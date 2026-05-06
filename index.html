@@ -1667,7 +1667,7 @@ main { padding-top: 64px; }
 .brokerage { background: var(--surface-page); }
 
 .broker-banner {
-  background: var(--text-primary);
+  background: var(--surface-page);
   border-top: 1px solid var(--border-primary);
   border-bottom: 1px solid var(--border-primary);
   padding: 18px 64px;
@@ -1675,17 +1675,11 @@ main { padding-top: 64px; }
   align-items: center;
   gap: 28px;
 
-  /* Inverse helpers — light glyphs on dark banner in light mode, dark glyphs on light banner in dark mode */
-  --inv-fg: var(--surface-page);
-  --inv-fg-soft: rgba(255,255,255,0.62);
-  --inv-fg-faint: rgba(255,255,255,0.38);
-  --inv-border: rgba(255,255,255,0.16);
-}
-[data-theme="dark"] .broker-banner {
-  --inv-fg: var(--surface-page);
-  --inv-fg-soft: rgba(0,0,0,0.62);
-  --inv-fg-faint: rgba(0,0,0,0.38);
-  --inv-border: rgba(0,0,0,0.16);
+  /* Ticker reads on the page surface — normal text tokens (theme-aware) */
+  --inv-fg: var(--text-primary);
+  --inv-fg-soft: var(--text-secondary);
+  --inv-fg-faint: var(--text-tertiary);
+  --inv-border: var(--border-tertiary);
 }
 .broker-banner .ticker-window {
   flex: 1;
@@ -1694,8 +1688,8 @@ main { padding-top: 64px; }
   border: 0;
   border-radius: 0;
 }
-.broker-banner .ticker-window::before { background: linear-gradient(to right, var(--text-primary) 0%, transparent 100%); }
-.broker-banner .ticker-window::after  { background: linear-gradient(to left,  var(--text-primary) 0%, transparent 100%); }
+.broker-banner .ticker-window::before { background: linear-gradient(to right, var(--surface-page) 0%, transparent 100%); }
+.broker-banner .ticker-window::after  { background: linear-gradient(to left,  var(--surface-page) 0%, transparent 100%); }
 .broker-banner .ticker-item {
   padding: 0 26px;
   border-right: 1px solid var(--inv-border);
@@ -1755,8 +1749,14 @@ main { padding-top: 64px; }
   background-repeat: no-repeat;
   background-position: center;
 }
+/* Dark-mode variant: wordmark recolored to white (.cls-3 fill swap) so the
+   ITRI text reads on the tinted ticker surface. Scoped to featured logo only —
+   partner strip uses the universal grayscale+invert filter, not this swap. */
 [data-theme="dark"] .featured-licensor-logo {
-  filter: invert(1) brightness(1.4);
+  background-image: url('assets/logos/partners/itri/itrilogo_eng_dark.svg');
+}
+[data-theme="dark"][lang="zh-Hant"] .featured-licensor-logo {
+  background-image: url('assets/logos/partners/itri/itrilogo_ch_dark.svg');
 }
 .featured-licensor-label {
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -1970,6 +1970,18 @@ main { padding-top: 64px; }
 [data-theme="dark"] .partner:hover { filter: none; opacity: 1; }
 [data-theme="dark"] .partner--innovue { filter: none; opacity: 0.7; }
 [data-theme="dark"] .partner--innovue:hover { opacity: 1; }
+/* ITRI uses a true dark-variant SVG (.cls-3 wordmark recolored to white) so we can
+   drop the invert and let grayscale alone mute it — matches III's muted look while
+   still revealing native cyan on hover. III keeps the invert filter (no dark SVG yet). */
+[data-theme="dark"] .partner--itri {
+  filter: grayscale(1);
+  opacity: 0.6;
+  background-image: url('assets/logos/partners/itri/itrilogo_eng_dark.svg');
+}
+[data-theme="dark"][lang="zh-Hant"] .partner--itri {
+  background-image: url('assets/logos/partners/itri/itrilogo_ch_dark.svg');
+}
+[data-theme="dark"] .partner--itri:hover { filter: none; opacity: 1; }
 
 /* ───────── Reports + Press ───────── */
 .section-head {
