@@ -22,7 +22,7 @@ If something in the page needs to change, the brand `.md` is edited first; this 
 open index.html
 ```
 
-No build step. Fonts load from the Google Fonts CDN (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `assets/logos/`.
+No build step. Fonts are self-hosted from `assets/fonts/` (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `assets/logos/`.
 
 ## Deploy
 
