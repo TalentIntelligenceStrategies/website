@@ -314,7 +314,7 @@
 /* ───────── Reset ───────── */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
 body {
   background: var(--surface-page);
@@ -2830,6 +2830,22 @@ main { padding-top: 64px; }
 .brand-select-item .check svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .brand-select-item.selected .check { opacity: 1; }
 
+/* Underline variant — matches .field underline inputs in the contact form. */
+.brand-select--underline > .brand-select-trigger {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-tertiary);
+  border-radius: 0;
+  padding: 12px 0;
+  height: auto;
+  font-size: 15px;
+}
+.brand-select--underline > .brand-select-trigger:focus-visible,
+.brand-select--underline.open > .brand-select-trigger {
+  border-color: transparent;
+  border-bottom-color: var(--border-focus);
+}
+
 .mkt-success {
   padding: 48px 32px; text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -3709,14 +3725,20 @@ main { padding-top: 64px; }
               <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
             </div>
             <div class="field">
-              <label for="contact-topic" data-zh="諮詢類型">Inquiry Type</label>
-              <select id="contact-topic" name="topic">
-                <option data-zh="授權組合">Licensing bundle</option>
-                <option data-zh="專利情報 / 估值">Patent intelligence / valuation</option>
-                <option data-zh="服務（仲介 / IP Ascent）">Services (Brokerage / IP Ascent)</option>
-                <option data-zh="媒體採訪">Press &amp; media</option>
-                <option data-zh="其他">General</option>
-              </select>
+              <label for="contact-topic-trigger" data-zh="諮詢類型">Inquiry Type</label>
+              <div class="brand-select brand-select--underline" id="contact-topic" data-name="topic">
+                <button id="contact-topic-trigger" class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="brand-select-label placeholder" data-zh="請選擇…">Select…</span>
+                  <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+                </button>
+                <div class="brand-select-menu" role="listbox">
+                  <div class="brand-select-item" role="option" data-value="licensing"><span data-zh="授權組合">Licensing bundle</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="intelligence"><span data-zh="專利情報 / 估值">Patent intelligence / valuation</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="services"><span data-zh="服務（仲介 / IP Ascent）">Services (Brokerage / IP Ascent)</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="press"><span data-zh="媒體採訪">Press &amp; media</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="general"><span data-zh="其他">General</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="field">
