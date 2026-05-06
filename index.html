@@ -1508,8 +1508,12 @@ main { padding-top: 64px; }
 }
 
 /* ─── Ascent · Program (bronze-washed) ─── */
+/* margin-inline: -32px breaks out of .container's 32px padding-inline so the
+   bronze wash reaches the container's outer edge (matches #products framing).
+   Mobile override drops it to -20px to match the smaller container gutter. */
 .adv-program {
-  padding: 72px 64px 64px;
+  padding: 72px 96px 64px;
+  margin-inline: -32px;
   text-align: center;
 }
 .adv-headline {
@@ -1670,7 +1674,8 @@ main { padding-top: 64px; }
   background: var(--surface-page);
   border-top: 1px solid var(--border-primary);
   border-bottom: 1px solid var(--border-primary);
-  padding: 18px 64px;
+  padding: 18px 96px;
+  margin-inline: -32px;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -1703,7 +1708,8 @@ main { padding-top: 64px; }
 .broker-banner .ticker-cta:hover { color: var(--inv-fg); }
 
 .broker-text {
-  padding: 56px 64px 64px;
+  padding: 56px 96px 64px;
+  margin-inline: -32px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 80px;
@@ -1909,6 +1915,13 @@ main { padding-top: 64px; }
   .tl-months span { font-size: 10px; }
   .tl-titles span { font-size: 12px; }
 }
+/* .container drops to padding-inline: 20px at ≤768px — match the breakout so the
+   bronze + ticker stay flush with the page gutter, not 12px shy of it. */
+@media (max-width: 768px) {
+  .adv-program,
+  .broker-banner,
+  .broker-text { margin-inline: -20px; }
+}
 
 /* Right-aligned "more" link with chevron — used in section headers + products foot */
 .arrow-link {
@@ -2065,8 +2078,13 @@ main { padding-top: 64px; }
 
 /* ───────── Reports — editorial split ───────── */
 /* Section modifier — surface-secondary stripe with hairline rules above/below.
-   Composes with .section so padding-block is preserved. */
-.section--editorial {
+   Background + borders sit on the inner .container (1440px) so the stripe
+   stays within the page's default view, matching #products framing. The
+   section's padding-block is shifted onto the container so the stripe also
+   covers what would otherwise be exposed page-surface above/below. */
+.section--editorial { padding-block: 0; }
+.section--editorial > .container {
+  padding-block: clamp(48px, 6vw, 80px);
   background: var(--surface-secondary);
   border-block: 1px solid var(--border-primary);
 }
@@ -2403,8 +2421,14 @@ main { padding-top: 64px; }
    radial is anchored at center (50% 50%) so the glow halos the content
    rather than fading down from the top. Hero glows from top; About halos
    center; Contact (below) rises from bottom — three-way variation on
-   one gradient scheme. */
-.about {
+   one gradient scheme.
+   Background + borders sit on the inner .container (1440px) so the wash
+   stays within the page's default view, matching #products framing. The
+   section's padding-block is shifted onto the container so the wash also
+   covers what would otherwise be exposed page-surface above/below. */
+.about { padding-block: 0; }
+.about > .container {
+  padding-block: clamp(48px, 6vw, 80px);
   background:
     radial-gradient(ellipse 80% 90% at 50% 50%,
       #DCE5EF 0%, #EAF0F7 40%, transparent 75%),
@@ -2412,7 +2436,7 @@ main { padding-top: 64px; }
   border-top: 1px solid var(--border-primary);
   border-bottom: 1px solid var(--border-primary);
 }
-[data-theme="dark"] .about {
+[data-theme="dark"] .about > .container {
   background:
     radial-gradient(ellipse 80% 90% at 50% 50%,
       rgba(51, 65, 85, 0.45) 0%,
@@ -2476,15 +2500,17 @@ main { padding-top: 64px; }
 /* ───────── Get in touch ───────── */
 /* Silver-faded background — radial anchored at bottom (50% 100%) so the
    glow rises from below the form. Pairs with About (center halo) and
-   the hero (top fade) for a three-way variation on one gradient scheme. */
-.contact {
+   the hero (top fade) for a three-way variation on one gradient scheme.
+   Background + border sit on the inner .container (1440px) so the wash
+   stays within the page's default view, matching #products framing. */
+.contact > .container {
   background:
     radial-gradient(ellipse 80% 90% at 50% 100%,
       #DCE5EF 0%, #EAF0F7 40%, transparent 75%),
     linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 85%);
   border-top: 1px solid var(--border-primary);
 }
-[data-theme="dark"] .contact {
+[data-theme="dark"] .contact > .container {
   background:
     radial-gradient(ellipse 80% 90% at 50% 100%,
       rgba(51, 65, 85, 0.45) 0%,
