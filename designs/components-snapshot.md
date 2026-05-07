@@ -927,6 +927,31 @@ Per [`visual-guide.md`](./visual-guide.md) Collaborator Partners: ITRI, III, and
 
 ---
 
+## Innovue collaboration card
+
+Single-row credit card introducing the Innovue partnership. Two columns separated by a vertical hairline: tight "Powered by" eyebrow + Innovue logo lockup on the left, introduction sentence on the right rendered with the silver text gradient (TIS-overall theme per [`visual-guide.md`](./visual-guide.md) §Imagery → Gradient architecture). Sibling to §Partner strip — shares the same container shell (`surface-page`, 1px `border-primary`, radius 16, padding 48 × 32) but carries different content: §Partner strip is the multi-mark peer row; this card is the Innovue-specific introduction. Both can coexist on the same surface — partner strip up top as the row of collaborators, this card below as the dedicated Innovue credit.
+
+- **Consumes:** `surface-page`, `border-primary`, `text-secondary`, `--gradient-text-silver-solid` (light) / `--gradient-text-silver-luminous` (dark) per [`design-tokens.md`](./design-tokens.md) §7.5
+- **Surfaces:** website homepage (Innovue partnership section); first-touch surfaces requiring Innovue credit per [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §8
+- **Variants:** default
+- **States:** rest only
+
+Container `surface-page`, `1px solid border-primary`, radius 16, padding `48 × 32`. Layout `display: flex; align-items: center; gap: 40px`. Three children: lockup, vertical divider, body copy.
+
+**Lockup.** Flex column, `align-items: flex-start`, `gap: 0`, `flex-shrink: 0`. Eyebrow `<span>` "Powered by" — Urbanist `14 / 400 / 0`, `text-secondary`, `line-height: 1`, `margin-left: -1px` (so the lowercase "P" stem sits flush with the leftmost edge of the Innovue glyphs below), `margin-bottom: -2px` (closes the visual gap to the logo). Innovue `<img>` at `height: 48px`, source `Innovue_Logo_Blue_eng.svg`; `[data-theme="dark"]` applies `filter: brightness(1.6)` per the §Footer Innovue treatment rule (full-color blue mark, brightened in dark mode — never inverted to grayscale here, distinct from the legacy partner-strip treatment).
+
+**Divider.** 1px `border-primary`, `align-self: stretch` — fills the full padded card height.
+
+**Body copy.** `flex: 1; min-width: 0`. Single `<p>`: Urbanist `20 / 500 / -0.005em / 1.45`. Silver text gradient via `background: var(--gradient-text-silver-solid); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent` (light); `--gradient-text-silver-luminous` on `[data-theme="dark"]`. Line-height 1.45 (loosened from 1.0) so descenders clear under `background-clip: text`.
+
+**Canonical copy.** "Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity." The "4th-largest" anchor is load-bearing per [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §anchor-numbers — do not paraphrase.
+
+**Centering note.** Lockup is geometrically centered with the divider midpoint (60px stack — 14px eyebrow − 2px overlap + 48px logo — centered against the v-rule's stretch). Visually, because the eyebrow is light and the logo heavy, the logo glyphs sit ~6px below the divider midpoint. An optical-centering variant — `transform: translateY(-6px)` on the lockup — lands the logo center on the divider with the eyebrow floating above. Both versions referenced in [`archive/previews/partner-strip-preview.html`](./archive/previews/partner-strip-preview.html); geometric centering is the default unless a consumer surface decides otherwise.
+
+**Responsive.** At ≤760px: layout collapses to `flex-direction: column; align-items: flex-start; gap: 32px`; vertical divider hides.
+
+---
+
 ## Seal · Standalone
 
 Round seal — TIS's translation of LEED-style certification badges. Thin outer ring, 1px white gap, filled disc, smaller white inner disc holding the issuer or partner submark; curved sans text on top and bottom arcs carries the issuer line and the per-seal credential count. Atomic: each seal stands alone or composes inside the §Verified License Badge pill.
