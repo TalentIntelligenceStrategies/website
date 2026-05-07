@@ -217,7 +217,7 @@ Container: `display: inline-flex; align-items: stretch`, 1px `border-primary`, r
 
 Each cell: `display: inline-flex; align-items: center; gap: 8`, padding 8×12, with a 1px `border-primary` right-divider (suppressed on the last child). `font-family: mono`, font-size 13, `white-space: nowrap`. Three inline tokens per cell:
 
-1. **Tier chip** — the canonical `tier-chip` (see §Tier chip), full label `Tier S` / `Tier A` / etc. Tier color lives entirely in the chip; the surrounding strip stays neutral so the row reads as a uniform summary primitive instead of a colored streak.
+1. **Tier chip** — the canonical `tier-chip` (see [`primitives.md`](./primitives.md) §Chip family / Tier chip), full label `Tier S` / `Tier A` / etc. Tier color lives entirely in the chip; the surrounding strip stays neutral so the row reads as a uniform summary primitive instead of a colored streak.
 2. **Count** — mono 13 / 600 / `text-primary` with `font-feature-settings: "tnum"`. The achieved number is the cell's primary signal.
 3. **Denominator** — mono 13 / 500 / `text-tertiary`, in the form `/N` (e.g. `/5`). Lighter weight and lower contrast than the count so the eye lands on the achieved number first; the slot capacity sits beside it as a quiet reference. Useful when bundles are under-recommended or mid-swap and a count of `5 / 6` reads more clearly than a bare `5`.
 
@@ -262,7 +262,7 @@ Container: `panel` shell — radius 10, 1px `border-primary`, background `surfac
 Body rows: `display: grid; grid-template-columns: 104px 54px 1fr 96px 86px 134px 94px 18px; align-items: center; column-gap: 18; padding: 13×20; border-bottom: 1px solid border-primary; cursor: pointer`. Hover applies background `surface-tertiary`. The eight columns, in order:
 
 1. **License ID** — mono 15 / 600 / `text-primary` (e.g. `LIC-00042`). The ID is the row's primary anchor and the only mono cell in the row — every other data column reads as sans tabular so the row's body weight stays calm and the ID's mono density is the column-edge anchor. ISO ID convention follows [`voice-and-messaging.md`](./voice-and-messaging.md) §7.
-2. **Jurisdiction chip** — `juris-chip`, two-letter code (`US` / `TW` / `EU` / `JP` / `KR`) per §Jurisdiction chip. The full region name is **not** repeated in the row — the chip carries the signal and the industry / context that follows is the human-readable text.
+2. **Jurisdiction chip** — `juris-chip`, two-letter code (`US` / `TW` / `EU` / `JP` / `KR`) per [`primitives.md`](./primitives.md) §Chip family / Jurisdiction chip. The full region name is **not** repeated in the row — the chip carries the signal and the industry / context that follows is the human-readable text.
 3. **Industry** — sans 15 / 500 / `text-secondary` (human-readable, e.g. `Electronics`). Takes the `1fr` slack column so long industry names breathe; all other columns are content-sized fixed widths so column edges align across rows.
 4. **Patent count** — sans 15 / 500 / `text-secondary` with `font-feature-settings: "tnum"; font-variant-numeric: tabular-nums` (`30 patents`). Reads as a calm tabular fact, not a hard mono numeric — the License ID owns the mono density.
 5. **Term** — sans 15 / 500 / `text-secondary` / tnum (`1 year`, `3 months`, `3 years`).
@@ -370,40 +370,6 @@ Row content (right of the dot): a head row (`display: flex; justify-content: spa
 The `muted` row modifier (opacity 0.5) de-emphasizes the row beyond the active milestone (e.g. Term ends after Renewal window opens) so the active step stays the row that draws the eye.
 
 Pairs with §Your licenses (the trigger surface that opens this right-rail) and §Verified License Badge (the visual anchor on the same detail surface).
-
----
-
-## Tier chip
-
-Inline-flex pill rendering an SABCD quality tier — five tones drawn from the SABCD ramp in [`design-tokens.md`](./design-tokens.md) §7.4: gold (S) → emerald (A) → sky (B) → violet (C) → orange (D).
-
-- **Consumes:** `score-s` / `score-a` / `score-b` / `score-c` / `score-d` foregrounds; `score-s-bg` / `score-a-bg` / `score-b-bg` / `score-c-bg` / `score-d-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
-- **Surfaces:** Licensing Platform (recommendation grid corners, license inventory and detail tables, bundle summary cells, patent feed cards, public verify page); Patent Intelligence SaaS scorecards
-- **Variants:** `s` / `a` / `b` / `c` / `d`
-- **States:** default
-
-Geometry per §Chip family above. **Font-weight 700** (one step heavier than Status chip's 600 — see §Chip family / weight asymmetry).
-
-**Label convention.** Always render the full token: `Tier S`, `Tier A`, `Tier B`, `Tier C`, `Tier D` — never the bare letter. The letter alone loses meaning when the chip travels out of context (CSV exports, screenshots, embed badges, paste into a deck), and the word "Tier" anchors the chip to a defined framework instead of to a pricing label like Premium / Pro / Plus. Same rule in prose — see [`voice-and-messaging.md`](./voice-and-messaging.md) §4.5.
-
-**Coexistence with Threshold bar.** The Threshold bar in §Threshold bar carries its own monochrome `STRONG` / `MID` / `WEAK` chip — that's the P1–P8 pillar score on the radar/threshold panel, a separate scoring system from SABCD tiers. Both coexist on the same page without conflict; Threshold bar's monochrome rule still applies inside the radar panel.
-
----
-
-## Jurisdiction chip
-
-Inline-flex pill rendering a jurisdiction code — `US` (indigo) / `TW` (olive) / `EU` (slate) / `JP` (fuchsia) / `KR` (cherry).
-
-- **Consumes:** `juris-us` / `juris-tw` / `juris-eu` / `juris-jp` / `juris-kr` foregrounds; `juris-us-bg` / `juris-tw-bg` / `juris-eu-bg` / `juris-jp-bg` / `juris-kr-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
-- **Surfaces:** Licensing Platform (catalog rows, recommendation grid header, cart, license inventory and detail, bundle summary, dashboard license rows — anywhere a jurisdiction needs to be recognised at a glance)
-- **Variants:** `us` / `tw` / `eu` / `jp` / `kr`
-- **States:** default
-
-Geometry per §Chip family above. **Font-weight 700**, matching Tier chip.
-
-**Content convention.** Always render the two-letter code (`US`, `TW`, `EU`, `JP`, `KR`) as the chip content — full region names sit alongside the chip in the surrounding row, never inside it. The two-letter form is naturally uppercase, so the chip reads correctly without a CSS `text-transform` rule. The chip is the at-a-glance signal; the full name is the human-readable label.
-
-**Pairing order.** Within a row, Jurisdiction precedes Tier (jurisdiction = outer container, tier = inner grade). Within the broader chip stack, the canonical order is Status → Jurisdiction → Tier — see §Chip family / stacking order.
 
 ---
 
@@ -650,7 +616,7 @@ Keyboard (palette): typing filters results; ↑/↓ move selection; Enter activa
 
 ## Filter bar
 
-Single-row controller above filterable grids — combines a multi-toggle pill group with single-select dropdowns and a sort / clear / count tail anchored right. Used above the Licensing Platform 30-patent recommendation grid to slice the bundle by tier and numeric thresholds. Composes §Select for the dropdowns and the Tier palette (without consuming §Tier chip itself — the pills are interactive toggles, not labels). Canonical reference: [`brand/previews/bundle-page-preview.html`](./previews/bundle-page-preview.html).
+Single-row controller above filterable grids — combines a multi-toggle pill group with single-select dropdowns and a sort / clear / count tail anchored right. Used above the Licensing Platform 30-patent recommendation grid to slice the bundle by tier and numeric thresholds. Composes §Select for the dropdowns and the Tier palette (without consuming the [`primitives.md`](./primitives.md) §Chip family / Tier chip itself — the pills are interactive toggles, not labels). Canonical reference: [`brand/previews/bundle-page-preview.html`](./previews/bundle-page-preview.html).
 
 - **Consumes:** `surface-page`, `surface-tertiary`, `border-primary`, `border-tertiary`, `border-focus`, `text-primary`, `text-secondary`, `text-tertiary`; selected pills pull `score-*` / `score-*-bg` per tier from [`design-tokens.md`](./design-tokens.md) §7.4
 - **Surfaces:** Licensing Platform (recommendation grid, license inventory); Patent Intelligence SaaS (saved-set browse)
@@ -1124,151 +1090,3 @@ Over-max (rare): fill pinned to 100%, value suffixed `+`. Under-zero: fill width
 **Section header** — when a stack of score rows forms a panel (the "SCORE & WEIGHT" layout), a header sits above the stack: `label-mono-11 / text-tertiary`, uppercase (e.g. `SCORE & WEIGHT`), followed by a 1px bottom `border-primary` divider. 20px spacing below the divider before the first row.
 
 **Accessibility** — track exposed as `role="progressbar"` with `aria-valuenow` / `aria-valuemin` / `aria-valuemax` and `aria-label` naming the metric (e.g. *"P1 Citation Impact"*). The tier chip word (`STRONG` / `MID` / `WEAK`) is the tier signal for all readers, colour-blind or otherwise — there is no colour-only signal anywhere in the component, meeting WCAG 1.4.1 by construction.
-
----
-
-## Gradients (exploration)
-
-Nine text-gradient utilities, four atmospheric background washes, eight per-pillar dot-gradient fields, and four faded-bg × solid-text pairings exploring SABCD-anchored and metallic sweeps for hero display register. **This section is the working spec — gradient primitives remain officially deferred per [`design-tokens.md`](./design-tokens.md) §6** (the *Imagery → gradients* item). Promote when visual rules resolve.
-
-**Pillar mapping owned by [`visual-guide.md`](./visual-guide.md) §Imagery → Gradient architecture** — silver = TIS overall, cool = Patent Intelligence SaaS, warm = Licensing Platform, bronze = Services (Ascent + Brokerage). This section catalogs the utilities; identity rules live there.
-
-Naming: `.grad-text-{theme}-{style}` and `.grad-bg-{theme}-{style}`, where `theme ∈ {warm, cool, silver, bronze}` and `style ∈ {solid, faded, luminous}`. `solid` = vivid throughout; `faded` = pale shimmer entry → vivid resolve; `luminous` = silver-only, high-key slate tuned for dark surfaces.
-
-### Vivid 500-level palette
-
-The SABCD-derived utilities draw from a **vivid 500-level** sibling palette of the canonical foregrounds. Canonical 700-level values (in [`design-tokens.md`](./design-tokens.md) §7.4 — `--score-*`) are tuned for WCAG AA contrast on chip pills at 11–12px; at hero display size (60–80px / 700 weight) they read muted. The 500-level lift keeps the same hue family but raises saturation/brightness for display register:
-
-| Tier | Canonical (§7.4) | Vivid stop |
-|---|---|---|
-| S | `#8B6914` deep aged gold | `#D4A017` bright gold (bronze-leaning, not yellow) |
-| A | `#047857` emerald-700 | `#10B981` emerald-500 |
-| B | `#0369A1` sky-700 | `#0EA5E9` sky-500 |
-| C | `#6D28D9` violet-700 | `#8B5CF6` violet-500 |
-| D | `#C2410C` orange-700 | `#F97316` orange-500 |
-
-### Silver slate ramp
-
-The silver theme draws from a Tailwind-style slate ramp (off the SABCD ladder):
-
-| Stop | Hex | Use |
-|---|---|---|
-| slate-100 | `#F1F5F9` | luminous text shimmer entry (dark-surface) |
-| slate-200 | `#E2E8F0` | luminous text mid (dark-surface) |
-| slate-300 | `#CBD5E1` | faded text shimmer entry |
-| slate-400 | `#94A3B8` | faded text mid · luminous text resolve |
-| slate-500 | `#64748B` | solid text entry |
-| slate-600 | `#475569` | faded text resolve (= canonical `--juris-eu`) |
-| slate-700 | `#334155` | solid text mid · silver pair-panel body colour |
-| slate-900 | `#0F172A` | solid text resolve |
-
-### Bronze ramp
-
-The bronze theme draws from a custom four-stop ramp tuned to harmonize with the warm S-tier gold:
-
-| Stop | Hex | Use |
-|---|---|---|
-| bronze-light | `#E8D8A8` | faded text shimmer entry (pale honey) |
-| bronze-mid | `#B8965A` | faded text mid · solid text entry |
-| bronze-deep | `#8B6914` | faded text resolve · solid text mid (= canonical `--score-s` deep) |
-| bronze-darker | `#5C4509` | solid text resolve · bronze pair-panel body colour |
-
-### Text gradients (nine utilities)
-
-Application: `background: linear-gradient(...); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent;`. All sweeps `90deg` (horizontal). The `*-faded` variants front-load pale stops in the first 30% to give a soft shimmer entry; the `*-solid` variants stay in the deep register throughout.
-
-| Utility | Stops · positions | Reads as |
-|---|---|---|
-| `.grad-text-warm-solid` | S → D · 0/100 | Warm duotone — gold meets orange, two extremes. Quietest of the SABCD-anchored set. |
-| `.grad-text-warm-faded` | `#F5E4A8` → `#ECD27A` → S → D · 0/15/30/100 | Warm duotone with pale-gold shimmer entry; soft left-to-right reading. |
-| `.grad-text-cool-solid` | A → B → C · 0/50/100 | Cool tritone — emerald → sky → violet. Premium S and weak D dropped. |
-| `.grad-text-cool-faded` | `#A7F3D0` → `#6EE7B7` → A → B → C · 0/15/30/65/100 | Cool tritone with pale-emerald shimmer entry. |
-| `.grad-text-silver-solid` | slate-500 → slate-700 → slate-900 · 0/50/100 | Gunmetal — confident and dark, no pale entry. |
-| `.grad-text-silver-faded` | slate-300 → slate-400 → slate-600 · 0/50/100 | Brushed chrome — pale shimmer to slate. |
-| `.grad-text-silver-luminous` | slate-100 → slate-200 → slate-400 · 0/50/100 | Luminous chrome — high-key silver tuned for dark surfaces; near-white shimmer entry resolving to soft slate. Same family as silver-faded, lifted upward to stay legible on `#0E0E0E`. |
-| `.grad-text-bronze-solid` | bronze-mid → bronze-deep → bronze-darker · 0/50/100 | Lacquered bronze — saturated, deep, no pale entry. |
-| `.grad-text-bronze-faded` | bronze-light → bronze-mid → bronze-deep · 0/50/100 | Polished bronze — pale honey resolves to canonical S-tier gold. |
-
-### Background washes (four utilities)
-
-Atmospheric, soft-tier-bg-register backgrounds for hero panels — saturation pulled way back, gradient *implied* not declared. Apple M4 / Anthropic-fan reference: ambient light, not a flat band. `*-faded` bgs anchor to white edges; the metallic radials hold their register top-down then fade to white near the floor.
-
-| Utility | Composition |
-|---|---|
-| `.grad-bg-warm-faded` | `linear-gradient(90deg, #FFFFFF 0%, #FDF6E0 35%, #FAF3DC 65%, #FFF7ED 100%)` — white-anchored, warm bloom on the right. |
-| `.grad-bg-cool-faded` | `linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%)` — white-anchored, cool tint resolving on the right. |
-| `.grad-bg-silver-faded` | `radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%), linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%)` — pale slate radial from top, fading to white near the floor. The Apple M4 reference. |
-| `.grad-bg-bronze-faded` | `radial-gradient(ellipse 90% 100% at 50% 0%, #EFE2BC 0%, #F5EBC8 35%, transparent 70%), linear-gradient(180deg, #FAF3DC 0%, #FFFFFF 85%)` — warm metallic counterpart to silver-faded. |
-
-### Dot gradients (eight utilities)
-
-Atmospheric multi-bloom fields composed of 2–3 fixed-radius radial gradients anchored at interior coordinates inside the content frame (apply on a `max-width`-bound container, not a full-bleed section, so the circles don't leak into side margins on wide viewports). Per-pillar identity for marketing surfaces — `*-warm-*` pairs with **Licensing Platform**, `*-cool-*` with **Patent Intelligence SaaS**. Light mode renders soft pastel hex at `0.35` alpha over the page surface; dark mode uses vivid SABCD at `0.20` alpha with `background-blend-mode: screen` for atmospheric lift against `#0E0E0E`.
-
-**Light-mode palette**
-
-- Warm: `#FFD7B0` peach, `#FEDCBE` cream, `#F5E4A8` gold (S-tier-adjacent pastels)
-- Cool: `#E9D5FF` lavender, `#BFDBFE` sky, `#D1FAE5` mint (A/B/C-tier-adjacent pastels)
-
-**Dark-mode palette (vivid SABCD)**
-
-- Warm: `#F97316` D-orange, `#D4A017` S-gold
-- Cool: `#8B5CF6` C-violet, `#0EA5E9` B-sky, `#10B981` A-emerald
-
-Naming: `.grad-dots-{theme}-{variant}` — `theme ∈ {warm, cool}`; `variant ∈ {diagonal, horizon, triad, spread}`. The four variants describe the bloom composition, not the colour story.
-
-| Utility | Light-mode composition | Reads as |
-|---|---|---|
-| `.grad-dots-warm-diagonal` | 600px peach @ 35% 30% + 480px cream @ 60% 65% | Two-dot asymmetric flow, top-left to lower-right. |
-| `.grad-dots-warm-horizon` | 540px peach @ 25% 50% + 540px gold @ 75% 50% | Two-dot horizontal — left + right at center vertical. |
-| `.grad-dots-warm-triad` | 480px peach @ 50% 25% + 440px cream @ 25% 75% + 440px gold @ 75% 75% | Triangular composition — top-center anchor with bottom corners. |
-| `.grad-dots-warm-spread` | 580px peach @ 20% 25% + 480px gold @ 75% 45% + 460px cream @ 35% 80% | Organic three-dot scatter, irregular flow. |
-| `.grad-dots-cool-diagonal` | 600px lavender @ 35% 30% + 480px sky @ 60% 65% | Cool counterpart to warm-diagonal. |
-| `.grad-dots-cool-horizon` | 540px lavender @ 25% 50% + 540px mint @ 75% 50% | Cool counterpart to warm-horizon. |
-| `.grad-dots-cool-triad` | 480px lavender @ 50% 25% + 440px sky @ 25% 75% + 440px mint @ 75% 75% | Cool counterpart to warm-triad. |
-| `.grad-dots-cool-spread` | 580px lavender @ 20% 25% + 480px mint @ 75% 45% + 460px sky @ 35% 80% | Cool counterpart to warm-spread. |
-
-Each warm utility takes a structurally identical cool sibling (same dot count, sizes, anchors) — only the colour palette differs, so designers can swap pillars without re-thinking layout.
-
-**Each dot-stop fades to `transparent 90%`.** The long fade is what lets dots overlap softly and blend into a continuous atmospheric field; don't shorten it past ~80% or the boundaries harden.
-
-**Dark-mode pattern.** Each utility carries a `[data-theme="dark"]` companion that swaps the pastel hex for vivid SABCD at `0.20` alpha (warm: orange/gold; cool: violet/sky/mint) and adds `background-blend-mode: screen` so overlapping blooms brighten where they intersect — gives the dim dark surface a touch of luminance without raising alpha.
-
-Canonical implementation: [`website/index.html`](../website/index.html) Products section consumes `.grad-dots-warm-diagonal` and `.grad-dots-cool-diagonal`, swapped via `[data-pillar]` on the section and applied to the inner `.container` (so the bloom field stays inside the 1440px content frame on wide viewports).
-
-### Pairing — faded background × solid text
-
-Four canonical pairings compose a faded background with the matching theme's solid text gradient. Background recedes; the headline carries colour weight. Body copy stays off the gradient (panel-specific solid colour) for legibility.
-
-| Theme | Background | Headline | Body colour |
-|---|---|---|---|
-| Warm | `.grad-bg-warm-faded` | `.grad-text-warm-solid` | `#7A4A0F` |
-| Bronze | `.grad-bg-bronze-faded` | `.grad-text-bronze-solid` | `#5C4509` (bronze-darker) |
-| Cool | `.grad-bg-cool-faded` | `.grad-text-cool-solid` | `#1E3A5F` |
-| Silver | `.grad-bg-silver-faded` | `.grad-text-silver-solid` | `#334155` (slate-700) |
-
-Panel chrome: `border-radius: 24px`, padding `96px 64px`, min-height `420px`. Mono-font tag in top-left (`rgba(255,255,255,0.7)` translucent pill, 6px backdrop blur, hairline border). Label-mono-11 meta in bottom-left. Headline at 88px / 700 / -.03em / 1.0 line-height. Body at 22px / 600 / -.005em / 1.4 line-height / 32ch max-width.
-
-### Promotion path
-
-When gradient primitives leave deferred status:
-
-1. Add primitives to [`design-tokens.md`](./design-tokens.md) §7.2: ~~`--score-s-vivid` … `--score-d-vivid`~~ (landed in §7.2 *Tier vivid*), slate ramp `--slate-100` … `--slate-900`, bronze ramp `--bronze-light` / `-mid` / `-deep` / `-darker`, plus the dot-gradient pastel palette — warm: `--pastel-peach` `#FFD7B0`, `--pastel-cream` `#FEDCBE`, `--pastel-gold` `#F5E4A8`; cool: `--pastel-lavender` `#E9D5FF`, `--pastel-sky` `#BFDBFE`, `--pastel-mint` `#D1FAE5`.
-2. Add `--gradient-text-*`, `--gradient-bg-*`, and `--gradient-dots-*` semantic tokens to §7.4 for the ten + five + eight utilities.
-3. Remove the *gradient primitives + semantic tokens land here in §7.2 / §7.4 once the visual rules resolve* line from §6 *Imagery*.
-4. Convert this section's "(exploration)" framing to canonical, drop the working-spec disclaimer.
-
----
-
-## Verification checklist
-
-Before shipping a component:
-
-- [ ] Every color references a semantic token, not a raw hex.
-- [ ] Every type choice uses a role (`heading-*`, `copy-*`, `label-*`, `button-*`).
-- [ ] Five states where applicable: default / hover / active / focus / disabled.
-- [ ] Focus ring visible; never color-only.
-- [ ] `prefers-reduced-motion: reduce` honored.
-- [ ] Contrast passes WCAG AA on every text/surface pairing.
-- [ ] Tap targets ≥ 44×44 px.
-- [ ] Works at every breakpoint.
-- [ ] Metadata lines complete: *consumes* names only semantic tokens, *surfaces* names specific MVPs, *variants* and *states* exhaustive.

@@ -196,7 +196,7 @@ Icons carry no state of their own. States live on the consuming component (butto
 > - **Generated / AI imagery** — policy (allowed or banned), house-style if allowed, content bans (faces, text-in-image), labelling.
 > - **Illustrations** — positive marketing rule. Current rule is only the negative — see [`components.md`](./components.md) §Empty state.
 > - **Product screenshots** — how Patent Intelligence SaaS / Licensing Platform UI is rendered in marketing and decks (frame chrome, annotation, mockup vs real device).
-> - **Gradients** — pillar architecture (which theme belongs to which surface) resolved below in §Gradient architecture; construction details, allowed surfaces, and primitive + semantic tokens still pending. Cross-cuts [`design-tokens.md`](./design-tokens.md) §7.2 / §7.4 (token layer) and [`components.md`](./components.md) §Gradients (utility catalog).
+> - **Gradients** — promoted out of pending. Pillar architecture (which theme belongs to which surface) resolved below in §Gradient architecture; style-tier when-to-use rules (solid / faded / luminous) below in same section; token spec + utility catalog in [`design-tokens.md`](./design-tokens.md) §7.2 + §7.5; visual reference in [`brand/previews/gradients-preview.html`](./previews/gradients-preview.html).
 > - **Patterns / textures / backgrounds** — geometric patterns, dotted grids, ink washes; generalize the deck-cover hero-cube precedent ([`presentations.md`](./presentations.md) §Cover) and define report / client-PDF cover treatments.
 > - **Maps (jurisdiction)** — geographic visuals for Licensing Platform jurisdiction × industry bundles; currently zero spec.
 > - **Non-data diagrams** — flowcharts, architecture, process diagrams. Distinct from the SaaS data-viz blocker tracked in §Iconography → Data Visualization above.
@@ -215,7 +215,17 @@ Each gradient theme is the visual signature of a TIS surface or pillar — the c
 | Services · Ascent program | Bronze | Lacquered bronze — solid text on bronze-faded bg. Assertive, headline-forward register for the 24-month consulting program. |
 | Services · Brokerage | Bronze | Polished bronze — faded text on bronze-faded-up bg. Softer, supporting register for the rights-holder ↔ acquirer matchmaking surface. |
 
-The catalog of gradient utilities (CSS class names, exact stops, dot-field compositions, dark-mode counterparts) lives in [`components.md`](./components.md) §Gradients (exploration). Token primitives + semantic tokens remain deferred per [`design-tokens.md`](./design-tokens.md) §6.
+**Style tiers — when to use which.** Each theme renders in one of three style tiers; pick by surface register, not by aesthetic preference.
+
+| Style | When to use | Surfaces |
+|---|---|---|
+| `solid` | Primary brand surfaces where the gradient itself is the headline. Vivid throughout, no pale entry — confident, deep, readable at hero scale. Default for hero text on light bg, faded-bg × solid-text pairings, and any surface where the gradient is being *read* as content. | Hero h1s, pillar landing headlines, faded-pair panel headlines |
+| `faded` | Decorative gradient text where the type is large enough that a pale shimmer entry adds register without losing legibility. Pale entry → vivid resolve, left-to-right warm-up. Use when the surface is otherwise quiet (off-white bg, generous whitespace) and the headline can carry a soft entry. | Pillar section eyebrows + display heads, marketing aside heads, content-card overlays |
+| `luminous` | **Silver only.** High-key slate ramp tuned for dark surfaces. Near-white shimmer entry resolving to soft slate — keeps silver text legible against `#0E0E0E` without lifting alpha. Don't use `luminous` on warm / cool / bronze; those themes don't have a luminous companion in §7.5 and would need a separate spec. | Dark-hero silver headlines, dark-mode display copy on the marketing site |
+
+**Don't cross-cast.** A pillar's theme is its identity — Patent Intelligence SaaS surfaces don't carry warm gradients, Licensing Platform surfaces don't carry cool gradients. Silver is the only theme that can speak across pillars (because it represents *no single pillar*) and is reserved for TIS-overall surfaces.
+
+The full token spec — CSS class names, exact stops, dot-field compositions, dark-mode counterparts — lives in [`design-tokens.md`](./design-tokens.md) §7.5. Visual reference: [`brand/previews/gradients-preview.html`](./previews/gradients-preview.html).
 
 Canonical implementations on a live surface: [`../website/index.html`](../website/index.html) — silver on the hero, warm on `#products[data-pillar="licensing"]`, cool on `#products[data-pillar="intelligence"]`, bronze on the `#services` Ascent + Brokerage banners.
 

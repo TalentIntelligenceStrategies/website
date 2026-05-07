@@ -299,6 +299,40 @@ Geometry per §Chip family above. **Font-weight 600** (the canonical chip weight
 
 ---
 
+### Jurisdiction chip
+
+Inline-flex pill rendering a jurisdiction code — `US` (indigo) / `TW` (olive) / `EU` (slate) / `JP` (fuchsia) / `KR` (cherry).
+
+- **Consumes:** `juris-us` / `juris-tw` / `juris-eu` / `juris-jp` / `juris-kr` foregrounds; `juris-us-bg` / `juris-tw-bg` / `juris-eu-bg` / `juris-jp-bg` / `juris-kr-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
+- **Surfaces:** Licensing Platform (catalog rows, recommendation grid header, cart, license inventory and detail, bundle summary, dashboard license rows — anywhere a jurisdiction needs to be recognised at a glance)
+- **Variants:** `us` / `tw` / `eu` / `jp` / `kr`
+- **States:** default
+
+Geometry per §Chip family above. **Font-weight 700**, matching Tier chip.
+
+**Content convention.** Always render the two-letter code (`US`, `TW`, `EU`, `JP`, `KR`) as the chip content — full region names sit alongside the chip in the surrounding row, never inside it. The two-letter form is naturally uppercase, so the chip reads correctly without a CSS `text-transform` rule. The chip is the at-a-glance signal; the full name is the human-readable label.
+
+**Pairing order.** Within a row, Jurisdiction precedes Tier (jurisdiction = outer container, tier = inner grade). Within the broader chip stack, the canonical order is Status → Jurisdiction → Tier — see §Chip family / stacking order.
+
+---
+
+### Tier chip
+
+Inline-flex pill rendering an SABCD quality tier — five tones drawn from the SABCD ramp in [`design-tokens.md`](./design-tokens.md) §7.4: gold (S) → emerald (A) → sky (B) → violet (C) → orange (D).
+
+- **Consumes:** `score-s` / `score-a` / `score-b` / `score-c` / `score-d` foregrounds; `score-s-bg` / `score-a-bg` / `score-b-bg` / `score-c-bg` / `score-d-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
+- **Surfaces:** Licensing Platform (recommendation grid corners, license inventory and detail tables, bundle summary cells, patent feed cards, public verify page); Patent Intelligence SaaS scorecards
+- **Variants:** `s` / `a` / `b` / `c` / `d`
+- **States:** default
+
+Geometry per §Chip family above. **Font-weight 700** (one step heavier than Status chip's 600 — see §Chip family / weight asymmetry).
+
+**Label convention.** Always render the full token: `Tier S`, `Tier A`, `Tier B`, `Tier C`, `Tier D` — never the bare letter. The letter alone loses meaning when the chip travels out of context (CSV exports, screenshots, embed badges, paste into a deck), and the word "Tier" anchors the chip to a defined framework instead of to a pricing label like Premium / Pro / Plus. Same rule in prose — see [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §4.5.
+
+**Coexistence with Threshold bar.** The Threshold bar in [`components.md`](./components.md) §Threshold bar carries its own monochrome `STRONG` / `MID` / `WEAK` chip — that's the P1–P8 pillar score on the radar/threshold panel, a separate scoring system from SABCD tiers. Both coexist on the same page without conflict; Threshold bar's monochrome rule still applies inside the radar panel.
+
+---
+
 ### Signal dot
 
 Pulsing 6×6 circle for live system state — dashboards, report status, any live-data surface. More saturated than status chip foregrounds so it attracts the eye at small sizes. Geometry diverges from the chip-pill trio (no text, smaller, circular); palette family is distinct from Status / Tier / Jurisdiction.
