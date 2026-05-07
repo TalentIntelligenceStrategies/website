@@ -6,11 +6,11 @@
 <title>TIS — Strategic patent intelligence, grounded in 170M patents</title>
 <meta name="description" content="Talent Intelligence Strategies — IP intelligence consultancy. Patent licensing bundles by jurisdiction, token-based valuation and reports against the 170M-patent Innovue database." />
 
-<link rel="icon" type="image/svg+xml" href="assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
-<link rel="icon" type="image/svg+xml" href="assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+<link rel="icon" type="image/svg+xml" href="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
 
-<link rel="preload" href="assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
 <style>
 /* ───────── Self-hosted fonts (mirrors brand/assets/fonts/) ───────── */
@@ -19,77 +19,77 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');
+  src: url('designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Urbanist';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/Urbanist/static/Urbanist-Medium.ttf') format('truetype');
+  src: url('designs/assets/fonts/Urbanist/static/Urbanist-Medium.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Urbanist';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf') format('truetype');
+  src: url('designs/assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Urbanist';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('assets/fonts/Urbanist/static/Urbanist-Bold.ttf') format('truetype');
+  src: url('designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Inconsolata';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/Inconsolata/static/Inconsolata-Regular.ttf') format('truetype');
+  src: url('designs/assets/fonts/Inconsolata/static/Inconsolata-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Inconsolata';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/Inconsolata/static/Inconsolata-Medium.ttf') format('truetype');
+  src: url('designs/assets/fonts/Inconsolata/static/Inconsolata-Medium.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Inconsolata';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf') format('truetype');
+  src: url('designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Regular.ttf') format('truetype');
+  src: url('designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Medium.ttf') format('truetype');
+  src: url('designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Medium.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-SemiBold.ttf') format('truetype');
+  src: url('designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-SemiBold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Bold.ttf') format('truetype');
+  src: url('designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Bold.ttf') format('truetype');
 }
 
 /* ───────── Tokens — light (mirrors brand/design-tokens.md §7.4) ───────── */
@@ -148,12 +148,12 @@
     radial-gradient(circle at 30% 30%, var(--surface-tertiary), transparent 50%),
     radial-gradient(circle at 70% 70%, var(--surface-quaternary), transparent 60%);
 
-  --logo-submark:           url('assets/logos/tis/tis_cubelogo_submark_dark.svg');
-  --logo-secondary:         url('assets/logos/tis/tis_secondarylogo_dark_eng.svg');
-  --partner-innovue:        url('assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg');
-  --partner-innovue-color:  url('assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
-  --partner-itri:           url('assets/logos/partners/itri/itrilogo_eng.svg');
-  --partner-iii:            url('assets/logos/partners/iii/logo_iii_dark_en.svg');
+  --logo-submark:           url('designs/assets/logos/tis/tis_cubelogo_submark_dark.svg');
+  --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
+  --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg');
+  --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
+  --partner-itri:           url('designs/assets/logos/partners/itri/itrilogo_eng.svg');
+  --partner-iii:            url('designs/assets/logos/partners/iii/logo_iii_dark_en.svg');
 
   /* Slate primitives — consumed by the silver text-gradient utility used on the hero
      headline (per components.md §Gradients). Not theme-scoped: light mode renders the
@@ -251,10 +251,10 @@
     0 1px 1px 0 rgba(0,0,0,0.35),
     0 0 1px 0 rgba(0,0,0,0.5);
 
-  --logo-submark:           url('assets/logos/tis/tis_cubelogo_submark_light.svg');
-  --logo-secondary:         url('assets/logos/tis/tis_secondarylogo_light_eng.svg');
-  --partner-innovue:        url('assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
-  --partner-innovue-color:  url('assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
+  --logo-submark:           url('designs/assets/logos/tis/tis_cubelogo_submark_light.svg');
+  --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_light_eng.svg');
+  --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
+  --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
   /* --partner-itri / --partner-iii inherit from light theme; CSS filter on .partner inverts them for dark display */
 
   /* ── Hero card-strip backdrop (dark) — paired with light tokens above ── */
@@ -285,17 +285,17 @@
 
 /* ───────── Tokens — language overrides (CH variants for both themes) ───────── */
 [lang="zh-Hant"] {
-  --partner-innovue-color:  url('assets/logos/partners/innovue/Innovue_Logo_Blue_ch.svg');
-  --partner-itri:           url('assets/logos/partners/itri/itrilogo_ch.svg');
-  --partner-iii:            url('assets/logos/partners/iii/logo_iii_dark_ch.svg');
+  --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_ch.svg');
+  --partner-itri:           url('designs/assets/logos/partners/itri/itrilogo_ch.svg');
+  --partner-iii:            url('designs/assets/logos/partners/iii/logo_iii_dark_ch.svg');
 }
 [data-theme="light"][lang="zh-Hant"] {
-  --logo-secondary:         url('assets/logos/tis/tis_secondarylogo_dark_ch.svg');
-  --partner-innovue:        url('assets/logos/partners/innovue/Innovue_Logo_Dark_ch.svg');
+  --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_dark_ch.svg');
+  --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Dark_ch.svg');
 }
 [data-theme="dark"][lang="zh-Hant"] {
-  --logo-secondary:         url('assets/logos/tis/tis_secondarylogo_light_ch.svg');
-  --partner-innovue:        url('assets/logos/partners/innovue/Innovue_Logo_Light_ch.svg');
+  --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_light_ch.svg');
+  --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Light_ch.svg');
 }
 
 /* Center text within the JS-locked EN min-width footprint so the shorter CH form
@@ -1752,10 +1752,10 @@ main { padding-top: 64px; }
    ITRI text reads on the tinted ticker surface. Scoped to featured logo only —
    partner strip uses the universal grayscale+invert filter, not this swap. */
 [data-theme="dark"] .featured-licensor-logo {
-  background-image: url('assets/logos/partners/itri/itrilogo_eng_dark.svg');
+  background-image: url('designs/assets/logos/partners/itri/itrilogo_eng_dark.svg');
 }
 [data-theme="dark"][lang="zh-Hant"] .featured-licensor-logo {
-  background-image: url('assets/logos/partners/itri/itrilogo_ch_dark.svg');
+  background-image: url('designs/assets/logos/partners/itri/itrilogo_ch_dark.svg');
 }
 .featured-licensor-label {
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -1982,10 +1982,10 @@ main { padding-top: 64px; }
 [data-theme="dark"] .partner--itri {
   filter: grayscale(1);
   opacity: 0.6;
-  background-image: url('assets/logos/partners/itri/itrilogo_eng_dark.svg');
+  background-image: url('designs/assets/logos/partners/itri/itrilogo_eng_dark.svg');
 }
 [data-theme="dark"][lang="zh-Hant"] .partner--itri {
-  background-image: url('assets/logos/partners/itri/itrilogo_ch_dark.svg');
+  background-image: url('designs/assets/logos/partners/itri/itrilogo_ch_dark.svg');
 }
 [data-theme="dark"] .partner--itri:hover { filter: none; opacity: 1; }
 

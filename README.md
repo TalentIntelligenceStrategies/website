@@ -1,6 +1,6 @@
 # TIS Marketing Website
 
-The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — a Taiwan-rooted IP intelligence consultancy. Currently a single static `index.html` with a self-contained `assets/` folder.
+The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — a Taiwan-rooted IP intelligence consultancy. Currently a single static `index.html` that loads its assets (fonts, logos, icons) from [`designs/assets/`](designs/assets/) — the read-only mirror of the brand monorepo's `brand/assets/`.
 
 ## Source of truth
 
@@ -25,7 +25,7 @@ There are **no editable files** in `designs/` — all authoring happens upstream
 open index.html
 ```
 
-No build step. Fonts are self-hosted from `assets/fonts/` (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `assets/logos/`.
+No build step. Fonts are self-hosted from `designs/assets/fonts/` (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `designs/assets/logos/`. Icons (when used by the page) come from `designs/assets/icons/`.
 
 ## Deploy
 
