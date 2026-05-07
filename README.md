@@ -4,17 +4,20 @@ The deployable marketing site for **Talent Intelligence Strategies** (泰然策�
 
 ## Source of truth
 
-This repo is a **rendered view** of the TIS brand monorepo (kept private), where tokens, components, voice, identity, and the website PRD are authored. The brand `.md` files are authoritative; this repo ships the resulting page.
+This repo is a **rendered view** of the TIS brand monorepo (kept private), where tokens, primitives, components, identity, and the website PRD are authored. The brand `.md` files are authoritative; this repo ships the resulting page.
 
-Authored upstream (not in this repo):
+Authored upstream in the brand monorepo, mirrored in `designs/` here:
 
-- Design tokens — `design-tokens.md`
-- Component catalog — `components.md`
-- Voice & messaging — `voice-and-messaging.md`
-- Visual / identity guide — `visual-guide.md`
-- Website PRD — `website-prd.md`
+- Design tokens — `design-tokens.md` (mirrored as [`designs/design-tokens-snapshot.md`](designs/design-tokens-snapshot.md))
+- Primitives — `primitives.md` (mirrored as [`designs/primitives-snapshot.md`](designs/primitives-snapshot.md))
+- Components — `components.md` (mirrored as [`designs/components-snapshot.md`](designs/components-snapshot.md)) — includes website-specific entries (Pillar, Deliverable card, How it works, IP intelligence drop popup) tagged via `Surfaces:`
+- Visual / identity guide — `visual-guide.md` (mirrored as [`designs/visual-guide-snapshot.md`](designs/visual-guide-snapshot.md))
 
-If something in the page needs to change, the brand `.md` is edited first; this repo is regenerated afterward. Don't fix the rendered HTML without propagating back.
+Authored upstream, not mirrored here:
+
+- Website PRD — `website-prd.md` (stays at TIS root)
+
+There are **no editable files** in `designs/` — all authoring happens upstream in the brand monorepo. If something in the page needs to change, edit the upstream brand `.md` first, then refresh the matching `*-snapshot.md` here, then regenerate the rendered HTML. Don't fix the rendered HTML or a snapshot without propagating back.
 
 ## Local preview
 
