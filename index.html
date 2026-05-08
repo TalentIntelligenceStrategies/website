@@ -1267,7 +1267,7 @@ main { padding-top: 64px; }
 }
 
 /* ───────── Per-pillar gradient theming — components.md §Gradients (focal level)
-   Scoped to #products via [data-pillar]; hero/partner-strip/counters stay neutral.
+   Scoped to #products via [data-pillar]; hero/Innovue card/counters stay neutral.
      Licensing Platform        → warm  (S → D vivid)
      Patent Intelligence SaaS  → cool  (A → B → C vivid)
    Themed surfaces: pillar h3 (gradient text), pillar visual placeholder (gradient bg),
@@ -1937,57 +1937,57 @@ main { padding-top: 64px; }
   flex-shrink: 0;
 }
 
-/* ───────── Partner strip ───────── */
-.partner-strip {
+/* ───────── Innovue collaboration card ─────────
+   components.md §Innovue collaboration card. Two-column credit:
+   "Powered by" eyebrow + Innovue Blue logo lockup left, vertical
+   hairline, intro sentence right with silver text gradient. Logo
+   reuses the existing --partner-innovue-color token (lang-aware
+   _eng ↔ _ch, theme-agnostic Blue mark per components.md §Footer).
+   Body silver wash applied via the existing .grad-text-silver-solid
+   utility class on the <p>; light + dark variants handled there. */
+.innovue-collab-card {
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
   border-radius: 16px;
   padding: 48px 32px;
-  display: flex; align-items: center; justify-content: center;
-  flex-wrap: wrap;
-  gap: 48px;
+  display: flex; align-items: center;
+  gap: 40px;
 }
-.partner-strip-label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
+.innovue-collab-card__attr {
+  display: flex; flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  flex-shrink: 0;
 }
-.partner {
-  height: 40px;
-  width: 200px;
+.innovue-collab-card__powered {
+  font-size: 14px; font-weight: 400; letter-spacing: 0;
+  color: var(--text-secondary);
+  line-height: 1;
+  margin-left: -1px;
+  margin-bottom: -2px;
+}
+.innovue-collab-card__logo {
   display: block;
+  width: 137px; height: 48px;
+  background-image: var(--partner-innovue-color);
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
-  filter: grayscale(1);
-  opacity: 0.55;
-  transition: filter 250ms cubic-bezier(0.2,1,0.3,1), opacity 250ms linear;
+  background-position: left center;
 }
-.partner:hover { filter: none; opacity: 1; }
-.partner--itri    { background-image: var(--partner-itri); }
-.partner--iii     { background-image: var(--partner-iii); }
-.partner--innovue { background-image: var(--partner-innovue); }
-.partner--innovue:hover { background-image: var(--partner-innovue-color); }
+[data-theme="dark"] .innovue-collab-card__logo { filter: brightness(1.6); }
+.innovue-collab-card__rule {
+  width: 1px; background: var(--border-primary); align-self: stretch;
+}
+.innovue-collab-card__quote { flex: 1; min-width: 0; }
+.innovue-collab-card__quote p {
+  font-size: 20px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.45;
+  margin: 0;
+}
 
-[data-theme="dark"] .partner { filter: grayscale(1) invert(1) brightness(1.4); opacity: 0.6; }
-[data-theme="dark"] .partner:hover { filter: none; opacity: 1; }
-[data-theme="dark"] .partner--innovue { filter: none; opacity: 0.7; }
-[data-theme="dark"] .partner--innovue:hover { opacity: 1; }
-/* ITRI uses a true dark-variant SVG (.cls-3 wordmark recolored to white) so we can
-   drop the invert and let grayscale alone mute it — matches III's muted look while
-   still revealing native cyan on hover. III keeps the invert filter (no dark SVG yet). */
-[data-theme="dark"] .partner--itri {
-  filter: grayscale(1);
-  opacity: 0.6;
-  background-image: url('designs/assets/logos/partners/itri/itrilogo_eng_dark.svg');
+@media (max-width: 760px) {
+  .innovue-collab-card { flex-direction: column; align-items: flex-start; gap: 32px; }
+  .innovue-collab-card__rule { display: none; }
 }
-[data-theme="dark"][lang="zh-Hant"] .partner--itri {
-  background-image: url('designs/assets/logos/partners/itri/itrilogo_ch_dark.svg');
-}
-[data-theme="dark"] .partner--itri:hover { filter: none; opacity: 1; }
 
 /* ───────── Reports + Press ───────── */
 .section-head {
@@ -3213,15 +3213,25 @@ main { padding-top: 64px; }
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Partner strip  —  components.md §Partner strip                      ║
+       ║ Innovue collaboration card  —  components.md §Innovue collaboration ║
+       ║ card. Sits in the same .section--tight slot the partner strip used, ║
+       ║ preserving 32px symmetric block padding + the next-section          ║
+       ║ padding-block-start: 0 collapse rule.                               ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight" aria-label="Partners">
+  <section class="section section--tight" aria-label="Innovue partnership">
     <div class="container">
-      <div class="partner-strip">
-        <span class="partner-strip-label" data-zh="合作夥伴">Partners</span>
-        <a href="https://www.innovue.ltd/"                   class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.itri.org.tw/english/index.aspx" class="partner partner--itri"    aria-label="ITRI — Industrial Technology Research Institute" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.iii.org.tw/en"                  class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+      <div class="innovue-collab-card">
+        <div class="innovue-collab-card__attr">
+          <span class="innovue-collab-card__powered" data-zh="技術支援">Powered by</span>
+          <a href="https://www.innovue.ltd/" class="innovue-collab-card__logo" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <div class="innovue-collab-card__rule"></div>
+        <div class="innovue-collab-card__quote">
+          <p class="grad-text-silver-solid"
+             data-zh="Innovue 是一家智慧財產權公司，營運全球第四大的專利索引——一個專屬、持續更新的全球專利活動資料庫。">
+            Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity.
+          </p>
+        </div>
       </div>
     </div>
   </section>
