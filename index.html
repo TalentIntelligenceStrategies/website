@@ -152,8 +152,6 @@
   --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
   --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg');
   --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
-  --partner-itri:           url('designs/assets/logos/partners/itri/itrilogo_eng.svg');
-  --partner-iii:            url('designs/assets/logos/partners/iii/logo_iii_dark_en.svg');
 
   /* Slate primitives — consumed by the silver text-gradient utility used on the hero
      headline (per components.md §Gradients). Not theme-scoped: light mode renders the
@@ -230,7 +228,6 @@
   --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_light_eng.svg');
   --partner-innovue:        url('designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
   --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
-  /* --partner-itri / --partner-iii inherit from light theme; CSS filter on .partner inverts them for dark display */
 
   /* ── Hero backdrop tokens (dark) — paired with light tokens above ── */
   --hero-bp-bg:
@@ -251,8 +248,6 @@
 /* ───────── Tokens — language overrides (CH variants for both themes) ───────── */
 [lang="zh-Hant"] {
   --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_ch.svg');
-  --partner-itri:           url('designs/assets/logos/partners/itri/itrilogo_ch.svg');
-  --partner-iii:            url('designs/assets/logos/partners/iii/logo_iii_dark_ch.svg');
 }
 [data-theme="light"][lang="zh-Hant"] {
   --logo-secondary:         url('designs/assets/logos/tis/tis_secondarylogo_dark_ch.svg');
@@ -1855,39 +1850,6 @@ main { padding-top: 64px; }
   gap: 32px;
   flex-shrink: 0;
 }
-.featured-licensor {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  margin-top: 4px;     /* compensate ascender so logo top aligns with headline cap */
-}
-.featured-licensor-logo {
-  height: 42px;
-  width: 180px;
-  background-image: var(--partner-itri);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-/* Dark-mode variant: wordmark recolored to white (.cls-3 fill swap) so the
-   ITRI text reads on the tinted ticker surface. Scoped to featured logo only —
-   partner strip uses the universal grayscale+invert filter, not this swap. */
-[data-theme="dark"] .featured-licensor-logo {
-  background-image: url('designs/assets/logos/partners/itri/itrilogo_eng_dark.svg');
-}
-[data-theme="dark"][lang="zh-Hant"] .featured-licensor-logo {
-  background-image: url('designs/assets/logos/partners/itri/itrilogo_ch_dark.svg');
-}
-.featured-licensor-label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-}
-
 /* ─── Tier chip — SABCD ramp ─── */
 .tier-chip {
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -2025,7 +1987,6 @@ main { padding-top: 64px; }
     align-items: center;
     width: 100%;
   }
-  .featured-licensor { margin-top: 0; }
   .timeline-rail { padding: 0 8px; }
   .tl-months span { font-size: 10px; }
   .tl-titles span { font-size: 12px; }
@@ -3618,10 +3579,6 @@ main { padding-top: 64px; }
             <p class="brokerage-body"><strong>TIS</strong> <span data-zh="居中協調，直至成案。長期獨家授權、專利交易、IP 驅動的併購——六位數至七位數美元規模的交易。我們以 NACVA 等級估值錨定價值，於 NDA 下推進合格管道，並結構化條款書直至成交。">sits in the middle until paper signs. Long-term exclusive licensing, patent sales, IP-driven M&amp;A — six- and seven-figure transactions. We anchor NACVA-grade valuation, work a qualified pipeline under NDA, and structure the term sheet through close.</span></p>
           </div>
           <div class="broker-action">
-            <div class="featured-licensor">
-              <span class="featured-licensor-logo" role="img" aria-label="ITRI — Industrial Technology Research Institute"></span>
-              <span class="featured-licensor-label" data-zh="特約授權方">Featured Licensor</span>
-            </div>
             <a href="#contact" class="adv-cta" data-zh="仲介詳情 →">Brokerage details →</a>
           </div>
         </div>
