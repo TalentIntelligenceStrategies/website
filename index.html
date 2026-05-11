@@ -167,46 +167,21 @@
   --slate-700: #334155;
   --slate-900: #0F172A;
 
-  /* ── Hero card-strip backdrop (light) ───────────────────────────────
-     3D fan of patent-blueprint cards positioned absolutely behind the
-     pillar text. Stack tuning vars (rotation/spacing/lift) live on :root
-     so the responsive overrides in @media blocks apply to both themes. */
-  --card-w: 240px;
-  --card-h: 340px;
-  --card-rest-rotY: 32deg;
-  --card-active-tY: -56px;
-  --card-active-tz: 80px;
-  --card-spacing: 100px;
+  /* ── Hero backdrop tokens (light) ──────────────────────────────────
+     Three swappable backdrops per slide: warm-blueprint (Licensing),
+     cool-signal (Patent Intelligence), silver (Positioning). All three
+     sit on a shared warm pour + bloom + 32px ruled-paper grid base. */
+  --hero-bp-bg: linear-gradient(180deg, #FFFFFF 0%, #FFFCF6 50%, #FFF6EA 100%);
+  --hero-bp-bloom:
+    radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.10) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.08) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
+  --hero-spotlight: radial-gradient(ellipse 55% 55% at 22% 50%,
+    rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.40) 35%,
+    rgba(255,255,255,0.10) 65%, transparent 85%);
+
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-card: 720ms;
-
-  /* Card surface — warm-paper cream */
-  --card-bg-rest:        rgba(248, 244, 236, 0.62);
-  --card-bg-rest-faded:  rgba(248, 244, 236, 0.40);
-  --card-bg-active:      rgba(252, 250, 244, 0.97);
-  --card-border-rest:    rgba(37, 37, 37, 0.08);
-  --card-border-active:  rgba(37, 37, 37, 0.16);
-  --card-shadow-inset-rest:   rgba(255, 255, 255, 0.45);
-  --card-shadow-inset-active: rgba(255, 255, 255, 0.60);
-  --card-shadow-rest:    0 6px 14px -8px rgba(37, 37, 37, 0.18);
-  --card-shadow-active:  0 32px 56px -20px rgba(37, 37, 37, 0.32),
-                         0 10px 18px  -6px rgba(37, 37, 37, 0.16);
-
-  /* Blueprint SVG ink */
-  --blueprint-stroke:        var(--text-primary);
-  --blueprint-stroke-fade:   var(--text-tertiary);
-  --blueprint-fill:          var(--text-primary);
-  --blueprint-paper:         #FCFAF4;
-  --blueprint-text:          var(--text-primary);
-  --blueprint-text-fade:     var(--text-secondary);
-
-  /* Spotlight under the pillar text — mutes cards behind so the
-     headline reads cleanly without losing the strip's energy at edges. */
-  --spotlight: radial-gradient(ellipse 65% 60% at 22% 45%,
-    rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.50) 30%,
-    rgba(255,255,255,0.20) 58%, transparent 80%);
-  --spotlight-mobile: radial-gradient(ellipse 70% 42% at 50% 50%,
-    rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.55) 32%, transparent 75%);
 }
 
 /* ───────── Tokens — dark (homepage-scope, not yet in design-tokens.md) ───────── */
@@ -257,30 +232,20 @@
   --partner-innovue-color:  url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
   /* --partner-itri / --partner-iii inherit from light theme; CSS filter on .partner inverts them for dark display */
 
-  /* ── Hero card-strip backdrop (dark) — paired with light tokens above ── */
-  --card-bg-rest:        rgba(31, 31, 31, 0.60);
-  --card-bg-rest-faded:  rgba(31, 31, 31, 0.32);
-  --card-bg-active:      rgba(38, 38, 38, 0.96);
-  --card-border-rest:    rgba(255, 255, 255, 0.06);
-  --card-border-active:  rgba(255, 255, 255, 0.14);
-  --card-shadow-inset-rest:   rgba(255, 255, 255, 0.04);
-  --card-shadow-inset-active: rgba(255, 255, 255, 0.08);
-  --card-shadow-rest:    0 6px 14px -8px rgba(0, 0, 0, 0.55);
-  --card-shadow-active:  0 32px 56px -20px rgba(0, 0, 0, 0.75),
-                         0 10px 18px  -6px rgba(0, 0, 0, 0.50);
-
-  --blueprint-stroke:        var(--text-primary);
-  --blueprint-stroke-fade:   var(--text-tertiary);
-  --blueprint-fill:          var(--text-primary);
-  --blueprint-paper:         var(--surface-tertiary);
-  --blueprint-text:          var(--text-primary);
-  --blueprint-text-fade:     var(--text-secondary);
-
-  --spotlight: radial-gradient(ellipse 65% 60% at 22% 45%,
-    rgba(14,14,14,0.82) 0%, rgba(14,14,14,0.55) 30%,
-    rgba(14,14,14,0.25) 58%, transparent 80%);
-  --spotlight-mobile: radial-gradient(ellipse 70% 42% at 50% 50%,
-    rgba(14,14,14,0.85) 0%, rgba(14,14,14,0.55) 32%, transparent 75%);
+  /* ── Hero backdrop tokens (dark) — paired with light tokens above ── */
+  --hero-bp-bg:
+    radial-gradient(120% 80% at 50% 0%,
+      rgba(212,160,23,0.10) 0%,
+      rgba(249,115,22,0.06) 35%,
+      var(--surface-page) 100%);
+  --hero-bp-bloom:
+    radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.06) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.05) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
+  --hero-spotlight: radial-gradient(ellipse 55% 55% at 22% 50%,
+    rgba(14,14,14,0.78) 0%, rgba(14,14,14,0.50) 35%,
+    rgba(14,14,14,0.20) 65%, transparent 85%);
 }
 
 /* ───────── Tokens — language overrides (CH variants for both themes) ───────── */
@@ -642,158 +607,447 @@ img, svg { display: block; }
 /* ───────── Main offset for fixed nav ───────── */
 main { padding-top: 64px; }
 
-/* ───────── Hero (3D card-strip backdrop, left-anchored pillar) ─────────
-   Layered: card-strip-3d (z 0) → spotlight ::before (z 1) → hero-inner
-   pillar (z 5). The whole hero fills the visible viewport below the
-   topnav so the strip has room to fan; pointer-events: none on the
-   spotlight + pillar text passes hover through to the cards behind. */
+/* ───────── Hero — warm-blueprint backdrop + 3-pillar carousel ─────────
+   Layered z-order:
+     0: warm-pour gradient (.hero background, --hero-bp-bg)
+     1: bloom + ruled-paper overlay (.hero::before, --hero-bp-bloom)
+     2: per-slide backdrop layer (.hero-blueprint / .hero-signal / .hero-silver,
+        crossfade-toggled via .hero[data-active-pillar="…"])
+     3: white-fade spotlight under pillar (.hero::after, --hero-spotlight)
+     5: carousel slider (.hero-inner) */
 .hero {
   position: relative;
-  height: calc(100vh - 64px);
+  height: 100vh;
   min-height: 580px;
-  padding-block: 0;
+  /* Cap hero on tall displays so the backdrop doesn't grow past where the
+     locked tile grid can reach (5 rows × 220px × 56° rotation = ~647px
+     of visible Y). Below 820 the hero still tracks 100vh; above 820 it
+     stops growing so the empty-backdrop bands don't blow out. */
+  max-height: 720px;
+  padding-block: 64px 0;
   overflow: hidden;
   display: flex;
   align-items: center;
+  background: var(--hero-bp-bg);
 }
 .hero::before {
   content: ""; position: absolute; inset: 0;
-  background: var(--spotlight);
+  background: var(--hero-bp-bloom);
   pointer-events: none;
   z-index: 1;
 }
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: var(--hero-spotlight);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* 3D blueprint grid — 30 patent figure tiles in perspective.
+   Sits between bloom (z 1) and spotlight (z 3), so the spotlight gently
+   mutes the figures behind the pillar text but they read at edges. */
+.hero-blueprint {
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transform: translateY(-20px);
+}
+.hero-blueprint .stage-3d {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  perspective: 2200px;
+  perspective-origin: 50% 30%;
+}
+.hero-blueprint .grid-3d {
+  display: grid;
+  grid-template-columns: repeat(6, 280px);
+  grid-auto-rows: 220px;
+  gap: 14px;
+  transform: rotateX(56deg) rotateZ(-14deg) translateY(-30px) scale(0.75);
+  transform-style: preserve-3d;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
+          mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
+}
+.bptile {
+  background: #FCFAF4;
+  border: 1px solid rgba(37,37,37,0.14);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+  box-shadow: 0 4px 16px rgba(37,37,37,0.10), 0 1px 2px rgba(37,37,37,0.06);
+}
+[data-theme="dark"] .bptile {
+  background: var(--surface-tertiary);
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.30);
+}
+.bptile .fig {
+  flex: 1;
+  border: 0.5px solid rgba(37,37,37,0.18);
+  background: rgba(252,250,244,0.5);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 3px;
+}
+[data-theme="dark"] .bptile .fig {
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+}
+.bptile .fig svg { width: 100%; height: 100%; display: block; }
+.bptile .fig svg .stroke-thin { stroke: #252525; stroke-width: 0.5; fill: none; }
+.bptile .fig svg .stroke-mid  { stroke: #252525; stroke-width: 0.75; fill: none; }
+.bptile .fig svg .stroke-bold { stroke: #252525; stroke-width: 1.0; fill: none; }
+.bptile .fig svg .stroke-construction { stroke: #8A8F98; stroke-width: 0.4; stroke-dasharray: 1 2; fill: none; }
+.bptile .fig svg .fill-mark { fill: #252525; }
+.bptile .fig svg text { font-family: Inconsolata, monospace; font-size: 5px; fill: #252525; }
+.bptile .fig svg .label-fade { fill: #8A8F98; font-size: 4.5px; }
+[data-theme="dark"] .bptile .fig svg .stroke-thin,
+[data-theme="dark"] .bptile .fig svg .stroke-mid,
+[data-theme="dark"] .bptile .fig svg .stroke-bold { stroke: #E2E8F0; }
+[data-theme="dark"] .bptile .fig svg .stroke-construction { stroke: #5A5A5A; }
+[data-theme="dark"] .bptile .fig svg .fill-mark,
+[data-theme="dark"] .bptile .fig svg text { fill: #E2E8F0; }
+[data-theme="dark"] .bptile .fig svg .label-fade { fill: #8A8F98; }
+[data-theme="dark"] .bptile .fig svg [fill="#FCFAF4"] { fill: var(--surface-tertiary); }
+.bptile .meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.bptile .pid {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 9px; font-weight: 600;
+  color: #252525;
+  letter-spacing: 0.04em;
+}
+[data-theme="dark"] .bptile .pid { color: #E2E8F0; }
+.bptile .tier-chip {
+  display: inline-flex; align-items: center;
+  font-size: 8px; font-weight: 700;
+  padding: 2px 5px; border-radius: 9999px;
+  white-space: nowrap;
+}
+.bptile .tier-chip.s { background: var(--score-s-bg); color: var(--score-s); }
+.bptile .tier-chip.a { background: var(--score-a-bg); color: var(--score-a); }
+.bptile .tier-chip.b { background: var(--score-b-bg); color: var(--score-b); }
+.bptile .tier-chip.c { background: var(--score-c-bg); color: var(--score-c); }
+.bptile .tier-chip.d { background: var(--score-d-bg); color: var(--score-d); }
+
+/* ───────── Hero — cool metric-tile backdrop (Signal pillar) ─────────
+   Swaps in for .hero-blueprint when the Patent Intelligence SaaS slide
+   (data-pillar="intelligence") is active. Mirrors the warm blueprint's
+   z-stack — sits at z 2 alongside it — and crossfades over 480ms. */
+
+/* Crossfade plumbing — shared between the two backdrops. */
+.hero-blueprint {
+  opacity: 1;
+  transition: opacity 480ms var(--ease-card);
+}
+.hero-signal {
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 480ms var(--ease-card);
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.14) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.12) 0%, transparent 70%),
+    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.10) 0%, transparent 70%),
+    linear-gradient(180deg, #FFFFFF 0%, #F5FBFF 50%, #EEF6FF 100%);
+}
+.hero-signal::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
+}
+[data-theme="dark"] .hero-signal {
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.18) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.16) 0%, transparent 70%),
+    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.12) 0%, transparent 70%),
+    #0E0E0E;
+}
+[data-theme="dark"] .hero-signal::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
+}
+
+.hero[data-active-pillar="intelligence"] .hero-blueprint { opacity: 0; }
+.hero[data-active-pillar="intelligence"] .hero-signal    { opacity: 1; }
+
+/* 3D-tilted 3×4 grid of metric tiles — same grammar AND scale (0.75) as
+   .hero-blueprint .grid-3d so the two backdrops feel like siblings. */
+.hero-signal .stage-3d {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  perspective: 2200px;
+  perspective-origin: 50% 30%;
+}
+.hero-signal .strip {
+  display: grid;
+  grid-template-columns: repeat(3, 260px);
+  grid-template-rows: repeat(4, 300px);
+  gap: 28px;
+  transform: rotateX(54deg) rotateZ(-14deg) translate3d(210px, -20px, 0) scale(0.75);
+  transform-style: preserve-3d;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
+          mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
+}
+
+/* Metric tile — translucent recipe lifted from .bptile. */
+.hero-signal .mt {
+  position: relative;
+  width: 260px; height: 300px; border-radius: 14px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(37,37,37,0.14);
+  padding: 22px 18px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 4px 16px rgba(37,37,37,0.10), 0 1px 2px rgba(37,37,37,0.06);
+}
+[data-theme="dark"] .hero-signal .mt {
+  background: rgba(31,31,31,0.92);
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.30);
+}
+
+.hero-signal .mt .tier-pin {
+  order: 99;
+  align-self: center;
+  margin-top: 12px;
+  font-family: 'Urbanist','Inter',system-ui,sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0; line-height: 1;
+  padding: 6px 14px; border-radius: 9999px; white-space: nowrap;
+}
+.hero-signal .mt .tier-pin.s { background: rgba(212,160,23,0.20); color: var(--score-s); }
+.hero-signal .mt .tier-pin.a { background: rgba(16,185,129,0.18); color: var(--score-a); }
+.hero-signal .mt .tier-pin.b { background: rgba(14,165,233,0.18); color: var(--score-b); }
+.hero-signal .mt .tier-pin.c { background: rgba(139,92,246,0.18); color: var(--score-c); }
+[data-theme="dark"] .hero-signal .mt .tier-pin.s { background: rgba(212,160,23,0.18); color: #F5D26A; }
+[data-theme="dark"] .hero-signal .mt .tier-pin.a { background: rgba(16,185,129,0.18); color: #A7F3D0; }
+[data-theme="dark"] .hero-signal .mt .tier-pin.b { background: rgba(14,165,233,0.18); color: #7DD3FC; }
+[data-theme="dark"] .hero-signal .mt .tier-pin.c { background: rgba(139,92,246,0.18); color: #C4B5FD; }
+
+.hero-signal .mt .lbl {
+  display: inline-flex; align-items: center;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+.hero-signal .mt .mid {
+  flex: 1; width: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+}
+.hero-signal .mt .val {
+  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-feature-settings: "tnum";
+  font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+  color: var(--text-primary);
+}
+.hero-signal .mt .val small { font-size: 0.38em; font-weight: 500; margin-left: 4px; color: var(--text-tertiary); letter-spacing: 0; }
+
+.hero-signal .mt .arc {
+  position: relative; width: 160px; height: 160px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-signal .mt .arc svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-signal .mt .arc .arc-track { fill: none; stroke: var(--border-tertiary); stroke-width: 6; stroke-linecap: round; }
+[data-theme="dark"] .hero-signal .mt .arc .arc-track { stroke: rgba(255,255,255,0.14); }
+.hero-signal .mt .arc .arc-fill { fill: none; stroke: var(--text-primary); stroke-width: 7; stroke-linecap: round; }
+[data-theme="dark"] .hero-signal .mt .arc .arc-fill { stroke: #FAFAFA; }
+.hero-signal .mt .arc .arc-val {
+  position: relative;
+  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-feature-settings: "tnum";
+  font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1;
+}
+.hero-signal .mt .arc .arc-val small { font-size: 0.40em; font-weight: 500; color: var(--text-tertiary); margin-left: 2px; letter-spacing: 0; }
+
+.hero-signal .mt .hist { width: 100%; max-width: 220px; }
+.hero-signal .mt .hist svg { width: 100%; height: 76px; display: block; }
+.hero-signal .mt .hist .bar { fill: var(--text-tertiary); fill-opacity: 0.32; }
+.hero-signal .mt .hist .bar.is-this { fill: var(--text-primary); fill-opacity: 1; }
+[data-theme="dark"] .hero-signal .mt .hist .bar.is-this { fill: #FAFAFA; }
+.hero-signal .mt .hist .baseline { stroke: var(--border-tertiary); stroke-width: 1; }
+[data-theme="dark"] .hero-signal .mt .hist .baseline { stroke: rgba(255,255,255,0.16); }
+.hero-signal .mt .hist .marker { fill: var(--text-primary); }
+[data-theme="dark"] .hero-signal .mt .hist .marker { fill: #FAFAFA; }
+
+.hero-signal .mt .meter { display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 220px; }
+.hero-signal .mt .meter .bar {
+  position: relative; width: 100%; height: 16px; border-radius: 3px;
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-tertiary);
+  overflow: hidden;
+}
+[data-theme="dark"] .hero-signal .mt .meter .bar { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
+.hero-signal .mt .meter .tick { position: absolute; top: -3px; bottom: -3px; left: 50%; width: 1px; background: var(--border-tertiary); z-index: 2; }
+[data-theme="dark"] .hero-signal .mt .meter .tick { background: rgba(255,255,255,0.24); }
+.hero-signal .mt .meter .fill { position: absolute; top: 0; bottom: 0; left: 0; width: 62.17%; background: var(--text-primary); }
+[data-theme="dark"] .hero-signal .mt .meter .fill { background: #FAFAFA; }
+.hero-signal .mt .meter .scale {
+  display: flex; justify-content: space-between;
+  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-feature-settings: "tnum";
+  font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+  letter-spacing: 0.04em; margin-top: 2px;
+}
+
+/* ───────── Hero — silver-gradient backdrop (Positioning pillar) ─────────
+   Silver = TIS overall per the gradient ↔ pillar pairings in visual-guide.md.
+   Mirrors the z-stack and 480ms crossfade of .hero-signal; brings the 32px
+   ruled-paper grid back via its own ::before. */
+.hero-silver {
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 480ms var(--ease-card);
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
+    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
+}
+.hero-silver::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
+}
+[data-theme="dark"] .hero-silver {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
+    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+}
+[data-theme="dark"] .hero-silver::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
+}
+
+.hero[data-active-pillar="positioning"] .hero-blueprint { opacity: 0; }
+.hero[data-active-pillar="positioning"] .hero-silver    { opacity: 1; }
+
+/* Per-pillar pillar styling — Signal slide overrides warm pillar accents
+   with cool gradients. Scoped via [data-pillar="intelligence"]. */
+.pillar[data-pillar="intelligence"] .pillar-title em {
+  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+[data-theme="dark"] .pillar[data-pillar="intelligence"] .pillar-title em {
+  background: linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+.hero .pillar[data-pillar="intelligence"] .btn-secondary,
+.hero .pillar[data-pillar="intelligence"] .btn-secondary:hover {
+  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+}
+
+/* Positioning slide — silver text gradient on the title em. */
+.pillar[data-pillar="positioning"] .pillar-title em {
+  background: linear-gradient(90deg,
+    var(--slate-500) 0%, var(--slate-700) 50%, var(--slate-900) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+[data-theme="dark"] .pillar[data-pillar="positioning"] .pillar-title em {
+  background: linear-gradient(90deg,
+    var(--slate-100) 0%, var(--slate-200) 50%, var(--slate-400) 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+.hero .pillar[data-pillar="positioning"] .btn-secondary {
+  background: var(--slate-200);
+  color: var(--slate-900);
+  -webkit-text-fill-color: var(--slate-900);
+}
+.hero .pillar[data-pillar="positioning"] .btn-secondary:hover {
+  background: var(--slate-400);
+  filter: none;
+}
+[data-theme="dark"] .hero .pillar[data-pillar="positioning"] .btn-secondary {
+  background: var(--slate-700);
+  color: var(--slate-100);
+  -webkit-text-fill-color: var(--slate-100);
+}
+[data-theme="dark"] .hero .pillar[data-pillar="positioning"] .btn-secondary:hover {
+  background: var(--slate-500);
+  filter: none;
+}
+
+/* Hero foreground — carousel container */
 .hero-inner {
   position: relative;
   z-index: 5;
   width: 100%;
 }
+
+/* Pillar — left-anchored on desktop, recenters on mobile. */
 .pillar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  max-width: 760px;
-  margin: 0 auto;
-  text-align: center;
-}
-/* Hero-scoped pillar overrides — left-anchored at desktop, narrower
-   max-width so the right ~55% of the strip stays visible as backdrop.
-   margin-inline-start scales with viewport (collapses to 0 on mobile,
-   where the @media block below recenters via margin: 0 auto) so the
-   pillar sits inset rather than flush to the container edge. */
-.hero .pillar {
   align-items: flex-start;
+  gap: 14px;
   text-align: left;
-  max-width: 540px;
-  margin: 0;
-  margin-inline-start: clamp(0px, 7vw, 112px);
-  gap: 22px;
+  max-width: 560px;
+  /* Offset matches .innovue-collab-card's padding-inline (32px) so the
+     pillar's left edge lines up with the Innovue card's content edge. */
+  margin: 0 0 0 32px;
 }
-.hero .pillar > * { pointer-events: none; }
-.hero .pillar-actions { justify-content: flex-start; pointer-events: auto; }
-.hero .pillar-meta { justify-content: flex-start; margin-top: 8px; }
-.hero .pillar-title { line-height: 1.08; }
-.pillar-title {
-  font-size: clamp(36px, 5vw, 60px);
-  /* Loosened from the 1.0 token in design-tokens.md §7.2 to clear descenders
-     (p, g, y) on two-line wrapping with background-clip:text. */
-  line-height: 1.1;
-}
-.pillar-title span { display: block; }
+.pillar > * { pointer-events: none; }
+.pillar-actions { pointer-events: auto; }
+
 .pillar-eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center;
   font-family: 'Inconsolata', ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.20em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   margin: 0;
 }
-.pillar-eyebrow .signal-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--signal-active);
-  position: relative;
+
+.pillar-title {
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin: 0;
 }
-.pillar-eyebrow .signal-dot::after {
-  content: ""; position: absolute; inset: 0;
-  border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(34,197,94,0.6);
-  animation: tis-pulse-green 2s infinite;
-}
-@keyframes tis-pulse-green {
-  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
-  70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
-  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+.pillar-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
 }
 
 .pillar-sub {
-  font-size: clamp(18px, 1.6vw, 22px);
+  font-size: clamp(16px, 1.4vw, 19px);
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.55;
   color: var(--text-secondary);
-  max-width: 56ch;
-  margin: 0;
+  max-width: 52ch;
+  margin: 4px 0 0;
 }
+
 .pillar-actions {
   display: flex; flex-wrap: wrap; gap: 12px;
-  justify-content: center;
-  margin-top: 8px;
-}
-.pillar-meta {
-  display: flex; flex-wrap: wrap; gap: 24px;
-  justify-content: center;
-  margin-top: 16px;
-  font-family: 'Inconsolata', ui-monospace, monospace;
-  font-size: 12px;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-.pillar-meta span strong {
-  display: block;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  text-transform: none;
+  justify-content: flex-start;
+  margin-top: 12px;
 }
 
-/* Markets stat — 2-row layout: "5 markets" inline on top, country codes centered below.
-   Specificity (0,2,1) overrides the default block-strong rule above (0,1,2). */
-.pillar-meta-juris {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+/* Hero secondary CTA — warm gold→orange gradient by default; overridden
+   per-slide above (cool for intelligence, slate for positioning). */
+.hero .btn-secondary {
+  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
+  color: #FFFFFF;
+  -webkit-text-fill-color: #FFFFFF;
 }
-.pillar-meta-juris-row {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  text-transform: none;
-}
-.pillar-meta .pillar-meta-juris strong {
-  display: inline;
-  margin: 0;
-}
-.pillar-meta-juris-unit {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  letter-spacing: 0;
-  text-transform: none;
+.hero .btn-secondary:hover {
+  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
+  filter: brightness(0.92);
 }
 
-/* ───────── Hero pillar slider ─────────
-   Three .pillar-slide articles stacked in a single grid cell so the stage
-   sizes to the tallest slide. Active slide is opaque + interactive; inactive
-   slides fade to 0 with a 12px Y-lift. Card-strip backdrop, spotlight, and
-   gradient stay static — only the pillar text rotates. */
+/* Hero pillar slider — fade-cross stacked grid */
 .hero-slider {
   display: flex;
   flex-direction: column;
@@ -807,16 +1061,21 @@ main { padding-top: 64px; }
   transform: translateY(12px);
   transition: opacity 480ms var(--ease-card), transform 480ms var(--ease-card);
 }
-.hero-slider-stage .pillar-slide.is-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-.hero-slider-stage .pillar-slide:not(.is-active) {
-  pointer-events: none;
-}
+.hero-slider-stage .pillar-slide.is-active { opacity: 1; transform: translateY(0); }
+.hero-slider-stage .pillar-slide:not(.is-active) { pointer-events: none; }
+/* Non-active slides skip layout/paint until activated — see also the lazy
+   hero-signal mount in JS for the 12 metric tiles. */
+.hero-slider-stage .pillar-slide:not(.is-active) { content-visibility: auto; contain-intrinsic-size: 480px 360px; }
+
+/* Carousel dots — anchored to the hero's bottom-right, x-aligned to the
+   container's right padding edge. Falls back to in-flow centered on
+   mobile (see <900px override below). */
 .hero-slider-dots {
   display: flex; gap: 10px;
-  margin-inline-start: clamp(0px, 7vw, 112px);
+  position: absolute;
+  bottom: 0;
+  right: max(32px, calc((100vw - 1440px) / 2 + 32px));
+  z-index: 6;
 }
 .hero-slider-dot {
   appearance: none; -webkit-appearance: none;
@@ -855,181 +1114,44 @@ main { padding-top: 64px; }
   to   { transform: scaleX(1); }
 }
 
-/* ───────── Card strip 3D backdrop ─────────
-   14 procedural patent-blueprint cards arranged on a horizontal arc
-   behind the hero pillar. Tokens (card sizing, surface colors, blueprint
-   ink, spotlight gradients) live at the bottom of the :root /
-   [data-theme="dark"] blocks above. Generation script appended at
-   end-of-body; cards are built into #strip on DOMContentLoaded. */
-.card-strip-3d {
-  position: absolute; inset: 0;
-  perspective: 2400px;
-  perspective-origin: 50% 60%;
-  pointer-events: none;
-  z-index: 0;
-  -webkit-mask-image: linear-gradient(90deg,
-    transparent 0%, black 12%, black 88%, transparent 100%);
-  mask-image: linear-gradient(90deg,
-    transparent 0%, black 12%, black 88%, transparent 100%);
-  overflow: visible;
-}
-.card-strip {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  transform-style: preserve-3d;
-  pointer-events: none;
-}
-.card-wrap {
-  position: absolute; top: 0; left: 0;
-  width: var(--card-w); height: var(--card-h);
-  margin-left: calc(var(--card-w) / -2);
-  margin-top:  calc(var(--card-h) / -2);
-  transform: translateX(calc((var(--idx) - (var(--count) - 1) / 2) * var(--card-spacing)))
-             translateY(0) translateZ(0);
-  transform-style: preserve-3d;
-  pointer-events: auto;
-  animation: tis-card-breathe 6.6s ease-in-out infinite alternate;
-  animation-delay: calc(var(--idx) * -0.34s);
-  transition: transform var(--dur-card) var(--ease-card);
-  will-change: transform;
-}
-@keyframes tis-card-breathe {
-  from { translate: 0 -2px; }
-  to   { translate: 0 2px; }
-}
-.card {
-  position: absolute; inset: 0;
-  border-radius: 5px;
-  background: var(--card-bg-rest);
-  border: 1px solid var(--card-border-rest);
-  box-shadow:
-    inset 0 0 0 1px var(--card-shadow-inset-rest),
-    var(--card-shadow-rest);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  overflow: hidden;
-  transform-origin: center center;
-  transform: rotateY(var(--card-rest-rotY));
-  transition:
-    transform var(--dur-card) var(--ease-card),
-    background 460ms var(--ease-card),
-    box-shadow 520ms var(--ease-card),
-    border-color 460ms var(--ease-card);
-  will-change: transform;
-  cursor: pointer;
-}
-.card-wrap[data-active="true"] {
-  transform: translateX(calc((var(--idx) - (var(--count) - 1) / 2) * var(--card-spacing)))
-             translateY(var(--card-active-tY))
-             translateZ(var(--card-active-tz));
-  z-index: 50;
-  animation-play-state: paused;
-}
-.card-wrap[data-active="true"] .card {
-  background: var(--card-bg-active);
-  border-color: var(--card-border-active);
-  box-shadow:
-    inset 0 0 0 1px var(--card-shadow-inset-active),
-    var(--card-shadow-active);
-}
-.card-strip[data-has-active="true"] .card-wrap:not([data-active="true"]) .card {
-  background: var(--card-bg-rest-faded);
-}
-
-/* Patent blueprint SVG — line-art rendered inside each card */
-.blueprint {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  display: block;
-  opacity: 0.78;
-  transition: opacity 460ms var(--ease-card);
-}
-.card-wrap[data-active="true"] .blueprint { opacity: 1; }
-
-.blueprint .stroke-thin { stroke: var(--blueprint-stroke); stroke-width: 0.5; fill: none; }
-.blueprint .stroke-mid  { stroke: var(--blueprint-stroke); stroke-width: 0.75; fill: none; }
-.blueprint .stroke-bold { stroke: var(--blueprint-stroke); stroke-width: 1.0; fill: none; }
-.blueprint .stroke-construction { stroke: var(--blueprint-stroke-fade); stroke-width: 0.4; fill: none; stroke-dasharray: 1 2; }
-.blueprint .fill-mark { fill: var(--blueprint-fill); }
-.blueprint text {
-  font-family: 'Inconsolata', ui-monospace, monospace;
-  font-size: 7px;
-  font-weight: 500;
-  fill: var(--blueprint-text);
-  letter-spacing: 0.04em;
-}
-.blueprint .label-large { font-size: 8px; font-weight: 600; }
-.blueprint .label-fade  { fill: var(--blueprint-text-fade); font-size: 6.5px; }
-/* Generator hardcodes fill="#FCFAF4" on title-block rect, callout circles,
-   gear/cam bodies, etc. — override via attribute selector so the same DOM
-   resolves to warm-paper cream in light mode and surface-tertiary in dark. */
-.blueprint [fill="#FCFAF4"] { fill: var(--blueprint-paper); }
-
-/* Mobile — proportional card scaling (no carousel fallback), pillar
-   reverts to centered. Required strip min-height satisfies
-   cs_h ≥ 2.146·(card_h/2 + |lift|) at each breakpoint. */
-@media (max-width: 900px) {
-  :root {
-    --card-w: 180px;
-    --card-h: 256px;
-    --card-spacing: 76px;
-    --card-active-tY: -42px;
-    --card-active-tz: 60px;
-  }
-  .hero { min-height: 540px; }
-  .hero::before { background: var(--spotlight-mobile); }
-  .hero .pillar {
-    align-items: center;
-    text-align: center;
-    max-width: 580px;
-    margin: 0 auto;
-  }
-  .hero .pillar-actions { justify-content: center; }
-  .hero .pillar-meta { justify-content: center; }
-  .hero-slider-dots { margin-inline-start: 0; justify-content: center; }
-}
-@media (max-width: 640px) {
-  :root {
-    --card-w: 140px;
-    --card-h: 198px;
-    --card-spacing: 58px;
-    --card-active-tY: -32px;
-    --card-active-tz: 48px;
-  }
-  .hero { min-height: 460px; }
-}
-
-/* Hero gradient utilities — silver only (per components.md §Gradients).
-   Production lock: the marketing hero ships with the silver pairing; warm / bronze /
-   cool variants live in components.md and surface in components-preview.html for
-   exploration but are not bundled here. */
+/* Silver text-gradient utility — used by hero pillar title AND many
+   non-hero section headings (reports, press, about, contact, Innovue
+   card body). Stops match design-tokens.md §Gradients silver-solid. */
 .grad-text-silver-solid {
   background-image: linear-gradient(90deg,
     var(--slate-500) 0%, var(--slate-700) 50%, var(--slate-900) 100%);
   background-clip: text; -webkit-background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
 }
-/* Dark-mode override — swap silver-solid stops for silver-luminous
-   (slate-100 → 200 → 400, components.md §Gradients exploration) so the
-   resolve still reads on #0E0E0E. Applied globally; both consumers (hero
-   pillar title and Get-in-touch heading) sit on the same dark surface. */
 [data-theme="dark"] .grad-text-silver-solid {
   background-image: linear-gradient(90deg,
     var(--slate-100) 0%, var(--slate-200) 50%, var(--slate-400) 100%);
 }
-.grad-bg-silver-faded {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%,
-      #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
-    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
+
+/* Hero responsive — preserve desktop's left-aligned vibe. */
+@media (max-width: 900px) {
+  .hero {
+    min-height: 540px;
+    padding-block: 64px 48px;
+  }
+  .hero .pillar { max-width: 580px; }
+  .hero-slider-dots {
+    position: static;
+    align-self: flex-end;
+    margin-top: 12px;
+  }
+  :root { --hero-spotlight: radial-gradient(ellipse 70% 42% at 22% 50%,
+    rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.50) 32%, transparent 75%); }
+  [data-theme="dark"] { --hero-spotlight: radial-gradient(ellipse 70% 42% at 22% 50%,
+    rgba(14,14,14,0.82) 0%, rgba(14,14,14,0.55) 32%, transparent 75%); }
 }
-[data-theme="dark"] .grad-bg-silver-faded {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%,
-      rgba(51, 65, 85, 0.50) 0%,         /* slate-700 tint */
-      rgba(30, 41, 59, 0.30) 35%,        /* slate-800 tint */
-      transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+@media (max-width: 640px) {
+  .hero { min-height: 460px; }
+}
+/* Narrow phone — drop the pillar's 32px left offset since the container
+   padding already shrinks to 20px on this range. */
+@media (max-width: 480px) {
+  .hero .pillar { margin-left: 0; }
 }
 
 /* ───────── Search modal — components.md §Search bar (compact icon-trigger variant) ───────── */
@@ -3104,99 +3226,72 @@ main { padding-top: 64px; }
   <h1 class="sr-only">TIS — Strategic patent intelligence, grounded in 170M patents</h1>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  static, single pillar (Licensing). Silver gradient pairing  ║
-       ║ per components.md §Gradients. Patent Intelligence routes via #products.║
+       ║ Hero  —  3-pillar carousel on warm-blueprint + silver + cool        ║
+       ║ backdrop swap. Backdrops crossfade via .hero[data-active-pillar=…]. ║
+       ║ Slide 2's 12 metric tiles are lazy-mounted by JS on first activate. ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero grad-bg-silver-faded" aria-label="Hero">
-    <!-- 3D patent-blueprint card backdrop. Generated by the IIFE
-         appended at end-of-body; cards mount into #strip on load. -->
-    <div class="card-strip-3d" aria-hidden="true">
-      <div class="card-strip" id="strip"></div>
+  <section class="hero" aria-label="Hero">
+    <!-- 3D blueprint figure grid (30 patents) — Licensing slide backdrop -->
+    <div class="hero-blueprint" aria-hidden="true">
+      <div class="stage-3d">
+        <div class="grid-3d" data-grid="blueprint"></div>
+      </div>
     </div>
+
+    <!-- Silver-gradient backdrop — Positioning slide backdrop -->
+    <div class="hero-silver" aria-hidden="true"></div>
+
+    <!-- Cool metric-tile backdrop — Patent Intelligence slide backdrop.
+         Lazy-mounted: .stage-3d + 12 tiles injected by JS on first activate. -->
+    <div class="hero-signal" id="hero-signal" aria-hidden="true"></div>
 
     <div class="container hero-inner">
 
       <div class="hero-slider" id="hero-slider" role="region" aria-roledescription="carousel" aria-label="TIS pillars">
         <div class="hero-slider-stage">
 
-          <!-- Slide 1 · Licensing Platform -->
+          <!-- Slide 1 · Licensing Platform (the focus) -->
           <article class="pillar pillar-slide is-active" data-pillar="licensing" id="hero-slide-0" role="tabpanel" aria-labelledby="hero-dot-0">
-            <p class="pillar-eyebrow">
-              <span class="signal-dot" aria-hidden="true"></span>
-              <span data-zh="授權平台 · 30 件專利組合">Licensing Platform · 30-patent bundles</span>
-            </p>
-            <h2 class="h-display pillar-title grad-text-silver-solid">
-              <span data-zh="你正進入的">You're shipping into</span>
-              <span data-zh="對手早已佈局的">markets your competitors</span>
-              <span data-zh="市場">already own</span>
+            <p class="pillar-eyebrow" data-zh="TIS 授權平台">TIS Licensing Platform</p>
+            <h2 class="pillar-title">
+              <span data-zh="別再申請。">Don't file.</span> <em data-zh="買下對手已贏的位置。">License what already won.</em>
             </h2>
-            <p class="pillar-sub" data-zh="上半年外國公司在台灣的專利申請量是本地的四倍。針對你客戶所在的司法管轄區訂閱 30 件專利組合。">
-              Foreign competitors out-filed Taiwan 4-to-1 last half-year. Subscribe to a 30-patent bundle for the jurisdictions your customers live in.
+            <p class="pillar-sub" data-zh="每組 30 件專利，鎖定一個司法管轄區。涵蓋 5 個市場，3 個月至 3 年非專屬授權。">
+              Each bundle is 30 patents in one jurisdiction. 5 markets, 3-month to 3-year non-exclusive terms.
             </p>
             <div class="pillar-actions">
               <a href="#products" class="btn btn-primary btn-lg" data-zh="瀏覽組合">Browse bundles</a>
               <a href="#contact"  class="btn btn-secondary" data-zh="聯絡業務">Contact sales</a>
             </div>
-            <div class="pillar-meta">
-              <span class="pillar-meta-juris">
-                <span class="pillar-meta-juris-row">
-                  <strong>5</strong>
-                  <span class="pillar-meta-juris-unit" data-zh="個市場">markets</span>
-                </span>
-                <span class="pillar-meta-juris-codes" data-zh="美 台 歐 日 韓">US TW EP JP KR</span>
-              </span>
-              <span><strong>ITRI · III</strong><span data-zh="專利來源">sources</span></span>
-              <span><strong>3 mo</strong><span data-zh="最短期限">shortest term</span></span>
-            </div>
           </article>
 
           <!-- Slide 2 · Patent Intelligence SaaS -->
           <article class="pillar pillar-slide" data-pillar="intelligence" id="hero-slide-1" role="tabpanel" aria-labelledby="hero-dot-1" aria-hidden="true" inert>
-            <p class="pillar-eyebrow">
-              <span class="signal-dot" aria-hidden="true"></span>
-              <span data-zh="專利情報 SaaS · 代幣制估值">Patent Intelligence SaaS · Token-based valuation</span>
-            </p>
-            <h2 class="h-display pillar-title grad-text-silver-solid">
-              <span data-zh="創辦人說「IP 很強」">A founder says</span>
-              <span data-zh="在你下注之前">"strong IP" —</span>
-              <span data-zh="先打分數">grade it before you wire</span>
+            <p class="pillar-eyebrow" data-zh="代幣制估值 · SABCD 評等">Token-Based Valuation · SABCD</p>
+            <h2 class="pillar-title">
+              <span data-zh="別再相信">Don't fund</span> <em data-zh="「IP 很強」。">"strong IP."</em> <span data-zh="打分數。">Grade it.</span>
             </h2>
-            <p class="pillar-sub" data-zh="依據 Innovue 1.7 億件專利資料庫的代幣制估值。一個下午就能將 14 件專利打出 SABCD 五級評等——2 件 A、3 件 B、9 件 C、無 S。在簽下投資意向書之前，做出 Go / no-go 判斷。">
-              Token-based valuation against Innovue's 170M-patent database. SABCD grades 14 patents in an afternoon — 2 A-tier, 3 B-tier, 9 C-tier, no S. Go / no-go, before the term sheet.
+            <p class="pillar-sub" data-zh="對照 1.7 億件專利的 SABCD 評等。在簽意向書之前，判斷 Go / no-go。">
+              SABCD scores against 170M patents. Go / no-go before the term sheet.
             </p>
             <div class="pillar-actions">
               <a href="#products" class="btn btn-primary btn-lg" data-zh="進行估值">Run a valuation</a>
               <a href="#reports"  class="btn btn-secondary" data-zh="範例報告">See sample report</a>
             </div>
-            <div class="pillar-meta">
-              <span><strong>170M</strong><span data-zh="專利資料庫">patents indexed</span></span>
-              <span><strong>SABCD</strong><span data-zh="五級評等">five-tier grade</span></span>
-              <span><strong>1 token</strong><span data-zh="精簡報告">short report</span></span>
-            </div>
           </article>
 
           <!-- Slide 3 · Strategic positioning -->
           <article class="pillar pillar-slide" data-pillar="positioning" id="hero-slide-2" role="tabpanel" aria-labelledby="hero-dot-2" aria-hidden="true" inert>
-            <p class="pillar-eyebrow">
-              <span class="signal-dot" aria-hidden="true"></span>
-              <span data-zh="TIS · 從防禦到佈局">TIS · From defense to position</span>
-            </p>
-            <h2 class="h-display pillar-title grad-text-silver-solid">
-              <span data-zh="別再防禦">Stop defending</span>
-              <span data-zh="你已有的">what you have.</span>
-              <span data-zh="開始佈局下一步">Start positioning what's next.</span>
+            <p class="pillar-eyebrow" data-zh="TIS · 防禦 → 佈局">TIS · Defense → Position</p>
+            <h2 class="pillar-title">
+              <span data-zh="別再防禦。">Stop defending.</span> <em data-zh="開始佈局。">Start positioning.</em>
             </h2>
-            <p class="pillar-sub" data-zh="TIS 是一間 IP 情報顧問公司——以台灣為基地、面向全球，依託全球第四大、收錄 1.7 億件專利的 Innovue 資料庫。">
-              TIS is an IP intelligence consultancy — Taiwan-rooted, globally active, grounded in Innovue's 170M-patent database, the fourth-largest in the world.
+            <p class="pillar-sub" data-zh="紮根台灣的 IP 情報，依託全球第四大的專利檔案。">
+              Taiwan-rooted IP intelligence, on the world's 4th-largest patent archive.
             </p>
             <div class="pillar-actions">
               <a href="#about"   class="btn btn-primary btn-lg" data-zh="我們的方法">How we work</a>
               <a href="#contact" class="btn btn-secondary" data-zh="與我們聯絡">Talk to us</a>
-            </div>
-            <div class="pillar-meta">
-              <span><strong>170M</strong><span data-zh="專利資料庫">patent database</span></span>
-              <span><strong>4th</strong><span data-zh="全球規模">globally</span></span>
-              <span><strong>TW · global</strong><span data-zh="紮根台灣 · 服務全球">root · reach</span></span>
             </div>
           </article>
 
@@ -4302,16 +4397,50 @@ main { padding-top: 64px; }
 </script>
 
 <!-- ╔═════════════════════════════════════════════════════════════════════╗
-     ║ Hero pillar slider  —  auto-advance 6s, dots manual, pause on hover  ║
+     ║ Hero pillar slider  —  auto-advance 6s, dots manual, pause on hover. ║
+     ║ Crossfades the three backdrops (.hero-blueprint / .hero-signal /     ║
+     ║ .hero-silver) by setting data-active-pillar on .hero. Slide 2's 12   ║
+     ║ metric tiles are lazy-mounted into #hero-signal on first activate    ║
+     ║ (or after requestIdleCallback pre-warms them while the user idles).  ║
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <script>
 (() => {
   const slider = document.getElementById('hero-slider');
   if (!slider) return;
-
-  const slides = Array.from(slider.querySelectorAll('.pillar-slide'));
-  const dots   = Array.from(slider.querySelectorAll('.hero-slider-dot'));
+  const hero       = slider.closest('.hero');
+  const heroSignal = hero && hero.querySelector('#hero-signal');
+  const slides     = Array.from(slider.querySelectorAll('.pillar-slide'));
+  const dots       = Array.from(slider.querySelectorAll('.hero-slider-dot'));
   if (slides.length < 2 || dots.length !== slides.length) return;
+
+  // ─── Slide 2 (Patent Intelligence) backdrop — 12 metric tiles. Held as
+  // a template-literal string so the browser doesn't parse them at first
+  // paint; injected once when slide 2 first activates (or sooner via the
+  // idle pre-warm at the bottom of this IIFE). ───
+  const HERO_SIGNAL_HTML = `<div class="stage-3d"><div class="strip"><!-- Row 1 · S-tier (cohort 98.3% · rank 4/183 · PSS 62.17) -->
+<div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/></svg><span class="arc-val">98.3<small>%</small></span></div></div><span class="tier-pin s">Tier S</span></div>
+<div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">4<small>/ 183</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar is-this" x="212" y="76" width="10" height="36"/><rect class="bar" x="225" y="106" width="10" height="6"/><polygon class="marker" points="212,0 222,0 217,15"/></svg></div></div><span class="tier-pin s">Tier S</span></div>
+<div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">62.17</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 62.17 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:62.17%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin s">Tier S</span></div>
+<!-- Row 2 · A-tier (cohort 88.7% · rank 18/162 · PSS 56.12) -->
+<div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/></svg><span class="arc-val">88.7<small>%</small></span></div></div><span class="tier-pin a">Tier A</span></div>
+<div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">18<small>/ 162</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="100" width="10" height="12"/><rect class="bar" x="17" y="90" width="10" height="22"/><rect class="bar" x="30" y="74" width="10" height="38"/><rect class="bar" x="43" y="54" width="10" height="58"/><rect class="bar" x="56" y="32" width="10" height="80"/><rect class="bar" x="69" y="14" width="10" height="98"/><rect class="bar" x="82" y="6" width="10" height="106"/><rect class="bar" x="95" y="10" width="10" height="102"/><rect class="bar" x="108" y="22" width="10" height="90"/><rect class="bar" x="121" y="40" width="10" height="72"/><rect class="bar" x="134" y="60" width="10" height="52"/><rect class="bar" x="147" y="78" width="10" height="34"/><rect class="bar is-this" x="160" y="68" width="10" height="44"/><rect class="bar" x="173" y="92" width="10" height="20"/><rect class="bar" x="186" y="98" width="10" height="14"/><rect class="bar" x="199" y="102" width="10" height="10"/><rect class="bar" x="212" y="104" width="10" height="8"/><rect class="bar" x="225" y="108" width="10" height="4"/><polygon class="marker" points="160,0 170,0 165,15"/></svg></div></div><span class="tier-pin a">Tier A</span></div>
+<div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">56.12</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 56.12 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:56.12%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin a">Tier A</span></div>
+<!-- Row 3 · B-tier (cohort 72.4% · rank 47/198 · PSS 47.30) -->
+<div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/></svg><span class="arc-val">72.4<small>%</small></span></div></div><span class="tier-pin b">Tier B</span></div>
+<div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">47<small>/ 198</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="106" width="10" height="6"/><rect class="bar" x="17" y="98" width="10" height="14"/><rect class="bar" x="30" y="86" width="10" height="26"/><rect class="bar" x="43" y="70" width="10" height="42"/><rect class="bar" x="56" y="50" width="10" height="62"/><rect class="bar" x="69" y="28" width="10" height="84"/><rect class="bar" x="82" y="14" width="10" height="98"/><rect class="bar is-this" x="95" y="40" width="10" height="72"/><rect class="bar" x="108" y="8" width="10" height="104"/><rect class="bar" x="121" y="14" width="10" height="98"/><rect class="bar" x="134" y="30" width="10" height="82"/><rect class="bar" x="147" y="52" width="10" height="60"/><rect class="bar" x="160" y="72" width="10" height="40"/><rect class="bar" x="173" y="86" width="10" height="26"/><rect class="bar" x="186" y="94" width="10" height="18"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="104" width="10" height="8"/><rect class="bar" x="225" y="108" width="10" height="4"/><polygon class="marker" points="95,0 105,0 100,15"/></svg></div></div><span class="tier-pin b">Tier B</span></div>
+<div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">47.30</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 47.30 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:47.30%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin b">Tier B</span></div>
+<!-- Row 4 · C-tier (cohort 48.5% · rank 88/152 · PSS 38.74) -->
+<div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/></svg><span class="arc-val">48.5<small>%</small></span></div></div><span class="tier-pin c">Tier C</span></div>
+<div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">88<small>/ 152</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="108" width="10" height="4"/><rect class="bar" x="17" y="102" width="10" height="10"/><rect class="bar" x="30" y="92" width="10" height="20"/><rect class="bar" x="43" y="78" width="10" height="34"/><rect class="bar" x="56" y="60" width="10" height="52"/><rect class="bar" x="69" y="40" width="10" height="72"/><rect class="bar" x="82" y="22" width="10" height="90"/><rect class="bar" x="95" y="10" width="10" height="102"/><rect class="bar" x="108" y="6" width="10" height="106"/><rect class="bar" x="121" y="14" width="10" height="98"/><rect class="bar is-this" x="134" y="44" width="10" height="68"/><rect class="bar" x="147" y="42" width="10" height="70"/><rect class="bar" x="160" y="62" width="10" height="50"/><rect class="bar" x="173" y="80" width="10" height="32"/><rect class="bar" x="186" y="92" width="10" height="20"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="106" width="10" height="6"/><rect class="bar" x="225" y="110" width="10" height="2"/><polygon class="marker" points="134,0 144,0 139,15"/></svg></div></div><span class="tier-pin c">Tier C</span></div>
+<div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">38.74</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 38.74 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:38.74%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin c">Tier C</span></div>
+</div></div>`;
+
+  let signalMounted = false;
+  const mountHeroSignal = () => {
+    if (signalMounted || !heroSignal) return;
+    signalMounted = true;
+    heroSignal.innerHTML = HERO_SIGNAL_HTML;
+  };
 
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const INTERVAL_MS = 6000;
@@ -4323,20 +4452,21 @@ main { padding-top: 64px; }
     slides.forEach((s, i) => {
       const on = i === active;
       s.classList.toggle('is-active', on);
-      if (on) {
-        s.removeAttribute('aria-hidden');
-        s.removeAttribute('inert');
-      } else {
-        s.setAttribute('aria-hidden', 'true');
-        s.setAttribute('inert', '');
-      }
+      if (on) { s.removeAttribute('aria-hidden'); s.removeAttribute('inert'); }
+      else    { s.setAttribute('aria-hidden', 'true'); s.setAttribute('inert', ''); }
     });
+    // Crossfade backdrop — set data-active-pillar on .hero so the matching
+    // backdrop layer fades in. Mount hero-signal lazily on first intelligence.
+    const activePillar = slides[active] && slides[active].dataset.pillar;
+    if (hero && activePillar) {
+      hero.setAttribute('data-active-pillar', activePillar);
+      if (activePillar === 'intelligence') mountHeroSignal();
+    }
     dots.forEach((d, i) => {
       d.setAttribute('aria-selected', String(i === active));
       d.setAttribute('tabindex', i === active ? '0' : '-1');
     });
-    // Restart the progress-bar animation by toggling the running flag
-    // off-then-on across a frame, so the keyframe replays from 0.
+    // Restart the progress-bar animation across a frame so the keyframe replays.
     slider.removeAttribute('data-running');
     if (!reduceMotion.matches) {
       requestAnimationFrame(() => {
@@ -4352,14 +4482,8 @@ main { padding-top: 64px; }
     slider.setAttribute('data-running', 'true');
     slider.removeAttribute('data-paused');
   };
-  const stop = () => {
-    if (timer) { clearInterval(timer); timer = null; }
-  };
-  const pause = () => {
-    if (!timer) return;
-    stop();
-    slider.setAttribute('data-paused', 'true');
-  };
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+  const pause = () => { if (!timer) return; stop(); slider.setAttribute('data-paused', 'true'); };
   const resume = () => {
     if (timer || reduceMotion.matches) return;
     slider.removeAttribute('data-paused');
@@ -4367,10 +4491,7 @@ main { padding-top: 64px; }
   };
 
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      setActive(i);
-      start(); // user jump resets the cycle
-    });
+    dot.addEventListener('click', () => { setActive(i); start(); });
     dot.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') { e.preventDefault(); setActive(active + 1); start(); dots[active].focus(); }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); setActive(active - 1); start(); dots[active].focus(); }
@@ -4382,19 +4503,21 @@ main { padding-top: 64px; }
   slider.addEventListener('mouseenter', pause);
   slider.addEventListener('mouseleave', resume);
   slider.addEventListener('focusin', pause);
-  slider.addEventListener('focusout', (e) => {
-    if (!slider.contains(e.relatedTarget)) resume();
-  });
+  slider.addEventListener('focusout', (e) => { if (!slider.contains(e.relatedTarget)) resume(); });
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) pause();
     else if (!slider.matches(':hover') && !slider.contains(document.activeElement)) resume();
   });
-
   reduceMotion.addEventListener('change', () => {
     if (reduceMotion.matches) { stop(); slider.removeAttribute('data-running'); }
     else start();
   });
+
+  // Pre-warm hero-signal during idle so a manual jump to slide 2 isn't blocked
+  // on innerHTML parse + layout. Bounded by 2.5s timeout in case idle never fires.
+  if ('requestIdleCallback' in window) requestIdleCallback(mountHeroSignal, { timeout: 2500 });
+  else setTimeout(mountHeroSignal, 1500);
 
   setActive(0);
   start();
@@ -4402,598 +4525,713 @@ main { padding-top: 64px; }
 </script>
 
 <!-- ╔═════════════════════════════════════════════════════════════════════╗
-     ║ Hero blueprint backdrop  —  procedural 3D card-strip generator      ║
-     ║ Builds 14 unique patent-blueprint SVGs into #strip and wires the    ║
-     ║ X-axis hover/proximity logic. Self-contained; no global state.      ║
+     ║ Hero blueprint backdrop  —  30 patent figure tiles in 3D perspective ║
+     ║ Renders the PATENTS × FIGS catalog into [data-grid="blueprint"]      ║
+     ║ inside .hero-blueprint. Deferred via requestIdleCallback so the      ║
+     ║ pillar text paints first; tiles fade in shortly after.               ║
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <script>
 (() => {
-  'use strict';
-
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-  const W = 240, H = 340;
-
-  // Right-margin callout slots — kept clear of the SHEET label, frame,
-  // and the bottom-right title block, so leader lines never cross figures.
-  const SLOTS = [
-    { x: 208, y: 56  },
-    { x: 215, y: 138 },
-    { x: 208, y: 230 },
+  const PATENTS = [
+    { id: 'US10892431', tier: 's' },
+    { id: 'TW I783922', tier: 's' },
+    { id: 'US11456778', tier: 's' },
+    { id: 'EP3987654',  tier: 's' },
+    { id: 'US10987112', tier: 'a' },
+    { id: 'TW I765444', tier: 'a' },
+    { id: 'US11234556', tier: 'a' },
+    { id: 'US10661220', tier: 'a' },
+    { id: 'US10334221', tier: 'a' },
+    { id: 'EP3812998',  tier: 'a' },
+    { id: 'TW I714005', tier: 'a' },
+    { id: 'US10665021', tier: 'a' },
+    { id: 'TW I812445', tier: 'a' },
+    { id: 'TW I798220', tier: 'b' },
+    { id: 'US10421889', tier: 'b' },
+    { id: 'US10772114', tier: 'b' },
+    { id: 'EP3656770',  tier: 'b' },
+    { id: 'TW I799015', tier: 'b' },
+    { id: 'US10999241', tier: 'b' },
+    { id: 'US11098334', tier: 'b' },
+    { id: 'EP3422119',  tier: 'b' },
+    { id: 'TW I720332', tier: 'b' },
+    { id: 'US10551987', tier: 'b' },
+    { id: 'US10889553', tier: 'b' },
+    { id: 'US11005612', tier: 'c' },
+    { id: 'EP3801559',  tier: 'c' },
+    { id: 'TW I801772', tier: 'c' },
+    { id: 'US10778445', tier: 'c' },
+    { id: 'US11111223', tier: 'd' },
+    { id: 'EP3445120',  tier: 'd' },
   ];
 
-  function srand(seed){
-    let s = seed | 0;
-    return () => {
-      s = (s * 1664525 + 1013904223) | 0;
-      return ((s >>> 0) & 0xffffffff) / 0x100000000;
-    };
-  }
-  function makeSVG(){
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    svg.setAttribute('class', 'blueprint');
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    return svg;
-  }
-  function el(tag, attrs, parent){
-    const e = document.createElementNS(SVG_NS, tag);
-    if (attrs) for (const k of Object.keys(attrs)) e.setAttribute(k, attrs[k]);
-    if (parent) parent.appendChild(e);
-    return e;
-  }
-  function text(parent, x, y, str, cls){
-    const t = el('text', { x, y, class: cls || '' }, parent);
-    t.textContent = str;
-    return t;
-  }
-  function centered(t){ t.setAttribute('text-anchor', 'middle'); return t; }
+  const FIGS = [
+    // 1. Recursive Lattice
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.1</text>
+     <g transform="translate(34,26)">
+       <line x1="0" y1="0" x2="120" y2="0" class="stroke-thin"/>
+       <line x1="0" y1="20" x2="120" y2="20" class="stroke-thin"/>
+       <line x1="0" y1="40" x2="120" y2="40" class="stroke-thin"/>
+       <line x1="0" y1="60" x2="120" y2="60" class="stroke-thin"/>
+       <line x1="0" y1="0" x2="0" y2="60" class="stroke-thin"/>
+       <line x1="30" y1="0" x2="30" y2="60" class="stroke-thin"/>
+       <line x1="60" y1="0" x2="60" y2="60" class="stroke-thin"/>
+       <line x1="90" y1="0" x2="90" y2="60" class="stroke-thin"/>
+       <line x1="120" y1="0" x2="120" y2="60" class="stroke-thin"/>
+       <circle cx="30" cy="20" r="2" class="fill-mark"/>
+       <circle cx="60" cy="0"  r="2" class="fill-mark"/>
+       <circle cx="90" cy="40" r="2" class="fill-mark"/>
+       <circle cx="120" cy="60" r="2" class="fill-mark"/>
+       <line x1="30" y1="20" x2="60" y2="0" class="stroke-bold"/>
+       <line x1="60" y1="0" x2="90" y2="40" class="stroke-bold"/>
+       <line x1="90" y1="40" x2="120" y2="60" class="stroke-bold"/>
+       <rect x="-6" y="-6" width="132" height="72" class="stroke-construction"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">1</text>`,
 
-  function drawTitleBlock(svg, fig, name, patentNo, inventor, date){
-    const g = el('g', { transform: `translate(${W - 114}, ${H - 74})` }, svg);
-    el('rect', { x: 0, y: 0, width: 100, height: 60, class: 'stroke-thin', fill: '#FCFAF4', 'fill-opacity': '0.5' }, g);
-    el('line', { x1: 0, y1: 14, x2: 100, y2: 14, class: 'stroke-thin' }, g);
-    el('line', { x1: 0, y1: 28, x2: 100, y2: 28, class: 'stroke-thin' }, g);
-    el('line', { x1: 0, y1: 42, x2: 100, y2: 42, class: 'stroke-thin' }, g);
-    text(g, 4, 9, fig, 'label-fade');
-    text(g, 4, 23, name, 'label-large');
-    text(g, 4, 37, patentNo);
-    text(g, 4, 51, inventor, 'label-fade');
-    text(g, 4, 57, date, 'label-fade');
-  }
+    // 2. Pressure Vessel
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.2</text>
+     <g transform="translate(64,26)">
+       <ellipse cx="35" cy="6" rx="35" ry="6" class="stroke-bold"/>
+       <line x1="0" y1="6" x2="0" y2="64" class="stroke-bold"/>
+       <line x1="70" y1="6" x2="70" y2="64" class="stroke-bold"/>
+       <ellipse cx="35" cy="64" rx="35" ry="6" class="stroke-bold"/>
+       <ellipse cx="35" cy="6" rx="35" ry="6" stroke-dasharray="1 1.5" class="stroke-construction"/>
+       <circle cx="35" cy="35" r="3" class="fill-mark"/>
+       <line x1="-10" y1="35" x2="0" y2="35" class="stroke-thin"/>
+       <line x1="70" y1="35" x2="80" y2="35" class="stroke-thin"/>
+       <rect x="-14" y="32" width="4" height="6" class="stroke-mid"/>
+       <rect x="80" y="32" width="4" height="6" class="stroke-mid"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">2</text>`,
 
-  function drawFrame(svg){
-    el('rect', { x: 12, y: 12, width: W - 24, height: H - 24, class: 'stroke-thin' }, svg);
-    const cs = 4;
-    [[12,12],[W-12,12],[12,H-12],[W-12,H-12]].forEach(([x,y])=>{
-      el('line', { x1: x-cs, y1: y, x2: x+cs, y2: y, class: 'stroke-thin' }, svg);
-      el('line', { x1: x, y1: y-cs, x2: x, y2: y+cs, class: 'stroke-thin' }, svg);
-    });
-  }
+    // 3. Spur gear
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.3</text>
+     <g transform="translate(100,60)">
+       <circle cx="0" cy="0" r="32" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="24" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="6" class="stroke-mid"/>
+       <circle cx="0" cy="0" r="2" class="fill-mark"/>
+       ${Array.from({length:12},(_,i)=>{const a=i*30*Math.PI/180;const x1=Math.cos(a)*32,y1=Math.sin(a)*32;const x2=Math.cos(a)*38,y2=Math.sin(a)*38;return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" class="stroke-bold"/>`;}).join('')}
+       <line x1="-50" y1="0" x2="-32" y2="0" class="stroke-construction"/>
+       <line x1="32" y1="0" x2="50" y2="0" class="stroke-construction"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">3</text>`,
 
-  function callout(svg, num, anchor, slotIdx){
-    const s = SLOTS[slotIdx];
-    el('line', { x1: anchor[0], y1: anchor[1], x2: s.x, y2: s.y, class: 'stroke-thin' }, svg);
-    el('circle', { cx: s.x, cy: s.y, r: 5.5, class: 'stroke-mid', fill: '#FCFAF4' }, svg);
-    const t = text(svg, s.x, s.y + 2.2, String(num));
-    t.setAttribute('text-anchor', 'middle');
-    t.setAttribute('font-size', '6.5');
-    t.setAttribute('font-weight', '600');
-  }
+    // 4. Circuit block diagram
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.4</text>
+     <g transform="translate(20,30)">
+       <rect x="0" y="0" width="38" height="20" class="stroke-bold"/>
+       <rect x="60" y="0" width="38" height="20" class="stroke-bold"/>
+       <rect x="120" y="0" width="38" height="20" class="stroke-bold"/>
+       <rect x="30" y="42" width="38" height="20" class="stroke-bold"/>
+       <rect x="90" y="42" width="38" height="20" class="stroke-bold"/>
+       <line x1="38" y1="10" x2="60" y2="10" class="stroke-thin"/>
+       <line x1="98" y1="10" x2="120" y2="10" class="stroke-thin"/>
+       <line x1="19" y1="20" x2="49" y2="42" class="stroke-thin"/>
+       <line x1="79" y1="20" x2="109" y2="42" class="stroke-thin"/>
+       <line x1="139" y1="20" x2="109" y2="42" class="stroke-thin"/>
+       <circle cx="49" cy="42" r="1.5" class="fill-mark"/>
+       <circle cx="109" cy="42" r="1.5" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">4</text>`,
 
-  // ─── 14 archetype generators ───
-  function drawLattice(svg, rng){
-    const g = el('g', { transform: 'translate(36, 60)' }, svg);
-    const sp = 18, cols = 6, rows = 9;
-    for (let r = 0; r < rows; r++) el('line', { x1: 0, y1: r*sp, x2: (cols-1)*sp, y2: r*sp, class: 'stroke-thin' }, g);
-    for (let c = 0; c < cols; c++) el('line', { x1: c*sp, y1: 0, x2: c*sp, y2: (rows-1)*sp, class: 'stroke-thin' }, g);
-    const hot = [];
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) if (rng() < 0.18) hot.push([c, r]);
-    for (const [c, r] of hot) el('circle', { cx: c*sp, cy: r*sp, r: 2.4, class: 'fill-mark' }, g);
-    for (let i = 0; i < hot.length - 1; i++) if (rng() < 0.4){
-      const [c1, r1] = hot[i], [c2, r2] = hot[i+1];
-      el('line', { x1: c1*sp, y1: r1*sp, x2: c2*sp, y2: r2*sp, class: 'stroke-bold' }, g);
-    }
-    el('rect', { x: -8, y: -8, width: (cols-1)*sp + 16, height: (rows-1)*sp + 16, class: 'stroke-construction' }, g);
-    callout(svg, 1, [60, 70], 0);
-    callout(svg, 2, [120, 138], 1);
-    callout(svg, 3, [80, 222], 2);
-  }
+    // 5. Sine wave + harmonics
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.5</text>
+     <g transform="translate(20,60)">
+       <line x1="0" y1="0" x2="160" y2="0" class="stroke-thin"/>
+       <line x1="0" y1="-26" x2="0" y2="26" class="stroke-thin"/>
+       <path d="M 0 0 Q 10 -26 20 0 T 40 0 T 60 0 T 80 0 T 100 0 T 120 0 T 140 0 T 160 0" class="stroke-bold"/>
+       <line x1="20" y1="-3" x2="20" y2="3" class="stroke-thin"/>
+       <line x1="60" y1="-3" x2="60" y2="3" class="stroke-thin"/>
+       <line x1="100" y1="-3" x2="100" y2="3" class="stroke-thin"/>
+       <line x1="140" y1="-3" x2="140" y2="3" class="stroke-thin"/>
+       <text x="20" y="10" text-anchor="middle" class="label-fade">f₀</text>
+       <text x="100" y="10" text-anchor="middle" class="label-fade">2f₀</text>
+       <circle cx="10" cy="-22" r="1.5" class="fill-mark"/>
+       <circle cx="50" cy="22" r="1.5" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">5</text>`,
 
-  function drawCylinder(svg, rng){
-    const cx = 100, w = 90, top = 54, bot = 254, h = bot - top;
-    const path = `M ${cx-w/2} ${top+12} Q ${cx-w/2} ${top}, ${cx} ${top}
-      Q ${cx+w/2} ${top}, ${cx+w/2} ${top+12}
-      L ${cx+w/2} ${bot-12} Q ${cx+w/2} ${bot}, ${cx} ${bot}
-      Q ${cx-w/2} ${bot}, ${cx-w/2} ${bot-12} Z`;
-    el('path', { d: path, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.4' }, svg);
-    for (const s of [0.18, 0.40, 0.62, 0.82]){
-      const y = top + h*s;
-      el('line', { x1: cx-w/2+3, y1: y, x2: cx+w/2-3, y2: y, class: 'stroke-mid' }, svg);
-    }
-    const hT = top + h*0.40, hB = top + h*0.62;
-    for (let x = cx-w/2+6; x < cx+w/2-6; x += 4){
-      el('line', { x1: x, y1: hT, x2: x + (hB-hT), y2: hB, class: 'stroke-thin' }, svg);
-    }
-    el('line', { x1: cx, y1: top-14, x2: cx, y2: bot+14, class: 'stroke-construction' }, svg);
-    callout(svg, 1, [cx, top + 6], 0);
-    callout(svg, 2, [cx + w/2, (top+bot)/2], 1);
-    callout(svg, 3, [cx, bot - 8], 2);
-  }
+    // 6. Optical lens
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.6</text>
+     <g transform="translate(100,60)">
+       <ellipse cx="0" cy="0" rx="12" ry="34" class="stroke-bold"/>
+       <line x1="-66" y1="-30" x2="-12" y2="-30" class="stroke-thin"/>
+       <line x1="-12" y1="-30" x2="60" y2="0" class="stroke-thin"/>
+       <line x1="-66" y1="-15" x2="-12" y2="-15" class="stroke-thin"/>
+       <line x1="-12" y1="-15" x2="60" y2="0" class="stroke-thin"/>
+       <line x1="-66" y1="0" x2="60" y2="0" class="stroke-mid"/>
+       <line x1="-66" y1="15" x2="-12" y2="15" class="stroke-thin"/>
+       <line x1="-12" y1="15" x2="60" y2="0" class="stroke-thin"/>
+       <line x1="-66" y1="30" x2="-12" y2="30" class="stroke-thin"/>
+       <line x1="-12" y1="30" x2="60" y2="0" class="stroke-thin"/>
+       <circle cx="60" cy="0" r="2.5" class="fill-mark"/>
+       <line x1="60" y1="-6" x2="60" y2="6" class="stroke-construction"/>
+       <text x="62" y="-8" class="label-fade">F</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">6</text>`,
 
-  function drawOptical(svg, rng){
-    const g = el('g', null, svg);
-    const yA = 130;
-    el('line', { x1: 22, y1: yA, x2: 188, y2: yA, class: 'stroke-construction' }, g);
-    el('polygon', { points: '50,108 70,148 30,148', class: 'stroke-bold' }, g);
-    el('polygon', { points: '90,114 116,134 90,154', class: 'stroke-bold' }, g);
-    el('ellipse', { cx: 150, cy: 130, rx: 7, ry: 22, class: 'stroke-bold' }, g);
-    el('line', { x1: 22, y1: yA, x2: 50, y2: yA, class: 'stroke-bold' }, g);
-    el('line', { x1: 70, y1: yA, x2: 90, y2: 124, class: 'stroke-bold' }, g);
-    el('line', { x1: 116, y1: 134, x2: 143, y2: 130, class: 'stroke-bold' }, g);
-    el('line', { x1: 157, y1: 130, x2: 188, y2: 110, class: 'stroke-bold' }, g);
-    el('line', { x1: 157, y1: 130, x2: 188, y2: 130, class: 'stroke-mid', 'stroke-dasharray': '3 2' }, g);
-    el('line', { x1: 157, y1: 130, x2: 188, y2: 150, class: 'stroke-mid', 'stroke-dasharray': '3 2' }, g);
-    let wd = 'M 28 220';
-    for (let x = 28; x <= 180; x += 3){
-      const y = 220 + Math.sin((x - 28) / 22) * 6;
-      wd += ` L ${x} ${y.toFixed(1)}`;
-    }
-    el('path', { d: wd, class: 'stroke-mid', fill: 'none' }, g);
-    el('line', { x1: 28, y1: 240, x2: 180, y2: 240, class: 'stroke-thin' }, g);
-    centered(text(g, 104, 250, 'λ = 632.8 nm', 'label-fade'));
-    callout(svg, 1, [50, 128], 0);
-    callout(svg, 2, [104, 134], 1);
-    callout(svg, 3, [150, 130], 2);
-  }
+    // 7. Heat sink
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.7</text>
+     <g transform="translate(40,28)">
+       <rect x="0" y="58" width="120" height="10" class="stroke-bold"/>
+       <rect x="2" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="18" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="34" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="50" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="66" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="82" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="98" y="14" width="6" height="44" class="stroke-bold"/>
+       <rect x="114" y="14" width="6" height="44" class="stroke-bold"/>
+       <line x1="-12" y1="76" x2="132" y2="76" class="stroke-construction"/>
+       <path d="M 50 6 q 4 -6 8 0 q -4 4 0 8" class="stroke-thin"/>
+       <path d="M 70 6 q 4 -6 8 0 q -4 4 0 8" class="stroke-thin"/>
+       <text x="-8" y="68" class="label-fade">base</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">7</text>`,
 
-  function drawLinkage(svg, rng){
-    const g = el('g', null, svg);
-    const j = [[50,230],[85,180],[120,130],[155,90],[85,90],[50,135]];
-    for (const [a,b] of [[0,1],[1,2],[2,3],[1,4],[4,5],[5,0],[2,4]]){
-      el('line', { x1: j[a][0], y1: j[a][1], x2: j[b][0], y2: j[b][1], class: 'stroke-bold' }, g);
-    }
-    for (const [x,y] of j){
-      el('circle', { cx: x, cy: y, r: 4, class: 'stroke-mid', fill: '#FCFAF4' }, g);
-      el('circle', { cx: x, cy: y, r: 1.4, class: 'fill-mark' }, g);
-    }
-    el('line', { x1: 30, y1: 250, x2: 180, y2: 250, class: 'stroke-bold' }, g);
-    for (let x = 30; x <= 180; x += 6) el('line', { x1: x, y1: 250, x2: x-4, y2: 256, class: 'stroke-thin' }, g);
-    el('line', { x1: j[0][0], y1: j[0][1], x2: j[3][0], y2: j[3][1], class: 'stroke-construction' }, g);
-    callout(svg, 1, [85, 180], 0);
-    callout(svg, 2, [120, 130], 1);
-    callout(svg, 3, [105, 250], 2);
-  }
+    // 8. PCB meander
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.8</text>
+     <g transform="translate(20,24)">
+       <rect x="0" y="0" width="160" height="76" class="stroke-construction"/>
+       <path d="M 8 14 H 38 V 30 H 8 V 46 H 38 V 62 H 70" class="stroke-bold"/>
+       <path d="M 90 8 H 130 V 24 H 100 V 40 H 130 V 60 H 152" class="stroke-bold"/>
+       <circle cx="8" cy="14" r="2.5" class="stroke-mid" fill="#FCFAF4"/>
+       <circle cx="70" cy="62" r="2.5" class="stroke-mid" fill="#FCFAF4"/>
+       <circle cx="90" cy="8" r="2.5" class="stroke-mid" fill="#FCFAF4"/>
+       <circle cx="152" cy="60" r="2.5" class="stroke-mid" fill="#FCFAF4"/>
+       <rect x="58" y="20" width="22" height="16" class="stroke-bold"/>
+       <line x1="60" y1="24" x2="78" y2="24" class="stroke-thin"/>
+       <line x1="60" y1="30" x2="78" y2="30" class="stroke-thin"/>
+       <text x="-6" y="-2" class="label-fade">U1</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">8</text>`,
 
-  function drawHeatExchanger(svg, rng){
-    const g = el('g', null, svg);
-    el('rect', { x: 28, y: 70, width: 150, height: 175, rx: 4, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.3' }, g);
-    let s = 'M 22 95 L 45 95 ';
-    let y = 95, dir = 1;
-    for (let i = 0; i < 4; i++){
-      const xEnd = dir > 0 ? 160 : 45;
-      s += `L ${xEnd} ${y} `;
-      const yN = y + 28;
-      const sweep = dir > 0 ? 1 : 0;
-      s += `A 14 14 0 0 ${sweep} ${xEnd} ${yN} `;
-      y = yN;
-      dir *= -1;
-    }
-    s += `L ${dir > 0 ? 45 : 160} ${y} L ${dir > 0 ? 22 : 184} ${y}`;
-    el('path', { d: s, class: 'stroke-mid', fill: 'none' }, g);
-    el('line', { x1: 18, y1: 90, x2: 18, y2: 100, class: 'stroke-bold' }, g);
-    el('line', { x1: 184, y1: y - 5, x2: 184, y2: y + 5, class: 'stroke-bold' }, g);
-    for (let i = 0; i < 4; i++) el('rect', { x: 50 + i*22, y: 235, width: 14, height: 6, class: 'stroke-thin', fill: '#FCFAF4' }, g);
-    callout(svg, 1, [22, 95], 0);
-    callout(svg, 2, [102, 137], 1);
-    callout(svg, 3, [184, 235], 2);
-  }
+    // 9. Honeycomb cell array
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.9</text>
+     <g transform="translate(100,60)">
+       <polygon points="-10,0 -5,-8.66 5,-8.66 10,0 5,8.66 -5,8.66" class="stroke-bold"/>
+       <polygon points="20,0 25,-8.66 35,-8.66 40,0 35,8.66 25,8.66" class="stroke-bold"/>
+       <polygon points="-40,0 -35,-8.66 -25,-8.66 -20,0 -25,8.66 -35,8.66" class="stroke-bold"/>
+       <polygon points="5,17.32 10,8.66 20,8.66 25,17.32 20,25.98 10,25.98" class="stroke-bold"/>
+       <polygon points="-25,17.32 -20,8.66 -10,8.66 -5,17.32 -10,25.98 -20,25.98" class="stroke-bold"/>
+       <polygon points="5,-17.32 10,-25.98 20,-25.98 25,-17.32 20,-8.66 10,-8.66" class="stroke-bold"/>
+       <polygon points="-25,-17.32 -20,-25.98 -10,-25.98 -5,-17.32 -10,-8.66 -20,-8.66" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="2" class="fill-mark"/>
+       <circle cx="-30" cy="17.32" r="1.5" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">9</text>`,
 
-  function drawAntenna(svg, rng){
-    const g = el('g', null, svg);
-    el('line', { x1: 28, y1: 200, x2: 178, y2: 200, class: 'stroke-bold' }, g);
-    for (let x = 28; x <= 178; x += 8) el('line', { x1: x, y1: 200, x2: x-4, y2: 208, class: 'stroke-thin' }, g);
-    const dipoles = [44, 75, 106, 137, 168];
-    for (const dx of dipoles){
-      el('line', { x1: dx, y1: 200, x2: dx, y2: 80, class: 'stroke-bold' }, g);
-      el('line', { x1: dx-7, y1: 80, x2: dx+7, y2: 80, class: 'stroke-bold' }, g);
-    }
-    el('path', { d: 'M 44 70 Q 106 50, 168 70', class: 'stroke-mid', 'stroke-dasharray': '3 2', fill: 'none' }, g);
-    el('line', { x1: 44, y1: 220, x2: 168, y2: 220, class: 'stroke-bold' }, g);
-    for (const dx of dipoles){
-      el('line', { x1: dx, y1: 200, x2: dx, y2: 220, class: 'stroke-bold' }, g);
-      el('circle', { cx: dx, cy: 220, r: 2, class: 'fill-mark' }, g);
-    }
-    el('line', { x1: 106, y1: 220, x2: 106, y2: 246, class: 'stroke-bold' }, g);
-    el('rect', { x: 96, y: 246, width: 20, height: 12, class: 'stroke-mid', fill: '#FCFAF4' }, g);
-    centered(text(g, 106, 254, 'RF', 'label-fade'));
-    callout(svg, 1, [106, 80], 0);
-    callout(svg, 2, [137, 200], 1);
-    callout(svg, 3, [106, 246], 2);
-  }
+    // 10. Horn antenna
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.10</text>
+     <g transform="translate(40,60)">
+       <rect x="0" y="-8" width="30" height="16" class="stroke-bold"/>
+       <line x1="30" y1="-8" x2="110" y2="-30" class="stroke-bold"/>
+       <line x1="30" y1="8" x2="110" y2="30" class="stroke-bold"/>
+       <line x1="110" y1="-30" x2="110" y2="30" class="stroke-bold"/>
+       <line x1="0" y1="0" x2="-12" y2="0" class="stroke-mid"/>
+       <line x1="-12" y1="-3" x2="-12" y2="3" class="stroke-mid"/>
+       <path d="M 110 -10 q 14 0 20 -10" class="stroke-thin"/>
+       <path d="M 110 0 q 18 0 24 -2" class="stroke-thin"/>
+       <path d="M 110 10 q 14 0 20 10" class="stroke-thin"/>
+       <text x="14" y="-12" class="label-fade">WG</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">10</text>`,
 
-  function drawDieFloorplan(svg, rng){
-    const g = el('g', null, svg);
-    el('rect', { x: 30, y: 60, width: 150, height: 200, class: 'stroke-bold' }, g);
-    el('rect', { x: 38, y: 68, width: 134, height: 184, class: 'stroke-construction' }, g);
-    const blocks = [
-      [44, 76, 60, 50, 'CORE'], [108, 76, 56, 50, 'CACHE'],
-      [44, 132, 30, 40, 'IO'], [78, 132, 86, 40, 'BUS'],
-      [44, 178, 50, 38, 'MEM'], [98, 178, 66, 38, 'DSP'],
-      [44, 222, 120, 26, 'PHY'],
-    ];
-    for (const [x, y, w, h, lbl] of blocks){
-      el('rect', { x, y, width: w, height: h, class: 'stroke-mid', fill: '#FCFAF4', 'fill-opacity': '0.5' }, g);
-      const t = centered(text(g, x + w/2, y + h/2 + 1.8, lbl, 'label-fade'));
-      t.setAttribute('font-size', '5');
-    }
-    for (let i = 0; i < 6; i++) el('rect', { x: 36 + i*24, y: 54, width: 6, height: 4, class: 'fill-mark' }, g);
-    callout(svg, 1, [74, 100], 0);
-    callout(svg, 2, [136, 152], 1);
-    callout(svg, 3, [104, 235], 2);
-  }
+    // 11. Helical coil / inductor
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.11</text>
+     <g transform="translate(40,60)">
+       <line x1="0" y1="0" x2="14" y2="0" class="stroke-bold"/>
+       <ellipse cx="22" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <ellipse cx="38" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <ellipse cx="54" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <ellipse cx="70" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <ellipse cx="86" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <ellipse cx="102" cy="0" rx="8" ry="14" class="stroke-bold"/>
+       <line x1="110" y1="0" x2="124" y2="0" class="stroke-bold"/>
+       <line x1="14" y1="-14" x2="110" y2="-14" class="stroke-construction"/>
+       <line x1="14" y1="14" x2="110" y2="14" class="stroke-construction"/>
+       <circle cx="0" cy="0" r="2" class="fill-mark"/>
+       <circle cx="124" cy="0" r="2" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">11</text>`,
 
-  function drawGearTrain(svg, rng){
-    const g = el('g', null, svg);
-    function gear(cx, cy, r, teeth){
-      const pts = [], n = teeth * 2;
-      for (let i = 0; i < n; i++){
-        const a = (i / n) * Math.PI * 2;
-        const rr = i % 2 === 0 ? r : r - 4;
-        pts.push(`${(cx + Math.cos(a)*rr).toFixed(1)},${(cy + Math.sin(a)*rr).toFixed(1)}`);
-      }
-      el('polygon', { points: pts.join(' '), class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.4' }, g);
-      el('circle', { cx, cy, r: r-2, class: 'stroke-construction' }, g);
-      el('circle', { cx, cy, r: 6, class: 'stroke-mid', fill: '#FCFAF4' }, g);
-      el('circle', { cx, cy, r: 2, class: 'fill-mark' }, g);
-      for (let i = 0; i < 4; i++){
-        const a = (i / 4) * Math.PI * 2 + Math.PI/4;
-        el('line', { x1: cx + Math.cos(a)*6, y1: cy + Math.sin(a)*6,
-                     x2: cx + Math.cos(a)*(r-6), y2: cy + Math.sin(a)*(r-6),
-                     class: 'stroke-thin' }, g);
-      }
-    }
-    gear(70, 140, 32, 14);
-    gear(140, 160, 22, 10);
-    el('line', { x1: 28, y1: 140, x2: 180, y2: 140, class: 'stroke-construction' }, g);
-    el('line', { x1: 70, y1: 90, x2: 70, y2: 195, class: 'stroke-construction' }, g);
-    el('line', { x1: 140, y1: 125, x2: 140, y2: 195, class: 'stroke-construction' }, g);
-    el('circle', { cx: 105, cy: 150, r: 2, class: 'stroke-mid', fill: '#FCFAF4' }, g);
-    el('path', { d: 'M 70 95 A 14 14 0 0 1 84 119', class: 'stroke-mid', fill: 'none' }, g);
-    el('path', { d: 'M 140 128 A 8 8 0 0 0 132 142', class: 'stroke-mid', fill: 'none' }, g);
-    callout(svg, 1, [70, 140], 0);
-    callout(svg, 2, [105, 150], 1);
-    callout(svg, 3, [140, 160], 2);
-  }
+    // 12. MEMS cantilever
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.12</text>
+     <g transform="translate(28,40)">
+       <rect x="0" y="0" width="14" height="40" class="stroke-bold"/>
+       <line x1="-2" y1="40" x2="16" y2="40" class="stroke-thin"/>
+       <line x1="-2" y1="42" x2="0" y2="44" class="stroke-thin"/>
+       <line x1="2" y1="42" x2="4" y2="44" class="stroke-thin"/>
+       <line x1="6" y1="42" x2="8" y2="44" class="stroke-thin"/>
+       <line x1="10" y1="42" x2="12" y2="44" class="stroke-thin"/>
+       <line x1="14" y1="42" x2="16" y2="44" class="stroke-thin"/>
+       <rect x="14" y="14" width="100" height="6" class="stroke-bold"/>
+       <path d="M 14 17 q 50 22 100 0" class="stroke-construction"/>
+       <rect x="60" y="32" width="40" height="6" class="stroke-mid"/>
+       <line x1="80" y1="20" x2="80" y2="32" class="stroke-construction"/>
+       <text x="120" y="20" class="label-fade">beam</text>
+       <text x="120" y="38" class="label-fade">elec</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">12</text>`,
 
-  function drawMicrofluidic(svg, rng){
-    const g = el('g', null, svg);
-    el('rect', { x: 28, y: 60, width: 145, height: 200, class: 'stroke-thin' }, g);
-    el('circle', { cx: 60, cy: 84, r: 8, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('circle', { cx: 140, cy: 84, r: 8, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('path', { d: 'M 60 92 L 95 130 M 140 92 L 105 130', class: 'stroke-bold', fill: 'none' }, g);
-    el('line', { x1: 95, y1: 130, x2: 105, y2: 130, class: 'stroke-bold' }, g);
-    let zd = 'M 95 132 ', zx = 95, zy = 132;
-    for (let i = 0; i < 6; i++){
-      zx = i % 2 === 0 ? 110 : 92;
-      zy += 9;
-      zd += `L ${zx} ${zy} `;
-    }
-    el('path', { d: zd, class: 'stroke-bold', fill: 'none' }, g);
-    el('rect', { x: 86, y: 200, width: 30, height: 22, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.5' }, g);
-    el('line', { x1: 101, y1: 222, x2: 101, y2: 244, class: 'stroke-bold' }, g);
-    el('circle', { cx: 101, cy: 250, r: 5, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    callout(svg, 1, [60, 84], 0);
-    callout(svg, 2, [101, 165], 1);
-    callout(svg, 3, [101, 211], 2);
-  }
+    // 13. Microfluidic Y-junction
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.13</text>
+     <g transform="translate(30,32)">
+       <circle cx="0" cy="6" r="6" class="stroke-bold"/>
+       <circle cx="0" cy="50" r="6" class="stroke-bold"/>
+       <line x1="6" y1="6" x2="60" y2="28" class="stroke-bold"/>
+       <line x1="6" y1="50" x2="60" y2="28" class="stroke-bold"/>
+       <line x1="6" y1="10" x2="56" y2="30" class="stroke-thin"/>
+       <line x1="6" y1="46" x2="56" y2="26" class="stroke-thin"/>
+       <line x1="60" y1="28" x2="120" y2="28" class="stroke-bold"/>
+       <line x1="60" y1="32" x2="120" y2="32" class="stroke-bold"/>
+       <rect x="120" y="20" width="20" height="20" class="stroke-bold"/>
+       <circle cx="130" cy="30" r="2" class="fill-mark"/>
+       <text x="-10" y="6" class="label-fade">A</text>
+       <text x="-10" y="52" class="label-fade">B</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">13</text>`,
 
-  function drawControlLoop(svg, rng){
-    const g = el('g', null, svg);
-    const boxes = [[35, 100, 28, 22, 'Σ'], [80, 100, 36, 22, 'CTRL'], [130, 100, 38, 22, 'PLANT']];
-    for (const [x, y, w, h, lbl] of boxes){
-      el('rect', { x, y, width: w, height: h, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-      const t = centered(text(g, x + w/2, y + h/2 + 2.5, lbl));
-      t.setAttribute('font-size', '7');
-      t.setAttribute('font-weight', '600');
-    }
-    function arrow(x1, y1, x2, y2){
-      el('line', { x1, y1, x2, y2, class: 'stroke-bold' }, g);
-      const a = Math.atan2(y2 - y1, x2 - x1);
-      el('line', { x1: x2, y1: y2, x2: x2 - Math.cos(a-0.5)*4, y2: y2 - Math.sin(a-0.5)*4, class: 'stroke-bold' }, g);
-      el('line', { x1: x2, y1: y2, x2: x2 - Math.cos(a+0.5)*4, y2: y2 - Math.sin(a+0.5)*4, class: 'stroke-bold' }, g);
-    }
-    arrow(20, 111, 35, 111);
-    arrow(63, 111, 80, 111);
-    arrow(116, 111, 130, 111);
-    arrow(168, 111, 184, 111);
-    el('path', { d: 'M 175 122 L 175 175 L 49 175 L 49 122', class: 'stroke-bold', fill: 'none' }, g);
-    arrow(49, 170, 49, 122);
-    el('rect', { x: 95, y: 162, width: 30, height: 24, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    centered(text(g, 110, 178, 'H(s)'));
-    text(g, 22, 95, 'r(t)', 'label-fade');
-    text(g, 173, 95, 'y(t)', 'label-fade');
-    el('rect', { x: 32, y: 210, width: 140, height: 42, class: 'stroke-thin' }, g);
-    let pd = 'M 32 230';
-    for (let x = 32; x <= 172; x += 3){
-      const t = (x - 32) / 140;
-      const y = 230 - 9 * (1 - Math.exp(-t * 4)) * Math.cos(t * 6);
-      pd += ` L ${x} ${y.toFixed(1)}`;
-    }
-    el('path', { d: pd, class: 'stroke-mid', fill: 'none' }, g);
-    callout(svg, 1, [49, 111], 0);
-    callout(svg, 2, [149, 111], 1);
-    callout(svg, 3, [110, 175], 2);
-  }
+    // 14. Semiconductor stack
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.14</text>
+     <g transform="translate(30,24)">
+       <rect x="0" y="0" width="120" height="10" class="stroke-bold"/>
+       <rect x="0" y="14" width="120" height="10" class="stroke-thin"/>
+       <rect x="0" y="28" width="120" height="10" class="stroke-bold"/>
+       <rect x="0" y="42" width="120" height="10" class="stroke-thin"/>
+       <rect x="0" y="56" width="120" height="14" class="stroke-bold"/>
+       <line x1="124" y1="5" x2="140" y2="5" class="stroke-construction"/>
+       <line x1="124" y1="19" x2="140" y2="19" class="stroke-construction"/>
+       <line x1="124" y1="33" x2="140" y2="33" class="stroke-construction"/>
+       <line x1="124" y1="47" x2="140" y2="47" class="stroke-construction"/>
+       <line x1="124" y1="63" x2="140" y2="63" class="stroke-construction"/>
+       <text x="142" y="7" class="label-fade">M1</text>
+       <text x="142" y="21" class="label-fade">D</text>
+       <text x="142" y="35" class="label-fade">M2</text>
+       <text x="142" y="49" class="label-fade">D</text>
+       <text x="142" y="65" class="label-fade">SUB</text>
+       <rect x="40" y="-6" width="8" height="6" class="stroke-bold"/>
+       <rect x="80" y="-6" width="8" height="6" class="stroke-bold"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">14</text>`,
 
-  function drawTruss(svg, rng){
-    const g = el('g', null, svg);
-    el('line', { x1: 30, y1: 200, x2: 180, y2: 200, class: 'stroke-bold' }, g);
-    el('line', { x1: 30, y1: 200, x2: 50, y2: 130, class: 'stroke-bold' }, g);
-    el('line', { x1: 50, y1: 130, x2: 160, y2: 130, class: 'stroke-bold' }, g);
-    el('line', { x1: 160, y1: 130, x2: 180, y2: 200, class: 'stroke-bold' }, g);
-    const xV = [50, 77, 105, 133, 160];
-    for (const x of xV) el('line', { x1: x, y1: 130, x2: x, y2: 200, class: 'stroke-bold' }, g);
-    el('line', { x1: 50, y1: 130, x2: 77, y2: 200, class: 'stroke-mid' }, g);
-    el('line', { x1: 77, y1: 130, x2: 105, y2: 200, class: 'stroke-mid' }, g);
-    el('line', { x1: 133, y1: 130, x2: 105, y2: 200, class: 'stroke-mid' }, g);
-    el('line', { x1: 160, y1: 130, x2: 133, y2: 200, class: 'stroke-mid' }, g);
-    for (const x of [30, 50, 77, 105, 133, 160, 180]) el('circle', { cx: x, cy: 200, r: 2.2, class: 'fill-mark' }, g);
-    for (const x of xV) el('circle', { cx: x, cy: 130, r: 2.2, class: 'fill-mark' }, g);
-    el('polygon', { points: '24,210 36,210 30,200', class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('polygon', { points: '174,210 186,210 180,200', class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    for (let x = 22; x <= 38; x += 4) el('line', { x1: x, y1: 212, x2: x-3, y2: 218, class: 'stroke-thin' }, g);
-    for (let x = 172; x <= 188; x += 4) el('line', { x1: x, y1: 212, x2: x-3, y2: 218, class: 'stroke-thin' }, g);
-    for (const x of xV){
-      el('line', { x1: x, y1: 92, x2: x, y2: 126, class: 'stroke-mid' }, g);
-      el('line', { x1: x, y1: 126, x2: x-2.5, y2: 120, class: 'stroke-mid' }, g);
-      el('line', { x1: x, y1: 126, x2: x+2.5, y2: 120, class: 'stroke-mid' }, g);
-    }
-    el('line', { x1: 30, y1: 232, x2: 180, y2: 232, class: 'stroke-thin' }, g);
-    el('line', { x1: 30, y1: 228, x2: 30, y2: 236, class: 'stroke-thin' }, g);
-    el('line', { x1: 180, y1: 228, x2: 180, y2: 236, class: 'stroke-thin' }, g);
-    centered(text(g, 105, 244, '12.0 m', 'label-fade'));
-    callout(svg, 1, [50, 130], 0);
-    callout(svg, 2, [105, 165], 1);
-    callout(svg, 3, [160, 200], 2);
-  }
+    // 15. Ball bearing
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.15</text>
+     <g transform="translate(100,60)">
+       <circle cx="0" cy="0" r="36" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="30" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="14" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="8" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="3" class="fill-mark"/>
+       ${Array.from({length:8},(_,i)=>{const a=i*45*Math.PI/180;const x=Math.cos(a)*22,y=Math.sin(a)*22;return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" class="stroke-mid" fill="#FCFAF4"/>`;}).join('')}
+       <line x1="-50" y1="0" x2="-36" y2="0" class="stroke-construction"/>
+       <line x1="36" y1="0" x2="50" y2="0" class="stroke-construction"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">15</text>`,
 
-  function drawBridge(svg, rng){
-    const g = el('g', null, svg);
-    const TT = [100, 70], LL = [40, 140], BB = [100, 210], RR = [160, 140];
-    function resistor(p, q){
-      const dx = q[0]-p[0], dy = q[1]-p[1], len = Math.hypot(dx, dy);
-      const ux = dx/len, uy = dy/len, px = -uy, py = ux;
-      const seg = len/8;
-      let pd = `M ${p[0]} ${p[1]} L ${(p[0]+ux*seg).toFixed(1)} ${(p[1]+uy*seg).toFixed(1)}`;
-      for (let i = 1; i <= 6; i++){
-        const along = seg + (i - 0.5) * seg;
-        const side = (i % 2 === 0) ? 4 : -4;
-        const x = p[0] + ux*along + px*side;
-        const y = p[1] + uy*along + py*side;
-        pd += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-      }
-      pd += ` L ${(q[0]-ux*seg).toFixed(1)} ${(q[1]-uy*seg).toFixed(1)} L ${q[0]} ${q[1]}`;
-      el('path', { d: pd, class: 'stroke-bold', fill: 'none' }, g);
-    }
-    resistor(TT, LL); resistor(TT, RR); resistor(LL, BB); resistor(RR, BB);
-    el('circle', { cx: 100, cy: 140, r: 10, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    centered(text(g, 100, 144, 'G'));
-    el('line', { x1: 50, y1: 140, x2: 90, y2: 140, class: 'stroke-bold' }, g);
-    el('line', { x1: 110, y1: 140, x2: 150, y2: 140, class: 'stroke-bold' }, g);
-    el('line', { x1: 100, y1: 70, x2: 100, y2: 50, class: 'stroke-bold' }, g);
-    el('line', { x1: 100, y1: 50, x2: 30, y2: 50, class: 'stroke-bold' }, g);
-    el('line', { x1: 30, y1: 50, x2: 30, y2: 232, class: 'stroke-bold' }, g);
-    el('line', { x1: 30, y1: 232, x2: 100, y2: 232, class: 'stroke-bold' }, g);
-    el('line', { x1: 100, y1: 232, x2: 100, y2: 210, class: 'stroke-bold' }, g);
-    el('line', { x1: 24, y1: 138, x2: 36, y2: 138, class: 'stroke-bold' }, g);
-    el('line', { x1: 28, y1: 145, x2: 32, y2: 145, class: 'stroke-bold' }, g);
-    for (const [x, y] of [TT, LL, BB, RR]) el('circle', { cx: x, cy: y, r: 2.4, class: 'fill-mark' }, g);
-    text(g, 64, 102, 'R₁', 'label-fade');
-    text(g, 130, 102, 'R₂', 'label-fade');
-    text(g, 60, 188, 'R₃', 'label-fade');
-    text(g, 134, 188, 'Rₓ', 'label-fade');
-    callout(svg, 1, [70, 105], 0);
-    callout(svg, 2, [100, 140], 1);
-    callout(svg, 3, [130, 175], 2);
-  }
+    // 16. Truss frame
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.16</text>
+     <g transform="translate(20,40)">
+       <line x1="0" y1="0" x2="160" y2="0" class="stroke-bold"/>
+       <line x1="0" y1="40" x2="160" y2="40" class="stroke-bold"/>
+       <line x1="0" y1="0" x2="0" y2="40" class="stroke-bold"/>
+       <line x1="40" y1="0" x2="40" y2="40" class="stroke-bold"/>
+       <line x1="80" y1="0" x2="80" y2="40" class="stroke-bold"/>
+       <line x1="120" y1="0" x2="120" y2="40" class="stroke-bold"/>
+       <line x1="160" y1="0" x2="160" y2="40" class="stroke-bold"/>
+       <line x1="0" y1="40" x2="40" y2="0" class="stroke-thin"/>
+       <line x1="40" y1="40" x2="80" y2="0" class="stroke-thin"/>
+       <line x1="120" y1="40" x2="80" y2="0" class="stroke-thin"/>
+       <line x1="160" y1="40" x2="120" y2="0" class="stroke-thin"/>
+       <polygon points="-6,46 6,46 0,40" class="stroke-mid" fill="#FCFAF4"/>
+       <polygon points="154,46 166,46 160,40" class="stroke-mid" fill="#FCFAF4"/>
+       <line x1="-12" y1="46" x2="172" y2="46" class="stroke-construction"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">16</text>`,
 
-  function drawCam(svg, rng){
-    const g = el('g', null, svg);
-    const cx = 95, cy = 175;
-    let pd = '';
-    for (let i = 0; i <= 32; i++){
-      const a = (i / 32) * Math.PI * 2;
-      const r = 28 + 8 * Math.sin(a) - 4 * Math.cos(a * 2);
-      const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
-      pd += `${i === 0 ? 'M ' : 'L '}${x.toFixed(1)} ${y.toFixed(1)} `;
-    }
-    pd += 'Z';
-    el('path', { d: pd, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.4' }, g);
-    el('circle', { cx, cy, r: 8, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('circle', { cx, cy, r: 2, class: 'fill-mark' }, g);
-    el('rect', { x: cx - 2, y: cy - 9, width: 4, height: 4, class: 'stroke-mid' }, g);
-    el('circle', { cx, cy: 130, r: 6, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('circle', { cx, cy: 130, r: 1.6, class: 'fill-mark' }, g);
-    el('line', { x1: cx, y1: 124, x2: cx, y2: 80, class: 'stroke-bold' }, g);
-    let sp = '';
-    for (let i = 0; i <= 10; i++){
-      const y = 80 - i * 4;
-      const x = cx + (i % 2 === 0 ? -4 : 4);
-      sp += `${i === 0 ? 'M ' : 'L '}${x} ${y} `;
-    }
-    el('path', { d: sp, class: 'stroke-mid', fill: 'none' }, g);
-    el('line', { x1: cx - 8, y1: 40, x2: cx + 8, y2: 40, class: 'stroke-bold' }, g);
-    for (let x = cx - 10; x <= cx + 10; x += 4) el('line', { x1: x, y1: 38, x2: x-3, y2: 32, class: 'stroke-thin' }, g);
-    el('line', { x1: cx, y1: 24, x2: cx, y2: 250, class: 'stroke-construction' }, g);
-    el('path', { d: 'M 145 248 Q 158 230, 165 215 Q 172 200, 180 215', class: 'stroke-mid', fill: 'none' }, g);
-    callout(svg, 1, [cx, 130], 0);
-    callout(svg, 2, [cx + 28, cy], 1);
-    callout(svg, 3, [cx, 60], 2);
-  }
+    // 17. State machine
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.17</text>
+     <g transform="translate(30,30)">
+       <circle cx="20" cy="20" r="14" class="stroke-bold"/>
+       <circle cx="80" cy="20" r="14" class="stroke-bold"/>
+       <circle cx="50" cy="60" r="14" class="stroke-bold"/>
+       <text x="20" y="22" text-anchor="middle">S1</text>
+       <text x="80" y="22" text-anchor="middle">S2</text>
+       <text x="50" y="62" text-anchor="middle">S3</text>
+       <line x1="34" y1="20" x2="66" y2="20" class="stroke-thin"/>
+       <polygon points="66,20 62,18 62,22" class="fill-mark"/>
+       <line x1="74" y1="32" x2="58" y2="48" class="stroke-thin"/>
+       <polygon points="58,48 62,46 60,50" class="fill-mark"/>
+       <line x1="42" y1="48" x2="26" y2="32" class="stroke-thin"/>
+       <polygon points="26,32 30,32 28,36" class="fill-mark"/>
+       <path d="M 80 6 q 14 -10 14 6" class="stroke-thin"/>
+       <polygon points="94,12 90,14 92,18" class="fill-mark"/>
+       <line x1="-6" y1="20" x2="6" y2="20" class="stroke-mid"/>
+       <polygon points="6,20 4,18 4,22" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">17</text>`,
 
-  function drawCyclone(svg, rng){
-    const g = el('g', null, svg);
-    const cx = 92;
-    el('rect', { x: cx - 35, y: 64, width: 70, height: 60, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.3' }, g);
-    el('polygon', { points: `${cx-35},124 ${cx+35},124 ${cx+5},230 ${cx-5},230`, class: 'stroke-bold', fill: '#FCFAF4', 'fill-opacity': '0.3' }, g);
-    el('rect', { x: cx + 35, y: 74, width: 28, height: 12, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('line', { x1: cx - 8, y1: 64, x2: cx - 8, y2: 44, class: 'stroke-bold' }, g);
-    el('line', { x1: cx + 8, y1: 64, x2: cx + 8, y2: 44, class: 'stroke-bold' }, g);
-    el('line', { x1: cx - 8, y1: 44, x2: cx + 8, y2: 44, class: 'stroke-bold' }, g);
-    el('line', { x1: cx - 8, y1: 64, x2: cx - 8, y2: 96, class: 'stroke-mid' }, g);
-    el('line', { x1: cx + 8, y1: 64, x2: cx + 8, y2: 96, class: 'stroke-mid' }, g);
-    el('line', { x1: cx - 8, y1: 96, x2: cx + 8, y2: 96, class: 'stroke-mid' }, g);
-    let h = '';
-    for (let i = 0; i <= 30; i++){
-      const t = i / 30;
-      const y = 92 + t * 130;
-      const r = 28 - t * 26;
-      const x = cx + Math.cos(t * Math.PI * 6) * r;
-      h += `${i === 0 ? 'M ' : 'L '}${x.toFixed(1)} ${y.toFixed(1)} `;
-    }
-    el('path', { d: h, class: 'stroke-mid', 'stroke-dasharray': '3 2', fill: 'none' }, g);
-    el('line', { x1: cx - 5, y1: 230, x2: cx - 5, y2: 250, class: 'stroke-bold' }, g);
-    el('line', { x1: cx + 5, y1: 230, x2: cx + 5, y2: 250, class: 'stroke-bold' }, g);
-    el('circle', { cx, cy: 256, r: 4, class: 'stroke-bold', fill: '#FCFAF4' }, g);
-    el('line', { x1: cx, y1: 30, x2: cx, y2: 248, class: 'stroke-construction' }, g);
-    callout(svg, 1, [cx + 35, 80], 0);
-    callout(svg, 2, [cx, 150], 1);
-    callout(svg, 3, [cx, 230], 2);
-  }
+    // 18. Cam profile
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.18</text>
+     <g transform="translate(70,60)">
+       <path d="M 0 -22 C 16 -22 22 -10 22 0 C 22 14 14 22 0 22 C -16 22 -22 12 -22 0 C -22 -14 -16 -22 0 -22 Z" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="4" class="stroke-mid"/>
+       <circle cx="0" cy="0" r="1.5" class="fill-mark"/>
+       <line x1="-8" y1="0" x2="-32" y2="0" class="stroke-construction"/>
+       <line x1="8" y1="0" x2="32" y2="0" class="stroke-construction"/>
+       <rect x="40" y="-6" width="14" height="12" class="stroke-bold"/>
+       <line x1="22" y1="-2" x2="40" y2="-2" class="stroke-mid"/>
+       <line x1="22" y1="2" x2="40" y2="2" class="stroke-mid"/>
+       <rect x="50" y="-22" width="10" height="20" class="stroke-thin"/>
+       <line x1="55" y1="-22" x2="55" y2="-32" class="stroke-construction"/>
+       <text x="60" y="-26" class="label-fade">F</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">18</text>`,
 
-  const TYPES = [
-    { fn: drawLattice,       name: 'RECURSIVE LATTICE' },
-    { fn: drawCylinder,      name: 'PRESSURE VESSEL' },
-    { fn: drawOptical,       name: 'OPTICAL CASCADE' },
-    { fn: drawLinkage,       name: 'PARALLEL LINKAGE' },
-    { fn: drawHeatExchanger, name: 'HEAT EXCHANGER' },
-    { fn: drawAntenna,       name: 'PHASED ARRAY' },
-    { fn: drawDieFloorplan,  name: 'DIE FLOORPLAN' },
-    { fn: drawGearTrain,     name: 'GEAR TRAIN' },
-    { fn: drawMicrofluidic,  name: 'MICROFLUIDIC' },
-    { fn: drawControlLoop,   name: 'CONTROL LOOP' },
-    { fn: drawTruss,         name: 'TRUSS SPAN' },
-    { fn: drawBridge,        name: 'BRIDGE CIRCUIT' },
-    { fn: drawCam,           name: 'CAM PROFILE' },
-    { fn: drawCyclone,       name: 'CYCLONE SEPARATOR' },
+    // 19. Pulley + belt drive
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.19</text>
+     <g transform="translate(40,60)">
+       <circle cx="0" cy="0" r="20" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="3" class="fill-mark"/>
+       <circle cx="100" cy="0" r="14" class="stroke-bold"/>
+       <circle cx="100" cy="0" r="2" class="fill-mark"/>
+       <line x1="0" y1="-20" x2="100" y2="-14" class="stroke-bold"/>
+       <line x1="0" y1="20" x2="100" y2="14" class="stroke-bold"/>
+       <line x1="-20" y1="-2" x2="-20" y2="2" class="stroke-thin"/>
+       <line x1="20" y1="-2" x2="20" y2="2" class="stroke-thin"/>
+       <line x1="-26" y1="0" x2="-22" y2="0" class="stroke-construction"/>
+       <line x1="22" y1="0" x2="26" y2="0" class="stroke-construction"/>
+       <text x="0" y="32" text-anchor="middle" class="label-fade">D1</text>
+       <text x="100" y="28" text-anchor="middle" class="label-fade">D2</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">19</text>`,
+
+    // 20. Heat exchanger
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.20</text>
+     <g transform="translate(20,32)">
+       <rect x="0" y="0" width="160" height="50" class="stroke-bold" rx="4"/>
+       <line x1="10" y1="12" x2="150" y2="12" class="stroke-thin"/>
+       <line x1="10" y1="20" x2="150" y2="20" class="stroke-thin"/>
+       <line x1="10" y1="30" x2="150" y2="30" class="stroke-thin"/>
+       <line x1="10" y1="38" x2="150" y2="38" class="stroke-thin"/>
+       <line x1="-12" y1="6" x2="0" y2="6" class="stroke-bold"/>
+       <line x1="160" y1="44" x2="172" y2="44" class="stroke-bold"/>
+       <line x1="40" y1="-10" x2="40" y2="0" class="stroke-mid"/>
+       <line x1="120" y1="50" x2="120" y2="60" class="stroke-mid"/>
+       <polygon points="40,0 38,-4 42,-4" class="fill-mark"/>
+       <polygon points="120,60 118,56 122,56" class="fill-mark"/>
+       <text x="-12" y="2" class="label-fade">in</text>
+       <text x="170" y="40" class="label-fade">out</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">20</text>`,
+
+    // 21. Cyclone separator
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.21</text>
+     <g transform="translate(70,18)">
+       <line x1="0" y1="0" x2="60" y2="0" class="stroke-bold"/>
+       <line x1="0" y1="0" x2="0" y2="40" class="stroke-bold"/>
+       <line x1="60" y1="0" x2="60" y2="40" class="stroke-bold"/>
+       <line x1="0" y1="40" x2="30" y2="80" class="stroke-bold"/>
+       <line x1="60" y1="40" x2="30" y2="80" class="stroke-bold"/>
+       <line x1="-20" y1="6" x2="0" y2="6" class="stroke-mid"/>
+       <polygon points="0,6 -2,4 -2,8" class="fill-mark"/>
+       <line x1="30" y1="-12" x2="30" y2="0" class="stroke-mid"/>
+       <polygon points="30,-12 28,-8 32,-8" class="fill-mark"/>
+       <line x1="30" y1="80" x2="30" y2="92" class="stroke-mid"/>
+       <polygon points="30,92 28,88 32,88" class="fill-mark"/>
+       <path d="M 30 12 q 16 8 0 16 q -16 -8 0 -16" class="stroke-construction"/>
+       <path d="M 30 32 q 12 6 0 12 q -12 -6 0 -12" class="stroke-construction"/>
+       <path d="M 30 50 q 8 4 0 8 q -8 -4 0 -8" class="stroke-construction"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">21</text>`,
+
+    // 22. T-junction valve
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.22</text>
+     <g transform="translate(20,44)">
+       <line x1="0" y1="14" x2="60" y2="14" class="stroke-bold"/>
+       <line x1="0" y1="24" x2="60" y2="24" class="stroke-bold"/>
+       <line x1="100" y1="14" x2="160" y2="14" class="stroke-bold"/>
+       <line x1="100" y1="24" x2="160" y2="24" class="stroke-bold"/>
+       <line x1="65" y1="0" x2="65" y2="38" class="stroke-bold"/>
+       <line x1="95" y1="0" x2="95" y2="38" class="stroke-bold"/>
+       <polygon points="60,8 80,19 60,30" class="stroke-bold" fill="#FCFAF4"/>
+       <polygon points="100,8 80,19 100,30" class="stroke-bold" fill="#FCFAF4"/>
+       <line x1="80" y1="19" x2="80" y2="-10" class="stroke-mid"/>
+       <circle cx="80" cy="-12" r="4" class="stroke-bold"/>
+       <line x1="76" y1="-14" x2="84" y2="-10" class="stroke-thin"/>
+       <text x="-6" y="20" class="label-fade">in</text>
+       <text x="164" y="20" class="label-fade">out</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">22</text>`,
+
+    // 23. Hydraulic cylinder
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.23</text>
+     <g transform="translate(20,40)">
+       <rect x="0" y="0" width="100" height="40" class="stroke-bold"/>
+       <line x1="0" y1="6" x2="100" y2="6" class="stroke-thin"/>
+       <line x1="0" y1="34" x2="100" y2="34" class="stroke-thin"/>
+       <rect x="40" y="0" width="14" height="40" class="stroke-bold"/>
+       <line x1="54" y1="20" x2="160" y2="20" class="stroke-bold"/>
+       <line x1="54" y1="22" x2="160" y2="22" class="stroke-bold"/>
+       <rect x="160" y="14" width="6" height="14" class="stroke-bold"/>
+       <line x1="-10" y1="14" x2="0" y2="14" class="stroke-mid"/>
+       <polygon points="0,14 -2,12 -2,16" class="fill-mark"/>
+       <line x1="-10" y1="28" x2="0" y2="28" class="stroke-mid"/>
+       <polygon points="-10,28 -8,26 -8,30" class="fill-mark"/>
+       <text x="-6" y="6" class="label-fade">A</text>
+       <text x="-6" y="40" class="label-fade">B</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">23</text>`,
+
+    // 24. Solar cell
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.24</text>
+     <g transform="translate(28,28)">
+       <rect x="0" y="0" width="140" height="64" class="stroke-bold"/>
+       <line x1="0" y1="20" x2="140" y2="20" class="stroke-mid"/>
+       <line x1="0" y1="44" x2="140" y2="44" class="stroke-mid"/>
+       <line x1="6" y1="0" x2="6" y2="64" class="stroke-thin"/>
+       <line x1="20" y1="0" x2="20" y2="64" class="stroke-thin"/>
+       <line x1="34" y1="0" x2="34" y2="64" class="stroke-thin"/>
+       <line x1="48" y1="0" x2="48" y2="64" class="stroke-thin"/>
+       <line x1="62" y1="0" x2="62" y2="64" class="stroke-thin"/>
+       <line x1="76" y1="0" x2="76" y2="64" class="stroke-thin"/>
+       <line x1="90" y1="0" x2="90" y2="64" class="stroke-thin"/>
+       <line x1="104" y1="0" x2="104" y2="64" class="stroke-thin"/>
+       <line x1="118" y1="0" x2="118" y2="64" class="stroke-thin"/>
+       <line x1="132" y1="0" x2="132" y2="64" class="stroke-thin"/>
+       <polygon points="68,-12 76,-4 60,-4" class="fill-mark"/>
+       <polygon points="80,-12 88,-4 72,-4" class="fill-mark"/>
+       <text x="146" y="22" class="label-fade">+</text>
+       <text x="146" y="46" class="label-fade">−</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">24</text>`,
+
+    // 25. DNA double helix
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.25</text>
+     <g transform="translate(70,18)">
+       <path d="M 0 0 Q 40 20 0 40 Q -40 60 0 80" class="stroke-bold"/>
+       <path d="M 0 0 Q -40 20 0 40 Q 40 60 0 80" class="stroke-bold"/>
+       <line x1="-12" y1="6" x2="12" y2="6" class="stroke-thin"/>
+       <line x1="-22" y1="14" x2="22" y2="14" class="stroke-thin"/>
+       <line x1="-22" y1="22" x2="22" y2="22" class="stroke-thin"/>
+       <line x1="-12" y1="30" x2="12" y2="30" class="stroke-thin"/>
+       <line x1="-12" y1="46" x2="12" y2="46" class="stroke-thin"/>
+       <line x1="-22" y1="54" x2="22" y2="54" class="stroke-thin"/>
+       <line x1="-22" y1="62" x2="22" y2="62" class="stroke-thin"/>
+       <line x1="-12" y1="70" x2="12" y2="70" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="2" class="fill-mark"/>
+       <circle cx="0" cy="40" r="2" class="fill-mark"/>
+       <circle cx="0" cy="80" r="2" class="fill-mark"/>
+       <text x="32" y="22" class="label-fade">A·T</text>
+       <text x="32" y="62" class="label-fade">G·C</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">25</text>`,
+
+    // 26. Logic gates
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.26</text>
+     <g transform="translate(20,40)">
+       <path d="M 0 0 H 20 A 12 12 0 0 1 20 24 H 0 Z" class="stroke-bold"/>
+       <line x1="-8" y1="6" x2="0" y2="6" class="stroke-thin"/>
+       <line x1="-8" y1="18" x2="0" y2="18" class="stroke-thin"/>
+       <line x1="32" y1="12" x2="48" y2="12" class="stroke-thin"/>
+       <text x="10" y="40" text-anchor="middle" class="label-fade">AND</text>
+       <path d="M 50 0 Q 60 12 50 24 Q 64 24 78 12 Q 64 0 50 0 Z" class="stroke-bold"/>
+       <line x1="48" y1="6" x2="55" y2="6" class="stroke-thin"/>
+       <line x1="48" y1="18" x2="55" y2="18" class="stroke-thin"/>
+       <line x1="78" y1="12" x2="94" y2="12" class="stroke-thin"/>
+       <text x="62" y="40" text-anchor="middle" class="label-fade">OR</text>
+       <polygon points="98,2 98,22 116,12" class="stroke-bold" fill="#FCFAF4"/>
+       <circle cx="119" cy="12" r="2" class="stroke-bold" fill="#FCFAF4"/>
+       <line x1="94" y1="12" x2="98" y2="12" class="stroke-thin"/>
+       <line x1="121" y1="12" x2="140" y2="12" class="stroke-thin"/>
+       <text x="108" y="40" text-anchor="middle" class="label-fade">NOT</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">26</text>`,
+
+    // 27. Robot arm
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.27</text>
+     <g transform="translate(34,90)">
+       <rect x="-10" y="0" width="20" height="6" class="stroke-bold"/>
+       <line x1="-14" y1="6" x2="14" y2="6" class="stroke-thin"/>
+       <line x1="-14" y1="8" x2="-12" y2="10" class="stroke-thin"/>
+       <line x1="-10" y1="8" x2="-8" y2="10" class="stroke-thin"/>
+       <line x1="-6" y1="8" x2="-4" y2="10" class="stroke-thin"/>
+       <line x1="-2" y1="8" x2="0" y2="10" class="stroke-thin"/>
+       <line x1="2" y1="8" x2="4" y2="10" class="stroke-thin"/>
+       <line x1="6" y1="8" x2="8" y2="10" class="stroke-thin"/>
+       <line x1="10" y1="8" x2="12" y2="10" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="4" class="stroke-bold" fill="#FCFAF4"/>
+       <circle cx="0" cy="0" r="1.5" class="fill-mark"/>
+       <line x1="0" y1="0" x2="36" y2="-30" class="stroke-bold"/>
+       <line x1="2" y1="-2" x2="38" y2="-32" class="stroke-bold"/>
+       <circle cx="36" cy="-30" r="4" class="stroke-bold" fill="#FCFAF4"/>
+       <circle cx="36" cy="-30" r="1.5" class="fill-mark"/>
+       <line x1="36" y1="-30" x2="80" y2="-44" class="stroke-bold"/>
+       <line x1="38" y1="-32" x2="82" y2="-46" class="stroke-bold"/>
+       <circle cx="80" cy="-44" r="4" class="stroke-bold" fill="#FCFAF4"/>
+       <circle cx="80" cy="-44" r="1.5" class="fill-mark"/>
+       <line x1="80" y1="-44" x2="110" y2="-30" class="stroke-bold"/>
+       <rect x="106" y="-34" width="10" height="8" class="stroke-bold"/>
+       <line x1="116" y1="-30" x2="120" y2="-34" class="stroke-thin"/>
+       <line x1="116" y1="-28" x2="120" y2="-24" class="stroke-thin"/>
+       <path d="M 0 -8 a 8 8 0 0 1 8 -4" class="stroke-construction"/>
+       <text x="14" y="-12" class="label-fade">θ₁</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">27</text>`,
+
+    // 28. Spring-mass-damper
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.28</text>
+     <g transform="translate(20,28)">
+       <line x1="0" y1="0" x2="140" y2="0" class="stroke-bold"/>
+       <line x1="0" y1="2" x2="2" y2="6" class="stroke-thin"/>
+       <line x1="6" y1="2" x2="8" y2="6" class="stroke-thin"/>
+       <line x1="12" y1="2" x2="14" y2="6" class="stroke-thin"/>
+       <line x1="18" y1="2" x2="20" y2="6" class="stroke-thin"/>
+       <line x1="24" y1="2" x2="26" y2="6" class="stroke-thin"/>
+       <line x1="30" y1="2" x2="32" y2="6" class="stroke-thin"/>
+       <line x1="36" y1="2" x2="38" y2="6" class="stroke-thin"/>
+       <line x1="42" y1="2" x2="44" y2="6" class="stroke-thin"/>
+       <line x1="60" y1="2" x2="62" y2="6" class="stroke-thin"/>
+       <line x1="66" y1="2" x2="68" y2="6" class="stroke-thin"/>
+       <line x1="72" y1="2" x2="74" y2="6" class="stroke-thin"/>
+       <line x1="78" y1="2" x2="80" y2="6" class="stroke-thin"/>
+       <line x1="84" y1="2" x2="86" y2="6" class="stroke-thin"/>
+       <path d="M 4 30 L 8 22 L 14 38 L 20 22 L 26 38 L 32 22 L 38 38 L 44 30" class="stroke-bold"/>
+       <line x1="4" y1="30" x2="0" y2="30" class="stroke-bold"/>
+       <line x1="44" y1="30" x2="84" y2="30" class="stroke-bold"/>
+       <rect x="60" y="22" width="20" height="16" class="stroke-bold"/>
+       <line x1="70" y1="22" x2="70" y2="38" class="stroke-thin"/>
+       <line x1="0" y1="6" x2="84" y2="6" class="stroke-thin"/>
+       <rect x="84" y="14" width="44" height="32" class="stroke-bold"/>
+       <text x="106" y="34" text-anchor="middle">m</text>
+       <line x1="106" y1="46" x2="106" y2="58" class="stroke-mid"/>
+       <polygon points="106,58 104,54 108,54" class="fill-mark"/>
+       <text x="112" y="58" class="label-fade">x</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">28</text>`,
+
+    // 29. Diaphragm pump
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.29</text>
+     <g transform="translate(30,32)">
+       <rect x="20" y="20" width="80" height="40" class="stroke-bold"/>
+       <path d="M 20 30 q 40 -10 80 0" class="stroke-bold"/>
+       <line x1="60" y1="20" x2="60" y2="0" class="stroke-mid"/>
+       <rect x="56" y="-8" width="8" height="10" class="stroke-bold"/>
+       <line x1="56" y1="-12" x2="64" y2="-4" class="stroke-thin"/>
+       <line x1="0" y1="40" x2="20" y2="40" class="stroke-bold"/>
+       <line x1="0" y1="48" x2="20" y2="48" class="stroke-bold"/>
+       <polygon points="10,40 14,44 6,44" class="stroke-mid" fill="#FCFAF4"/>
+       <line x1="100" y1="40" x2="120" y2="40" class="stroke-bold"/>
+       <line x1="100" y1="48" x2="120" y2="48" class="stroke-bold"/>
+       <polygon points="110,48 114,44 106,44" class="stroke-mid" fill="#FCFAF4"/>
+       <line x1="-12" y1="44" x2="0" y2="44" class="stroke-thin"/>
+       <polygon points="0,44 -2,42 -2,46" class="fill-mark"/>
+       <line x1="120" y1="44" x2="132" y2="44" class="stroke-thin"/>
+       <polygon points="132,44 130,42 130,46" class="fill-mark"/>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">29</text>`,
+
+    // 30. Fresnel lens
+    `<rect x="6" y="6" width="188" height="108" class="stroke-thin"/>
+     <text x="170" y="13" class="label-fade">FIG.30</text>
+     <g transform="translate(80,60)">
+       <circle cx="0" cy="0" r="4" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="10" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="16" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="22" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="28" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="34" class="stroke-bold"/>
+       <circle cx="0" cy="0" r="40" class="stroke-thin"/>
+       <line x1="-50" y1="0" x2="50" y2="0" class="stroke-construction"/>
+       <line x1="0" y1="-50" x2="0" y2="50" class="stroke-construction"/>
+       <line x1="40" y1="0" x2="78" y2="-18" class="stroke-thin"/>
+       <line x1="40" y1="0" x2="78" y2="0" class="stroke-mid"/>
+       <line x1="40" y1="0" x2="78" y2="18" class="stroke-thin"/>
+       <circle cx="0" cy="0" r="1.5" class="fill-mark"/>
+       <text x="80" y="-20" class="label-fade">F</text>
+     </g>
+     <circle cx="180" cy="50" r="4.5" class="stroke-mid" fill="#FCFAF4"/>
+     <text x="180" y="52" text-anchor="middle" font-size="5" font-weight="600">30</text>`,
   ];
-  const INVENTORS = [
-    'K. CHEN, R. PARK', 'M. WONG', 'T. TANAKA, S. ARNAUD',
-    'L. MORENO', 'D. KAUR, N. ABE', 'A. NAGY',
-    'J. OKONKWO', 'H. PATEL', 'C. SINGH, B. ELIAS',
-    'F. KOVÁCS', 'O. NAKAMURA, V. RAO', 'E. THORNE',
-    'R. ABBASI', 'M. NDIAYE',
-  ];
-  function pad(n, len){ return String(n).padStart(len, '0'); }
 
-  function buildBlueprint(idx){
-    const rng = srand(31 + idx * 47);
-    const svg = makeSVG();
-    drawFrame(svg);
-    const type = TYPES[idx % TYPES.length];
-    type.fn(svg, rng);
+  const tierLabel = (t) => t.toUpperCase();
 
-    const fig = `FIG. ${pad(idx + 1, 2)}`;
-    const patent = `US-${pad(3700000 + Math.floor(rng() * 999999), 7)}`;
-    const inv = INVENTORS[idx % INVENTORS.length];
-    const yr = 2024 + (idx % 3);
-    const mo = pad(((idx * 7) % 12) + 1, 2);
-    const dy = pad(((idx * 11) % 28) + 1, 2);
-    drawTitleBlock(svg, fig, type.name, patent, inv, `${yr}/${mo}/${dy}`);
-
-    text(svg, 22, 24, `SHEET ${idx + 1} / 14`, 'label-fade');
-
-    return { svg };
+  function renderBlueprint(node){
+    node.innerHTML = PATENTS.map((p, i) => `
+      <div class="bptile">
+        <div class="fig"><svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid meet">${FIGS[i % FIGS.length]}</svg></div>
+        <div class="meta"><span class="pid">${p.id}</span><span class="tier-chip ${p.tier}">${tierLabel(p.tier)}</span></div>
+      </div>`).join('');
   }
 
-  // ─── Build the strip ───
-  const NUM_CARDS = 14;
-  const strip = document.getElementById('strip');
-  if (!strip) return; // hero may have been removed; bail safely
-
-  strip.style.setProperty('--count', NUM_CARDS);
-  for (let i = 0; i < NUM_CARDS; i++){
-    const wrap = document.createElement('div');
-    wrap.className = 'card-wrap';
-    wrap.style.setProperty('--idx', i);
-    wrap.dataset.active = 'false';
-    wrap.dataset.idx = String(i);
-
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.appendChild(buildBlueprint(i).svg);
-
-    wrap.appendChild(card);
-    strip.appendChild(wrap);
-  }
-
-  // ─── Mouse proximity (X-only with hysteresis, cached centers) ───
-  const wraps = Array.from(strip.querySelectorAll('.card-wrap'));
-  const stripBox = document.querySelector('.card-strip-3d');
-  const X_TRIGGER  = 80;
-  const Y_BAND     = 200;
-  const HYSTERESIS = 14;
-  let activeIdx = -1;
-  let centers = [];
-
-  function recomputeCenters(){
-    const r = stripBox.getBoundingClientRect();
-    const cx0 = r.left + r.width / 2;
-    const cy0 = r.top + r.height / 2;
-    const spacing = parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue('--card-spacing')
-    ) || 100;
-    centers = [];
-    for (let i = 0; i < NUM_CARDS; i++){
-      centers.push({ x: cx0 + (i - (NUM_CARDS - 1) / 2) * spacing, y: cy0 });
-    }
-  }
-  requestAnimationFrame(recomputeCenters);
-  window.addEventListener('resize', recomputeCenters, { passive: true });
-  window.addEventListener('scroll', recomputeCenters, { passive: true });
-
-  function setActive(idx){
-    if (idx === activeIdx) return;
-    if (activeIdx >= 0) wraps[activeIdx].dataset.active = 'false';
-    activeIdx = idx;
-    if (idx >= 0){
-      wraps[idx].dataset.active = 'true';
-      strip.dataset.hasActive = 'true';
-    } else {
-      strip.dataset.hasActive = 'false';
-    }
-  }
-
-  document.addEventListener('mousemove', (e) => {
-    if (centers.length === 0) return;
-    const mx = e.clientX, my = e.clientY;
-    if (Math.abs(my - centers[0].y) > Y_BAND){ setActive(-1); return; }
-
-    let closest = -1, minDx = Infinity;
-    for (let i = 0; i < centers.length; i++){
-      const dx = Math.abs(mx - centers[i].x);
-      if (dx < minDx){ minDx = dx; closest = i; }
-    }
-    if (minDx > X_TRIGGER){ setActive(-1); return; }
-    if (activeIdx >= 0 && closest !== activeIdx){
-      const curDx = Math.abs(mx - centers[activeIdx].x);
-      if (curDx - minDx < HYSTERESIS) return;
-    }
-    setActive(closest);
-  }, { passive: true });
-  document.addEventListener('mouseleave', () => setActive(-1));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight'){
-      const next = activeIdx < 0 ? Math.floor(NUM_CARDS / 2) : Math.min(NUM_CARDS - 1, activeIdx + 1);
-      setActive(next);
-    } else if (e.key === 'ArrowLeft'){
-      const next = activeIdx < 0 ? Math.floor(NUM_CARDS / 2) : Math.max(0, activeIdx - 1);
-      setActive(next);
-    } else if (e.key === 'Escape'){
-      setActive(-1);
-    }
-  });
+  // Defer the 30-tile build past first paint so the headline appears
+  // instantly; tiles fade in shortly after. Bounded 1.5s in case idle
+  // never fires (background tab, throttled mobile, etc.).
+  const initBlueprint = () => {
+    document.querySelectorAll('[data-grid="blueprint"]').forEach(renderBlueprint);
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(initBlueprint, { timeout: 1500 });
+  else setTimeout(initBlueprint, 0);
 })();
 </script>
 
