@@ -1628,44 +1628,6 @@ main { padding-top: 64px; }
   background: rgba(14,165,233,0.18); color: #A7F3D0;
 }
 
-/* Section bg — three soft pastel blooms per pillar (Apple Intelligence style).
-   Bg lives on the .container (max-width 1440px), NOT the section, so the circles
-   stay inside the content frame instead of leaking into the side margins on
-   wide viewports. Diagonal: top-left + center + bottom-right. ~60% alpha. */
-#products > .container { transition: background 350ms cubic-bezier(0.2,1,0.3,1); }
-#products[data-pillar="licensing"] > .container {
-  background:
-    radial-gradient(circle 600px at 35% 30%,   rgba(255,215,176,0.35) 0%, transparent 90%),
-    radial-gradient(circle 480px at 60% 65%,   rgba(254,220,190,0.35) 0%, transparent 90%);
-}
-#products[data-pillar="intelligence"] > .container {
-  background:
-    radial-gradient(circle 600px at 35% 30%,   rgba(233,213,255,0.35) 0%, transparent 90%),
-    radial-gradient(circle 480px at 60% 65%,   rgba(191,219,254,0.35) 0%, transparent 90%);
-}
-[data-theme="dark"] #products[data-pillar="licensing"] > .container {
-  background:
-    radial-gradient(circle 600px at 35% 30%,   rgba(249,115,22,0.20) 0%, transparent 90%),
-    radial-gradient(circle 480px at 60% 65%,   rgba(212,160,23,0.20) 0%, transparent 90%);
-  background-blend-mode: screen;
-}
-[data-theme="dark"] #products[data-pillar="intelligence"] > .container {
-  background:
-    radial-gradient(circle 600px at 35% 30%,   rgba(139,92,246,0.20) 0%, transparent 90%),
-    radial-gradient(circle 480px at 60% 65%,   rgba(14,165,233,0.20) 0%, transparent 90%);
-  background-blend-mode: screen;
-}
-
-/* Deliverable cards — translucent frosted glass so the bloom field shows through. */
-#products .deliverable-card {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-}
-[data-theme="dark"] #products .deliverable-card {
-  background: rgba(22, 22, 22, 0.55);
-}
-
 /* How it works — left visual + right accordion */
 .howitworks {
   margin: 0;
