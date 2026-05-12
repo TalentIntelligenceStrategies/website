@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-12 10:52 +08:00** · Replaced Licensing pillar's "Product visualization coming soon" placeholder with `brand/previews/imagery-preview.html` §1.1 catalog read: bare browser-frame at 688px hosting the 30-tile warm-light flat grid (1376×860 native @ 0.5 scale, container-query fluid below 1180px), two overhanging callouts (bundle composition bottom-left, System / FTO pick paths top-right, -24px overhang), Licensing-only `grid-template-columns: 1fr 688px` with 1180px collapse breakpoint, dark-mode parity inherited from source.
+
 - **2026-05-11 23:35 +08:00** · Folded `brand/archive/previews/redesign-hero-homepage-preview.html` into `index.html`: replaced single-backdrop hero with the 3-pillar carousel on warm-blueprint / cool-signal / silver crossfade; new `--hero-bp-bg` / `--hero-bp-bloom` / `--hero-spotlight` tokens (light+dark); dropped `signal-dot`, `pillar-meta*`, `card-strip-3d` + procedural generator and their token blocks (`--card-*`, `--blueprint-*`, `--spotlight*`, `--dur-card`, `--grad-bg-silver-faded`); slide 2's 12 metric tiles lazy-mount via `requestIdleCallback`, slide 1's 30-tile patent grid deferred the same way, non-active pillar slides get `content-visibility: auto`.
 
 - **2026-05-08 11:33 +08:00** · Swapped `.partner-strip` for `.innovue-collab-card` on `index.html` per upstream §Innovue collaboration card — full bilingual (lang-aware Innovue Blue logo via `--partner-innovue-color`, `data-zh` on eyebrow + body copy); `--partner-*` token definitions retained for other consumers; section spacing preserved via the existing `.section--tight` wrapper.

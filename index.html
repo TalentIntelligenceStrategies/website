@@ -1466,6 +1466,151 @@ main { padding-top: 64px; }
     #161616 0%, rgba(16,185,129,0.10) 35%, rgba(14,165,233,0.10) 70%, rgba(139,92,246,0.10) 100%);
   color: #A7F3D0; border-color: rgba(167, 243, 208, 0.15);
 }
+
+/* ───────── Product shot · Licensing flat catalog ─────────────────────────
+   Replaces the .pillar-hero-visual placeholder in #pillar-licensing with
+   the §1.1 "The 30, head-on" composition from brand/previews/imagery-preview.html.
+   Inner canvas stays at the source's native 1376×860; fluid scale via
+   container queries so the frame fills the .pillar-hero column at 16:10
+   and the two callouts overhang -56px into the column gap / page margin.
+   ────────────────────────────────────────────────────────────────────── */
+.pillar-hero-shot { position: relative; }
+/* Pin Licensing's visual column to the source's 688px display width so the
+   30-tile catalog renders at imagery-preview's exact 0.5 scale (tiles
+   100×65 rendered, gap 7px). Licensing collapses to 1-col earlier than
+   other pillars (1180px instead of 980px) because copy column would
+   otherwise compress below ~280px while the visual stays pinned. */
+#pillar-licensing .pillar-hero { grid-template-columns: 1fr 688px; }
+@media (max-width: 1180px) {
+  #pillar-licensing .pillar-hero { grid-template-columns: 1fr; gap: 32px; }
+}
+.frame-wrap { position: relative; width: 100%; max-width: 688px; margin: 0 auto; display: block; }
+.browser-frame {
+  width: 100%;
+  background: var(--surface-page);
+  border: 1px solid rgba(238,238,238,0.5);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.04),
+    0 16px 48px -8px rgba(0,0,0,0.12),
+    0 48px 96px -24px rgba(0,0,0,0.18);
+  position: relative;
+}
+[data-theme="dark"] .browser-frame {
+  border-color: rgba(212,160,23,0.22);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.30),
+    0 16px 48px -8px rgba(0,0,0,0.50),
+    0 48px 96px -24px rgba(0,0,0,0.60);
+}
+.browser-frame[data-chrome="bare"] .chrome { display: none; }
+.frame-canvas {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface-page);
+  container-type: inline-size;
+}
+.shot-inner {
+  position: absolute; top: 0; left: 0;
+  width: 1376px; height: 860px;
+  transform-origin: top left;
+  transform: scale(calc(100cqi / 1376));
+}
+
+.shot-perspective { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.shot-perspective .stage-3d {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.shot-perspective .grid-3d { display: grid; gap: 14px; }
+.shot-perspective.warm-light {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFCF6 50%, #FFF6EA 100%);
+}
+.shot-perspective.warm-light::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.10) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.08) 0%, transparent 70%);
+}
+.shot-perspective.warm-light.flat .grid-3d {
+  grid-template-columns: repeat(6, 200px);
+  grid-auto-rows: 130px;
+  gap: 14px;
+}
+[data-theme="dark"] .shot-perspective.warm-light {
+  background: linear-gradient(180deg, #1A0F08 0%, #1F140B 50%, #1A0F08 100%);
+}
+[data-theme="dark"] .shot-perspective.warm-light::before {
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.20) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.14) 0%, transparent 70%);
+}
+
+.btile {
+  background: #FFFFFF;
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+.btile .tt { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.btile .pid { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.04em; }
+.btile .ipc { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.02em; }
+.btile .bot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: auto; }
+.btile .cites { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
+.shot-perspective.warm-light .btile {
+  background: rgba(255,255,255,0.96);
+  border-color: rgba(232,217,180,0.55);
+  box-shadow: 0 4px 16px rgba(122,74,15,0.06), 0 1px 2px rgba(122,74,15,0.04);
+}
+[data-theme="dark"] .shot-perspective.warm-light .btile {
+  background: rgba(28,20,12,0.92);
+  border-color: rgba(212,160,23,0.22);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(212,160,23,0.10);
+}
+.btile .tier-chip { font-size: 11px; padding: 3px 8px; letter-spacing: 0.06em; }
+
+.callout {
+  position: absolute; z-index: 20;
+  display: flex; align-items: flex-start; gap: 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  min-width: 180px; max-width: 240px;
+  font-family: 'Urbanist', system-ui, sans-serif;
+}
+[data-theme="dark"] .callout {
+  background: rgba(28,20,12,0.94);
+  border-color: rgba(212,160,23,0.22);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.50), 0 1px 2px rgba(0,0,0,0.30);
+}
+.callout .accent { width: 8px; height: 8px; border-radius: 50%; background: var(--text-primary); flex-shrink: 0; margin-top: 5px; }
+.callout .accent.warm { background: #F97316; }
+.callout .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.callout .val { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+.callout .val em { font-style: normal; background: linear-gradient(135deg, #D4A017 0%, #F97316 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.callout .sub { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
+
+.callout.bundle-callout { min-width: 0; max-width: 300px; padding: 12px 14px; }
+.bundle-callout h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); line-height: 1.25; margin: 0; }
+.bundle-callout h3 em { font-style: normal; background: linear-gradient(135deg, #D4A017 0%, #F97316 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bundle-callout .sub { font-size: 11px; color: var(--text-secondary); line-height: 1.45; margin: 4px 0 0; }
+.bundle-callout .legend { display: flex; align-items: center; flex-wrap: nowrap; gap: 4px; margin-top: 8px; }
+.bundle-callout .legend .tier-chip { font-size: 9px; padding: 2px 5px; letter-spacing: 0.06em; }
+
+/* When #pillar-licensing collapses to 1-col (<=1180px), pull callouts inside
+   the frame so they don't hang off the page edge on narrow viewports. */
+@media (max-width: 1180px) {
+  .pillar-hero-shot .callout.bundle-callout { left: 16px !important; bottom: 16px !important; right: auto !important; }
+  .pillar-hero-shot .callout:not(.bundle-callout) { right: 16px !important; top: 16px !important; left: auto !important; }
+}
+
 /* Active toggle tab — gradient fill (overrides the default solid-black active state). */
 #products[data-pillar="licensing"] .pillar-tab[aria-selected="true"] {
   background: linear-gradient(90deg, #FDF6E0 0%, #FAF3DC 50%, #FFF7ED 100%);
@@ -3341,7 +3486,75 @@ main { padding-top: 64px; }
             <p data-zh="訂閱依司法管轄區 × 產業精選的 30 件專利組合。NPE 對台灣出口商的求償，落點通常是三個月 TIS 訂閱費用的 50–500 倍——組合在訂閱當週生效，並附上一枚可在隔日早上交給對手的 Verified License Badge。">Subscribe to a 30-patent bundle, curated per jurisdiction × industry. NPE demand letters against Taiwan exporters settle at 50–500× the price of a three-month TIS subscription — the bundle activates the week you subscribe, with a Verified License Badge you can hand to a counter-party the next morning.</p>
             <a href="#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
           </div>
-          <div class="pillar-hero-visual" aria-hidden="true">Product visualization coming soon</div>
+          <div class="pillar-hero-shot" aria-hidden="true">
+            <div class="frame-wrap">
+              <div class="browser-frame" data-chrome="bare">
+                <div class="frame-canvas">
+                  <div class="shot-inner">
+                    <div class="shot-perspective warm-light flat">
+                      <div class="stage-3d">
+                        <div class="grid-3d">
+                          <div class="btile"><div class="tt"><span class="pid">US10892431</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">H01L 27/12</div><div class="bot"><span class="cites">412 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I783922</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">G06F 9/455</div><div class="bot"><span class="cites">287 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US11456778</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">G06N 3/08</div><div class="bot"><span class="cites">198 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3987654</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">H04W 28/02</div><div class="bot"><span class="cites">156 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10987112</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06F 16/901</div><div class="bot"><span class="cites">142 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I765444</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01L 21/3105</div><div class="bot"><span class="cites">118 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US11234556</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06N 20/00</div><div class="bot"><span class="cites">103 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10661220</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06N 3/045</div><div class="bot"><span class="cites">96 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10334221</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06K 9/62</div><div class="bot"><span class="cites">94 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3812998</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H04L 9/0631</div><div class="bot"><span class="cites">88 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I714005</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01L 21/762</div><div class="bot"><span class="cites">81 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10665021</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06F 12/0815</div><div class="bot"><span class="cites">76 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I812445</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01M 10/0525</div><div class="bot"><span class="cites">71 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I798220</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 9/30</div><div class="bot"><span class="cites">62 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10421889</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 23/367</div><div class="bot"><span class="cites">59 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10772114</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06N 5/04</div><div class="bot"><span class="cites">54 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3656770</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 21/602</div><div class="bot"><span class="cites">48 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I799015</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 27/108</div><div class="bot"><span class="cites">45 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10999241</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 13/16</div><div class="bot"><span class="cites">41 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US11098334</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H04W 72/04</div><div class="bot"><span class="cites">37 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3422119</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 1/3287</div><div class="bot"><span class="cites">34 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I720332</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 29/78</div><div class="bot"><span class="cites">31 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10551987</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 9/4881</div><div class="bot"><span class="cites">29 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10889553</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 16/903</div><div class="bot"><span class="cites">26 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US11005612</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">H04L 12/707</div><div class="bot"><span class="cites">22 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3801559</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">G06F 8/41</div><div class="bot"><span class="cites">19 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">TW I801772</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">G06N 3/063</div><div class="bot"><span class="cites">17 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US10778445</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">H01L 25/065</div><div class="bot"><span class="cites">14 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">US11111223</span><span class="tier-chip tier-chip--d">D</span></div><div class="ipc">G06F 11/14</div><div class="bot"><span class="cites">11 cites</span></div></div>
+                          <div class="btile"><div class="tt"><span class="pid">EP3445120</span><span class="tier-chip tier-chip--d">D</span></div><div class="ipc">H04L 67/12</div><div class="bot"><span class="cites">9 cites</span></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="callout bundle-callout" style="bottom:80px;left:-24px">
+                <span class="accent warm"></span>
+                <div class="body">
+                  <h3>Built from <em>thirty</em>. Tiered.</h3>
+                  <p class="sub">Pick a bundle by jurisdiction and industry — 30 patents drawn from the 170M-patent database.</p>
+                  <div class="legend">
+                    <span class="tier-chip tier-chip--s">Tier S</span>
+                    <span class="tier-chip tier-chip--a">Tier A</span>
+                    <span class="tier-chip tier-chip--b">Tier B</span>
+                    <span class="tier-chip tier-chip--c">Tier C</span>
+                    <span class="tier-chip tier-chip--d">Tier D</span>
+                  </div>
+                </div>
+              </aside>
+
+              <aside class="callout" style="top:108px;right:-24px">
+                <span class="accent warm"></span>
+                <div class="body">
+                  <div class="val"><em>Two ways</em> to pick the thirty.</div>
+                  <div class="sub">System pick or FTO-guided — the platform builds from your input.</div>
+                </div>
+              </aside>
+            </div>
+          </div>
         </div>
 
         <div class="deliverable-grid">
