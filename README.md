@@ -29,7 +29,7 @@ No build step. Fonts are self-hosted from `designs/assets/fonts/` (Urbanist, Inc
 
 ## Deploy
 
-TBD — Vercel / Netlify / GitHub Pages decision pending. The repo has no host-specific config yet, so it's portable.
+Hosted on GitHub Pages from the `main` branch — live at [talentintelligencestrategies.github.io/website](https://talentintelligencestrategies.github.io/website/). Custom domain `tisglobalinc.com` planned; DNS wiring pending. Until the custom domain resolves, the canonical URL declared in `index.html` (`https://tisglobalinc.com/`) won't match the live host — expected, no action needed.
 
 ## Changelog
 
