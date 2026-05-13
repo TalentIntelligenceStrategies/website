@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>TIS — Email signature setup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#FAFAFA;
+      --surface:#FFFFFF;
+      --surface-soft:#F4F4F4;
+      --border:#E5E5E5;
+      --text-primary:#252525;
+      --text-secondary:#474747;
+      --text-tertiary:#8A8F98;
+      --accent:#252525;
+      --accent-ink:#FFFFFF;
+      --success:#16A34A;
+      --font-sans:'Urbanist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    }
+    html{font-family:var(--font-sans);color:var(--text-primary);background:var(--bg);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    body{padding:64px 24px 96px;line-height:1.5}
+    main{max-width:1100px;margin:0 auto}
+    a{color:inherit}
+
+    /* ───────── Header ───────── */
+    header.hero{margin-bottom:48px;max-width:680px}
+    h1{font-size:36px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;margin-bottom:12px}
+    .lede{color:var(--text-secondary);font-size:16px;line-height:1.55}
+    .lede strong{color:var(--text-primary);font-weight:600}
+
+    /* ───────── Section heads ───────── */
+    .section{margin-bottom:48px}
+    .section-eyebrow{
+      font-size:11px;font-weight:600;letter-spacing:+0.12em;text-transform:uppercase;
+      color:var(--text-tertiary);margin-bottom:12px;
+    }
+    h2{font-size:20px;font-weight:600;letter-spacing:-0.01em;margin-bottom:20px}
+
+    /* ───────── Steps ───────── */
+    .steps{
+      background:var(--surface);border:1px solid var(--border);border-radius:14px;
+      padding:32px;
+    }
+    .steps ol{list-style:none;counter-reset:step;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+    .steps li{
+      counter-increment:step;position:relative;padding-left:36px;
+      color:var(--text-secondary);font-size:14.5px;line-height:1.6;
+    }
+    .steps li::before{
+      content:counter(step);
+      position:absolute;left:0;top:2px;
+      width:24px;height:24px;border-radius:50%;
+      background:var(--surface-soft);color:var(--text-primary);
+      display:flex;align-items:center;justify-content:center;
+      font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;
+      border:1px solid var(--border);
+    }
+    .steps li strong{color:var(--text-primary);font-weight:600}
+    .steps li em{font-style:normal;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;background:var(--surface-soft);padding:1px 6px;border-radius:4px;color:var(--text-primary)}
+    .steps li .step-note{
+      margin-top:8px;font-size:13px;
+      color:var(--text-tertiary);line-height:1.55;
+    }
+
+    /* ───────── Cards ───────── */
+    .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+    @media (max-width:880px){.cards{grid-template-columns:1fr}}
+
+    .card{
+      background:var(--surface);border:1px solid var(--border);border-radius:14px;
+      padding:24px;display:flex;flex-direction:column;
+    }
+    .card-head{margin-bottom:16px}
+    .card-name{font-size:14px;font-weight:600;color:var(--text-primary);letter-spacing:-0.005em}
+    .card-role{font-size:12.5px;color:var(--text-tertiary);margin-top:3px}
+
+    .preview{
+      flex:1;border:1px solid var(--border);border-radius:10px;
+      background:#FFFFFF;padding:20px;margin-bottom:16px;
+      overflow:auto;
+    }
+    .preview-label{
+      font-family:ui-monospace,'SF Mono',Menlo,monospace;
+      font-size:10px;font-weight:500;letter-spacing:+0.10em;text-transform:uppercase;
+      color:var(--text-tertiary);margin-bottom:8px;
+    }
+    .preview-render{font-family:Arial,sans-serif}
+
+    .pre-source{display:none}
+
+    .copy-btn{
+      width:100%;background:var(--accent);color:var(--accent-ink);
+      border:0;padding:14px 16px;border-radius:10px;
+      font-family:inherit;font-size:13.5px;font-weight:600;letter-spacing:-0.005em;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      transition:background-color .15s ease, transform .05s ease;
+    }
+    .copy-btn:hover{background:#000}
+    .copy-btn:active{transform:translateY(1px)}
+    .copy-btn[data-copied="true"]{background:var(--success)}
+    .copy-btn[data-copied="true"]:hover{background:var(--success)}
+    .copy-btn svg{width:14px;height:14px;flex-shrink:0}
+
+  </style>
+</head>
+<body>
+<main>
+
+  <header class="hero">
+    <div class="section-eyebrow">TIS · Email signature setup</div>
+    <h1>Get your signature into Gmail in 2 minutes.</h1>
+    <p class="lede">Find your card below, click <strong>Copy for Gmail</strong>, then paste into Gmail's signature settings. The signature is name-led with your Chinese name first, followed by English, your title, the TIS logo, and your contact rows.</p>
+  </header>
+
+  <section class="section">
+    <h2>Steps</h2>
+    <div class="steps">
+      <ol>
+        <li>Below, find the card with your name and click <strong>Copy for Gmail</strong>. The button turns green to confirm.</li>
+        <li>Open Gmail. Click the <strong>gear icon</strong> (top right) → <strong>See all settings</strong>.</li>
+        <li>You're on the <strong>General</strong> tab. Scroll down to the <strong>Signature</strong> section.</li>
+        <li>Click <strong>+ Create new</strong>. Name it <em>TIS</em> (or whatever you like) → <strong>Create</strong>.</li>
+        <li>Click into the empty signature editor on the right, then paste. Your signature should appear exactly as it looks in the preview.</li>
+        <li>Under <strong>Signature defaults</strong>, set both <em>FOR NEW EMAILS USE</em> and <em>ON REPLY/FORWARD USE</em> to your new TIS signature.</li>
+        <li>Just below, you'll see a checkbox: <em>Insert signature before quoted text in replies, and remove the "--" line that precedes it</em>. Leave it <strong>unchecked</strong>.</li>
+        <li>Scroll to the bottom of the settings page and click <strong>Save Changes</strong>.</li>
+        <li>Send a test email to yourself to confirm everything renders correctly.<div class="step-note">Heads up — the logo may flicker once on the first load as it's pulled from our hosted server. After that it's cached, so subsequent opens render instantly.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Your signature</h2>
+    <div class="cards">
+
+      <!-- ─────────── Ming-I Peng ─────────── -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-name">Ming-I Peng</div>
+          <div class="card-role">Managing Director</div>
+        </div>
+        <div class="preview-label">Gmail preview</div>
+        <div class="preview">
+          <div class="preview-render" data-snippet="sig-mingi"></div>
+        </div>
+<pre class="pre-source" id="sig-mingi">&lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:arial,sans-serif;color:#474747"&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;div style="font-size:13px;font-weight:600;color:#252525;line-height:1.3"&gt;彭明義 · Ming-I Peng&lt;/div&gt;
+    &lt;div style="font-size:12px;color:#474747;line-height:1.5;padding-top:2px"&gt;Managing Director&lt;/div&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td style="padding-top:20px;padding-bottom:20px"&gt;
+    &lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/tis-logo.png" width="200" height="56" alt="TIS · Talent Intelligence Strategies · 泰然策略" style="display:block;border:0;width:200px;height:56px"&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-phone.png" width="14" height="14" alt="Phone" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;color:#474747;line-height:1.55"&gt;+886 988 168 777&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-mail.png" width="14" height="14" alt="Email" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;line-height:1.55"&gt;&lt;a href="mailto:mingi.peng@tisglobalinc.com" style="color:#474747;text-decoration:none"&gt;mingi.peng@tisglobalinc.com&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        <button class="copy-btn" type="button" data-target="sig-mingi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-btn-label">Copy for Gmail</span>
+        </button>
+      </div>
+
+      <!-- ─────────── Troy Shih ─────────── -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-name">Troy Shih</div>
+          <div class="card-role">Senior Product Director</div>
+        </div>
+        <div class="preview-label">Gmail preview</div>
+        <div class="preview">
+          <div class="preview-render" data-snippet="sig-troy"></div>
+        </div>
+<pre class="pre-source" id="sig-troy">&lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:arial,sans-serif;color:#474747"&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;div style="font-size:13px;font-weight:600;color:#252525;line-height:1.3"&gt;施宜亨 · Troy Shih&lt;/div&gt;
+    &lt;div style="font-size:12px;color:#474747;line-height:1.5;padding-top:2px"&gt;Senior Product Director&lt;/div&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td style="padding-top:20px;padding-bottom:20px"&gt;
+    &lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/tis-logo.png" width="200" height="56" alt="TIS · Talent Intelligence Strategies · 泰然策略" style="display:block;border:0;width:200px;height:56px"&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-phone.png" width="14" height="14" alt="Phone" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;color:#474747;line-height:1.55"&gt;+886 939 727 061&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-mail.png" width="14" height="14" alt="Email" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;line-height:1.55"&gt;&lt;a href="mailto:troy.shih@tisglobalinc.com" style="color:#474747;text-decoration:none"&gt;troy.shih@tisglobalinc.com&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        <button class="copy-btn" type="button" data-target="sig-troy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-btn-label">Copy for Gmail</span>
+        </button>
+      </div>
+
+      <!-- ─────────── Irene Lu ─────────── -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-name">Irene Lu</div>
+          <div class="card-role">Director of Sales &amp; Business Development</div>
+        </div>
+        <div class="preview-label">Gmail preview</div>
+        <div class="preview">
+          <div class="preview-render" data-snippet="sig-irene"></div>
+        </div>
+<pre class="pre-source" id="sig-irene">&lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:arial,sans-serif;color:#474747"&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;div style="font-size:13px;font-weight:600;color:#252525;line-height:1.3"&gt;盧思婷 · Irene Lu&lt;/div&gt;
+    &lt;div style="font-size:12px;color:#474747;line-height:1.5;padding-top:2px"&gt;Director of Sales &amp;amp; Business Development&lt;/div&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td style="padding-top:20px;padding-bottom:20px"&gt;
+    &lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/tis-logo.png" width="200" height="56" alt="TIS · Talent Intelligence Strategies · 泰然策略" style="display:block;border:0;width:200px;height:56px"&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-phone.png" width="14" height="14" alt="Phone" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;color:#474747;line-height:1.55"&gt;+886 933 715 600&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-mail.png" width="14" height="14" alt="Email" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;line-height:1.55"&gt;&lt;a href="mailto:irene.lu@tisglobalinc.com" style="color:#474747;text-decoration:none"&gt;irene.lu@tisglobalinc.com&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        <button class="copy-btn" type="button" data-target="sig-irene">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-btn-label">Copy for Gmail</span>
+        </button>
+      </div>
+
+      <!-- ─────────── Michael Hwang ─────────── -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-name">Michael Hwang</div>
+          <div class="card-role">Director of Design &amp; Global Growth</div>
+        </div>
+        <div class="preview-label">Gmail preview</div>
+        <div class="preview">
+          <div class="preview-render" data-snippet="sig-michael"></div>
+        </div>
+<pre class="pre-source" id="sig-michael">&lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:arial,sans-serif;color:#474747"&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;div style="font-size:13px;font-weight:600;color:#252525;line-height:1.3"&gt;黃唯 · Michael Hwang&lt;/div&gt;
+    &lt;div style="font-size:12px;color:#474747;line-height:1.5;padding-top:2px"&gt;Director of Design &amp;amp; Global Growth&lt;/div&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td style="padding-top:20px;padding-bottom:20px"&gt;
+    &lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/tis-logo.png" width="200" height="56" alt="TIS · Talent Intelligence Strategies · 泰然策略" style="display:block;border:0;width:200px;height:56px"&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;
+    &lt;table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-phone.png" width="14" height="14" alt="Phone" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;color:#474747;line-height:1.55"&gt;+886 981 015 718&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width="30" style="vertical-align:middle;line-height:0"&gt;&lt;img src="https://talentintelligencestrategies.github.io/website/designs/assets/signature/icon-mail.png" width="14" height="14" alt="Email" style="display:inline-block;border:0;width:14px;height:14px"&gt;&lt;/td&gt;
+        &lt;td style="font-size:12px;line-height:1.55"&gt;&lt;a href="mailto:michael.hwang@tisglobalinc.com" style="color:#474747;text-decoration:none"&gt;michael.hwang@tisglobalinc.com&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        <button class="copy-btn" type="button" data-target="sig-michael">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-btn-label">Copy for Gmail</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Decode HTML-escaped <pre> source into rich HTML.
+  const decode = (s) => {
+    const t = document.createElement('textarea');
+    t.innerHTML = s;
+    return t.value;
+  };
+
+  // Inject each signature into its paired preview, using inline styles only
+  // (Arial, etc.) so the on-page preview matches what a Gmail recipient sees.
+  document.querySelectorAll('.preview-render').forEach(target => {
+    const id = target.dataset.snippet;
+    const pre = document.getElementById(id);
+    if (!pre) return;
+    target.innerHTML = decode(pre.innerHTML);
+  });
+
+  // Copy-to-clipboard. Writes both text/html (the styled signature, which
+  // Gmail will paste as a rich signature) and text/plain (the raw HTML, for
+  // anyone pasting into a text-only field).
+  const writeRich = async (html) => {
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      const item = new ClipboardItem({
+        'text/html':  new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([html], { type: 'text/plain' }),
+      });
+      await navigator.clipboard.write([item]);
+      return true;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(html);
+      return true;
+    }
+    return false;
+  };
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    const label = btn.querySelector('.copy-btn-label');
+    const originalLabel = label.textContent;
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.target;
+      const pre = document.getElementById(id);
+      if (!pre) return;
+      const html = decode(pre.innerHTML);
+
+      try {
+        const ok = await writeRich(html);
+        if (!ok) throw new Error('clipboard unavailable');
+        btn.dataset.copied = 'true';
+        label.textContent = 'Copied — paste into Gmail';
+        setTimeout(() => {
+          btn.dataset.copied = 'false';
+          label.textContent = originalLabel;
+        }, 2400);
+      } catch (e) {
+        // Fallback: select the <pre> so the user can ⌘C / Ctrl+C manually.
+        pre.style.display = 'block';
+        pre.style.userSelect = 'text';
+        const range = document.createRange();
+        range.selectNodeContents(pre);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        label.textContent = 'Selected — press ⌘C / Ctrl+C';
+        setTimeout(() => {
+          pre.style.display = 'none';
+          label.textContent = originalLabel;
+        }, 3000);
+      }
+    });
+  });
+</script>
+</body>
+</html>
