@@ -1,5 +1,3 @@
-<!-- Snapshot of TIS/brand/visual-guide.md — do NOT edit here. Edit upstream in brand/ and resync. -->
-
 # TIS Visual Guide
 
 Brand-identity reference for TIS — logo meaning, logo usage, Innovue co-branding, and name usage. Scope: marketing website + Patent Intelligence SaaS MVP + Licensing Platform MVP.
@@ -87,7 +85,17 @@ Drop-in HTML — include in the `<head>` of every page; no page-level context re
 
 Paths above assume the site serves `brand/assets/logos/tis/` from the web root; adjust per deployment. The 32×32 and 180×180 PNGs are not yet generated — export from the dark SVG when needed.
 
-> **TODO (pending PRD):** Open Graph / social share image spec — dimensions (1200×630 OG, 1200×628 LinkedIn), per-surface layout (homepage, product pages, pricing, reports), template source files, how the cube mark anchors the composition. Owner: visual-guide.md as a new subsection under Logo Usage.
+### Open Graph / Social share image
+
+The dark-surface 1200×630 card platforms render when `tisglobalinc.com` is shared on LinkedIn, X, Slack, WhatsApp, Discord, iMessage, Facebook, Pinterest. Referenced via `og:image` and `twitter:image` meta tags in `website/index.html`.
+
+**Asset.** [`brand/assets/imagery/og.png`](./assets/imagery/og.png) — 1200×630 PNG, dark surface (`#252525`). Mirrored read-only at `website/designs/assets/imagery/og.png` (served from `https://tisglobalinc.com/designs/assets/imagery/og.png`).
+
+**Source.** Rendered from [`brand/catalog/imagery-preview.html`](./catalog/imagery-preview.html) §6 via Chrome headless `?og=2b` query param. The §2 cool-signal `.hero` is cloned in by JS so the OG card stays in visual sync with the homepage hero pattern.
+
+**Composition.** §2 cool-signal `.hero` cloned in as backdrop; cool radial wash overridden to top-down silver-luminous gradient (`slate-200 → slate-300 → transparent at 65%`). White two-line headline (`Turn IP into market position, / grounded in 170M patents`) left-anchored, vertically centered. Co-branded TIS|Innovue lockup beneath per [§Co-Branded Lockup](#co-branded-lockup), **with an OG-tightened clear-space of `2cqw` each side of the divider** (vs the default minimum of submark-height) to fit the card's constrained vertical space. Submark and Innovue both rendered at `5cqw` height (peer weight).
+
+**Per-surface variants (TODO).** Currently a single homepage variant. LinkedIn supports a separate 1200×628 size; product-pages, pricing, and report-pages may eventually want their own copy. Add siblings to `brand/assets/imagery/` as `og-{surface}.png` and update `website/index.html` to reference the per-page version (either inline per-page meta tags or JS-injected `<meta>` rewrites).
 
 ### Profile avatars (socials)
 
@@ -266,6 +274,8 @@ For all subsequent or space-constrained placements: **TIS Submark** + thin verti
 |---|---|---|
 | Marketing footer | Innovue 36px tall × 172px wide against the 32px TIS submark — Innovue reads dominant; the lockup *is* the "Powered by Innovue" attribution for the page | [`components.md`](./components.md) §Footer |
 | Pitch-deck content-slide footer | Innovue logotype targeted at 40px (~1.25× submark height) for projection legibility | [`presentations.md`](./presentations.md) §3 Footer |
+
+A third override — distinct in kind, not size — applies to the **Open Graph card**: clear-space each side of the divider is tightened from the submark-height default to `2cqw` (~24px) to fit the card's constrained vertical space. Innovue stays at peer weight (no over-weighting). See §Open Graph / Social share image above.
 
 ### Innovue Logo Variants
 
