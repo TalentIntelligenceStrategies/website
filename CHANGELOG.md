@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-13 14:50 +08:00** · **TEMP** · Repointed `og:image` + `twitter:image` from `https://tisglobalinc.com/...` to `https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png` so social-card validators (opengraph.xyz, LinkedIn Post Inspector, Meta Sharing Debugger) can fetch the asset before DNS resolves; `og:url` + `<link rel="canonical">` left at `tisglobalinc.com` (those are display strings, not fetched). **Revert both image URLs to `tisglobalinc.com/designs/assets/imagery/og.png` once DNS is wired.**
+
 - **2026-05-13 14:42 +08:00** · Added `designs/assets/imagery/og.png` (mirror of `brand/assets/imagery/og.png`) — 1200×630 social-share card built from the §2 cool-signal hero backdrop with silver-luminous overlay, white two-line headline, and a TIS|Innovue co-branded lockup beneath; `index.html` `og:image` + `twitter:image` repointed from the previously stubbed `/assets/og/tis-og-1200x630.png` to `/designs/assets/imagery/og.png`; resync'd `visual-guide-snapshot.md` for the upstream OG spec.
 
 - **2026-05-13 13:04 +08:00** · Rewrote `<head>` SEO + social meta in `index.html`: verb-led title (`TIS — Turn patents into market position`), activity-led description, added `<link rel="canonical">` plus Open Graph (og:type/site_name/url/title/description/image/locale) and Twitter (summary_large_image card) tag blocks; `og:image` stubs `/assets/og/tis-og-1200x630.png` pending the asset.
