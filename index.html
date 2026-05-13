@@ -2175,7 +2175,10 @@ main { padding-top: 64px; }
 .innovue-collab-card__logo {
   display: block;
   width: 137px; height: 48px;
-  background-image: var(--partner-innovue-color);
+  /* EN wordmark in both languages — per components.md §Innovue collaboration
+     card §Lockup. The lang-aware --partner-innovue-color token would swap to
+     the stacked CH mark and crowd the eyebrow above. */
+  background-image: url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left center;
@@ -2473,10 +2476,12 @@ main { padding-top: 64px; }
 .footer-innovue {
   display: block;
   height: 36px; width: 103px;  /* natural SVG aspect 300:105 at h=36 → w≈102.86; box hugs the glyphs so divider→Innovue clear-space reads ~24px, matching submark→divider */
-  background: var(--partner-innovue-color) center/contain no-repeat;
+  /* EN wordmark in both languages — per components.md §Footer §Co-branded
+     lockup (full-color blue on light, Light_eng + brightness(1.6) on dark). */
+  background: url('designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg') center/contain no-repeat;
 }
 [data-theme="dark"] .footer-innovue {
-  background-image: var(--partner-innovue);
+  background-image: url('designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
   filter: brightness(1.6);
 }
 .footer-copy {
@@ -3394,7 +3399,7 @@ main { padding-top: 64px; }
     <div class="container">
       <div class="innovue-collab-card">
         <div class="innovue-collab-card__attr">
-          <span class="innovue-collab-card__powered" data-zh="技術支援">Powered by</span>
+          <span class="innovue-collab-card__powered">Powered by</span>
           <a href="https://www.innovue.ltd/" class="innovue-collab-card__logo" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
         </div>
         <div class="innovue-collab-card__rule"></div>

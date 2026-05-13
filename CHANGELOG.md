@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-13 21:58 +08:00** · Pinned `.innovue-collab-card__logo` and `.footer-innovue` to `Innovue_Logo_Blue_eng.svg` (and `Light_eng.svg` in dark) instead of the lang-aware `--partner-innovue*` tokens, and dropped the `data-zh="技術支援"` swap on the `.innovue-collab-card__powered` eyebrow, so the "Powered by" + INNOVUE lockup renders identically in EN and CH — matches `brand/components.md` §Innovue collaboration card §Lockup + §Footer §Co-branded lockup.
+
 - **2026-05-13 17:02 +08:00** · Tightened `.hero` in `index.html` to `height: clamp(460px, 56vw, 580px)` + `padding-block: 32px 0` (matches `brand/catalog/imagery-preview.html`'s frame) so the tile-grid backdrop crops cleanly at the bottom on tall viewports; mobile breakpoints unchanged.
 
 - **2026-05-13 15:13 +08:00** · Added `designs/assets/signature/` with `tis-logo.png` (400×112, from `tis_secondarylogo_dark_dual.svg`) + `icon-{phone,mail,globe}.png` (28×28, stroke `#474747`) so brand catalog's Gmail-signature Variant B can reference hosted `https://` URLs instead of base64 data URIs (eliminates Gmail send-flicker from CID re-uploads).
