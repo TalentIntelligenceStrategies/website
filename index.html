@@ -1533,7 +1533,9 @@ main { padding-top: 64px; }
   position: absolute; top: 0; left: 0;
   width: 1376px; height: 860px;
   transform-origin: top left;
-  transform: scale(calc(100cqi / 1376));
+  /* Divide a length by a length so calc() returns a unitless ratio; dividing
+     100cqi by a raw number leaves the result as a length, which scale() drops. */
+  transform: scale(calc(100cqi / 1376px));
 }
 
 .shot-perspective { position: relative; width: 100%; height: 100%; overflow: hidden; }
@@ -1626,6 +1628,283 @@ main { padding-top: 64px; }
   .pillar-hero-shot .callout.bundle-callout { left: 16px !important; bottom: 16px !important; right: auto !important; }
   .pillar-hero-shot .callout:not(.bundle-callout) { right: 16px !important; top: 16px !important; left: auto !important; }
 }
+
+/* ───────── Product shot · Intelligence spread-read cascade ──────────────
+   Replaces .pillar-hero-visual placeholder in #pillar-intelligence with the
+   §2.1 "spread read · cascade · medium peek" composition from
+   brand/catalog/imagery-preview.html. Five expanded Pro-report cards
+   (D → S) fanned diagonally over a cool-light flat canvas, two cool
+   callouts overhanging the column. Inner canvas 1376×1032 (16:12 vs the
+   licensing shot's 16:10); fluid scale via the same container-query
+   pattern. ────────────────────────────────────────────────────────────── */
+#pillar-intelligence .pillar-hero { grid-template-columns: 1fr 688px; }
+@media (max-width: 1180px) {
+  #pillar-intelligence .pillar-hero { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* Tall canvas — bumps frame to 16:12 so the diagonal cascade fits. */
+.browser-frame.is-tall .frame-canvas { aspect-ratio: 16/12; }
+.browser-frame.is-tall .shot-inner { height: 1032px; }
+
+/* Cool-light flat canvas — vertical white→pale-cool gradient + sky/violet bloom. */
+.shot-perspective.cool-light { background: linear-gradient(180deg, #FFFFFF 0%, #F6FAFD 50%, #ECF4FA 100%); }
+.shot-perspective.cool-light::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.08) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.07) 0%, transparent 70%),
+    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.06) 0%, transparent 70%);
+}
+.shot-perspective.cool-light.flat .stage-3d { perspective: none; perspective-origin: 50% 50%; }
+[data-theme="dark"] .shot-perspective.cool-light { background: linear-gradient(180deg, #0B1318 0%, #0F1A22 50%, #0B1318 100%); }
+[data-theme="dark"] .shot-perspective.cool-light::before {
+  background:
+    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.16) 0%, transparent 65%),
+    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.14) 0%, transparent 70%),
+    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.10) 0%, transparent 70%);
+}
+
+/* Cool callout variant — emerald → sky → violet gradient for em + cool accent dot. */
+.callout .accent.cool { background: #0EA5E9; }
+.callout.cool .val em,
+.bundle-callout.cool h3 em {
+  font-style: normal;
+  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* — Pro-Report card primitives (shell, letterhead, tier seal, metric cells) — */
+.r-page-card { border: 1px solid var(--text-primary); border-radius: 8px; box-shadow: var(--shadow-low); overflow: hidden; background: var(--surface-page); }
+[data-theme="dark"] .r-page-card { border-color: rgba(255,255,255,0.18); }
+
+.r-letterhead {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px;
+  padding: 14px 32px;
+  background: var(--surface-inverse); color: var(--text-inverse);
+  font-size: 11px; font-weight: 600; letter-spacing: +0.18em; text-transform: uppercase;
+}
+.r-letterhead .l-brand { display: flex; align-items: center; gap: 14px; justify-self: start; }
+.r-letterhead .l-brand .l-tis { height: 22px; width: auto; display: block; }
+.r-letterhead .l-brand .l-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.32); display: inline-block; }
+.r-letterhead .l-brand .l-innovue { height: 30px; width: auto; display: block; }
+.r-letterhead .l-meta { justify-self: end; display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,0.72); }
+.r-letterhead .l-meta b { color: var(--text-inverse); font-weight: 600; }
+[data-theme="dark"] .r-letterhead .l-brand .l-divider { background: rgba(0,0,0,0.20); }
+[data-theme="dark"] .r-letterhead .l-meta { color: rgba(0,0,0,0.65); }
+
+/* Logo swap — light theme letterhead is dark (show light logos); dark flips. */
+.r-letterhead .l-tis.is-dark,
+.r-letterhead .l-innovue.is-dark { display: none; }
+[data-theme="dark"] .r-letterhead .l-tis.is-light,
+[data-theme="dark"] .r-letterhead .l-innovue.is-light { display: none; }
+[data-theme="dark"] .r-letterhead .l-tis.is-dark,
+[data-theme="dark"] .r-letterhead .l-innovue.is-dark { display: block; }
+
+/* Tier seal — bordered, double-ringed, giant tier letter. */
+.r-seal {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 28px 16px;
+  border: 1.5px solid var(--score-s); border-radius: 14px;
+  background: linear-gradient(180deg, var(--score-s-bg) 0%, var(--surface-page) 100%);
+  position: relative;
+}
+.r-seal::after { content: ""; position: absolute; inset: 6px; border: 1px solid var(--score-s); border-radius: 9px; opacity: 0.40; pointer-events: none; }
+.r-seal > * { position: relative; z-index: 1; }
+.r-seal-eyebrow { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 12px; font-weight: 600; letter-spacing: +0.20em; text-transform: uppercase; color: var(--score-s); margin-bottom: 14px; }
+.r-seal-eyebrow .r-seal-num { font-feature-settings: "tnum"; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; text-transform: none; color: var(--score-s); }
+.r-seal-mark { font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-size: 140px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; margin-bottom: 10px; padding-right: 0.05em; }
+.r-seal-tier { font-size: 15px; font-weight: 600; color: var(--score-s); font-feature-settings: "tnum"; letter-spacing: 0; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1; }
+.r-seal-tier .r-seal-dot { font-size: 200%; line-height: 0; vertical-align: middle; }
+
+/* Tier seal — non-S variants (border + bg + accent text). */
+.r-seal[data-tier="a"] { border-color: var(--score-a); background: linear-gradient(180deg, var(--score-a-bg) 0%, var(--surface-page) 100%); }
+.r-seal[data-tier="a"]::after { border-color: var(--score-a); }
+.r-seal[data-tier="a"] .r-seal-eyebrow,
+.r-seal[data-tier="a"] .r-seal-tier,
+.r-seal[data-tier="a"] .r-seal-eyebrow .r-seal-num { color: var(--score-a); }
+.r-seal[data-tier="b"] { border-color: var(--score-b); background: linear-gradient(180deg, var(--score-b-bg) 0%, var(--surface-page) 100%); }
+.r-seal[data-tier="b"]::after { border-color: var(--score-b); }
+.r-seal[data-tier="b"] .r-seal-eyebrow,
+.r-seal[data-tier="b"] .r-seal-tier,
+.r-seal[data-tier="b"] .r-seal-eyebrow .r-seal-num { color: var(--score-b); }
+.r-seal[data-tier="c"] { border-color: var(--score-c); background: linear-gradient(180deg, var(--score-c-bg) 0%, var(--surface-page) 100%); }
+.r-seal[data-tier="c"]::after { border-color: var(--score-c); }
+.r-seal[data-tier="c"] .r-seal-eyebrow,
+.r-seal[data-tier="c"] .r-seal-tier,
+.r-seal[data-tier="c"] .r-seal-eyebrow .r-seal-num { color: var(--score-c); }
+.r-seal[data-tier="d"] { border-color: var(--score-d); background: linear-gradient(180deg, var(--score-d-bg) 0%, var(--surface-page) 100%); }
+.r-seal[data-tier="d"]::after { border-color: var(--score-d); }
+.r-seal[data-tier="d"] .r-seal-eyebrow,
+.r-seal[data-tier="d"] .r-seal-tier,
+.r-seal[data-tier="d"] .r-seal-eyebrow .r-seal-num { color: var(--score-d); }
+
+/* Tier "deep" colours — giant letter mark per tier (light + dark). */
+.r-seal[data-tier="s"] .r-seal-mark { color: #5C4708; }
+.r-seal[data-tier="a"] .r-seal-mark { color: #065F46; }
+.r-seal[data-tier="b"] .r-seal-mark { color: #0C4A6E; }
+.r-seal[data-tier="c"] .r-seal-mark { color: #4C1D95; }
+.r-seal[data-tier="d"] .r-seal-mark { color: #9A3412; }
+[data-theme="dark"] .r-seal[data-tier="s"] .r-seal-mark { color: #F5D26A; }
+[data-theme="dark"] .r-seal[data-tier="a"] .r-seal-mark { color: #6EE7B7; }
+[data-theme="dark"] .r-seal[data-tier="b"] .r-seal-mark { color: #7DD3FC; }
+[data-theme="dark"] .r-seal[data-tier="c"] .r-seal-mark { color: #C4B5FD; }
+[data-theme="dark"] .r-seal[data-tier="d"] .r-seal-mark { color: #FDBA74; }
+
+/* Metric cells (cohort arc, rank histogram, PSS meter). */
+.r-metric { padding: 14px 16px; border: 1px solid var(--border-primary); border-radius: 14px; background: var(--surface-secondary); display: flex; flex-direction: column; align-items: center; text-align: center; }
+.r-metric .lbl { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; letter-spacing: +0.18em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+.r-metric .val { font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-feature-settings: "tnum"; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--text-primary); }
+.r-metric .val small { font-size: 0.4em; font-weight: 500; margin-left: 2px; color: var(--text-tertiary); letter-spacing: 0; }
+.r-metric .sub { font-size: 12px; color: var(--text-tertiary); margin-top: 10px; }
+.r-metric-mid { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.r-metric-arc { position: relative; width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; }
+.r-metric-arc-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.r-metric-arc-svg .arc-track { fill: none; stroke: var(--border-tertiary); stroke-width: 6; stroke-linecap: round; }
+.r-metric-arc-svg .arc-fill { fill: none; stroke: var(--text-primary); stroke-width: 6; stroke-linecap: round; }
+.r-metric-arc-val { font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-feature-settings: "tnum"; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--text-primary); position: relative; z-index: 1; }
+.r-metric-arc-val small { font-size: 0.4em; font-weight: 500; color: var(--text-tertiary); margin-left: 2px; letter-spacing: 0; }
+.r-metric-dist { width: 100%; max-width: 240px; }
+.r-metric-dist-svg { width: 100%; height: 80px; display: block; }
+.r-metric-dist-svg .bar { fill: var(--text-tertiary); fill-opacity: 0.32; }
+.r-metric-dist-svg .bar.is-this { fill: var(--text-primary); fill-opacity: 1; }
+.r-metric-dist-svg .marker { fill: var(--text-primary); }
+.r-metric-dist-svg .baseline { stroke: var(--border-tertiary); stroke-width: 1; }
+.r-metric-meter-h { width: 100%; max-width: 240px; }
+.r-metric-meter-h-bar { position: relative; width: 100%; height: 20px; background: var(--surface-quaternary); border: 1px solid var(--border-tertiary); border-radius: 3px; overflow: hidden; }
+.r-metric-meter-h-fill { position: absolute; top: 0; bottom: 0; left: 0; background: var(--text-primary); }
+.r-metric-meter-h-tick { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--border-tertiary); }
+.r-metric-meter-h-tick.t-50 { left: 50%; }
+.r-metric-meter-h-scale { display: flex; justify-content: space-between; font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: "tnum"; font-size: 9px; font-weight: 600; color: var(--text-tertiary); margin-top: 5px; letter-spacing: +0.04em; }
+
+/* 2×2 layout shared by the cascade cards (seal + 3 metric cells). */
+.r-grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 28px 32px 32px; }
+
+/* Spread-stage — absolutely positions page-cards inside the cool-light canvas. */
+.shot-perspective.cool-light.flat .r-spread-stage { position: absolute; inset: 0; }
+.shot-perspective.cool-light.flat .r-spread-stage .r-page-card { position: absolute; transition: transform 240ms ease; }
+
+/* Five-card cascade — D upper-left (back, z:1) → S lower-right (front, z:5). */
+.shot-perspective.cool-light.flat .r-spread-stage.is-cascade .r-page-card { width: 500px; }
+.r-spread-stage.is-cascade .r-letterhead { padding: 9px 16px; font-size: 9.5px; letter-spacing: +0.16em; gap: 10px; }
+.r-spread-stage.is-cascade .r-letterhead .l-tis { height: 16px; }
+.r-spread-stage.is-cascade .r-letterhead .l-innovue { height: 20px; }
+.r-spread-stage.is-cascade .r-letterhead .l-divider { height: 16px; }
+.r-spread-stage.is-cascade .r-letterhead .l-meta { gap: 10px; }
+.r-spread-stage.is-cascade .r-grid-2x2 { padding: 14px 14px 16px; gap: 10px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-seal { padding: 14px 8px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-seal-mark { font-size: 82px; margin-bottom: 6px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-seal-eyebrow { margin-bottom: 7px; font-size: 9px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-seal-eyebrow .r-seal-num { font-size: 12px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-seal-tier { font-size: 11px; gap: 5px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric { padding: 10px 8px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric .lbl { font-size: 8.5px; letter-spacing: +0.14em; margin-bottom: 4px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-arc { width: 80px; height: 80px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-arc-svg .arc-track,
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-arc-svg .arc-fill { stroke-width: 7; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric .val { font-size: 19px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-arc-val { font-size: 17px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric .sub { font-size: 9px; margin-top: 6px; line-height: 1.35; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-mid { gap: 6px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-dist-svg { height: 44px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-meter-h-bar { height: 14px; }
+.r-spread-stage.is-cascade .r-grid-2x2 .r-metric-meter-h-scale { font-size: 8px; margin-top: 3px; }
+
+/* Layered drop shadows — depth scales with z-order. */
+.r-spread-stage.is-cascade .r-page-card.is-d { z-index: 1; box-shadow: 0 8px 20px -8px rgba(15,23,42,0.10), 0 3px 8px -3px rgba(15,23,42,0.06); }
+.r-spread-stage.is-cascade .r-page-card.is-c { z-index: 2; box-shadow: 0 12px 28px -10px rgba(15,23,42,0.12), 0 4px 10px -4px rgba(15,23,42,0.08); }
+.r-spread-stage.is-cascade .r-page-card.is-b { z-index: 3; box-shadow: 0 16px 36px -12px rgba(15,23,42,0.14), 0 5px 12px -5px rgba(15,23,42,0.10); }
+.r-spread-stage.is-cascade .r-page-card.is-a { z-index: 4; box-shadow: 0 20px 44px -12px rgba(15,23,42,0.18), 0 6px 14px -6px rgba(15,23,42,0.12); }
+.r-spread-stage.is-cascade .r-page-card.is-s { z-index: 5; box-shadow: 0 28px 56px -14px rgba(15,23,42,0.24), 0 8px 20px -8px rgba(15,23,42,0.16); }
+[data-theme="dark"] .r-spread-stage.is-cascade .r-page-card.is-d { box-shadow: 0 8px 20px -8px rgba(0,0,0,0.42), 0 3px 8px -3px rgba(0,0,0,0.30); }
+[data-theme="dark"] .r-spread-stage.is-cascade .r-page-card.is-c { box-shadow: 0 12px 28px -10px rgba(0,0,0,0.45), 0 4px 10px -4px rgba(0,0,0,0.32); }
+[data-theme="dark"] .r-spread-stage.is-cascade .r-page-card.is-b { box-shadow: 0 16px 36px -12px rgba(0,0,0,0.48), 0 5px 12px -5px rgba(0,0,0,0.34); }
+[data-theme="dark"] .r-spread-stage.is-cascade .r-page-card.is-a { box-shadow: 0 20px 44px -12px rgba(0,0,0,0.55), 0 6px 14px -6px rgba(0,0,0,0.38); }
+[data-theme="dark"] .r-spread-stage.is-cascade .r-page-card.is-s { box-shadow: 0 28px 56px -14px rgba(0,0,0,0.65), 0 8px 20px -8px rgba(0,0,0,0.42); }
+
+/* Medium peek — 40% offset (X step 200, Y step 76). */
+.r-spread-stage.is-cascade.peek-medium .r-page-card.is-d { top: 25px;  left: 38px;  }
+.r-spread-stage.is-cascade.peek-medium .r-page-card.is-c { top: 101px; left: 238px; }
+.r-spread-stage.is-cascade.peek-medium .r-page-card.is-b { top: 177px; left: 438px; }
+.r-spread-stage.is-cascade.peek-medium .r-page-card.is-a { top: 253px; left: 638px; }
+.r-spread-stage.is-cascade.peek-medium .r-page-card.is-s { top: 329px; left: 838px; }
+
+/* Expanded — Score & Weight section pushes card height ~600px; tighten internals. */
+.r-spread-stage.is-cascade.is-expanded .r-page-card .r-grid-2x2 { padding: 12px 12px 14px; gap: 10px; }
+.r-spread-stage.is-cascade.is-expanded .r-page-card .r-seal-mark { font-size: 74px; margin-bottom: 6px; }
+.r-spread-stage.is-cascade.is-expanded .r-page-card .r-metric-arc { width: 74px; height: 74px; }
+.r-spread-stage.is-cascade.is-expanded .r-page-card .r-metric .val { font-size: 18px; }
+.r-spread-stage.is-cascade.is-expanded .r-page-card .r-metric-arc-val { font-size: 16px; }
+
+/* Score & Weight — divider + header + 200px radar | threshold rows. */
+.r-score-section { padding: 14px 14px 16px; border-top: 1px solid var(--border-primary); }
+.r-score-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px; font-weight: 600; letter-spacing: +0.18em; text-transform: uppercase; color: var(--text-tertiary);
+  padding-bottom: 7px; border-bottom: 1px solid var(--border-primary); margin-bottom: 12px;
+}
+.r-score-header .r-score-header-meta { color: var(--text-secondary); }
+.r-score-grid { display: grid; grid-template-columns: 200px 1fr; gap: 18px; align-items: start; }
+
+/* Mini radar — monochrome, 8-axis (P1–P8). */
+.r-radar-mini { width: 200px; height: 200px; position: relative; }
+.r-radar-mini svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.r-radar-mini .grid { fill: none; stroke: var(--border-primary); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.r-radar-mini .grid.inner { stroke-dasharray: 3 3; }
+.r-radar-mini .spoke { stroke: var(--border-primary); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.r-radar-mini .polygon { fill: none; stroke: var(--text-tertiary); stroke-width: 1.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.r-radar-mini .point { fill: var(--text-primary); }
+.r-radar-mini .label { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 18px; font-weight: 600; letter-spacing: +0.10em; fill: var(--text-secondary); }
+
+/* Mini threshold rows — label + chip + value + 2px track. */
+.r-thresh-mini { display: flex; flex-direction: column; gap: 9px; }
+.r-thresh-row { display: flex; flex-direction: column; gap: 3px; }
+.r-thresh-row .head { display: flex; align-items: baseline; gap: 8px; line-height: 1; }
+.r-thresh-row .head .lbl { flex: 1; font-size: 10px; font-weight: 500; color: var(--text-primary); letter-spacing: 0; text-transform: none; }
+.r-thresh-row .head .tier { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 600; letter-spacing: +0.20em; color: var(--text-tertiary); text-transform: uppercase; }
+.r-thresh-row .head .val { font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-feature-settings: "tnum"; font-size: 11px; font-weight: 600; color: var(--text-primary); min-width: 18px; text-align: right; }
+.r-thresh-row .track { position: relative; width: 100%; height: 2px; background: var(--surface-tertiary); border-radius: 1px; }
+.r-thresh-row .fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--text-primary); border-radius: 1px; }
+
+[data-theme="dark"] .r-score-section { border-top-color: rgba(255,255,255,0.12); }
+[data-theme="dark"] .r-score-header { border-bottom-color: rgba(255,255,255,0.12); }
+[data-theme="dark"] .r-thresh-row .track { background: rgba(255,255,255,0.08); }
+
+/* ── Intelligence-pillar fit & theming overrides ─────────────────────────
+   Three deltas vs the catalog source:
+   (a) Frame stays 16:10 (no .is-tall) to match licensing. The cascade
+       renders at its natural native scale — D/C/B fully inside the canvas,
+       A grazing the bottom, S deliberately falls off the bottom-right.
+       The bleed reads as a teaser ("more reports below the fold").
+   (b) Dark-mode frame border + callout bg use cool sky tint, not warm gold.
+   (c) Letterhead pinned to the always-dark banner regardless of theme. */
+
+[data-theme="dark"] #pillar-intelligence .browser-frame {
+  border-color: rgba(14,165,233,0.22);
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.30),
+    0 16px 48px -8px rgba(0,0,0,0.50),
+    0 48px 96px -24px rgba(0,0,0,0.60);
+}
+[data-theme="dark"] #pillar-intelligence .callout {
+  background: rgba(11,19,24,0.94);
+  border-color: rgba(14,165,233,0.22);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.50), 0 1px 2px rgba(0,0,0,0.30);
+}
+
+/* Letterhead — always-dark banner; show light-variant logos always. */
+#pillar-intelligence .r-letterhead {
+  background: #252525;
+  color: #FFFFFF;
+}
+#pillar-intelligence .r-letterhead .l-brand .l-divider { background: rgba(255,255,255,0.32); }
+#pillar-intelligence .r-letterhead .l-meta { color: rgba(255,255,255,0.72); }
+#pillar-intelligence .r-letterhead .l-meta b { color: #FFFFFF; }
+[data-theme="dark"] #pillar-intelligence .r-letterhead .l-tis.is-light,
+[data-theme="dark"] #pillar-intelligence .r-letterhead .l-innovue.is-light { display: block; }
+[data-theme="dark"] #pillar-intelligence .r-letterhead .l-tis.is-dark,
+[data-theme="dark"] #pillar-intelligence .r-letterhead .l-innovue.is-dark { display: none; }
 
 /* Active toggle tab — gradient fill (overrides the default solid-black active state). */
 #products[data-pillar="licensing"] .pillar-tab[aria-selected="true"] {
@@ -3616,7 +3895,564 @@ main { padding-top: 64px; }
             <p data-zh="以代幣計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.7 億件專利資料庫，做出 Go / no-go 判斷。">Token-based products for patent valuation, comparison, and report sales. A founder says "strong IP" — SABCD grades their 14 patents in an afternoon: 2 A-tier, 3 B-tier, 9 C-tier, no S. Go / no-go, against Innovue's 170M-patent database.</p>
             <a href="#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
           </div>
-          <div class="pillar-hero-visual" aria-hidden="true">Product visualization coming soon</div>
+          <div class="pillar-hero-shot" aria-hidden="true">
+            <div class="frame-wrap">
+              <div class="browser-frame" data-chrome="bare">
+                <div class="frame-canvas">
+                  <div class="shot-inner">
+                    <div class="shot-perspective cool-light flat">
+                      <div class="r-spread-stage is-cascade peek-medium is-expanded">
+
+                        <!-- D-tier · back of the stack -->
+                        <div class="r-page-card is-d">
+                          <div class="r-letterhead">
+                            <div class="l-brand">
+                              <img class="l-tis is-light" src="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                              <img class="l-tis is-dark" src="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                              <span class="l-divider" aria-hidden="true"></span>
+                              <img class="l-innovue is-light" src="designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                              <img class="l-innovue is-dark" src="designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                            </div>
+                            <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-08</b></span></div>
+                          </div>
+                          <div class="r-grid-2x2">
+                            <div class="r-seal" data-tier="d">
+                              <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;24.18</span></div>
+                              <div class="r-seal-mark">D</div>
+                              <div class="r-seal-tier"><span class="r-seal-rank">117 / 142</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 82.4%</span></div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Cohort percentile</div>
+                              <div class="r-metric-mid">
+                                <div class="r-metric-arc">
+                                  <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                                    <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                                    <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="63 283"/>
+                                  </svg>
+                                  <div class="r-metric-arc-val">22.3<small>%</small></div>
+                                </div>
+                              </div>
+                              <div class="sub">142-patent industrial actuator pool</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Rank in pool</div>
+                              <div class="r-metric-mid">
+                                <div class="val">117<small> / 142</small></div>
+                                <div class="r-metric-dist">
+                                  <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
+                                    <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
+                                    <rect class="bar" x="4"   y="104" width="10" height="8"/>
+                                    <rect class="bar" x="17"  y="96"  width="10" height="16"/>
+                                    <rect class="bar" x="30"  y="82"  width="10" height="30"/>
+                                    <rect class="bar is-this" x="43" y="64" width="10" height="48"/>
+                                    <rect class="bar" x="56"  y="42"  width="10" height="70"/>
+                                    <rect class="bar" x="69"  y="22"  width="10" height="90"/>
+                                    <rect class="bar" x="82"  y="10"  width="10" height="102"/>
+                                    <rect class="bar" x="95"  y="6"   width="10" height="106"/>
+                                    <rect class="bar" x="108" y="12"  width="10" height="100"/>
+                                    <rect class="bar" x="121" y="26"  width="10" height="86"/>
+                                    <rect class="bar" x="134" y="46"  width="10" height="66"/>
+                                    <rect class="bar" x="147" y="66"  width="10" height="46"/>
+                                    <rect class="bar" x="160" y="82"  width="10" height="30"/>
+                                    <rect class="bar" x="173" y="90"  width="10" height="22"/>
+                                    <rect class="bar" x="186" y="96"  width="10" height="16"/>
+                                    <rect class="bar" x="199" y="100" width="10" height="12"/>
+                                    <rect class="bar" x="212" y="104" width="10" height="8"/>
+                                    <rect class="bar" x="225" y="108" width="10" height="4"/>
+                                    <polygon class="marker" points="43,0 53,0 48,15"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div class="sub">Re-ranked weekly as cohort updates</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">PSS score</div>
+                              <div class="r-metric-mid">
+                                <div class="val">24.18</div>
+                                <div class="r-metric-meter-h">
+                                  <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 24.18 of 100">
+                                    <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
+                                    <div class="r-metric-meter-h-fill" style="width:24.18%;"></div>
+                                  </div>
+                                  <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                              </div>
+                              <div class="sub">Composite of 8 pillars · 50 indicators</div>
+                            </div>
+                          </div>
+                          <div class="r-score-section">
+                            <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier D</span></div>
+                            <div class="r-score-grid">
+                              <div class="r-radar-mini">
+                                <svg viewBox="-200 -200 400 400" aria-hidden="true">
+                                  <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
+                                  <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
+                                  <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
+                                  <polygon class="polygon" points="0,-29 17.68,-17.68 37,0 7.07,7.07 0,18 -9.9,9.9 -22,0 -24.04,-24.04"/>
+                                  <circle class="point" cx="0" cy="-29" r="3.5"/><circle class="point" cx="17.68" cy="-17.68" r="3.5"/><circle class="point" cx="37" cy="0" r="3.5"/><circle class="point" cx="7.07" cy="7.07" r="3.5"/><circle class="point" cx="0" cy="18" r="3.5"/><circle class="point" cx="-9.9" cy="9.9" r="3.5"/><circle class="point" cx="-22" cy="0" r="3.5"/><circle class="point" cx="-24.04" cy="-24.04" r="3.5"/>
+                                  <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
+                                </svg>
+                              </div>
+                              <div class="r-thresh-mini">
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">WEAK</span><span class="val">29</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">25</span></div><div class="track"><div class="fill" style="width:25%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">WEAK</span><span class="val">37</span></div><div class="track"><div class="fill" style="width:37%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">10</span></div><div class="track"><div class="fill" style="width:10%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">18</span></div><div class="track"><div class="fill" style="width:18%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">14</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">22</span></div><div class="track"><div class="fill" style="width:22%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">WEAK</span><span class="val">34</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- C-tier -->
+                        <div class="r-page-card is-c">
+                          <div class="r-letterhead">
+                            <div class="l-brand">
+                              <img class="l-tis is-light" src="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                              <img class="l-tis is-dark" src="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                              <span class="l-divider" aria-hidden="true"></span>
+                              <img class="l-innovue is-light" src="designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                              <img class="l-innovue is-dark" src="designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                            </div>
+                            <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-15</b></span></div>
+                          </div>
+                          <div class="r-grid-2x2">
+                            <div class="r-seal" data-tier="c">
+                              <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;38.74</span></div>
+                              <div class="r-seal-mark">C</div>
+                              <div class="r-seal-tier"><span class="r-seal-rank">88 / 152</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 57.9%</span></div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Cohort percentile</div>
+                              <div class="r-metric-mid">
+                                <div class="r-metric-arc">
+                                  <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                                    <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                                    <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/>
+                                  </svg>
+                                  <div class="r-metric-arc-val">48.5<small>%</small></div>
+                                </div>
+                              </div>
+                              <div class="sub">152-patent display backlight pool</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Rank in pool</div>
+                              <div class="r-metric-mid">
+                                <div class="val">88<small> / 152</small></div>
+                                <div class="r-metric-dist">
+                                  <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
+                                    <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
+                                    <rect class="bar" x="4"   y="108" width="10" height="4"/>
+                                    <rect class="bar" x="17"  y="102" width="10" height="10"/>
+                                    <rect class="bar" x="30"  y="92"  width="10" height="20"/>
+                                    <rect class="bar" x="43"  y="78"  width="10" height="34"/>
+                                    <rect class="bar" x="56"  y="60"  width="10" height="52"/>
+                                    <rect class="bar" x="69"  y="40"  width="10" height="72"/>
+                                    <rect class="bar" x="82"  y="22"  width="10" height="90"/>
+                                    <rect class="bar" x="95"  y="10"  width="10" height="102"/>
+                                    <rect class="bar" x="108" y="6"   width="10" height="106"/>
+                                    <rect class="bar" x="121" y="14"  width="10" height="98"/>
+                                    <rect class="bar is-this" x="134" y="44" width="10" height="68"/>
+                                    <rect class="bar" x="147" y="42"  width="10" height="70"/>
+                                    <rect class="bar" x="160" y="62"  width="10" height="50"/>
+                                    <rect class="bar" x="173" y="80"  width="10" height="32"/>
+                                    <rect class="bar" x="186" y="92"  width="10" height="20"/>
+                                    <rect class="bar" x="199" y="100" width="10" height="12"/>
+                                    <rect class="bar" x="212" y="106" width="10" height="6"/>
+                                    <rect class="bar" x="225" y="110" width="10" height="2"/>
+                                    <polygon class="marker" points="134,0 144,0 139,15"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div class="sub">Re-ranked weekly as cohort updates</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">PSS score</div>
+                              <div class="r-metric-mid">
+                                <div class="val">38.74</div>
+                                <div class="r-metric-meter-h">
+                                  <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 38.74 of 100">
+                                    <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
+                                    <div class="r-metric-meter-h-fill" style="width:38.74%;"></div>
+                                  </div>
+                                  <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                              </div>
+                              <div class="sub">Composite of 8 pillars · 50 indicators</div>
+                            </div>
+                          </div>
+                          <div class="r-score-section">
+                            <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier C</span></div>
+                            <div class="r-score-grid">
+                              <div class="r-radar-mini">
+                                <svg viewBox="-200 -200 400 400" aria-hidden="true">
+                                  <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
+                                  <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
+                                  <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
+                                  <polygon class="polygon" points="0,-44 28.28,-28.28 52,0 17.68,17.68 0,33 -20.51,20.51 -37,0 -34.65,-34.65"/>
+                                  <circle class="point" cx="0" cy="-44" r="3.5"/><circle class="point" cx="28.28" cy="-28.28" r="3.5"/><circle class="point" cx="52" cy="0" r="3.5"/><circle class="point" cx="17.68" cy="17.68" r="3.5"/><circle class="point" cx="0" cy="33" r="3.5"/><circle class="point" cx="-20.51" cy="20.51" r="3.5"/><circle class="point" cx="-37" cy="0" r="3.5"/><circle class="point" cx="-34.65" cy="-34.65" r="3.5"/>
+                                  <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
+                                </svg>
+                              </div>
+                              <div class="r-thresh-mini">
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">WEAK</span><span class="val">44</span></div><div class="track"><div class="fill" style="width:44%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">40</span></div><div class="track"><div class="fill" style="width:40%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">52</span></div><div class="track"><div class="fill" style="width:52%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">25</span></div><div class="track"><div class="fill" style="width:25%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">33</span></div><div class="track"><div class="fill" style="width:33%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">29</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">37</span></div><div class="track"><div class="fill" style="width:37%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">WEAK</span><span class="val">49</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- B-tier -->
+                        <div class="r-page-card is-b">
+                          <div class="r-letterhead">
+                            <div class="l-brand">
+                              <img class="l-tis is-light" src="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                              <img class="l-tis is-dark" src="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                              <span class="l-divider" aria-hidden="true"></span>
+                              <img class="l-innovue is-light" src="designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                              <img class="l-innovue is-dark" src="designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                            </div>
+                            <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-22</b></span></div>
+                          </div>
+                          <div class="r-grid-2x2">
+                            <div class="r-seal" data-tier="b">
+                              <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;47.30</span></div>
+                              <div class="r-seal-mark">B</div>
+                              <div class="r-seal-tier"><span class="r-seal-rank">47 / 198</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 23.7%</span></div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Cohort percentile</div>
+                              <div class="r-metric-mid">
+                                <div class="r-metric-arc">
+                                  <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                                    <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                                    <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/>
+                                  </svg>
+                                  <div class="r-metric-arc-val">72.4<small>%</small></div>
+                                </div>
+                              </div>
+                              <div class="sub">198-patent automotive radar pool</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Rank in pool</div>
+                              <div class="r-metric-mid">
+                                <div class="val">47<small> / 198</small></div>
+                                <div class="r-metric-dist">
+                                  <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
+                                    <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
+                                    <rect class="bar" x="4"   y="106" width="10" height="6"/>
+                                    <rect class="bar" x="17"  y="98"  width="10" height="14"/>
+                                    <rect class="bar" x="30"  y="86"  width="10" height="26"/>
+                                    <rect class="bar" x="43"  y="70"  width="10" height="42"/>
+                                    <rect class="bar" x="56"  y="50"  width="10" height="62"/>
+                                    <rect class="bar" x="69"  y="28"  width="10" height="84"/>
+                                    <rect class="bar" x="82"  y="14"  width="10" height="98"/>
+                                    <rect class="bar is-this" x="95" y="40" width="10" height="72"/>
+                                    <rect class="bar" x="108" y="8"   width="10" height="104"/>
+                                    <rect class="bar" x="121" y="14"  width="10" height="98"/>
+                                    <rect class="bar" x="134" y="30"  width="10" height="82"/>
+                                    <rect class="bar" x="147" y="52"  width="10" height="60"/>
+                                    <rect class="bar" x="160" y="72"  width="10" height="40"/>
+                                    <rect class="bar" x="173" y="86"  width="10" height="26"/>
+                                    <rect class="bar" x="186" y="94"  width="10" height="18"/>
+                                    <rect class="bar" x="199" y="100" width="10" height="12"/>
+                                    <rect class="bar" x="212" y="104" width="10" height="8"/>
+                                    <rect class="bar" x="225" y="108" width="10" height="4"/>
+                                    <polygon class="marker" points="95,0 105,0 100,15"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div class="sub">Re-ranked weekly as cohort updates</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">PSS score</div>
+                              <div class="r-metric-mid">
+                                <div class="val">47.30</div>
+                                <div class="r-metric-meter-h">
+                                  <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 47.30 of 100">
+                                    <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
+                                    <div class="r-metric-meter-h-fill" style="width:47.30%;"></div>
+                                  </div>
+                                  <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                              </div>
+                              <div class="sub">Composite of 8 pillars · 50 indicators</div>
+                            </div>
+                          </div>
+                          <div class="r-score-section">
+                            <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier B</span></div>
+                            <div class="r-score-grid">
+                              <div class="r-radar-mini">
+                                <svg viewBox="-200 -200 400 400" aria-hidden="true">
+                                  <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
+                                  <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
+                                  <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
+                                  <polygon class="polygon" points="0,-53 34.65,-34.65 61,0 24.04,24.04 0,42 -26.87,26.87 -46,0 -41.01,-41.01"/>
+                                  <circle class="point" cx="0" cy="-53" r="3.5"/><circle class="point" cx="34.65" cy="-34.65" r="3.5"/><circle class="point" cx="61" cy="0" r="3.5"/><circle class="point" cx="24.04" cy="24.04" r="3.5"/><circle class="point" cx="0" cy="42" r="3.5"/><circle class="point" cx="-26.87" cy="26.87" r="3.5"/><circle class="point" cx="-46" cy="0" r="3.5"/><circle class="point" cx="-41.01" cy="-41.01" r="3.5"/>
+                                  <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
+                                </svg>
+                              </div>
+                              <div class="r-thresh-mini">
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">MID</span><span class="val">53</span></div><div class="track"><div class="fill" style="width:53%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">49</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">61</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">34</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">42</span></div><div class="track"><div class="fill" style="width:42%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">38</span></div><div class="track"><div class="fill" style="width:38%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">46</span></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">MID</span><span class="val">58</span></div><div class="track"><div class="fill" style="width:58%"></div></div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- A-tier -->
+                        <div class="r-page-card is-a">
+                          <div class="r-letterhead">
+                            <div class="l-brand">
+                              <img class="l-tis is-light" src="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                              <img class="l-tis is-dark" src="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                              <span class="l-divider" aria-hidden="true"></span>
+                              <img class="l-innovue is-light" src="designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                              <img class="l-innovue is-dark" src="designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                            </div>
+                            <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-29</b></span></div>
+                          </div>
+                          <div class="r-grid-2x2">
+                            <div class="r-seal" data-tier="a">
+                              <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;56.12</span></div>
+                              <div class="r-seal-mark">A</div>
+                              <div class="r-seal-tier"><span class="r-seal-rank">18 / 162</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 11.1%</span></div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Cohort percentile</div>
+                              <div class="r-metric-mid">
+                                <div class="r-metric-arc">
+                                  <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                                    <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                                    <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/>
+                                  </svg>
+                                  <div class="r-metric-arc-val">88.7<small>%</small></div>
+                                </div>
+                              </div>
+                              <div class="sub">162-patent semiconductor photolithography pool</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Rank in pool</div>
+                              <div class="r-metric-mid">
+                                <div class="val">18<small> / 162</small></div>
+                                <div class="r-metric-dist">
+                                  <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
+                                    <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
+                                    <rect class="bar" x="4"   y="100" width="10" height="12"/>
+                                    <rect class="bar" x="17"  y="90"  width="10" height="22"/>
+                                    <rect class="bar" x="30"  y="74"  width="10" height="38"/>
+                                    <rect class="bar" x="43"  y="54"  width="10" height="58"/>
+                                    <rect class="bar" x="56"  y="32"  width="10" height="80"/>
+                                    <rect class="bar" x="69"  y="14"  width="10" height="98"/>
+                                    <rect class="bar" x="82"  y="6"   width="10" height="106"/>
+                                    <rect class="bar" x="95"  y="10"  width="10" height="102"/>
+                                    <rect class="bar" x="108" y="22"  width="10" height="90"/>
+                                    <rect class="bar" x="121" y="40"  width="10" height="72"/>
+                                    <rect class="bar" x="134" y="60"  width="10" height="52"/>
+                                    <rect class="bar" x="147" y="78"  width="10" height="34"/>
+                                    <rect class="bar is-this" x="160" y="68" width="10" height="44"/>
+                                    <rect class="bar" x="173" y="92"  width="10" height="20"/>
+                                    <rect class="bar" x="186" y="98"  width="10" height="14"/>
+                                    <rect class="bar" x="199" y="102" width="10" height="10"/>
+                                    <rect class="bar" x="212" y="104" width="10" height="8"/>
+                                    <rect class="bar" x="225" y="108" width="10" height="4"/>
+                                    <polygon class="marker" points="160,0 170,0 165,15"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div class="sub">Re-ranked weekly as cohort updates</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">PSS score</div>
+                              <div class="r-metric-mid">
+                                <div class="val">56.12</div>
+                                <div class="r-metric-meter-h">
+                                  <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 56.12 of 100">
+                                    <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
+                                    <div class="r-metric-meter-h-fill" style="width:56.12%;"></div>
+                                  </div>
+                                  <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                              </div>
+                              <div class="sub">Composite of 8 pillars · 50 indicators</div>
+                            </div>
+                          </div>
+                          <div class="r-score-section">
+                            <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier A</span></div>
+                            <div class="r-score-grid">
+                              <div class="r-radar-mini">
+                                <svg viewBox="-200 -200 400 400" aria-hidden="true">
+                                  <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
+                                  <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
+                                  <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
+                                  <polygon class="polygon" points="0,-61 40.3,-40.3 69,0 29.7,29.7 0,50 -32.53,32.53 -54,0 -46.67,-46.67"/>
+                                  <circle class="point" cx="0" cy="-61" r="3.5"/><circle class="point" cx="40.3" cy="-40.3" r="3.5"/><circle class="point" cx="69" cy="0" r="3.5"/><circle class="point" cx="29.7" cy="29.7" r="3.5"/><circle class="point" cx="0" cy="50" r="3.5"/><circle class="point" cx="-32.53" cy="32.53" r="3.5"/><circle class="point" cx="-54" cy="0" r="3.5"/><circle class="point" cx="-46.67" cy="-46.67" r="3.5"/>
+                                  <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
+                                </svg>
+                              </div>
+                              <div class="r-thresh-mini">
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">MID</span><span class="val">61</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">MID</span><span class="val">57</span></div><div class="track"><div class="fill" style="width:57%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">69</span></div><div class="track"><div class="fill" style="width:69%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">42</span></div><div class="track"><div class="fill" style="width:42%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">MID</span><span class="val">50</span></div><div class="track"><div class="fill" style="width:50%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">46</span></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">MID</span><span class="val">54</span></div><div class="track"><div class="fill" style="width:54%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">MID</span><span class="val">66</span></div><div class="track"><div class="fill" style="width:66%"></div></div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- S-tier · front of the stack -->
+                        <div class="r-page-card is-s">
+                          <div class="r-letterhead">
+                            <div class="l-brand">
+                              <img class="l-tis is-light" src="designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                              <img class="l-tis is-dark" src="designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                              <span class="l-divider" aria-hidden="true"></span>
+                              <img class="l-innovue is-light" src="designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                              <img class="l-innovue is-dark" src="designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                            </div>
+                            <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-05-06</b></span></div>
+                          </div>
+                          <div class="r-grid-2x2">
+                            <div class="r-seal" data-tier="s">
+                              <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;78.91</span></div>
+                              <div class="r-seal-mark">S</div>
+                              <div class="r-seal-tier"><span class="r-seal-rank">4 / 183</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 2.2%</span></div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Cohort percentile</div>
+                              <div class="r-metric-mid">
+                                <div class="r-metric-arc">
+                                  <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                                    <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                                    <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/>
+                                  </svg>
+                                  <div class="r-metric-arc-val">98.3<small>%</small></div>
+                                </div>
+                              </div>
+                              <div class="sub">183-patent semiconductor advanced-node process pool</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">Rank in pool</div>
+                              <div class="r-metric-mid">
+                                <div class="val">4<small> / 183</small></div>
+                                <div class="r-metric-dist">
+                                  <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
+                                    <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
+                                    <rect class="bar" x="4"   y="104" width="10" height="8"/>
+                                    <rect class="bar" x="17"  y="96"  width="10" height="16"/>
+                                    <rect class="bar" x="30"  y="82"  width="10" height="30"/>
+                                    <rect class="bar" x="43"  y="64"  width="10" height="48"/>
+                                    <rect class="bar" x="56"  y="42"  width="10" height="70"/>
+                                    <rect class="bar" x="69"  y="22"  width="10" height="90"/>
+                                    <rect class="bar" x="82"  y="10"  width="10" height="102"/>
+                                    <rect class="bar" x="95"  y="6"   width="10" height="106"/>
+                                    <rect class="bar" x="108" y="12"  width="10" height="100"/>
+                                    <rect class="bar" x="121" y="26"  width="10" height="86"/>
+                                    <rect class="bar" x="134" y="46"  width="10" height="66"/>
+                                    <rect class="bar" x="147" y="66"  width="10" height="46"/>
+                                    <rect class="bar" x="160" y="82"  width="10" height="30"/>
+                                    <rect class="bar" x="173" y="90"  width="10" height="22"/>
+                                    <rect class="bar" x="186" y="96"  width="10" height="16"/>
+                                    <rect class="bar" x="199" y="100" width="10" height="12"/>
+                                    <rect class="bar is-this" x="212" y="76" width="10" height="36"/>
+                                    <rect class="bar" x="225" y="106" width="10" height="6"/>
+                                    <polygon class="marker" points="212,0 222,0 217,15"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div class="sub">Re-ranked weekly as cohort updates</div>
+                            </div>
+                            <div class="r-metric">
+                              <div class="lbl">PSS score</div>
+                              <div class="r-metric-mid">
+                                <div class="val">78.91</div>
+                                <div class="r-metric-meter-h">
+                                  <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 78.91 of 100">
+                                    <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
+                                    <div class="r-metric-meter-h-fill" style="width:78.91%;"></div>
+                                  </div>
+                                  <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
+                                </div>
+                              </div>
+                              <div class="sub">Composite of 8 pillars · 50 indicators</div>
+                            </div>
+                          </div>
+                          <div class="r-score-section">
+                            <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier S</span></div>
+                            <div class="r-score-grid">
+                              <div class="r-radar-mini">
+                                <svg viewBox="-200 -200 400 400" aria-hidden="true">
+                                  <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
+                                  <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
+                                  <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
+                                  <polygon class="polygon" points="0,-83 55.86,-55.86 91,0 45.25,45.25 0,72 -48.08,48.08 -76,0 -62.23,-62.23"/>
+                                  <circle class="point" cx="0" cy="-83" r="3.5"/><circle class="point" cx="55.86" cy="-55.86" r="3.5"/><circle class="point" cx="91" cy="0" r="3.5"/><circle class="point" cx="45.25" cy="45.25" r="3.5"/><circle class="point" cx="0" cy="72" r="3.5"/><circle class="point" cx="-48.08" cy="48.08" r="3.5"/><circle class="point" cx="-76" cy="0" r="3.5"/><circle class="point" cx="-62.23" cy="-62.23" r="3.5"/>
+                                  <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
+                                </svg>
+                              </div>
+                              <div class="r-thresh-mini">
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">STRONG</span><span class="val">83</span></div><div class="track"><div class="fill" style="width:83%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">MID</span><span class="val">79</span></div><div class="track"><div class="fill" style="width:79%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">STRONG</span><span class="val">91</span></div><div class="track"><div class="fill" style="width:91%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">MID</span><span class="val">64</span></div><div class="track"><div class="fill" style="width:64%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">MID</span><span class="val">72</span></div><div class="track"><div class="fill" style="width:72%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">MID</span><span class="val">68</span></div><div class="track"><div class="fill" style="width:68%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">MID</span><span class="val">76</span></div><div class="track"><div class="fill" style="width:76%"></div></div></div>
+                                <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">STRONG</span><span class="val">88</span></div><div class="track"><div class="fill" style="width:88%"></div></div></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="callout bundle-callout cool" style="bottom:80px;left:-24px">
+                <span class="accent cool"></span>
+                <div class="body">
+                  <h3 data-zh="三種讀法。<em>一個結論。</em>">Three readings. <em>One verdict.</em></h3>
+                  <p class="sub" data-zh="同期百分位、排名與 PSS 收斂為單一 SABCD 評等——對照同儕計分。">Cohort percentile, rank, and PSS resolve to a single SABCD tier — scored against peers.</p>
+                  <div class="legend">
+                    <span class="tier-chip tier-chip--s">Tier S</span>
+                    <span class="tier-chip tier-chip--a">Tier A</span>
+                    <span class="tier-chip tier-chip--b">Tier B</span>
+                    <span class="tier-chip tier-chip--c">Tier C</span>
+                    <span class="tier-chip tier-chip--d">Tier D</span>
+                  </div>
+                </div>
+              </aside>
+
+              <aside class="callout cool" style="top:108px;right:-24px">
+                <span class="accent cool"></span>
+                <div class="body">
+                  <div class="val" data-zh="<em>兩種深度。</em>同一引擎。"><em>Two depths.</em> Same engine.</div>
+                  <div class="sub" data-zh="短報告——快速取得評等。完整報告——評等加上 50 項指標深度分析。">Brief — the grade, fast. Pro — the grade plus the 50-indicator deep dive.</div>
+                </div>
+              </aside>
+            </div>
+          </div>
         </div>
 
         <div class="deliverable-grid">
