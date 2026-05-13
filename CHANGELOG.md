@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-13 17:02 +08:00** · Tightened `.hero` in `index.html` to `height: clamp(460px, 56vw, 580px)` + `padding-block: 32px 0` (matches `brand/catalog/imagery-preview.html`'s frame) so the tile-grid backdrop crops cleanly at the bottom on tall viewports; mobile breakpoints unchanged.
+
 - **2026-05-13 15:13 +08:00** · Added `designs/assets/signature/` with `tis-logo.png` (400×112, from `tis_secondarylogo_dark_dual.svg`) + `icon-{phone,mail,globe}.png` (28×28, stroke `#474747`) so brand catalog's Gmail-signature Variant B can reference hosted `https://` URLs instead of base64 data URIs (eliminates Gmail send-flicker from CID re-uploads).
 
 - **2026-05-13 14:50 +08:00** · **TEMP** · Repointed `og:image` + `twitter:image` from `https://tisglobalinc.com/...` to `https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png` so social-card validators (opengraph.xyz, LinkedIn Post Inspector, Meta Sharing Debugger) can fetch the asset before DNS resolves; `og:url` + `<link rel="canonical">` left at `tisglobalinc.com` (those are display strings, not fetched). **Revert both image URLs to `tisglobalinc.com/designs/assets/imagery/og.png` once DNS is wired.**

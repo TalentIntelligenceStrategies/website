@@ -630,14 +630,12 @@ main { padding-top: 64px; }
      5: carousel slider (.hero-inner) */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 580px;
-  /* Cap hero on tall displays so the backdrop doesn't grow past where the
-     locked tile grid can reach (5 rows × 220px × 56° rotation = ~647px
-     of visible Y). Below 820 the hero still tracks 100vh; above 820 it
-     stops growing so the empty-backdrop bands don't blow out. */
-  max-height: 720px;
-  padding-block: 64px 0;
+  /* Clamped to match brand/catalog/imagery-preview.html's frame
+     (clamp(460px, 56vw, 580px)) so the tile-grid backdrop crops cleanly
+     at the bottom instead of trailing into empty air on tall viewports.
+     56vw keeps the hero proportional to width; 460/580 cap the extremes. */
+  height: clamp(460px, 56vw, 580px);
+  padding-block: 32px 0;
   overflow: hidden;
   display: flex;
   align-items: center;
