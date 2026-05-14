@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-14 18:44 +08:00** · Repointed the 12 signature image URLs in `designs/assets/signature/email-signature-setup.html` from `talentintelligencestrategies.github.io/website/...` to `tisglobalinc.com/...` so Gmail-rendered signatures stop breaking on GH Pages' 301-redirect of the legacy host (Gmail won't follow redirects for inline images).
+
 - **2026-05-14 18:11 +08:00** · Removed the `services` (Services / Brokerage / IP Ascent) option from the contact form's Inquiry Type dropdown in `index.html`, completing the Services retirement that the 2026-05-12 16:01 entry deferred.
 
 - **2026-05-14 00:03 +08:00** · Replaced Patent Intelligence pillar's "Product visualization coming soon" placeholder with `brand/catalog/imagery-preview.html` §2.1 spread-read · cascade · medium peek: five-card SABCD ladder (D→C→B→A→S) on a cool-light flat canvas, S deliberately bleeds past the bottom-right edge; two cool-variant callouts ("Three readings · One verdict" + "Two depths · Same engine"); `.r-*` Pro-report primitives (page-card, letterhead, seal, metric cells, mini 8-axis radar + P1–P8 thresholds); `#pillar-intelligence`-scoped overrides — letterhead pinned to always-dark banner regardless of theme, dark-mode frame border + callout bg use cool sky tint (no longer inheriting Licensing's warm gold); fixed `.shot-inner` transform from `scale(calc(100cqi / 1376))` to `scale(calc(100cqi / 1376px))` so the unit-bearing calc resolves to a unitless ratio — also unclips Licensing's 30-tile grid, which had silently been rendering only its top-left ~9 tiles since the unit bug shipped.
