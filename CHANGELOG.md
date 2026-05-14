@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-14 19:09 +08:00** · Baked a soft 0.5px white halo into the four `designs/assets/signature/` PNGs (`tis-logo`, `icon-phone`, `icon-mail`, `icon-globe`) so the dark glyphs stay legible on Gmail's `#1F1F1F` dark-mode surface without altering their light-mode rendering.
+
 - **2026-05-14 18:44 +08:00** · Repointed the 12 signature image URLs in `designs/assets/signature/email-signature-setup.html` from `talentintelligencestrategies.github.io/website/...` to `tisglobalinc.com/...` so Gmail-rendered signatures stop breaking on GH Pages' 301-redirect of the legacy host (Gmail won't follow redirects for inline images).
 
 - **2026-05-14 18:11 +08:00** · Removed the `services` (Services / Brokerage / IP Ascent) option from the contact form's Inquiry Type dropdown in `index.html`, completing the Services retirement that the 2026-05-12 16:01 entry deferred.
