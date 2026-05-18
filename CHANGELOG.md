@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-18 10:42 +08:00** · Restructured the site into a multi-page layout — split inline CSS / JS into shared `assets/styles.css` + `assets/site.js` (root-relative paths), renamed the "Intelligence" pillar to "Signal" across the homepage (data attrs, IDs, CSS scopes, labels, footer link, JS literals), added new `/product/signal/` and `/product/licensing/` deep-dive pages with hero + audience + how-it-works + deliverables + pricing + FAQ + CTA sections sourced from the corresponding repo `docs/` folders, added "Learn more →" CTAs inside each homepage pillar panel, dropped a sync `<head>` theme-init script to prevent dark-mode FOUC; homepage Products section content otherwise unchanged. Brand `.md` files keep "Patent Intelligence SaaS" as internal name — rename is website-only.
+
 - **2026-05-14 19:09 +08:00** · Baked a soft 0.5px white halo into the four `designs/assets/signature/` PNGs (`tis-logo`, `icon-phone`, `icon-mail`, `icon-globe`) so the dark glyphs stay legible on Gmail's `#1F1F1F` dark-mode surface without altering their light-mode rendering.
 
 - **2026-05-14 18:44 +08:00** · Repointed the 12 signature image URLs in `designs/assets/signature/email-signature-setup.html` from `talentintelligencestrategies.github.io/website/...` to `tisglobalinc.com/...` so Gmail-rendered signatures stop breaking on GH Pages' 301-redirect of the legacy host (Gmail won't follow redirects for inline images).

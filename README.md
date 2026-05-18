@@ -1,10 +1,32 @@
 # TIS Marketing Website
 
-The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — a Taiwan-rooted IP intelligence consultancy. Currently a single static `index.html` that loads its assets (fonts, logos, icons) from [`designs/assets/`](designs/assets/) — the read-only mirror of the brand monorepo's `brand/assets/`.
+The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — a Taiwan-rooted IP intelligence consultancy. A static multi-page site that loads its fonts, logos, and icons from [`designs/assets/`](designs/assets/) — the read-only mirror of the brand monorepo's `brand/assets/`.
+
+## Pages
+
+| URL                          | File                                                     |
+| ---------------------------- | -------------------------------------------------------- |
+| `/`                          | [`index.html`](index.html) — homepage                    |
+| `/product/signal/`           | [`product/signal/index.html`](product/signal/index.html) — Signal deep-dive (token-based patent valuation, comparison, reports) |
+| `/product/licensing/`        | [`product/licensing/index.html`](product/licensing/index.html) — Licensing Platform deep-dive (30-patent bundles, jurisdiction × industry) |
+
+Each page is self-contained HTML — no build step, no router. Shared chrome (top nav, footer, theme toggle, language switcher) is duplicated across all three pages; design changes there mean editing all three files.
+
+## Shared assets
+
+| Path                     | What it is                                               |
+| ------------------------ | -------------------------------------------------------- |
+| [`assets/styles.css`](assets/styles.css) | All CSS — tokens, components, page layouts. ~3,800 lines. Single source of truth for visual design. |
+| [`assets/site.js`](assets/site.js)       | All JS — theme toggle, language switcher, mobile drawer, search, hero slider, form handlers. ~1,280 lines. |
+| [`designs/`](designs/)   | Read-only brand snapshots + fonts, logos, icons mirrored from the brand monorepo. |
+
+**Asset paths are root-relative** — every reference uses `/assets/...` or `/designs/assets/...`. This works because GitHub Pages with a custom domain serves the repo at the domain root. Don't change to relative paths — subpages two levels deep would break.
+
+A small inline `<script>` block lives at the top of each page's `<head>` to read `tis-theme` and `tis-lang` from `localStorage` and set `<html data-theme>` / `<html lang>` before paint. This prevents flash-of-unstyled-content on dark mode. Keep it in sync across pages; everything else lives in `assets/site.js`.
 
 ## Source of truth
 
-This repo is a **rendered view** of the TIS brand monorepo (kept private), where tokens, primitives, components, identity, and the website PRD are authored. The brand `.md` files are authoritative; this repo ships the resulting page.
+This repo is a **rendered view** of the TIS brand monorepo (kept private), where tokens, primitives, components, identity, and the website PRD are authored. The brand `.md` files are authoritative; this repo ships the resulting pages.
 
 Authored upstream in the brand monorepo, mirrored in `designs/` here:
 
@@ -16,20 +38,35 @@ Authored upstream in the brand monorepo, mirrored in `designs/` here:
 Authored upstream, not mirrored here:
 
 - Website PRD — `website-prd.md` (stays at TIS root)
+- Product copy / pricing — sourced from `vc-signal/docs/` (Signal page) and `licensing-platform/docs/` (Licensing page)
 
 There are **no editable files** in `designs/` — all authoring happens upstream in the brand monorepo. If something in the page needs to change, edit the upstream brand `.md` first, then refresh the matching `*-snapshot.md` here, then regenerate the rendered HTML. Don't fix the rendered HTML or a snapshot without propagating back.
 
 ## Local preview
 
 ```
-open index.html
+python3 -m http.server 8000
 ```
 
-No build step. Fonts are self-hosted from `designs/assets/fonts/` (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `designs/assets/logos/`. Icons (when used by the page) come from `designs/assets/icons/`.
+Then open [http://localhost:8000/](http://localhost:8000/). A simple file open (`open index.html`) won't work for the product pages — root-relative paths need a server.
+
+No build step. Fonts are self-hosted from `designs/assets/fonts/` (Urbanist, Inconsolata, Noto Sans TC). Logos and favicons resolve from `designs/assets/logos/`.
 
 ## Deploy
 
-Hosted on GitHub Pages from the `main` branch — live at [talentintelligencestrategies.github.io/website](https://talentintelligencestrategies.github.io/website/). Custom domain `tisglobalinc.com` planned; DNS wiring pending. Until the custom domain resolves, the canonical URL declared in `index.html` (`https://tisglobalinc.com/`) won't match the live host — expected, no action needed.
+Hosted on **GitHub Pages from the `main` branch**, served live at **[tisglobalinc.com](https://tisglobalinc.com/)**. The custom domain is configured via the [`CNAME`](CNAME) file at the repo root + DNS records pointing at GitHub's IPs (DNS managed at Squarespace). HTTPS is active.
+
+The GitHub Pages preview URL ([talentintelligencestrategies.github.io/website](https://talentintelligencestrategies.github.io/website/)) still resolves but is no longer the canonical host.
+
+Deploy flow:
+
+1. Commit + push to `main`
+2. GitHub Pages auto-rebuilds (~30 seconds)
+3. New version live at `tisglobalinc.com`
+
+## Naming convention — Signal vs Patent Intelligence SaaS
+
+The Signal product page (`/product/signal/`) is the consumer-facing surface for what the brand system internally calls "Patent Intelligence SaaS." The brand `.md` files still use the internal name; the marketing site uses **Signal**. This dual naming is intentional and documented in the brand monorepo's `CLAUDE.md`.
 
 ## Changelog
 

@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Licensing Platform — TIS</title>
+<meta name="description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours, with a Verified License Badge you can hand to a counter-party the next morning." />
+<link rel="canonical" href="https://tisglobalinc.com/product/licensing/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TIS" />
+<meta property="og:url" content="https://tisglobalinc.com/product/licensing/" />
+<meta property="og:title" content="Licensing Platform — TIS" />
+<meta property="og:description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours, with a Verified License Badge you can hand to a counter-party the next morning." />
+<meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="TIS Licensing Platform — Non-exclusive patent bundles" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Licensing Platform — TIS" />
+<meta name="twitter:description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours, with a Verified License Badge you can hand to a counter-party the next morning." />
+<meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
+<meta name="twitter:image:alt" content="TIS Licensing Platform — Non-exclusive patent bundles" />
+
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+
+<link rel="stylesheet" href="/assets/styles.css">
+
+<script>
+  // Theme init — sync to avoid FOUC. Reads tis-theme + tis-lang from localStorage and sets <html> attrs before paint.
+  (() => {
+    const t = localStorage.getItem('tis-theme');
+    const choice = (t === 'system' || t === 'light' || t === 'dark') ? t : 'system';
+    const resolved = choice === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : choice;
+    document.documentElement.setAttribute('data-theme', resolved);
+    const lang = localStorage.getItem('tis-lang');
+    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+  })();
+</script>
+</head>
+
+<body data-page="licensing">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ╔═════════════════════════════════════════════════════════════════════╗
+     ║ Top nav — duplicated from homepage; nav anchors point to /#...     ║
+     ╚═════════════════════════════════════════════════════════════════════╝ -->
+<header class="topnav" role="banner">
+  <div class="container topnav-inner">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+      <span class="topnav-logo" aria-hidden="true"></span>
+    </a>
+
+    <span class="topnav-spacer"></span>
+
+    <nav class="topnav-links" aria-label="Primary">
+      <a href="/#products" class="topnav-link" data-zh="產品">Products</a>
+      <a href="/#reports"  class="topnav-link" data-zh="報告">Reports</a>
+      <a href="/#press"    class="topnav-link" data-zh="新聞">Press</a>
+      <a href="/#about"    class="topnav-link" data-zh="關於">About</a>
+      <a href="/#contact"  class="topnav-link" data-zh="聯絡">Contact</a>
+    </nav>
+
+    <div class="topnav-controls">
+      <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme">
+        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="lang-wrap" id="lang-wrap">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        </div>
+      </div>
+
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.34-4.34"/>
+          <circle cx="11" cy="11" r="8"/>
+        </svg>
+      </button>
+
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-overlay" id="mobile-overlay"></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+  <div class="mobile-header">
+    <span class="mobile-header-logo" aria-hidden="true"></span>
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-list" aria-label="Primary mobile">
+    <a href="/#products" data-zh="產品">Products</a>
+    <a href="/#reports"  data-zh="報告">Reports</a>
+    <a href="/#press"    data-zh="新聞">Press</a>
+    <a href="/#about"    data-zh="關於">About</a>
+    <a href="/#contact"  data-zh="聯絡">Contact</a>
+  </nav>
+  <div class="mobile-auth">
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+  </div>
+</aside>
+
+<div class="search-overlay" id="search-overlay"></div>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-input-row">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m21 21-4.34-4.34"/>
+      <circle cx="11" cy="11" r="8"/>
+    </svg>
+    <input id="search-input" type="text" class="search-input" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <span class="search-esc" aria-hidden="true">Esc</span>
+  </div>
+  <div class="search-results">
+    <p class="search-section-label" data-zh="跳至">Jump to</p>
+    <a href="/#products" class="search-link" data-zh="產品">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
+      <span data-zh="產品">Products</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/signal/" class="search-link" data-zh="Signal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+      <span data-zh="Signal">Signal</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#reports" class="search-link" data-zh="報告">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      <span data-zh="報告">Reports</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#contact" class="search-link" data-zh="聯絡">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <span data-zh="聯絡">Contact</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+  </div>
+</div>
+
+<main id="main" data-pillar="licensing">
+
+  <h1 class="sr-only" data-zh="授權平台 — 30 件專利組合，可在隔日早上交給對手的 Verified License Badge">Licensing Platform — 30-patent bundles with a Verified License Badge you can hand over the next morning</h1>
+
+  <!-- ─── Page hero ─── -->
+  <section class="section section--page-hero" aria-label="Licensing hero">
+    <div class="container page-hero">
+      <p class="page-hero-eyebrow" data-zh="非獨家授權 · 訂閱當週生效">Non-exclusive licensing · active the week you subscribe</p>
+      <h2 class="page-hero-title">
+        <span data-zh="被動防禦，">Stop running from</span> <em data-zh="升級為主動佈局。">demand letters. Start positioning.</em>
+      </h2>
+      <p class="page-hero-sub" data-zh="一個 30 件專利組合，依司法管轄區 × 產業精選——3 個月、6 個月、或 1 年。NPE 對台灣出口商的求償，落點通常是三個月 TIS 訂閱費用的 50–500 倍。組合在訂閱當週生效，並附上一枚可在隔日早上交給對手的 Verified License Badge。">
+        Subscribe to a 30-patent bundle, curated per jurisdiction × industry — 3 months, 6 months, or 1 year. NPE demand letters against Taiwan exporters settle at 50–500× the price of a three-month TIS subscription. The bundle activates the week you subscribe, with a Verified License Badge you can hand to a counter-party the next morning.
+      </p>
+      <div class="pillar-hero-cta">
+        <a href="#signup" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="開始訂閱">Start a subscription</a>
+        <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stat bar ─── -->
+  <section class="section section--tight" aria-label="By the numbers">
+    <div class="container stats-grid stats-grid--4up">
+      <div class="stat-card">
+        <p class="stat-eyebrow" data-zh="一個組合">Per bundle</p>
+        <h2 class="stat-num"><span class="counter" data-target="30">0</span></h2>
+        <p class="stat-body" data-zh="精選專利數，按 SABCD 5/6/9/6/4 分配。每件都已驗證可授權狀態，並可單獨拆出。">Curated patents per bundle, distributed S/A/B/C/D as 5/6/9/6/4. Each patent vetted for license availability and individually traceable.</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-eyebrow" data-zh="覆蓋市場">Jurisdictions</p>
+        <h2 class="stat-num"><span class="counter" data-target="4">0</span></h2>
+        <p class="stat-body" data-zh="美、歐、日、台——挑你客戶實際所在的地方，不是全球宣示。">US, EP, JP, TW — pick where your customers actually live. Coverage is the entry pass, not a global claim.</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-eyebrow" data-zh="科技導向產業">Tech-forward industries</p>
+        <h2 class="stat-num"><span class="counter" data-target="6">0</span></h2>
+        <p class="stat-body" data-zh="與台灣 IP Bank、Innovue 資料庫對齊，覆蓋半導體、網通、多媒體、計算機系統、綜合應用、淨零碳排。">Aligned with Taiwan's IP Bank and Innovue's database — covering semiconductors, networking, multimedia, computing, emerging applications, net-zero.</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-eyebrow" data-zh="訂閱期限">Term options</p>
+        <h2 class="stat-num"><span>3 · 6 · 12</span></h2>
+        <p class="stat-body" data-zh="月——3、6、或 12 個月。6 個月以 95% 年費計、1 年以 90% 年費計。所有期間皆為非獨家。">Months — 3, 6, or 12. The 6-month plan runs 95% of the annual rate; the 12-month plan 90%. Non-exclusive throughout.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Audience cards ─── -->
+  <section class="section" aria-labelledby="lic-audience-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="目標客群">Built for</p>
+        <h2 id="lic-audience-heading" data-zh="授權是入場券——對的人在對的時間需要對的盾牌。">Licensing is the entry pass — the right shield, at the right time, for the right buyer.</h2>
+      </header>
+
+      <div class="audience-grid">
+        <article class="audience-card">
+          <p class="audience-card-eyebrow" data-zh="台灣出海企業">Taiwan SMEs going overseas</p>
+          <h3 data-zh="對手在美國或歐洲告我，我有保障嗎？">"What if a competitor or NPE sues me in the US or EU?"</h3>
+          <p data-zh="月均支出低於萬元，就能在 4 個主要出口市場取得 30 件專利的非獨家覆蓋——比聘律師快、比逐件購買省。立即啟動，無須等待。">For less than NT$10K a month, gain non-exclusive coverage of 30 patents across 4 major export markets — faster than hiring counsel, cheaper than acquiring patents one at a time. Instant activation, no wait state.</p>
+        </article>
+
+        <article class="audience-card">
+          <p class="audience-card-eyebrow" data-zh="進入台灣的國際企業">Foreign companies entering Taiwan</p>
+          <h3 data-zh="台灣合規節奏不能拖">"We're scaling in Taiwan — compliance can't be a 6-month delay."</h3>
+          <p data-zh="非獨家訂閱組合確保即時合規。台灣專利庫與 IP Bank 對齊；訂閱者另享「不攻擊台灣企業承諾」條款，保護本地中小企業——這是市場聲譽資產。">Non-exclusive subscription bundles unlock immediate regulatory clearance. Taiwan IP curated through IP Bank; subscribers commit to a Non-Aggression Covenant protecting Taiwan SMEs — a market-reputation asset on day one.</p>
+        </article>
+
+        <article class="audience-card">
+          <p class="audience-card-eyebrow" data-zh="研發 / 新品上市團隊">R&amp;D &amp; product launch teams</p>
+          <h3 data-zh="6 個月的開發週期，需要與之對齊的保護期">"Our 6-month prototype cycle needs cover before any public demo."</h3>
+          <p data-zh="3、6、或 12 個月期。6 個月方案以 1 年價格的 95% 計，正好對齊一個 sprint 或上市檔期。不續約沒有違約金，續約則回到 MSRP 全價以保專利價值。">3-, 6-, or 12-month plans. The 6-month plan runs 95% of the annual rate, sized to a sprint or launch window. No penalty for non-renewal; renewals return to MSRP to preserve patent value.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── How it works ─── -->
+  <section class="section" aria-labelledby="lic-flow-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="運作方式">How it works</p>
+        <h2 id="lic-flow-heading" data-zh="從選擇到 Badge 在手——通常一週內完成。">From selection to badge in hand — typically within a week.</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">01</span>
+          <div class="step-body">
+            <h3 data-zh="選擇你的路徑">Choose your path</h3>
+            <p data-zh="選定司法管轄區（美、歐、日、台）與產業（半導體、網通、多媒體、計算機系統、綜合應用、淨零）。或讓我們的 FTO 引導路徑根據你的產品幫你選——把選擇困難交給系統。">Pick a jurisdiction (US, EP, JP, TW) and an industry (semiconductors, networking, multimedia, computing, emerging applications, net-zero). Or let our FTO-guided path narrow the choices to your product — outsource the decision fatigue.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">02</span>
+          <div class="step-body">
+            <h3 data-zh="配對">Get matched</h3>
+            <p data-zh="我們的 AI 將你的產品或 FTO 報告與產業專利池比對，24 小時內出 30 件精選專利。SABCD 5/6/9/6/4 分布；每件可單獨檢視來源、引用、權利範圍。">Our AI compares your product or FTO report against the industry patent pool. 30 curated patents within 24 hours, distributed S/A/B/C/D as 5/6/9/6/4. Drill into each — source, citations, claim scope all traceable.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">03</span>
+          <div class="step-body">
+            <h3 data-zh="簽約並啟動">Sign &amp; activate</h3>
+            <p data-zh="同意期限（3 / 6 / 12 個月）。下載你的數位授權憑證（DLC）——具法律效力、時戳簽署。隔日生效；隔日早上即可在會議桌上拿出。">Agree to the term (3 / 6 / 12 months). Download your Digital License Credential (DLC) — legally defensible, timestamp-signed. Effective the next day; on the meeting-room table the next morning.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">04</span>
+          <div class="step-body">
+            <h3 data-zh="使用 Verified License Badge">Wield your Verified License Badge</h3>
+            <p data-zh="把徽章放在你的網站、攤位、產品包裝、Email 簽名。掃描 QR 即可驗證——對手在兩秒內知道你已被覆蓋。NPE 把你從目標清單上劃掉。">Display the badge on your website, booth, product packaging, email signature. QR scan returns license number, scope, and term-end date — counter-parties verify in two seconds. NPEs cross you off the target list.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── Deliverables ─── -->
+  <section class="section" aria-labelledby="lic-deliver-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="你會拿到什麼">What you get</p>
+        <h2 id="lic-deliver-heading" data-zh="一個組合、一份憑證、一枚 Badge——足以在會議桌上交給對手。">One bundle, one credential, one badge — enough to hand over at the meeting table.</h2>
+      </header>
+
+      <div class="deliverable-grid">
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </span>
+          <h4 data-zh="30 件專利組合（SABCD 5/6/9/6/4）">30-patent bundle (SABCD 5/6/9/6/4)</h4>
+          <p data-zh="每包 30 件，分布 S 級 5、A 級 6、B 級 9、C 級 6、D 級 4。每件都已驗證可授權、可拆閱、跨類覆蓋。透明的品質計分。">Every bundle has 30 patents, distributed S × 5, A × 6, B × 9, C × 6, D × 4. Each vetted for license availability, individually traceable, with cross-category coverage. Transparent quality scoring.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </span>
+          <h4 data-zh="司法管轄區 × 產業策展">Jurisdiction × industry curation</h4>
+          <p data-zh="專利來自全球前四（美、歐、日）+ 台灣 IP Bank。依你的產業垂直篩選，與政府科技優先政策對齊。">Patents sourced from the Global Top 4 (US, EP, JP) plus Taiwan's IP Bank. Filtered by your exact industry vertical, aligned with government tech priorities.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <h4 data-zh="Verified License Badge">Verified License Badge</h4>
+          <p data-zh="品牌化數位資產（PNG / SVG），內嵌 QR Code。掃描即可驗證授權編號、範圍、到期日。在續約時自動更新；合約結束即轉灰並顯示「Expired」。">A branded digital asset (PNG / SVG) with embedded QR. Scan returns the license number, scope, and term-end date. Auto-regenerates on renewal; turns gray and reads "Expired" at term end.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          </span>
+          <h4 data-zh="數位授權憑證 (DLC)">Digital License Credential (DLC)</h4>
+          <p data-zh="法院可採之憑證，可以台灣官方電子身分（MOICA）或電子用印簽署。3 種形式：紙本+用印、紙本+電子用印、純電子（含時戳）。到期後仍保留 10 年供歷史參考。">Legally defensible credential, signed with Taiwan's official MOICA e-ID or digital seal. Three forms: paper + seal, paper + digital seal, fully electronic (timestamp-signed). Retained 10 years post-expiry for historical reference.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          </span>
+          <h4 data-zh="期限彈性">Flexible term options</h4>
+          <p data-zh="3、6、或 12 個月。6 個月以 95% 年費計、12 個月以 90% 年費計。所有期間皆為非獨家；無長期鎖定。續約回到 MSRP 全價（無折扣）——這是設計選擇，目的是保護專利長期價值。">3, 6, or 12 months. The 6-month plan is 95% of the annual rate; 12-month is 90%. Non-exclusive throughout; no long-term lock-in. Renewals return to full MSRP — by design, to preserve long-term patent value.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </span>
+          <h4 data-zh="動態池子補償">Dynamic pool compensation</h4>
+          <p data-zh="如果你包中的專利在合約期間遭撤銷，TIS 會以同級專利免費替換。覆蓋缺口不是你的風險。">If a patent in your bundle gets invalidated mid-contract, TIS replaces it with an equivalent-tier patent at no cost. Coverage gaps are our problem, not yours.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pricing ─── -->
+  <section class="section" id="pricing" aria-labelledby="lic-pricing-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="定價">Pricing</p>
+        <h2 id="lic-pricing-heading" data-zh="月費 NT$7,990 起。三個等級、三種期限。所有金額為新台幣。">Starts at NT$7,990/mo. Three tiers, three terms. All amounts in NT$.</h2>
+      </header>
+
+      <div class="price-grid price-grid--3up">
+        <article class="price-card">
+          <p class="price-card-eyebrow" data-zh="入門">Plus</p>
+          <h4 data-zh="多媒體 · 淨零">Multimedia · Net-Zero</h4>
+          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">7,990</span><span class="price-period" data-zh="/月">/mo</span></p>
+          <p class="price-meta" data-zh="3 個月 NT$23,970 起 · 6 個月 NT$45,543 · 1 年 NT$86,292">From NT$23,970 for 3 months · NT$45,543 / 6 mo · NT$86,292 / 1 yr</p>
+          <ul class="price-features">
+            <li data-zh="30 件專利組合（SABCD 5/6/9/6/4）">30-patent bundle (SABCD 5/6/9/6/4)</li>
+            <li data-zh="一個司法管轄區 + 一個產業">One jurisdiction + one industry</li>
+            <li data-zh="Verified License Badge + DLC 憑證">Verified License Badge + DLC credential</li>
+            <li data-zh="動態池子補償">Dynamic pool compensation</li>
+          </ul>
+        </article>
+
+        <article class="price-card price-card--featured">
+          <p class="price-card-eyebrow" data-zh="標準 · 推薦">Pro · Recommended</p>
+          <h4 data-zh="計算機系統 · 綜合應用">Computing · Emerging apps</h4>
+          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">8,990</span><span class="price-period" data-zh="/月">/mo</span></p>
+          <p class="price-meta" data-zh="3 個月 NT$26,970 起 · 6 個月 NT$51,243 · 1 年 NT$97,092">From NT$26,970 for 3 months · NT$51,243 / 6 mo · NT$97,092 / 1 yr</p>
+          <ul class="price-features">
+            <li data-zh="包含 Plus 全部內容">Everything in Plus</li>
+            <li data-zh="可選 AI / 自駕車 / 資安等高需求產業">Includes AI / autonomous / cybersecurity verticals</li>
+            <li data-zh="多包採購折扣（最高 -15%）">Multi-bundle discounts up to 15% off</li>
+          </ul>
+        </article>
+
+        <article class="price-card">
+          <p class="price-card-eyebrow" data-zh="高端">Premium</p>
+          <h4 data-zh="半導體 · 網通">Semiconductors · Networking</h4>
+          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">9,990</span><span class="price-period" data-zh="/月">/mo</span></p>
+          <p class="price-meta" data-zh="3 個月 NT$29,970 起 · 6 個月 NT$56,943 · 1 年 NT$107,892">From NT$29,970 for 3 months · NT$56,943 / 6 mo · NT$107,892 / 1 yr</p>
+          <ul class="price-features">
+            <li data-zh="包含 Pro 全部內容">Everything in Pro</li>
+            <li data-zh="半導體 / 5G / MIMO 等市場影響最深領域">Highest-impact verticals (chip design, 5G, MIMO)</li>
+            <li data-zh="可跨美 / 歐 / 日 / 台組合採購">Cross-jurisdiction bundle eligibility (US / EP / JP / TW)</li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="price-fine" data-zh="所有四個司法管轄區（美、歐、日、台）依等級採同一定價（v8.1.0，2026-05-08 對齊）。期間折扣：3 個月全額、6 個月 95% 年費、1 年 90% 年費。多包折扣：2 包 95%、3 包 90%、5 包 85%（與期間折扣可疊加）。續約無折扣——這是設計選擇，目的是讓專利長期價值透過「續約常態化」維持，而非「長約低折」侵蝕。">All four jurisdictions (US, EP, JP, TW) share the same tier pricing (aligned v8.1.0, 2026-05-08). Period discount: 3-month full rate, 6-month at 95% of annual, 1-year at 90%. Volume discount: 2 bundles at 95%, 3 at 90%, 5+ at 85% (stacks with period discount). Renewals are full MSRP — by design, to preserve long-term patent value through renewal normalization, not bulk-discount erosion.</p>
+    </div>
+  </section>
+
+  <!-- ─── Jurisdictions × industries table ─── -->
+  <section class="section" aria-labelledby="lic-coverage-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="覆蓋範圍">Coverage</p>
+        <h2 id="lic-coverage-heading" data-zh="4 個司法管轄區 × 6 個科技導向產業。">Four jurisdictions × six tech-forward industries.</h2>
+      </header>
+
+      <div class="coverage-grid">
+        <div class="coverage-block">
+          <h3 data-zh="司法管轄區">Jurisdictions</h3>
+          <ul class="coverage-list">
+            <li><strong>US</strong> <span data-zh="美國">United States</span></li>
+            <li><strong>EP</strong> <span data-zh="歐洲專利局">European Patent Office</span></li>
+            <li><strong>JP</strong> <span data-zh="日本">Japan</span></li>
+            <li><strong>TW</strong> <span data-zh="台灣">Taiwan</span></li>
+          </ul>
+        </div>
+
+        <div class="coverage-block coverage-block--wide">
+          <h3 data-zh="科技導向產業（v9.1.0 與台灣 IP Bank 對齊）">Tech-forward industries (v9.1.0, IP Bank-aligned)</h3>
+          <ul class="coverage-list coverage-list--2col">
+            <li><strong data-zh="網路與通訊">Networking &amp; Communications</strong> <span data-zh="MIMO · CDMA · WiFi · 4G/5G · 基地台 · 天線 · RFID">MIMO · CDMA · WiFi · 4G/5G · base stations · antennas · RFID</span></li>
+            <li><strong data-zh="多媒體影音 / 影像處理">Multimedia &amp; Video</strong> <span data-zh="音視訊訊號 · 傳輸 · 數位廣播 · 編解碼 · 直播">Audio/video signal · transmission · codec · live streaming</span></li>
+            <li><strong data-zh="晶片半導體設計製造">Chip &amp; Semiconductors</strong> <span data-zh="台灣 2025 優先 #1 — 晶片設計與半導體製造">Taiwan 2025 priority #1 — chip design &amp; semiconductor manufacturing</span></li>
+            <li><strong data-zh="計算機系統">Computing Systems</strong> <span data-zh="電路設計 · 處理器 · 記憶體 · I/O">Circuit design · processors · memory · I/O</span></li>
+            <li><strong data-zh="綜合應用">Emerging Applications</strong> <span data-zh="自駕車 · 電動車 · AI · 資安 · 智慧系統">Autonomous vehicles · EVs · AI · cybersecurity · smart systems</span></li>
+            <li><strong data-zh="淨零碳排">Net-Zero &amp; Sustainability</strong> <span data-zh="綠能 · 儲能 · 材料 · 醫化 · 元件效率">Green tech · energy storage · materials · pharma-chem · device efficiency</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Verified License Badge explainer ─── -->
+  <section class="section" aria-labelledby="lic-badge-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="Verified License Badge">Verified License Badge</p>
+        <h2 id="lic-badge-heading" data-zh="心理威懾、風險緩釋、社會證明——一枚徽章三層作用。">Psychological deterrence. Risk mitigation. Social proof. One badge, three layers.</h2>
+      </header>
+
+      <div class="badge-explainer">
+        <div class="badge-block">
+          <h3 data-zh="它是什麼">What it is</h3>
+          <ul>
+            <li data-zh="視覺：TIS + 專利供應方共同識別">Visual: joint mark with TIS + the IP supplier</li>
+            <li data-zh="驗證：獨一無二的授權編號 + 內嵌 QR Code">Authentication: unique license number + embedded QR code</li>
+            <li data-zh="媒介：數位（PNG / SVG）+ 可印刷版（攤位、產品標籤）">Media: digital (PNG / SVG) + printable (booth, product labels)</li>
+            <li data-zh="自動更新：續約時系統重生；合約結束即轉灰並顯示 Expired">Auto-update: regenerated on renewal; turns gray + "Expired" at term end</li>
+          </ul>
+        </div>
+        <div class="badge-block">
+          <h3 data-zh="怎麼用">How it's used</h3>
+          <ul>
+            <li data-zh="網站：首頁或產品頁——傳達合規與第三方背書">Website: homepage or product page — signals compliance and third-party backing</li>
+            <li data-zh="Email 簽名：業務團隊外發信附帶徽章 + 驗證連結">Email signature: business-dev team includes the badge + verification link</li>
+            <li data-zh="展會：印刷在攤位、產品展品、名片">Trade show: printed on booth materials, demos, business cards</li>
+            <li data-zh="產品包裝：類似 CE / UL 標誌，QR 可掃描驗證">Product packaging: like CE / UL marks — QR-scannable on physical goods</li>
+          </ul>
+        </div>
+        <div class="badge-block">
+          <h3 data-zh="當對手掃描時">When a counter-party scans</h3>
+          <ul>
+            <li data-zh="兩秒內登陸 TIS 公開驗證頁">Two seconds to land on TIS's public verification page</li>
+            <li data-zh="顯示：狀態（Valid / Expired）、授權編號、司法管轄區 / 產業、生效日與到期日">Shown: status (Valid / Expired), license number, jurisdiction × industry, effective &amp; expiry dates</li>
+            <li data-zh="不顯示技術專利清單（隱私規則）">Not shown: the technical patent list (privacy rule)</li>
+            <li data-zh="對手感受：「這家公司已被 TIS 與 [專利供應方] 把關」——攻擊成本 &gt; 預期回收">Takeaway: "This company is vetted by TIS &amp; [the IP supplier]" — cost of attack &gt; expected recovery</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ─── -->
+  <section class="section" aria-labelledby="lic-faq-heading">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow" data-zh="常見問題">Common questions</p>
+        <h2 id="lic-faq-heading" data-zh="決策前你會想問的事。">The questions you'd ask before signing.</h2>
+      </header>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>
+            <span data-zh="為什麼是組合，不是單件購買？">Why a bundle instead of buying individual patents?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="組合消除「選擇困難」——你在一筆交易中取得跨類覆蓋。單件成本比逐件購買低 30–40%。而且關鍵不是擁有專利，是有沒有合法盾牌；非獨家授權正好滿足這個用途。">A bundle eliminates "cherry-picking paralysis" — you get vetted, cross-category coverage in one transaction. Per-patent cost drops 30–40% vs. one-off acquisition. And the goal isn't ownership; it's a legal shield. Non-exclusive licensing fits the use case exactly.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span data-zh="如果組合中的專利遭撤銷怎麼辦？">What if a patent in my bundle gets invalidated?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="平台有動態池子補償機制。若合約期間有專利遭撤銷，TIS 以同級別專利免費替換——覆蓋缺口由我方承擔。">The platform runs a dynamic pool compensation mechanism. If a patent is revoked mid-contract, TIS replaces it with an equivalent-tier patent at no cost. Coverage gaps are on us.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span data-zh="非獨家授權和擁有專利差在哪？">How is non-exclusive licensing different from ownership?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="非獨家 = 你無法阻止別人用同樣的專利（其他訂閱者也能取得），但成本是擁有的 1/20。非獨家適合「防禦」；如果你要「攻擊」（轉讓 / 排他授權 / 出售），那走我們另一條媒合服務。">Non-exclusive = you can't block others from using the same patents (other licensees can also access them), but the cost is about 1/20 of ownership. Non-exclusive fits defense; if you want offense (transfer / exclusive licensing / sale), that runs through a separate brokerage service.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span data-zh="續約有折扣嗎？">Do renewals get a discount?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="沒有——這是 2026 年 5 月起的政策。續約月費 = 首次訂閱 MSRP × 期間折扣，再無額外折扣。原因是：專利長期價值應透過「續約常態化」（每年回到全價）保護，而非「長約低折」侵蝕。">No — this is a May 2026 policy change. Renewal monthly rate = first-subscription MSRP × period discount, no further stacking. The reasoning: long-term patent value is preserved through renewal normalization (full MSRP every year), not through bulk-discount erosion.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span data-zh="覆蓋哪些國家？">Which jurisdictions are covered?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="四個主要：美、歐、日、台。反映台灣出口主力市場與科技供應鏈策略對齊。需要其他國家覆蓋？業務團隊可逐案報價。">Four primary: US, EP, JP, TW. They reflect Taiwan's top export markets and tech-supply-chain strategic alignment. Need other jurisdictions? Sales can quote case-by-case.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span data-zh="可以期中升級嗎？">Can I upgrade mid-contract?</span>
+            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </summary>
+          <p data-zh="可以——升級到更高等級或新增司法管轄區。差額按「每件專利每日」精算（v8.1.0 起），無須重新談判。降級則須等期末。">Yes — upgrade to a higher tier or add a new jurisdiction. The difference is calculated per-patent-per-day (v8.1.0+). No renegotiation. Downgrades wait until term end.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA banner ─── -->
+  <section class="section cta-banner" id="signup" aria-labelledby="lic-cta-heading">
+    <div class="container cta-banner-inner">
+      <header class="section-head section-head--centered">
+        <h2 id="lic-cta-heading" data-zh="從訂閱到 Badge 在手——通常一週內完成。">From subscription to badge in hand — typically within a week.</h2>
+        <p data-zh="先和業務團隊聊聊你的產業、出口市場、時程。10 分鐘確認方向，24 小時內報價。">Start with a 10-minute call to scope your industry, export markets, and timeline. Quote back within 24 hours.</p>
+      </header>
+      <div class="pillar-hero-cta">
+        <a href="#signup" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="開始訂閱">Start a subscription</a>
+        <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="與我們聊聊">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Footer  —  components.md §Footer                                    ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-nl-block" id="footer-nl-block">
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <form class="footer-nl-form" id="footer-nl-form" novalidate>
+              <input type="email" placeholder="Your Email" aria-label="Email address" required />
+              <button type="submit" aria-label="Subscribe">
+                <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </form>
+          </div>
+          <div class="footer-logo-row">
+            <span class="footer-logo" aria-hidden="true"></span>
+            <span class="footer-divider" aria-hidden="true"></span>
+            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+          </div>
+          <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 data-zh="產品">Products</h4>
+            <ul>
+              <li><a href="/product/licensing/" data-zh="授權平台">Licensing Platform</a></li>
+              <li><a href="/product/signal/" data-zh="Signal">Signal</a></li>
+              <li><a href="/#products" data-zh="Verified License Badge">Verified License Badge</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="公司">Company</h4>
+            <ul>
+              <li><a href="/#about" data-zh="關於">About</a></li>
+              <li><a href="/#reports" data-zh="報告">Reports</a></li>
+              <li><a href="/#press" data-zh="新聞">Press</a></li>
+              <li><a href="/#contact" data-zh="聯絡">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="法律">Legal</h4>
+            <ul>
+              <li><a href="#" data-zh="服務條款">Terms</a></li>
+              <li><a href="#" data-zh="隱私政策">Privacy</a></li>
+              <li><a href="#" data-zh="揭露聲明">Disclosures</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-zh="聯絡">Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></li>
+            <li><a href="#" data-zh="台北 · 台灣">Taipei, Taiwan</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</main>
+
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
+<script src="/assets/site.js" defer></script>
+
+</body>
+</html>
