@@ -284,6 +284,19 @@
         const m = item.querySelector('.acc-mark');
         if (m) m.textContent = '−';
       }
+      // Sync sibling step-panel if this accordion has a partner visual (e.g. /product/licensing/ How it works).
+      const stepKey = item.dataset.step;
+      if (stepKey) {
+        const howitworks = group.closest('.howitworks');
+        const visual = howitworks && howitworks.querySelector('.howitworks-visual--steps');
+        if (visual) {
+          // If we just closed the only open item, fall back to the first panel as default.
+          const activeKey = wasOpen ? (visual.querySelector('.howitworks-step-panel').dataset.step || stepKey) : stepKey;
+          visual.querySelectorAll('.howitworks-step-panel').forEach(panel => {
+            panel.classList.toggle('is-active', panel.dataset.step === activeKey);
+          });
+        }
+      }
     });
   });
 

@@ -4,14 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Signal — TIS</title>
-<meta name="description" content="Token-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes. Built for VC IP due diligence." />
+<meta name="description" content="Point-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes. Built for VC and CVC IP due diligence." />
 <link rel="canonical" href="https://tisglobalinc.com/product/signal/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/product/signal/" />
 <meta property="og:title" content="Signal — TIS" />
-<meta property="og:description" content="Token-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes." />
+<meta property="og:description" content="Point-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes." />
 <meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,7 +20,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Signal — TIS" />
-<meta name="twitter:description" content="Token-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes." />
+<meta name="twitter:description" content="Point-based patent valuation, comparison, and report sales. SABCD scoring against Innovue's 170M-patent database, delivered to your inbox in 30 minutes." />
 <meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta name="twitter:image:alt" content="TIS Signal — Grade IP in 30 minutes" />
 
@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/styles.css?v=2">
 
 <script>
   // Theme init — sync to avoid FOUC. Reads tis-theme + tis-lang from localStorage and sets <html> attrs before paint.
@@ -180,332 +180,597 @@
 
   <h1 class="sr-only" data-zh="Signal — 30 分鐘為專利做 SABCD 評等">Signal — Grade patents with SABCD in 30 minutes</h1>
 
-  <!-- ─── Page hero ─── -->
-  <section class="section section--page-hero" aria-label="Signal hero">
-    <div class="container page-hero">
-      <p class="page-hero-eyebrow" data-zh="代幣制估值 · SABCD 評等">Token-based valuation · SABCD scoring</p>
-      <h2 class="page-hero-title">
-        <span data-zh="別再相信">Don't fund</span> <em data-zh="「IP 很強」。">"strong IP."</em> <span data-zh="打分數。">Grade it.</span>
-      </h2>
-      <p class="page-hero-sub" data-zh="代幣制的專利估值、比對與報告產品。對照 Innovue 1.7 億件專利的 SABCD 評等——和 TIS 授權平台同源引擎。30 分鐘內收到一份含同儕基準的 Brief；投委會需要深度時，秒級解鎖 7 章節 Pro 報告。">
-        Token-based products for patent valuation, comparison, and report sales. SABCD grades against Innovue's 170M-patent database — same engine as TIS Licensing. A peer-benchmarked Brief lands in your inbox in 30 minutes; unlock the 7-chapter Pro report the moment your IC needs it.
-      </p>
-      <div class="pillar-hero-cta">
-        <a href="#signup" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費取得 50 點">Get 50 free points</a>
+  <!-- ─── 1. Brief hero (centered) ─── -->
+  <section class="section section--page-hero section--page-hero--brief section--page-hero--centered" aria-label="Signal hero">
+    <div class="container">
+      <div class="page-hero">
+        <h2 class="page-hero-title">
+          <span data-zh="30 分鐘為 IP 打分。">Grade IP in 30 minutes.</span> <em data-zh="不是幾週。">Not weeks.</em>
+        </h2>
+        <p class="page-hero-sub" data-zh="提交專利號，半小時內收到 SABCD 評等 Brief。對 Innovue 1.7 億件全球第四大專利資料庫計算同儕百分位。">Submit a patent number. Receive an SABCD-graded Brief in your inbox in thirty minutes. Peer percentile drawn from Innovue's 170M-patent database — fourth-largest globally.</p>
+        <div class="page-hero-actions">
+          <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
+          <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 2. Product overview screenshot — cloned from homepage #products Signal pillar ─── -->
+  <section class="section" aria-label="Signal overview">
+    <div class="container">
+
+      <div class="pillar-hero">
+        <div class="pillar-hero-copy">
+          <h3 data-zh="Signal">Signal</h3>
+          <p data-zh="以點數計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.7 億件專利資料庫，做出 Go / no-go 判斷。">Point-based products for patent valuation, comparison, and report sales. A founder says "strong IP" — SABCD grades their 14 patents in an afternoon: 2 A-tier, 3 B-tier, 9 C-tier, no S. Go / no-go, against Innovue's 170M-patent database.</p>
+          <div class="pillar-hero-cta">
+            <a href="/#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
+            <a href="#pricing" class="btn btn-secondary btn-lg" data-zh="查看定價 →">See pricing →</a>
+          </div>
+        </div>
+        <div class="pillar-hero-shot" aria-hidden="true">
+          <div class="frame-wrap">
+            <div class="browser-frame" data-chrome="bare">
+              <div class="frame-canvas">
+                <div class="shot-inner">
+                  <div class="shot-perspective cool-light flat">
+                    <div class="r-spread-stage is-cascade peek-medium is-expanded">
+
+                      <div class="r-page-card is-d">
+                        <div class="r-letterhead">
+                          <div class="l-brand">
+                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                            <span class="l-divider" aria-hidden="true"></span>
+                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                          </div>
+                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-08</b></span></div>
+                        </div>
+                        <div class="r-grid-2x2">
+                          <div class="r-seal" data-tier="d">
+                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;24.18</span></div>
+                            <div class="r-seal-mark">D</div>
+                            <div class="r-seal-tier"><span class="r-seal-rank">117 / 142</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 82.4%</span></div>
+                          </div>
+                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="63 283"/></svg><div class="r-metric-arc-val">22.3<small>%</small></div></div></div><div class="sub">142-patent industrial actuator pool</div></div>
+                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">117<small> / 142</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
+                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">24.18</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 24.18 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:24.18%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
+                        </div>
+                      </div>
+
+                      <div class="r-page-card is-c">
+                        <div class="r-letterhead">
+                          <div class="l-brand">
+                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                            <span class="l-divider" aria-hidden="true"></span>
+                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                          </div>
+                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-15</b></span></div>
+                        </div>
+                        <div class="r-grid-2x2">
+                          <div class="r-seal" data-tier="c">
+                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;38.74</span></div>
+                            <div class="r-seal-mark">C</div>
+                            <div class="r-seal-tier"><span class="r-seal-rank">88 / 152</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 57.9%</span></div>
+                          </div>
+                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/></svg><div class="r-metric-arc-val">48.5<small>%</small></div></div></div><div class="sub">152-patent display backlight pool</div></div>
+                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">88<small> / 152</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
+                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">38.74</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 38.74 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:38.74%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
+                        </div>
+                      </div>
+
+                      <div class="r-page-card is-b">
+                        <div class="r-letterhead">
+                          <div class="l-brand">
+                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                            <span class="l-divider" aria-hidden="true"></span>
+                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                          </div>
+                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-22</b></span></div>
+                        </div>
+                        <div class="r-grid-2x2">
+                          <div class="r-seal" data-tier="b">
+                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;47.30</span></div>
+                            <div class="r-seal-mark">B</div>
+                            <div class="r-seal-tier"><span class="r-seal-rank">47 / 198</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 23.7%</span></div>
+                          </div>
+                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/></svg><div class="r-metric-arc-val">72.4<small>%</small></div></div></div><div class="sub">198-patent automotive radar pool</div></div>
+                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">47<small> / 198</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
+                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">47.30</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 47.30 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:47.30%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
+                        </div>
+                      </div>
+
+                      <div class="r-page-card is-a">
+                        <div class="r-letterhead">
+                          <div class="l-brand">
+                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                            <span class="l-divider" aria-hidden="true"></span>
+                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                          </div>
+                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-29</b></span></div>
+                        </div>
+                        <div class="r-grid-2x2">
+                          <div class="r-seal" data-tier="a">
+                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;56.12</span></div>
+                            <div class="r-seal-mark">A</div>
+                            <div class="r-seal-tier"><span class="r-seal-rank">18 / 162</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 11.1%</span></div>
+                          </div>
+                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/></svg><div class="r-metric-arc-val">88.7<small>%</small></div></div></div><div class="sub">162-patent semiconductor photolithography pool</div></div>
+                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">18<small> / 162</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
+                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">56.12</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 56.12 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:56.12%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
+                        </div>
+                      </div>
+
+                      <div class="r-page-card is-s">
+                        <div class="r-letterhead">
+                          <div class="l-brand">
+                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
+                            <span class="l-divider" aria-hidden="true"></span>
+                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
+                          </div>
+                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-05-06</b></span></div>
+                        </div>
+                        <div class="r-grid-2x2">
+                          <div class="r-seal" data-tier="s">
+                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;78.91</span></div>
+                            <div class="r-seal-mark">S</div>
+                            <div class="r-seal-tier"><span class="r-seal-rank">4 / 183</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 2.2%</span></div>
+                          </div>
+                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/></svg><div class="r-metric-arc-val">98.3<small>%</small></div></div></div><div class="sub">183-patent semiconductor advanced-node process pool</div></div>
+                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">4<small> / 183</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
+                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">78.91</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 78.91 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:78.91%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="callout bundle-callout cool" style="bottom:80px;left:-24px">
+              <span class="accent cool"></span>
+              <div class="body">
+                <h3 data-zh="三種讀法。<em>一個結論。</em>">Three readings. <em>One verdict.</em></h3>
+                <p class="sub" data-zh="同期百分位、排名與 PSS 收斂為單一 SABCD 評等——對照同儕計分。">Cohort percentile, rank, and PSS resolve to a single SABCD tier — scored against peers.</p>
+                <div class="legend">
+                  <span class="tier-chip tier-chip--s">Tier S</span>
+                  <span class="tier-chip tier-chip--a">Tier A</span>
+                  <span class="tier-chip tier-chip--b">Tier B</span>
+                  <span class="tier-chip tier-chip--c">Tier C</span>
+                  <span class="tier-chip tier-chip--d">Tier D</span>
+                </div>
+              </div>
+            </aside>
+
+            <aside class="callout cool" style="top:108px;right:-24px">
+              <span class="accent cool"></span>
+              <div class="body">
+                <div class="val"><em>Two depths.</em> Same engine.</div>
+                <div class="sub" data-zh="短報告——快速取得評等。完整報告——評等加上 50 項指標深度分析。">Brief — the grade, fast. Pro — the grade plus the 50-indicator deep dive.</div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <div class="deliverable-grid">
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
+          <h4 data-zh="SABCD 估值">SABCD valuation</h4>
+          <p data-zh="依據 Innovue 1.7 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。Brief 報告 15 點（NT$1,500）；+15 點升級為 Pro。">Five-tier patent quality score against Innovue's 170M-patent database. Tier S is premium / strategic; D is the bottom of the ladder. Brief 15 points (NT$1,500); +15 to upgrade to Pro.</p>
+        </article>
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
+          <h4 data-zh="專利比對">Patent comparison</h4>
+          <p data-zh="並列比對請求項、專利家族與引用重疊。辨識侵權風險，找出最可能擋住路線圖的專利。">Side-by-side claim, family, and citation overlap. Identifies infringement risk and the patents most likely to block your roadmap.</p>
+        </article>
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg></span>
+          <h4 data-zh="繞道路徑指引">Work-around guidance</h4>
+          <p data-zh="依資料庫掃描，追蹤繞過阻擋性專利的替代請求項路徑。在公開資料稀薄、進入市場時程緊迫時，讓 go / no-go 判斷更銳利。">Database-grounded scan that traces alternate claim paths around blocking patents. Sharpens go / no-go calls under thin public data and tight market-entry windows.</p>
+        </article>
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+          <h4 data-zh="預製報告">Pre-built reports</h4>
+          <p data-zh="產業 × 司法管轄區的專利地形圖——集中度、空白區、申請潮——以點數計費，可下載。Innovue 與 TIS 內部使用同一資料庫。">Industry × jurisdiction landscapes — concentration, whitespace, filing surge — point-priced and downloadable. Same DB Innovue and TIS use internally.</p>
+        </article>
+      </div>
+
+      <div class="howitworks">
+        <h3 data-zh="運作方式">How it works</h3>
+        <div class="howitworks-grid">
+
+          <div class="howitworks-visual howitworks-visual--steps" aria-hidden="true">
+
+            <div class="howitworks-step-panel is-active" data-step="search">
+              <p class="howitworks-step-eyebrow"><span>Step 1</span><span class="dot"></span><span data-zh="搜尋輸入">Search input</span></p>
+              <div class="prod-option-list">
+                <div class="prod-option-row is-selected"><span class="nm" data-zh="專利號">Patent number</span><span class="ct">US 10,892,431</span></div>
+                <div class="prod-option-row"><span class="nm" data-zh="公司名稱">Company name</span><span class="ct" data-zh="模糊比對">Fuzzy match</span></div>
+                <div class="prod-option-row"><span class="nm" data-zh="技術描述">Technology description</span><span class="ct" data-zh="自然語言">Natural language</span></div>
+                <div class="prod-option-row"><span class="nm" data-zh="批次上傳">Batch upload</span><span class="ct">PDF · CSV · XLSX</span></div>
+              </div>
+            </div>
+
+            <div class="howitworks-step-panel" data-step="valuation">
+              <p class="howitworks-step-eyebrow"><span>Step 2</span><span class="dot"></span><span data-zh="評分執行中">Scoring in progress</span></p>
+              <div class="prod-status-timeline">
+                <div class="prod-timeline-step is-done"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="送出">Submitted</p><p class="prod-timeline-sub">T+0 min</p></div>
+                <div class="prod-timeline-step is-active"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="評分中">Scoring</p><p class="prod-timeline-sub">T+15–20 min</p></div>
+                <div class="prod-timeline-step is-future"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="Brief 寄達">Brief sent</p><p class="prod-timeline-sub">T+30 min</p></div>
+              </div>
+            </div>
+
+            <div class="howitworks-step-panel" data-step="evidence">
+              <p class="howitworks-step-eyebrow"><span>Step 3</span><span class="dot"></span><span data-zh="檢視證據">Verdict + evidence</span></p>
+              <div class="howitworks-seal-row">
+                <div class="prod-seal" data-tier="b">
+                  <span class="prod-seal-eyebrow"><span>PSS 62.17</span></span>
+                  <span class="prod-seal-mark">B</span>
+                  <span class="prod-seal-tier"><span>47 / 183</span></span>
+                </div>
+                <div class="prod-metric-trio" style="grid-template-columns:1fr;">
+                  <div class="prod-metric"><span class="lbl" data-zh="同儕百分位">Percentile</span><span class="val">61.7<small>%</small></span></div>
+                  <div class="prod-metric"><span class="lbl" data-zh="組內排名">Rank</span><span class="val">47<small>/183</small></span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="howitworks-step-panel" data-step="export">
+              <p class="howitworks-step-eyebrow"><span>Step 4</span><span class="dot"></span><span data-zh="匯出">Downloadable Brief</span></p>
+              <article class="prod-report-page" style="max-width:none;">
+                <header class="prod-letterhead">
+                  <div class="l-brand"><span>TIS Signal</span><span class="l-divider"></span><span>Innovue</span></div>
+                  <div class="l-meta"><span>BRF-<b>2026-0518-A1F3</b></span></div>
+                </header>
+                <div class="prod-report-bc"><div><p class="prod-report-bc-meta">US 10,892,431 B2 · COHORT n=183</p></div></div>
+                <div class="prod-report-hero">
+                  <div class="prod-seal" data-tier="b">
+                    <span class="prod-seal-eyebrow"><span>PSS 62.17</span></span>
+                    <span class="prod-seal-mark">B</span>
+                    <span class="prod-seal-tier"><span>47 / 183</span></span>
+                  </div>
+                </div>
+                <footer class="prod-report-foot">
+                  <span>© 2026 TIS · SAMPLE</span>
+                  <span>SHA-256 · 9F8E…7C32</span>
+                </footer>
+              </article>
+            </div>
+
+          </div>
+
+          <div class="acc-list">
+            <div class="acc-item is-open" data-step="search">
+              <button type="button" class="acc-trigger">
+                <span class="acc-title" data-zh="搜尋">Search</span>
+                <span class="acc-mark" aria-hidden="true">−</span>
+              </button>
+              <div class="acc-content"><div><p data-zh="輸入專利號、公司名稱或技術描述。可上傳 PDF、CSV 或 Excel 批次處理——無需自有專利組合。">Patent number, company name, or technology description. Upload PDF, CSV, or Excel for batch processing — no patent portfolio required.</p></div></div>
+            </div>
+            <div class="acc-item" data-step="valuation">
+              <button type="button" class="acc-trigger">
+                <span class="acc-title" data-zh="執行估值">Run a Valuation</span>
+                <span class="acc-mark" aria-hidden="true">+</span>
+              </button>
+              <div class="acc-content"><div><p data-zh="依據 Innovue 1.7 億件專利資料庫回傳 SABCD 評等。Brief 報告 15 點；累計 30 點升級為 Pro（+15 點差額）。1 點 = NT$100。">SABCD grades returned against Innovue's 170M-patent database. 15 points for a Brief; +15 to upgrade to Pro (30 cumulative). 1 point = NT$100.</p></div></div>
+            </div>
+            <div class="acc-item" data-step="evidence">
+              <button type="button" class="acc-trigger">
+                <span class="acc-title" data-zh="檢視證據">Review the evidence</span>
+                <span class="acc-mark" aria-hidden="true">+</span>
+              </button>
+              <div class="acc-content"><div><p data-zh="引用、家族數、司法管轄區覆蓋、請求項範圍。先理由再結論——每一級評等都對應到具體專利與具名相對方。">Citations, family counts, jurisdiction coverage, claim breadth. Reasons before conclusions — every grade attaches to specific patents and named counterparties.</p></div></div>
+            </div>
+            <div class="acc-item" data-step="export">
+              <button type="button" class="acc-trigger">
+                <span class="acc-title" data-zh="匯出或儲存">Export or save</span>
+                <span class="acc-mark" aria-hidden="true">+</span>
+              </button>
+              <div class="acc-content"><div><p data-zh="PDF 報告供投資備忘錄使用。將估值存入 Dashboard 以監控投資組合。">PDF report for the deal memo. Save Valuations to your dashboard for portfolio monitoring.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 3. Pricing (moved up; restructured per licensing pattern) ─── -->
+  <section class="section section--alt" id="pricing" aria-labelledby="signal-pricing-heading">
+    <div class="container">
+      <header class="section-head section-head--centered">
+        <p class="section-eyebrow prod-eyebrow" data-zh="定價">Pricing</p>
+        <h2 id="signal-pricing-heading" data-zh="按報告付費，或月訂閱。">Pay per report. Or subscribe.</h2>
+        <p data-zh="1 點 = NT$100。錢包以公司網域為單位共用——同網域最多 5 個帳號共用同一個餘額。">1 point = NT$100. <strong>Wallet pooled per company domain</strong> — up to 5 accounts share the same balance.</p>
+      </header>
+
+      <div class="prod-pricing-grid">
+        <article class="prod-price-tier">
+          <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
+          <p class="prod-price-name" data-zh="Lite">Lite</p>
+          <p class="prod-price-tagline" data-zh="單人分析師節奏 · 約 3 份 Brief / 月">Single-analyst tempo · ~3 Briefs / month</p>
+          <div class="prod-price-block">
+            <span class="num">NT$4,900</span><span class="unit">/ mo</span>
+          </div>
+          <p class="prod-price-foot" data-zh="獨立 / 輕量 VC。需要更高頻？升級 Standard。">For solo / lightweight VCs. Need higher frequency? Upgrade to Standard.</p>
+          <ul class="prod-price-features">
+            <li data-zh="49 點 / 月（約 3 份 Brief）">49 points / month (~3 Briefs)</li>
+            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
+            <li data-zh="月底未用點數歸零">Subscription points reset monthly</li>
+            <li data-zh="信箱送達 + 儀表板存取">Email delivery + dashboard access</li>
+            <li data-zh="PDF 浮水印 + 稽核軌跡">Watermarked PDFs + audit trail</li>
+          </ul>
+          <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
+        </article>
+
+        <article class="prod-price-tier is-featured">
+          <p class="prod-price-eyebrow" data-zh="最熱門">Most popular</p>
+          <p class="prod-price-name">Standard</p>
+          <p class="prod-price-tagline" data-zh="VC 標準配置 · 約 5 份 Brief 或 2 份 Pro + 1 份 Brief / 月">VC default · ~5 Briefs or 2 Pros + 1 Brief / month</p>
+          <div class="prod-price-block">
+            <span class="num">NT$7,900</span><span class="unit">/ mo</span>
+            <span class="save">Save 5%</span>
+          </div>
+          <p class="prod-price-foot" data-zh="大多訂閱者落在這一檔。批次與優先 SLA 一次到位。">Most subscribers land here. Batch and priority SLA all-in.</p>
+          <ul class="prod-price-features">
+            <li data-zh="83 點 / 月（5 份 Brief 或 2 Pros + 1 Brief）">83 points / month (5 Briefs or 2 Pros + 1 Brief)</li>
+            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
+            <li data-zh="批次提交：早上 8 份 deck，當天回">Batch submit — 8 morning decks, scored by EOD</li>
+            <li data-zh="優先處理佇列（30 分鐘 SLA）">Priority queue (30-min SLA)</li>
+            <li data-zh="PDF + JSON 匯出">PDF + JSON export</li>
+          </ul>
+          <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
+        </article>
+
+        <article class="prod-price-tier">
+          <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
+          <p class="prod-price-name">Pro</p>
+          <p class="prod-price-tagline" data-zh="高頻分析師 + IC 合夥人混合 · ~7 份 Brief 或 3 份 Pro / 月">High-frequency analysts + IC partner mix · ~7 Briefs or 3 Pros / month</p>
+          <div class="prod-price-block">
+            <span class="num">NT$9,900</span><span class="unit">/ mo</span>
+            <span class="save">Save 10%</span>
+          </div>
+          <p class="prod-price-foot" data-zh="所有層級錢包皆為公司網域 5 個帳號共用；6+ 帳號企業錢包為 Phase 2。">All tier wallets stay pooled at 5 accounts per domain. 6+ enterprise wallet is Phase 2.</p>
+          <ul class="prod-price-features">
+            <li data-zh="110 點 / 月（7 份 Brief 或 3 Pros + 1 Brief）">110 points / month (7 Briefs or 3 Pros + 1 Brief)</li>
+            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
+            <li data-zh="專屬同儕池（自選 IPC 範圍）">Custom cohort selection (IPC / time bands)</li>
+            <li data-zh="月度 LP-report 摘要">Monthly LP-letter summary</li>
+            <li data-zh="Slack / Teams 整合">Slack / Teams hook for new Briefs</li>
+          </ul>
+          <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
+        </article>
+      </div>
+
+      <div class="prod-ref-table-wrap">
+        <div class="prod-ref-table-head">
+          <h4 data-zh="按報告價目">Points per query</h4>
+          <p data-zh="加值點數包：50 點 NT$4,500 · 150 點 NT$13,000 · 500 點 NT$42,000">Top-up packs: 50 pts NT$4,500 · 150 pts NT$13,000 · 500 pts NT$42,000</p>
+        </div>
+        <table class="prod-ref-table">
+          <thead><tr>
+            <th data-zh="動作">Action</th>
+            <th class="right" data-zh="點數">Points</th>
+            <th class="right" data-zh="價格">Price</th>
+            <th class="right" data-zh="折扣">Top-up discount</th>
+          </tr></thead>
+          <tbody>
+            <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+            <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+            <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
+            <tr><td data-zh="50 點頂入包">50-point top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
+            <tr><td data-zh="150 點頂入包">150-point top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
+            <tr><td data-zh="500 點頂入包">500-point top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="prod-price-fine" data-zh="先期 VC 試行：50 點免費啟動，可換約 3 份 Brief 或 1 份 Pro + 1 份 Brief。試行登記期 2026-07 至 2026-12——聯絡業務報名。頂入點數無到期日；訂閱送的點數月底重置。">First-batch VC pilot — 50 free points to start (roughly 3 Briefs or 1 Pro + 1 Brief). Pilot enrollment open 2026-07 through 2026-12 — talk to sales. Top-up points never expire; subscription-granted points reset monthly.</p>
+    </div>
+  </section>
+
+  <!-- ─── 4. Use Case (Problem + Solution + Outcomes folded under one header) ─── -->
+  <section class="section section--alt" aria-labelledby="signal-usecase-heading">
+    <div class="container">
+      <h3 id="signal-usecase-heading" class="usecase-heading" data-zh="使用情境">Use Case</h3>
+
+      <div class="usecase-split">
+        <div class="usecase-split-side usecase-split-side--before">
+          <p class="usecase-split-label" data-zh="過去">Before</p>
+          <h4 class="usecase-split-headline" data-zh="一位創辦人說「IP 很強」。你週四要投票。">A founder claims "strong IP." You vote on Thursday.</h4>
+          <p class="usecase-split-subhead" data-zh="今天 VC 在做 IP 盡調，只有三條不太好的路。">Today's options for IP DD — pick your trade-off.</p>
+
+          <div class="usecase-split-stat">
+            <span class="usecase-split-stat-label" data-zh="得到可辯護等級所需時間">Time to a defensible grade</span>
+            <span class="usecase-split-stat-value" data-zh="幾天起">Days+</span>
+          </div>
+
+          <ol class="usecase-split-timeline">
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp" data-zh="第 0 天">Day 0</span>
+              <span class="usecase-split-timeline-label" data-zh="自行 Google Patents 翻閱——只有文字，沒有判斷">DIY Google Patents — text, no judgment</span>
+            </li>
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp" data-zh="第 1–10 天">Day 1–10</span>
+              <span class="usecase-split-timeline-label" data-zh="委外 IP 律師——法律意見、無同儕基準">Hire IP counsel — legal opinion, no benchmark</span>
+            </li>
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp" data-zh="預設">Default</span>
+              <span class="usecase-split-timeline-label" data-zh="投影片寫「IP 很強」——無從驗證">Deck says "Strong IP" — unverifiable</span>
+            </li>
+          </ol>
+
+          <div class="usecase-split-supporting">
+            <div>
+              <span class="usecase-split-supporting-num">$500–1,500</span>
+              <span class="usecase-split-supporting-label" data-zh="每件律師審閱費用">per patent for counsel review</span>
+            </div>
+            <div>
+              <span class="usecase-split-supporting-num">0</span>
+              <span class="usecase-split-supporting-label" data-zh="同儕基準訊號">peer-benchmark signal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="usecase-split-side usecase-split-side--after">
+          <p class="usecase-split-label" data-zh="現在">After</p>
+          <h4 class="usecase-split-headline"><span data-zh="每件專利交給 PSS 引擎。">Every patent run through the PSS engine.</span> <em data-zh="三十分鐘到信箱。">Inbox in thirty minutes.</em></h4>
+          <p class="usecase-split-subhead" data-zh="送出專利號，離開桌前。Brief 自己會到。">Submit a patent number. Walk away. The Brief arrives.</p>
+
+          <div class="usecase-split-stat">
+            <span class="usecase-split-stat-label" data-zh="得到可辯護等級所需時間">Time to a defensible grade</span>
+            <span class="usecase-split-stat-value" data-zh="30 分鐘">30 min</span>
+          </div>
+
+          <ol class="usecase-split-timeline">
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp">T+0</span>
+              <span class="usecase-split-timeline-label" data-zh="送出專利號——不需技術說明書、不需 FTO">Submit patent # — no spec, no FTO required</span>
+            </li>
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp">T+15</span>
+              <span class="usecase-split-timeline-label" data-zh="PSS 引擎評分——50 指標 × 8 大支柱">PSS scoring — 50 indicators × 8 pillars</span>
+            </li>
+            <li class="usecase-split-timeline-step">
+              <span class="usecase-split-timeline-stamp">T+30</span>
+              <span class="usecase-split-timeline-label" data-zh="Brief 到信箱——SABCD + 同儕百分位">Brief in inbox — SABCD + peer percentile</span>
+            </li>
+          </ol>
+
+          <div class="usecase-split-supporting">
+            <div>
+              <span class="usecase-split-supporting-num">50 × 8</span>
+              <span class="usecase-split-supporting-label" data-zh="指標 × 支柱，每份 Brief">indicators × pillars per Brief</span>
+            </div>
+            <div>
+              <span class="usecase-split-supporting-num">100+</span>
+              <span class="usecase-split-supporting-label" data-zh="同產業同儕，取自 1.7 億件池">cohort peers from the 170M corpus</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="usecase-split-footer">
+          <p class="usecase-split-footer-lede" data-zh="想看週四前 Brief 在 IC 投影片上的樣子？">See what your Thursday looks like — a finished Brief, before you start.</p>
+          <a href="https://signal.tisglobalinc.com/start" class="btn btn-secondary" data-target="signal-sample" data-zh="看一份範例 Brief →">See a sample Brief →</a>
+        </div>
+      </div>
+
+      <div class="usecase-personas">
+        <header class="usecase-personas-head">
+          <p class="section-eyebrow prod-eyebrow" data-zh="適用對象">Who this works for</p>
+          <h4 class="usecase-personas-headline" data-zh="兩種買家。同一份 Brief。">Two buyers. Same Brief.</h4>
+        </header>
+        <div class="usecase-personas-grid">
+          <article class="usecase-persona">
+            <p class="usecase-persona-tag" data-zh="VC IC 工作流">VC IC workflow</p>
+            <h5 class="usecase-persona-headline" data-zh="午餐前看完 8 份 Pitch Deck。合夥人會議前 Brief 已在信箱。">Eight Pitch Decks before lunch. Inbox before the partner meeting.</h5>
+            <p class="usecase-persona-body" data-zh="週一早上批次送出，走去 standup。30 分鐘後 Brief 到信箱，依 SABCD 對同產業池排名——投資前盡調的可辯護等級。">Submit on Monday morning, walk to standup. Briefs arrive in thirty minutes, ranked by SABCD against the same industry pool — a defensible grade for pre-investment DD.</p>
+          </article>
+
+          <article class="usecase-persona">
+            <p class="usecase-persona-tag" data-zh="企業創投 / 公司 IP 部門">Corporate venture · TTO</p>
+            <h5 class="usecase-persona-headline" data-zh="併購對象說「組合很強」。當天結束前把 14 件專利跑過 PSS。">Acquisition target says "strong portfolio." Run their 14 patents through PSS by EOD.</h5>
+            <p class="usecase-persona-body" data-zh="逐件送專利號，依資產買 Brief 或 Pro。SABCD 結論可直接附進 M&A 備忘——對的是與授權決策同一份 Innovue 1.7 億件資料庫。">Submit each patent number individually. Brief or Pro per asset. SABCD verdicts you can attach to the M&A memo, against the same Innovue 170M corpus used for licensing decisions.</p>
+            <p class="usecase-persona-foot" data-zh="產業地形圖在路線圖上——v1 階段 Signal 以單件資產為單位服務 CVC。">Industry-wide landscape mapping is on the roadmap — for v1, Signal serves CVC on a per-asset basis.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 7. FAQ ─── -->
+  <section class="section" aria-labelledby="signal-faq-heading">
+    <div class="container">
+      <div class="faq-layout">
+        <header class="faq-head">
+          <h3 id="signal-faq-heading" class="faq-heading" data-zh="常見問題">FAQ</h3>
+        </header>
+
+        <div class="acc-list faq-list">
+          <div class="acc-item is-open">
+            <button type="button" class="acc-trigger">
+              <span class="acc-title" data-zh="SABCD 等級是怎麼算出來的？">How is the SABCD grade actually calculated?</span>
+              <span class="acc-mark" aria-hidden="true">−</span>
+            </button>
+            <div class="acc-content"><div>
+              <p data-zh="Patent Strength Score (PSS) 引擎將每件專利分解為 50 個量化訊號——引用影響、法律強度、市場覆蓋、授權潛力、技術前瞻、同族廣度、維護生命力、競爭密度。八大支柱，各自獨立加權。透明 &gt; 精準：我們會給你一個字母，更努力去證明那個字母。">The <strong>Patent Strength Score (PSS)</strong> engine decomposes every patent into <strong>50 quantitative signals</strong> — citation impact, legal robustness, market coverage, licensing potential, forward technology, family breadth, maintenance vitality, competitive density. Eight pillars, each independently weighted. <strong>Transparency over precision</strong> — we give you a letter, then work harder to <em>prove</em> the letter.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item">
+            <button type="button" class="acc-trigger">
+              <span class="acc-title" data-zh="比較的同儕池是什麼？">What pool are you comparing my patent against?</span>
+              <span class="acc-mark" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-content"><div>
+              <p data-zh="Signal 讀取你專利的 IPC 分類、技術領域與申請年代區間，配對 TIS 池內 100+ 同儕——由 Innovue WEBPAT 預先評分。同樣的 IP 池支援 TIS 授權平台的捆綁。這不是「對全球所有專利的百分位」。這是對你真正會競爭的對手的百分位。">Signal reads your patent's IPC class, technical domain, and filing window, then matches it to <strong>100+ peers from the TIS pool</strong> — pre-scored on Innovue WEBPAT. The same pool feeds bundles on the TIS Licensing Platform. This isn't "percentile vs every patent on Earth." It's percentile <strong>vs the companies you'll actually compete with</strong>.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item">
+            <button type="button" class="acc-trigger">
+              <span class="acc-title" data-zh="我可以看到每個分數是怎麼算出來的嗎？">Can I see how each score was calculated?</span>
+              <span class="acc-mark" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-content"><div>
+              <p data-zh="可以。點開任一支柱：看到 5–8 項底層指標。點開任一指標：看到計算公式、原始數值、與同儕中位數。沒有「我們的模型說」。Signal 報告為資訊參考用途，並非法律或投資建議。">Yes. Click any pillar to see its 5–8 underlying indicators. Click any indicator to see the formula, the raw value, and the cohort median. <strong>No "our model says."</strong> Signal Briefs are informational — not legal or investment advice.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item">
+            <button type="button" class="acc-trigger">
+              <span class="acc-title" data-zh="Brief 跟 Pro 擴充差在哪裡？">What's in a Brief vs the Pro extension?</span>
+              <span class="acc-mark" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-content"><div>
+              <p data-zh="Brief（15 點）涵蓋：SABCD 評等、PSS 強度、同儕百分位、組內排名、八大支柱雷達圖、50 指標摘要計分卡、評等理由。Pro（+15 點）再加：前 10 大強項（含貢獻百分比）、前 10 大風險（含敏感度分析）、跨場景穩定矩陣（授權／訴訟／併購）、授權策略 + 對手地圖、工作迴避指引（FTO hints）、50 指標完整透明、PDF + JSON 匯出。+15 點，30 秒內解鎖。"><strong>Brief (15 points)</strong> covers the SABCD verdict, PSS magnitude, peer percentile, cohort rank, eight-pillar radar, 50-indicator summary scorecard, and rating rationale. <strong>Pro (+15 points)</strong> adds the top 10 strengths with contribution percentages, top 10 risks with sensitivity analysis, cross-scenario stability matrix (licensing / litigation / M&amp;A), licensing strategy with counter-party map, work-around guidance (FTO hints), full 50-indicator drilldown with formulas, and PDF + JSON export. +15 points unlocks Pro in under thirty seconds.</p>
+            </div></div>
+          </div>
+
+          <div class="acc-item">
+            <button type="button" class="acc-trigger">
+              <span class="acc-title" data-zh="從送出到收到 Brief 需要多久？">How long until the Brief lands in my inbox?</span>
+              <span class="acc-mark" aria-hidden="true">+</span>
+            </button>
+            <div class="acc-content"><div>
+              <p data-zh="三十分鐘。送出專利號 → PSS 引擎評分（T+15–20 min）→ Brief 寄達（T+30 min）。離開桌前，回來時 Brief 已在信箱。"><strong>Thirty minutes.</strong> Submit a patent number → the PSS engine scores it (T+15–20 min) → the Brief lands in your inbox (T+30 min). Walk away from your desk; come back to a finished report.</p>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 8. CTA banner (themed) ─── -->
+  <section class="section cta-banner cta-banner--themed" id="signup" aria-labelledby="signal-cta-heading">
+    <div class="container">
+      <header class="section-head section-head--centered">
+        <h2 id="signal-cta-heading" data-zh="先試一筆。50 點免費。">Try one for free. 50 points on us.</h2>
+        <p data-zh="先期 VC 試行登記：2026-07 至 2026-12。聯絡業務領取 50 點——約 3 份 Brief 或 1 份 Pro + 1 份 Brief。">First-batch VC pilot, enrollment open 2026-07 through 2026-12. Talk to sales for your 50 starter points — roughly 3 Briefs or 1 Pro + 1 Brief.</p>
+      </header>
+      <div class="page-hero-actions">
+        <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
         <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── Stat bar ─── -->
-  <section class="section section--tight" aria-label="By the numbers">
-    <div class="container stats-grid stats-grid--4up">
-      <div class="stat-card">
-        <p class="stat-eyebrow" data-zh="交付時間">Time to inbox</p>
-        <h2 class="stat-num"><span class="counter" data-target="30">0</span><span class="num-suffix" data-zh=" 分">min</span></h2>
-        <p class="stat-body" data-zh="從提交專利號到 Brief 寄達信箱。Pro 升級則為瞬間（&lt; 30 秒）。">From submitting a patent number to a Brief in your inbox. Pro upgrades are instant (&lt; 30 sec).</p>
-      </div>
-      <div class="stat-card">
-        <p class="stat-eyebrow" data-zh="比對宇宙">Comparison universe</p>
-        <h2 class="stat-num"><span class="counter" data-target="170">0</span><span class="num-suffix">M</span></h2>
-        <p class="stat-body" data-zh="Innovue 專屬資料庫的專利總量——全球第四大。包含 100+ 司法管轄區。">Patents in Innovue's proprietary database — 4th-largest globally. Spans 100+ patent offices.</p>
-      </div>
-      <div class="stat-card">
-        <p class="stat-eyebrow" data-zh="評等維度">Scoring dimensions</p>
-        <h2 class="stat-num"><span class="counter" data-target="50">0</span></h2>
-        <p class="stat-body" data-zh="每件專利檢核的 PSS 指標數，分布在 8 個面向（引用影響力、法律強度、市場覆蓋、授權潛力等）。">PSS indicators evaluated per patent across 8 dimensions (citation impact, legal strength, market coverage, licensing potential, more).</p>
-      </div>
-      <div class="stat-card">
-        <p class="stat-eyebrow" data-zh="等級系統">Grading system</p>
-        <h2 class="stat-num"><span>SABCD</span></h2>
-        <p class="stat-body" data-zh="五級評等——S（前段）/ A / B / C / D（後段）。與 TIS 授權平台使用同一個治理框架。">Five tiers — S (top) / A / B / C / D (bottom). Same governance framework as TIS Licensing Platform.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Audience cards ─── -->
-  <section class="section" aria-labelledby="signal-audience-heading">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow" data-zh="目標客群">Built for</p>
-        <h2 id="signal-audience-heading" data-zh="把 IP 盡職調查從投委會階段，前移到初篩階段。">Move IP due diligence from IC stage to first-screen stage.</h2>
-      </header>
-
-      <div class="audience-grid">
-        <article class="audience-card">
-          <p class="audience-card-eyebrow" data-zh="創投分析師">VC analysts</p>
-          <h3 data-zh="從直覺判斷升級為客觀評等">From gut calls to objective grades</h3>
-          <p data-zh="你每週看 5–20 件新創 deck，但 IP 盡職調查永遠是瓶頸——傳統報告 4–8 週、單件 5–15 萬。提交專利號，30 分鐘內收到含百分位排名與雷達圖的 Brief。不需 IP 背景。">You see 5–20 pitch decks a week, but IP due diligence is the bottleneck — traditional reports take 4–8 weeks and cost NT$5–15K per patent. Submit a patent number; a Brief with percentile rank and radar chart lands in 30 minutes. No IP background needed.</p>
-        </article>
-
-        <article class="audience-card">
-          <p class="audience-card-eyebrow" data-zh="創投合夥人 / 投委會">VC partners · IC</p>
-          <h3 data-zh="可辯護的專利論述，而非顧問直覺">Defensible patent narratives, not consultant hunches</h3>
-          <p data-zh="被投公司聲稱「IP 很強」，但你要在投委會表決連自己都無法客觀評估的專利。Pro 報告 7 章節深度——50 指標 + Top 10 強項/弱項 + 跨場景穩定性 + 授權策略——直接放進你的 IC deck，全程透明。">Your portfolios claim "strong IP," but you're voting on patents you can't objectively evaluate. The Pro report's 7 chapters — 50-indicator breakdown, Top 10 strengths and weaknesses, cross-scenario stability, licensing strategy — drops straight into your IC deck with full transparency.</p>
-        </article>
-
-        <article class="audience-card">
-          <p class="audience-card-eyebrow" data-zh="加速器 / 育成中心">Accelerators · incubators</p>
-          <h3 data-zh="一個 cohort 一次評完">Grade a cohort in one afternoon</h3>
-          <p data-zh="輔導 12 家新創，每家手上 3–15 件專利。標準化評等讓 cohort 之間可比較——找出強項、揭露弱項，給 demo day 的投資人一份相同基準的對照表。月訂閱讓全團隊共用一個錢包。">Mentoring 12 startups, each with 3–15 patents. Standardized grading makes the cohort comparable — surface strengths, expose weaknesses, hand demo-day investors one shared benchmark. Monthly subscription pools points across your team.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── How it works ─── -->
-  <section class="section" aria-labelledby="signal-flow-heading">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow" data-zh="使用流程">How it works</p>
-        <h2 id="signal-flow-heading" data-zh="四個步驟。30 分鐘到信箱。">Four steps. Inbox in 30 minutes.</h2>
-      </header>
-
-      <ol class="steps">
-        <li class="step">
-          <span class="step-num" aria-hidden="true">01</span>
-          <div class="step-body">
-            <h3 data-zh="提交專利號">Submit a patent number</h3>
-            <p data-zh="輸入專利號或發明人姓名。Signal 自動對應到 12 個產業分類之一，並讓你批次提交多筆（早上 8 件 pitch deck，就送 8 件）。">Enter a patent number or inventor name. Signal maps it to one of 12 industry buckets and accepts batches (eight Monday-morning pitch decks → submit eight patents).</p>
-          </div>
-        </li>
-        <li class="step">
-          <span class="step-num" aria-hidden="true">02</span>
-          <div class="step-body">
-            <h3 data-zh="系統抽取屬性（15–20 分，非同步）">System extracts attributes (15–20 min, async)</h3>
-            <p data-zh="Signal 呼叫 Innovue WEBPAT，跨 8 個面向抽取 50 項專利強度指標——引用影響力、法律強度、市場覆蓋、授權潛力等。你不必盯著頁面等。">Signal calls Innovue's WEBPAT to extract 50 patent-strength indicators across 8 dimensions — citation impact, legal strength, market coverage, licensing potential, more. No need to wait on the page.</p>
-          </div>
-        </li>
-        <li class="step">
-          <span class="step-num" aria-hidden="true">03</span>
-          <div class="step-body">
-            <h3 data-zh="Brief 報告寄達信箱">Brief report lands in email</h3>
-            <p data-zh="30 分鐘內，你會收到 Brief：你的專利在 TIS 池內 100+ 同儕中的百分位排名、SABCD 等級、8 大支柱雷達圖。含水印與時間戳。">Within 30 minutes, the Brief arrives: your patent's percentile rank among 100+ peers in the TIS pool, its SABCD grade, and an 8-pillar radar chart. Watermarked and timestamped.</p>
-          </div>
-        </li>
-        <li class="step">
-          <span class="step-num" aria-hidden="true">04</span>
-          <div class="step-body">
-            <h3 data-zh="按需解鎖 Pro 深度報告">Unlock the Pro deep-dive on demand</h3>
-            <p data-zh="點擊「解鎖深度報告」——瞬間升級。Pro 多七章節：50 指標逐項深入、Top 10 強項 / 弱項、跨場景穩定性矩陣（授權 / 訴訟 / 併購）、授權策略建議。">Click "Unlock Pro" — instant upgrade. Pro adds seven chapters: 50-indicator drilldown, Top 10 strengths and weaknesses, cross-scenario stability (licensing / litigation / M&amp;A), and licensing strategy recommendations.</p>
-          </div>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ─── Deliverables ─── -->
-  <section class="section" aria-labelledby="signal-deliver-heading">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow" data-zh="你會拿到什麼">What you get</p>
-        <h2 id="signal-deliver-heading" data-zh="可下載的報告，永久存取。所有指標可追溯。">Downloadable reports, permanent access. Every metric traceable.</h2>
-      </header>
-
-      <div class="deliverable-grid">
-        <article class="deliverable-card">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-          </span>
-          <h4 data-zh="Brief 快速報告">Spotlight Brief</h4>
-          <p data-zh="一份可滾動報告——SABCD 等級、同儕群百分位、8 大支柱雷達圖。Email 寄達，30 分鐘到手，永久存取。15 點 / NT$1,500。">A single scrollable report — SABCD grade, peer-cohort percentile, 8-pillar radar chart. Emailed in 30 minutes, permanent access. 15 points / NT$1,500.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          </span>
-          <h4 data-zh="Pro 深度報告">Spotlight Pro</h4>
-          <p data-zh="投委會等級的執行摘要——7 章節：50 指標逐項、Top 10 強項 / 弱項、跨場景穩定性、授權策略路線。從 Brief 一鍵升級。累計 30 點 / NT$3,000（+15 點差額）。">An IC-grade executive briefing — 7 chapters: 50-indicator detail, Top 10 strengths and weaknesses, cross-scenario stability, licensing roadmap. One-click upgrade from a Brief. 30 points cumulative / NT$3,000 (+15 delta).</p>
-        </article>
-
-        <article class="deliverable-card">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
-          </span>
-          <h4 data-zh="專利池同儕基準">Peer benchmarking</h4>
-          <p data-zh="你的專利對照 TIS 池內 100+ 同儕——和 TIS 授權平台共用的標準化池。每位同儕都已預先評過 PSS 50 指標；每個分數都可點開、可追溯。">Your patent is ranked against 100+ peers in the TIS pool — the same standardized pool used by TIS Licensing Platform. Every peer pre-scored on the 50-indicator engine; every metric clickable and traceable.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M16 12h.01M2 10h20"/></svg>
-          </span>
-          <h4 data-zh="共用點數錢包">Pooled wallet</h4>
-          <p data-zh="月訂閱按公司網域計費（不是按座位）。最多 5 位團隊成員共用一個錢包，由管理員配發；新月份重置。多分析師同時用 = 一份訂閱費。">Monthly subscription billed per company domain (not per seat). Up to 5 team members share one wallet, managed by your admin, reset each month. Many analysts → one subscription fee.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-          </span>
-          <h4 data-zh="PDF 水印與稽核軌跡">PDF watermarking &amp; audit trail</h4>
-          <p data-zh="每份 Brief 和 Pro 都加上下載者的 email 與時間戳。防未授權轉發；必要時可追溯洩漏來源。GDPR 相容。">Every Brief and Pro is watermarked with the downloader's email and timestamp. Prevents unauthorized redistribution; traceable if a PDF leaks. GDPR-compliant.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Pricing ─── -->
-  <section class="section" id="pricing" aria-labelledby="signal-pricing-heading">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow" data-zh="定價">Pricing</p>
-        <h2 id="signal-pricing-heading" data-zh="按報告付費，或月訂閱。1 點 = NT$100。">Pay per report, or subscribe monthly. 1 point = NT$100.</h2>
-      </header>
-
-      <h3 class="price-group-heading" data-zh="按報告">Per report</h3>
-      <div class="price-grid price-grid--2up">
-        <article class="price-card">
-          <p class="price-card-eyebrow" data-zh="入門">Entry</p>
-          <h4 data-zh="Spotlight Brief">Spotlight Brief</h4>
-          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">1,500</span></p>
-          <p class="price-meta" data-zh="15 點 · 約 US$50">15 points · ≈ US$50</p>
-          <ul class="price-features">
-            <li data-zh="SABCD 等級 + 8 支柱雷達圖">SABCD grade + 8-pillar radar chart</li>
-            <li data-zh="同儕群百分位排名">Peer-cohort percentile rank</li>
-            <li data-zh="30 分鐘內 Email 寄達">Email delivery in 30 minutes</li>
-            <li data-zh="永久存取（含水印）">Permanent access (watermarked)</li>
-          </ul>
-        </article>
-
-        <article class="price-card price-card--featured">
-          <p class="price-card-eyebrow" data-zh="決策級">Decision-grade</p>
-          <h4 data-zh="Spotlight Pro">Spotlight Pro</h4>
-          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">3,000</span></p>
-          <p class="price-meta" data-zh="累計 30 點（+15 差額） · 約 US$100">30 points cumulative (+15 delta) · ≈ US$100</p>
-          <ul class="price-features">
-            <li data-zh="含 Brief 全部內容">Everything in the Brief</li>
-            <li data-zh="50 指標逐項深入">50-indicator drilldown</li>
-            <li data-zh="Top 10 強項 / 弱項">Top 10 strengths and weaknesses</li>
-            <li data-zh="跨場景穩定性矩陣">Cross-scenario stability matrix</li>
-            <li data-zh="授權策略路線">Licensing strategy roadmap</li>
-            <li data-zh="從 Brief 瞬間升級（&lt; 30 秒）">Instant upgrade from a Brief (&lt; 30 sec)</li>
-          </ul>
-        </article>
-      </div>
-
-      <h3 class="price-group-heading" data-zh="月訂閱（依公司網域，共用錢包）">Monthly subscription (per company domain · pooled wallet)</h3>
-      <div class="price-grid price-grid--3up">
-        <article class="price-card">
-          <p class="price-card-eyebrow" data-zh="輕量">Lite</p>
-          <h4 data-zh="49 點 / 月">49 points / mo</h4>
-          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">4,900</span><span class="price-period" data-zh="/月">/mo</span></p>
-          <p class="price-meta" data-zh="約 3 件 Brief 或 1 件 Pro + 1 件 Brief">~3 Briefs or 1 Pro + 1 Brief</p>
-          <ul class="price-features">
-            <li data-zh="最多 5 位成員共用錢包">Up to 5 team members, shared wallet</li>
-            <li data-zh="每月點數重置">Points reset monthly</li>
-            <li data-zh="標準費率（無折扣）">Standard rate (no discount)</li>
-          </ul>
-        </article>
-
-        <article class="price-card price-card--featured">
-          <p class="price-card-eyebrow" data-zh="標準 · 推薦">Standard · Recommended</p>
-          <h4 data-zh="83 點 / 月">83 points / mo</h4>
-          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">7,900</span><span class="price-period" data-zh="/月">/mo</span></p>
-          <p class="price-meta" data-zh="約 5 件 Brief 或 2 件 Pro + 1 件 Brief · 折抵 5%">~5 Briefs or 2 Pro + 1 Brief · 5% off direct</p>
-          <ul class="price-features">
-            <li data-zh="最多 5 位成員共用錢包">Up to 5 team members, shared wallet</li>
-            <li data-zh="每月點數重置">Points reset monthly</li>
-            <li data-zh="比直購省 5%（牌價 NT$8,300）">5% off direct purchase (list NT$8,300)</li>
-            <li data-zh="適合日常使用的單一分析師">Fits a single analyst on daily flow</li>
-          </ul>
-        </article>
-
-        <article class="price-card">
-          <p class="price-card-eyebrow" data-zh="進階">Pro</p>
-          <h4 data-zh="110 點 / 月">110 points / mo</h4>
-          <p class="price-amount"><span class="price-currency">NT$</span><span class="price-num">9,900</span><span class="price-period" data-zh="/月">/mo</span></p>
-          <p class="price-meta" data-zh="約 7 件 Brief 或 3 件 Pro + 1 件 Brief · 折抵 10%">~7 Briefs or 3 Pro + 1 Brief · 10% off direct</p>
-          <ul class="price-features">
-            <li data-zh="最多 5 位成員共用錢包">Up to 5 team members, shared wallet</li>
-            <li data-zh="每月點數重置">Points reset monthly</li>
-            <li data-zh="比直購省 10%（牌價 NT$11,000）">10% off direct purchase (list NT$11,000)</li>
-            <li data-zh="適合分析師 + 合夥人混合使用">Fits mixed analyst + partner usage</li>
-          </ul>
-        </article>
-      </div>
-
-      <p class="price-fine" data-zh="新註冊公司免費試用：50 點（約 3 件 Brief），30 天評估期。無須信用卡。需要加購點數？50/150/500 點套件提供階梯折扣（最高 16%）。Signal 錢包與 TIS 授權平台分開計帳；不跨產品互通。">New firms get 50 free points (~3 Briefs) for a 30-day trial — no credit card required. Need more? Top-up packs of 50 / 150 / 500 points offer up to 16% volume discounts. Signal wallets are separate from TIS Licensing Platform accounting; points don't cross products.</p>
-    </div>
-  </section>
-
-  <!-- ─── FAQ ─── -->
-  <section class="section" aria-labelledby="signal-faq-heading">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow" data-zh="常見問題">Common questions</p>
-        <h2 id="signal-faq-heading" data-zh="先回答顯而易見的疑慮。">The questions you'd ask first.</h2>
-      </header>
-
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>
-            <span data-zh="為什麼不直接用 Google Patents？">Why not just use Google Patents?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="免費工具讓你看到專利文本，但無法告訴你這件專利在你產業內的同儕中排第幾、是否禁得起訴訟、是否有授權價值。Signal 在 30 分鐘內加上同儕基準與 SABCD 嚴謹評等——那就是創投決策需要的「判斷層」。">Free tools show you patent text, but not how the patent stacks against peers in your vertical, whether it's defensible in court, or whether it has licensing value. Signal adds the judgment layer VCs need — peer benchmarking + SABCD rigor — in 30 minutes.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span data-zh="SABCD 評等怎麼確保準確？">How do you guarantee the SABCD grades are accurate?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="每個等級都跑過 Innovue PSS（Patent Strength Score）引擎——驅動 TIS 授權平台的同一個 50 指標 / 8 支柱系統。Innovue WEBPAT 收錄 100+ 國家、1.7 億件專利。每個數字都可追溯：點開任意 SABCD 等級，能看到 50 項計分卡。透明 &gt; 精確。如果其他顧問給出不同分數，通常是同儕池不同（我們用 TIS 標準池；他們可能手挑 5–10 件）。">Every grade runs through Innovue's PSS (Patent Strength Score) engine — the same 50-indicator, 8-pillar system that powers TIS Licensing Platform. Innovue's WEBPAT covers 170M patents across 100+ countries. Every number is traceable: click any SABCD grade, drill into the 50-item scorecard. Transparency &gt; precision. Different scores from counsel usually mean a different peer pool (we use TIS's standardized pool; they may hand-pick 5–10 comparables).</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span data-zh="如果我的專利不在你們資料庫呢？">What if the patent isn't in your database?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="你提交後，Innovue API 在 15–20 分鐘內抽取你的專利屬性。如果它是新專利或冷門領域，可能不在我們的標準池作為「同儕」，但仍會依其 IPC 分類對照符合條件的池內專利計分。你仍會得到 SABCD 等級、百分位、雷達圖——只是同儕宇宙反映的是 TIS 策劃池內可比的部分。">When you submit a patent, Innovue's API extracts its 50 attributes in 15–20 minutes. If it's new or obscure, it may not be in our standardized pool as a "peer," but it will be scored and ranked by percentile against peers matching its IPC classification. You still get SABCD grade, percentile, and radar chart — the peer universe just reflects what's available in the curated TIS pool.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span data-zh="30 分鐘可不可以更快？">How fast can it go?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="Brief 30 分鐘是設計選擇，不是技術限制。Innovue 屬性抽取 15–20 分鐘 + TIS 評等 + Email 共 10 分鐘。為什麼用非同步？因為創投是批次篩 deck——週一早上看 8 件、提交 8 件、走去開會，30 分鐘後回到桌前已經 8 份 Brief 在信箱。Pro 升級反而是瞬間的（&lt; 30 秒），因為屬性在 Brief 時就抽好了。">The 30-minute Brief is a workflow choice, not a technical limit. Innovue extraction is 15–20 min; TIS scoring + email is 10 min. Why async? Because VCs batch-screen — Monday morning you see 8 decks, submit 8 patents, walk to meetings, return 30 minutes later to 8 Briefs in your inbox. Pro upgrades are instant (&lt; 30 sec) because attributes are already extracted at Brief time.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span data-zh="Signal 算不算法律意見或投資意見？">Is Signal legal or investment advice?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="不是。每份 Signal 報告都註明：本報告不構成法律、財務、商業或投資意見。它是分析師與投委會的決策輔助工具；高風險併購或訴訟仍應請律師。我們把這個邊界明寫，目的是讓你引用 SABCD 時站得穩。">No. Every Signal report carries a disclaimer: this is not legal, financial, business, or investment advice. It's a decision-support tool for analysts and IC members; high-stakes M&amp;A and litigation still call for counsel. We name the boundary so the SABCD numbers you cite stand on solid ground.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>
-            <span data-zh="一個訂閱可以多人共用嗎？">Can my whole team share one subscription?</span>
-            <span class="faq-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
-          </summary>
-          <p data-zh="可以。月訂閱按公司網域計費（例如 @acme-ventures.com），不是按座位。最多 5 位團隊成員共用一個錢包；所有查詢從同一個月度點數池扣。避免「買 3 個座位 = 3 倍價格」的陷阱，鼓勵團隊協作。">Yes. Monthly subscriptions are billed per company domain (e.g., @acme-ventures.com), not per seat. Up to 5 team members share one pooled wallet; every query draws from the same monthly bucket. No "buy 3 seats = 3× the price" trap.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── CTA banner ─── -->
-  <section class="section cta-banner" id="signup" aria-labelledby="signal-cta-heading">
-    <div class="container cta-banner-inner">
-      <header class="section-head section-head--centered">
-        <h2 id="signal-cta-heading" data-zh="先試一筆。免費 50 點。">Try one for free. 50 points on us.</h2>
-        <p data-zh="新註冊公司可免費取得 50 點（約 3 件 Brief 或 1 件 Pro + 1 件 Brief），30 天評估期。無須信用卡。">New firms get 50 free points (~3 Briefs or 1 Pro + 1 Brief), 30-day evaluation window. No credit card required.</p>
-      </header>
-      <div class="pillar-hero-cta">
-        <a href="#signup" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="開始試用">Start your trial</a>
-        <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="與我們聊聊">Talk to us</a>
-      </div>
-    </div>
-  </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Footer  —  components.md §Footer                                    ║
+       ║ Duplicated from homepage; in-page anchors prefixed with / for subpages║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <footer class="footer" role="contentinfo">
     <div class="container">
@@ -577,7 +842,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=2" defer></script>
 
 </body>
 </html>
