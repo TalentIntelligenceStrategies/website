@@ -265,6 +265,8 @@ Self-hosted at [`brand/assets/fonts/`](./assets/fonts/) (SIL OFL) in the Google 
 
 | Role | Size | Weight | Tracking | Line-height | Case |
 |---|---|---|---|---|---|
+| heading-96 | 96 | 700 | −0.03em | 0.95 | sentence (deck cover hero) |
+| heading-88 | 88 | 700 | −0.03em | 1.0  | sentence (deck cover alt) |
 | heading-72 | 72 | 700 | −0.03em | 1.0  | sentence |
 | heading-56 | 56 | 700 | −0.03em | 1.05 | sentence |
 | heading-48 | 48 | 700 | −0.02em | 1.1  | sentence |
@@ -273,6 +275,8 @@ Self-hosted at [`brand/assets/fonts/`](./assets/fonts/) (SIL OFL) in the Google 
 | heading-24 | 24 | 600 | −0.01em | 1.3  | sentence |
 | heading-20 | 20 | 600 |  0      | 1.35 | sentence |
 | heading-18 | 18 | 600 | −0.01em | 1.3  | sentence (accordion summary) |
+| copy-24 | 24 | 400 |  0      | 1.55 | sentence (deck body — projection-distance floor candidate) |
+| copy-22 | 22 | 400 |  0      | 1.55 | sentence (deck body — projection-distance mid floor) |
 | copy-20 | 20 | 400 |  0      | 1.55 | sentence |
 | copy-18 | 18 | 400 |  0      | 1.55 | sentence |
 | copy-16 | 16 | 400 | +0.01em | 1.6  | sentence |
@@ -285,6 +289,8 @@ Self-hosted at [`brand/assets/fonts/`](./assets/fonts/) (SIL OFL) in the Google 
 | num-mono-32 | 32 | 600 | −0.01em | 1.2 | as content (Inconsolata; deck metric-strip hero numerals, denser strips) |
 | label-13 | 13 | 500 | +0.05em | 1.2 | sentence |
 | label-12 | 12 | 600 | +0.15em | 1.2 | UPPERCASE |
+| label-mono-16 | 16 | 500 | +0.10em | 1.2 | UPPERCASE (deck eyebrow / footer chrome — projection-distance) |
+| label-mono-14 | 14 | 500 | +0.10em | 1.2 | UPPERCASE (deck eyebrow / footer chrome — projection-distance) |
 | label-mono-12 | 12 | 500 | +0.10em | 1.2 | UPPERCASE (number-prefixed IDs only, e.g., `LIC-12345` inline labels) |
 | button-16 | 16 | 700 | +0.10em | 1.0 | per button |
 | button-14 | 14 | 700 | +0.10em | 1.0 | per button |
