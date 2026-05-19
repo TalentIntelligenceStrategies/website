@@ -63,7 +63,24 @@
     <span class="topnav-spacer"></span>
 
     <nav class="topnav-links" aria-label="Primary">
-      <a href="#products" class="topnav-link" data-zh="產品">Products</a>
+      <div class="topnav-dropdown-wrap">
+        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
+          <span data-zh="產品">Products</span>
+          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
+          <div class="products-menu-grid">
+            <a href="/product/licensing/" class="product-card" role="menuitem">
+              <span class="product-card-eyebrow" data-zh="授權">LICENSING</span>
+              <span class="product-card-statement" data-zh="30 件專利防護組合，當週上線。">30-patent shields, active the week you subscribe.</span>
+            </a>
+            <a href="/product/signal/" class="product-card" role="menuitem">
+              <span class="product-card-eyebrow">SIGNAL</span>
+              <span class="product-card-statement" data-zh="30 分鐘完成 SABCD 估價，比對 1.7 億件專利。">SABCD valuation in 30 minutes, against 170M patents.</span>
+            </a>
+          </div>
+        </div>
+      </div>
       <a href="#reports"  class="topnav-link" data-zh="報告">Reports</a>
       <a href="#press"    class="topnav-link" data-zh="新聞">Press</a>
       <a href="#about"    class="topnav-link" data-zh="關於">About</a>
@@ -135,7 +152,14 @@
     </button>
   </div>
   <nav class="mobile-list" aria-label="Primary mobile">
-    <a href="#products" data-zh="產品">Products</a>
+    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
+      <span data-zh="產品">Products</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-products-sublist" class="mobile-sublist">
+      <a href="/product/licensing/" class="mobile-sub-row" data-zh="授權平台">Licensing Platform</a>
+      <a href="/product/signal/"    class="mobile-sub-row">Signal</a>
+    </div>
     <a href="#reports"  data-zh="報告">Reports</a>
     <a href="#press"    data-zh="新聞">Press</a>
     <a href="#about"    data-zh="關於">About</a>

@@ -542,6 +542,123 @@ img, svg { display: block; }
           mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
 }
 
+/* ───────── Products dropdown — Linear-style mega menu ───────── */
+.topnav-link.has-dropdown {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 0; background: transparent; cursor: pointer;
+  font-family: inherit;
+}
+.topnav-chevron {
+  width: 12px; height: 12px;
+  color: var(--text-quaternary);
+  stroke: currentColor; fill: none; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
+}
+.topnav-link.has-dropdown[aria-expanded="true"] .topnav-chevron { transform: rotate(180deg); }
+
+.topnav-dropdown-wrap { position: relative; }
+.products-menu {
+  position: absolute;
+  /* Anchor below the topnav's bottom border, not the trigger's bottom. The trigger
+     sits centered inside the 64px topnav row, so its bottom lands ~17px above the
+     topnav bottom edge — adding 24px pushes the panel past the border with an 8px
+     visible gap. */
+  top: calc(100% + 24px);
+  left: 0;
+  transform: translateY(-4px);
+  width: min(560px, calc(100vw - 32px));
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-medium);
+  padding: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.2,1,0.3,1), transform 150ms cubic-bezier(0.2,1,0.3,1);
+  z-index: 600;
+}
+/* Transparent hover bridge over the gap between trigger and panel — keeps pointer
+   movement from trigger to panel inside one continuous hit area. Spans the full
+   distance from panel's top up to the trigger's bottom edge. */
+.products-menu::before {
+  content: '';
+  position: absolute;
+  top: -24px; left: 0; right: 0; height: 24px;
+}
+.products-menu[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.products-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border-primary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.product-card {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 20px 24px;
+  background: var(--surface-page);
+  text-decoration: none;
+  transition: background 100ms linear, color 100ms linear;
+}
+.product-card:hover,
+.product-card[aria-current="page"] { background: var(--surface-tertiary); }
+.product-card-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  transition: color 100ms linear;
+}
+.product-card[aria-current="page"] .product-card-eyebrow { color: var(--text-primary); }
+.product-card:hover .product-card-eyebrow { color: var(--text-secondary); }
+.product-card-statement {
+  font-size: 18px; font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+/* Mobile drawer accordion — Products row */
+.mobile-list .mobile-row-dropdown {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  font-size: 16px; font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-primary);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.mobile-row-dropdown .mobile-nav-chevron {
+  width: 16px; height: 16px;
+  color: var(--text-tertiary);
+  stroke: currentColor; fill: none; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
+}
+.mobile-row-dropdown[aria-expanded="true"] .mobile-nav-chevron { transform: rotate(180deg); }
+.mobile-sublist { display: none; flex-direction: column; }
+.mobile-sublist[data-open="true"] { display: flex; }
+.mobile-list .mobile-sub-row {
+  height: 44px;
+  padding-left: 16px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  justify-content: flex-start;
+}
+
 /* ───────── Mobile drawer ───────── */
 .mobile-overlay {
   position: fixed; inset: 0;

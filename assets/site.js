@@ -157,7 +157,10 @@
   // doesn't shrink them (which would otherwise shift the right cluster rightward via
   // the flex spacer absorbing the slack). Mobile-drawer items live in full-width or
   // flex:1 containers so they don't cause neighbor reflow — left unlocked.
-  const lockables = document.querySelectorAll('.topnav-link[data-zh], .topnav-cta[data-zh]');
+  // `.topnav-link.has-dropdown > [data-zh]` covers the Products dropdown trigger's
+  // inner span (the button itself wraps text + chevron, so we lock the text span
+  // rather than the button to keep the chevron stable across language toggles).
+  const lockables = document.querySelectorAll('.topnav-link[data-zh], .topnav-cta[data-zh], .topnav-link.has-dropdown > [data-zh]');
   const lockI18nWidths = () => {
     lockables.forEach(el => {
       if (el.dataset.locked) return;
@@ -193,6 +196,116 @@
 
   document.addEventListener('click', closeLangMenu);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
+
+  // ──────────────── Products dropdown — Linear-style mega menu ────────────────
+  const pdWrap = document.querySelector('.topnav-dropdown-wrap');
+  if (pdWrap) {
+    const pdTrigger = pdWrap.querySelector('#products-trigger');
+    const pdMenu    = pdWrap.querySelector('#products-menu');
+    const pdCards   = Array.from(pdMenu.querySelectorAll('.product-card'));
+    const hoverFine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    let openTimer = null, closeTimer = null;
+
+    const pdOpen = () => {
+      pdMenu.dataset.open = 'true';
+      pdTrigger.setAttribute('aria-expanded', 'true');
+    };
+    const pdClose = () => {
+      pdMenu.dataset.open = 'false';
+      pdTrigger.setAttribute('aria-expanded', 'false');
+    };
+    const cancelTimers = () => {
+      if (openTimer)  { clearTimeout(openTimer);  openTimer  = null; }
+      if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+    };
+
+    if (hoverFine) {
+      // Wrap covers only the trigger's bounding box (the panel is absolute,
+      // outside the wrap). Listen on both — entering either cancels close;
+      // leaving either schedules close. The 8px gap is bridged by .products-menu::before.
+      const onEnter = () => {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        if (pdMenu.dataset.open === 'true') return;
+        openTimer = setTimeout(() => { openTimer = null; pdOpen(); }, 120);
+      };
+      const onLeave = () => {
+        if (openTimer) { clearTimeout(openTimer); openTimer = null; }
+        if (pdMenu.dataset.open !== 'true') return;
+        closeTimer = setTimeout(() => { closeTimer = null; pdClose(); }, 200);
+      };
+      pdWrap.addEventListener('pointerenter', onEnter);
+      pdWrap.addEventListener('pointerleave', onLeave);
+      pdMenu.addEventListener('pointerenter', onEnter);
+      pdMenu.addEventListener('pointerleave', onLeave);
+    }
+
+    pdTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cancelTimers();
+      if (pdMenu.dataset.open === 'true') pdClose();
+      else pdOpen();
+    });
+
+    pdTrigger.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || (e.key === 'Enter' && pdMenu.dataset.open !== 'true')) {
+        e.preventDefault();
+        cancelTimers();
+        pdOpen();
+        const current = pdMenu.querySelector('.product-card[aria-current="page"]') || pdCards[0];
+        if (current) current.focus();
+      } else if (e.key === 'Escape') {
+        cancelTimers();
+        pdClose();
+      }
+    });
+
+    pdCards.forEach((card, i) => {
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          pdCards[(i + 1) % pdCards.length].focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          pdCards[(i - 1 + pdCards.length) % pdCards.length].focus();
+        } else if (e.key === 'Escape') {
+          cancelTimers();
+          pdClose();
+          pdTrigger.focus();
+        }
+      });
+      card.addEventListener('click', () => { cancelTimers(); pdClose(); });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (pdMenu.dataset.open !== 'true') return;
+      if (pdWrap.contains(e.target)) return;
+      pdClose();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && pdMenu.dataset.open === 'true') {
+        pdClose();
+        pdTrigger.focus();
+      }
+    });
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 64 && pdMenu.dataset.open === 'true') pdClose();
+    }, { passive: true });
+  }
+
+  // ──────────────── Mobile drawer accordion — Products ────────────────
+  const mProductsRow = document.querySelector('.mobile-list .mobile-row-dropdown');
+  if (mProductsRow) {
+    const sublistId = mProductsRow.getAttribute('aria-controls');
+    const mSublist  = sublistId ? document.getElementById(sublistId) : null;
+    if (mSublist) {
+      mProductsRow.addEventListener('click', () => {
+        const open = mProductsRow.getAttribute('aria-expanded') === 'true';
+        mProductsRow.setAttribute('aria-expanded', String(!open));
+        if (open) delete mSublist.dataset.open;
+        else mSublist.dataset.open = 'true';
+      });
+    }
+  }
 
   // ──────────────── Mobile drawer ────────────────
   const mTrigger = document.getElementById('mobile-trigger');
