@@ -355,9 +355,9 @@ A co-branded credential TIS issues to licensees, analogous to CE / UL marks. The
 | TIS issuer | `TIS ISSUED VERIFIED LICENSE` |
 | ITRI licensee | `INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE` |
 | III licensee | `INSTITUTE FOR INFORMATION INDUSTRY` |
-| TSMC licensee | `TAIWAN SEMICONDUCTOR MANUFACTURING CO.` |
+| NYCU licensee | `NATIONAL YANG MING CHIAO TUNG UNIVERSITY` |
 
-When a new licensee onboards, extend this table with the partner's registered legal name in uppercase before any seal renders. Acronyms (ITRI / III / TSMC) never appear on the arc — the registered full name carries the institutional weight the credential is meant to project.
+When a new licensee onboards, extend this table with the partner's registered legal name in uppercase before any seal renders. Acronyms (ITRI / III / NYCU) never appear on the arc — the registered full name carries the institutional weight the credential is meant to project.
 
 **Content formats**
 
@@ -368,7 +368,7 @@ When a new licensee onboards, extend this table with the partner's registered le
 **Construction rules**
 
 - TIS seal follows §Seal · Standalone (`is-tis` modifier locks the dark-disc / dark-cube-submark look in any theme — credential marks must not invert).
-- Licensee seals use the partner colour map (`is-itri` / `is-iii` / `is-tsmc`); add new partner variants in [`components.md`](./components.md) when a new licensee onboards.
+- Licensee seals use the partner colour map (`is-itri` / `is-iii` / `is-nycu`); add new partner variants in [`components.md`](./components.md) when a new licensee onboards.
 - "Powered by Innovue" does not appear on the badge — it credits the patent-source institution, not the underlying technology platform.
 - The pill itself is light-locked via local CSS-variable scope (full token list in [`components.md`](./components.md) §Verified License Badge). Identity rule: the stamped artifact reads consistently across surface and theme.
 

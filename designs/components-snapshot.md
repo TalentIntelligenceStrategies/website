@@ -1,5 +1,3 @@
-<!-- Snapshot of TIS/brand/components.md — do NOT edit here. Edit upstream in brand/ and resync. -->
-
 # TIS Components
 
 Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, IP intelligence drop popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
@@ -987,9 +985,9 @@ Container `surface-page`, `1px solid border-primary`, radius 16, padding `48 × 
 
 Round seal — TIS's translation of LEED-style certification badges. Thin outer ring, 1px white gap, filled disc, smaller white inner disc holding the issuer or partner submark; curved sans text on top and bottom arcs carries the issuer line and the per-seal credential count. Atomic: each seal stands alone or composes inside the §Verified License Badge pill.
 
-- **Consumes:** `surface-inverse` (TIS disc), `surface-page` (inner disc), `text-inverse` (curved text), `border-primary`, `--logo-submark` (TIS) plus partner submark URLs (ITRI / III / TSMC). The TIS variant pins these four tokens to light values via `.is-tis` so the issuer mark stays dark-on-white in dark mode (LEED / UL precedent — credential marks must not invert with theme).
+- **Consumes:** `surface-inverse` (TIS disc), `surface-page` (inner disc), `text-inverse` (curved text), `border-primary`, `--logo-submark` (TIS) plus partner submark URLs (NYCU / ITRI / III). The TIS variant pins these four tokens to light values via `.is-tis` so the issuer mark stays dark-on-white in dark mode (LEED / UL precedent — credential marks must not invert with theme).
 - **Surfaces:** Licensing Platform (issuance, packaging, exhibition) · website (Credentials section) · Patent Intelligence SaaS (verification page)
-- **Variants:** issuer (TIS) · partner (ITRI · III · TSMC, brand color as disc fill); standalone 176×176 · ×0.65 (114×114, the embeddable size used inside the Verified License Badge pill)
+- **Variants:** issuer (TIS) · partner (NYCU · ITRI · III, brand color as disc fill); standalone 176×176 · ×0.65 (114×114, the embeddable size used inside the Verified License Badge pill)
 - **States:** default (no hover or interactive states — credential mark, not a control)
 
 **Construction (200×200 viewBox, scaled to render size):**
@@ -1005,11 +1003,11 @@ Round seal — TIS's translation of LEED-style certification badges. Thin outer 
 | Partner | Disc fill | Submark file | Submark size (standalone / ×0.65) | Bottom-arc content |
 |---|---|---|---|---|
 | TIS | `surface-inverse` (#252525, light-locked) | per `--logo-submark` (light-locked to dark-cube file) | 50 / 33 | `LIC-NNNNN` |
+| NYCU | `#0033A0` | `partners/nycu/nycu_seal.svg` | 50 / 33 | `N PATENTS` |
 | ITRI | `#00AAEA` | `partners/itri/itrilogo_submark.svg` | 40 / 26 | `N PATENTS` |
-| III | `#14156D` | `partners/iii/logo_iii_submark.svg` | 40 / 26 | `N PATENTS` |
-| TSMC | `#FF0000` | `partners/tsmc/tsmc_logo.svg` (wordmark — `tsmc_submark.svg` is not used on the seal) | 64 / 42 | `N PATENTS` |
+| III | `#14156D` | `partners/iii/logo_iii_submark.svg` | 50 / 33 | `N PATENTS` |
 
-TSMC's box runs ~60% larger than ITRI / III because the seal embeds the full wordmark (`tsmc_logo.svg`) rather than a clean submark; the larger box compensates so the visible glyph reads at parity. If a tightly-cropped TSMC submark becomes available, swap it in and drop back to 40 / 26 sizing. Top-arc strings are standardized per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — never inline literal arc text here.
+ITRI's box runs smaller than its peers because its wordmark fills its own viewBox edge-to-edge; the other partners' submarks carry built-in padding or radial decoration, so the larger 50 / 33 box keeps the visible glyph at parity. Top-arc strings are standardized per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — never inline literal arc text here.
 
 **×0.65 variant** — every dimension multiplied by 0.65: disc 114×114, submarks per the table, font-size 13. Keeps the curved text legible while shrinking the seal for embedding. This is the size used inside §Verified License Badge.
 
@@ -1031,11 +1029,11 @@ Stadium-shaped credential pill that wraps the issuer seal, three licensee seals,
 **Layout (left → right):**
 1. Issuer seal — TIS at ×0.65
 2. Vertical divider — 1px × 80px, `border-tertiary` at 70% opacity
-3. Licensee seals — N × ×0.65 (TSMC, ITRI, III in canonical issuance-ledger order)
+3. Licensee seals — N × ×0.65 (NYCU, ITRI, III in canonical issuance-ledger order)
 4. Vertical divider
 5. Credential stack — 72×72 QR (1px `border-primary`, radius 8) above mono `LIC-NNNNN` (`label-mono-11 / text-secondary`)
 
-**Curved-text contract.** Each seal's top arc carries its standardized identifier per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — TIS issuer reads `TIS ISSUED VERIFIED LICENSE`; licensee seals read the partner's full registered name from that file's top-arc table (ITRI / III / TSMC strings, uppercase, never the acronym). Bottom arc carries the per-seal credential count. The TIS seal's bottom-arc `LIC-NNNNN` must match the credential stack's `lic-no` literal — the same identifier rendered in two registers (curved on the seal, mono below the QR). If they drift, treat it as a defect.
+**Curved-text contract.** Each seal's top arc carries its standardized identifier per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — TIS issuer reads `TIS ISSUED VERIFIED LICENSE`; licensee seals read the partner's full registered name from that file's top-arc table (NYCU / ITRI / III strings, uppercase, never the acronym). Bottom arc carries the per-seal credential count. The TIS seal's bottom-arc `LIC-NNNNN` must match the credential stack's `lic-no` literal — the same identifier rendered in two registers (curved on the seal, mono below the QR). If they drift, treat it as a defect.
 
 **Anti-counterfeit** (server-side, not a visual spec): invisible watermark embedded at generation; QR resolves to the TIS verification page.
 
