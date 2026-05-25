@@ -45,6 +45,1393 @@
     if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
   })();
 </script>
+<style>
+/* ============================================================
+   How it works — horizontal scroll rail (signal product page)
+   Adapted from licensing-product-page-preview.html's .howit-*
+   pattern. Cool palette per the Patent Intel SaaS = cool rule.
+   Six cards: Submit · Pool match · Brief · Pro · PDF · History.
+   ============================================================ */
+.howitworks .howit-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 32px; margin: 0 0 40px;
+}
+.howitworks .howit-head h3 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
+  margin: 0;
+}
+
+/* "Signal" pillar-hero h3 — matches How it works h3 sizing so the
+   section heading rhythm is consistent down the page. Mirrors the
+   licensing-product-page-preview.html .pillar-hero-copy h3 override.
+   line-height 1.2 (not 1.1) so the bold "g" descender doesn't clip. */
+.pillar-hero-copy h3 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 32px;
+}
+
+.howit-rail-nav { display: flex; gap: 8px; flex-shrink: 0; }
+.howit-arrow {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--border-primary);
+  background: var(--surface-page);
+  color: var(--text-tertiary);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: color 120ms linear, border-color 120ms linear;
+}
+/* Active (non-disabled) — outlined treatment: white interior, 1.5px sky
+   ring + sky icon (#0EA5E9 — signal's dominant accent, paired with the
+   cool dot-pastel sky in design-tokens.md §7.4). Disabled inherits the
+   neutral 1.5px gray ring + tertiary-gray icon. */
+.howit-arrow:not(:disabled) {
+  border-color: #0EA5E9;
+  color: #0EA5E9;
+}
+.howit-arrow:disabled { cursor: not-allowed; }
+.howit-arrow svg { width: 14px; height: 14px; }
+
+/* Override the inherited 2-column .howitworks-grid (shared styles.css)
+   — replaced wholesale by the horizontal rail. */
+.howitworks .howit-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(440px, 460px);
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 4px 4px 16px;
+  margin: 0 -4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.howitworks .howit-rail::-webkit-scrollbar { display: none; }
+
+.howit-card {
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  background: var(--surface-page);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
+}
+.howit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
+}
+
+/* Visual — cool-faded gradient backdrop + product-UI crop on top.
+   Aspect-ratio 1/1 (square) gives the absolutely-positioned minis
+   enough vertical room to not collide at the narrow card width. */
+.howit-card-visual {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  isolation: isolate;
+}
+.howit-card-grad {
+  position: absolute; inset: 0; z-index: 0;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+.howit-card:hover .howit-card-grad { opacity: 1; }
+
+/* Per-card gradient washes — signal cool trio (mint #A7F3D0 ·
+   sky #BFDBFE · violet #E9D5FF) per brand/previews/signal-flow-preview.html.
+   Each card varies position + emphasis so they feel distinct. */
+.howit-card[data-grad="1"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 640px 380px at 22% 28%, rgba(167,243,208,0.46), transparent 65%),
+    radial-gradient(ellipse 520px 320px at 80% 82%, rgba(191,219,254,0.40), transparent 65%),
+    radial-gradient(ellipse 360px 260px at 56% 106%, rgba(233,213,255,0.28), transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 35%, #F0F9FF 75%, #F5F3FF 100%);
+}
+.howit-card[data-grad="2"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 580px 340px at 72% 22%, rgba(191,219,254,0.48), transparent 65%),
+    radial-gradient(ellipse 500px 320px at 18% 86%, rgba(167,243,208,0.40), transparent 65%),
+    radial-gradient(ellipse 400px 260px at 56% 50%, rgba(233,213,255,0.24), transparent 65%),
+    linear-gradient(160deg, #F0F9FF 0%, #ECFDF5 50%, #F5F3FF 100%);
+}
+.howit-card[data-grad="3"] .howit-card-grad {
+  background:
+    radial-gradient(circle 520px at 50% 50%, rgba(191,219,254,0.50), transparent 60%),
+    radial-gradient(ellipse 480px 300px at 22% 105%, rgba(167,243,208,0.34), transparent 60%),
+    radial-gradient(ellipse 460px 280px at 82% 8%, rgba(233,213,255,0.30), transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 60%, #F5F3FF 100%);
+}
+.howit-card[data-grad="4"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 600px 380px at 28% 72%, rgba(233,213,255,0.40), transparent 65%),
+    radial-gradient(ellipse 480px 320px at 82% 22%, rgba(191,219,254,0.42), transparent 65%),
+    radial-gradient(ellipse 380px 240px at 50% 110%, rgba(167,243,208,0.26), transparent 60%),
+    linear-gradient(135deg, #F5F3FF 0%, #FFFFFF 50%, #F0F9FF 100%);
+}
+.howit-card[data-grad="5"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 560px 360px at 50% 52%, rgba(191,219,254,0.42), transparent 60%),
+    radial-gradient(ellipse 420px 260px at 14% 16%, rgba(167,243,208,0.32), transparent 60%),
+    radial-gradient(ellipse 420px 260px at 86% 92%, rgba(233,213,255,0.28), transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
+}
+.howit-card[data-grad="6"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 600px 360px at 18% 28%, rgba(167,243,208,0.44), transparent 65%),
+    radial-gradient(ellipse 480px 300px at 84% 84%, rgba(233,213,255,0.36), transparent 65%),
+    radial-gradient(ellipse 380px 240px at 52% 50%, rgba(191,219,254,0.30), transparent 65%),
+    linear-gradient(160deg, #FFFFFF 0%, #ECFDF5 50%, #F5F3FF 100%);
+}
+
+[data-theme="dark"] .howit-card[data-grad="1"] .howit-card-grad,
+[data-theme="dark"] .howit-card[data-grad="2"] .howit-card-grad,
+[data-theme="dark"] .howit-card[data-grad="3"] .howit-card-grad,
+[data-theme="dark"] .howit-card[data-grad="4"] .howit-card-grad,
+[data-theme="dark"] .howit-card[data-grad="5"] .howit-card-grad,
+[data-theme="dark"] .howit-card[data-grad="6"] .howit-card-grad {
+  background:
+    radial-gradient(ellipse 600px 360px at 30% 30%, rgba(4,120,87,0.22), transparent 65%),
+    radial-gradient(ellipse 500px 320px at 78% 78%, rgba(3,105,161,0.24), transparent 65%),
+    radial-gradient(ellipse 400px 260px at 50% 110%, rgba(109,40,217,0.18), transparent 65%),
+    linear-gradient(150deg, #0E1820 0%, #0A1218 100%);
+}
+
+.howit-card-stage {
+  position: absolute; inset: 0; z-index: 1;
+  overflow: hidden;
+}
+
+/* Screenshot-based stage visuals — floating product UI shots positioned to
+   sit in the card frame with a soft drop-shadow. */
+.howit-shot {
+  position: absolute;
+  height: auto;
+  border-radius: 10px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 8px 24px -8px rgba(0,0,0,0.12),
+    0 24px 56px -20px rgba(0,0,0,0.18);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Body — h4 + paragraph + 3 check bullets */
+.howit-card-body {
+  padding: 24px 26px 28px;
+  display: flex; flex-direction: column; gap: 12px;
+  border-top: 1px solid var(--border-primary);
+  background: var(--surface-page);
+}
+.howit-card-body h4 {
+  font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+  line-height: 1.25; margin: 0; color: var(--text-primary);
+}
+.howit-card-body p {
+  font-size: 15px; line-height: 1.55; margin: 0;
+  color: var(--text-secondary);
+}
+.howit-checks {
+  list-style: none; padding: 0; margin: 4px 0 0;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.howit-checks li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; line-height: 1.5; color: var(--text-secondary);
+}
+.howit-checks li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  margin-top: 2px;
+  background: #0EA5E9;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
+}
+
+/* ============================================================
+   Mini-components — opaque cards positioned over the gradient
+   ============================================================ */
+.howit-mini {
+  position: absolute;
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.10), 0 18px 40px -16px rgba(0,0,0,0.14);
+  color: var(--text-primary);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.howit-mini .hm-head { display: flex; align-items: center; gap: 8px; }
+.howit-mini .hm-step {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--text-primary); color: var(--surface-page);
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px; font-weight: 700;
+}
+.howit-mini .hm-label {
+  font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.howit-mini .hm-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 11px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 13px;
+  background: var(--surface-page);
+}
+.howit-mini .hm-opt.is-selected {
+  border-color: #0EA5E9;
+  box-shadow: inset 0 0 0 1px #0EA5E9;
+}
+.howit-mini .hm-input-nm {
+  font-weight: 600; color: var(--text-primary);
+}
+.howit-mini .hm-input-val {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px; letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+.howit-mini .hm-input-aside {
+  font-size: 10.5px; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+}
+.howit-mini .hm-input-foot {
+  font-size: 11px; letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  margin: 2px 0 0;
+}
+
+/* Card 1 · Submit — "What patent are we grading?" form screenshot (1412×1346,
+   near-square). Same pattern as licensing Card 1 — width-fit at 92%, top
+   anchored, slight bottom fade from the page-bleed cushion at the source's
+   bottom edge. */
+.howit-stage-submit .howit-shot-form {
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+}
+
+/* Card 2 · Pool — "Confirm the industry pool" screenshot (1436×1448, square).
+   Same width-fit pattern as Card 1. */
+.howit-stage-pool .howit-shot-pool {
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+}
+
+/* Card 3 · Pick delivery — "Pick your delivery" screenshot (1304×1352, slightly
+   portrait). Same width-fit pattern as Cards 1 + 2. Replaces the prior 'Brief
+   delivered' + 'Pro upgrade' cards now that delivery choice is the step-3 moment. */
+.howit-stage-delivery .howit-shot-delivery {
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+}
+
+/* Card 4 · Brief report content — full Brief Report screenshot (1696×1426,
+   landscape, aspect 1.19). Single-row dashboard: A-tier + 4 metric panels
+   + radar in one row, with PILLAR ANALYSIS table below. Same width-fit
+   pattern as Card 5. */
+.howit-stage-brief .howit-shot-report {
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+}
+
+/* Card 5 · Pro report — full Pro report screenshot (1810×1498, landscape,
+   aspect 1.21). Single-row dashboard layout: S-tier + 4 metric panels +
+   radar all in one row. Width 92%, same pattern as the rest of the rail.
+   Image fills upper portion of card with whitespace below. */
+.howit-stage-pro .howit-shot-pro-report {
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+}
+
+/* Narrow viewports — hide arrow controls; full-width snap */
+@media (max-width: 720px) {
+  .howit-rail-nav { display: none; }
+  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
+  .howitworks .howit-head { margin-bottom: 24px; }
+}
+
+/* ============================================================
+   Pricing section header — single left-aligned h2 per the
+   licensing pattern. Replaces .section-head--centered + eyebrow
+   + intro paragraph with a typographically heavier title that
+   matches How it works' h3 sizing.
+   ============================================================ */
+.bp-section-heading {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 64px;
+  text-align: left;
+}
+
+/* Inter-section padding override — tight rhythm between the upper
+   product sections (Hero → Deliverables → How it works → Pricing).
+   Each transition sums to 64px (32+32) instead of the Stripe-default
+   160+160 = 320px chasm. Keeps the page reading as a single product
+   story until the visitor lands at Pricing. */
+section[aria-label="Signal hero"] { padding-bottom: 32px; }
+section[aria-label="Signal deliverables"] { padding-top: 32px; padding-bottom: 32px; }
+section[aria-label="How Signal works"] { padding-top: 32px; padding-bottom: 32px; }
+section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
+
+/* ============================================================
+   Pricing card overrides — Standard · Pro · Max
+   - Eyebrow dot removed (was a B-vivid 8px circle in shared CSS).
+   - "Most popular" relocated to a corner badge on the featured card.
+   - Credits strip + side-by-side block to make credits clear.
+   - "Everything in X, plus:" inheritance pill at top of features.
+   ============================================================ */
+
+/* Hide the dot before the eyebrow text */
+.prod-price-eyebrow::before { display: none !important; }
+
+/* Hide the eyebrow text on non-featured cards (no longer needed for
+   vertical alignment since featured eyebrow is absolutely positioned) */
+.prod-price-tier:not(.is-featured) .prod-price-eyebrow { display: none; }
+
+/* Featured card — relative anchor for the corner badge.
+   Override the shared CSS warm-amber box-shadow with the signal
+   cool trio (emerald + sky + violet) so the glow matches the
+   border ring, Subscribe button, and "How it works" check accents. */
+.prod-price-tier.is-featured {
+  position: relative; overflow: visible;
+  box-shadow:
+    0 12px 36px rgba(16,185,129,0.16),
+    0 12px 36px rgba(14,165,233,0.18),
+    0 12px 36px rgba(139,92,246,0.16),
+    0 4px 12px rgba(14,165,233,0.10),
+    0 1px 2px rgba(0,0,0,0.04);
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1),
+              box-shadow 240ms ease;
+}
+[data-theme="dark"] .prod-price-tier.is-featured {
+  box-shadow:
+    0 12px 36px rgba(16,185,129,0.22),
+    0 12px 36px rgba(14,165,233,0.26),
+    0 12px 36px rgba(139,92,246,0.22),
+    0 4px 12px rgba(0,0,0,0.40),
+    0 1px 2px rgba(0,0,0,0.30);
+}
+
+/* Hover — non-featured cards (Standard, Max): lift + sky border accent.
+   Border shifts from neutral to sky #0EA5E9 and a soft cool-tone shadow
+   appears, keeping the trio palette consistent across the page. */
+.prod-price-tier:not(.is-featured) {
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1),
+              border-color 200ms ease,
+              box-shadow 240ms ease;
+}
+.prod-price-tier:not(.is-featured):hover {
+  transform: translateY(-4px);
+  border-color: #0EA5E9;
+  box-shadow:
+    0 14px 32px -10px rgba(14,165,233,0.20),
+    0 4px 12px -4px rgba(14,165,233,0.10),
+    0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* Hover — Pro (featured): deeper lift + intensified trio glow.
+   Already lifted by -4px in shared CSS; goes to -8px on hover. */
+.prod-price-tier.is-featured:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 48px rgba(16,185,129,0.22),
+    0 20px 48px rgba(14,165,233,0.26),
+    0 20px 48px rgba(139,92,246,0.22),
+    0 6px 16px rgba(14,165,233,0.14),
+    0 1px 2px rgba(0,0,0,0.04);
+}
+[data-theme="dark"] .prod-price-tier.is-featured:hover {
+  box-shadow:
+    0 20px 48px rgba(16,185,129,0.30),
+    0 20px 48px rgba(14,165,233,0.34),
+    0 20px 48px rgba(139,92,246,0.30),
+    0 6px 16px rgba(0,0,0,0.45),
+    0 1px 2px rgba(0,0,0,0.30);
+}
+
+/* Body — position relative for absolute side rails; clip horizontal
+   overflow so the peeking 4th card doesn't trigger a scrollbar. */
+body {
+  position: relative;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* Narrow the container from 1440 to 1080 (Stripe /pricing tight) and
+   tighten horizontal padding from 32px to 16px so content sits close
+   to the rails like Stripe. Scoped to NOT affect the topnav, which
+   keeps its current 32px padding for the nav bar's own breathing room. */
+.container { max-width: 1080px; }
+.container:not(.topnav-inner) { padding-inline: 16px; }
+@media (max-width: 1140px) {
+  .container:not(.topnav-inner) { padding-inline: 12px; }
+}
+
+/* Stripe typography hierarchy on Urbanist — weight 600 (not 700),
+   slightly tighter tracking, larger size scale. The 56px ceiling
+   on section heads matches Stripe's /pricing H2 visually. */
+.bp-section-heading,
+.howitworks .howit-head h3,
+.pillar-hero-copy h3 {
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+}
+
+/* Hero display heading — locked to Stripe h1.Copy__title actual values.
+   Stripe inspected at 898px viewport: 48px sohne-var, line-height computed
+   to ~1.17 (112px box across 2 lines). 5.35vw matches 48px at viewport 898;
+   floor 36 / ceiling 56 keeps the scale within Stripe's range across
+   375 → 1440+ viewports. Color stays on TIS --text-primary, not Stripe's
+   #0A2540, per brand rule. */
+.section--page-hero h1,
+.section--page-hero h2,
+.section--page-hero--centered h1,
+.section--page-hero--centered h2 {
+  font-size: clamp(36px, 5.35vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.17;
+}
+
+/* Body text bumped from ~15 → 17px (Stripe body ratio) */
+.section p,
+.howit-card-body p,
+.faq-list .acc-content p,
+.pillar-hero-copy p {
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* How it works rail — 3 cards inside the 1080 container, 4th card
+   peeks past the right dashed rail toward the viewport right edge.
+   Math: container content area = 1080 - 64(padding) = 1016. With
+   24px gaps and 3 cards: ((1016 - 48) / 3) = 322.67 → 320px each
+   leaves ≈18px slack inside content. To peek the 4th, we extend
+   the rail's right boundary past the container's right edge by the
+   distance from the right rail to the viewport right edge. */
+.howitworks .howit-rail {
+  grid-auto-columns: 320px;
+  gap: 24px;
+  /* push rail right boundary past the right rail toward viewport edge.
+     -16px offsets the container's right padding (now 16px, was 32px). */
+  margin-right: calc(-16px - max(0px, 50vw - 540px));
+  padding-right: 16px;
+}
+@media (max-width: 1140px) {
+  .howitworks .howit-rail {
+    grid-auto-columns: minmax(300px, 320px);
+    margin-right: 0;
+    padding-right: 4px;
+  }
+}
+@media (max-width: 720px) {
+  .howitworks .howit-rail {
+    grid-auto-columns: minmax(86vw, 86vw);
+  }
+}
+
+/* "Recommended" badge anchored to top-right corner of featured card.
+   Sentence case (not uppercase), Urbanist (not mono), trio gradient
+   fill matching the border ring + Subscribe button. */
+.prod-price-tier.is-featured .prod-price-eyebrow {
+  position: absolute;
+  top: -12px; right: 18px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  color: #FFFFFF;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  z-index: 2;
+  box-shadow:
+    0 6px 16px -4px rgba(14,165,233,0.40),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  min-height: 0;
+}
+
+/* Side-by-side price + credits — used on ALL three cards now so
+   the font hierarchy is identical across the row. */
+.prod-price-block-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+  align-items: stretch;
+}
+.prod-price-split-side {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.prod-price-split-side .lbl {
+  font-family: var(--prod-font-mono);
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.prod-price-split-side .val {
+  font-family: var(--prod-font-mono);
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+.prod-price-split-side .sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.prod-price-split-side .save {
+  display: inline-flex; align-self: flex-start;
+  font-family: var(--prod-font-mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--score-a-vivid);
+  margin-top: 2px;
+}
+.prod-price-split-side.is-credits {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface-secondary);
+}
+
+/* Feature bullets — replace shared CSS's "–" with a sky-blue check icon */
+.prod-price-features li::before {
+  content: "" !important;
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  margin-top: 1px;
+  background: #0EA5E9;
+  color: transparent !important;
+  font-family: inherit !important;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
+}
+
+/* "Everything in X, plus:" — first feature item on Pro + Max.
+   Inline with the rest of the list (no dark box), but uses "+" instead
+   of the check icon and sits visually as a soft prefix. */
+.prod-price-features li.prod-price-feat-inherit {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.prod-price-features li.prod-price-feat-inherit::before {
+  content: "+" !important;
+  background: transparent !important;
+  color: #0EA5E9 !important;
+  -webkit-mask: none !important;
+          mask: none !important;
+  font-family: var(--prod-font-mono) !important;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  width: 16px; height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+}
+
+/* ============================================================
+   Pricing tier — adopt the How it works card hierarchy:
+   - .prod-price-name reads as the card's h4 title
+     (15px / 600 / -0.005em / 1.4) — matches .howit-card-body h4
+   - .prod-price-features renders as the checks list
+     (15px / 1.5, filled-circle + white-check icon) — matches
+     .howit-checks li styling exactly. Per-pillar circle color.
+   Price block, eyebrow badge, and CTA button are untouched.
+   ============================================================ */
+/* Specificity bumped (.prod-price-tier .prod-price-name = 0,2,0)
+   so this beats the .section p bundle (0,1,1) that was silently
+   forcing .prod-price-name back to 17px / 400. */
+.prod-price-tier .prod-price-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0;
+}
+.prod-price-features {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.prod-price-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.prod-price-features li::before {
+  content: '' !important;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  border-radius: 50%;
+  background-color: #0EA5E9;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M4.2 8.4l2.6 2.6L11.8 6' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px;
+  -webkit-mask: none !important;
+          mask: none !important;
+  color: transparent !important;
+}
+
+/* ============================================================
+   "Credits per query" reference table — stretch full width of
+   container (was capped at 920px), lift the heading OUT of the
+   table card to sit above it, and adopt the deliverable / How
+   it works text hierarchy throughout:
+   - .prod-ref-table-title heading → h4 spec, lives ABOVE the
+     bordered table wrapper (not inside it).
+   - .prod-ref-table th (column headers) → same h4 spec.
+   - .prod-ref-table td (cell text) → body spec.
+   - .prod-ref-table td.mono kept "mono" class for the original
+     tabular intent, but font-family is now Urbanist for
+     visual continuity with the rest of the page.
+   - .right columns (numeric / discount) are CENTER-aligned so
+     the values sit directly under their column headers.
+   ============================================================ */
+.prod-ref-table-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 32px 0 12px;
+}
+.prod-ref-table-wrap {
+  max-width: none;
+  margin: 0;
+}
+.prod-ref-table th {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  text-transform: none;
+  color: var(--text-primary);
+}
+.prod-ref-table th,
+.prod-ref-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.prod-ref-table td {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+.prod-ref-table td.mono {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.prod-ref-table th.right,
+.prod-ref-table td.right {
+  text-align: center;
+}
+
+/* ============================================================
+   STRIPE DESIGN TOKENS — system layer (layout, type ratios,
+   spacing, motion) applied to TIS brand layer (Urbanist font,
+   cool trio accents, slate text). Captured from stripe.com's
+   .MktRoot custom properties.
+   ============================================================ */
+
+:root {
+  /* Stripe's row-gap scale — vertical spacing between elements */
+  --tis-row-gap-normal: 8px;
+  --tis-row-gap-medium: 24px;
+  --tis-row-gap-large: 32px;
+  --tis-row-gap-xlarge: 64px;
+  --tis-row-gap-xxlarge: 88px;
+
+  /* Stripe section vertical padding */
+  --tis-section-padding-y: 160px;
+
+  /* Stripe copy max-width — paragraphs never exceed 75% of layout */
+  --tis-copy-max-width: 810px;
+
+  /* Stripe hover transition curve (used by all interactive elements) */
+  --tis-hover-transition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  /* Card system — Stripe's border-radius + 5-step shadow ladder */
+  --tis-card-radius: 8px;
+  --tis-shadow-xs: 0 2px 5px -1px rgba(50,50,93,0.10), 0 1px 3px -1px rgba(0,0,0,0.08);
+  --tis-shadow-s:  0 6px 12px -2px rgba(50,50,93,0.12), 0 3px 7px -3px rgba(0,0,0,0.08);
+  --tis-shadow-m:  0 13px 27px -5px rgba(50,50,93,0.14), 0 8px 16px -8px rgba(0,0,0,0.10);
+  --tis-shadow-l:  0 30px 60px -12px rgba(50,50,93,0.16), 0 18px 36px -18px rgba(0,0,0,0.12);
+  --tis-shadow-xl: 0 50px 100px -20px rgba(50,50,93,0.18), 0 30px 60px -30px rgba(0,0,0,0.14);
+}
+
+/* Body bg = pure white. Was rgb(246, 249, 252) cool tint — but that
+   paved over the per-section gradients (hero + CTA) and competed with
+   them. Body now stays neutral; sections own their own gradient washes
+   (.section--page-hero::before, .cta-banner--themed::before) which
+   bloom properly against white. */
+body {
+  background-color: #FFFFFF;
+}
+[data-theme="dark"] body {
+  background-color: var(--surface-page);
+}
+
+/* Stripe body weight — 300 (light) instead of 400 (regular). Applied
+   in Urbanist. This is the single biggest "feels lighter / Stripe-like"
+   change — the page reads more airy and editorial. */
+body,
+.section p,
+.howit-card-body p,
+.faq-list .acc-content p,
+.pillar-hero-copy p {
+  font-weight: 400;
+}
+
+/* Heading weights — Stripe semibold 425, we approximate with Urbanist
+   500. Display headings stay at 600 (Stripe's "bold" mapped to Urbanist
+   600 for visual heft). */
+.bp-section-heading,
+.howitworks .howit-head h3,
+.pillar-hero-copy h3 {
+  font-weight: 600;
+}
+.section--page-hero h1,
+.section--page-hero h2,
+.section--page-hero--centered h1,
+.section--page-hero--centered h2 {
+  font-weight: 600;
+}
+
+/* Stripe section vertical padding — 160px top/bottom on standard
+   sections (was clamp(48px, 6vw, 80px) — about half). This gives
+   the page much more breathing room between major sections, the
+   single biggest visual change from this token pass. */
+.section { padding-block: var(--tis-section-padding-y); }
+.section--alt { padding-block: var(--tis-section-padding-y); }
+@media (max-width: 768px) {
+  .section,
+  .section--alt { padding-block: clamp(80px, 12vw, 120px); }
+}
+
+/* Inter-section padding override v2 — same as above but applied AFTER
+   the Stripe 160px section-padding upgrade. Tight 32+32 transitions
+   between Hero → Deliverables → How it works → Pricing. */
+section[aria-label="Signal hero"] { padding-bottom: 32px; }
+section[aria-label="Signal deliverables"] { padding-top: 32px; padding-bottom: 32px; }
+section[aria-label="How Signal works"] { padding-top: 32px; padding-bottom: 32px; }
+section#pricing.section--alt { padding-top: 32px; }
+
+/* Copy max-width — Stripe constrains paragraph body text to 810px
+   (75% of 1080 layout). Applied to hero p + section paragraphs so
+   long text never spans the full container width edge-to-edge. */
+.pillar-hero-copy p,
+.section-head p,
+.section > .container > p {
+  max-width: var(--tis-copy-max-width);
+}
+
+/* Button / CTA font — Stripe ctaFont = 425 / 15px / 1.6. We use
+   Urbanist 500 (closest available weight). Universal hover easing. */
+.btn,
+.btn-primary,
+.btn-secondary,
+.prod-price-cta {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  transition: var(--tis-hover-transition);
+}
+
+/* Universal hover easing — apply Stripe's hover curve to anything
+   that already declares its own transition properties on hover. */
+a, button,
+.howit-card,
+.prod-price-tier,
+.acc-trigger,
+.btn {
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* ============================================================
+   CANONICAL TYPE SCALE — locked to Stripe h1.Copy__title @ 56px /
+   line-height 1.2 (inspected on stripe.com/payments). Scale ratios
+   applied across the page so h1 / h2 / h3 / body read as one
+   disciplined hierarchy. Uses Urbanist (TIS brand) at the sizes
+   and weights Stripe uses with Sohne. Colors stay on --text-primary
+   per brand rule.
+   ============================================================ */
+
+/* h1 — hero display heading. clamp(36, 5.35vw, 56) verified against
+   Stripe at viewport 898 → 48px and viewport 1286 → 56px (clamped). */
+.section--page-hero h1,
+.section--page-hero h2,
+.section--page-hero--centered h1,
+.section--page-hero--centered h2,
+.pillar-hero-copy h1,
+.pillar-hero-copy h2 {
+  font-size: clamp(36px, 5.35vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* h2 — section heads (Pricing, CTA). */
+.bp-section-heading,
+.cta-banner--themed .section-head h2,
+.cta-banner--themed h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* Pricing section heading — match the "How it works" h3 spec
+   (clamp(22px, 2.5vw, 32px) / 600 / -0.015em / 1.25). Scoped to
+   .bp-section-heading only — CTA heads stay at the larger
+   clamp(28,3.5vw,44) h2 scale defined above. */
+.bp-section-heading {
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+/* FAQ accordion — adopt the deliverable / How it works card
+   text hierarchy:
+   - .acc-title (question) → h4 title spec (15px / 600 / -0.005em / 1.4)
+   - .acc-content p (answer) → body spec (15px / 400 / 1.55).
+   Overrides the bundled .faq-list .acc-content p rule above
+   that set 17px / 400 via the Stripe body-bump. */
+.acc-trigger .acc-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+}
+.faq-list .acc-content p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+/* h3 — subsection heads (How it works, FAQ). */
+.howitworks .howit-head h3,
+.faq-heading,
+.pillar-hero-copy h3 {
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+/* Hero left column vertical rhythm — Stripe row-gap scale: 24px
+   between h1 and body p, 32px between body p and CTAs. Matches the
+   RowLayout gap pattern inspected on Stripe. */
+.section--page-hero .pillar-hero-copy h1,
+.section--page-hero .pillar-hero-copy h2 {
+  margin: 0 0 24px;
+}
+.section--page-hero .pillar-hero-copy p {
+  margin: 0 0 32px;
+  max-width: var(--tis-copy-max-width, 810px);
+}
+.section--page-hero .pillar-hero-copy .pillar-hero-cta {
+  margin: 0;
+}
+
+/* ============================================================
+   Hero shot — fluid scale, left-aligned to middle guideline.
+   - position:absolute + left:50% pins the shot's left edge to
+     the middle dotted guideline (= pillar-hero center = 50vw).
+   - width:50vw extends the right edge to viewport right.
+   - aspect-ratio 350/500 keeps the 7:10 ratio while scaling.
+   - .container z-index:2 lifts the hero above body::after (the
+     right outer rail), so the rail passes behind the shot.
+     Scoped to the hero section only.
+   - overflow:visible (overriding styles.css) lets the shot's
+     box-shadow render past the section bottom.
+   - .pillar-hero-copy min-height keeps signal + licensing hero
+     sections the same height regardless of paragraph wrap.
+   - Lightened box-shadow vs styles.css default reads softer at
+     the larger shot size.
+   ============================================================ */
+.section--page-hero { overflow: visible; }
+.section--page-hero > .container { z-index: 2; }
+.section--page-hero .pillar-hero { position: relative; }
+.section--page-hero .pillar-hero-copy { min-height: 420px; }
+.section--page-hero .pillar-hero-shot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  /* Width spans from the center guideline (50vw) to the right outer rail
+     (50vw + 540, where body::after sits) = 540px on any viewport ≥ 1080px.
+     On narrower viewports it shrinks with 50vw so the right edge tracks the
+     clamped rail at the viewport edge. Width-based (not `right`-based) so
+     positioning context doesn't matter — .pillar-hero stays the positioning
+     parent for vertical top:0 alignment. Aspect ratio dropped — height
+     follows the inner .frame-canvas (16:10) so the shot proportions track
+     the visible image. */
+  width: min(540px, 50vw);
+  z-index: 2;
+}
+.section--page-hero .pillar-hero-shot .frame-wrap { max-width: none; }
+.section--page-hero .pillar-hero-shot .browser-frame {
+  box-shadow:
+    0 1px 1px rgba(0,0,0,0.02),
+    0 12px 32px -8px rgba(0,0,0,0.06),
+    0 32px 64px -16px rgba(0,0,0,0.08);
+}
+/* Hero frame +30% taller — canvas aspect-ratio 16/10 → 16/13 and
+   .shot-inner height 860 → 1118 (both ×1.3). Width unchanged, top edge
+   unchanged. More inner content becomes visible at the bottom because the
+   inner layout naturally extends downward into the added vertical space. */
+.section--page-hero .pillar-hero-shot .frame-canvas { aspect-ratio: 16 / 13; }
+.section--page-hero .pillar-hero-shot .shot-inner { height: 1118px; }
+
+/* Hero signal backdrop — re-center + zoom inside the .shot-inner box.
+   styles.css tuned `.hero-signal .strip` (perspective-origin 50% 30%,
+   transform translate3d(210px, -20px, 0) scale(0.75), mask 78% 72% with
+   steep fade) to the full-width carousel hero, where the strip needed
+   to sit right of the pillar text. In the preview's confined 1376×1118
+   virtual canvas we drop the X-translate so the 3×4 metric grid centers,
+   bump scale to 1.0, and tighten the mask so the visible area fills
+   the card. */
+.section--page-hero .pillar-hero-shot .hero-signal .stage-3d {
+  perspective-origin: 50% 50%;
+}
+.section--page-hero .pillar-hero-shot .hero-signal .strip {
+  transform: scale(1.3);
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+
+@media (max-width: 980px) {
+  .section--page-hero .pillar-hero-shot {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+  .section--page-hero .pillar-hero-shot .frame-wrap { max-width: 688px; }
+}
+
+/* ============================================================
+   Section background audit — strip backgrounds that cover the
+   body's rails + dotted inner lines. Keep the cool radial
+   gradient washes (they're decorative atop body bg, not solid).
+   ============================================================ */
+
+/* CTA banner — drop the solid --surface-secondary background so body's
+   off-white tint + dotted rails show through. The .cta-banner--themed
+   ::before radial gradient still applies, painting cool color washes
+   on top of the visible body. Also drop the heavy border-top which
+   reads as a hard section break against the new continuous rails.
+   padding-block tightened from the 160px section-rhythm default down
+   to 104px (−33%) so the bottom CTA reads tighter against the footer
+   without affecting other sections. */
+.cta-banner {
+  background: transparent;
+  border-top: 0;
+  padding-block: 104px;
+}
+/* Zero the .page-hero-actions 64px bottom margin (inherited from styles.css
+   §page-hero-actions, written for the hero at top-of-page where buttons sit
+   above more content). At the bottom-of-page CTA the buttons are the last
+   thing in the section, so that 64px makes content sit ~32px above the
+   gradient's vertical midline. Scoped to .cta-banner only — the hero keeps
+   its 64px. */
+.cta-banner .page-hero-actions { margin-bottom: 0; }
+
+/* ============================================================
+   Deliverable cards — Stripe-flat treatment.
+   Locked to Stripe values: icon 40px / margin-bottom 8px, title 15px
+   semibold with 2×16 vertical accent line ::before (per-pillar color),
+   body 15px / 300 / --text-secondary. All card chrome stripped.
+   ============================================================ */
+.deliverable-card {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  gap: 12px;
+}
+.deliverable-card:hover { box-shadow: none; transform: none; }
+
+.deliverable-card .icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 0 8px;
+}
+.deliverable-card .icon svg {
+  width: 28px; height: 28px;
+}
+
+/* Title — 15px semibold, with the Stripe-style 2×16 vertical accent
+   line ::before. Per-pillar color set below. */
+.deliverable-card h4 {
+  position: relative;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+  padding-left: 12px;
+  margin: 0;
+}
+.deliverable-card h4::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 16px;
+  background: var(--text-tertiary);  /* fallback */
+}
+[data-pillar="signal"] .deliverable-card h4::before { background: #0EA5E9; }
+[data-pillar="licensing"] .deliverable-card h4::before { background: #F97316; }
+
+/* Body — 15px / 300 / --text-secondary, aligned to title's left edge. */
+.deliverable-card p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  padding-left: 12px;
+  margin: 0;
+}
+
+/* Page hero already uses transparent (only ::before radial gradient) —
+   no change needed there. */
+
+/* .section--alt sections (Pricing, Use Case) use no background — no
+   change needed. */
+
+/* ============================================================
+   HOW IT WORKS — Stripe-exact rebuild.
+   Locked to Stripe FullWidthFeatureCarouselItemWrapper inspected
+   values: card wrapper 540 wide, visual 3:2 landscape, title 26px /
+   #0A2540, body 18px / #425466, check labels 15px / #425466 with
+   16×16 filled circle checkmarks. Colors stay on TIS tokens.
+   Per-pillar accent: signal sky / licensing warm orange.
+   ============================================================ */
+
+.howitworks .howit-rail {
+  grid-auto-columns: 504px;
+  gap: 36px;
+  /* Extension math: -16px offsets container padding, max() extends
+     rail to viewport right edge on screens wider than 1080. With
+     504px cards × 2 = 1008 + 36 gap = 1044, the 3rd card naturally
+     starts past the container content area and peeks the right rail. */
+  margin-right: calc(-16px - max(0px, 50vw - 540px));
+  padding-right: 16px;
+}
+@media (max-width: 1140px) {
+  .howitworks .howit-rail {
+    grid-auto-columns: minmax(440px, 504px);
+    margin-right: 0;
+    padding-right: 4px;
+  }
+}
+@media (max-width: 720px) {
+  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
+}
+
+/* Visual area — landscape 3:2 (Stripe inspected: 496×330 ≈ 1.504). */
+.howit-card-visual {
+  aspect-ratio: 3 / 2;
+}
+
+/* Card title + body — match .deliverable-card typography
+   (15px h4 / 600 / -0.005em / 1.4; 15px p / 400 / 1.55). */
+.howit-card-body {
+  padding: 28px 30px 32px;
+  gap: 14px;
+}
+.howit-card-body h4 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0;
+}
+.howit-card-body p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Check list items — 16px label color --text-secondary; 20×20 outlined
+   circle (1.5px colored ring + white interior + colored check icon
+   inside). Matches the howit-arrow outlined treatment so the rail nav
+   buttons and check bullets share a visual language. Per-pillar accent
+   color (signal sky / licensing warm). */
+.howit-checks {
+  margin-top: 6px;
+  gap: 12px;
+}
+.howit-checks li {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  align-items: flex-start;
+  gap: 12px;
+}
+.howit-checks li::before {
+  content: '' !important;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 1.5px solid #0EA5E9;  /* signal default */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%230EA5E9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  -webkit-mask: none !important;
+          mask: none !important;
+}
+[data-pillar="signal"] .howit-checks li::before {
+  border-color: #0EA5E9;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%230EA5E9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+[data-pillar="licensing"] .howit-checks li::before {
+  border-color: #F97316;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%23F97316' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* ============================================================
+   HOW IT WORKS — Stripe grid-edge alignment.
+   Cards 540px wide (= 2 grid columns of 270 each). Grid gap = 0.
+   Visible gap moves INSIDE each card as 36px right-padding. Card
+   chrome (border, bg, shadow, radius) moves from .howit-card to
+   .howit-card-visual. Body becomes flat text below the visual.
+   Result: card LEFT and RIGHT edges align flush with the inner
+   dotted column lines (270 / 540 / 810).
+   ============================================================ */
+
+.howitworks .howit-rail {
+  grid-auto-columns: 540px;
+  gap: 0;
+  /* Negative left margin bleeds past container's 16px padding so
+     card 1's left edge lands AT the outer rail (50vw - 540), not
+     16px in from it. Right side still extends past right rail. */
+  margin-left: -16px;
+  margin-right: calc(-16px - max(0px, 50vw - 540px));
+  padding-right: 0;
+}
+@media (max-width: 1140px) {
+  .howitworks .howit-rail {
+    grid-auto-columns: minmax(440px, 540px);
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+@media (max-width: 720px) {
+  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
+}
+
+/* Card wrapper — transparent, 540px slot with 36px internal
+   right-padding that creates the visible gap between cards. */
+.howit-card {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  padding-right: 36px;
+  transition: none;
+}
+.howit-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Visual area now carries the card chrome (border, bg, shadow, radius). */
+.howit-card-visual {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  background: var(--surface-page);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
+}
+.howit-card:hover .howit-card-visual {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
+}
+
+/* Body is flat text below the visual — no border-top, no chrome */
+.howit-card-body {
+  padding: 24px 0 0;
+  border-top: 0;
+  background: transparent;
+  gap: 14px;
+}
+
+/* ============================================================
+   HOW IT WORKS — Stripe-exact nested card structure.
+   Outer card has white bg + shadow via ::before pseudo (so card
+   chrome only fills the content area, not the 36px padding-right
+   gap). Inside the card: a nested gray visual box (24px margin
+   from card edges) holds the product UI. On hover, the gradient
+   overlay fades in. Body sits flat below the visual in the white
+   card area with 32px padding.
+   ============================================================ */
+
+.howit-card {
+  position: relative;
+  scroll-snap-align: start;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  padding-right: 36px;
+  display: flex; flex-direction: column;
+  transition: none;
+}
+.howit-card:hover { transform: none; }
+
+/* Card chrome — white bg + shadow + radius. Fills content area only
+   (inset 0 36px 0 0) so the right 36px padding stays transparent
+   (creating the visible gap between cards). */
+.howit-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 36px 0 0;
+  background: var(--surface-page);
+  border: 0;
+  border-radius: 16px;
+  /* Bottom-heavy asymmetric shadow — negative spreads keep horizontal
+     extension minimal so the shadow doesn't clip at the rail's left
+     overflow boundary. Always visible. */
+  box-shadow:
+    0 2px 4px -1px rgba(0,0,0,0.05),
+    0 8px 16px -4px rgba(0,0,0,0.08),
+    0 20px 40px -12px rgba(0,0,0,0.12);
+  transition: box-shadow 240ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hover lift — the WHOLE card translates up 4px (matches the previous
+   pop-out behavior). Shadow deepens to reinforce the lift. */
+.howit-card {
+  transition: transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1) !important;
+}
+.howit-card:hover {
+  transform: translateY(-4px) !important;
+}
+.howit-card:hover::before {
+  box-shadow:
+    0 4px 8px -2px rgba(0,0,0,0.06),
+    0 16px 32px -8px rgba(0,0,0,0.10),
+    0 32px 56px -16px rgba(0,0,0,0.16);
+}
+
+/* Rail padding/margin — back to keeping card 1's left edge exactly
+   at the outer rail (margin-left: -16 cancels container's 16px padding).
+   No padding-left buffer; instead the shadow uses negative spreads
+   so it doesn't horizontally extend enough to be visibly clipped.
+   position+z-index lifts the card row above body::after (the right
+   outer rail at z-index:1) so cards peeking past the right rail
+   render in front of the rail, not behind it. Scoped to this rail
+   only — header row and other sections keep the rail above content. */
+.howitworks .howit-rail {
+  position: relative;
+  z-index: 2;
+  margin: 0 calc(-16px - max(0px, 50vw - 540px)) 0 -16px;
+  padding: 8px 0 40px 0;
+}
+@media (max-width: 1140px) {
+  .howitworks .howit-rail {
+    margin: 0;
+    padding: 8px 0 40px 0;
+  }
+}
+@media (max-width: 720px) {
+  .howitworks .howit-rail {
+    margin: 0;
+    padding: 8px 8px 40px 8px;
+  }
+}
+
+/* Card content layers above ::before chrome */
+.howit-card-visual,
+.howit-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* Visual = nested LIGHT GRAY box with 24px margin from card edges */
+.howit-card-visual {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 0;
+  background: rgb(246, 247, 249);  /* Stripe cool light gray */
+  box-shadow: none;
+  margin: 24px 24px 0;
+  /* aspect-ratio is inherited from earlier rule (3/2) */
+}
+
+/* Gradient overlay — hidden by default, fades in on hover */
+.howit-card-grad {
+  opacity: 0;
+  transition: opacity 320ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.howit-card:hover .howit-card-grad {
+  opacity: 1;
+}
+
+/* Body = text area inside white card, below visual */
+.howit-card-body {
+  padding: 24px 32px 32px;
+  border-top: 0;
+  background: transparent;
+  gap: 14px;
+}
+</style>
 </head>
 
 <body data-page="signal">
@@ -204,33 +1591,19 @@
 
   <h1 class="sr-only" data-zh="Signal — 30 分鐘為專利做 SABCD 評等">Signal — Grade patents with SABCD in 30 minutes</h1>
 
-  <!-- ─── 1. Brief hero (centered) ─── -->
-  <section class="section section--page-hero section--page-hero--brief section--page-hero--centered" aria-label="Signal hero">
-    <div class="container">
-      <div class="page-hero">
-        <h2 class="page-hero-title">
-          <span data-zh="30 分鐘為 IP 打分。">Grade IP in 30 minutes.</span> <em data-zh="不是幾週。">Not weeks.</em>
-        </h2>
-        <p class="page-hero-sub" data-zh="提交專利號，半小時內收到 SABCD 評等 Brief。對 Innovue 1.7 億件全球第四大專利資料庫計算同儕百分位。">Submit a patent number. Receive an SABCD-graded Brief in your inbox in thirty minutes. Peer percentile drawn from Innovue's 170M-patent database — fourth-largest globally.</p>
-        <div class="page-hero-actions">
-          <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
-          <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 2. Product overview screenshot — cloned from homepage #products Signal pillar ─── -->
-  <section class="section" aria-label="Signal overview">
+  <!-- ─── 1. Hero (Stripe 2-col — text left + report visual right) ─── -->
+  <section class="section section--page-hero" aria-label="Signal hero">
     <div class="container">
 
       <div class="pillar-hero">
         <div class="pillar-hero-copy">
-          <h3 data-zh="Signal">Signal</h3>
-          <p data-zh="以點數計費的專利估值、比對與報告產品。創辦人口中的「IP 很強」——Signal 把它化為可辯護的 SABCD 評等，逐件對 Innovue 1.7 億件專利資料庫驗證。">Point-based products for patent valuation, comparison, and report sales. Founders claim "strong IP." Signal turns the claim into a defensible SABCD grade — per patent, against Innovue's 170M-patent database.</p>
+          <h1 class="page-hero-title">
+            <span data-zh="30 分鐘為 IP 打分。">Grade IP in 30 minutes.</span> <em data-zh="不是幾週。">Not weeks.</em>
+          </h1>
+          <p data-zh="提交專利號，半小時內收到 SABCD 評等報告。對 Innovue 1.7 億件全球第四大專利資料庫計算同儕百分位。">Submit a patent number. Receive an SABCD-graded report in your inbox in thirty minutes. Peer percentile drawn from Innovue's 170M-patent database — fourth-largest globally.</p>
           <div class="pillar-hero-cta">
-            <a href="/#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
-            <a href="#pricing" class="btn btn-secondary btn-lg" data-zh="查看定價 →">See pricing →</a>
+            <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
+            <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
           </div>
         </div>
         <div class="pillar-hero-shot" aria-hidden="true">
@@ -238,273 +1611,193 @@
             <div class="browser-frame" data-chrome="bare">
               <div class="frame-canvas">
                 <div class="shot-inner">
-                  <div class="shot-perspective cool-light flat">
-                    <div class="r-spread-stage is-cascade peek-medium is-expanded">
-
-                      <div class="r-page-card is-d">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-08</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="d">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;24.18</span></div>
-                            <div class="r-seal-mark">D</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">117 / 142</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 82.4%</span></div>
-                          </div>
-                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="63 283"/></svg><div class="r-metric-arc-val">22.3<small>%</small></div></div></div><div class="sub">142-patent industrial actuator pool</div></div>
-                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">117<small> / 142</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
-                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">24.18</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 24.18 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:24.18%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
-                        </div>
+                  <div class="hero-signal" style="opacity:1">
+                    <div class="stage-3d">
+                      <div class="strip">
+                        <!-- Row 1 · S-tier (cohort 98.3% · rank 4/183 · PSS 62.17) -->
+                        <div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/></svg><span class="arc-val">98.3<small>%</small></span></div></div><span class="tier-pin s">Tier S</span></div>
+                        <div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">4<small>/ 183</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar is-this" x="212" y="76" width="10" height="36"/><rect class="bar" x="225" y="106" width="10" height="6"/><polygon class="marker" points="212,0 222,0 217,15"/></svg></div></div><span class="tier-pin s">Tier S</span></div>
+                        <div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">62.17</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 62.17 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:62.17%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin s">Tier S</span></div>
+                        <!-- Row 2 · A-tier (cohort 88.7% · rank 18/162 · PSS 56.12) -->
+                        <div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/></svg><span class="arc-val">88.7<small>%</small></span></div></div><span class="tier-pin a">Tier A</span></div>
+                        <div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">18<small>/ 162</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="100" width="10" height="12"/><rect class="bar" x="17" y="90" width="10" height="22"/><rect class="bar" x="30" y="74" width="10" height="38"/><rect class="bar" x="43" y="54" width="10" height="58"/><rect class="bar" x="56" y="32" width="10" height="80"/><rect class="bar" x="69" y="14" width="10" height="98"/><rect class="bar" x="82" y="6" width="10" height="106"/><rect class="bar" x="95" y="10" width="10" height="102"/><rect class="bar" x="108" y="22" width="10" height="90"/><rect class="bar" x="121" y="40" width="10" height="72"/><rect class="bar" x="134" y="60" width="10" height="52"/><rect class="bar" x="147" y="78" width="10" height="34"/><rect class="bar is-this" x="160" y="68" width="10" height="44"/><rect class="bar" x="173" y="92" width="10" height="20"/><rect class="bar" x="186" y="98" width="10" height="14"/><rect class="bar" x="199" y="102" width="10" height="10"/><rect class="bar" x="212" y="104" width="10" height="8"/><rect class="bar" x="225" y="108" width="10" height="4"/><polygon class="marker" points="160,0 170,0 165,15"/></svg></div></div><span class="tier-pin a">Tier A</span></div>
+                        <div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">56.12</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 56.12 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:56.12%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin a">Tier A</span></div>
+                        <!-- Row 3 · B-tier (cohort 72.4% · rank 47/198 · PSS 47.30) -->
+                        <div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/></svg><span class="arc-val">72.4<small>%</small></span></div></div><span class="tier-pin b">Tier B</span></div>
+                        <div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">47<small>/ 198</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="106" width="10" height="6"/><rect class="bar" x="17" y="98" width="10" height="14"/><rect class="bar" x="30" y="86" width="10" height="26"/><rect class="bar" x="43" y="70" width="10" height="42"/><rect class="bar" x="56" y="50" width="10" height="62"/><rect class="bar" x="69" y="28" width="10" height="84"/><rect class="bar" x="82" y="14" width="10" height="98"/><rect class="bar is-this" x="95" y="40" width="10" height="72"/><rect class="bar" x="108" y="8" width="10" height="104"/><rect class="bar" x="121" y="14" width="10" height="98"/><rect class="bar" x="134" y="30" width="10" height="82"/><rect class="bar" x="147" y="52" width="10" height="60"/><rect class="bar" x="160" y="72" width="10" height="40"/><rect class="bar" x="173" y="86" width="10" height="26"/><rect class="bar" x="186" y="94" width="10" height="18"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="104" width="10" height="8"/><rect class="bar" x="225" y="108" width="10" height="4"/><polygon class="marker" points="95,0 105,0 100,15"/></svg></div></div><span class="tier-pin b">Tier B</span></div>
+                        <div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">47.30</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 47.30 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:47.30%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin b">Tier B</span></div>
+                        <!-- Row 4 · C-tier (cohort 48.5% · rank 88/152 · PSS 38.74) -->
+                        <div class="mt"><span class="lbl">Cohort percentile</span><div class="mid"><div class="arc"><svg viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/></svg><span class="arc-val">48.5<small>%</small></span></div></div><span class="tier-pin c">Tier C</span></div>
+                        <div class="mt"><span class="lbl">Rank in pool</span><div class="mid"><div class="val">88<small>/ 152</small></div><div class="hist"><svg viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true"><line class="baseline" x1="0" y1="112" x2="240" y2="112"/><rect class="bar" x="4" y="108" width="10" height="4"/><rect class="bar" x="17" y="102" width="10" height="10"/><rect class="bar" x="30" y="92" width="10" height="20"/><rect class="bar" x="43" y="78" width="10" height="34"/><rect class="bar" x="56" y="60" width="10" height="52"/><rect class="bar" x="69" y="40" width="10" height="72"/><rect class="bar" x="82" y="22" width="10" height="90"/><rect class="bar" x="95" y="10" width="10" height="102"/><rect class="bar" x="108" y="6" width="10" height="106"/><rect class="bar" x="121" y="14" width="10" height="98"/><rect class="bar is-this" x="134" y="44" width="10" height="68"/><rect class="bar" x="147" y="42" width="10" height="70"/><rect class="bar" x="160" y="62" width="10" height="50"/><rect class="bar" x="173" y="80" width="10" height="32"/><rect class="bar" x="186" y="92" width="10" height="20"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="106" width="10" height="6"/><rect class="bar" x="225" y="110" width="10" height="2"/><polygon class="marker" points="134,0 144,0 139,15"/></svg></div></div><span class="tier-pin c">Tier C</span></div>
+                        <div class="mt"><span class="lbl">PSS score</span><div class="mid"><div class="val">38.74</div><div class="meter"><div class="bar" role="img" aria-label="PSS magnitude 38.74 of 100"><span class="tick" aria-hidden="true"></span><div class="fill" style="width:38.74%"></div></div><div class="scale"><span>0</span><span>50</span><span>100</span></div></div></div><span class="tier-pin c">Tier C</span></div>
                       </div>
-
-                      <div class="r-page-card is-c">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-15</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="c">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;38.74</span></div>
-                            <div class="r-seal-mark">C</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">88 / 152</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 57.9%</span></div>
-                          </div>
-                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/></svg><div class="r-metric-arc-val">48.5<small>%</small></div></div></div><div class="sub">152-patent display backlight pool</div></div>
-                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">88<small> / 152</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
-                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">38.74</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 38.74 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:38.74%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
-                        </div>
-                      </div>
-
-                      <div class="r-page-card is-b">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-22</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="b">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;47.30</span></div>
-                            <div class="r-seal-mark">B</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">47 / 198</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 23.7%</span></div>
-                          </div>
-                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/></svg><div class="r-metric-arc-val">72.4<small>%</small></div></div></div><div class="sub">198-patent automotive radar pool</div></div>
-                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">47<small> / 198</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
-                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">47.30</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 47.30 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:47.30%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
-                        </div>
-                      </div>
-
-                      <div class="r-page-card is-a">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-29</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="a">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;56.12</span></div>
-                            <div class="r-seal-mark">A</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">18 / 162</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 11.1%</span></div>
-                          </div>
-                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/></svg><div class="r-metric-arc-val">88.7<small>%</small></div></div></div><div class="sub">162-patent semiconductor photolithography pool</div></div>
-                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">18<small> / 162</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
-                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">56.12</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 56.12 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:56.12%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
-                        </div>
-                      </div>
-
-                      <div class="r-page-card is-s">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-05-06</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="s">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;78.91</span></div>
-                            <div class="r-seal-mark">S</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">4 / 183</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 2.2%</span></div>
-                          </div>
-                          <div class="r-metric"><div class="lbl">Cohort percentile</div><div class="r-metric-mid"><div class="r-metric-arc"><svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true"><path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/><path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/></svg><div class="r-metric-arc-val">98.3<small>%</small></div></div></div><div class="sub">183-patent semiconductor advanced-node process pool</div></div>
-                          <div class="r-metric"><div class="lbl">Rank in pool</div><div class="r-metric-mid"><div class="val">4<small> / 183</small></div></div><div class="sub">Re-ranked weekly as cohort updates</div></div>
-                          <div class="r-metric"><div class="lbl">PSS score</div><div class="r-metric-mid"><div class="val">78.91</div><div class="r-metric-meter-h"><div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 78.91 of 100"><span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span><div class="r-metric-meter-h-fill" style="width:78.91%;"></div></div><div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div></div></div><div class="sub">Composite of 8 pillars · 50 indicators</div></div>
-                        </div>
-                      </div>
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <aside class="callout bundle-callout cool" style="bottom:80px;left:-24px">
-              <span class="accent cool"></span>
-              <div class="body">
-                <h3 data-zh="三種讀法。<em>一個結論。</em>">Three readings. <em>One verdict.</em></h3>
-                <p class="sub" data-zh="同期百分位、排名與 PSS 收斂為單一 SABCD 評等——對照同儕計分。">Cohort percentile, rank, and PSS resolve to a single SABCD tier — scored against peers.</p>
-                <div class="legend">
-                  <span class="tier-chip tier-chip--s">Tier S</span>
-                  <span class="tier-chip tier-chip--a">Tier A</span>
-                  <span class="tier-chip tier-chip--b">Tier B</span>
-                  <span class="tier-chip tier-chip--c">Tier C</span>
-                  <span class="tier-chip tier-chip--d">Tier D</span>
-                </div>
-              </div>
-            </aside>
-
-            <aside class="callout cool" style="top:108px;right:-24px">
-              <span class="accent cool"></span>
-              <div class="body">
-                <div class="val"><em>Two depths.</em> Same engine.</div>
-                <div class="sub" data-zh="短報告——快速取得評等。完整報告——評等加上 50 項指標深度分析。">Brief — the grade, fast. Pro — the grade plus the 50-indicator deep dive.</div>
-              </div>
-            </aside>
           </div>
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ─── 2. Deliverables (4 cards, directly below hero) ─── -->
+  <section class="section" aria-label="Signal deliverables">
+    <div class="container">
+
       <div class="deliverable-grid">
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
-          <h4 data-zh="SABCD 估值">SABCD valuation</h4>
-          <p data-zh="依據 Innovue 1.7 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。Brief 報告 15 點（NT$1,500）；+15 點升級為 Pro。">Five-tier patent quality score against Innovue's 170M-patent database. Tier S is premium / strategic; D is the bottom of the ladder. Brief 15 points (NT$1,500); +15 to upgrade to Pro.</p>
+          <h4 data-zh="看見你的專利排在哪裡">See how your patent measures up</h4>
+          <p data-zh="SABCD 評等將每件專利從 Tier S 排到 Tier D，以 Innovue 1.7 億件專利資料庫的同產業池為校準基準。">An SABCD grade ranks every patent from Tier S to Tier D, calibrated against industry-pool peers in Innovue's 170M-patent database.</p>
         </article>
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
-          <h4 data-zh="專利比對">Patent comparison</h4>
-          <p data-zh="並列比對請求項、專利家族與引用重疊。辨識侵權風險，找出最可能擋住路線圖的專利。">Side-by-side claim, family, and citation overlap. Identifies infringement risk and the patents most likely to block your roadmap.</p>
+          <h4 data-zh="壓力測試專利的真實強度">Pressure-test a patent's strength</h4>
+          <p data-zh="並列比對請求項、專利家族與引用，對標技術相近的同儕專利，檢驗其有效性與真實強度是否經得起審視。">Side-by-side claim, family, and citation comparison against technology-similar peers checks whether a patent's validity and strength hold up to scrutiny.</p>
         </article>
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg></span>
-          <h4 data-zh="繞道路徑指引">Work-around guidance</h4>
-          <p data-zh="依資料庫掃描，追蹤繞過阻擋性專利的替代請求項路徑。在公開資料稀薄、進入市場時程緊迫時，讓 go / no-go 判斷更銳利。">Database-grounded scan that traces alternate claim paths around blocking patents. Sharpens go / no-go calls under thin public data and tight market-entry windows.</p>
+          <h4 data-zh="策略佈局你的路徑">Strategically position your path</h4>
+          <p data-zh="每件專利拆解為 8 大加權支柱──引用影響力（Citation Impact）、前瞻價值（Forward-Looking Value）等──Pro 報告再展開 50 項指標深度分析，協助策略決策。">Each patent decomposes into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more — with Pro reports opening a 50-indicator deep dive to sharpen your decision.</p>
         </article>
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
-          <h4 data-zh="預製報告">Pre-built reports</h4>
-          <p data-zh="產業 × 司法管轄區的專利地形圖——集中度、空白區、申請潮——以點數計費，可下載。Innovue 與 TIS 內部使用同一資料庫。">Industry × jurisdiction landscapes — concentration, whitespace, filing surge — point-priced and downloadable. Same DB Innovue and TIS use internally.</p>
+          <h4 data-zh="下注前，先摸清地形">Know the terrain before you bet</h4>
+          <p data-zh="補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。">Closes the blind spots that drive risk and expensive mistakes. Pre-built by industry and jurisdiction — no analyst project required.</p>
         </article>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ─── 3. How Signal works ─── -->
+  <section class="section" aria-label="How Signal works">
+    <div class="container">
+
       <div class="howitworks">
-        <h3 data-zh="運作方式">How it works</h3>
-        <div class="howitworks-grid">
-
-          <div class="howitworks-visual howitworks-visual--steps" aria-hidden="true">
-
-            <div class="howitworks-step-panel is-active" data-step="search">
-              <p class="howitworks-step-eyebrow"><span>Step 1</span><span class="dot"></span><span data-zh="搜尋輸入">Search input</span></p>
-              <div class="prod-option-list">
-                <div class="prod-option-row is-selected"><span class="nm" data-zh="專利號">Patent number</span><span class="ct">US 10,892,431</span></div>
-                <div class="prod-option-row"><span class="nm" data-zh="公司名稱">Company name</span><span class="ct" data-zh="模糊比對">Fuzzy match</span></div>
-                <div class="prod-option-row"><span class="nm" data-zh="技術描述">Technology description</span><span class="ct" data-zh="自然語言">Natural language</span></div>
-                <div class="prod-option-row"><span class="nm" data-zh="批次上傳">Batch upload</span><span class="ct">PDF · CSV · XLSX</span></div>
-              </div>
-            </div>
-
-            <div class="howitworks-step-panel" data-step="valuation">
-              <p class="howitworks-step-eyebrow"><span>Step 2</span><span class="dot"></span><span data-zh="評分執行中">Scoring in progress</span></p>
-              <div class="prod-status-timeline">
-                <div class="prod-timeline-step is-done"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="送出">Submitted</p><p class="prod-timeline-sub">0 min</p></div>
-                <div class="prod-timeline-step is-active"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="評分中">Scoring</p><p class="prod-timeline-sub">15–20 min</p></div>
-                <div class="prod-timeline-step is-future"><div class="prod-timeline-dot"></div><p class="prod-timeline-label" data-zh="Brief 寄達">Brief sent</p><p class="prod-timeline-sub">30 min</p></div>
-              </div>
-            </div>
-
-            <div class="howitworks-step-panel" data-step="evidence">
-              <p class="howitworks-step-eyebrow"><span>Step 3</span><span class="dot"></span><span data-zh="檢視證據">Verdict + evidence</span></p>
-              <div class="howitworks-seal-row">
-                <div class="prod-seal" data-tier="b">
-                  <span class="prod-seal-eyebrow"><span>PSS 62.17</span></span>
-                  <span class="prod-seal-mark">B</span>
-                  <span class="prod-seal-tier"><span>47 / 183</span></span>
-                </div>
-                <div class="prod-metric-trio" style="grid-template-columns:1fr;">
-                  <div class="prod-metric"><span class="lbl" data-zh="同儕百分位">Percentile</span><span class="val">61.7<small>%</small></span></div>
-                  <div class="prod-metric"><span class="lbl" data-zh="組內排名">Rank</span><span class="val">47<small>/183</small></span></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="howitworks-step-panel" data-step="export">
-              <p class="howitworks-step-eyebrow"><span>Step 4</span><span class="dot"></span><span data-zh="匯出">Downloadable Brief</span></p>
-              <article class="prod-report-page" style="max-width:none;">
-                <header class="prod-letterhead">
-                  <div class="l-brand"><span>TIS Signal</span><span class="l-divider"></span><span>Innovue</span></div>
-                  <div class="l-meta"><span>BRF-<b>2026-0518-A1F3</b></span></div>
-                </header>
-                <div class="prod-report-bc"><div><p class="prod-report-bc-meta">US 10,892,431 B2 · COHORT n=183</p></div></div>
-                <div class="prod-report-hero">
-                  <div class="prod-seal" data-tier="b">
-                    <span class="prod-seal-eyebrow"><span>PSS 62.17</span></span>
-                    <span class="prod-seal-mark">B</span>
-                    <span class="prod-seal-tier"><span>47 / 183</span></span>
-                  </div>
-                </div>
-                <footer class="prod-report-foot">
-                  <span>© 2026 TIS · SAMPLE</span>
-                  <span>SHA-256 · 9F8E…7C32</span>
-                </footer>
-              </article>
-            </div>
-
+        <div class="howit-head">
+          <h3 data-zh="運作方式">How it works</h3>
+          <div class="howit-rail-nav" role="group" aria-label="Scroll the How it works rail">
+            <button type="button" class="howit-arrow" data-howit-prev aria-label="Previous step" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button type="button" class="howit-arrow" data-howit-next aria-label="Next step">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
           </div>
+        </div>
 
-          <div class="acc-list">
-            <div class="acc-item is-open" data-step="search">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="搜尋">Search</span>
-                <span class="acc-mark" aria-hidden="true">−</span>
-              </button>
-              <div class="acc-content"><div><p data-zh="輸入專利號、公司名稱或技術描述。可上傳 PDF、CSV 或 Excel 批次處理——無需自有專利組合。">Patent number, company name, or technology description. Upload PDF, CSV, or Excel for batch processing — no patent portfolio required.</p></div></div>
+        <div class="howit-rail" data-howit-rail>
+
+          <!-- Card 1 · Submit a patent — submit form screenshot ("What patent are we grading?") -->
+          <article class="howit-card" data-step="submit" data-grad="1">
+            <div class="howit-card-visual">
+              <div class="howit-card-grad" aria-hidden="true"></div>
+              <div class="howit-card-stage howit-stage-submit">
+                <img class="howit-shot howit-shot-form"
+                     src="/designs/assets/imagery/screenshots/signal/01-submit-form.png"
+                     alt="" aria-hidden="true">
+              </div>
             </div>
-            <div class="acc-item" data-step="valuation">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="執行估值">Run a Valuation</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div><p data-zh="依據 Innovue 1.7 億件專利資料庫回傳 SABCD 評等。Brief 報告 15 點；累計 30 點升級為 Pro（+15 點差額）。1 點 = NT$100。">SABCD grades returned against Innovue's 170M-patent database. 15 points for a Brief; +15 to upgrade to Pro (30 cumulative). 1 point = NT$100.</p></div></div>
+            <div class="howit-card-body">
+              <h4 data-zh="提交一個專利號">Submit a patent number</h4>
+              <p data-zh="Brief 30 分鐘內寄達──免分析師，免等一整週。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
+              <ul class="howit-checks">
+                <li data-zh="USPTO · TW · EPO · WO">USPTO · TW · EPO · WO</li>
+                <li data-zh="可平行 submit">Parallel submissions</li>
+                <li data-zh="P95 寄達 ≤ 30 分鐘">P95 email delivery ≤ 30 min</li>
+              </ul>
             </div>
-            <div class="acc-item" data-step="evidence">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="檢視證據">Review the evidence</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div><p data-zh="引用、家族數、司法管轄區覆蓋、請求項範圍。先理由再結論——每一級評等都對應到具體專利與具名相對方。">Citations, family counts, jurisdiction coverage, claim breadth. Reasons before conclusions — every grade attaches to specific patents and named counterparties.</p></div></div>
+          </article>
+
+          <!-- Card 2 · Pool match — "Confirm the industry pool" screenshot -->
+          <article class="howit-card" data-step="pool" data-grad="2">
+            <div class="howit-card-visual">
+              <div class="howit-card-grad" aria-hidden="true"></div>
+              <div class="howit-card-stage howit-stage-pool">
+                <img class="howit-shot howit-shot-pool"
+                     src="/designs/assets/imagery/screenshots/signal/02-pool-confirm.png"
+                     alt="" aria-hidden="true">
+              </div>
             </div>
-            <div class="acc-item" data-step="export">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="匯出或儲存">Export or save</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div><p data-zh="PDF 報告供投資備忘錄使用。將估值存入 Dashboard 以監控投資組合。">PDF report for the deal memo. Save Valuations to your dashboard for portfolio monitoring.</p></div></div>
+            <div class="howit-card-body">
+              <h4 data-zh="比對到對的同儕池">Matched against the right peer pool</h4>
+              <p data-zh="評分可信賴──校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。">Scores you can trust — graded against patents that actually compete in the same category.</p>
+              <ul class="howit-checks">
+                <li data-zh="IPC 驅動的 12 產業池路由">IPC-driven routing across 12 industry pools</li>
+                <li data-zh="Innovue 1.7 億件專利資料庫（全球第 4 大）">Innovue 170M-patent base · 4th largest globally</li>
+                <li data-zh="池內樣本不足會於 Brief 上標示警示">Low-sample pools flagged on the Brief</li>
+              </ul>
             </div>
-          </div>
+          </article>
+
+          <!-- Card 3 · Pick your delivery — Brief or Pro choice at order time -->
+          <article class="howit-card" data-step="delivery" data-grad="3">
+            <div class="howit-card-visual">
+              <div class="howit-card-grad" aria-hidden="true"></div>
+              <div class="howit-card-stage howit-stage-delivery">
+                <img class="howit-shot howit-shot-delivery"
+                     src="/designs/assets/imagery/screenshots/signal/03-delivery-pick.png"
+                     alt="" aria-hidden="true">
+              </div>
+            </div>
+            <div class="howit-card-body">
+              <h4 data-zh="Brief 還是 Pro──你決定">Brief or Pro — your call</h4>
+              <p data-zh="同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。">One scoring engine, two depths — pay for what you need today, top up later.</p>
+              <ul class="howit-checks">
+                <li data-zh="Brief · 15 點 · 30 分鐘郵件">Brief · 15 pts · 30-min email</li>
+                <li data-zh="Pro · 30 點 · 即時渲染">Pro · 30 pts · instant render</li>
+                <li data-zh="事後升級無加價">Upgrade anytime, no premium</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 4 · Brief content — what the Brief report shows -->
+          <article class="howit-card" data-step="brief" data-grad="4">
+            <div class="howit-card-visual">
+              <div class="howit-card-grad" aria-hidden="true"></div>
+              <div class="howit-card-stage howit-stage-brief">
+                <img class="howit-shot howit-shot-report"
+                     src="/designs/assets/imagery/screenshots/signal/04-brief-report.png"
+                     alt="" aria-hidden="true">
+              </div>
+            </div>
+            <div class="howit-card-body">
+              <h4 data-zh="Brief 報告呈現什麼">What the Brief report shows you</h4>
+              <p data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
+              <ul class="howit-checks">
+                <li data-zh="等級判定 + PSS 分數">Tier verdict + PSS score</li>
+                <li data-zh="池內百分位 + 池內排名">Cohort percentile + rank in pool</li>
+                <li data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Status · family · IPC · life · AI summary</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 5 · Pro report — Pro version of the report with PSS pillar deep dive -->
+          <article class="howit-card" data-step="pro" data-grad="5">
+            <div class="howit-card-visual">
+              <div class="howit-card-grad" aria-hidden="true"></div>
+              <div class="howit-card-stage howit-stage-pro">
+                <img class="howit-shot howit-shot-pro-report"
+                     src="/designs/assets/imagery/screenshots/signal/05-pro-report.png"
+                     alt="" aria-hidden="true">
+              </div>
+            </div>
+            <div class="howit-card-body">
+              <h4 data-zh="Pro 將 PSS 拆解成 50 項指標">Pro unpacks the PSS into 50 indicators</h4>
+              <p data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
+              <ul class="howit-checks">
+                <li data-zh="八大支柱 × 4–8 項指標 = 50 項">8 pillars × 4–8 indicators = 50 metrics</li>
+                <li data-zh="每項指標：原值、百分位、權重">Each indicator: value, percentile, weight</li>
+                <li data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Top 10 drivers + Top 5 sensitivities flagged</li>
+              </ul>
+            </div>
+          </article>
+
         </div>
       </div>
 
@@ -514,43 +1807,50 @@
   <!-- ─── 3. Pricing (moved up; restructured per licensing pattern) ─── -->
   <section class="section section--alt" id="pricing" aria-labelledby="signal-pricing-heading">
     <div class="container">
-      <header class="section-head section-head--centered">
-        <p class="section-eyebrow prod-eyebrow" data-zh="定價">Pricing</p>
-        <h2 id="signal-pricing-heading" data-zh="按報告付費，或月訂閱。">Pay per report. Or subscribe.</h2>
-        <p data-zh="1 點 = NT$100。錢包以公司網域為單位共用——同網域最多 5 個帳號共用同一個餘額。">1 point = NT$100. <strong>Wallet pooled per company domain</strong> — up to 5 accounts share the same balance.</p>
-      </header>
+      <h2 id="signal-pricing-heading" class="bp-section-heading" data-zh="定價 — 按報告付費，或月訂閱。">Pricing — Pay per report. Or subscribe.</h2>
 
       <div class="prod-pricing-grid">
+        <!-- Tier 1 · Standard — side-by-side, no save tag (0% off / break-even) -->
         <article class="prod-price-tier">
           <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
-          <p class="prod-price-name" data-zh="Lite">Lite</p>
-          <p class="prod-price-tagline" data-zh="單人分析師節奏 · 約 3 份 Brief / 月">Single-analyst tempo · ~3 Briefs / month</p>
-          <div class="prod-price-block">
-            <span class="num">NT$4,900</span><span class="unit">/ mo</span>
+          <p class="prod-price-name" data-zh="Standard">Standard</p>
+          <div class="prod-price-block-split">
+            <div class="prod-price-split-side">
+              <span class="lbl" data-zh="月費">Monthly</span>
+              <span class="val">NT$4,900</span>
+            </div>
+            <div class="prod-price-split-side is-credits">
+              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
+              <span class="val">49</span>
+              <span class="sub" data-zh="約 3 份 Brief">Roughly 3 Briefs</span>
+            </div>
           </div>
-          <p class="prod-price-foot" data-zh="獨立 / 輕量 VC。需要更高頻？升級 Standard。">For solo / lightweight VCs. Need higher frequency? Upgrade to Standard.</p>
           <ul class="prod-price-features">
-            <li data-zh="49 點 / 月（約 3 份 Brief）">49 points / month (~3 Briefs)</li>
-            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
-            <li data-zh="月底未用點數歸零">Subscription points reset monthly</li>
             <li data-zh="信箱送達 + 儀表板存取">Email delivery + dashboard access</li>
             <li data-zh="PDF 浮水印 + 稽核軌跡">Watermarked PDFs + audit trail</li>
+            <li data-zh="月底未用點數歸零">Credits reset monthly</li>
           </ul>
           <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
         </article>
 
+        <!-- Tier 2 · Pro (featured / Recommended) — side-by-side equal weight -->
         <article class="prod-price-tier is-featured">
-          <p class="prod-price-eyebrow" data-zh="最熱門">Most popular</p>
-          <p class="prod-price-name">Standard</p>
-          <p class="prod-price-tagline" data-zh="VC 標準配置 · 約 5 份 Brief 或 2 份 Pro + 1 份 Brief / 月">VC default · ~5 Briefs or 2 Pros + 1 Brief / month</p>
-          <div class="prod-price-block">
-            <span class="num">NT$7,900</span><span class="unit">/ mo</span>
-            <span class="save">Save 5%</span>
+          <p class="prod-price-eyebrow" data-zh="推薦">Recommended</p>
+          <p class="prod-price-name">Pro</p>
+          <div class="prod-price-block-split">
+            <div class="prod-price-split-side">
+              <span class="lbl" data-zh="月費">Monthly</span>
+              <span class="val">NT$7,900</span>
+              <span class="save">Save 5%</span>
+            </div>
+            <div class="prod-price-split-side is-credits">
+              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
+              <span class="val">83</span>
+              <span class="sub" data-zh="約 5 份 Brief">Roughly 5 Briefs</span>
+            </div>
           </div>
-          <p class="prod-price-foot" data-zh="大多訂閱者落在這一檔。批次與優先 SLA 一次到位。">Most subscribers land here. Batch and priority SLA all-in.</p>
           <ul class="prod-price-features">
-            <li data-zh="83 點 / 月（5 份 Brief 或 2 Pros + 1 Brief）">83 points / month (5 Briefs or 2 Pros + 1 Brief)</li>
-            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
+            <li class="prod-price-feat-inherit" data-zh="Standard 全部 + 以下">Everything in Standard, plus:</li>
             <li data-zh="批次提交：早上 8 份 deck，當天回">Batch submit — 8 morning decks, scored by EOD</li>
             <li data-zh="優先處理佇列（30 分鐘 SLA）">Priority queue (30-min SLA)</li>
             <li data-zh="PDF + JSON 匯出">PDF + JSON export</li>
@@ -558,18 +1858,24 @@
           <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
         </article>
 
+        <!-- Tier 3 · Max — side-by-side, Save 10% -->
         <article class="prod-price-tier">
           <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
-          <p class="prod-price-name">Pro</p>
-          <p class="prod-price-tagline" data-zh="高頻分析師 + IC 合夥人混合 · ~7 份 Brief 或 3 份 Pro / 月">High-frequency analysts + IC partner mix · ~7 Briefs or 3 Pros / month</p>
-          <div class="prod-price-block">
-            <span class="num">NT$9,900</span><span class="unit">/ mo</span>
-            <span class="save">Save 10%</span>
+          <p class="prod-price-name">Max</p>
+          <div class="prod-price-block-split">
+            <div class="prod-price-split-side">
+              <span class="lbl" data-zh="月費">Monthly</span>
+              <span class="val">NT$9,900</span>
+              <span class="save">Save 10%</span>
+            </div>
+            <div class="prod-price-split-side is-credits">
+              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
+              <span class="val">110</span>
+              <span class="sub" data-zh="約 7 份 Brief">Roughly 7 Briefs</span>
+            </div>
           </div>
-          <p class="prod-price-foot" data-zh="所有層級錢包皆為公司網域 5 個帳號共用；6+ 帳號企業錢包為 Phase 2。">All tier wallets stay pooled at 5 accounts per domain. 6+ enterprise wallet is Phase 2.</p>
           <ul class="prod-price-features">
-            <li data-zh="110 點 / 月（7 份 Brief 或 3 Pros + 1 Brief）">110 points / month (7 Briefs or 3 Pros + 1 Brief)</li>
-            <li data-zh="共用錢包——以公司網域為單位，5 個帳號">Pooled wallet — 5 accounts per company domain</li>
+            <li class="prod-price-feat-inherit" data-zh="Pro 全部 + 以下">Everything in Pro, plus:</li>
             <li data-zh="專屬同儕池（自選 IPC 範圍）">Custom cohort selection (IPC / time bands)</li>
             <li data-zh="月度 LP-report 摘要">Monthly LP-letter summary</li>
             <li data-zh="Slack / Teams 整合">Slack / Teams hook for new Briefs</li>
@@ -578,15 +1884,12 @@
         </article>
       </div>
 
+      <h4 class="prod-ref-table-title" data-zh="按報告價目">Credits per query</h4>
       <div class="prod-ref-table-wrap">
-        <div class="prod-ref-table-head">
-          <h4 data-zh="按報告價目">Points per query</h4>
-          <p data-zh="加值點數包：50 點 NT$4,500 · 150 點 NT$13,000 · 500 點 NT$42,000">Top-up packs: 50 pts NT$4,500 · 150 pts NT$13,000 · 500 pts NT$42,000</p>
-        </div>
         <table class="prod-ref-table">
           <thead><tr>
             <th data-zh="動作">Action</th>
-            <th class="right" data-zh="點數">Points</th>
+            <th class="right" data-zh="點數">Credits</th>
             <th class="right" data-zh="價格">Price</th>
             <th class="right" data-zh="折扣">Top-up discount</th>
           </tr></thead>
@@ -594,127 +1897,17 @@
             <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
             <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
             <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
-            <tr><td data-zh="50 點頂入包">50-point top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
-            <tr><td data-zh="150 點頂入包">150-point top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
-            <tr><td data-zh="500 點頂入包">500-point top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
+            <tr><td data-zh="50 點頂入包">50-credit top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
+            <tr><td data-zh="150 點頂入包">150-credit top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
+            <tr><td data-zh="500 點頂入包">500-credit top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p class="prod-price-fine" data-zh="先期 VC 試行：50 點免費啟動，可換約 3 份 Brief 或 1 份 Pro + 1 份 Brief。試行登記期 2026-07 至 2026-12——聯絡業務報名。頂入點數無到期日；訂閱送的點數月底重置。">First-batch VC pilot — 50 free points to start (roughly 3 Briefs or 1 Pro + 1 Brief). Pilot enrollment open 2026-07 through 2026-12 — talk to sales. Top-up points never expire; subscription-granted points reset monthly.</p>
     </div>
   </section>
 
-  <!-- ─── 4. Use Case (Problem + Solution + Outcomes folded under one header) ─── -->
-  <section class="section section--alt" aria-labelledby="signal-usecase-heading">
-    <div class="container">
-      <h3 id="signal-usecase-heading" class="usecase-heading" data-zh="使用情境">Use Case</h3>
-
-      <div class="usecase-split">
-        <div class="usecase-split-side usecase-split-side--before">
-          <p class="usecase-split-label" data-zh="過去">Before</p>
-          <h4 class="usecase-split-headline" data-zh="投影片寫「IP 很強」。IC 要的是證據——這週四，不是下一季。">Pitches claim "strong IP." IC needs evidence — by Thursday, not next quarter.</h4>
-          <p class="usecase-split-subhead" data-zh="今天 VC 在做 IP 盡調，只有三條不太好的路。">Today's options for IP DD — pick your trade-off.</p>
-
-          <div class="usecase-split-stat">
-            <span class="usecase-split-stat-label" data-zh="得到可辯護等級所需時間">Time to a defensible grade</span>
-            <span class="usecase-split-stat-value" data-zh="幾天起">Days+</span>
-          </div>
-
-          <ol class="usecase-split-timeline">
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp" data-zh="第 0 天">Day 0</span>
-              <span class="usecase-split-timeline-label" data-zh="自行 Google Patents 翻閱——只有文字，沒有判斷">DIY Google Patents — text, no judgment</span>
-            </li>
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp" data-zh="第 1–10 天">Day 1–10</span>
-              <span class="usecase-split-timeline-label" data-zh="委外 IP 律師——法律意見、無同儕基準">Hire IP counsel — legal opinion, no benchmark</span>
-            </li>
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp" data-zh="預設">Default</span>
-              <span class="usecase-split-timeline-label" data-zh="投影片寫「IP 很強」——無從驗證">Deck says "Strong IP" — unverifiable</span>
-            </li>
-          </ol>
-
-          <div class="usecase-split-supporting">
-            <div>
-              <span class="usecase-split-supporting-num">$500–1,500</span>
-              <span class="usecase-split-supporting-label" data-zh="每件律師審閱費用">per patent for counsel review</span>
-            </div>
-            <div>
-              <span class="usecase-split-supporting-num">0</span>
-              <span class="usecase-split-supporting-label" data-zh="同儕基準訊號">peer-benchmark signal</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="usecase-split-side usecase-split-side--after">
-          <p class="usecase-split-label" data-zh="現在">After</p>
-          <h4 class="usecase-split-headline"><span data-zh="每件專利交給 PSS 引擎。">Every patent run through the PSS engine.</span> <em data-zh="三十分鐘到信箱。">Inbox in thirty minutes.</em></h4>
-          <p class="usecase-split-subhead" data-zh="送出專利號，離開桌前。Brief 自己會到。">Submit a patent number. Walk away. The Brief arrives.</p>
-
-          <div class="usecase-split-stat">
-            <span class="usecase-split-stat-label" data-zh="得到可辯護等級所需時間">Time to a defensible grade</span>
-            <span class="usecase-split-stat-value" data-zh="30 分鐘">30 min</span>
-          </div>
-
-          <ol class="usecase-split-timeline">
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp">0 min</span>
-              <span class="usecase-split-timeline-label" data-zh="送出專利號——不需技術說明書、不需 FTO">Submit patent # — no spec, no FTO required</span>
-            </li>
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp">15 min</span>
-              <span class="usecase-split-timeline-label" data-zh="PSS 引擎評分——50 指標 × 8 大支柱">PSS scoring — 50 indicators × 8 pillars</span>
-            </li>
-            <li class="usecase-split-timeline-step">
-              <span class="usecase-split-timeline-stamp">30 min</span>
-              <span class="usecase-split-timeline-label" data-zh="Brief 到信箱——SABCD + 同儕百分位">Brief in inbox — SABCD + peer percentile</span>
-            </li>
-          </ol>
-
-          <div class="usecase-split-supporting">
-            <div>
-              <span class="usecase-split-supporting-num">50 × 8</span>
-              <span class="usecase-split-supporting-label" data-zh="指標 × 支柱，每份 Brief">indicators × pillars per Brief</span>
-            </div>
-            <div>
-              <span class="usecase-split-supporting-num">100+</span>
-              <span class="usecase-split-supporting-label" data-zh="同產業同儕，取自 1.7 億件池">cohort peers from the 170M corpus</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="usecase-split-footer">
-          <p class="usecase-split-footer-lede" data-zh="想看一份範例 Brief？你信箱會收到的就是這個格式。">See a sample Brief — exactly what lands in your inbox.</p>
-          <a href="https://signal.tisglobalinc.com/start" class="btn btn-secondary" data-target="signal-sample" data-zh="看一份範例 Brief →">See a sample Brief →</a>
-        </div>
-      </div>
-
-      <div class="usecase-personas">
-        <header class="usecase-personas-head">
-          <p class="section-eyebrow prod-eyebrow" data-zh="適用對象">Who this works for</p>
-          <h4 class="usecase-personas-headline" data-zh="兩種買家。同一份 Brief。">Two buyers. Same Brief.</h4>
-        </header>
-        <div class="usecase-personas-grid">
-          <article class="usecase-persona">
-            <p class="usecase-persona-tag" data-zh="VC IC 工作流">VC IC workflow</p>
-            <h5 class="usecase-persona-headline" data-zh="午餐前看完 8 份 Pitch Deck。合夥人會議前 Brief 已在信箱。">Eight Pitch Decks before lunch. Inbox before the partner meeting.</h5>
-            <p class="usecase-persona-body" data-zh="週一早上批次送出，走去 standup。30 分鐘後 Brief 到信箱，依 SABCD 對同產業池排名——投資前盡調的可辯護等級。">Submit on Monday morning, walk to standup. Briefs arrive in thirty minutes, ranked by SABCD against the same industry pool — a defensible grade for pre-investment DD.</p>
-          </article>
-
-          <article class="usecase-persona">
-            <p class="usecase-persona-tag" data-zh="企業創投 / 公司 IP 部門">Corporate venture · TTO</p>
-            <h5 class="usecase-persona-headline" data-zh="併購對象說「組合很強」。當天結束前把 14 件專利跑過 PSS。">Acquisition target says "strong portfolio." Run their 14 patents through PSS by EOD.</h5>
-            <p class="usecase-persona-body" data-zh="逐件送專利號，依資產買 Brief 或 Pro。SABCD 結論可直接附進 M&A 備忘——對的是與授權決策同一份 Innovue 1.7 億件資料庫。">Submit each patent number individually. Brief or Pro per asset. SABCD verdicts you can attach to the M&A memo, against the same Innovue 170M corpus used for licensing decisions.</p>
-            <p class="usecase-persona-foot" data-zh="產業地形圖在路線圖上——v1 階段 Signal 以單件資產為單位服務 CVC。">Industry-wide landscape mapping is on the roadmap — for v1, Signal serves CVC on a per-asset basis.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 7. FAQ ─── -->
+  <!-- ─── 4. FAQ (moved up under Pricing) ─── -->
   <section class="section" aria-labelledby="signal-faq-heading">
     <div class="container">
       <div class="faq-layout">
@@ -729,7 +1922,7 @@
               <span class="acc-mark" aria-hidden="true">−</span>
             </button>
             <div class="acc-content"><div>
-              <p data-zh="Patent Strength Score (PSS) 引擎將每件專利分解為 50 個量化訊號——引用影響、法律強度、市場覆蓋、授權潛力、技術前瞻、同族廣度、維護生命力、競爭密度。八大支柱，各自獨立加權。透明 &gt; 精準。">The <strong>Patent Strength Score (PSS)</strong> engine decomposes every patent into <strong>50 quantitative signals</strong> — citation impact, legal robustness, market coverage, licensing potential, forward technology, family breadth, maintenance vitality, competitive density. Eight pillars, each independently weighted. <strong>Transparency over precision.</strong></p>
+              <p data-zh="Patent Strength Score (PSS) 引擎將每件專利分解為 50 個量化訊號——引用影響、法律強度、市場覆蓋、授權潛力、技術前瞻、同族廣度、維護生命力、競爭密度。八大支柱,各自獨立加權。透明 &gt; 精準。">The <strong>Patent Strength Score (PSS)</strong> engine decomposes every patent into <strong>50 quantitative signals</strong> — citation impact, legal robustness, market coverage, licensing potential, forward technology, family breadth, maintenance vitality, competitive density. Eight pillars, each independently weighted. <strong>Transparency over precision.</strong></p>
             </div></div>
           </div>
 
@@ -739,7 +1932,7 @@
               <span class="acc-mark" aria-hidden="true">+</span>
             </button>
             <div class="acc-content"><div>
-              <p data-zh="Signal 讀取你專利的 IPC 分類、技術領域與申請年代區間，配對 TIS 池內 100+ 同儕——由 Innovue WEBPAT 預先評分。同樣的 IP 池支援 TIS 授權平台的捆綁。這不是「對全球所有專利的百分位」。這是對你真正會競爭的對手的百分位。">Signal reads your patent's IPC class, technical domain, and filing window, then matches it to <strong>100+ peers from the TIS pool</strong> — pre-scored on Innovue WEBPAT. The same pool feeds bundles on the TIS Licensing Platform. This isn't "percentile vs every patent on Earth." It's percentile <strong>vs the companies you'll actually compete with</strong>.</p>
+              <p data-zh="Signal 讀取你專利的 IPC 分類、技術領域與申請年代區間,配對 TIS 池內 100+ 同儕——由 Innovue WEBPAT 預先評分。同樣的 IP 池支援 TIS 授權平台的捆綁。這不是「對全球所有專利的百分位」。這是對你真正會競爭的對手的百分位。">Signal reads your patent's IPC class, technical domain, and filing window, then matches it to <strong>100+ peers from the TIS pool</strong> — pre-scored on Innovue WEBPAT. The same pool feeds bundles on the TIS Licensing Platform. This isn't "percentile vs every patent on Earth." It's percentile <strong>vs the companies you'll actually compete with</strong>.</p>
             </div></div>
           </div>
 
@@ -749,7 +1942,7 @@
               <span class="acc-mark" aria-hidden="true">+</span>
             </button>
             <div class="acc-content"><div>
-              <p data-zh="可以。點開任一支柱：看到 5–8 項底層指標。點開任一指標：看到計算公式、原始數值、與同儕中位數。沒有「我們的模型說」。Signal 報告為資訊參考用途，並非法律或投資建議。">Yes. Click any pillar to see its 5–8 underlying indicators. Click any indicator to see the formula, the raw value, and the cohort median. <strong>No "our model says."</strong> Signal Briefs are informational — not legal or investment advice.</p>
+              <p data-zh="可以。點開任一支柱：看到 5–8 項底層指標。點開任一指標：看到計算公式、原始數值、與同儕中位數。沒有「我們的模型說」。Signal 報告為資訊參考用途,並非法律或投資建議。">Yes. Click any pillar to see its 5–8 underlying indicators. Click any indicator to see the formula, the raw value, and the cohort median. <strong>No "our model says."</strong> Signal Briefs are informational — not legal or investment advice.</p>
             </div></div>
           </div>
 
@@ -759,7 +1952,7 @@
               <span class="acc-mark" aria-hidden="true">+</span>
             </button>
             <div class="acc-content"><div>
-              <p data-zh="Brief（15 點）涵蓋：SABCD 評等、PSS 強度、同儕百分位、組內排名、八大支柱雷達圖。Pro（+15 點）再加：50 指標摘要計分卡、評等理由、前 10 大強項（含貢獻百分比）、前 10 大風險（含敏感度分析）、跨場景穩定矩陣（授權／訴訟／併購）、授權策略 + 對手地圖、工作迴避指引（FTO hints）、50 指標完整透明、PDF + JSON 匯出。+15 點，30 秒內解鎖。"><strong>Brief (15 points)</strong> covers the SABCD verdict, PSS magnitude, peer percentile, cohort rank, and eight-pillar radar. <strong>Pro (+15 points)</strong> adds the 50-indicator summary scorecard, rating rationale, top 10 strengths with contribution percentages, top 10 risks with sensitivity analysis, cross-scenario stability matrix (licensing / litigation / M&amp;A), licensing strategy with counter-party map, work-around guidance (FTO hints), full 50-indicator drilldown with formulas, and PDF + JSON export. +15 points unlocks Pro in under thirty seconds.</p>
+              <p data-zh="Brief(15 點)涵蓋：SABCD 評等、PSS 強度、同儕百分位、組內排名、八大支柱雷達圖。Pro(+15 點)再加：50 指標摘要計分卡、評等理由、前 10 大強項(含貢獻百分比)、前 10 大風險(含敏感度分析)、跨場景穩定矩陣(授權／訴訟／併購)、授權策略 + 對手地圖、工作迴避指引(FTO hints)、50 指標完整透明、PDF + JSON 匯出。+15 點,30 秒內解鎖。"><strong>Brief (15 credits)</strong> covers the SABCD verdict, PSS magnitude, peer percentile, cohort rank, and eight-pillar radar. <strong>Pro (+15 credits)</strong> adds the 50-indicator summary scorecard, rating rationale, top 10 strengths with contribution percentages, top 10 risks with sensitivity analysis, cross-scenario stability matrix (licensing / litigation / M&amp;A), licensing strategy with counter-party map, work-around guidance (FTO hints), full 50-indicator drilldown with formulas, and PDF + JSON export. +15 credits unlocks Pro in under thirty seconds.</p>
             </div></div>
           </div>
 
@@ -769,7 +1962,7 @@
               <span class="acc-mark" aria-hidden="true">+</span>
             </button>
             <div class="acc-content"><div>
-              <p data-zh="三十分鐘。送出專利號 → PSS 引擎評分（15–20 min）→ Brief 寄達（30 min）。離開桌前，回來時 Brief 已在信箱。"><strong>Thirty minutes.</strong> Submit a patent number → the PSS engine scores it (15–20 min) → the Brief lands in your inbox (30 min). Walk away from your desk; come back to a finished report.</p>
+              <p data-zh="三十分鐘。送出專利號 → PSS 引擎評分(15–20 min)→ Brief 寄達(30 min)。離開桌前,回來時 Brief 已在信箱。"><strong>Thirty minutes.</strong> Submit a patent number → the PSS engine scores it (15–20 min) → the Brief lands in your inbox (30 min). Walk away from your desk; come back to a finished report.</p>
             </div></div>
           </div>
         </div>
@@ -777,12 +1970,16 @@
     </div>
   </section>
 
+  <!-- Use Case + Who-this-works-for moved to
+       brand/archive/previews/product-pages-deferred-sections.html
+       on 2026-05-22. -->
+
   <!-- ─── 8. CTA banner (themed) ─── -->
   <section class="section cta-banner cta-banner--themed" id="signup" aria-labelledby="signal-cta-heading">
     <div class="container">
       <header class="section-head section-head--centered">
-        <h2 id="signal-cta-heading" data-zh="先試一筆。50 點免費。">Try one for free. 50 points on us.</h2>
-        <p data-zh="先期 VC 試行登記：2026-07 至 2026-12。聯絡業務領取 50 點——約 3 份 Brief 或 1 份 Pro + 1 份 Brief。">First-batch VC pilot, enrollment open 2026-07 through 2026-12. Talk to sales for your 50 starter points — roughly 3 Briefs or 1 Pro + 1 Brief.</p>
+        <h2 id="signal-cta-heading" data-zh="先試一筆。50 點免費。">Try one for free. 50 credits on us.</h2>
+        <p data-zh="先期 VC 試行登記：2026-07 至 2026-12。聯絡業務領取 50 點——約 3 份 Brief 或 1 份 Pro + 1 份 Brief。">First-batch VC pilot, enrollment open 2026-07 through 2026-12. Talk to sales for your 50 starter credits — roughly 3 Briefs or 1 Pro + 1 Brief.</p>
       </header>
       <div class="page-hero-actions">
         <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
@@ -792,6 +1989,7 @@
   </section>
 
 
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Footer  —  components.md §Footer                                    ║
        ║ Duplicated from homepage; in-page anchors prefixed with / for subpages║
@@ -865,7 +2063,36 @@
 <div id="lang-overlay" aria-hidden="true">
   <div id="lang-cube"></div>
 </div>
+<script>
+  // How it works — horizontal scroll rail.
+  // Arrow controls paginate by 1 card width; arrows disable at the rail ends.
+  document.addEventListener('DOMContentLoaded', () => {
+    const rail = document.querySelector('[data-howit-rail]');
+    if (!rail) return;
+    const prev = document.querySelector('[data-howit-prev]');
+    const next = document.querySelector('[data-howit-next]');
+    if (!prev || !next) return;
 
+    const step = () => {
+      const first = rail.querySelector('.howit-card');
+      if (!first) return rail.clientWidth * 0.5;
+      const gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || '24') || 24;
+      return first.getBoundingClientRect().width + gap;
+    };
+
+    const updateArrows = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      prev.disabled = rail.scrollLeft <= 1;
+      next.disabled = rail.scrollLeft >= max - 1;
+    };
+
+    prev.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left:  step(), behavior: 'smooth' }));
+    rail.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+  });
+</script>
 <script src="/assets/site.js?v=2" defer></script>
 
 </body>
