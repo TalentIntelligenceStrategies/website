@@ -476,12 +476,17 @@ body {
 
 /* Narrow the container from 1440 to 1080 (Stripe /pricing tight) and
    tighten horizontal padding from 32px to 16px so content sits close
-   to the rails like Stripe. Scoped to NOT affect the topnav, which
-   keeps its current 32px padding for the nav bar's own breathing room. */
+   to the rails like Stripe. Topnav + footer restored to the homepage's
+   1440 / 32px frame so the chrome matches. */
 .container { max-width: 1080px; }
 .container:not(.topnav-inner) { padding-inline: 16px; }
 @media (max-width: 1140px) {
   .container:not(.topnav-inner) { padding-inline: 12px; }
+}
+.topnav-inner,
+.footer .container { max-width: 1440px; padding-inline: 32px; }
+@media (max-width: 768px) {
+  .footer .container { padding-inline: 20px; }
 }
 
 /* Stripe typography hierarchy on Urbanist — weight 600 (not 700),
@@ -1475,6 +1480,7 @@ a, button,
     </nav>
 
     <div class="topnav-controls">
+      <!-- Theme toggle — 3-segment pill: System / Light / Dark -->
       <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme">
         <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1495,6 +1501,7 @@ a, button,
         </button>
       </div>
 
+      <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
         <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1509,6 +1516,7 @@ a, button,
         </div>
       </div>
 
+      <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
       <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
@@ -1518,6 +1526,7 @@ a, button,
 
       <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
+      <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
@@ -1525,6 +1534,7 @@ a, button,
   </div>
 </header>
 
+<!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
 <aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
   <div class="mobile-header">
@@ -1552,6 +1562,7 @@ a, button,
   </div>
 </aside>
 
+<!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
 <div class="search-overlay" id="search-overlay"></div>
 <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
   <div class="search-input-row">
@@ -1569,14 +1580,19 @@ a, button,
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/product/licensing/" class="search-link" data-zh="授權平台">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-      <span data-zh="授權平台">Licensing Platform</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
     <a href="/#reports" class="search-link" data-zh="報告">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
       <span data-zh="報告">Reports</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#press" class="search-link" data-zh="新聞">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2"/><path d="M18 14V8M14 14V8M10 14v-4M6 14V12"/></svg>
+      <span data-zh="新聞">Press</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#about" class="search-link" data-zh="關於">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/#contact" class="search-link" data-zh="聯絡">
@@ -1584,6 +1600,69 @@ a, button,
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
+  </div>
+</div>
+
+<!-- IP intelligence drop popup — components.md §IP intelligence drop popup (variant F · top hero band, ~520px). Trigger: 45s OR 50% scroll, whichever first; 30-day localStorage suppression. -->
+<div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mkt-headline">
+  <div class="mkt-card with-hero" id="mkt-card">
+    <div class="mkt-img" aria-hidden="true"></div>
+    <button class="mkt-close" type="button" aria-label="Close" data-mkt-close>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="mkt-band">
+      <h2 id="mkt-headline" data-zh="重要的專利動態。">The patent moves that matter.</h2>
+      <p data-zh="一年四份簡報。精選非匯總。">Four briefs a year. Curated, not aggregated.</p>
+    </div>
+    <div class="mkt-body">
+      <form class="mkt-form" id="mkt-form" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <span class="lbl"><span data-zh="角色">Role</span> <span class="opt" data-zh="· 選填">· optional</span></span>
+            <div class="brand-select" data-name="role">
+              <button class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="brand-select-label placeholder" data-zh="請選擇…">Select…</span>
+                <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="brand-select-menu" role="listbox">
+                <div class="brand-select-item" role="option" data-value="founder"><span data-zh="創辦人 / 高階主管">Founder / C-suite</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="legal"><span data-zh="智財 / 法務">IP / Legal</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="rnd"><span data-zh="研發 / 工程">R&amp;D / Engineering</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="investor"><span data-zh="投資人 / 分析師">Investor / Analyst</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="other"><span data-zh="其他">Other</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl"><span data-zh="產業">Industry</span> <span class="opt" data-zh="· 選填">· optional</span></span>
+            <div class="brand-select" data-name="industry">
+              <button class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="brand-select-label placeholder" data-zh="所有產業">All industries</span>
+                <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+              </button>
+              <div class="brand-select-menu" role="listbox">
+                <div class="brand-select-item" role="option" data-value="electronics"><span data-zh="電子">Electronics</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="mechanical"><span data-zh="機械">Mechanical</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="green"><span data-zh="綠能">Green Energy</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="biomedical"><span data-zh="生醫">Biomedical</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                <div class="brand-select-item" role="option" data-value="materials"><span data-zh="材料">Materials</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl" data-zh="工作信箱">Work email</span>
+          <input class="input" type="email" required placeholder="you@company.com" aria-label="Work email" />
+        </div>
+      </form>
+    </div>
+    <div class="mkt-foot">
+      <button class="btn btn-primary mkt-cta" type="submit" form="mkt-form" data-zh="訂閱下一份簡報">Get the next brief</button>
+      <p class="mkt-fine">
+        <span data-zh="每季一封信。">One email per quarter.</span>
+        <a href="#" data-zh="隱私政策">Privacy</a>
+      </p>
+    </div>
   </div>
 </div>
 
