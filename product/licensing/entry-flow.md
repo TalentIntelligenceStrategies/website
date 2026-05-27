@@ -45,6 +45,11 @@ state — do **not** re-spec it here:
 Authoritative internal spec (single source of truth, downstream in the licensing
 repo): [../../../operations-site/worktemp/journey/entry-flow-userflow.md](../../../operations-site/worktemp/journey/entry-flow-userflow.md) §2–§5.
 
+A static **lobby prototype** of this front door lives at [lobby/index.html](lobby/index.html)
+(`/product/licensing/lobby/`) — a branded split-screen check-in (marketing panel +
+Sign up/Log in) whose "Continue" hands off to `licensing.tisglobalinc.com/start`.
+It is a visual mock (no backend); product-page CTAs are not yet routed through it.
+
 ## 3. Route-name reconciliation (open)
 
 Marketing links to `/start`; the internal doc names the lobby `/welcome`
