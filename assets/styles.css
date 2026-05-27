@@ -146,7 +146,8 @@
   --logo-secondary:         url('/designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
   --partner-innovue:        url('/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg');
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
-  --partner-itri:           url('/designs/assets/logos/partners/itri/itrilogo_eng.svg');
+  --partner-ipic:           url('/designs/assets/logos/partners/ipic/ipic_logo.svg');
+  --partner-nycu:           url('/designs/assets/logos/partners/nycu/nycu_logo_dark_en.svg');
   --partner-iii:            url('/designs/assets/logos/partners/iii/logo_iii_dark_en.svg');
 
   /* Slate primitives — consumed by the silver text-gradient utility used on the hero
@@ -244,7 +245,8 @@
 /* ───────── Tokens — language overrides (CH variants for both themes) ───────── */
 [lang="zh-Hant"] {
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_ch.svg');
-  --partner-itri:           url('/designs/assets/logos/partners/itri/itrilogo_ch.svg');
+  /* iPIC ships a single logo (no language-exclusive CH variant) — no zh-Hant override. */
+  --partner-nycu:           url('/designs/assets/logos/partners/nycu/nycu_logo_dark_ch.svg');
   --partner-iii:            url('/designs/assets/logos/partners/iii/logo_iii_dark_ch.svg');
 }
 [data-theme="light"][lang="zh-Hant"] {
@@ -717,11 +719,11 @@ img, svg { display: block; }
 /* ───────── Main offset for fixed nav ───────── */
 main { padding-top: 64px; }
 
-/* ───────── Hero — warm-blueprint backdrop + 3-pillar carousel ─────────
+/* ───────── Hero — gradient backdrops + 3-pillar carousel ─────────
    Layered z-order:
      0: warm-pour gradient (.hero background, --hero-bp-bg)
      1: bloom + ruled-paper overlay (.hero::before, --hero-bp-bloom)
-     2: per-slide backdrop layer (.hero-blueprint / .hero-signal / .hero-silver,
+     2: per-slide gradient backdrop (.hero-warm / .hero-signal / .hero-silver,
         crossfade-toggled via .hero[data-active-pillar="…"])
      3: white-fade spotlight under pillar (.hero::after, --hero-spotlight)
      5: carousel slider (.hero-inner) */
@@ -751,102 +753,39 @@ main { padding-top: 64px; }
   z-index: 3;
 }
 
-/* 3D blueprint grid — 30 patent figure tiles in perspective.
-   Sits between bloom (z 1) and spotlight (z 3), so the spotlight gently
-   mutes the figures behind the pillar text but they read at edges. */
-.hero-blueprint {
+/* ───────── Hero — warm-gradient backdrop (Licensing pillar) ─────────
+   Default slide. Shares the positioning placement (top-ellipse gradient +
+   32px ruled grid), recolored warm. Crossfades at z 2 over 480ms. */
+.hero-warm {
   position: absolute; inset: 0;
   z-index: 2;
   pointer-events: none;
-  transform: translateY(-20px);
-}
-.hero-blueprint .stage-3d {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  perspective: 2200px;
-  perspective-origin: 50% 30%;
-}
-.hero-blueprint .grid-3d {
-  display: grid;
-  grid-template-columns: repeat(6, 280px);
-  grid-auto-rows: 220px;
-  gap: 14px;
-  transform: rotateX(56deg) rotateZ(-14deg) translateY(-30px) scale(0.75);
-  transform-style: preserve-3d;
-  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
-          mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
-}
-.bptile {
-  background: #FCFAF4;
-  border: 1px solid rgba(37,37,37,0.14);
-  border-radius: 6px;
-  padding: 8px 10px;
-  display: flex; flex-direction: column; gap: 6px;
-  box-shadow: 0 4px 16px rgba(37,37,37,0.10), 0 1px 2px rgba(37,37,37,0.06);
-}
-[data-theme="dark"] .bptile {
-  background: var(--surface-tertiary);
-  border-color: rgba(255,255,255,0.10);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.30);
-}
-.bptile .fig {
-  flex: 1;
-  border: 0.5px solid rgba(37,37,37,0.18);
-  background: rgba(252,250,244,0.5);
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 3px;
-}
-[data-theme="dark"] .bptile .fig {
-  border-color: rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.04);
-}
-.bptile .fig svg { width: 100%; height: 100%; display: block; }
-.bptile .fig svg .stroke-thin { stroke: #252525; stroke-width: 0.5; fill: none; }
-.bptile .fig svg .stroke-mid  { stroke: #252525; stroke-width: 0.75; fill: none; }
-.bptile .fig svg .stroke-bold { stroke: #252525; stroke-width: 1.0; fill: none; }
-.bptile .fig svg .stroke-construction { stroke: #8A8F98; stroke-width: 0.4; stroke-dasharray: 1 2; fill: none; }
-.bptile .fig svg .fill-mark { fill: #252525; }
-.bptile .fig svg text { font-family: Inconsolata, monospace; font-size: 5px; fill: #252525; }
-.bptile .fig svg .label-fade { fill: #8A8F98; font-size: 4.5px; }
-[data-theme="dark"] .bptile .fig svg .stroke-thin,
-[data-theme="dark"] .bptile .fig svg .stroke-mid,
-[data-theme="dark"] .bptile .fig svg .stroke-bold { stroke: #E2E8F0; }
-[data-theme="dark"] .bptile .fig svg .stroke-construction { stroke: #5A5A5A; }
-[data-theme="dark"] .bptile .fig svg .fill-mark,
-[data-theme="dark"] .bptile .fig svg text { fill: #E2E8F0; }
-[data-theme="dark"] .bptile .fig svg .label-fade { fill: #8A8F98; }
-[data-theme="dark"] .bptile .fig svg [fill="#FCFAF4"] { fill: var(--surface-tertiary); }
-.bptile .meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.bptile .pid {
-  font-family: 'Inconsolata', ui-monospace, monospace;
-  font-size: 9px; font-weight: 600;
-  color: #252525;
-  letter-spacing: 0.04em;
-}
-[data-theme="dark"] .bptile .pid { color: #E2E8F0; }
-.bptile .tier-chip {
-  display: inline-flex; align-items: center;
-  font-size: 8px; font-weight: 700;
-  padding: 2px 5px; border-radius: 9999px;
-  white-space: nowrap;
-}
-.bptile .tier-chip.s { background: var(--score-s-bg); color: var(--score-s); }
-.bptile .tier-chip.a { background: var(--score-a-bg); color: var(--score-a); }
-.bptile .tier-chip.b { background: var(--score-b-bg); color: var(--score-b); }
-.bptile .tier-chip.c { background: var(--score-c-bg); color: var(--score-c); }
-.bptile .tier-chip.d { background: var(--score-d-bg); color: var(--score-d); }
-
-/* ───────── Hero — cool metric-tile backdrop (Signal pillar) ─────────
-   Swaps in for .hero-blueprint when the Signal slide
-   (data-pillar="signal") is active. Mirrors the warm blueprint's
-   z-stack — sits at z 2 alongside it — and crossfades over 480ms. */
-
-/* Crossfade plumbing — shared between the two backdrops. */
-.hero-blueprint {
-  opacity: 1;
+  opacity: 0;
   transition: opacity 480ms var(--ease-card);
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 0%, #FFEAD0 0%, #FFF4E6 35%, transparent 70%),
+    linear-gradient(180deg, #FFF7EE 0%, #FFFFFF 85%);
 }
+.hero-warm::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
+}
+[data-theme="dark"] .hero-warm {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(120,74,15,0.42) 0%, rgba(80,50,10,0.26) 35%, transparent 70%),
+    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+}
+[data-theme="dark"] .hero-warm::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
+}
+
+/* ───────── Hero — cool-gradient backdrop (Signal pillar) ─────────
+   Same positioning placement (top-ellipse gradient + 32px ruled grid),
+   recolored cool. Crossfades at z 2 over 480ms. */
 .hero-signal {
   position: absolute; inset: 0;
   z-index: 2;
@@ -854,10 +793,8 @@ main { padding-top: 64px; }
   opacity: 0;
   transition: opacity 480ms var(--ease-card);
   background:
-    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.14) 0%, transparent 65%),
-    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.12) 0%, transparent 70%),
-    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.10) 0%, transparent 70%),
-    linear-gradient(180deg, #FFFFFF 0%, #F5FBFF 50%, #EEF6FF 100%);
+    radial-gradient(ellipse 90% 100% at 50% 0%, #CFE9FB 0%, #E6F4FF 35%, transparent 70%),
+    linear-gradient(180deg, #F2F9FF 0%, #FFFFFF 85%);
 }
 .hero-signal::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -867,10 +804,8 @@ main { padding-top: 64px; }
 }
 [data-theme="dark"] .hero-signal {
   background:
-    radial-gradient(60% 50% at 50% 25%, rgba(14,165,233,0.18) 0%, transparent 65%),
-    radial-gradient(40% 40% at 85% 80%, rgba(139,92,246,0.16) 0%, transparent 70%),
-    radial-gradient(35% 35% at 15% 80%, rgba(16,185,129,0.12) 0%, transparent 70%),
-    #0E0E0E;
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(14,165,233,0.34) 0%, rgba(14,116,180,0.20) 35%, transparent 70%),
+    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 [data-theme="dark"] .hero-signal::before {
   background:
@@ -878,125 +813,11 @@ main { padding-top: 64px; }
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
 }
 
-.hero[data-active-pillar="signal"] .hero-blueprint { opacity: 0; }
-.hero[data-active-pillar="signal"] .hero-signal    { opacity: 1; }
-
-/* 3D-tilted 3×4 grid of metric tiles — same grammar AND scale (0.75) as
-   .hero-blueprint .grid-3d so the two backdrops feel like siblings. */
-.hero-signal .stage-3d {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  perspective: 2200px;
-  perspective-origin: 50% 30%;
-}
-.hero-signal .strip {
-  display: grid;
-  grid-template-columns: repeat(3, 260px);
-  grid-template-rows: repeat(4, 300px);
-  gap: 28px;
-  transform: rotateX(54deg) rotateZ(-14deg) translate3d(210px, -20px, 0) scale(0.75);
-  transform-style: preserve-3d;
-  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
-          mask-image: radial-gradient(ellipse 78% 72% at 50% 55%, #000 30%, rgba(0,0,0,0.7) 55%, transparent 88%);
-}
-
-/* Metric tile — translucent recipe lifted from .bptile. */
-.hero-signal .mt {
-  position: relative;
-  width: 260px; height: 300px; border-radius: 14px;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(37,37,37,0.14);
-  padding: 22px 18px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  box-shadow: 0 4px 16px rgba(37,37,37,0.10), 0 1px 2px rgba(37,37,37,0.06);
-}
-[data-theme="dark"] .hero-signal .mt {
-  background: rgba(31,31,31,0.92);
-  border-color: rgba(255,255,255,0.10);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.30);
-}
-
-.hero-signal .mt .tier-pin {
-  order: 99;
-  align-self: center;
-  margin-top: 12px;
-  font-family: 'Urbanist','Inter',system-ui,sans-serif;
-  font-size: 12px; font-weight: 700; letter-spacing: 0; line-height: 1;
-  padding: 6px 14px; border-radius: 9999px; white-space: nowrap;
-}
-.hero-signal .mt .tier-pin.s { background: rgba(212,160,23,0.20); color: var(--score-s); }
-.hero-signal .mt .tier-pin.a { background: rgba(16,185,129,0.18); color: var(--score-a); }
-.hero-signal .mt .tier-pin.b { background: rgba(14,165,233,0.18); color: var(--score-b); }
-.hero-signal .mt .tier-pin.c { background: rgba(139,92,246,0.18); color: var(--score-c); }
-[data-theme="dark"] .hero-signal .mt .tier-pin.s { background: rgba(212,160,23,0.18); color: #F5D26A; }
-[data-theme="dark"] .hero-signal .mt .tier-pin.a { background: rgba(16,185,129,0.18); color: #A7F3D0; }
-[data-theme="dark"] .hero-signal .mt .tier-pin.b { background: rgba(14,165,233,0.18); color: #7DD3FC; }
-[data-theme="dark"] .hero-signal .mt .tier-pin.c { background: rgba(139,92,246,0.18); color: #C4B5FD; }
-
-.hero-signal .mt .lbl {
-  display: inline-flex; align-items: center;
-  font-size: 12px; font-weight: 600;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary);
-  margin-bottom: 10px;
-}
-.hero-signal .mt .mid {
-  flex: 1; width: 100%; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 10px;
-}
-.hero-signal .mt .val {
-  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
-  font-feature-settings: "tnum";
-  font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1;
-  color: var(--text-primary);
-}
-.hero-signal .mt .val small { font-size: 0.38em; font-weight: 500; margin-left: 4px; color: var(--text-tertiary); letter-spacing: 0; }
-
-.hero-signal .mt .arc {
-  position: relative; width: 160px; height: 160px;
-  display: flex; align-items: center; justify-content: center;
-}
-.hero-signal .mt .arc svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-signal .mt .arc .arc-track { fill: none; stroke: var(--border-tertiary); stroke-width: 6; stroke-linecap: round; }
-[data-theme="dark"] .hero-signal .mt .arc .arc-track { stroke: rgba(255,255,255,0.14); }
-.hero-signal .mt .arc .arc-fill { fill: none; stroke: var(--text-primary); stroke-width: 7; stroke-linecap: round; }
-[data-theme="dark"] .hero-signal .mt .arc .arc-fill { stroke: #FAFAFA; }
-.hero-signal .mt .arc .arc-val {
-  position: relative;
-  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
-  font-feature-settings: "tnum";
-  font-size: 36px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1;
-}
-.hero-signal .mt .arc .arc-val small { font-size: 0.40em; font-weight: 500; color: var(--text-tertiary); margin-left: 2px; letter-spacing: 0; }
-
-.hero-signal .mt .hist { width: 100%; max-width: 220px; }
-.hero-signal .mt .hist svg { width: 100%; height: 76px; display: block; }
-.hero-signal .mt .hist .bar { fill: var(--text-tertiary); fill-opacity: 0.32; }
-.hero-signal .mt .hist .bar.is-this { fill: var(--text-primary); fill-opacity: 1; }
-[data-theme="dark"] .hero-signal .mt .hist .bar.is-this { fill: #FAFAFA; }
-.hero-signal .mt .hist .baseline { stroke: var(--border-tertiary); stroke-width: 1; }
-[data-theme="dark"] .hero-signal .mt .hist .baseline { stroke: rgba(255,255,255,0.16); }
-.hero-signal .mt .hist .marker { fill: var(--text-primary); }
-[data-theme="dark"] .hero-signal .mt .hist .marker { fill: #FAFAFA; }
-
-.hero-signal .mt .meter { display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 220px; }
-.hero-signal .mt .meter .bar {
-  position: relative; width: 100%; height: 16px; border-radius: 3px;
-  background: var(--surface-tertiary);
-  border: 1px solid var(--border-tertiary);
-  overflow: hidden;
-}
-[data-theme="dark"] .hero-signal .mt .meter .bar { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
-.hero-signal .mt .meter .tick { position: absolute; top: -3px; bottom: -3px; left: 50%; width: 1px; background: var(--border-tertiary); z-index: 2; }
-[data-theme="dark"] .hero-signal .mt .meter .tick { background: rgba(255,255,255,0.24); }
-.hero-signal .mt .meter .fill { position: absolute; top: 0; bottom: 0; left: 0; width: 62.17%; background: var(--text-primary); }
-[data-theme="dark"] .hero-signal .mt .meter .fill { background: #FAFAFA; }
-.hero-signal .mt .meter .scale {
-  display: flex; justify-content: space-between;
-  font-family: 'Inconsolata', ui-monospace, 'SF Mono', Menlo, monospace;
-  font-feature-settings: "tnum";
-  font-size: 12px; font-weight: 600; color: var(--text-tertiary);
-  letter-spacing: 0.04em; margin-top: 2px;
-}
+/* Crossfade — each gradient layer fades in for its slide. Licensing is the
+   default (data-active-pillar set by setActive(0) at load). */
+.hero[data-active-pillar="licensing"]   .hero-warm   { opacity: 1; }
+.hero[data-active-pillar="signal"]      .hero-signal { opacity: 1; }
+.hero[data-active-pillar="positioning"] .hero-silver { opacity: 1; }
 
 /* ───────── Hero — silver-gradient backdrop (Positioning pillar) ─────────
    Silver = TIS overall per the gradient ↔ pillar pairings in visual-guide.md.
@@ -1028,9 +849,6 @@ main { padding-top: 64px; }
     repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
 }
-
-.hero[data-active-pillar="positioning"] .hero-blueprint { opacity: 0; }
-.hero[data-active-pillar="positioning"] .hero-silver    { opacity: 1; }
 
 /* Per-pillar pillar styling — Signal slide overrides warm pillar accents
    with cool gradients. Scoped via [data-pillar="signal"]. */
@@ -2566,6 +2384,23 @@ main { padding-top: 64px; }
   background-position: left center;
 }
 [data-theme="dark"] .innovue-collab-card__logo { filter: brightness(1.6); }
+
+/* Inline Innovue wordmark — leads the 02/Source sentence as its subject (replaces
+   writing the name out). Uses a tightly-cropped copy of the brand-blue wordmark
+   (viewBox trimmed of its ~63% vertical padding) so a normal-height box renders the
+   glyphs full-size and baseline-aligned with the surrounding text. Box ratio (6.6/0.9
+   ≈ 7.33) matches the cropped viewBox (300/41); margin-right gives the trailing gap. */
+.innovue-collab-card--inline { align-items: flex-start; }
+.innovue-inline {
+  display: inline-block;
+  width: 6.6em; height: 0.9em;
+  margin-right: 0.3em;
+  vertical-align: baseline;
+  position: relative; top: 0.03em;
+  background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg');
+  background-size: contain; background-repeat: no-repeat; background-position: left bottom;
+}
+[data-theme="dark"] .innovue-inline { filter: brightness(1.6); }
 .innovue-collab-card__rule {
   width: 1px; background: var(--border-primary); align-self: stretch;
 }
@@ -2581,7 +2416,7 @@ main { padding-top: 64px; }
 }
 
 /* ───────── Partner strip ─────────
-   components.md §Partner strip. Row of partner marks — Innovue, ITRI, III —
+   components.md §Partner strip. Row of partner marks — Innovue, iPIC, III, NYCU —
    monochrome at rest, returning to brand color on hover. Equal height (peers,
    not a hierarchy) per visual-guide.md §Collaborator Partners. Restored under
    the hero per team note; shares the §Innovue collaboration card container shell. */
@@ -2589,18 +2424,24 @@ main { padding-top: 64px; }
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
   border-radius: 16px;
-  padding: 48px 32px;
-  display: flex; align-items: center; justify-content: center;
-  flex-wrap: wrap;
-  gap: 48px;
+  padding: 40px 32px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 28px;
 }
 .partner-strip-label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.20em;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  text-align: center;
+}
+/* Centered logo row below the eyebrow. */
+.partner-logos {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap;
+  gap: 48px;
 }
 .partner {
   height: 40px;
@@ -2614,7 +2455,8 @@ main { padding-top: 64px; }
   transition: filter 250ms cubic-bezier(0.2,1,0.3,1), opacity 250ms linear;
 }
 .partner:hover { filter: none; opacity: 1; }
-.partner--itri    { background-image: var(--partner-itri); }
+.partner--ipic    { background-image: var(--partner-ipic); }
+.partner--nycu    { background-image: var(--partner-nycu); }
 .partner--iii     { background-image: var(--partner-iii); }
 .partner--innovue { background-image: var(--partner-innovue); }
 .partner--innovue:hover { background-image: var(--partner-innovue-color); }
@@ -2623,18 +2465,9 @@ main { padding-top: 64px; }
 [data-theme="dark"] .partner:hover { filter: none; opacity: 1; }
 [data-theme="dark"] .partner--innovue { filter: none; opacity: 0.7; }
 [data-theme="dark"] .partner--innovue:hover { opacity: 1; }
-/* ITRI uses a true dark-variant SVG (.cls-3 wordmark recolored to white) so we can
-   drop the invert and let grayscale alone mute it — matches III's muted look while
-   still revealing native cyan on hover. III keeps the invert filter (no dark SVG yet). */
-[data-theme="dark"] .partner--itri {
-  filter: grayscale(1);
-  opacity: 0.6;
-  background-image: url('/designs/assets/logos/partners/itri/itrilogo_eng_dark.svg');
-}
-[data-theme="dark"][lang="zh-Hant"] .partner--itri {
-  background-image: url('/designs/assets/logos/partners/itri/itrilogo_ch_dark.svg');
-}
-[data-theme="dark"] .partner--itri:hover { filter: none; opacity: 1; }
+/* iPIC + NYCU are wired light-mode desktop only for now. In dark mode they fall through
+   to the generic [data-theme="dark"] .partner invert rule above — dedicated dark variants
+   (and any per-mark tuning) are deferred to the dark-mode pass. */
 
 /* ───────── Reports + Press ───────── */
 .section-head {

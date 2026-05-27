@@ -4,14 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>TIS — Turn patents into market position</title>
-<meta name="description" content="Patent licensing and token-based valuations from Innovue's 170M-patent database — built for companies expanding overseas, raising capital, or running IP due diligence." />
+<meta name="description" content="License 30-patent bundles and grade any patent SABCD against its industry pool — patent positions you can put to work, for companies expanding overseas, raising capital, or running IP due diligence." />
 <link rel="canonical" href="https://tisglobalinc.com/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/" />
 <meta property="og:title" content="TIS — Turn patents into market position" />
-<meta property="og:description" content="Patent licensing and token-based valuations from Innovue's 170M-patent database — built for companies expanding overseas, raising capital, or running IP due diligence." />
+<meta property="og:description" content="License 30-patent bundles and grade any patent SABCD against its industry pool — patent positions you can put to work, for companies expanding overseas, raising capital, or running IP due diligence." />
 <meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,7 +20,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="TIS — Turn patents into market position" />
-<meta name="twitter:description" content="Patent licensing and token-based valuations from Innovue's 170M-patent database — built for companies expanding overseas, raising capital, or running IP due diligence." />
+<meta name="twitter:description" content="License 30-patent bundles and grade any patent SABCD against its industry pool — patent positions you can put to work, for companies expanding overseas, raising capital, or running IP due diligence." />
 <meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
 
@@ -76,7 +76,7 @@
             </a>
             <a href="/product/signal/" class="product-card" role="menuitem">
               <span class="product-card-eyebrow">SIGNAL</span>
-              <span class="product-card-statement" data-zh="30 分鐘完成 SABCD 估價，比對 1.7 億件專利。">SABCD valuation in 30 minutes, against 170M patents.</span>
+              <span class="product-card-statement" data-zh="30 分鐘完成 SABCD 估價，比對 1.7 億件專利。">SABCD valuation in 30 minutes, against your industry pool.</span>
             </a>
           </div>
         </div>
@@ -276,7 +276,7 @@
 
 <main id="main">
 
-  <h1 class="sr-only">TIS — Strategic patent intelligence, grounded in 170M patents</h1>
+  <h1 class="sr-only">TIS — Strategic patent intelligence, from defense to position</h1>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Hero  —  3-pillar carousel on warm-blueprint + silver + cool        ║
@@ -284,18 +284,16 @@
        ║ Slide 2's 12 metric tiles are lazy-mounted by JS on first activate. ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="hero" aria-label="Hero">
-    <!-- 3D blueprint figure grid (30 patents) — Licensing slide backdrop -->
-    <div class="hero-blueprint" aria-hidden="true">
-      <div class="stage-3d">
-        <div class="grid-3d" data-grid="blueprint"></div>
-      </div>
-    </div>
+    <!-- Per-slide gradient + 32px-grid backdrops. All three share the
+         positioning placement (top-ellipse gradient + ruled grid), recolored
+         per product; crossfade-toggled via .hero[data-active-pillar="…"]. -->
+    <!-- Warm-gradient backdrop — Licensing slide -->
+    <div class="hero-warm" aria-hidden="true"></div>
 
-    <!-- Silver-gradient backdrop — Positioning slide backdrop -->
+    <!-- Silver-gradient backdrop — Positioning slide -->
     <div class="hero-silver" aria-hidden="true"></div>
 
-    <!-- Cool metric-tile backdrop — Signal slide backdrop.
-         Lazy-mounted: .stage-3d + 12 tiles injected by JS on first activate. -->
+    <!-- Cool-gradient backdrop — Signal slide -->
     <div class="hero-signal" id="hero-signal" aria-hidden="true"></div>
 
     <div class="container hero-inner">
@@ -303,44 +301,14 @@
       <div class="hero-slider" id="hero-slider" role="region" aria-roledescription="carousel" aria-label="TIS pillars">
         <div class="hero-slider-stage">
 
-          <!-- Slide 1 · Licensing Platform (the focus) -->
-          <article class="pillar pillar-slide is-active" data-pillar="licensing" id="hero-slide-0" role="tabpanel" aria-labelledby="hero-dot-0">
-            <p class="pillar-eyebrow" data-zh="TIS 授權平台">TIS Licensing Platform</p>
-            <h2 class="pillar-title">
-              <span data-zh="別再申請。">Don't file.</span> <em data-zh="買下對手已贏的位置。">License what already won.</em>
-            </h2>
-            <p class="pillar-sub" data-zh="每組 30 件專利，鎖定一個司法管轄區。涵蓋 5 個市場，3 個月至 3 年非專屬授權。">
-              Each bundle is 30 patents in one jurisdiction. 5 markets, 3-month to 3-year non-exclusive terms.
-            </p>
-            <div class="pillar-actions">
-              <a href="/product/licensing/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
-              <a href="#contact"  class="btn btn-secondary" data-zh="聯絡業務">Contact sales</a>
-            </div>
-          </article>
-
-          <!-- Slide 2 · Signal -->
-          <article class="pillar pillar-slide" data-pillar="signal" id="hero-slide-1" role="tabpanel" aria-labelledby="hero-dot-1" aria-hidden="true" inert>
-            <p class="pillar-eyebrow" data-zh="代幣制估值 · SABCD 評等">Token-Based Valuation · SABCD</p>
-            <h2 class="pillar-title">
-              <span data-zh="別再相信">Don't fund</span> <em data-zh="「IP 很強」。">"strong IP."</em> <span data-zh="打分數。">Grade it.</span>
-            </h2>
-            <p class="pillar-sub" data-zh="對照 1.7 億件專利的 SABCD 評等。在簽意向書之前，判斷 Go / no-go。">
-              SABCD scores against 170M patents. Go / no-go before the term sheet.
-            </p>
-            <div class="pillar-actions">
-              <a href="/product/signal/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
-              <a href="#contact"  class="btn btn-secondary" data-zh="聯絡業務">Contact sales</a>
-            </div>
-          </article>
-
-          <!-- Slide 3 · Strategic positioning -->
-          <article class="pillar pillar-slide" data-pillar="positioning" id="hero-slide-2" role="tabpanel" aria-labelledby="hero-dot-2" aria-hidden="true" inert>
+          <!-- Slide 1 · Strategic positioning (lead) -->
+          <article class="pillar pillar-slide is-active" data-pillar="positioning" id="hero-slide-0" role="tabpanel" aria-labelledby="hero-dot-0">
             <p class="pillar-eyebrow" data-zh="TIS · 防禦 → 佈局">TIS · Defense → Position</p>
             <h2 class="pillar-title">
               <span data-zh="別再防禦。">Stop defending.</span> <em data-zh="開始佈局。">Start positioning.</em>
             </h2>
             <p class="pillar-sub" data-zh="紮根台灣的 IP 情報，依託全球第四大的專利檔案。">
-              Taiwan-rooted IP intelligence, on the world's 4th-largest patent archive.
+              Taiwan-rooted IP intelligence, built on a patent archive no public AI tool can reach.
             </p>
             <div class="pillar-actions">
               <a href="#about"   class="btn btn-primary btn-lg" data-zh="我們的方法">How we work</a>
@@ -348,12 +316,42 @@
             </div>
           </article>
 
+          <!-- Slide 2 · Licensing Platform -->
+          <article class="pillar pillar-slide" data-pillar="licensing" id="hero-slide-1" role="tabpanel" aria-labelledby="hero-dot-1" aria-hidden="true" inert>
+            <p class="pillar-eyebrow" data-zh="TIS 授權平台">TIS Licensing Platform</p>
+            <h2 class="pillar-title">
+              <span data-zh="別再申請。">Don't file.</span> <em data-zh="買下對手已贏的位置。">License what already won.</em>
+            </h2>
+            <p class="pillar-sub" data-zh="每組 30 件專利，鎖定一個司法管轄區。涵蓋 5 個市場，3 個月至 3 年非專屬授權。">
+              Thirty patents that already hold your market — curated by jurisdiction and industry, live the week you subscribe, non-exclusive on 3-month to 3-year terms.
+            </p>
+            <div class="pillar-actions">
+              <a href="/product/licensing/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
+              <a href="#contact"  class="btn btn-secondary" data-zh="聯絡業務">Contact sales</a>
+            </div>
+          </article>
+
+          <!-- Slide 3 · Signal -->
+          <article class="pillar pillar-slide" data-pillar="signal" id="hero-slide-2" role="tabpanel" aria-labelledby="hero-dot-2" aria-hidden="true" inert>
+            <p class="pillar-eyebrow" data-zh="代幣制估值 · SABCD 評等">Token-Based Valuation · SABCD</p>
+            <h2 class="pillar-title">
+              <span data-zh="別再相信">Don't fund</span> <em data-zh="「IP 很強」。">"strong IP."</em> <span data-zh="打分數。">Grade it.</span>
+            </h2>
+            <p class="pillar-sub" data-zh="對照 1.7 億件專利的 SABCD 評等。在簽意向書之前，判斷 Go / no-go。">
+              An SABCD grade against your industry's pool, back in an afternoon — go / no-go before the term sheet, not after.
+            </p>
+            <div class="pillar-actions">
+              <a href="/product/signal/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
+              <a href="#contact"  class="btn btn-secondary" data-zh="聯絡業務">Contact sales</a>
+            </div>
+          </article>
+
         </div>
 
         <div class="hero-slider-dots" role="tablist" aria-label="Select hero slide">
-          <button type="button" class="hero-slider-dot" id="hero-dot-0" role="tab" aria-selected="true"  aria-controls="hero-slide-0" aria-label="Slide 1: Licensing Platform"></button>
-          <button type="button" class="hero-slider-dot" id="hero-dot-1" role="tab" aria-selected="false" aria-controls="hero-slide-1" aria-label="Slide 2: Signal"></button>
-          <button type="button" class="hero-slider-dot" id="hero-dot-2" role="tab" aria-selected="false" aria-controls="hero-slide-2" aria-label="Slide 3: From defense to position"></button>
+          <button type="button" class="hero-slider-dot" id="hero-dot-0" role="tab" aria-selected="true"  aria-controls="hero-slide-0" aria-label="Slide 1: From defense to position"></button>
+          <button type="button" class="hero-slider-dot" id="hero-dot-1" role="tab" aria-selected="false" aria-controls="hero-slide-1" aria-label="Slide 2: Licensing Platform"></button>
+          <button type="button" class="hero-slider-dot" id="hero-dot-2" role="tab" aria-selected="false" aria-controls="hero-slide-2" aria-label="Slide 3: Signal"></button>
         </div>
       </div>
 
@@ -361,17 +359,22 @@
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Partner strip  —  components.md §Partner strip. Restored under the   ║
-       ║ hero per team note. Innovue first (bound partner), ITRI + III follow ║
-       ║ as collaborators; equal height, monochrome → brand color on hover.   ║
+       ║ Exclusive patent access  —  institutions that granted TIS exclusive  ║
+       ║ access to a handful of their patents, feeding the SABCD comparison   ║
+       ║ pool. Centered eyebrow (Urbanist) above a centered logo row          ║
+       ║ (Innovue · iPIC · III · NYCU); monochrome → brand color on hover.    ║
+       ║ Wired light-mode desktop for now.                                    ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight" aria-label="Partners">
+  <section class="section section--tight" aria-label="Exclusive patent access">
     <div class="container">
       <div class="partner-strip">
-        <span class="partner-strip-label" data-zh="合作夥伴">Partners</span>
-        <a href="https://www.innovue.ltd/"                   class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.itri.org.tw/english/index.aspx" class="partner partner--itri"    aria-label="ITRI — Industrial Technology Research Institute" target="_blank" rel="noopener noreferrer"></a>
-        <a href="https://www.iii.org.tw/en"                  class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+        <span class="partner-strip-label" data-zh="專屬專利授權">Exclusive patent access</span>
+        <div class="partner-logos">
+          <a href="https://www.innovue.ltd/" class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+        </div>
       </div>
     </div>
   </section>
@@ -385,17 +388,17 @@
         <div class="stat-card">
           <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
           <h2 class="stat-num"><span class="counter" data-target="170">0</span><span class="num-suffix">M</span></h2>
-          <p class="stat-body" data-zh="Innovue 專屬資料庫所收錄的專利數——全球第四大。不在公開網路上，任何標準 AI 工具都搜不到。">Patents in Innovue's proprietary database — 4th-largest globally. Not on the open web; not reachable through any standard AI tool.</p>
+          <p class="stat-body" data-zh="Innovue 專屬資料庫所收錄的專利數——全球第四大。不在公開網路上，任何標準 AI 工具都搜不到。">Innovue's proprietary database — the world's 4th-largest, and the ground every TIS grade stands on. Not on the open web. Not reachable by any standard AI tool.</p>
         </div>
         <div class="stat-card">
           <p class="stat-eyebrow" data-zh="分析系統">Analytical system</p>
           <h2 class="stat-num"><span class="counter" data-target="13">0</span></h2>
-          <p class="stat-body" data-zh="透過已驗證渠道整合取得資料的模組數——不做公開爬取。每個模組對應一個明確的資料來源。">Modules sourcing data through verified channel integrations — no public scraping. Each module a defined data source.</p>
+          <p class="stat-body" data-zh="透過已驗證渠道整合取得資料的模組數——不做公開爬取。每個模組對應一個明確的資料來源。">Thirteen modules, each a verified channel into official data — no public scraping, no guessing where a number came from.</p>
         </div>
         <div class="stat-card">
           <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdictional coverage</p>
           <h2 class="stat-num"><span class="counter" data-target="100">0</span><span class="num-suffix">+</span></h2>
-          <p class="stat-body" data-zh="每日從官方來源索引的專利局數。美、歐、日、台、韓的覆蓋最深。">Patent offices indexed daily from official sources. US, EP, JP, TW, KR carry the deepest coverage.</p>
+          <p class="stat-body" data-zh="每日從官方來源索引的專利局數。美、歐、日、台、韓的覆蓋最深。">Patent offices indexed daily from official sources — US, EP, JP, TW, and KR run the deepest.</p>
         </div>
       </div>
     </div>
@@ -422,7 +425,7 @@
         <div class="pillar-hero">
           <div class="pillar-hero-copy">
             <h3 id="pillar-licensing-heading" data-zh="授權平台">Licensing Platform</h3>
-            <p data-zh="訂閱依司法管轄區 × 產業精選的 30 件專利組合。NPE 對台灣出口商的求償，落點通常是三個月 TIS 訂閱費用的 50–500 倍——組合在訂閱當週生效，並附上一枚可在隔日早上交給對手的 Verified License Badge。">Subscribe to a 30-patent bundle, curated per jurisdiction × industry. NPE demand letters against Taiwan exporters settle at 50–500× the price of a three-month TIS subscription — the bundle activates the week you subscribe, with a Verified License Badge you can hand to a counter-party the next morning.</p>
+            <p data-zh="訂閱依司法管轄區 × 產業精選的 30 件專利組合。NPE 對台灣出口商的求償，落點通常是三個月 TIS 訂閱費用的 50–500 倍——組合在訂閱當週生效，並附上一枚可在隔日早上交給對手的 Verified License Badge。">You ship into markets your competitors already mapped — and one NPE demand letter settles at 50–500× the price of a three-month subscription. Subscribe to a 30-patent bundle, curated by jurisdiction and industry: live the week you sign, with a Verified License Badge you can hand a counter-party the next morning.</p>
             <div class="pillar-hero-cta">
               <a href="#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
               <a href="/product/licensing/" class="btn btn-secondary btn-lg" data-zh="深入了解 →">Learn more →</a>
@@ -477,7 +480,7 @@
                 <span class="accent warm"></span>
                 <div class="body">
                   <h3>Built from <em>thirty</em>. Tiered.</h3>
-                  <p class="sub">Pick a bundle by jurisdiction and industry — 30 patents drawn from the 170M-patent database.</p>
+                  <p class="sub">Pick a bundle by jurisdiction and industry — 30 patents drawn from the curated partner pool.</p>
                   <div class="legend">
                     <span class="tier-chip tier-chip--s">Tier S</span>
                     <span class="tier-chip tier-chip--a">Tier A</span>
@@ -492,7 +495,7 @@
                 <span class="accent warm"></span>
                 <div class="body">
                   <div class="val"><em>Two ways</em> to pick the thirty.</div>
-                  <div class="sub">System pick or FTO-guided — the platform builds from your input.</div>
+                  <div class="sub">System pick or FTO-guided — the bundle builds from your input.</div>
                 </div>
               </aside>
             </div>
@@ -504,32 +507,32 @@
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
             </span>
-            <h4 data-zh="30 件專利組合">30-patent bundle</h4>
-            <p data-zh="依司法管轄區 × 產業精選。訂閱當週生效——非獨家、可轉授權、可於投資人會議出示，亦可回應 NPE 函。">Curated per jurisdiction × industry. Active the week you subscribe — non-exclusive, ready to license out, present at investor meetings, or answer an NPE letter.</p>
+            <h4 data-zh="30 件專利組合">Curated coverage, active this week</h4>
+            <p data-zh="依司法管轄區 × 產業精選。訂閱當週生效——非獨家、可轉授權、可於投資人會議出示，亦可回應 NPE 函。">Thirty patents, curated by jurisdiction and industry, live the week you subscribe — covering the market your customers actually buy in.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
             </span>
-            <h4 data-zh="五個司法管轄區">Five jurisdictions</h4>
-            <p data-zh="美、歐、日、台、韓。挑你客戶實際所在的地方——覆蓋是入場券，不是全球宣示。">US, EP, JP, TW, KR. Pick where your customers actually live — coverage is the entry pass, not a global claim.</p>
+            <h4 data-zh="五個司法管轄區">Enter new markets with IP in hand</h4>
+            <p data-zh="美、歐、日、台、韓。挑你客戶實際所在的地方——覆蓋是入場券，不是全球宣示。">Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
             </span>
-            <h4 data-zh="Verified License Badge">Verified License Badge</h4>
-            <p data-zh="標誌同時呈現 TIS 與專利供應方。QR 回傳授權編號、範圍與到期日——無論徽章出現在攤位、型錄、公開說明書或電郵簽名，兩秒內可驗證。">TIS + IP supplier on the mark. QR returns license number, scope, and term-end date — verified in two seconds wherever the badge sits: booth, catalog, prospectus, email signature.</p>
+            <h4 data-zh="Verified License Badge">Verifiable in one scan</h4>
+            <p data-zh="標誌同時呈現 TIS 與專利供應方。QR 回傳授權編號、範圍與到期日——無論徽章出現在攤位、型錄、公開說明書或電郵簽名，兩秒內可驗證。">A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21V13"/><path d="M10 21V9"/><path d="M14 21V5"/><path d="M18 21V11"/></svg>
             </span>
-            <h4 data-zh="期限彈性">Term flexibility</h4>
-            <p data-zh="3 個月、1 年、或 3 年。長期承諾享有折扣；全程皆為非獨家授權。具體條件由業務團隊依需求報價。">3-month, 1-year, or 3-year. Longer commitments earn a discount; all terms are non-exclusive throughout. Exact terms quoted by sales against your scope.</p>
+            <h4 data-zh="期限彈性">See exactly what's in the bundle</h4>
+            <p data-zh="3 個月、1 年、或 3 年。長期承諾享有折扣；全程皆為非獨家授權。具體條件由業務團隊依需求報價。">Every patent graded on Innovue's SABCD framework — a typical bundle splits 5 S · 6 A · 9 B · 6 C · 4 D. No black box, no filler.</p>
           </article>
         </div>
 
@@ -560,11 +563,11 @@
                   <span class="acc-mark" aria-hidden="true">−</span>
                 </button>
                 <div class="acc-content"><div>
-                  <p data-zh="只為你真正需要的市場與期間付費。">Pay only for the markets and time you actually need.</p>
+                  <p data-zh="只為你真正需要的市場與期間付費。">Pay for the markets and the term you actually need — nothing you don't.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="US · TW">US · TW</li>
-                    <li data-zh="3、6 或 12 個月期">3, 6, or 12-month terms</li>
-                    <li data-zh="30 件 SABCD 評等專利／組合">30 SABCD-graded patents per bundle</li>
+                    <li data-zh="US · TW">Cover the market your customers buy in</li>
+                    <li data-zh="3、6 或 12 個月期">Choose the term that fits your runway</li>
+                    <li data-zh="30 件 SABCD 評等專利／組合">Get thirty SABCD-graded patents per bundle</li>
                   </ul>
                 </div></div>
               </div>
@@ -576,9 +579,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="15 秒內取得組合──或交付你的 FTO 報告，由平台繞過已釐清的部分。">A bundle in 15 seconds — or hand us your FTO and we'll route around it.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="Path A · System Recommendation（免費）">Path A · System Recommendation (free)</li>
-                    <li data-zh="Path B · FTO-Guided">Path B · FTO-Guided</li>
-                    <li data-zh="兩條路徑都附 30 件同級替換池">Both ship with a 30-deep same-tier swap pool</li>
+                    <li data-zh="Path A · System Recommendation（免費）">Let the system recommend a bundle, free</li>
+                    <li data-zh="Path B · FTO-Guided">Or hand us your FTO to guide the pick</li>
+                    <li data-zh="兩條路徑都附 30 件同級替換池">Either path ships with a same-tier swap pool</li>
                   </ul>
                 </div></div>
               </div>
@@ -590,9 +593,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="15 秒內取得依市場策展的 30 件 SABCD 評等專利。">30 SABCD-graded patents, curated to your market in under 15 seconds.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="典型 5 S · 6 A · 9 B · 6 C · 4 D 分布">Typical split: 5 S · 6 A · 9 B · 6 C · 4 D</li>
-                    <li data-zh="來源：ITRI、III 及大學夥伴">Sourced from ITRI, III, and university partners</li>
-                    <li data-zh="訂閱當週生效">Active the week you subscribe</li>
+                    <li data-zh="典型 5 S · 6 A · 9 B · 6 C · 4 D 分布">Get a tier-balanced bundle, flagship to long tail</li>
+                    <li data-zh="來源：ITRI、III 及大學夥伴">Drawn from the Innovue, iPIC, III &amp; NYCU pool</li>
+                    <li data-zh="訂閱當週生效">Go live the week you subscribe</li>
                   </ul>
                 </div></div>
               </div>
@@ -604,9 +607,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="不喜歡某一件？可替換──無加價、無等審。">Don't love a pick? Swap it — no surcharge, no review delay.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="每組附 30 件同級替換池">30-deep same-tier swap pool per bundle</li>
-                    <li data-zh="期內可不限次替換">Unlimited swaps within term</li>
-                    <li data-zh="同級替換，組成 30 件不變">S replaces S, A replaces A — the 30 stays 30</li>
+                    <li data-zh="每組附 30 件同級替換池">Swap any pick from a same-tier pool</li>
+                    <li data-zh="期內可不限次替換">Swap as often as you like, within term</li>
+                    <li data-zh="同級替換，組成 30 件不變">Replace like-for-like — the count stays thirty</li>
                   </ul>
                 </div></div>
               </div>
@@ -618,9 +621,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="一處文件中心──展示、辯護、佐證授權所需的一切。">One Document Center — everything you need to display, defend, and prove the license.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="PNG + SVG 版本，即用即嵌">Credential in PNG + SVG, embed-ready</li>
-                    <li data-zh="PAdES 簽章的合約與授權證書">PAdES-signed contract + license certificate</li>
-                    <li data-zh="一條連結即可公開驗證">Public verifier in one link</li>
+                    <li data-zh="PNG + SVG 版本，即用即嵌">Embed the credential anywhere, PNG or SVG</li>
+                    <li data-zh="PAdES 簽章的合約與授權證書">Hand over a PAdES-signed contract and certificate</li>
+                    <li data-zh="一條連結即可公開驗證">Let anyone verify it from one link</li>
                   </ul>
                 </div></div>
               </div>
@@ -637,7 +640,7 @@
         <div class="pillar-hero">
           <div class="pillar-hero-copy">
             <h3 id="pillar-signal-heading" data-zh="Signal">Signal</h3>
-            <p data-zh="以代幣計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.7 億件專利資料庫，做出 Go / no-go 判斷。">Token-based products for patent valuation, comparison, and report sales. A founder says "strong IP" — SABCD grades their 14 patents in an afternoon: 2 A-tier, 3 B-tier, 9 C-tier, no S. Go / no-go, against Innovue's 170M-patent database.</p>
+            <p data-zh="以代幣計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.7 億件專利資料庫，做出 Go / no-go 判斷。">A founder says "strong IP, 14 patents granted." Strong against what? SABCD grades all 14 in an afternoon — 2 A-tier, 3 B-tier, 9 C-tier, no S — each ranked against its industry pool. Go / no-go before the term sheet, paid by the token.</p>
             <div class="pillar-hero-cta">
               <a href="#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
               <a href="/product/signal/" class="btn btn-secondary btn-lg" data-zh="深入了解 →">Learn more →</a>
@@ -1208,32 +1211,32 @@
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
             </span>
-            <h4 data-zh="SABCD 估值">SABCD valuation</h4>
-            <p data-zh="依據 Innovue 1.7 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。短報告 1 代幣；完整報告 8 代幣。">Five-tier patent quality score against Innovue's 170M-patent database. Tier S is premium / strategic; D is the bottom of the ladder. 1 token short report; 8 tokens full.</p>
+            <h4 data-zh="SABCD 估值">See how your patent measures up</h4>
+            <p data-zh="依據 Innovue 1.7 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。短報告 1 代幣；完整報告 8 代幣。">One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
             </span>
-            <h4 data-zh="專利比對">Patent comparison</h4>
-            <p data-zh="並列比對請求項、專利家族與引用重疊。辨識侵權風險，找出最可能擋住路線圖的專利。">Side-by-side claim, family, and citation overlap. Identifies infringement risk and the patents most likely to block your roadmap.</p>
+            <h4 data-zh="專利比對">Pressure-test a patent's strength</h4>
+            <p data-zh="並列比對請求項、專利家族與引用重疊。辨識侵權風險，找出最可能擋住路線圖的專利。">Claim, family, and citation, side by side against technology-similar peers — so you see whether a patent's strength holds up before you bet on it.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
             </span>
-            <h4 data-zh="繞道路徑指引">Work-around guidance</h4>
-            <p data-zh="依資料庫掃描，追蹤繞過阻擋性專利的替代請求項路徑。在公開資料稀薄、進入市場時程緊迫時，讓 go / no-go 判斷更銳利。">Database-grounded scan that traces alternate claim paths around blocking patents. Sharpens go / no-go calls under thin public data and tight market-entry windows.</p>
+            <h4 data-zh="繞道路徑指引">Strategically position your path</h4>
+            <p data-zh="依資料庫掃描，追蹤繞過阻擋性專利的替代請求項路徑。在公開資料稀薄、進入市場時程緊迫時，讓 go / no-go 判斷更銳利。">Every patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more. Pro opens all 50 indicators beneath them, so you see exactly what anchors the grade.</p>
           </article>
 
           <article class="deliverable-card">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
             </span>
-            <h4 data-zh="預製報告">Pre-built reports</h4>
-            <p data-zh="產業 × 司法管轄區的專利地形圖——集中度、空白區、申請潮——以代幣計費，可下載。Innovue 與 TIS 內部使用同一資料庫。">Industry × jurisdiction landscapes — concentration, whitespace, filing surge — token-priced and downloadable. Same DB Innovue and TIS use internally.</p>
+            <h4 data-zh="預製報告">Know the terrain before you bet</h4>
+            <p data-zh="產業 × 司法管轄區的專利地形圖——集中度、空白區、申請潮——以代幣計費，可下載。Innovue 與 TIS 內部使用同一資料庫。">Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit.</p>
           </article>
         </div>
 
@@ -1266,9 +1269,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="Brief 30 分鐘內寄達──免分析師，免等一整週。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="USPTO · TW · EPO · WO">USPTO · TW · EPO · WO</li>
-                    <li data-zh="可平行 submit">Parallel submissions</li>
-                    <li data-zh="P95 寄達 ≤ 30 分鐘">P95 email delivery ≤ 30 min</li>
+                    <li data-zh="USPTO · TW · EPO · WO">Grade patents from any major office</li>
+                    <li data-zh="可平行 submit">Score a whole batch at once</li>
+                    <li data-zh="P95 寄達 ≤ 30 分鐘">Skip the week-long analyst wait</li>
                   </ul>
                 </div></div>
               </div>
@@ -1280,9 +1283,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="評分可信賴──校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。">Scores you can trust — graded against patents that actually compete in the same category.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="IPC 驅動的 12 產業池路由">IPC-driven routing across 12 industry pools</li>
-                    <li data-zh="Innovue 1.7 億件專利資料庫（全球第 4 大）">Innovue 170M-patent base · 4th largest globally</li>
-                    <li data-zh="池內樣本不足會於 Brief 上標示警示">Low-sample pools flagged on the Brief</li>
+                    <li data-zh="IPC 驅動的 12 產業池路由">Get matched to your exact technical category</li>
+                    <li data-zh="Innovue 1.7 億件專利資料庫（全球第 4 大）">Benchmark against the Innovue, iPIC, III &amp; NYCU pool</li>
+                    <li data-zh="池內樣本不足會於 Brief 上標示警示">Know upfront when confidence is low</li>
                   </ul>
                 </div></div>
               </div>
@@ -1294,9 +1297,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。">One scoring engine, two depths — pay for what you need today, top up later.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="Brief · 15 點 · 30 分鐘郵件">Brief · 15 pts · 30-min email</li>
-                    <li data-zh="Pro · 30 點 · 即時渲染">Pro · 30 pts · instant render</li>
-                    <li data-zh="事後升級無加價">Upgrade anytime, no premium</li>
+                    <li data-zh="Brief · 15 點 · 30 分鐘郵件">Start with the fast Brief verdict</li>
+                    <li data-zh="Pro · 30 點 · 即時渲染">Go deeper with Pro when you need it</li>
+                    <li data-zh="事後升級無加價">Upgrade anytime — no switching premium</li>
                   </ul>
                 </div></div>
               </div>
@@ -1308,9 +1311,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="等級判定 + PSS 分數">Tier verdict + PSS score</li>
-                    <li data-zh="池內百分位 + 池內排名">Cohort percentile + rank in pool</li>
-                    <li data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Status · family · IPC · life · AI summary</li>
+                    <li data-zh="等級判定 + PSS 分數">See the tier verdict at a glance</li>
+                    <li data-zh="池內百分位 + 池內排名">Know exactly where it ranks among peers</li>
+                    <li data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Forward it to your IC as-is</li>
                   </ul>
                 </div></div>
               </div>
@@ -1322,9 +1325,9 @@
                 <div class="acc-content"><div>
                   <p data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
                   <ul class="howitworks-checks">
-                    <li data-zh="八大支柱 × 4–8 項指標 = 50 項">8 pillars × 4–8 indicators = 50 metrics</li>
-                    <li data-zh="每項指標：原值、百分位、權重">Each indicator: value, percentile, weight</li>
-                    <li data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Top 10 drivers + Top 5 sensitivities flagged</li>
+                    <li data-zh="八大支柱 × 4–8 項指標 = 50 項">See what anchors the grade</li>
+                    <li data-zh="每項指標：原值、百分位、權重">Trace every score to its formula</li>
+                    <li data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Spot the top drivers and risks fast</li>
                   </ul>
                 </div></div>
               </div>
@@ -1445,7 +1448,7 @@
             <div class="content-card-meta-row">
               <span>2026-03-05</span>
             </div>
-            <h3 class="content-card-title" data-zh="TIS 與 Innovue 正式結盟，撐起 1.7 億件專利情報層。">TIS and Innovue formalize the alliance powering the 170M-patent intelligence layer.</h3>
+            <h3 class="content-card-title" data-zh="TIS 與 Innovue 正式結盟，撐起 1.7 億件專利情報層。">TIS and Innovue formalize the alliance behind the 170M-patent intelligence layer.</h3>
           </div>
         </a>
 
@@ -1490,33 +1493,13 @@
         <article class="about-pos">
           <p class="pos-num" data-zh="02 / 資料來源">02 / Source</p>
           <h3 data-zh="紮根於 1.7 億件專利。">Grounded in 170M patents.</h3>
-          <p data-zh="我們的分析骨幹是 Innovue 資料庫——全球第四大，不被爬取，任何標準 AI 工具都觸及不到。">Our analytical spine is Innovue's database — the 4th-largest in the world, not crawled and not reachable through any standard AI tool.</p>
+          <p><a href="https://www.innovue.ltd/" class="innovue-inline" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a><span data-zh="營運全球第四大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。">maintains the world's 4th-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool.</span></p>
         </article>
         <article class="about-pos">
           <p class="pos-num" data-zh="03 / 方法">03 / Method</p>
           <h3 data-zh="交付成果，而非工具。">Deliverables, not tools.</h3>
           <p data-zh="壓力之下泰然處之，依循證據逐步推進。客戶不必懂專利——那是我們的事。">Composed under pressure, methodical through evidence. Clients shouldn't need patent expertise — that's what we're for.</p>
         </article>
-      </div>
-
-      <!-- Innovue credit — relocated out of the post-hero slot per team note;
-           folds in as the closing attribution of the About section. Unwrapped
-           from its old .section--tight/.container chrome since it now lives
-           inside About's own .container. -->
-      <div class="about-innovue">
-        <div class="innovue-collab-card">
-          <div class="innovue-collab-card__attr">
-            <span class="innovue-collab-card__powered">Powered by</span>
-            <a href="https://www.innovue.ltd/" class="innovue-collab-card__logo" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-          </div>
-          <div class="innovue-collab-card__rule"></div>
-          <div class="innovue-collab-card__quote">
-            <p class="grad-text-silver-solid"
-               data-zh="Innovue 是一家智慧財產權公司，營運全球第四大的專利索引——一個專屬、持續更新的全球專利活動資料庫。">
-              Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -1623,7 +1606,6 @@
             <ul>
               <li><a href="/product/licensing/" data-zh="授權平台">Licensing Platform</a></li>
               <li><a href="/product/signal/" data-zh="Signal">Signal</a></li>
-              <li><a href="#products" data-zh="Verified License Badge">Verified License Badge</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -1650,7 +1632,6 @@
           <ul>
             <li><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></li>
             <li><a href="#" data-zh="台北 · 台灣">Taipei, Taiwan</a></li>
-            <li><a href="#">LinkedIn</a></li>
           </ul>
         </div>
       </div>

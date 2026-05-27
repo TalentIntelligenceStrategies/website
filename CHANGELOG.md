@@ -10,6 +10,28 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-27 14:12 +08:00** · Reframed the homepage Partner strip as "Exclusive patent access" — centered Urbanist eyebrow above a centered logo row (kept the prior 40×200 logo sizing).
+
+- **2026-05-27 14:03 +08:00** · Added per-product entry-flow docs (`product/{signal,licensing}/entry-flow.md`) documenting the marketing→product handoff, the staged "separate-now, SSO-ready" auth model, and the returning-user "Sign in" CTA gap.
+
+- **2026-05-27 13:53 +08:00** · Hero carousel: removed the Licensing/Signal backdrop figures (all three slides now use the positioning-style gradient + 32px grid, recolored warm/cool/silver); reordered slides to Positioning → Licensing → Signal.
+
+- **2026-05-27 13:33 +08:00** · Footer cleanup across all pages — removed the LinkedIn link (Contact column) and the Verified License Badge link (Products column).
+
+- **2026-05-27 13:23 +08:00** · Unified the four deliverable cards per pillar — homepage now matches the product pages' (benefit-led) headings, bodies, and icons (Licensing card-4 icon swapped to bar-chart); EN + symbols only, data-zh left for the Chinese pass.
+
+- **2026-05-27 13:06 +08:00** · Converted all how-it-works checklist bullets (homepage + both product pages) from raw specs to verb-led benefit phrasing (Stripe style); deliverable-card bodies pushed further into the cadence; data-zh untouched.
+
+- **2026-05-27 12:51 +08:00** · Voice rewrite (EN) across homepage + both product pages — Stripe-style confident, benefit-cascade cadence with TIS-compliant words; kept the lines already on-voice, lifted heroes/intros/stats/cards, scrubbed banned words ("platform"/"powering"/"unlock"). data-zh untouched.
+
+- **2026-05-27 12:18 +08:00** · Licensing pricing: added a 36-month term and flattened price to be industry-independent (duration only) — NT$9,990 / 9,490 / 8,990 / 7,990 per mo at 3 / 6 / 12 / 36, up to 20% off.
+
+- **2026-05-27 11:47 +08:00** · Corrected SABCD comparison framing across homepage + both product pages (EN only) — scoring/ranking now reads "against your industry pool" not the 170M database; retired stale ITRI for Innovue/iPIC/III/NYCU.
+
+- **2026-05-27 11:10 +0800** · About: folded the Innovue description (inline logo replacing the name) into the 02/Source card and removed the separate closing Innovue card.
+
+- **2026-05-27 10:48 +0800** · Partner strip: iPIC replaces ITRI, NYCU added as 4th mark (Innovue · iPIC · III · NYCU); light-mode desktop only.
+
 - **2026-05-27 10:21 +08:00** · Homepage reorder: moved the Innovue credit out of the post-hero slot and folded it into the About section as a closing attribution; restored the Partner strip (Innovue · ITRI · III) under the hero, with its dropped --partner-itri/--partner-iii tokens and .partner CSS brought back.
 
 - **2026-05-27 09:48 +08:00** · Made the desktop Products dropdown click open-only — clicking the trigger while the hover-opened panel is showing no longer toggles it shut (it now focuses the first card); close stays on outside-click / Esc / scroll.
