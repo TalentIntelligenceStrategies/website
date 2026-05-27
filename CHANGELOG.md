@@ -10,6 +10,10 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-27 15:50 +08:00** · Reframed the homepage Partner strip as a full-bleed hairline band — "Exclusive Patent Access" caption centered on the top rule, logos centered (kept the 40×200 sizing).
+
+- **2026-05-27 14:36 +08:00** · Added the Licensing lobby page (`product/licensing/lobby/`) — split-screen branded check-in (warm marketing panel + Sign up/Log in card) that gates entry into `licensing.tisglobalinc.com/start`; standalone (product-page CTAs unchanged), brand tokens, self-contained theme/lang/tab JS.
+
 - **2026-05-27 14:12 +08:00** · Reframed the homepage Partner strip as "Exclusive patent access" — centered Urbanist eyebrow above a centered logo row (kept the prior 40×200 logo sizing).
 
 - **2026-05-27 14:03 +08:00** · Added per-product entry-flow docs (`product/{signal,licensing}/entry-flow.md`) documenting the marketing→product handoff, the staged "separate-now, SSO-ready" auth model, and the returning-user "Sign in" CTA gap.
