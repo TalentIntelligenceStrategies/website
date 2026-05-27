@@ -544,35 +544,93 @@
         <div class="howitworks">
           <h3 data-zh="運作方式">How it works</h3>
           <div class="howitworks-grid">
-            <div class="howitworks-visual" aria-hidden="true">Process visualization coming soon</div>
+            <div class="howitworks-visual howitworks-visual--steps howitworks-visual--shots" data-pillar-howit="licensing" aria-hidden="true">
+              <div class="howitworks-step-panel howitworks-step-panel--shot is-active" data-step="pick" data-grad="1">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/01-pick-picker.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="ways" data-grad="2">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/02-ways-paths.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="activate" data-grad="3">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/03-activate-bundle.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="swap" data-grad="4">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/04-swap-actions.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="badge" data-grad="5">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/05-badge-license.png" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
             <div class="acc-list">
-              <div class="acc-item is-open">
+              <div class="acc-item is-open" data-step="pick">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="選擇司法管轄區 × 產業">Pick your jurisdiction × industry</span>
+                  <span class="acc-title" data-zh="選擇法域 × 產業 × 期間">Pick your jurisdiction × industry × term</span>
                   <span class="acc-mark" aria-hidden="true">−</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="為你客戶所在的市場選擇預構組合——美、歐、日、台、韓——涵蓋 PCB、半導體、顯示器、MedTech 等。">Choose a pre-built bundle for the markets your customers live in — US, EP, JP, TW, or KR — across PCB, semiconductors, displays, MedTech, and more.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="只為你真正需要的市場與期間付費。">Pay only for the markets and time you actually need.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="US · TW">US · TW</li>
+                    <li data-zh="3、6 或 12 個月期">3, 6, or 12-month terms</li>
+                    <li data-zh="30 件 SABCD 評等專利／組合">30 SABCD-graded patents per bundle</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="ways">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="訂閱">Subscribe</span>
+                  <span class="acc-title" data-zh="兩種挑 30 件的方法">Two ways to pick the 30</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="3 個月、1 年、或 3 年期。長期承諾享有折扣；全程皆為非獨家授權。">3-month, 1-year, or 3-year term. Longer commitments earn a discount. Non-exclusive throughout.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="15 秒內取得組合──或交付你的 FTO 報告，由平台繞過已釐清的部分。">A bundle in 15 seconds — or hand us your FTO and we'll route around it.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="Path A · System Recommendation（免費）">Path A · System Recommendation (free)</li>
+                    <li data-zh="Path B · FTO-Guided">Path B · FTO-Guided</li>
+                    <li data-zh="兩條路徑都附 30 件同級替換池">Both ship with a 30-deep same-tier swap pool</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="activate">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="啟用組合">Activate the bundle</span>
+                  <span class="acc-title" data-zh="相關組合建議">Relevant bundle suggested</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="30 件可立即生效的非獨家授權，於訂閱當週上線。來源為 ITRI、III 與大學夥伴——對等合作，並無階層。">30 active non-exclusive licenses, live the week you subscribe. Sourced from ITRI, III, and university partners — peers, not a hierarchy.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="15 秒內取得依市場策展的 30 件 SABCD 評等專利。">30 SABCD-graded patents, curated to your market in under 15 seconds.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="典型 5 S · 6 A · 9 B · 6 C · 4 D 分布">Typical split: 5 S · 6 A · 9 B · 6 C · 4 D</li>
+                    <li data-zh="來源：ITRI、III 及大學夥伴">Sourced from ITRI, III, and university partners</li>
+                    <li data-zh="訂閱當週生效">Active the week you subscribe</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="swap">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="展示徽章">Display the badge</span>
+                  <span class="acc-title" data-zh="自選替換──隨你決定">Swap patents — your call</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="一枚 Verified License Badge——與專利供應方共同署名，QR 連結至即時登記檔——供你的攤位、型錄、公開說明書與電郵簽名使用。兩秒內可驗證。">A Verified License Badge — co-branded with the IP supplier, QR-linked to a live registry — for your booth, catalog, prospectus, and email signature. Verifiable in two seconds.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="不喜歡某一件？可替換──無加價、無等審。">Don't love a pick? Swap it — no surcharge, no review delay.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="每組附 30 件同級替換池">30-deep same-tier swap pool per bundle</li>
+                    <li data-zh="期內可不限次替換">Unlimited swaps within term</li>
+                    <li data-zh="同級替換，組成 30 件不變">S replaces S, A replaces A — the 30 stays 30</li>
+                  </ul>
+                </div></div>
+              </div>
+              <div class="acc-item" data-step="badge">
+                <button type="button" class="acc-trigger">
+                  <span class="acc-title" data-zh="展示憑證──以及完整檔案">Display the credential — and the full file</span>
+                  <span class="acc-mark" aria-hidden="true">+</span>
+                </button>
+                <div class="acc-content"><div>
+                  <p data-zh="一處文件中心──展示、辯護、佐證授權所需的一切。">One Document Center — everything you need to display, defend, and prove the license.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="PNG + SVG 版本，即用即嵌">Credential in PNG + SVG, embed-ready</li>
+                    <li data-zh="PAdES 簽章的合約與授權證書">PAdES-signed contract + license certificate</li>
+                    <li data-zh="一條連結即可公開驗證">Public verifier in one link</li>
+                  </ul>
+                </div></div>
               </div>
             </div>
           </div>
@@ -1190,35 +1248,93 @@
         <div class="howitworks">
           <h3 data-zh="運作方式">How it works</h3>
           <div class="howitworks-grid">
-            <div class="howitworks-visual" aria-hidden="true">Process visualization coming soon</div>
+            <div class="howitworks-visual howitworks-visual--steps howitworks-visual--shots" data-pillar-howit="signal" aria-hidden="true">
+              <div class="howitworks-step-panel howitworks-step-panel--shot is-active" data-step="submit" data-grad="1">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/01-submit-form.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="pool" data-grad="2">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/02-pool-confirm.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="delivery" data-grad="3">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/03-delivery-pick.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="brief" data-grad="4">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/04-brief-report.png" alt="" loading="lazy" decoding="async">
+              </div>
+              <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="pro" data-grad="5">
+                <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/05-pro-report.png" alt="" loading="lazy" decoding="async">
+              </div>
+            </div>
             <div class="acc-list">
-              <div class="acc-item is-open">
+              <div class="acc-item is-open" data-step="submit">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="搜尋">Search</span>
+                  <span class="acc-title" data-zh="提交一個專利號">Submit a patent number</span>
                   <span class="acc-mark" aria-hidden="true">−</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="輸入專利號、公司名稱或技術描述。可上傳 PDF、CSV 或 Excel 批次處理——無需自有專利組合。">Patent number, company name, or technology description. Upload PDF, CSV, or Excel for batch processing — no patent portfolio required.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="Brief 30 分鐘內寄達──免分析師，免等一整週。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="USPTO · TW · EPO · WO">USPTO · TW · EPO · WO</li>
+                    <li data-zh="可平行 submit">Parallel submissions</li>
+                    <li data-zh="P95 寄達 ≤ 30 分鐘">P95 email delivery ≤ 30 min</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="pool">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="執行估值">Run a Valuation</span>
+                  <span class="acc-title" data-zh="比對到對的同儕池">Matched against the right peer pool</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="依據 Innovue 1.7 億件專利資料庫回傳 SABCD 評等。短報告 1 代幣；完整報告 8 代幣。">SABCD grades returned against Innovue's 170M-patent database. 1 token for a short report; 8 tokens for a full one.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="評分可信賴──校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。">Scores you can trust — graded against patents that actually compete in the same category.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="IPC 驅動的 12 產業池路由">IPC-driven routing across 12 industry pools</li>
+                    <li data-zh="Innovue 1.7 億件專利資料庫（全球第 4 大）">Innovue 170M-patent base · 4th largest globally</li>
+                    <li data-zh="池內樣本不足會於 Brief 上標示警示">Low-sample pools flagged on the Brief</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="delivery">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="檢視證據">Review the evidence</span>
+                  <span class="acc-title" data-zh="Brief 還是 Pro──你決定">Brief or Pro — your call</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="引用、家族數、司法管轄區覆蓋、請求項範圍。先理由再結論——每一級評等都對應到具體專利與具名相對方。">Citations, family counts, jurisdiction coverage, claim breadth. Reasons before conclusions — every grade attaches to specific patents and named counterparties.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。">One scoring engine, two depths — pay for what you need today, top up later.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="Brief · 15 點 · 30 分鐘郵件">Brief · 15 pts · 30-min email</li>
+                    <li data-zh="Pro · 30 點 · 即時渲染">Pro · 30 pts · instant render</li>
+                    <li data-zh="事後升級無加價">Upgrade anytime, no premium</li>
+                  </ul>
+                </div></div>
               </div>
-              <div class="acc-item">
+              <div class="acc-item" data-step="brief">
                 <button type="button" class="acc-trigger">
-                  <span class="acc-title" data-zh="匯出或儲存">Export or save</span>
+                  <span class="acc-title" data-zh="Brief 報告呈現什麼">What the Brief report shows you</span>
                   <span class="acc-mark" aria-hidden="true">+</span>
                 </button>
-                <div class="acc-content"><div><p data-zh="PDF 報告供投資備忘錄使用。將估值存入 Dashboard 以監控投資組合。">PDF report for the deal memo. Save Valuations to your dashboard for portfolio monitoring.</p></div></div>
+                <div class="acc-content"><div>
+                  <p data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="等級判定 + PSS 分數">Tier verdict + PSS score</li>
+                    <li data-zh="池內百分位 + 池內排名">Cohort percentile + rank in pool</li>
+                    <li data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Status · family · IPC · life · AI summary</li>
+                  </ul>
+                </div></div>
+              </div>
+              <div class="acc-item" data-step="pro">
+                <button type="button" class="acc-trigger">
+                  <span class="acc-title" data-zh="Pro 將 PSS 拆解成 50 項指標">Pro unpacks the PSS into 50 indicators</span>
+                  <span class="acc-mark" aria-hidden="true">+</span>
+                </button>
+                <div class="acc-content"><div>
+                  <p data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
+                  <ul class="howitworks-checks">
+                    <li data-zh="八大支柱 × 4–8 項指標 = 50 項">8 pillars × 4–8 indicators = 50 metrics</li>
+                    <li data-zh="每項指標：原值、百分位、權重">Each indicator: value, percentile, weight</li>
+                    <li data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Top 10 drivers + Top 5 sensitivities flagged</li>
+                  </ul>
+                </div></div>
               </div>
             </div>
           </div>

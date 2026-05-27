@@ -242,8 +242,16 @@
     pdTrigger.addEventListener('click', (e) => {
       e.stopPropagation();
       cancelTimers();
-      if (pdMenu.dataset.open === 'true') pdClose();
-      else pdOpen();
+      // Click only opens — it never closes. A click while the panel is already
+      // open (e.g. surfaced by hover) confirms intent and moves focus into the
+      // panel instead of toggling it shut. Close paths are outside-click / Esc /
+      // scroll / card-select, all wired below.
+      if (pdMenu.dataset.open === 'true') {
+        const current = pdMenu.querySelector('.product-card[aria-current="page"]') || pdCards[0];
+        if (current) current.focus();
+      } else {
+        pdOpen();
+      }
     });
 
     pdTrigger.addEventListener('keydown', (e) => {
