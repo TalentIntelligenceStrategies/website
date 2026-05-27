@@ -361,25 +361,17 @@
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Innovue collaboration card  —  components.md §Innovue collaboration ║
-       ║ card. Sits in the same .section--tight slot the partner strip used, ║
-       ║ preserving 32px symmetric block padding + the next-section          ║
-       ║ padding-block-start: 0 collapse rule.                               ║
+       ║ Partner strip  —  components.md §Partner strip. Restored under the   ║
+       ║ hero per team note. Innovue first (bound partner), ITRI + III follow ║
+       ║ as collaborators; equal height, monochrome → brand color on hover.   ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight" aria-label="Innovue partnership">
+  <section class="section section--tight" aria-label="Partners">
     <div class="container">
-      <div class="innovue-collab-card">
-        <div class="innovue-collab-card__attr">
-          <span class="innovue-collab-card__powered">Powered by</span>
-          <a href="https://www.innovue.ltd/" class="innovue-collab-card__logo" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-        <div class="innovue-collab-card__rule"></div>
-        <div class="innovue-collab-card__quote">
-          <p class="grad-text-silver-solid"
-             data-zh="Innovue 是一家智慧財產權公司，營運全球第四大的專利索引——一個專屬、持續更新的全球專利活動資料庫。">
-            Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity.
-          </p>
-        </div>
+      <div class="partner-strip">
+        <span class="partner-strip-label" data-zh="合作夥伴">Partners</span>
+        <a href="https://www.innovue.ltd/"                   class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+        <a href="https://www.itri.org.tw/english/index.aspx" class="partner partner--itri"    aria-label="ITRI — Industrial Technology Research Institute" target="_blank" rel="noopener noreferrer"></a>
+        <a href="https://www.iii.org.tw/en"                  class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
       </div>
     </div>
   </section>
@@ -1505,6 +1497,26 @@
           <h3 data-zh="交付成果，而非工具。">Deliverables, not tools.</h3>
           <p data-zh="壓力之下泰然處之，依循證據逐步推進。客戶不必懂專利——那是我們的事。">Composed under pressure, methodical through evidence. Clients shouldn't need patent expertise — that's what we're for.</p>
         </article>
+      </div>
+
+      <!-- Innovue credit — relocated out of the post-hero slot per team note;
+           folds in as the closing attribution of the About section. Unwrapped
+           from its old .section--tight/.container chrome since it now lives
+           inside About's own .container. -->
+      <div class="about-innovue">
+        <div class="innovue-collab-card">
+          <div class="innovue-collab-card__attr">
+            <span class="innovue-collab-card__powered">Powered by</span>
+            <a href="https://www.innovue.ltd/" class="innovue-collab-card__logo" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+          <div class="innovue-collab-card__rule"></div>
+          <div class="innovue-collab-card__quote">
+            <p class="grad-text-silver-solid"
+               data-zh="Innovue 是一家智慧財產權公司，營運全球第四大的專利索引——一個專屬、持續更新的全球專利活動資料庫。">
+              Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
