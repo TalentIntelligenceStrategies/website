@@ -2420,24 +2420,42 @@ main { padding-top: 64px; }
    monochrome at rest, returning to brand color on hover. Equal height (peers,
    not a hierarchy) per visual-guide.md §Collaborator Partners. Restored under
    the hero per team note; shares the §Innovue collaboration card container shell. */
+/* Full-bleed hairline band (was a rounded pill). The top/bottom rules ride the
+   full-width <section class="section--patent-band"> below — <main> carries no
+   inline padding, so the section spans the viewport without a 100vw breakout.
+   The strip is the centered label + logo row in the rail. */
 .partner-strip {
-  background: var(--surface-page);
-  border: 1px solid var(--border-primary);
-  border-radius: 16px;
-  padding: 40px 32px;
   display: flex; flex-direction: column; align-items: center;
   gap: 28px;
 }
-.partner-strip-label {
-  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  text-align: center;
+/* Exclusive patent access section: hairlines top + bottom, flush under the hero;
+   margin-block-end separates the bottom rule from the stats below. */
+.section--patent-band {
+  position: relative;
+  /* Above the hero's backdrop layers (z-index ≤ 5, which sit in the root
+     stacking context since .hero creates none) so the caption — which straddles
+     up onto the top rule into the hero's bottom edge — isn't painted over. */
+  z-index: 6;
+  border-block: 1px solid var(--border-primary);
+  padding-block: 42px;
+  margin-block-end: 48px;
 }
-/* Centered logo row below the eyebrow. */
+/* Sentence-case caption centered on the band's top rule. Positioned out of flow
+   (relative to the section) so the logo row keeps its centered spacing; the
+   surface-page background masks the hairline behind the text. */
+.partner-strip-label {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2px 16px;
+  background: var(--surface-page);
+  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
 .partner-logos {
   display: flex; align-items: center; justify-content: center;
   flex-wrap: wrap;
