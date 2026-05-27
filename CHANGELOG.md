@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-27 17:10 +08:00** · Reworked About + Inquiries: dropped both eyebrows, divider, and gradients; gave Inquiries a reversed full-bleed silver glow; added a Board of Directors roster (5 members) under the pillars with full-viewport fading hairlines.
+
 - **2026-05-27 15:50 +08:00** · Reframed the homepage Partner strip as a full-bleed hairline band — "Exclusive Patent Access" caption centered on the top rule, logos centered (kept the 40×200 sizing).
 
 - **2026-05-27 14:36 +08:00** · Added the Licensing lobby page (`product/licensing/lobby/`) — split-screen branded check-in (edge-less warm panel + Sign up/Log in forms, logo-only header) gating entry into `licensing.tisglobalinc.com/start`; standalone (product-page CTAs unchanged), brand tokens, fits one viewport.

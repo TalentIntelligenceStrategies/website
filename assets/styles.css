@@ -2910,47 +2910,17 @@ main { padding-top: 64px; }
 }
 
 /* ───────── About ───────── */
-/* Silver-faded background — same stops as .grad-bg-silver-faded but the
-   radial is anchored at center (50% 50%) so the glow halos the content
-   rather than fading down from the top. Hero glows from top; About halos
-   center; Contact (below) rises from bottom — three-way variation on
-   one gradient scheme.
-   Background + borders sit on the inner .container (1440px) so the wash
-   stays within the page's default view, matching #products framing. The
-   section's padding-block is shifted onto the container so the wash also
-   covers what would otherwise be exposed page-surface above/below. */
-.about { padding-block: 0; }
+/* Padding-block sits on the inner .container (1440px) so spacing matches
+   #products framing; the section itself stays on the page surface. */
+.about { padding-block: 0; overflow-x: clip; }
 .about > .container {
   padding-block: clamp(48px, 6vw, 80px);
-  background:
-    radial-gradient(ellipse 80% 90% at 50% 50%,
-      #DCE5EF 0%, #EAF0F7 40%, transparent 75%),
-    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
-  border-top: 1px solid var(--border-primary);
-  border-bottom: 1px solid var(--border-primary);
-}
-[data-theme="dark"] .about > .container {
-  background:
-    radial-gradient(ellipse 80% 90% at 50% 50%,
-      rgba(51, 65, 85, 0.45) 0%,
-      rgba(30, 41, 59, 0.25) 40%,
-      transparent 75%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 .about-head {
   margin-bottom: 56px;
 }
 @media (max-width: 880px) {
   .about-head { margin-bottom: 40px; }
-}
-.about-head .meta-eyebrow {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin: 0 0 16px;
 }
 .about-head h2 {
   font-size: clamp(28px, 3.4vw, 40px);
@@ -2996,26 +2966,113 @@ main { padding-top: 64px; }
   margin: 0;
 }
 
-/* ───────── Get in touch ───────── */
-/* Silver-faded background — radial anchored at bottom (50% 100%) so the
-   glow rises from below the form. Pairs with About (center halo) and
-   the hero (top fade) for a three-way variation on one gradient scheme.
-   Background + border sit on the inner .container (1440px) so the wash
-   stays within the page's default view, matching #products framing. */
-.contact > .container {
-  background:
-    radial-gradient(ellipse 80% 90% at 50% 100%,
-      #DCE5EF 0%, #EAF0F7 40%, transparent 75%),
-    linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 85%);
-  border-top: 1px solid var(--border-primary);
+/* ───────── About — board roster ─────────
+   Five members on one line, bracketed by full-width top + bottom hairlines
+   with a centered title straddling the top rule (same treatment as the
+   Exclusive Patent Access band). Sits below the positioning grid. */
+.board-roster {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-top: 72px;
+  padding-block: 48px;
 }
-[data-theme="dark"] .contact > .container {
+/* Top + bottom hairlines break out of the container to span the full viewport
+   and fade to transparent at the natural edges — same behaviour as the
+   Exclusive Patent Access band. .about clips the 100vw breakout (below). */
+.board-roster::before,
+.board-roster::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--border-primary) 12%,
+    var(--border-primary) 88%,
+    transparent 100%);
+}
+.board-roster::before { top: 0; }
+.board-roster::after  { bottom: 0; }
+/* Title masks the hairline behind it via the page-surface background. */
+.board-roster__title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2px 16px;
+  background: var(--surface-page);
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-tertiary);
+}
+.board-member { text-align: center; }
+.board-photo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 110px;
+  aspect-ratio: 1;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  border: 1px solid var(--border-primary);
+  overflow: hidden;
   background:
-    radial-gradient(ellipse 80% 90% at 50% 100%,
-      rgba(51, 65, 85, 0.45) 0%,
-      rgba(30, 41, 59, 0.25) 40%,
-      transparent 75%),
-    linear-gradient(180deg, var(--surface-page) 0%, var(--surface-secondary) 85%);
+    radial-gradient(ellipse 80% 80% at 50% 30%, #EAF0F7 0%, #DCE5EF 70%),
+    linear-gradient(180deg, #F1F5F9, #E2E8F0);
+  color: #94A3B8;
+  font-weight: 700;
+}
+.board-photo span { font-size: 1.4rem; letter-spacing: 0.02em; }
+.board-name {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.board-role {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+}
+[data-theme="dark"] .board-photo {
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 30%, rgba(51,65,85,0.55) 0%, rgba(30,41,59,0.40) 70%),
+    linear-gradient(180deg, var(--surface-tertiary), var(--surface-secondary));
+  color: var(--text-tertiary);
+}
+@media (max-width: 900px) {
+  .board-roster { grid-template-columns: repeat(3, 1fr); gap: 36px 20px; }
+}
+@media (max-width: 560px) {
+  .board-roster { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ───────── Get in touch ───────── */
+/* Reversed silver hero backdrop — same stops as .hero-silver but the radial
+   origin is flipped to the bottom (50% 100%) and the linear runs upward, so
+   the glow pours up from the bottom of the section and fades to the page
+   surface before the top edge (the About/Inquiries line). No ruled grid.
+   Full-bleed on the .contact section element (like .hero) so it runs
+   edge-to-edge and scales with the viewport; stops at the section bottom. */
+.contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
+    linear-gradient(0deg, #F1F5F9 0%, #FFFFFF 85%);
+}
+[data-theme="dark"] .contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
+    linear-gradient(0deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 .contact-grid {
   display: grid;
@@ -3025,15 +3082,6 @@ main { padding-top: 64px; }
 }
 @media (max-width: 880px) {
   .contact-grid { grid-template-columns: 1fr; gap: 56px; padding-block: 64px; }
-}
-.contact-left .meta-eyebrow {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin: 0 0 24px;
 }
 .contact-left h2 {
   font-size: clamp(40px, 5vw, 64px);
@@ -3097,7 +3145,7 @@ main { padding-top: 64px; }
 .field textarea { resize: none; }
 .contact-actions {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
   padding-top: 8px;
