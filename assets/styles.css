@@ -2928,8 +2928,10 @@ main { padding-top: 64px; }
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0;
-  max-width: 26ch;
 }
+/* Two-line stack: each clause is its own block so the break holds at the comma
+   and survives the textContent-based language switch (a raw <br> would not). */
+.about-head h2 span { display: block; }
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

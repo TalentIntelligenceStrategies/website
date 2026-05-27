@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-27 17:25 +08:00** · Rewrote the About headline to a two-line stack — "An IP intelligence consultancy, / turning the patent landscape into market position." (split into per-line spans so the break survives language toggles).
+
 - **2026-05-27 17:10 +08:00** · Reworked About + Inquiries: dropped both eyebrows, divider, and gradients; gave Inquiries a reversed full-bleed silver glow; added a Board of Directors roster (5 members) under the pillars with full-viewport fading hairlines.
 
 - **2026-05-27 15:50 +08:00** · Reframed the homepage Partner strip as a full-bleed hairline band — "Exclusive Patent Access" caption centered on the top rule, logos centered (kept the 40×200 sizing).
