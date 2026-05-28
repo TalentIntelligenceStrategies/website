@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-28 16:29 +08:00** · Retargeted product-page signup CTAs from `*.tisglobalinc.com/start` to local `/product/<x>/lobby/` (licensing × 3, signal × 5) so the curious-to-signup flow stays in-domain.
+
 - **2026-05-28 14:01 +08:00** · Added Signal lobby at `/product/signal/lobby/` — mirrors the Licensing lobby structurally (stripped topnav, scroll ticker, 1:1 split-screen, partner row, 100vh lock), swaps to cool blue gradient + `--score-b-vivid` bullet accent + SABCD/credits/Brief copy + Signal-specific ticker items + `signal.tisglobalinc.com/start` upstream link.
 
 - **2026-05-28 13:28 +08:00** · Rebuilt the Licensing lobby into a single-viewport surface — stripped topnav to logo + language toggle, replaced the static banner with a continuous-scroll ticker (ISO-dated updates, no dismiss), inlined the Exclusive Patent Access logos (2×2 color-at-rest) in the marketing column, locked 1:1 columns with 420px top-anchored centered blocks, and pinned the page to 100vh with no scroll.
