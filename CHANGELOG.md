@@ -10,6 +10,18 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-28 12:47 +08:00** · Tightened the Patent-band CTA's surrounding gaps to 64px each side on both product pages (Pricing's `padding-bottom: 32px` re-applied, FAQ's `padding-top` overridden to 32) — matches the upper-page rhythm so the credibility band reads as part of the product story rather than floating in a chasm. FAQ's bottom stays default 160 so the Contact form keeps its breathing room.
+
+- **2026-05-28 12:23 +08:00** · Repainted each product page's Contact section bloom in the matching pillar palette — licensing → `.hero-warm` stops, signal → `.hero-signal` cool stops — keeping the bottom-origin / upward-linear axis flip from styles.css §Get in touch. Mirrors how the homepage uses identical silver stops between its hero and contact, just inverted.
+
+- **2026-05-28 12:15 +08:00** · Moved the Exclusive Patent Access + paired CTA band above the FAQ on both product pages — new order is Pricing → Patent-band CTA → FAQ → Contact form, so credibility lands before objections rather than after.
+
+- **2026-05-28 12:08 +08:00** · Tightened both product pages' Exclusive Patent Access CTA band into a single horizontal row (headline · 4 color logos · button) at ≥1100px that stacks to 3 rows below; dropped the top-rule "Exclusive Patent Access" caption, switched logos to color-at-rest via `.partner-strip--color`, scaled logos to 180×36 / 40px equidistant gaps (200×40 / 48px in the stacked fallback), tightened outer section gaps to 20px so logos sit closer to the headline + button, and broke each headline into per-line spans — licensing "Find your position on patents / from established institutions", signal "Benchmark against a pool, / drawn from reputable institutions".
+
+- **2026-05-28 11:58 +08:00** · Replaced the themed `.cta-banner` on both product pages with an Exclusive Patent Access hairline band (Innovue · iPIC · III · NYCU) paired with a product-specific CTA — licensing "Stake your position…" + Build your bundle; signal "Benchmark against a pool…" + Get your first Brief. Kept `id="signup"` so the announcement-banner link still resolves.
+
+- **2026-05-28 11:46 +08:00** · Added announcement banner, recent-updates hub, and Exclusive Patent Access partner strip (color-at-rest variant) to the Licensing lobby; swapped the floating logo for an inline header row.
+
 - **2026-05-28 11:41 +08:00** · Aligned both product pages with the homepage layout — dropped the 1080px container override (now inherits the shared 1440/32/20 frame), swapped each hero for the homepage `.hero` chrome with per-pillar gradient (licensing → warm, signal → cool), and appended a local `#contact` form section below `#signup` so CTAs scroll in-page instead of jumping back home.
 
 - **2026-05-28 11:16 +08:00** · Added §Announcement banner across homepage and both product pages — solid `surface-inverse` bar, dead-center message + CTA, close absolute-right, per-session dismiss via `data-announce-id`; page-specific copy (homepage → bundles, licensing → pricing, signal → 50-credits trial).

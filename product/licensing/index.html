@@ -1465,6 +1465,10 @@ section[aria-label="Licensing hero"] { padding-bottom: 32px; }
 section[aria-label="Licensing deliverables"] { padding-top: 32px; padding-bottom: 32px; }
 section[aria-label="How Licensing works"] { padding-top: 32px; padding-bottom: 32px; }
 section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
+/* FAQ top pulled to 32 so the Patent-band CTA sits with 64px gap on each
+   side (matches the upper-page rhythm). FAQ bottom stays default 160 so the
+   Contact form still gets generous breath above it. */
+section[aria-labelledby="lic-faq-heading"] { padding-top: 32px; }
 
 /* Copy max-width — 810px (75% of 1080) for body paragraphs. */
 .pillar-hero-copy p,
@@ -1669,26 +1673,106 @@ a, button,
   .section--page-hero .pillar-hero-shot .frame-wrap { max-width: 688px; }
 }
 
-/* CTA banner — strip solid background so rails show through.
-   padding-block tightened from the 160px section-rhythm default down
-   to 104px (−33%) so the bottom CTA reads tighter against the footer
-   without affecting other sections. */
-.cta-banner {
-  background: transparent;
-  border-top: 0;
-  padding-block: 104px;
+/* Exclusive Patent Access + paired CTA — full-bleed hairline band that
+   doubles as the final intra-page CTA before the Contact form. One-line
+   horizontal layout (headline · 4 logos · button) at ≥1100px, stacks to
+   3 rows below. Color-at-rest logos via .partner-strip--color (same
+   modifier the lobby uses); the "Exclusive Patent Access" caption is
+   intentionally dropped — the headline carries the meaning. */
+.section--patent-band.patent-band--cta {
+  padding-block: 32px;
+  margin-block-end: 0;
+  border-block: 0;
 }
-/* Zero the .page-hero-actions 64px bottom margin (inherited from styles.css
-   §page-hero-actions, written for the hero at top-of-page where buttons sit
-   above more content). At the bottom-of-page CTA the buttons are the last
-   thing in the section, so that 64px makes content sit ~32px above the
-   gradient's vertical midline. Scoped to .cta-banner only — the hero keeps
-   its 64px. */
-.cta-banner .page-hero-actions { margin-bottom: 0; }
-/* Keep "From subscription to active defense." on one line. styles.css
-   §cta-banner--themed h2 sets max-width: 24ch, which forces a wrap on
-   this 36-char headline. Scoped to the licensing CTA heading only. */
-#lic-cta-heading { max-width: none; }
+.section--patent-band.patent-band--cta .partner-strip {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.partner-cta-heading {
+  margin: 0;
+  flex: 0 1 auto;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--text-primary);
+  text-align: left;
+}
+/* Per-line spans force the visual break and survive the language toggle —
+   same pattern as the homepage About headline. */
+.partner-cta-heading span { display: block; }
+.section--patent-band.patent-band--cta .partner-logos {
+  flex: 0 0 auto;
+  gap: 40px;
+}
+.section--patent-band.patent-band--cta .partner {
+  height: 36px;
+  width: 180px;
+}
+.section--patent-band.patent-band--cta .partner-cta-btn {
+  flex: 0 0 auto;
+}
+/* Color-at-rest reinforcement — match .partner-strip--color from the lobby:
+   drop the grayscale filter and opacity dim entirely, no hover transition. */
+.partner-strip--color .partner {
+  filter: none;
+  opacity: 1;
+  transition: none;
+}
+.partner-strip--color .partner:hover {
+  filter: none;
+  opacity: 1;
+}
+.partner-strip--color .partner--innovue {
+  background-image: var(--partner-innovue-color);
+}
+[data-theme="dark"] .partner-strip--color .partner {
+  filter: none;
+  opacity: 1;
+}
+[data-theme="dark"] .partner-strip--color .partner--innovue {
+  filter: none;
+  opacity: 1;
+}
+/* Fall back to a centered 3-row stack below 1100px (text / logos / button) —
+   logos and headline scale back up to the section's standard size. */
+@media (max-width: 1100px) {
+  .section--patent-band.patent-band--cta .partner-strip {
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .partner-cta-heading {
+    text-align: center;
+    max-width: 540px;
+  }
+  .section--patent-band.patent-band--cta .partner-logos {
+    gap: 48px;
+  }
+  .section--patent-band.patent-band--cta .partner {
+    height: 40px;
+    width: 200px;
+  }
+}
+
+/* Contact section — repaint the silver bloom in the Licensing pillar's warm
+   palette. Mirrors styles.css §Get in touch: same axis flip (radial origin
+   50% 100% + linear 0deg, bloom pours up from the section bottom) but with
+   .hero-warm's exact stops in place of the silver wash. Bookends the page
+   with the same gradient family as the hero. */
+.contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, #FFEAD0 0%, #FFF4E6 35%, transparent 70%),
+    linear-gradient(0deg, #FFF7EE 0%, #FFFFFF 85%);
+}
+[data-theme="dark"] .contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, rgba(120,74,15,0.42) 0%, rgba(80,50,10,0.26) 35%, transparent 70%),
+    linear-gradient(0deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+}
 
 /* ============================================================
    Deliverable cards — Stripe-flat treatment (paired with signal).
@@ -2611,6 +2695,28 @@ a, button,
     </div>
   </section>
 
+  <!-- ─── 8. Exclusive Patent Access + paired CTA — full-bleed hairline band
+       doubles as the final intra-page CTA. Replaces the prior .cta-banner so
+       the credibility (Innovue · iPIC · III · NYCU) lands paired with the
+       trial action, then flows into the Contact form. -->
+  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="lic-cta-heading">
+    <div class="container">
+      <div class="partner-strip partner-strip--color">
+        <h2 id="lic-cta-heading" class="partner-cta-heading">
+          <span data-zh="從這些機構所授權的">Find your position on patents</span>
+          <span data-zh="專利中，找到你的位置。">from established institutions</span>
+        </h2>
+        <div class="partner-logos">
+          <a href="https://www.innovue.ltd/" class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg partner-cta-btn" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── 4. FAQ (moved up under Pricing) ─── -->
   <section class="section" aria-labelledby="lic-faq-heading">
     <div class="container">
@@ -2677,20 +2783,6 @@ a, button,
   <!-- Use Case + Who-this-works-for + Two artifacts moved to
        brand/archive/previews/product-pages-deferred-sections.html
        on 2026-05-22. -->
-
-  <!-- ─── 8. CTA banner (themed) ─── -->
-  <section class="section cta-banner cta-banner--themed" id="signup" aria-labelledby="lic-cta-heading">
-    <div class="container">
-      <header class="section-head section-head--centered">
-        <h2 id="lic-cta-heading" data-zh="從訂閱到主動防禦。">From subscription to active position.</h2>
-        <p data-zh="選法域、產業、期間。15 分鐘填完。AI 配對 24 小時。徽章 72 小時內生效。">Pick your jurisdiction, industry, and term. Fifteen minutes to fill out. AI matches in 24 hours. Badge active within 72 hours.</p>
-      </header>
-      <div class="page-hero-actions">
-        <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
-        <a href="#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
-      </div>
-    </div>
-  </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Get in touch  —  components.md §Input (underline variant)           ║

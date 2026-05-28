@@ -845,7 +845,11 @@ body,
 section[aria-label="Signal hero"] { padding-bottom: 32px; }
 section[aria-label="Signal deliverables"] { padding-top: 32px; padding-bottom: 32px; }
 section[aria-label="How Signal works"] { padding-top: 32px; padding-bottom: 32px; }
-section#pricing.section--alt { padding-top: 32px; }
+section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
+/* FAQ top pulled to 32 so the Patent-band CTA sits with 64px gap on each
+   side (matches the upper-page rhythm). FAQ bottom stays default 160 so the
+   Contact form still gets generous breath above it. */
+section[aria-labelledby="signal-faq-heading"] { padding-top: 32px; }
 
 /* Copy max-width — Stripe constrains paragraph body text to 810px
    (75% of 1080 layout). Applied to hero p + section paragraphs so
@@ -1058,26 +1062,106 @@ a, button,
    gradient washes (they're decorative atop body bg, not solid).
    ============================================================ */
 
-/* CTA banner — drop the solid --surface-secondary background so body's
-   off-white tint + dotted rails show through. The .cta-banner--themed
-   ::before radial gradient still applies, painting cool color washes
-   on top of the visible body. Also drop the heavy border-top which
-   reads as a hard section break against the new continuous rails.
-   padding-block tightened from the 160px section-rhythm default down
-   to 104px (−33%) so the bottom CTA reads tighter against the footer
-   without affecting other sections. */
-.cta-banner {
-  background: transparent;
-  border-top: 0;
-  padding-block: 104px;
+/* Exclusive Patent Access + paired CTA — full-bleed hairline band that
+   doubles as the final intra-page CTA before the Contact form. One-line
+   horizontal layout (headline · 4 logos · button) at ≥1100px, stacks to
+   3 rows below. Color-at-rest logos via .partner-strip--color (same
+   modifier the lobby uses); the "Exclusive Patent Access" caption is
+   intentionally dropped — the headline carries the meaning. */
+.section--patent-band.patent-band--cta {
+  padding-block: 32px;
+  margin-block-end: 0;
+  border-block: 0;
 }
-/* Zero the .page-hero-actions 64px bottom margin (inherited from styles.css
-   §page-hero-actions, written for the hero at top-of-page where buttons sit
-   above more content). At the bottom-of-page CTA the buttons are the last
-   thing in the section, so that 64px makes content sit ~32px above the
-   gradient's vertical midline. Scoped to .cta-banner only — the hero keeps
-   its 64px. */
-.cta-banner .page-hero-actions { margin-bottom: 0; }
+.section--patent-band.patent-band--cta .partner-strip {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.partner-cta-heading {
+  margin: 0;
+  flex: 0 1 auto;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--text-primary);
+  text-align: left;
+}
+/* Per-line spans force the visual break and survive the language toggle —
+   same pattern as the homepage About headline. */
+.partner-cta-heading span { display: block; }
+.section--patent-band.patent-band--cta .partner-logos {
+  flex: 0 0 auto;
+  gap: 40px;
+}
+.section--patent-band.patent-band--cta .partner {
+  height: 36px;
+  width: 180px;
+}
+.section--patent-band.patent-band--cta .partner-cta-btn {
+  flex: 0 0 auto;
+}
+/* Color-at-rest reinforcement — match .partner-strip--color from the lobby:
+   drop the grayscale filter and opacity dim entirely, no hover transition. */
+.partner-strip--color .partner {
+  filter: none;
+  opacity: 1;
+  transition: none;
+}
+.partner-strip--color .partner:hover {
+  filter: none;
+  opacity: 1;
+}
+.partner-strip--color .partner--innovue {
+  background-image: var(--partner-innovue-color);
+}
+[data-theme="dark"] .partner-strip--color .partner {
+  filter: none;
+  opacity: 1;
+}
+[data-theme="dark"] .partner-strip--color .partner--innovue {
+  filter: none;
+  opacity: 1;
+}
+/* Fall back to a centered 3-row stack below 1100px (text / logos / button) —
+   logos and headline scale back up to the section's standard size. */
+@media (max-width: 1100px) {
+  .section--patent-band.patent-band--cta .partner-strip {
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .partner-cta-heading {
+    text-align: center;
+    max-width: 540px;
+  }
+  .section--patent-band.patent-band--cta .partner-logos {
+    gap: 48px;
+  }
+  .section--patent-band.patent-band--cta .partner {
+    height: 40px;
+    width: 200px;
+  }
+}
+
+/* Contact section — repaint the silver bloom in the Signal pillar's cool
+   palette. Mirrors styles.css §Get in touch: same axis flip (radial origin
+   50% 100% + linear 0deg, bloom pours up from the section bottom) but with
+   .hero-signal's exact stops in place of the silver wash. Bookends the page
+   with the same gradient family as the hero. */
+.contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, #CFE9FB 0%, #E6F4FF 35%, transparent 70%),
+    linear-gradient(0deg, #F2F9FF 0%, #FFFFFF 85%);
+}
+[data-theme="dark"] .contact {
+  background:
+    radial-gradient(ellipse 90% 100% at 50% 100%, rgba(14,165,233,0.34) 0%, rgba(14,116,180,0.20) 35%, transparent 70%),
+    linear-gradient(0deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+}
 
 /* ============================================================
    Deliverable cards — Stripe-flat treatment.
@@ -1967,6 +2051,28 @@ a, button,
     </div>
   </section>
 
+  <!-- ─── 8. Exclusive Patent Access + paired CTA — full-bleed hairline band
+       doubles as the final intra-page CTA. Replaces the prior .cta-banner so
+       the credibility (Innovue · iPIC · III · NYCU) lands paired with the
+       trial action, then flows into the Contact form. -->
+  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="signal-cta-heading">
+    <div class="container">
+      <div class="partner-strip partner-strip--color">
+        <h2 id="signal-cta-heading" class="partner-cta-heading">
+          <span data-zh="對照同儕池來評等，">Benchmark against a pool,</span>
+          <span data-zh="池由可信機構策展。">drawn from reputable institutions</span>
+        </h2>
+        <div class="partner-logos">
+          <a href="https://www.innovue.ltd/" class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg partner-cta-btn" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ─── 4. FAQ (moved up under Pricing) ─── -->
   <section class="section" aria-labelledby="signal-faq-heading">
     <div class="container">
@@ -2033,20 +2139,6 @@ a, button,
   <!-- Use Case + Who-this-works-for moved to
        brand/archive/previews/product-pages-deferred-sections.html
        on 2026-05-22. -->
-
-  <!-- ─── 8. CTA banner (themed) ─── -->
-  <section class="section cta-banner cta-banner--themed" id="signup" aria-labelledby="signal-cta-heading">
-    <div class="container">
-      <header class="section-head section-head--centered">
-        <h2 id="signal-cta-heading" data-zh="先試一筆。50 點免費。">Try one for free. 50 credits on us.</h2>
-        <p data-zh="先期 VC 試行登記：2026-07 至 2026-12。聯絡業務領取 50 點——約 3 份 Brief 或 1 份 Pro + 1 份 Brief。">First-batch VC pilot, enrollment open 2026-07 through 2026-12. Talk to sales for your 50 starter credits — roughly 3 Briefs or 1 Pro + 1 Brief.</p>
-      </header>
-      <div class="page-hero-actions">
-        <a href="https://signal.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
-        <a href="#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
-      </div>
-    </div>
-  </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Get in touch  —  components.md §Input (underline variant)           ║
