@@ -39,13 +39,23 @@
    auth card (right). Atoms (.btn, .field) come from styles.css;
    only the warm pour + split-screen layout live here.
    ============================================================ */
-body { display: flex; flex-direction: column; min-height: 100vh; }
-/* Override the global `main { padding-top: 64px }` (was for the fixed topnav).
-   No global topnav on this lobby surface — ticker is the topmost element. */
-main#main { padding-top: 0; }
+/* Lobby is locked to one viewport — no scrolling. Anything past the bottom
+   edge is clipped. The fixed topnav escapes `overflow: hidden` via its
+   position: fixed, so it's unaffected. */
+html, body { height: 100%; }
+body {
+  display: flex; flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
 
-/* main owns the warm pour + blueprint grid so the lobby reads against the
-   gradient, matching the homepage hero aesthetic. */
+/* The stripped lobby topnav has only the lang toggle — no theme/search/CTA
+   cluster to divide from — so suppress the global controls hairline. */
+.topnav-controls::before { display: none; }
+
+/* main owns the warm pour + blueprint grid so the fixed topnav (translucent
+   blur) reads against the gradient, matching the homepage hero aesthetic.
+   The global `main { padding-top: 64px }` (styles.css) clears the fixed bar. */
 main#main {
   position: relative;
   flex: 1 1 auto;
@@ -74,18 +84,6 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
     repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 32px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 32px);
 }
-
-/* Minimal lobby header — sits below the ticker, above the split-screen.
-   Logo on the left links back to /; language toggle on the right. */
-.lobby-header {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px clamp(24px, 4vw, 56px) 0;
-}
-.lobby-header .topnav-logo-link { display: flex; align-items: center; }
 
 /* Lobby split-screen — two equal panels filling the remaining viewport.
    Each column centers a fixed-width content block (~420px) both vertically
@@ -284,6 +282,38 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 </head>
 <body>
 
+<!-- ╔═════════════════════════════════════════════════════════════════════╗
+     ║ Top nav  —  same .topnav chrome as the homepage (fixed 64px,        ║
+     ║ translucent, .container max-width centering for the logo), but      ║
+     ║ stripped to just the logo (left) + language toggle (right).         ║
+     ║ Lobby is a conversion surface — no Products / Reports / Press /     ║
+     ║ About / Contact / theme / search / Contact-sales / mobile drawer.   ║
+     ╚═════════════════════════════════════════════════════════════════════╝ -->
+<header class="topnav" role="banner">
+  <div class="container topnav-inner">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+      <span class="topnav-logo" aria-hidden="true"></span>
+    </a>
+
+    <span class="topnav-spacer"></span>
+
+    <div class="topnav-controls">
+      <div class="lang-wrap" id="lang-wrap">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
 <main id="main">
 
@@ -432,13 +462,62 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
   </div>
 </footer>
 
-<script src="/assets/site.js"></script>
 <script>
-  // Lobby-specific behaviors (password show/hide + auth-panel switch). All
-  // site-wide chrome (theme toggle, language switcher, dropdowns, mobile
-  // drawer, search modal, announce dismiss, i18n) is handled by site.js.
+  // Self-contained — no site.js. The full marketing site.js has un-guarded
+  // references to mobile-drawer + search-modal which we've stripped from this
+  // surface, so we inline only what the lobby actually needs: theme tracking
+  // for system mode, language toggle + i18n swap, password show/hide, and
+  // auth-panel switching.
   (() => {
-    // Password show / hide
+    const root = document.documentElement;
+
+    // ── Theme — live-track OS preference while in System mode.
+    //   (Theme is set pre-paint in <head>; this just keeps it synced.)
+    const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+    prefersDark.addEventListener('change', () => {
+      if ((localStorage.getItem('tis-theme') || 'system') === 'system') {
+        root.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
+      }
+    });
+
+    // ── i18n — capture EN copy, then swap to ZH if the user previously chose it.
+    const i18nEls = document.querySelectorAll('[data-zh]');
+    i18nEls.forEach(el => { el.dataset.en = el.textContent.trim(); });
+    const swapText = (lang) => i18nEls.forEach(el => {
+      el.textContent = lang === 'zh' ? el.dataset.zh : el.dataset.en;
+    });
+
+    // ── Language switcher (EN / 中文)
+    const langWrap = document.getElementById('lang-wrap');
+    const langTrigger = document.getElementById('lang-trigger');
+    const langButtons = langWrap.querySelectorAll('[data-lang-set]');
+
+    const applyLang = (lang) => {
+      root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+      langButtons.forEach(b => b.setAttribute('aria-checked', String(b.dataset.langSet === lang)));
+      swapText(lang);
+      localStorage.setItem('tis-lang', lang);
+    };
+    applyLang(localStorage.getItem('tis-lang') || 'en');
+
+    const closeLangMenu = () => {
+      langWrap.dataset.open = 'false';
+      langTrigger.setAttribute('aria-expanded', 'false');
+    };
+    langTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = langWrap.dataset.open === 'true';
+      if (open) closeLangMenu();
+      else { langWrap.dataset.open = 'true'; langTrigger.setAttribute('aria-expanded', 'true'); }
+    });
+    langButtons.forEach(b => b.addEventListener('click', () => {
+      applyLang(b.dataset.langSet);
+      closeLangMenu();
+    }));
+    document.addEventListener('click', closeLangMenu);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
+
+    // ── Password show / hide
     const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
     const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c7 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.68"/><path d="M6.06 6.06A13 13 0 0 0 2 11s3 7 10 7a9.1 9.1 0 0 0 5-1.27"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M2 2l20 20"/></svg>';
     document.querySelectorAll('.field-eye').forEach(btn => {
@@ -452,7 +531,7 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
       });
     });
 
-    // Switch between Sign up / Log in panels (via the in-form cross-links)
+    // ── Switch between Sign up / Log in panels (via the in-form cross-links)
     const panels = { signup: document.getElementById('panel-signup'), login: document.getElementById('panel-login') };
     const activate = (name) => {
       Object.entries(panels).forEach(([k, el]) => { el.hidden = k !== name; });
