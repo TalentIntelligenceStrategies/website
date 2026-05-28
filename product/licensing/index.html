@@ -1415,18 +1415,8 @@ body {
   background-color: var(--surface-page);
 }
 
-/* Container 1440 → 1080 for product-page body sections. Topnav + footer
-   restored to the homepage's 1440 / 32px frame so the chrome matches. */
-.container { max-width: 1080px; }
-.container:not(.topnav-inner) { padding-inline: 16px; }
-@media (max-width: 1140px) {
-  .container:not(.topnav-inner) { padding-inline: 12px; }
-}
-.topnav-inner,
-.footer .container { max-width: 1440px; padding-inline: 32px; }
-@media (max-width: 768px) {
-  .footer .container { padding-inline: 20px; }
-}
+/* Container inherits homepage spec (max-width 1440 / padding-inline 32 → 20 @768)
+   so the marketing site reads as one continuous layout across pages. */
 
 /* ============================================================
    STRIPE DESIGN TOKENS — system layer (spacing, motion, card scale).
@@ -1979,10 +1969,10 @@ a, button,
 .howitworks .howit-rail {
   position: relative;
   z-index: 2;
-  margin: 0 calc(-16px - max(0px, 50vw - 540px)) 0 -16px;
+  margin: 0 calc(-32px - max(0px, 50vw - 720px)) 0 -32px;
   padding: 8px 0 40px 0;
 }
-@media (max-width: 1140px) {
+@media (max-width: 1440px) {
   .howitworks .howit-rail {
     margin: 0;
     padding: 8px 0 40px 0;
@@ -2033,7 +2023,9 @@ a, button,
 <a href="#main" class="skip-link">Skip to content</a>
 
 <!-- ╔═════════════════════════════════════════════════════════════════════╗
-     ║ Top nav — duplicated from homepage; nav anchors point to /#...     ║
+     ║ Top nav — duplicated from homepage. Reports/Press/About anchor to  ║
+     ║ homepage (/#...); Contact anchors locally (#contact) so the CTA    ║
+     ║ scrolls to the in-page form instead of jumping back to home.       ║
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
@@ -2065,7 +2057,7 @@ a, button,
       <a href="/#reports"  class="topnav-link" data-zh="報告">Reports</a>
       <a href="/#press"    class="topnav-link" data-zh="新聞">Press</a>
       <a href="/#about"    class="topnav-link" data-zh="關於">About</a>
-      <a href="/#contact"  class="topnav-link" data-zh="聯絡">Contact</a>
+      <a href="#contact"  class="topnav-link" data-zh="聯絡">Contact</a>
     </nav>
 
     <div class="topnav-controls">
@@ -2113,7 +2105,7 @@ a, button,
         </svg>
       </button>
 
-      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
@@ -2144,10 +2136,10 @@ a, button,
     <a href="/#reports"  data-zh="報告">Reports</a>
     <a href="/#press"    data-zh="新聞">Press</a>
     <a href="/#about"    data-zh="關於">About</a>
-    <a href="/#contact"  data-zh="聯絡">Contact</a>
+    <a href="#contact"  data-zh="聯絡">Contact</a>
   </nav>
   <div class="mobile-auth">
-    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <a href="#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>
 
@@ -2184,7 +2176,7 @@ a, button,
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/#contact" class="search-link" data-zh="聯絡">
+    <a href="#contact" class="search-link" data-zh="聯絡">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -2271,37 +2263,25 @@ a, button,
   </div>
 
   <!-- ─── 1. Hero (Stripe 2-col — text left + product visual right) ─── -->
-  <section class="section section--page-hero" aria-label="Licensing hero">
-    <div class="container">
+  <!-- Hero — homepage chrome (gradient backdrop + 32px grid + .pillar layout),
+       single-slide, warm gradient for the Licensing pillar. -->
+  <section class="hero" aria-label="Licensing hero" data-active-pillar="licensing">
+    <div class="hero-warm" aria-hidden="true"></div>
+    <div class="hero-silver" aria-hidden="true"></div>
+    <div class="hero-signal" aria-hidden="true"></div>
 
-      <div class="pillar-hero">
-        <div class="pillar-hero-copy">
-          <h1 class="page-hero-title">
-            <span data-zh="30 件專利防護組合。">30-patent shield.</span> <em data-zh="當週上線。">Active this week.</em>
-          </h1>
-          <p data-zh="一張訂閱，30 件 SABCD 評等專利，依法域 × 產業策展。訂閱當週由被動防禦轉為主動佈局。">One subscription, thirty SABCD-graded patents, curated for your jurisdiction and industry — passive defense to active position the week you subscribe.</p>
-          <div class="pillar-hero-cta">
-            <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
-            <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
-          </div>
+    <div class="container hero-inner">
+      <article class="pillar" data-pillar="licensing">
+        <p class="pillar-eyebrow" data-zh="TIS 授權平台">TIS Licensing Platform</p>
+        <h1 class="pillar-title">
+          <span data-zh="30 件專利防護組合。">30-patent shield.</span> <em data-zh="當週上線。">Active this week.</em>
+        </h1>
+        <p class="pillar-sub" data-zh="一張訂閱，30 件 SABCD 評等專利，依法域 × 產業策展。訂閱當週由被動防禦轉為主動佈局。">One subscription, thirty SABCD-graded patents, curated for your jurisdiction and industry — passive defense to active position the week you subscribe.</p>
+        <div class="pillar-actions">
+          <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
+          <a href="#contact" class="btn btn-secondary" data-zh="聯絡業務">Talk to sales</a>
         </div>
-        <div class="pillar-hero-shot" aria-hidden="true">
-          <div class="frame-wrap">
-            <div class="browser-frame" data-chrome="bare">
-              <div class="frame-canvas">
-                <div class="shot-inner">
-                  <div class="hero-blueprint">
-                    <div class="stage-3d">
-                      <div class="grid-3d" data-grid="blueprint"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      </article>
     </div>
   </section>
 
@@ -2707,7 +2687,77 @@ a, button,
       </header>
       <div class="page-hero-actions">
         <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
-        <a href="/#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
+        <a href="#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Get in touch  —  components.md §Input (underline variant)           ║
+       ║ Duplicated from homepage so in-page CTAs anchor locally.            ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="contact" id="contact" aria-labelledby="contact-heading">
+    <div class="container contact-grid">
+      <aside class="contact-left">
+        <h2 id="contact-heading" class="grad-text-silver-solid" data-zh="與我們聯絡。">Get in touch.</h2>
+        <a href="mailto:contact@tisglobalinc.com" class="contact-email">contact@tisglobalinc.com</a>
+      </aside>
+
+      <div class="contact-right">
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="contact-row">
+            <div class="field">
+              <label for="contact-name" data-zh="姓名">Full Name</label>
+              <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+            </div>
+            <div class="field">
+              <label for="contact-email" data-zh="電子郵件">Email Address</label>
+              <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="field">
+              <label for="contact-org" data-zh="機構">Organization</label>
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+            </div>
+            <div class="field">
+              <label for="contact-topic-trigger" data-zh="諮詢類型">Inquiry Type</label>
+              <div class="brand-select brand-select--underline" id="contact-topic" data-name="topic" data-value="licensing">
+                <button id="contact-topic-trigger" class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="brand-select-label" data-zh="授權組合">Licensing bundle</span>
+                  <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+                </button>
+                <div class="brand-select-menu" role="listbox">
+                  <div class="brand-select-item selected" role="option" data-value="licensing"><span data-zh="授權組合">Licensing bundle</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="signal"><span data-zh="Signal / 估值">Signal / valuation</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="press"><span data-zh="媒體採訪">Press &amp; media</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="general"><span data-zh="其他">General</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
+            <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+          </div>
+          <div class="contact-actions">
+            <dl class="contact-hours" aria-label="Office hours">
+              <dt data-zh="台北 (UTC+8)">Taipei (UTC+8)</dt><dd data-zh="週一至週五">Mon–Fri</dd>
+              <dt data-zh="服務時間">Office hours</dt><dd>09:00 – 18:00</dd>
+            </dl>
+            <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
+          </div>
+        </form>
+
+        <div class="contact-success" id="contact-success" role="status" aria-live="polite">
+          <span class="check-pill" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <div>
+            <h3 data-zh="訊息已送出。">Message sent.</h3>
+            <p data-zh="已收到您的諮詢。我們將於 1–2 個工作天內回覆。">Inquiry received. We'll be in touch within 1–2 business days.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2752,7 +2802,7 @@ a, button,
               <li><a href="/#about" data-zh="關於">About</a></li>
               <li><a href="/#reports" data-zh="報告">Reports</a></li>
               <li><a href="/#press" data-zh="新聞">Press</a></li>
-              <li><a href="/#contact" data-zh="聯絡">Contact</a></li>
+              <li><a href="#contact" data-zh="聯絡">Contact</a></li>
             </ul>
           </div>
           <div class="footer-col">

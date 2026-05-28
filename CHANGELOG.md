@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-28 11:41 +08:00** · Aligned both product pages with the homepage layout — dropped the 1080px container override (now inherits the shared 1440/32/20 frame), swapped each hero for the homepage `.hero` chrome with per-pillar gradient (licensing → warm, signal → cool), and appended a local `#contact` form section below `#signup` so CTAs scroll in-page instead of jumping back home.
+
 - **2026-05-28 11:16 +08:00** · Added §Announcement banner across homepage and both product pages — solid `surface-inverse` bar, dead-center message + CTA, close absolute-right, per-session dismiss via `data-announce-id`; page-specific copy (homepage → bundles, licensing → pricing, signal → 50-credits trial).
 
 - **2026-05-27 17:25 +08:00** · Rewrote the About headline to a two-line stack — "An IP intelligence consultancy, / turning the patent landscape into market position." (split into per-line spans so the break survives language toggles).
