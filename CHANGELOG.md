@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-28 22:22 +08:00** · Rewrote homepage hero carousel (three slides), products nav dropdown, and announcement banner copy + zh; eyebrow typography moved to Urbanist normal-case, subhead bumped to deck-style, pillar container widened to 820px, scoped warm gradient for the Licensing slide.
+
 - **2026-05-28 16:50 +08:00** · Dropped redundant Contact link from top nav + mobile drawer on home, licensing, and signal pages (Contact Sales CTA covers it); stripped the per-step gradient backdrop wrapping homepage How-it-works screenshots — now a subtle border + shadow on the image only.
 
 - **2026-05-28 16:29 +08:00** · Retargeted product-page signup CTAs from `*.tisglobalinc.com/start` to local `/product/<x>/lobby/` (licensing × 3, signal × 5) so the curious-to-signup flow stays in-domain.

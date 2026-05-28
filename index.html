@@ -71,12 +71,12 @@
         <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
           <div class="products-menu-grid">
             <a href="/product/licensing/" class="product-card" role="menuitem">
-              <span class="product-card-eyebrow" data-zh="授權">LICENSING</span>
-              <span class="product-card-statement" data-zh="30 件專利防護組合，當週上線。">30-patent shields, active the week you subscribe.</span>
+              <span class="product-card-name" data-zh="授權平台">Licensing Platform</span>
+              <span class="product-card-desc" data-zh="依司法管轄區與產業的專利防護。">Patent protection by jurisdiction and industry.</span>
             </a>
             <a href="/product/signal/" class="product-card" role="menuitem">
-              <span class="product-card-eyebrow">SIGNAL</span>
-              <span class="product-card-statement" data-zh="30 分鐘完成 SABCD 估價，比對 1.7 億件專利。">SABCD valuation in 30 minutes, against your industry pool.</span>
+              <span class="product-card-name" data-zh="Signal 平台">Signal Platform</span>
+              <span class="product-card-desc" data-zh="對標同業，為任何專利評分。">Score any patent against its industry.</span>
             </a>
           </div>
         </div>
@@ -156,8 +156,14 @@
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
     <div id="m-products-sublist" class="mobile-sublist">
-      <a href="/product/licensing/" class="mobile-sub-row" data-zh="授權平台">Licensing Platform</a>
-      <a href="/product/signal/"    class="mobile-sub-row">Signal</a>
+      <a href="/product/licensing/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="授權平台">Licensing Platform</span>
+        <span class="mobile-sub-desc" data-zh="依司法管轄區與產業的專利防護。">Patent protection by jurisdiction and industry.</span>
+      </a>
+      <a href="/product/signal/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="Signal 平台">Signal Platform</span>
+        <span class="mobile-sub-desc" data-zh="對標同業，為任何專利評分。">Score any patent against its industry.</span>
+      </a>
     </div>
     <a href="#reports"  data-zh="報告">Reports</a>
     <a href="#press"    data-zh="新聞">Press</a>
@@ -279,8 +285,9 @@
   <!-- §Announcement banner — silver (TIS-overall). Session-dismissed by data-announce-id. -->
   <div class="announce" data-pillar="silver" data-announce-id="2026-q2-licensing-live" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
-      <span class="announce-msg" data-zh="TIS 專利授權平台正式上線 — 涵蓋五大司法管轄區的 30 件專利組合。">The TIS Licensing Platform is now live — 30-patent bundles across five jurisdictions.</span>
-      <a class="announce-link" href="#products" data-zh="探索組合 →">Explore bundles →</a>
+      <span class="ticker-pulse" aria-hidden="true"></span>
+      <span class="announce-msg" data-zh="新上線：TIS 授權平台 — 30 件專利組合，涵蓋美國與台灣">Just launched: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      <a class="announce-link" href="#products" data-zh="探索產業 →">Explore industries →</a>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -312,12 +319,14 @@
 
           <!-- Slide 1 · Strategic positioning (lead) -->
           <article class="pillar pillar-slide is-active" data-pillar="positioning" id="hero-slide-0" role="tabpanel" aria-labelledby="hero-dot-0">
-            <p class="pillar-eyebrow" data-zh="TIS · 防禦 → 佈局">TIS · Defense → Position</p>
+            <p class="pillar-eyebrow" data-zh="IP 情報顧問">An IP intelligence consultancy</p>
             <h2 class="pillar-title">
-              <span data-zh="別再防禦。">Stop defending.</span> <em data-zh="開始佈局。">Start positioning.</em>
+              <span data-zh="將專利複雜度">Turning patent complexity</span><br>
+              <span data-zh="轉化為">into</span> <em data-zh="市場佈局。">market position.</em>
             </h2>
-            <p class="pillar-sub" data-zh="紮根台灣的 IP 情報，依託全球第四大的專利檔案。">
-              Taiwan-rooted IP intelligence, built on a patent archive no public AI tool can reach.
+            <p class="pillar-sub">
+              <span data-zh="釐清 IP 優勢、風險與策略定位">Clarity on IP strength, exposure, and strategic position</span><br>
+              <span data-zh="— 以天計，非以月計。">— in days, not months.</span>
             </p>
             <div class="pillar-actions">
               <a href="#about"   class="btn btn-primary btn-lg" data-zh="我們的方法">How we work</a>
@@ -327,12 +336,14 @@
 
           <!-- Slide 2 · Licensing Platform -->
           <article class="pillar pillar-slide" data-pillar="licensing" id="hero-slide-1" role="tabpanel" aria-labelledby="hero-dot-1" aria-hidden="true" inert>
-            <p class="pillar-eyebrow" data-zh="TIS 授權平台">TIS Licensing Platform</p>
+            <p class="pillar-eyebrow" data-zh="授權平台">Licensing Platform</p>
             <h2 class="pillar-title">
-              <span data-zh="別再申請。">Don't file.</span> <em data-zh="買下對手已贏的位置。">License what already won.</em>
+              <span data-zh="從專利保障">From patent coverage</span><br>
+              <span data-zh="至">to an</span> <em data-zh="進攻型主張。">offensive claim.</em>
             </h2>
-            <p class="pillar-sub" data-zh="每組 30 件專利，鎖定一個司法管轄區。涵蓋 5 個市場，3 個月至 3 年非專屬授權。">
-              Thirty patents that already hold your market — curated by jurisdiction and industry, live the week you subscribe, non-exclusive on 3-month to 3-year terms.
+            <p class="pillar-sub">
+              <span data-zh="訂閱 30 件專利組合，">Subscribe to a 30-patent bundle,</span><br>
+              <span data-zh="為你的司法管轄區與產業策展。">curated for your jurisdiction and industry.</span>
             </p>
             <div class="pillar-actions">
               <a href="/product/licensing/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
@@ -342,12 +353,14 @@
 
           <!-- Slide 3 · Signal -->
           <article class="pillar pillar-slide" data-pillar="signal" id="hero-slide-2" role="tabpanel" aria-labelledby="hero-dot-2" aria-hidden="true" inert>
-            <p class="pillar-eyebrow" data-zh="代幣制估值 · SABCD 評等">Token-Based Valuation · SABCD</p>
+            <p class="pillar-eyebrow" data-zh="Signal 平台">Signal Platform</p>
             <h2 class="pillar-title">
-              <span data-zh="別再相信">Don't fund</span> <em data-zh="「IP 很強」。">"strong IP."</em> <span data-zh="打分數。">Grade it.</span>
+              <span data-zh="評等 IP 強度">Grading IP strength</span><br>
+              <span data-zh="化為">into an</span> <em data-zh="可執行報告。">actionable report.</em>
             </h2>
-            <p class="pillar-sub" data-zh="對照 1.7 億件專利的 SABCD 評等。在簽意向書之前，判斷 Go / no-go。">
-              An SABCD grade against your industry's pool, back in an afternoon — go / no-go before the term sheet, not after.
+            <p class="pillar-sub">
+              <span data-zh="依 50 項指標評分，對標同產業專利">Scored across 50 indicators, against its industry peers</span><br>
+              <span data-zh="— 數小時內，而非數週。">— back in hours, not weeks.</span>
             </p>
             <div class="pillar-actions">
               <a href="/product/signal/" class="btn btn-primary btn-lg" data-zh="查看產品">View product</a>
@@ -358,9 +371,9 @@
         </div>
 
         <div class="hero-slider-dots" role="tablist" aria-label="Select hero slide">
-          <button type="button" class="hero-slider-dot" id="hero-dot-0" role="tab" aria-selected="true"  aria-controls="hero-slide-0" aria-label="Slide 1: From defense to position"></button>
+          <button type="button" class="hero-slider-dot" id="hero-dot-0" role="tab" aria-selected="true"  aria-controls="hero-slide-0" aria-label="Slide 1: An IP intelligence consultancy"></button>
           <button type="button" class="hero-slider-dot" id="hero-dot-1" role="tab" aria-selected="false" aria-controls="hero-slide-1" aria-label="Slide 2: Licensing Platform"></button>
-          <button type="button" class="hero-slider-dot" id="hero-dot-2" role="tab" aria-selected="false" aria-controls="hero-slide-2" aria-label="Slide 3: Signal"></button>
+          <button type="button" class="hero-slider-dot" id="hero-dot-2" role="tab" aria-selected="false" aria-controls="hero-slide-2" aria-label="Slide 3: Signal Platform"></button>
         </div>
       </div>
 
@@ -1643,7 +1656,7 @@
             <h4 data-zh="產品">Products</h4>
             <ul>
               <li><a href="/product/licensing/" data-zh="授權平台">Licensing Platform</a></li>
-              <li><a href="/product/signal/" data-zh="Signal">Signal</a></li>
+              <li><a href="/product/signal/" data-zh="Signal 平台">Signal Platform</a></li>
             </ul>
           </div>
           <div class="footer-col">
