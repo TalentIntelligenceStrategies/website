@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-29 00:18 +08:00** · Propagated Innovue database size bump from 170M → 180M (1.7 億 → 1.8 億) across the Signal product page (hero subhead, deliverable, How-it-works check) and Signal lobby ticker — homepage already updated under the prior commit.
+
 - **2026-05-29 00:09 +08:00** · Replaced the homepage stat-card 3-up with a bordered frame + internal dividers + "Powered by Innovue" footer (Option 1 from brand counter preview); numbers now flow into body sentences (180M patents…, 50 quantitative indicators…, 100+ jurisdictions…); dropped dead `.stats-grid` / `.stat-card` / `.stats-grid--4up` CSS and `num-word`/`num-suffix` spans.
 
 - **2026-05-28 22:22 +08:00** · Rewrote homepage hero carousel (three slides), products nav dropdown, and announcement banner copy + zh; eyebrow typography moved to Urbanist normal-case, subhead bumped to deck-style, pillar container widened to 820px, scoped warm gradient for the Licensing slide.
