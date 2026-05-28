@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-29 00:09 +08:00** · Replaced the homepage stat-card 3-up with a bordered frame + internal dividers + "Powered by Innovue" footer (Option 1 from brand counter preview); numbers now flow into body sentences (180M patents…, 50 quantitative indicators…, 100+ jurisdictions…); dropped dead `.stats-grid` / `.stat-card` / `.stats-grid--4up` CSS and `num-word`/`num-suffix` spans.
+
 - **2026-05-28 22:22 +08:00** · Rewrote homepage hero carousel (three slides), products nav dropdown, and announcement banner copy + zh; eyebrow typography moved to Urbanist normal-case, subhead bumped to deck-style, pillar container widened to 820px, scoped warm gradient for the Licensing slide.
 
 - **2026-05-28 16:50 +08:00** · Dropped redundant Contact link from top nav + mobile drawer on home, licensing, and signal pages (Contact Sales CTA covers it); stripped the per-step gradient backdrop wrapping homepage How-it-works screenshots — now a subtle border + shadow on the image only.

@@ -402,25 +402,33 @@
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Stats counter  —  3-up, count-up on scroll (1200ms linear, §7.2)    ║
+       ║ Stats counter — bordered 3-up frame + Innovue attribution footer.   ║
+       ║ Count-up on scroll (1200ms linear, §7.2). Numbers flow into body    ║
+       ║ sentences (e.g. "180M patents powered by Innovue's WEBPAT…").       ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight" aria-label="By the numbers">
+  <section class="section section--tight section--counter" aria-label="By the numbers">
     <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
-          <h2 class="stat-num"><span class="counter" data-target="170">0</span><span class="num-suffix">M</span></h2>
-          <p class="stat-body" data-zh="Innovue 專屬資料庫所收錄的專利數——全球第四大。不在公開網路上，任何標準 AI 工具都搜不到。">Innovue's proprietary database — the world's 4th-largest, and the ground every TIS grade stands on. Not on the open web. Not reachable by any standard AI tool.</p>
+      <div class="stats-frame">
+        <div class="stats-3up">
+          <div class="stat">
+            <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
+            <h2 class="stat-num"><span class="counter" data-target="180">0</span>M</h2>
+            <p class="stat-body" data-zh="件專利由 Innovue WEBPAT 資料庫支撐 — 累積超過 21 年的智財服務經驗。">patents powered by Innovue's WEBPAT database — with over 21 years of experience in providing IP services.</p>
+          </div>
+          <div class="stat">
+            <p class="stat-eyebrow" data-zh="專利強度評分 — PSS">Patent Strength Score — PSS</p>
+            <h2 class="stat-num"><span class="counter" data-target="50">0</span></h2>
+            <p class="stat-body" data-zh="項量化指標歸納入八大支柱 — 匯整為 0–100 強度評分，依同業基準評等。">quantitative indicators folded into 8 pillars — combined into a 0–100 strength score, graded against industry peers.</p>
+          </div>
+          <div class="stat">
+            <p class="stat-eyebrow" data-zh="覆蓋">Coverage</p>
+            <h2 class="stat-num"><span class="counter" data-target="100">0</span>+</h2>
+            <p class="stat-body" data-zh="個司法管轄區每日自官方專利局來源主動索引 — 美、台、歐、日、韓等多國覆蓋。">jurisdictions actively indexed daily from official Patent Office sources — US, TW, EU, JP, KR, and many more.</p>
+          </div>
         </div>
-        <div class="stat-card">
-          <p class="stat-eyebrow" data-zh="分析系統">Analytical system</p>
-          <h2 class="stat-num"><span class="counter" data-target="13">0</span></h2>
-          <p class="stat-body" data-zh="透過已驗證渠道整合取得資料的模組數——不做公開爬取。每個模組對應一個明確的資料來源。">Thirteen modules, each a verified channel into official data — no public scraping, no guessing where a number came from.</p>
-        </div>
-        <div class="stat-card">
-          <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdictional coverage</p>
-          <h2 class="stat-num"><span class="counter" data-target="100">0</span><span class="num-suffix">+</span></h2>
-          <p class="stat-body" data-zh="每日從官方來源索引的專利局數。美、歐、日、台、韓的覆蓋最深。">Patent offices indexed daily from official sources — US, EP, JP, TW, and KR run the deepest.</p>
+        <div class="stats-frame-foot">
+          <span data-zh="技術提供">Powered by</span>
+          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
         </div>
       </div>
     </div>
@@ -662,7 +670,7 @@
         <div class="pillar-hero">
           <div class="pillar-hero-copy">
             <h3 id="pillar-signal-heading" data-zh="Signal">Signal</h3>
-            <p data-zh="以代幣計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.7 億件專利資料庫，做出 Go / no-go 判斷。">A founder says "strong IP, 14 patents granted." Strong against what? SABCD grades all 14 in an afternoon — 2 A-tier, 3 B-tier, 9 C-tier, no S — each ranked against its industry pool. Go / no-go before the term sheet, paid by the token.</p>
+            <p data-zh="以代幣計費的專利估值、比對與報告產品。創辦人說「IP 很強」——SABCD 一個下午就能對 14 件專利做出評等：2 件 A、3 件 B、9 件 C、無 S。依據 Innovue 1.8 億件專利資料庫，做出 Go / no-go 判斷。">A founder says "strong IP, 14 patents granted." Strong against what? SABCD grades all 14 in an afternoon — 2 A-tier, 3 B-tier, 9 C-tier, no S — each ranked against its industry pool. Go / no-go before the term sheet, paid by the token.</p>
             <div class="pillar-hero-cta">
               <a href="#contact" class="btn btn-primary btn-lg" data-zh="聯絡業務">Talk to sales</a>
               <a href="/product/signal/" class="btn btn-secondary btn-lg" data-zh="深入了解 →">Learn more →</a>
@@ -1234,7 +1242,7 @@
               <svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
             </span>
             <h4 data-zh="SABCD 估值">See how your patent measures up</h4>
-            <p data-zh="依據 Innovue 1.7 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。短報告 1 代幣；完整報告 8 代幣。">One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market.</p>
+            <p data-zh="依據 Innovue 1.8 億件專利資料庫的五級專利品質評分。Tier S 為頂級／策略級；D 為底層。短報告 1 代幣；完整報告 8 代幣。">One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market.</p>
           </article>
 
           <article class="deliverable-card">
@@ -1306,7 +1314,7 @@
                   <p data-zh="評分可信賴──校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。">Scores you can trust — graded against patents that actually compete in the same category.</p>
                   <ul class="howitworks-checks">
                     <li data-zh="IPC 驅動的 12 產業池路由">Get matched to your exact technical category</li>
-                    <li data-zh="Innovue 1.7 億件專利資料庫（全球第 4 大）">Benchmark against the Innovue, iPIC, III &amp; NYCU pool</li>
+                    <li data-zh="Innovue 1.8 億件專利資料庫（全球第 4 大）">Benchmark against the Innovue, iPIC, III &amp; NYCU pool</li>
                     <li data-zh="池內樣本不足會於 Brief 上標示警示">Know upfront when confidence is low</li>
                   </ul>
                 </div></div>
@@ -1470,7 +1478,7 @@
             <div class="content-card-meta-row">
               <span>2026-03-05</span>
             </div>
-            <h3 class="content-card-title" data-zh="TIS 與 Innovue 正式結盟，撐起 1.7 億件專利情報層。">TIS and Innovue formalize the alliance behind the 170M-patent intelligence layer.</h3>
+            <h3 class="content-card-title" data-zh="TIS 與 Innovue 正式結盟，撐起 1.8 億件專利情報層。">TIS and Innovue formalize the alliance behind the 180M-patent intelligence layer.</h3>
           </div>
         </a>
 
@@ -1513,7 +1521,7 @@
         </article>
         <article class="about-pos">
           <p class="pos-num" data-zh="02 / 資料來源">02 / Source</p>
-          <h3 data-zh="紮根於 1.7 億件專利。">Grounded in 170M patents.</h3>
+          <h3 data-zh="紮根於 1.8 億件專利。">Grounded in 180M patents.</h3>
           <p><a href="https://www.innovue.ltd/" class="innovue-inline" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a><span data-zh="營運全球第四大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。">maintains the world's 4th-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool.</span></p>
         </article>
         <article class="about-pos">
