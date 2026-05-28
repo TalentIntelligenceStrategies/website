@@ -669,4 +669,24 @@
 
   setActive(0);
   start();
+
+  // ──────────────── Announcement banner — per-session dismiss ────────────────
+  // Keyed by data-announce-id so a NEW announcement re-shows even within the
+  // same session; sessionStorage so it returns on the next visit.
+  document.querySelectorAll('.announce').forEach((bar) => {
+    const key = 'tis-announce-dismissed:' + bar.dataset.announceId;
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem(key) === '1'; } catch (_) {}
+    if (dismissed) { bar.hidden = true; return; }
+
+    const close = bar.querySelector('.announce-close');
+    if (!close) return;
+    close.addEventListener('click', () => {
+      try { sessionStorage.setItem(key, '1'); } catch (_) {}
+      const done = () => { bar.hidden = true; bar.classList.remove('is-dismissing'); };
+      if (reduceMotion.matches) { done(); return; }
+      bar.classList.add('is-dismissing');
+      bar.addEventListener('transitionend', done, { once: true });
+    });
+  });
 })();

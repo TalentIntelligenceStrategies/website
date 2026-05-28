@@ -878,6 +878,14 @@ section#pricing.section--alt { padding-top: 32px; }
   transition: var(--tis-hover-transition);
 }
 
+/* Topnav CTA stays on the homepage spec so chrome reads identically across pages. */
+.topnav-cta {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.10em;
+}
+
 /* Universal hover easing — apply Stripe's hover curve to anything
    that already declares its own transition properties on hover. */
 a, button,
@@ -1669,6 +1677,17 @@ a, button,
 <main id="main" data-pillar="signal">
 
   <h1 class="sr-only" data-zh="Signal — 30 分鐘為專利做 SABCD 評等">Signal — Grade patents with SABCD in 30 minutes</h1>
+
+  <!-- §Announcement banner — TIS-system chrome (identical across all surfaces). -->
+  <div class="announce" data-announce-id="2026-q2-signal-beta" role="region" aria-label="Site announcement">
+    <span class="announce-cluster">
+      <span class="announce-msg" data-zh="Signal Beta 開放 — 首次專利評估免費贈送 50 點。">Signal beta is open — try your first patent valuation free with 50 credits.</span>
+      <a class="announce-link" href="#signup" data-zh="立即試用 →">Try Signal free →</a>
+    </span>
+    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
 
   <!-- ─── 1. Hero (Stripe 2-col — text left + report visual right) ─── -->
   <section class="section section--page-hero" aria-label="Signal hero">

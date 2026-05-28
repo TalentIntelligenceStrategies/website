@@ -103,6 +103,10 @@
 
   --signal-active:  #22C55E;
 
+  /* Inverse-surface interaction overlay — design-tokens.md §7.4
+     surface-inverse-translucent. Used by .announce-close hover on the dark bar. */
+  --surface-inverse-translucent: rgba(255,255,255,0.10);
+
   /* SABCD tier ramp — design-tokens.md §7.4 (text + tinted bg pairs) */
   --score-s: #8B6914; --score-s-bg: #FAF3DC;
   --score-a: #047857; --score-a-bg: #ECFDF5;
@@ -176,6 +180,14 @@
     rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.40) 35%,
     rgba(255,255,255,0.10) 65%, transparent 85%);
 
+  /* Silver faded wash — design-tokens.md §7.4 gradient-bg-silver-faded.
+     Single source for the .hero-silver backdrop AND the §Announcement banner
+     (TIS-overall / website pillar). Cool + warm washes land here when the
+     product pages adopt the banner. */
+  --gradient-bg-silver-faded:
+    radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
+    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
+
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -201,6 +213,10 @@
   --border-secondary: #262626;
   --border-tertiary:  #303030;
   --border-focus:     #FAFAFA;
+
+  --gradient-bg-silver-faded:
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
+    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 
   --success-bg: #052E16; --success-fg: #86EFAC;
 
@@ -719,6 +735,55 @@ img, svg { display: block; }
 /* ───────── Main offset for fixed nav ───────── */
 main { padding-top: 64px; }
 
+/* ───────── §Announcement banner — components.md ─────────
+   In-flow, below the fixed nav (sits inside main's 64px top pad), above the
+   hero, scrolls away. One spec / per-surface content; website = silver pillar.
+   Session-dismissed by data-announce-id (assets/site.js). */
+.announce {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 56px;
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  overflow: hidden; max-height: 80px;
+  transition: max-height 200ms var(--ease-card), opacity 200ms var(--ease-card);
+}
+.announce[hidden] { display: none; }
+.announce.is-dismissing {
+  max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+}
+.announce-cluster {
+  display: flex; align-items: center; gap: 10px;
+  min-width: 0;
+}
+.announce-msg {
+  font-size: 14px; font-weight: 500; color: var(--text-inverse);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.announce-link {
+  font-size: 14px; font-weight: 600; color: var(--text-inverse);
+  text-decoration: none; white-space: nowrap; flex-shrink: 0;
+}
+.announce-link:hover { text-decoration: underline; }
+.announce-close {
+  position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+  width: 24px; height: 24px; display: grid; place-items: center;
+  border: none; background: transparent; border-radius: 6px; cursor: pointer;
+  color: var(--text-inverse); opacity: 0.75;
+}
+.announce-close:hover {
+  background: var(--surface-inverse-translucent);
+  opacity: 1;
+}
+.announce-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 640px) {
+  .announce { padding-inline: 48px; }
+  .announce-close { right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announce { transition: opacity 120ms linear; }
+}
+
 /* ───────── Hero — gradient backdrops + 3-pillar carousel ─────────
    Layered z-order:
      0: warm-pour gradient (.hero background, --hero-bp-bg)
@@ -829,9 +894,7 @@ main { padding-top: 64px; }
   pointer-events: none;
   opacity: 0;
   transition: opacity 480ms var(--ease-card);
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
-    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
+  background: var(--gradient-bg-silver-faded);
 }
 .hero-silver::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -840,9 +903,7 @@ main { padding-top: 64px; }
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
 }
 [data-theme="dark"] .hero-silver {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+  background: var(--gradient-bg-silver-faded);
 }
 [data-theme="dark"] .hero-silver::before {
   background:
