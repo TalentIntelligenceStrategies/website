@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-28 16:50 +08:00** · Dropped redundant Contact link from top nav + mobile drawer on home, licensing, and signal pages (Contact Sales CTA covers it); stripped the per-step gradient backdrop wrapping homepage How-it-works screenshots — now a subtle border + shadow on the image only.
+
 - **2026-05-28 16:29 +08:00** · Retargeted product-page signup CTAs from `*.tisglobalinc.com/start` to local `/product/<x>/lobby/` (licensing × 3, signal × 5) so the curious-to-signup flow stays in-domain.
 
 - **2026-05-28 14:01 +08:00** · Added Signal lobby at `/product/signal/lobby/` — mirrors the Licensing lobby structurally (stripped topnav, scroll ticker, 1:1 split-screen, partner row, 100vh lock), swaps to cool blue gradient + `--score-b-vivid` bullet accent + SABCD/credits/Brief copy + Signal-specific ticker items + `signal.tisglobalinc.com/start` upstream link.
