@@ -327,7 +327,7 @@ Inline-flex pill rendering an SABCD quality tier — five tones drawn from the S
 
 Geometry per §Chip family above. **Font-weight 700** (one step heavier than Status chip's 600 — see §Chip family / weight asymmetry).
 
-**Label convention.** Always render the full token: `Tier S`, `Tier A`, `Tier B`, `Tier C`, `Tier D` — never the bare letter. The letter alone loses meaning when the chip travels out of context (CSV exports, screenshots, embed badges, paste into a deck), and the word "Tier" anchors the chip to a defined framework instead of to a pricing label like Premium / Pro / Plus. Same rule in prose — see [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §4.5.
+**Label convention.** Always render the full token: `Tier S`, `Tier A`, `Tier B`, `Tier C`, `Tier D` — never the bare letter. The letter alone loses meaning when the chip travels out of context (CSV exports, screenshots, embed badges, paste into a deck), and the word "Tier" anchors the chip to a defined framework instead of to a pricing label like Premium / Pro / Plus. Same rule in prose — see [`brand-voice.md`](./brand-voice.md) §4.
 
 **Coexistence with Threshold bar.** The Threshold bar in [`components.md`](./components.md) §Threshold bar carries its own monochrome `STRONG` / `MID` / `WEAK` chip — that's the P1–P8 pillar score on the radar/threshold panel, a separate scoring system from SABCD tiers. Both coexist on the same page without conflict; Threshold bar's monochrome rule still applies inside the radar panel.
 

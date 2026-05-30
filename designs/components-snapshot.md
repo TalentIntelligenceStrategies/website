@@ -19,7 +19,7 @@ Input-box trigger with a calendar icon; popover shows a month grid for single-da
 - **Variants:** single-date / date-range
 - **States:** closed, open, focus, error, disabled
 
-Trigger: Input box (md 36 / lg 40), `icon-sm` `calendar` right-aligned in `text-tertiary`. Popover: `menu` preset (radius 12, shadow `medium`, 1px `border-primary`), padding 16, offset 4 below trigger, width ~288. Header: month + year centered (`heading-18`); `chevron-left` / `chevron-right` (`icon-sm`) as prev / next buttons in `text-secondary`. Day-of-week row: `label-mono-11 / text-tertiary`. Day grid: 7 columns × 6 rows, each cell 32×32 radius 6, `copy-14` centered. Today: underline on the number. Selected: background `surface-inverse`, text `text-inverse`. Range endpoints: filled like selected; range body: background `surface-tertiary`, text `text-primary`. Hover cell: `surface-tertiary`. Disabled dates: opacity 0.4. Keyboard: ←/→/↑/↓ move by day / week, Enter selects, Esc closes. Date format follows [`voice-and-messaging.md`](./voice-and-messaging.md) §7 (ISO `YYYY-MM-DD`).
+Trigger: Input box (md 36 / lg 40), `icon-sm` `calendar` right-aligned in `text-tertiary`. Popover: `menu` preset (radius 12, shadow `medium`, 1px `border-primary`), padding 16, offset 4 below trigger, width ~288. Header: month + year centered (`heading-18`); `chevron-left` / `chevron-right` (`icon-sm`) as prev / next buttons in `text-secondary`. Day-of-week row: `label-mono-11 / text-tertiary`. Day grid: 7 columns × 6 rows, each cell 32×32 radius 6, `copy-14` centered. Today: underline on the number. Selected: background `surface-inverse`, text `text-inverse`. Range endpoints: filled like selected; range body: background `surface-tertiary`, text `text-primary`. Hover cell: `surface-tertiary`. Disabled dates: opacity 0.4. Keyboard: ←/→/↑/↓ move by day / week, Enter selects, Esc closes. Date format follows [`brand-voice.md`](./brand-voice.md) §6 (ISO `YYYY-MM-DD`).
 
 ---
 
@@ -61,7 +61,7 @@ Empty state: table body replaced by the Empty state component, spanning all colu
 
 ## Empty state
 
-Centered column explaining why a data surface is empty and what to do next. Type + optional Lucide icon only — no illustrations (per [`voice-and-messaging.md`](./voice-and-messaging.md) §4 anti-hype rule).
+Centered column explaining why a data surface is empty and what to do next. Type + optional Lucide icon only — no illustrations (per [`brand-voice.md`](./brand-voice.md) §3 anti-hype rule).
 
 - **Consumes:** `text-primary`, `text-secondary`, `text-tertiary`
 - **Surfaces:** Patent Intelligence SaaS · Licensing Platform · website (any data surface that can be empty)
@@ -290,7 +290,7 @@ Container: `panel` shell — radius 10, 1px `border-primary`, background `surfac
 
 Body rows: `display: grid; grid-template-columns: 104px 54px 1fr 96px 86px 134px 94px 18px; align-items: center; column-gap: 18; padding: 13×20; border-bottom: 1px solid border-primary; cursor: pointer`. Hover applies background `surface-tertiary`. The eight columns, in order:
 
-1. **License ID** — mono 15 / 600 / `text-primary` (e.g. `LIC-00042`). The ID is the row's primary anchor and the only mono cell in the row — every other data column reads as sans tabular so the row's body weight stays calm and the ID's mono density is the column-edge anchor. ISO ID convention follows [`voice-and-messaging.md`](./voice-and-messaging.md) §7.
+1. **License ID** — mono 15 / 600 / `text-primary` (e.g. `LIC-00042`). The ID is the row's primary anchor and the only mono cell in the row — every other data column reads as sans tabular so the row's body weight stays calm and the ID's mono density is the column-edge anchor. ISO ID convention follows [`brand-voice.md`](./brand-voice.md) §6.
 2. **Jurisdiction chip** — `juris-chip`, two-letter code (`US` / `TW` / `EU` / `JP` / `KR`) per [`primitives.md`](./primitives.md) §Chip family / Jurisdiction chip. The full region name is **not** repeated in the row — the chip carries the signal and the industry / context that follows is the human-readable text.
 3. **Industry** — sans 15 / 500 / `text-secondary` (human-readable, e.g. `Electronics`). Takes the `1fr` slack column so long industry names breathe; all other columns are content-sized fixed widths so column edges align across rows.
 4. **Patent count** — sans 15 / 500 / `text-secondary` with `font-feature-settings: "tnum"; font-variant-numeric: tabular-nums` (`30 patents`). Reads as a calm tabular fact, not a hard mono numeric — the License ID owns the mono density.
@@ -394,7 +394,7 @@ Container: `panel` shell wrapping a `tl` block (padding 8×24×16). Each row: `p
 | ghost | `text-tertiary` at opacity 0.3 |
 | none | `display: none` (last row, or no connector to far-future) |
 
-Row content (right of the dot): a head row (`display: flex; justify-content: space-between; align-items: baseline; gap: 8; margin-bottom: 2`) with the milestone title at sans 14 / 500 / `text-primary` on the left and the date at mono 12 / 400 / `text-tertiary` (+0.05em) on the right. Dates render ISO `YYYY-MM-DD` per [`voice-and-messaging.md`](./voice-and-messaging.md) §7. Below the head, an optional note at sans 12 / 400 / `text-secondary` / line-height 1.5 explains what the milestone unlocks (e.g. `30 days before expiry · 2.5–5% discount`).
+Row content (right of the dot): a head row (`display: flex; justify-content: space-between; align-items: baseline; gap: 8; margin-bottom: 2`) with the milestone title at sans 14 / 500 / `text-primary` on the left and the date at mono 12 / 400 / `text-tertiary` (+0.05em) on the right. Dates render ISO `YYYY-MM-DD` per [`brand-voice.md`](./brand-voice.md) §6. Below the head, an optional note at sans 12 / 400 / `text-secondary` / line-height 1.5 explains what the milestone unlocks (e.g. `30 days before expiry · 2.5–5% discount`).
 
 The `muted` row modifier (opacity 0.5) de-emphasizes the row beyond the active milestone (e.g. Term ends after Renewal window opens) so the active step stays the row that draws the eye.
 
@@ -463,6 +463,33 @@ The marketing topnav swaps content live with the document `lang` attribute (`en`
 - **Stable footprint.** Each translatable item (`.topnav-link`, plus whichever of the auth sub-group items render on this surface — the `Contact sales` pill on the marketing cluster, or the `Log in` text + `Sign up` pill on the product-unauthenticated cluster) carries a JS-locked `min-width` set to its EN natural width measured after `document.fonts.ready` — so toggling `lang` never shrinks any item and the right cluster never reflows via the `flex: 1` spacer absorbing slack. Nav-link and the `Log in` text variant use `text-align: center` so the shorter CH form sits centered inside its EN-sized box; the `Contact sales` and `Sign up` pills inherit centering from `.btn` (`inline-flex` / `justify-content: center`).
 - **Type.** Per [`design-tokens.md`](./design-tokens.md) §3 / §7.2 the Noto Sans TC ramp matches the Urbanist counterpart 1:1, so nav-link sizes don't step between languages. CJK code points cascade to Noto Sans TC via the body fallback stack (`'Urbanist', 'Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif`) — no per-lang `font-family` swap, so Latin runs in either mode keep Urbanist metrics. CJK glyphs read slightly heavier optically; accepted trade-off for the fully seamless toggle.
 - **Selector authority.** The `[lang="zh-Hant"] .topnav-logo` aspect-ratio override has higher specificity (0,2,0) than the `@media` submark fallback at 640px; the fallback selector explicitly lists `[lang="zh-Hant"] .topnav-logo` alongside `.topnav-logo` to tie specificity so source order wins inside the media query and the submark renders square in both languages on small screens.
+
+---
+
+## Announcement banner
+
+Full-width single-line notice that sits **directly below the §Top nav and above the hero** — the first in-flow block of page content. One announcement per surface: a slim **solid dark-ink bar** carrying a short message and one inline link, dismissible for the session. **One spec, per-surface content** — the markup, CSS, and dismiss behaviour are shared; each surface fills its own `data-announce-id`, message, and link, and signals its pillar through a small leading dot in that pillar's accent colour (the bar itself is the same `surface-inverse` everywhere — a deliberate choice so the banner reads as TIS-system-level chrome no matter which surface it appears on, with the dot carrying the per-pillar cue). Not a §Toast (transient, async-fired, bottom-right) and not a §Modal (blocking) — this is ambient, always-at-top page chrome the reader can scroll past or close.
+
+- **Consumes:** `surface-inverse` (bar fill — dark ink on light pages, inverts to light on dark pages per the surface-inverse semantic; either way the bar reads as a high-contrast strip against the page), `text-inverse` (message + inline link + close glyph; pairs with the bar fill in both themes), `surface-inverse-translucent` (close hover overlay — the dark-theme equivalent of `surface-tertiary` for the inverse bar) — all from [`design-tokens.md`](./design-tokens.md) §7.4. Close button reuses the §Toast close pattern (`icon-sm` `x`, 24×24, radius 6).
+- **Surfaces:** website (homepage + marketing lobbies — **silver dot**, TIS-overall) · Patent Intelligence SaaS lobby (**cool dot**) · Licensing Platform lobby (**warm dot**). Bar fill is the same `surface-inverse` across all three; the dot is the only per-pillar signal — see *Per-surface theming* below.
+- **Variants:** default (dot + message + inline link + close) / message-only (no link, dot retained) / no-dismiss modifier (`data-dismissible="false"` — close button drops, reserved for time-critical or legal notices; default is dismissible)
+- **States:** shown, dismissing (collapse + fade), hidden (removed from flow; sessionStorage flag set)
+
+**Placement & flow.** In-flow, not fixed: the bar is the first child of the page content region (which already carries `padding-top: 64` to clear the fixed §Top nav). It therefore renders flush under the nav's bottom hairline and **scrolls away with the page** — it does not pin. No own `z-index`; it sits in normal stacking below the `z-100` nav. Full-bleed background, inner row inherits the page container (`max-width: 1440`, `padding-inline: 32`, `20` below `md`). **No bottom hairline** — the dark bar against the white page surface is its own boundary; adding `border-primary` underneath would draw a visible 1px line on top of the dark fill that reads as a glitch.
+
+**Anatomy (single row, `position: relative`, `display: flex; align-items: center; justify-content: center`, `min-height: 44`, padding-block `10`, padding-inline `56`).** Message + CTA sit dead-center of the bar; the close button is absolutely positioned at the right edge so its width never shifts the cluster off-axis. The symmetric `padding-inline: 56` reserves matching empty space on both sides — visually balances the close button at the right edge and lets the cluster's mathematical center align with the bar's optical center.
+
+- **Message** — `copy-14 / weight 500 / text-inverse`, single line, `text-overflow: ellipsis` at narrow widths. Keep it to one clause; this is a headline, not a paragraph.
+- **Inline link** — `copy-14 / weight 600 / text-inverse` with a trailing ` →` arrow, `text-decoration: none`, hover underline. The whole bar is **not** the click target — only the link is, so the close button and any text selection stay unambiguous.
+- **Close** — `position: absolute; right: 20; top: 50%; transform: translateY(-50%)` — taken out of flow so it never pulls the cluster off-center. `icon-sm` `x` glyph, `text-inverse` at 75% opacity, 24×24 hit target, radius 6, hover background `surface-inverse-translucent` with glyph at full opacity. `aria-label="Dismiss announcement"`. Dropped under the `no-dismiss` modifier.
+
+**Per-surface theming.** The **bar is identical on every surface** — `surface-inverse` fill, `text-inverse` content, no per-pillar mark. A deliberate departure from the pillar-gradient pattern that governs hero backdrops and section washes (per [`visual-guide.md`](./visual-guide.md) §Gradient architecture): announcements are **TIS-system-level chrome**, not pillar-scoped — the same colour band on every property tells the reader *TIS is speaking*, with the message itself doing the work of saying what about. Earlier iterations carried a per-pillar accent dot; that was dropped because the bar's per-surface signal added decoding overhead without informational value (the reader already knows which surface they're on). The bar inverts with theme like other inverse-surface chrome — dark ink strip on light pages, light strip on dark pages — `text-inverse` flips with it and stays legible against both.
+
+**Dismissal (per session).** Close sets `sessionStorage["tis-announce-dismissed"] = announceId`; on load the bar checks the stored id against its own `data-announce-id` and stays hidden only if they match. Keying by id means a **new** announcement re-appears even within the same session (the stored id no longer matches), while a re-render of the same notice stays closed. Session scope (not `localStorage`) means the bar returns on the next visit — chosen so announcements get a fresh impression each session without nagging within one. Closing collapses the bar (`max-height → 0` + `opacity → 0`, 200ms emphasized) then sets `hidden`; under `prefers-reduced-motion: reduce` the collapse is instant (opacity only, no height animation).
+
+**Accessibility.** Wrap in `role="region"` with `aria-label="Site announcement"`. The notice is informational, not urgent — do **not** use `role="alert"`/`aria-live` (that would interrupt screen-reader flow on every page load). Close button is a real `<button>`, keyboard-focusable, focus-visible ring per the global rule; on dismiss, focus moves to the §Top nav so it doesn't land in void.
+
+Pairs with §Top nav (sits flush beneath it) and the §Hero on each lobby (sits flush above it). Don't reach for §Toast (transient async feedback) or §Modal (blocking) for standing announcements — this bar is the ambient, dismissible, top-of-page channel. One banner per page; don't stack two.
 
 ---
 
@@ -770,7 +797,7 @@ Uses Modal `sm` (400). No close-X button in the header — user must choose an a
 
 Structure:
 - **Header** — optional status icon (`icon-md`): `alert-triangle` in `danger-fg` for destructive; `info` in `info-fg` for default. Title `heading-20 / text-primary` follows.
-- **Body** — 1–2 sentences, `copy-14 / text-secondary`, explaining consequences. Never fluff; never hype. Per [`voice-and-messaging.md`](./voice-and-messaging.md) §4.
+- **Body** — 1–2 sentences, `copy-14 / text-secondary`, explaining consequences. Never fluff; never hype. Per [`brand-voice.md`](./brand-voice.md) §3.
 - **Footer** — ghost "Cancel" on the left of the cluster; primary action on the right. **Destructive variant** replaces the primary button background with `danger-fg` and keeps `text-inverse` white.
 
 Action-pending state: primary button shows a small inline spinner and disables both buttons until the operation resolves.
@@ -961,7 +988,7 @@ Per [`visual-guide.md`](./visual-guide.md) Collaborator Partners: ITRI, III, and
 Single-row credit card introducing the Innovue partnership. Two columns separated by a vertical hairline: tight "Powered by" eyebrow + Innovue logo lockup on the left, introduction sentence on the right rendered with the silver text gradient (TIS-overall theme per [`visual-guide.md`](./visual-guide.md) §Imagery → Gradient architecture). Sibling to §Partner strip — shares the same container shell (`surface-page`, 1px `border-primary`, radius 16, padding 48 × 32) but carries different content: §Partner strip is the multi-mark peer row; this card is the Innovue-specific introduction. Both can coexist on the same surface — partner strip up top as the row of collaborators, this card below as the dedicated Innovue credit.
 
 - **Consumes:** `surface-page`, `border-primary`, `text-secondary`, `--gradient-text-silver-solid` (light) / `--gradient-text-silver-luminous` (dark) per [`design-tokens.md`](./design-tokens.md) §7.5
-- **Surfaces:** website homepage (Innovue partnership section); first-touch surfaces requiring Innovue credit per [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §8
+- **Surfaces:** website homepage (Innovue partnership section); first-touch surfaces requiring Innovue credit per [`brand-voice.md`](./brand-voice.md) §7
 - **Variants:** default
 - **States:** rest only
 
@@ -973,7 +1000,7 @@ Container `surface-page`, `1px solid border-primary`, radius 16, padding `48 × 
 
 **Body copy.** `flex: 1; min-width: 0`. Single `<p>`: Urbanist `20 / 500 / -0.005em / 1.45`. Silver text gradient via `background: var(--gradient-text-silver-solid); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent` (light); `--gradient-text-silver-luminous` on `[data-theme="dark"]`. Line-height 1.45 (loosened from 1.0) so descenders clear under `background-clip: text`.
 
-**Canonical copy.** "Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity." The "4th-largest" anchor is load-bearing per [`archive/voice-and-messaging.md`](./archive/voice-and-messaging.md) §anchor-numbers — do not paraphrase.
+**Canonical copy.** "Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity." The "4th-largest" anchor is load-bearing per [`brand-voice.md`](./brand-voice.md) §5 — do not paraphrase.
 
 **Centering note.** Lockup is geometrically centered with the divider midpoint (60px stack — 14px eyebrow − 2px overlap + 48px logo — centered against the v-rule's stretch). Visually, because the eyebrow is light and the logo heavy, the logo glyphs sit ~6px below the divider midpoint. An optical-centering variant — `transform: translateY(-6px)` on the lockup — lands the logo center on the divider with the eyebrow floating above. Both versions referenced in [`archive/previews/partner-strip-preview.html`](./archive/previews/partner-strip-preview.html); geometric centering is the default unless a consumer surface decides otherwise.
 

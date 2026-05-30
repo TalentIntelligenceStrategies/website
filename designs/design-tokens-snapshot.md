@@ -2,13 +2,13 @@
 
 # TIS Visual System
 
-Source of truth for the look and feel of TIS — primitives, semantic tokens, motion, accessibility, and material presets. Three downstream surfaces consume this system and live in separate repositories: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP (upcoming). §§1–6 describe the system; §7 is the developer appendix. For the shared component catalog, see [`components.md`](./components.md); for tone, [`voice-and-messaging.md`](./voice-and-messaging.md); for logo and name usage, [`visual-guide.md`](./visual-guide.md).
+Source of truth for the look and feel of TIS — primitives, semantic tokens, motion, accessibility, and material presets. Three downstream surfaces consume this system and live in separate repositories: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP (upcoming). §§1–6 describe the system; §7 is the developer appendix. For the shared component catalog, see [`components.md`](./components.md); for tone, [`brand-voice.md`](./brand-voice.md); for logo and name usage, [`visual-guide.md`](./visual-guide.md).
 
 ---
 
 ## 1. At a glance
 
-White, near-black (`#252525`), and a 10-step gray ladder carry the page. Color appears as status only — success, warning, danger, info. Type is Urbanist (sans) + Inconsolata (mono). Motion eases, never bounces. Borders render at 1px (0.5px on retina). Tone reference: 泰然 — see [`voice-and-messaging.md`](./voice-and-messaging.md) §3.
+White, near-black (`#252525`), and a 10-step gray ladder carry the page. Color appears as status only — success, warning, danger, info. Type is Urbanist (sans) + Inconsolata (mono). Motion eases, never bounces. Borders render at 1px (0.5px on retina). Tone reference: 泰然 — see [`brand-voice.md`](./brand-voice.md) §2.
 
 ---
 
@@ -397,6 +397,7 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | surface-inverse-hover | `#292524` |
 | surface-translucent | `rgba(0,0,0,0.05)` |
 | surface-page-translucent | `rgba(255,255,255,0.70)` (for backdrop-blur chrome — top nav, sticky bars) |
+| surface-inverse-translucent | `rgba(255,255,255,0.10)` (interaction overlay on inverse surfaces — e.g. close-button hover on the §Announcement banner where `surface-tertiary` would vanish against the dark fill; dark-theme equivalent of `surface-translucent`) |
 | text-primary | `#252525` |
 | text-secondary | `#474747` |
 | text-tertiary | `#8A8F98` (UI only) |

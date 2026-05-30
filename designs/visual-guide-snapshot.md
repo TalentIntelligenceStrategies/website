@@ -2,7 +2,7 @@
 
 Brand-identity reference for TIS — logo meaning, logo usage, Innovue co-branding, and name usage. Scope: marketing website + Patent Intelligence SaaS MVP + Licensing Platform MVP.
 
-> For the visual system (colors, typography, motion, spacing, components), see [`design-tokens.md`](./design-tokens.md). For voice and copy rules, see [`voice-and-messaging.md`](./voice-and-messaging.md). This file scopes to brand-identity artifacts outside the token system.
+> For the visual system (colors, typography, motion, spacing, components), see [`design-tokens.md`](./design-tokens.md). For voice and copy rules, see [`brand-voice.md`](./brand-voice.md). This file scopes to brand-identity artifacts outside the token system.
 
 ---
 
@@ -249,7 +249,7 @@ Innovue is a visible strategic partner — not a hidden technology layer.
 
 On the first customer-facing touchpoint, use the **TIS Primary Logo**. Its lockup already includes "Powered by Innovue" — partnership credit is built in.
 
-> Deck application: cover slide is a first-touchpoint surface. See [`presentations.md`](./presentations.md) §3 for cover construction; credit-when logic is in [`voice-and-messaging.md`](./voice-and-messaging.md) §8.
+> Deck application: cover slide is a first-touchpoint surface. See [`presentations.md`](./presentations.md) §3 for cover construction; credit-when logic is in [`brand-voice.md`](./brand-voice.md) §7.
 
 ### Co-Branded Lockup
 
@@ -363,7 +363,7 @@ When a new licensee onboards, extend this table with the partner's registered le
 
 - **License #** — `LIC-NNNNN` (5-digit zero-padded, e.g., `LIC-00042`). The same identifier appears in two registers on the badge: curved on the TIS seal's bottom arc, and mono below the QR. They must match — treat any drift as a defect.
 - **Patent count** — per-licensee, integer + `PATENTS` (e.g., `18 PATENTS`). On the licensee seal's bottom arc.
-- **Validity period** — when surfaced (verification page, not on the badge itself): `YYYY-MM-DD – YYYY-MM-DD` per [`voice-and-messaging.md`](./voice-and-messaging.md) §7; en-dash separator with a single space on each side.
+- **Validity period** — when surfaced (verification page, not on the badge itself): `YYYY-MM-DD – YYYY-MM-DD` per [`brand-voice.md`](./brand-voice.md) §6; en-dash separator with a single space on each side.
 
 **Construction rules**
 
@@ -400,7 +400,7 @@ The canonical pill IS the combined form. Single-licensee and multi-licensee badg
 - **Expired** — visual treatment deferred. See [`design-tokens.md`](./design-tokens.md) §6.
 - **Anti-counterfeit** — invisible watermark embedded at generation; QR code resolves to the TIS verification page showing real-time status and authorized scope.
 
-For copy attribution rules, see [`voice-and-messaging.md`](./voice-and-messaging.md) §8.
+For copy attribution rules, see [`brand-voice.md`](./brand-voice.md) §7.
 
 ---
 
