@@ -131,8 +131,17 @@
   // Generation token guards against rapid back-to-back clicks: late
   // setTimeout callbacks bail if a newer swap has started.
   let langGen = 0;
+  // Elements with `data-zh-html` opt into innerHTML on swap so their `data-zh`
+  // can contain inline markup (e.g. `<strong>` to emphasize a Chinese phrase
+  // that has no equivalent in the EN string). EN side still uses textContent
+  // since `data-en` is captured from plain textContent at init.
   const swapText = (lang) => i18nEls.forEach(el => {
-    el.textContent = lang === 'zh' ? el.dataset.zh : el.dataset.en;
+    const target = lang === 'zh' ? el.dataset.zh : el.dataset.en;
+    if (el.hasAttribute('data-zh-html')) {
+      el.innerHTML = target;
+    } else {
+      el.textContent = target;
+    }
   });
 
   const applyLang = (lang, opts = {}) => {

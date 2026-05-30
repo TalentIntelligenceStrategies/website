@@ -8,9 +8,18 @@
 
 **3-column tables (shipping copy):**
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| (exact Chinese from PDF) | (word-for-word EN, preserves rhythm) | (Miko's manual EN, filled in over time) |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| (exact Chinese from PDF) | (word-for-word EN, preserves rhythm) | (Miko's manual EN, filled in over time) | 🟢 / 🟡 / ⚪ + YYYY-MM-DD |
+
+**Shipped legend (emoji + date, scannable at a glance):**
+
+- 🟢 **YYYY-MM-DD** — ZH copy is live on `index.html` or the matching product page.
+- ⚪ — Not yet shipped. Cell may be blank.
+
+**Scope:** This column tracks **copy shipping only**, not destination readiness. A CTA row whose text is live but whose `href` still points at a placeholder (because the target page hasn't been built) is fully 🟢 — note the href TODO as inline metadata after the date, e.g. `🟢 2026-05-30 · href TODO: /badge-showcase`. Destination/build tracking belongs in the surface repo's issue tracker or the "Open sign-off items" §, not in this column.
+
+The `Shipped` column grows on a table the first time any row inside it ships. The block's `Status:` line keeps Irene's original `Strategic direction` / `Direct edit — apply when ready` label — that describes intent, not shipping state.
 
 **Block headers (per copy element):**
 - **Key:** machine-parseable copy-key in `surface-section-element` form, used by the future i18n generator
@@ -32,10 +41,10 @@ Irene's recommendations, locked here so they don't drift across sections.
 
 ### Product names
 
-| 中文 | Literal translation | English (TBD) | Maps to |
-|---|---|---|---|
-| TIS 專利防護網 | "TIS Patent Protection Net" | TBD | Licensing Platform (Irene's Option 1, recommended) |
-| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD | SABCD grading (Irene's Option 2, recommended) |
+| 中文 | Literal translation | English (TBD) | Maps to | Shipped |
+|---|---|---|---|---|
+| 泰然專利防護網 | "Tairan Patent Protection Net" | TBD | Licensing Platform (Irene's Option 1, recommended; `泰然` prefix replaces earlier `TIS` per 2026-05-30 decision — `TIS 泰然X` is redundant since 泰然 *is* TIS's Chinese name) | 🟢 2026-05-30 |
+| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD | SABCD grading (Irene's Option 2, recommended) | 🟢 2026-05-30 |
 
 ### Product-line naming triplet (slide 11)
 
@@ -223,27 +232,27 @@ Three persona-specific hero banner concepts. **These are strategic direction**: 
 - **Selector:** `.hero #hero-slide-0 .pillar-title` (or a new persona-specific slide)
 - **Status:** Strategic direction
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 出國保旅平險。出口保專利險。 | "Going abroad, insure travel-accident. Exporting, insure patent." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 出國保旅平險。出口保專利險。 | "Going abroad, insure travel-accident. Exporting, insure patent." | TBD | 🟢 2026-05-30 |
 
 ### Subhead
 
 - **Key:** `home-hero-a-subhead`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 律師費 500 萬 + 整批退貨 + 三倍懲罰，水險都買，專利險怎麼能不買？ | "Lawyer fee NT$5M + whole-batch return + triple-damages punishment — even water insurance you buy; how can you not buy patent insurance?" | TBD |
-| 月租不到 1 萬，30 件大廠專利授權，立即生效。 | "Monthly rent under NT$10K, 30 large-company patent licenses, immediate activation." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 律師費 500 萬 + 整批退貨 + 三倍懲罰，水險都買，專利險怎麼能不買？ | "Lawyer fee NT$5M + whole-batch return + triple-damages punishment — even water insurance you buy; how can you not buy patent insurance?" | TBD | 🟢 2026-05-30 |
+| 月租不到 1 萬，30 件大廠專利授權，立即生效。 | "Monthly rent under NT$10K, 30 large-company patent licenses, immediate activation." | TBD | 🟢 2026-05-30 |
 
 ### CTAs
 
 - **Key:** `home-hero-a-cta-primary` / `home-hero-a-cta-secondary`
 
-| 中文原文 | Literal translation | English (TBD) | Role |
-|---|---|---|---|
-| 試跑專利包 | "try-run patent bundle" | TBD | Primary — destination: Licensee Portal visitor Feed (FR-01) |
-| 專利標章加持用法 | "patent badge empowerment usage" | TBD | Secondary — destination: badge-showcase page (new, 1–2 weeks) |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 試跑專利包 | "try-run patent bundle" | TBD | Primary — destination: Licensee Portal visitor Feed (FR-01) | 🟢 2026-05-30 · href TODO: FR-01 visitor feed |
+| 專利標章加持用法 | "patent badge empowerment usage" | TBD | Secondary — destination: badge-showcase page (new, 1–2 weeks) | 🟢 2026-05-30 · href TODO: /badge-showcase |
 
 **Design notes (Irene):**
 - 「出國 / 出口」 parallel structure leverages SME owners' familiar insurance mindset.
@@ -261,27 +270,27 @@ Three persona-specific hero banner concepts. **These are strategic direction**: 
 - **Selector:** `.hero #hero-slide-2 .pillar-title` (Signal Platform slot)
 - **Status:** Strategic direction
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 技術含金量高不高，看排名就知道。 | "Whether the tech's gold-content is high — look at the ranking and you'll know." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 技術含金量高不高，看排名就知道。 | "Whether the tech's gold-content is high — look at the ranking and you'll know." | TBD | 🟢 2026-05-30 |
 
 ### Subhead
 
 - **Key:** `home-hero-b-subhead`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| SABCD 五級評分 + 同產業 cohort 排名。 | "SABCD five-tier scoring + same-industry cohort ranking." | TBD |
-| 一份可直接附入 IC memo 或 LP 季報的標準化報告。 | "A standardized report you can attach directly to an IC memo or LP quarterly report." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| SABCD 五級評分 + 同產業 cohort 排名。 | "SABCD five-tier scoring + same-industry cohort ranking." | TBD | 🟢 2026-05-30 |
+| 一份可直接附入 IC memo 或 LP 季報的標準化報告。 | "A standardized report you can attach directly to an IC memo or LP quarterly report." | TBD | 🟢 2026-05-30 |
 
 ### CTAs
 
 - **Key:** `home-hero-b-cta-primary` / `home-hero-b-cta-secondary`
 
-| 中文原文 | Literal translation | English (TBD) | Role |
-|---|---|---|---|
-| 免費預覽報告樣本 | "free preview report sample" | TBD | Primary — destination: Signal 5-tier SABCD sample page (already on site) |
-| 專利評級怎麼算 | "how patent rating is calculated" | TBD | Secondary — destination: methodology page (new, 1–2 weeks) |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 免費預覽報告樣本 | "free preview report sample" | TBD | Primary — destination: Signal 5-tier SABCD sample page (already on site) | 🟢 2026-05-30 · href `/product/signal/` |
+| 專利評級怎麼算 | "how patent rating is calculated" | TBD | Secondary — destination: methodology page (new, 1–2 weeks) | 🟢 2026-05-30 · href TODO: /methodology |
 
 **Design notes (Irene):**
 - Core wedge: lawyers tell you "legal"; TIS tells you "strong / not-strong" — a different product category.
@@ -299,27 +308,27 @@ Three persona-specific hero banner concepts. **These are strategic direction**: 
 - **Selector:** (new persona-specific slide TBD)
 - **Status:** Strategic direction
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 泰然專利包為你的補助申請加分。 | "Tairan Patent Bundle adds points to your grant application." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 泰然專利包為你的補助申請加分。 | "Tairan Patent Bundle adds points to your grant application." | TBD | 🟢 2026-05-30 |
 
 ### Subhead
 
 - **Key:** `home-hero-c-subhead`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 評審認可的是創智、資策會、陽明交大的優質保證。 | "What the reviewers recognize is the quality assurance of 創智 / 資策會 / 陽明交大." | TBD |
-| 30 件合法授權專利以你公司名義可用，月租不到 1 萬。 | "30 legally-licensed patents usable under your company's name, monthly rent under NT$10K." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 評審認可的是創智、資策會、陽明交大的優質保證。 | "What the reviewers recognize is the quality assurance of 創智 / 資策會 / 陽明交大." | TBD | 🟢 2026-05-30 |
+| 30 件合法授權專利以你公司名義可用，月租不到 1 萬。 | "30 legally-licensed patents usable under your company's name, monthly rent under NT$10K." | TBD | 🟢 2026-05-30 |
 
 ### CTAs
 
 - **Key:** `home-hero-c-cta-primary` / `home-hero-c-cta-secondary`
 
-| 中文原文 | Literal translation | English (TBD) | Role |
-|---|---|---|---|
-| 試跑專利包 | "try-run patent bundle" | TBD | Primary — destination: Licensee Portal visitor Feed (FR-01) |
-| 了解授權方案 | "understand licensing options" | TBD | Secondary — destination: transparent pricing page (FR-03) |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 試跑專利包 | "try-run patent bundle" | TBD | Primary — destination: Licensee Portal visitor Feed (FR-01) | 🟢 2026-05-30 · href `/product/licensing/` (surrogate; FR-01 visitor feed pending) |
+| 了解授權方案 | "understand licensing options" | TBD | Secondary — destination: transparent pricing page (FR-03) | 🟢 2026-05-30 · href TODO: FR-03 transparent pricing |
 
 **Design notes (Irene):**
 - The three institution names (創智 / 資策會 / 陽明交大) are the protagonists — strongest social proof.
@@ -373,13 +382,13 @@ Internal / English contracts:
 
 ## Slide 12: Product naming — Licensing Platform
 
-**Status:** Direct edit — adopted name is **TIS 專利防護網**
+**Status:** Direct edit — adopted name is **泰然專利防護網** (rebadged from Irene's original `TIS 專利防護網` per 2026-05-30 decision — `泰然` prefix prevents `TIS 泰然X` redundancy in inline copy where the announce bar / press cards embed the product name)
 
-### Option 1 (Recommended by Irene): TIS 專利防護網
+### Option 1 (Recommended by Irene): 泰然專利防護網
 
-| 中文 | Literal translation | English (TBD) |
-|---|---|---|
-| TIS 專利防護網 | "TIS Patent Protection Net" | TBD |
+| 中文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 泰然專利防護網 | "Tairan Patent Protection Net" | TBD | 🟢 2026-05-30 |
 
 Irene's rationale:
 - **Why it feels like a product:** Standard high-quality tech product naming (like "enterprise security net," "cloud filter net").
@@ -462,9 +471,9 @@ Irene's rationale (not recommended):
 
 ### Option 2 (Recommended by Irene): 泰然專利強度評級系統
 
-| 中文 | Literal translation | English (TBD) |
-|---|---|---|
-| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD |
+| 中文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD | 🟢 2026-05-30 |
 
 Irene's rationale:
 - Targets the same risk-averse VC mindset, but frames the product as "the objective judge of moat authenticity."
@@ -536,16 +545,22 @@ Irene proposes 6 new options:
 - **File:** `website/index.html`
 - **Selector:** `#contact-topic` (also `#contact-topic-trigger` for the trigger label)
 
-| 中文原文 | Literal translation | English (TBD) | Option |
-|---|---|---|---|
-| 專利授權 | "patent licensing" | TBD | 1 |
-| 專利評級 | "patent rating" | TBD | 2 |
-| 專利評估報告 | "patent evaluation report" | TBD | 3 |
-| 產業報告 | "industry report" | TBD | 4 |
-| 媒體採訪 | "media interview" | TBD | 5 |
-| 其他 | "other" | TBD | 6 |
+| 中文原文 | Literal translation | English (TBD) | Option | Shipped |
+|---|---|---|---|---|
+| 專利授權 | "patent licensing" | Patent Licensing *(provisional — Title-Cased literal; awaiting Miko-locked final)* | 1 | 🟢 2026-05-30 · data-value `licensing` |
+| 專利評級 | "patent rating" | Patent Rating *(provisional)* | 2 | 🟢 2026-05-30 · data-value `rating` |
+| 專利評估報告 | "patent evaluation report" | Patent Evaluation Report *(provisional)* | 3 | 🟢 2026-05-30 · data-value `evaluation-report` |
+| 產業報告 | "industry report" | Industry Report *(provisional)* | 4 | 🟢 2026-05-30 · data-value `industry-report` |
+| 媒體採訪 | "media interview" | Media Interview *(provisional)* | 5 | 🟢 2026-05-30 · data-value `press` (reused from prior option) |
+| 其他 | "other" | Other *(provisional)* | 6 | 🟢 2026-05-30 · data-value `general` (reused from prior option) |
 
-**Plus form field annotation (Irene):** 「More info. query: Phone no. and title」 — consider adding a Phone Number and Title field to the contact form.
+> **EN copy is provisional.** Each `English (TBD)` cell above is the literal translation Title-Cased for UI consistency with the rest of the contact form (`Inquiry Type` label, `Send Inquiry` button) — it is a *content reflection* of the ZH option, not Miko's final locked copy. Replace each one row-at-a-time when finalized. The HTML comment above the dropdown in `index.html` lines ~1608–1614 mirrors this caveat for anyone editing the markup directly.
+
+> **Backend handlers.** Two new `data-value`s were introduced (`rating`, `evaluation-report`, `industry-report`); the prior `signal` value was retired. Any server-side router that matched the old 4-value set (`licensing` / `signal` / `press` / `general`) will need to be extended to handle the three new values — otherwise the new inquiry types will hit a default branch.
+
+**Plus form field annotation (Irene):** 「More info. query: Phone no. and title」 — consider adding a Phone Number and Title field to the contact form. (Not addressed in 2026-05-30 dropdown swap; separate task.)
+
+> **Reused beyond the dropdown (2026-05-30).** `專利授權` and `專利評級` are also the ZH labels on the homepage product-section pillar tabs (`#products .pillar-tab`, `index.html` lines ~464–465) — short category names fit the tab UI better than the full product names (`泰然專利防護網` / `泰然專利強度評級系統`, which remain on the snapshot H3, nav dropdown, section heading, footer, etc.). EN side of the tabs still reads `Licensing Platform` / `Signal Platform`.
 
 ## Slide 17: About TIS — Innovue stats section
 
@@ -579,20 +594,20 @@ Irene's annotations:
 
 - **Key:** `home-stats-database-subtitle`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 每日與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 | "Daily-synced with official sources, world's 4th-largest complete patent database; retrieval misses no traces or clues." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 每日與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 | "Daily-synced with official sources, world's 4th-largest complete patent database; retrieval misses no traces or clues." | TBD | 🟢 2026-05-30 · shipped with subject-clause prefix added: `Innovue 專屬資料庫所收錄的專利數 - …`. EN still reads `patents powered by Innovue's WEBPAT database — with over 21 years of experience…` (pending Miko-lock). |
 
-Irene asks: **Highlight 「每日」** ("daily").
+Irene asks: **Highlight 「每日」** ("daily"). *Honored 2026-05-30 — `每日` wrapped in `<strong>` via new `data-zh-html` opt-in mechanism in `assets/site.js`.*
 
 ### Jurisdiction stat — subtitle
 
 - **Key:** `home-stats-jurisdiction-subtitle`
 - **Selector:** `.stat-num .counter[data-target="100"]` block
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。 | "The patent database covers over 100 countries globally, including US / EU / JP / TW / KR — best partner for global patent positioning." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。 | "The patent database covers over 100 countries globally, including US / EU / JP / TW / KR — best partner for global patent positioning." | TBD | 🟢 2026-05-30 · ZH only; EN still reads "indexed daily from official Patent Office sources" — daily-emphasis from Irene's note is now ZH/EN-divergent |
 
 ### Analysis-modules stat
 
@@ -627,22 +642,22 @@ Slide 18 is a TBD note from Irene:
 - **File:** `website/index.html`
 - **Selector:** `#products-menu` item targeting `/product/licensing/`
 
-| 中文原文 | Literal translation | English (TBD) | Element |
-|---|---|---|---|
-| 30 件專利防護組合，當週上線。 | "30-piece patent protection bundle, online within the week." | TBD | Headline |
-| 泰然專利防護網 | "Tairan Patent Protection Net" | TBD | Product label |
-| 精選適配專利防護組合，為出口貨物保專利險，快㏿生效，省時省力省預算。 | "Curated, fitted patent protection bundle; insure patent insurance for exported goods; fast activation; saves time, effort, and budget." | TBD | Description |
+| 中文原文 | Literal translation | English (TBD) | Element | Shipped |
+|---|---|---|---|---|
+| 30 件專利防護組合，當週上線。 | "30-piece patent protection bundle, online within the week." | TBD | Headline | |
+| 泰然專利防護網 | "Tairan Patent Protection Net" | TBD | Product label | 🟢 2026-05-30 |
+| 精選適配專利防護組合，為出口貨物保專利險，快㏿生效，省時省力省預算。 | "Curated, fitted patent protection bundle; insure patent insurance for exported goods; fast activation; saves time, effort, and budget." | TBD | Description | 🟢 2026-05-30 · shipped to desktop + mobile dropdowns; `㏿` → `速` per OCR-fix convention |
 
 ### Signal card — label + description
 
 - **Key:** `home-nav-product-signal-title` / `home-nav-product-signal-body`
 - **Selector:** `#products-menu` item targeting `/product/signal/`
 
-| 中文原文 | Literal translation | English (TBD) | Element |
-|---|---|---|---|
-| 30 分鐘完成 SABCD 估價，比對 1.7 億件專利。 | "Complete SABCD valuation in 30 minutes; compared against 170 million patents." | TBD | Headline |
-| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD | Product label |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | "Compare against same-industry patents; based on 50 indicators that include both 'quantity' and 'quality'; rate patents professionally with grounded reasoning." | TBD | Description |
+| 中文原文 | Literal translation | English (TBD) | Element | Shipped |
+|---|---|---|---|---|
+| 30 分鐘完成 SABCD 估價，比對 1.7 億件專利。 | "Complete SABCD valuation in 30 minutes; compared against 170 million patents." | TBD | Headline | |
+| 泰然專利強度評級系統 | "Tairan Patent Strength Rating System" | TBD | Product label | 🟢 2026-05-30 |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | "Compare against same-industry patents; based on 50 indicators that include both 'quantity' and 'quality'; rate patents professionally with grounded reasoning." | TBD | Description | 🟢 2026-05-30 · shipped to desktop + mobile dropdowns |
 
 **Note:** 1.7 億 = 170M. Slide 17 prefers 180M (`updated from Innovue website`). Reconcile before shipping — pick one number for both places.
 
@@ -660,32 +675,32 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 - **File:** `website/index.html`
 - **Selector:** `#pillar-licensing h3` and surrounding intro
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 拼出口的台灣頭家，這裡有一張關鍵名片。 | "Taiwan headmen who hustle for exports — here's one critical business card." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 拼出口的台灣頭家，這裡有一張關鍵名片。 | "Taiwan headmen who hustle for exports — here's one critical business card." | For Taiwan exporters — one critical business card to hand over. *(provisional)* | 🟢 2026-05-30 · replaces the prior 4-feature template in `#pillar-licensing`; entire headline wrapped in `<strong>` via `data-zh-html` (per matching slide-28 bolding pattern) |
 
 ### Snapshot body
 
 - **Key:** `home-snapshot-licensing-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 專利蟑螂評估攻擊成本後跳過你找下家。 | "AI picks 30 legal IPs from the three institution pools — 創智 / 資策會 / 陽明交大 — based on your export country × industry; active the day after payment; ships you a high-spec license badge hangable on booths, quotes, Email signatures. Monthly under NT$10K; doesn't sell the 'absolutely never sued' myth, but makes patent cockroaches assess attack cost and skip you for the next target." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 專利蟑螂評估攻擊成本後跳過你找下家。 | "AI picks 30 legal IPs from the three institution pools — 創智 / 資策會 / 陽明交大 — based on your export country × industry; active the day after payment; ships you a high-spec license badge hangable on booths, quotes, Email signatures. Monthly under NT$10K; doesn't sell the 'absolutely never sued' myth, but makes patent cockroaches assess attack cost and skip you for the next target." | AI picks 30 legal IPs from the ITRI / III / NYCU institution pools, matched to your export country × industry. Activates the day after payment and ships a high-spec license badge you can hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes patent trolls weigh the attack cost and skip you for an easier target. *(provisional — 創智/資策會/陽明交大 mapped to ITRI/III/NYCU per open-item §1 disclosure; "patent cockroaches" softened to "patent trolls")* | 🟢 2026-05-30 · ZH verbatim from slide; `專利蟑螂` wrapped in `<strong>` via `data-zh-html` (per matching slide-28 bolding pattern) |
 
 ### Snapshot annotations (highlight callouts)
 
-| 中文原文 | Literal translation | English (TBD) | Role |
-|---|---|---|---|
-| 30 個專利橫跨 5 個評級，有質有量兼備。 | "30 patents span 5 tiers — quality and quantity both present." | TBD | Annotation 1 |
-| 提供兩種專利包選法 - AI 智選 / FTO 保選。 | "Provides two bundle-selection methods — AI smart-pick / FTO curated-pick." | TBD | Annotation 2 |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 30 個專利橫跨 5 個評級，有質有量兼備。 | "30 patents span 5 tiers — quality and quantity both present." | 30 patents span 5 tiers — quality and quantity in one bundle. *(provisional)* | Annotation 1 | 🟢 2026-05-30 · folded into pillar-features paragraph (no longer a visual screenshot callout) |
+| 提供兩種專利包選法 - AI 智選 / FTO 保選。 | "Provides two bundle-selection methods — AI smart-pick / FTO curated-pick." | Two selection methods — AI smart-pick or FTO-guided curation. *(provisional)* | Annotation 2 | 🟢 2026-05-30 · folded into pillar-features paragraph |
 
 ### Snapshot CTAs
 
 - **Key:** `home-snapshot-licensing-cta-primary`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 查看智選專利包 | "view the smart-pick patent bundle" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 查看智選專利包 | "view the smart-pick patent bundle" | View Smart-Pick Bundle *(provisional)* | 🟢 2026-05-30 · replaces prior `聯絡業務`/`Talk to sales` primary CTA; href TODO: `/product/licensing/#bundle-browse` (currently lands on page root) |
 
 ## Slide 21: Licensing product page hero
 
@@ -693,45 +708,43 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 **Currently on site:** `website/product/licensing/index.html` line 2356 — `section.hero` with `.pillar-title` at line 2364.
 
-### Hero headline (two-part with accent on 「當週上線」)
+> **Transcription correction (2026-05-30).** The doc's earlier framing of "Hero annotation (alt-headline)" + "Hero benefit-bullet annotation" was misleading — Irene's PDF actually positions those two strings as **direct replacements** for the original headline and subhead, not as supplementary annotations. The original headline (`30 件專利防護組合。當週上線。`) and original subhead (`一張訂閱…`) are **superseded**, not preserved. Section headings below have been re-ordered to reflect this.
+
+### Hero headline (insurance-metaphor framing)
 
 - **Key:** `licensing-hero-headline`
 - **File:** `website/product/licensing/index.html`
 - **Selector:** `.hero .pillar-title`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 30 件專利防護組合。當週上線。 | "30-piece patent protection bundle. Online within the week." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 出口買專利險，30 件專利包輕裝上陣。 | "Exporting buys patent insurance; the 30-piece patent bundle goes in light-armor." | TBD | 🟢 2026-05-30 · em emphasis on `30 件專利包輕裝上陣。`; EN preserved structurally and now diverges from ZH meaning (flagged for Miko-lock) |
+| 30 件專利防護組合。當週上線。 *(superseded)* | "30-piece patent protection bundle. Online within the week." | — | ⚪ replaced by row above |
 
 ### Hero subhead
 
 - **Key:** `licensing-hero-subhead`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 一張訂閱，30 件 SABCD 評等專利，依法域 × 產業策展。訂閱當週由被動防禦轉為主動佈局。 | "One subscription, 30 SABCD-tiered patents, curated by jurisdiction × industry. The week you subscribe, you turn from passive defense to active positioning." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級，戴上授權認證標章立刻從被動防禦轉為主動佈局。 | "1 minute to tick country × industry × term, 2 bundle-selection methods, 5 patent tiers — put on the license-certification badge and immediately turn from passive defense to active positioning." | TBD | 🟢 2026-05-30 · single paragraph; the prior `一張訂閱…` ZH subhead is superseded. EN preserved structurally (One subscription, thirty SABCD-graded patents…) and now diverges from ZH meaning |
+| 一張訂閱，30 件 SABCD 評等專利，依法域 × 產業策展。訂閱當週由被動防禦轉為主動佈局。 *(superseded)* | "One subscription, 30 SABCD-tiered patents, curated by jurisdiction × industry. The week you subscribe, you turn from passive defense to active positioning." | — | ⚪ replaced by row above |
 
 ### Hero CTAs
 
 - **Key:** `licensing-hero-cta-primary` / `licensing-hero-cta-secondary`
 
-| 中文原文 | Literal translation | English (TBD) | Role |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 試跑專利包 | "try-run patent bundle" | TBD | Primary (universal slide-11 brand verb) | 🟢 2026-05-30 · href `/product/licensing/lobby/` (existing) |
+| 聯絡業務 | "contact sales" | TBD | Secondary | 🟢 2026-05-30 · href `#contact` (existing) |
+| 組建你的組合 *(superseded)* | "build your bundle" | — | Primary (prior) | ⚪ replaced by `試跑專利包` |
+
+### Eyebrow (page-level product label)
+
+| 中文原文 | Literal translation | English (TBD) | Shipped |
 |---|---|---|---|
-| 組建你的組合 | "build your bundle" | TBD | Primary (existing CTA) |
-| 試跑專利包 | "try-run patent bundle" | TBD | Primary (Irene's replacement / annotation — universal brand verb) |
-| 聯絡業務 | "contact sales" | TBD | Secondary |
-
-### Hero annotation (alt-headline phrase Irene proposes)
-
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 出口買專利險，30 件專利包輕裝上陣。 | "Exporting buys patent insurance; the 30-piece patent bundle goes in light-armor." | TBD |
-
-### Hero benefit-bullet annotation
-
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級，戴上授權認證標章立刻從被動防禦轉為主動佈局。 | "1 minute to tick country × industry × term, 2 bundle-selection methods, 5 patent tiers — put on the license-certification badge and immediately turn from passive defense to active positioning." | TBD |
+| 泰然專利防護網 | "Tairan Patent Protection Net" | TBD | 🟢 2026-05-30 · rebadged from `TIS 授權平台` per the cross-page product-name swap |
 
 ## Slide 22: Licensing product page — Jurisdiction × Industry × Term selector
 
@@ -746,29 +759,29 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 - **Selector:** in the wizard-step heading area near line 2418
 - **Status:** Direct edit
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 選擇法域 × 產業 × 期間 | "Choose jurisdiction × industry × term" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 選擇法域 × 產業 × 期間 | "Choose jurisdiction × industry × term" | TBD | 🟢 2026-05-30 · `.howit-card[data-step="pick"] h4` |
 
 ### Selector body
 
 - **Key:** `licensing-selector-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 一包專利包支持一個法域、一個 產業、一種期間，只為你真正需要的組合付費。 | "One bundle supports one jurisdiction, one industry, one term — only pay for the combination you actually need." | TBD |
-| US、TW，兩個主戰場供專利佈局。 | "US, TW — two main battlefields for patent positioning." | TBD |
-| 3、6、12、24 個月期，隨時可以升級至可選期別，延長授權期間。 | "3 / 6 / 12 / 24-month terms; upgradable to longer terms at any time to extend the license period." | TBD |
-| 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 | "30 SABCD-tiered patent bundle; patents within the same tier are swappable at any time." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 一包專利包支持一個法域、一個 產業、一種期間，只為你真正需要的組合付費。 | "One bundle supports one jurisdiction, one industry, one term — only pay for the combination you actually need." | TBD | 🟢 2026-05-30 · shipped as card subtitle `<p>` (replaces prior `只為你真正需要的市場與期間付費。`) |
+| US、TW，兩個主戰場供專利佈局。 | "US, TW — two main battlefields for patent positioning." | TBD | 🟢 2026-05-30 · shipped as bullet 1 (replaces `US · TW`) |
+| 3、6、12、24 個月期，隨時可以升級至可選期別，延長授權期間。 | "3 / 6 / 12 / 24-month terms; upgradable to longer terms at any time to extend the license period." | TBD | 🟢 2026-05-30 · shipped as bullet 2, lightly compressed for bullet UI: `3、6、12、24 個月期，隨時可升級延長授權期間。` (replaces `3、6 或 12 個月期`) |
+| 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 | "30 SABCD-tiered patent bundle; patents within the same tier are swappable at any time." | TBD | 🟢 2026-05-30 · shipped as bullet 3 (replaces `30 件 SABCD 評等專利／組合`) |
 
-### Selector summary bullets (matching the existing UI mini-list)
+### Selector summary bullets (prior UI mini-list — *superseded by slide-22 body*)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 只為你真正需要的市場與期間付費。 | "Only pay for the market and term you actually need." | TBD |
-| US · TW | "US · TW" | TBD |
-| 3、6 或 12 個月期 | "3, 6, or 12 month terms" | TBD |
-| 30 件 SABCD 評等專利／組合 | "30 SABCD-tiered patents per bundle" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 只為你真正需要的市場與期間付費。 *(superseded)* | "Only pay for the market and term you actually need." | — | ⚪ replaced by slide-22 body subtitle |
+| US · TW *(superseded)* | "US · TW" | — | ⚪ replaced by slide-22 body bullet 1 |
+| 3、6 或 12 個月期 *(superseded)* | "3, 6, or 12 month terms" | — | ⚪ replaced by slide-22 body bullet 2 |
+| 30 件 SABCD 評等專利／組合 *(superseded)* | "30 SABCD-tiered patents per bundle" | — | ⚪ replaced by slide-22 body bullet 3 |
 
 ## Slide 23: Licensing product page — Two selection methods (AI / FTO)
 
@@ -780,32 +793,30 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 - **Key:** `licensing-method-headline`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 兩種專利包挑選法 | "Two bundle-selection methods" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 兩種專利包挑選法 | "Two bundle-selection methods" | TBD | 🟢 2026-05-30 · `.howit-card[data-step="ways"] h4` (replaces prior `兩種挑 30 件的方法`) |
 
 ### Section body
 
 - **Key:** `licensing-method-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| AI 快㏿取得組合，或提交 FTO 報告精準篩選。 | "AI rapidly delivers the bundle, or submit an FTO report for precision filtering." | TBD |
-| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | "Method A — AI smart-pick (free): AI smart-picks 30 patents that match your needs as the bundle." | TBD |
-| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | "Method B — FTO curated-pick (paid): upload your FTO report or pay extra to commission Tairan to produce the FTO report; precision-filter the bundle for gaps in your patent positioning." | TBD |
-| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | "The platform provides 30 primary picks and 30 alternate picks, for you to choose from." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| AI 快㏿取得組合，或提交 FTO 報告精準篩選。 | "AI rapidly delivers the bundle, or submit an FTO report for precision filtering." | TBD | 🟢 2026-05-30 · shipped as card subtitle `<p>` with `㏿ → 速` per OCR-fix convention |
+| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | "Method A — AI smart-pick (free): AI smart-picks 30 patents that match your needs as the bundle." | TBD | 🟢 2026-05-30 · shipped verbatim as bullet 1 |
+| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | "Method B — FTO curated-pick (paid): upload your FTO report or pay extra to commission Tairan to produce the FTO report; precision-filter the bundle for gaps in your patent positioning." | TBD | 🟢 2026-05-30 · shipped verbatim as bullet 2 (notably long — wraps in card UI; acceptable per Miko) |
+| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | "The platform provides 30 primary picks and 30 alternate picks, for you to choose from." | TBD | 🟢 2026-05-30 · shipped verbatim as bullet 3 |
 
-### Method summary bullets (matching existing UI mini-list — current ZH)
+### Method summary bullets (prior UI mini-list — *superseded by slide-23 body*)
 
-The existing site (right side of slide 23) already shows these as `data-zh` values. Preserve unless Irene calls them out for change:
-
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 兩種挑 30 件的方法 | "Two ways to pick 30 patents" | TBD |
-| 5 秒內取得組合——或交付你的 FTO 報告，由平台繞過已釐清的部分。 | "Receive the bundle within 5 seconds — or hand over your FTO report; the platform bypasses what you've already cleared." | TBD |
-| Path A · System Recommendation（免費） | "Path A · System Recommendation (free)" | TBD |
-| Path B · FTO-Guided | "Path B · FTO-Guided" | TBD |
-| 兩條路徑都附 30 件同級替換池 | "Both paths come with a 30-piece same-tier swap pool" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 兩種挑 30 件的方法 *(superseded)* | "Two ways to pick 30 patents" | — | ⚪ replaced by slide-23 headline |
+| 5 秒內取得組合——或交付你的 FTO 報告，由平台繞過已釐清的部分。 *(superseded)* | "Receive the bundle within 5 seconds — or hand over your FTO report; the platform bypasses what you've already cleared." | — | ⚪ replaced by slide-23 body subtitle |
+| Path A · System Recommendation（免費） *(superseded)* | "Path A · System Recommendation (free)" | — | ⚪ replaced by slide-23 body bullet 1 |
+| Path B · FTO-Guided *(superseded)* | "Path B · FTO-Guided" | — | ⚪ replaced by slide-23 body bullet 2 |
+| 兩條路徑都附 30 件同級替換池 *(superseded)* | "Both paths come with a 30-piece same-tier swap pool" | — | ⚪ replaced by slide-23 body bullet 3 |
 
 ## Slide 24: Licensing product page — Bundle browse
 
@@ -815,32 +826,30 @@ The existing site (right side of slide 23) already shows these as `data-zh` valu
 
 - **Key:** `licensing-browse-headline`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 專利包瀏覽 | "Bundle browse" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 專利包瀏覽 | "Bundle browse" | TBD | 🟢 2026-05-30 · `.howit-card[data-step="activate"] h4` (replaces prior `相關組合建議`) |
 
 ### Section body
 
 - **Key:** `licensing-browse-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 針對特定商品特定市場選取 30 個最佳專利組合。 | "Select the 30 best patents into a bundle for a specific product and specific market." | TBD |
-| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | "Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both present." | TBD |
-| 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 | "Sourced from premium patent pools including 國家級創智法人 / 資策會法人 / 陽明交大學術單位 — quality assured." | TBD |
-| 不用等 18 個月或無止盡商務談判，訂閱到生效快㏿打通關。 | "No need to wait 18 months or endless business negotiations — subscription-to-activation breaks through fast." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 針對特定商品特定市場選取 30 個最佳專利組合。 | "Select the 30 best patents into a bundle for a specific product and specific market." | TBD | 🟢 2026-05-30 · shipped as card subtitle `<p>` |
+| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | "Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both present." | TBD | 🟢 2026-05-30 · shipped as bullet 1, formatting preserved (half-width parens, `.` separator) |
+| 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 | "Sourced from premium patent pools including 國家級創智法人 / 資策會法人 / 陽明交大學術單位 — quality assured." | TBD | 🟢 2026-05-30 · shipped as bullet 2 |
+| 不用等 18 個月或無止盡商務談判，訂閱到生效快㏿打通關。 | "No need to wait 18 months or endless business negotiations — subscription-to-activation breaks through fast." | TBD | 🟢 2026-05-30 · shipped as bullet 3 with PDF-verbatim variant: `…訂 閱到生效快打通關。` (space inside `訂 閱`, no `速` per Miko's PDF-source confirmation) |
 
-### Browse summary bullets (matching existing UI mini-list — current ZH)
+### Browse summary bullets (prior UI mini-list — *superseded by slide-24 body*)
 
-The existing site (right side of slide 24) already shows these as `data-zh` values. Preserve unless Irene calls them out for change:
-
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 相關組合建議 | "Related bundle recommendations" | TBD |
-| 15 秒內取得依市場策展的 30 件 SABCD 評等專利。 | "Receive 30 SABCD-tiered patents curated by market within 15 seconds." | TBD |
-| 典型 5 S · 6 A · 9 B · 6 C · 4 D 分布 | "Typical 5 S · 6 A · 9 B · 6 C · 4 D distribution" | TBD |
-| 來源：ITRI、III 及大學夥伴 | "Sources: ITRI, III, and university partners" | TBD |
-| 訂閱當週生效 | "Active the week you subscribe" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 相關組合建議 *(superseded)* | "Related bundle recommendations" | — | ⚪ replaced by slide-24 headline |
+| 15 秒內取得依市場策展的 30 件 SABCD 評等專利。 *(superseded)* | "Receive 30 SABCD-tiered patents curated by market within 15 seconds." | — | ⚪ replaced by slide-24 body subtitle |
+| 典型 5 S · 6 A · 9 B · 6 C · 4 D 分布 *(superseded)* | "Typical 5 S · 6 A · 9 B · 6 C · 4 D distribution" | — | ⚪ replaced by slide-24 body bullet 1 |
+| 來源：ITRI、III 及大學夥伴 *(superseded)* | "Sources: ITRI, III, and university partners" | — | ⚪ replaced by slide-24 body bullet 2 |
+| 訂閱當週生效 *(superseded)* | "Active the week you subscribe" | — | ⚪ replaced by slide-24 body bullet 3 |
 
 ## Slide 25: Licensing product page — Lock / swap bundle
 
@@ -850,29 +859,29 @@ The existing site (right side of slide 24) already shows these as `data-zh` valu
 
 - **Key:** `licensing-lock-headline`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 鎖定專利包 | "Lock the bundle" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 鎖定專利包 | "Lock the bundle" | TBD | 🟢 2026-05-30 · `.howit-card[data-step="swap"] h4` (replaces prior `自選替換──隨你決定`) |
 
 ### Section body
 
 - **Key:** `licensing-lock-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 同評級專利可自選替換，隨你決定，不加價、無等審。 | "Same-tier patents are swappable at your discretion — no extra cost, no review wait." | TBD |
-| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | "The platform provides 30 primary and 30 alternate patents for you to swap." | TBD |
-| 授權期間內可不限次替換同評級專利，提升企業防禦力。 | "Within the license term, unlimited same-tier swaps; raise your enterprise defensive capability." | TBD |
-| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | "As long as the tier composition (5S.6A.9B.6C.4D) is maintained, swap however you want." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 同評級專利可自選替換，隨你決定，不加價、無等審。 | "Same-tier patents are swappable at your discretion — no extra cost, no review wait." | TBD | 🟢 2026-05-30 · shipped as card subtitle `<p>` |
+| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | "The platform provides 30 primary and 30 alternate patents for you to swap." | TBD | 🟢 2026-05-30 · shipped as bullet 1 |
+| 授權期間內可不限次替換同評級專利，提升企業防禦力。 | "Within the license term, unlimited same-tier swaps; raise your enterprise defensive capability." | TBD | 🟢 2026-05-30 · shipped as bullet 2 |
+| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | "As long as the tier composition (5S.6A.9B.6C.4D) is maintained, swap however you want." | TBD | 🟢 2026-05-30 · shipped as bullet 3, formatting preserved (half-width parens, `.` separator) |
 
-### Lock summary bullets
+### Lock summary bullets (prior UI mini-list — *superseded by slide-25 body*)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 不喜歡某一件？可替換——無加價、無等審。 | "Don't like a particular one? Swappable — no extra cost, no review wait." | TBD |
-| 每組附 30 件同級替換池 | "Each bundle comes with a 30-piece same-tier swap pool" | TBD |
-| 期內可不限次替換 | "Unlimited swaps within the term" | TBD |
-| 同級替換，組成 30 件不變 | "Same-tier swap; the 30-piece composition stays unchanged" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 不喜歡某一件？可替換——無加價、無等審。 *(superseded)* | "Don't like a particular one? Swappable — no extra cost, no review wait." | — | ⚪ replaced by slide-25 body subtitle |
+| 每組附 30 件同級替換池 *(superseded)* | "Each bundle comes with a 30-piece same-tier swap pool" | — | ⚪ replaced by slide-25 body bullet 1 |
+| 期內可不限次替換 *(superseded)* | "Unlimited swaps within the term" | — | ⚪ replaced by slide-25 body bullet 2 |
+| 同級替換，組成 30 件不變 *(superseded)* | "Same-tier swap; the 30-piece composition stays unchanged" | — | ⚪ replaced by slide-25 body bullet 3 |
 
 ## Slide 26: Licensing product page — Certificates + Badge
 
@@ -882,28 +891,28 @@ The existing site (right side of slide 24) already shows these as `data-zh` valu
 
 - **Key:** `licensing-badge-headline`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 展示憑證，展示你的軟實力 | "Show the credential, show your soft power" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 展示憑證，展示你的軟實力 | "Show the credential, show your soft power" | TBD | 🟢 2026-05-30 · `.howit-card[data-step="badge"] h4` (replaces prior `展示憑證──以及完整檔案`) |
 
 ### Section body
 
 - **Key:** `licensing-badge-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | "High-spec license-certification badge — for customers to query, raises the threshold for being sued." | TBD |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | "High-spec notarized-e-signature digital license credential — embedded with a unique license number and QR code; 2-second online live verification." | TBD |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | "The 'Tairan × authoritative institution' co-branded license-certification badge — freely printable on international booths, proposal documents, website footers, or product packaging — keeps competitors from easily crossing the line." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | "High-spec license-certification badge — for customers to query, raises the threshold for being sued." | TBD | 🟢 2026-05-30 · shipped as card subtitle `<p>` |
+| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | "High-spec notarized-e-signature digital license credential — embedded with a unique license number and QR code; 2-second online live verification." | TBD | 🟢 2026-05-30 · shipped as bullet 1 |
+| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | "The 'Tairan × authoritative institution' co-branded license-certification badge — freely printable on international booths, proposal documents, website footers, or product packaging — keeps competitors from easily crossing the line." | TBD | 🟢 2026-05-30 · shipped as bullet 2 (Card 5 now has 2 bullets total vs 3 on other How-it-works cards — known visual asymmetry) |
 
-### Badge summary bullets
+### Badge summary bullets (prior UI mini-list — *superseded by slide-26 body*)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 一處文件中心——展示、辯護、佐證授權所需的一切。 | "One document center — everything you need to display, defend, and substantiate the license." | TBD |
-| PNG + SVG 版本，即用即嵌 | "PNG + SVG versions — embed-ready" | TBD |
-| PAdES 簽章的合約與授權證書 | "PAdES-signed contract and license certificate" | TBD |
-| 一條連結即可公開驗證 | "One link for public verification" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 一處文件中心——展示、辯護、佐證授權所需的一切。 *(superseded)* | "One document center — everything you need to display, defend, and substantiate the license." | — | ⚪ replaced by slide-26 body subtitle |
+| PNG + SVG 版本，即用即嵌 *(superseded)* | "PNG + SVG versions — embed-ready" | — | ⚪ rolled into slide-26 body bullet 1 |
+| PAdES 簽章的合約與授權證書 *(superseded)* | "PAdES-signed contract and license certificate" | — | ⚪ rolled into slide-26 body bullet 1 |
+| 一條連結即可公開驗證 *(superseded)* | "One link for public verification" | — | ⚪ dropped from card; slide-26 specs only 2 bullets after subtitle |
 
 ## Slide 27: Licensing product page — Pricing
 
@@ -917,73 +926,77 @@ The existing site (right side of slide 24) already shows these as `data-zh` valu
 - **File:** `website/product/licensing/index.html`
 - **Selector:** `#lic-pricing-heading`
 
-| 中文原文 | Literal translation | English (TBD) | Current `data-zh` value |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
 |---|---|---|---|
-| 定價 — 組建你的組合。 | "Pricing — Build your bundle." | TBD | (matches existing) |
+| 專利授權套件組合 | "Patent licensing package bundle" | TBD | 🟢 2026-05-30 · shipped as the H2's `data-zh` (replaces prior `定價 — 組建你的組合。`); EN side of H2 stays `Pricing — Build your bundle.` |
+| 定價 — 組建你的組合。 *(superseded)* | "Pricing — Build your bundle." | — | ⚪ replaced by `專利授權套件組合` on the same H2; original ZH text retired |
 
-### Pricing — Product label (panel header)
+### Pricing — Product label (panel header — *folded into the H2 above*)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 專利授權套件組合 | "Patent licensing package bundle" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 專利授權套件組合 | "Patent licensing package bundle" | TBD | 🟢 2026-05-30 · per Miko 2026-05-30, no separate panel-header element — the product label IS the H2 (above). A short-lived `bp-section-sub <p>` was added then removed in the same session. |
 
 ### Pricing — Term tabs
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 3 個月 | "3 months" | TBD |
-| 6 個月 | "6 months" | TBD |
-| 12 個月 | "12 months" | TBD |
-| 24 個月 | "24 months" | TBD |
-| 36 個月 | "36 months" | (Crossed out in slide — Irene removed) |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 3 個月 | "3 months" | TBD | 🟢 2026-05-30 · `bp-toggle-seg[data-bp-term="3"]` (pre-existing) |
+| 6 個月 | "6 months" | TBD | 🟢 2026-05-30 · `bp-toggle-seg[data-bp-term="6"]` (pre-existing) |
+| 12 個月 | "12 months" | TBD | 🟢 2026-05-30 · `bp-toggle-seg[data-bp-term="12"]` (active default) |
+| 24 個月 | "24 months" | TBD | 🟢 2026-05-30 · added as `bp-toggle-seg[data-bp-term="24"]`; matching `PRICES['24'] = 8490` and `TERM_SAVE['24'] = 'Save 15%'` (`85折優惠` ZH) are pricing assumptions — confirm with product team |
+| 36 個月 *(removed)* | "36 months" | — | ⚪ removed per slide-27 strikethrough; old `bp-term="36"` slot retired in HTML + JS pricing maps + FAQ blurb |
 
 ### Pricing — Jurisdiction picker
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 選擇國家 | "Choose country" | TBD |
-| 美國 | "United States" | TBD |
-| 台灣 | "Taiwan" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 選擇國家 | "Choose country" | TBD | 🟢 2026-05-30 · `data-zh` added to `.bp-group .bp-label` for jurisdiction |
+| 美國 | "United States" | TBD | 🟢 2026-05-30 · `data-zh` added to US option `.opt-nm` |
+| 台灣 | "Taiwan" | TBD | 🟢 2026-05-30 · `data-zh` added to TW option `.opt-nm` |
+
+`可訂閱` / `Available` right-side label was added then **removed** on Miko's 2026-05-30 sweep — both ZH and EN gone from the picker; no doc row was ever tracked for it.
 
 ### Pricing — Industry picker (6 industries)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 選擇產業 | "Choose industry" | TBD |
-| 晶片半導體設計製造 | "chip & semiconductor design and manufacturing" | TBD |
-| 網路通訊 | "networking & communications" | TBD |
-| 計算機系統 | "computing systems" | TBD |
-| 綜合應用 | "integrated applications" | TBD |
-| 多媒體影音 / 影像處理 | "multimedia A/V / image processing" | TBD |
-| 淨零碳排 | "net-zero / carbon" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 選擇產業 | "Choose industry" | TBD | 🟢 2026-05-30 · `data-zh` added to `.bp-group .bp-label` for industry |
+| 晶片半導體設計製造 | "chip & semiconductor design and manufacturing" | TBD | 🟢 2026-05-30 · `[data-bp-value="chip"] .opt-nm` |
+| 網路通訊 | "networking & communications" | TBD | 🟢 2026-05-30 · `[data-bp-value="networking"] .opt-nm` |
+| 計算機系統 | "computing systems" | TBD | 🟢 2026-05-30 · `[data-bp-value="computing"] .opt-nm` |
+| 綜合應用 | "integrated applications" | TBD | 🟢 2026-05-30 · `[data-bp-value="integrated"] .opt-nm` |
+| 多媒體影音 / 影像處理 | "multimedia A/V / image processing" | TBD | 🟢 2026-05-30 · shipped as `多媒體影音/影像處理` (slash without surrounding spaces, fits the chip width) |
+| 淨零碳排 | "net-zero / carbon" | TBD | 🟢 2026-05-30 · `[data-bp-value="netzero"] .opt-nm` |
+| 30 / 包 | "30 / bundle" | TBD | 🟢 2026-05-30 · `data-zh` added to each industry option's `.opt-rgt` |
 
-Each industry card carries `30 / 包` ("30 / bundle") count.
+These industry names are also mirrored in the JS `INDUSTRY_LABEL_ZH` map so the right-side estimate panel re-renders with ZH when the lang toggle flips.
 
 ### Pricing — Bundle estimate panel
 
-| 中文原文 | Literal translation | English (TBD) | Element |
-|---|---|---|---|
-| 單包金額預估 | "Single-bundle amount estimate" | TBD | Panel heading |
-| 國家 | "Country" | TBD | Row label |
-| 產業 | "Industry" | TBD | Row label |
-| 期別 | "Term" | TBD | Row label |
-| 月均額 | "Monthly average" | TBD | Price row label |
-| / 月 9 折優惠 | "/ month 10% off" | TBD | Discount badge |
-| 訂閱 | "Subscribe" | TBD | Primary button |
+| 中文原文 | Literal translation | English (TBD) | Element | Shipped |
+|---|---|---|---|---|
+| 單包金額預估 | "Single-bundle amount estimate" | TBD | Panel heading | 🟢 2026-05-30 · `.bp-estimate-label` |
+| 國家 | "Country" | TBD | Row label | 🟢 2026-05-30 · estimate row 1 label |
+| 產業 | "Industry" | TBD | Row label | 🟢 2026-05-30 · estimate row 2 label |
+| 期別 | "Term" | TBD | Row label | 🟢 2026-05-30 · estimate row 3 label |
+| 月均額 | "Monthly average" | TBD | Price row label | 🟢 2026-05-30 · `.bp-estimate-total .lbl` |
+| / 月 9 折優惠 | "/ month 10% off" | TBD | Discount badge | 🟢 2026-05-30 · split across two elements — `/ 月` is the unit `data-zh`, `9折優惠` (no space) comes from the new JS `TERM_SAVE_ZH['12']` map; 6-month uses `95折優惠`, 24-month uses `85折優惠` (assumed) |
+| 訂閱 | "Subscribe" | TBD | Primary button | 🟢 2026-05-30 · pre-existing `data-zh="訂閱"` on `.bp-estimate-cta` |
 
 ### Pricing — Each-bundle inclusions list
 
 - **Key:** `licensing-pricing-includes-*`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 30 件 SABCD 評等專利 | "30 SABCD-tiered patents" | TBD |
-| 授權認證標章 (Verified License Badge + QR 驗證頁) | "License-certification badge (Verified License Badge + QR verification page)" | TBD |
-| DLC 數位授權憑證 (PAdES · eIDAS) | "DLC digital license credential (PAdES · eIDAS)" | TBD |
-| MOICA 政府電子簽章 | "MOICA government e-signature" | TBD |
-| 不限次同級專利替換（動態池補償） | "Unlimited same-tier patent swap (dynamic pool compensation)" | TBD |
-| AI 智選（24 小時）配對 | "AI smart-pick matching (24 hours)" | TBD |
-| 標章運用於參展 / 宣傳物（法域 × 產業策展） | "Badge usage on trade shows / promotional materials (jurisdiction × industry curation)" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 30 件 SABCD 評等專利 | "30 SABCD-tiered patents" | TBD | 🟢 2026-05-30 · pre-existing |
+| 授權認證標章 (Verified License Badge + QR 驗證頁) | "License-certification badge (Verified License Badge + QR verification page)" | TBD | 🟢 2026-05-30 · shipped as short form `授權認證標章` (parenthetical EN equivalent dropped per slide-27 visual annotation — Verified License Badge + QR is still in the EN-side text) |
+| DLC 數位授權憑證 (PAdES · eIDAS) | "DLC digital license credential (PAdES · eIDAS)" | TBD | 🟢 2026-05-30 · shipped with full-width parens `（PAdES · eIDAS）` (pre-existing) |
+| MOICA 政府電子簽章 | "MOICA government e-signature" | TBD | 🟢 2026-05-30 · pre-existing |
+| 不限次同級專利替換（動態池補償） | "Unlimited same-tier patent swap (dynamic pool compensation)" | TBD | 🟢 2026-05-30 · shipped as short form `不限次同級專利替換` (parenthetical `（動態池補償）` dropped per slide-27 visual annotation) |
+| AI 智選（24 小時）配對 | "AI smart-pick matching (24 hours)" | TBD | 🟢 2026-05-30 · shipped as short form `AI 智選` (parenthetical `（24 小時）` + `配對` dropped per slide-27 visual annotation) |
+| 標章運用於參展 / 宣傳物（法域 × 產業策展） | "Badge usage on trade shows / promotional materials (jurisdiction × industry curation)" | TBD | 🟢 2026-05-30 · shipped as short form `標章運用於參展/宣傳物` (parenthetical dropped). This bullet REPLACED the prior `法域 × 產業策展` ZH (which was the parenthetical) — meaning the bullet now talks about badge usage rather than bundle curation. EN side updated provisionally to `Badge usage on booths & promo materials`. |
 
 ## Slide 28: Homepage product snapshot — SABCD (Signal)
 
@@ -999,35 +1012,35 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 - **File:** `website/index.html`
 - **Selector:** `#pillar-signal` heading
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 拼募資的 founder、做盡調的 VC、評估護城河的企業 ——專利強不強，看排名就知道。 | "Founders hustling fundraising, VCs running diligence, enterprises evaluating moats — whether the patent is strong, look at the ranking and you'll know." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 拼募資的 founder、做盡調的 VC、評估護城河的企業 ——專利強不強，看排名就知道。 | "Founders hustling fundraising, VCs running diligence, enterprises evaluating moats — whether the patent is strong, look at the ranking and you'll know." | TBD | 🟢 2026-05-30 · shipped via `data-zh-html` with entire headline wrapped in `<strong>`; double em-dash `——` collapsed to single `—` per Miko |
 
 ### Snapshot body
 
 - **Key:** `home-snapshot-signal-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 泰然專利強度評級系統把每件專利打進 同產業 cohort 做百分位排序，產出 SABCD 五級評級。客戶無須整理文件，只需提供專利號，系統自動從 1.8 億筆專利資料庫抽取完整資料、跑完 50 項指標分析。短版執行摘要可快㏿初篩判斷強度，長版逐項下鑽。 | "Tairan Patent Strength Rating System knocks every patent into the same-industry cohort for percentile ranking, producing the SABCD five-tier rating. The customer doesn't need to organize documents — just provide the patent number; the system automatically extracts the full data from the 180-million-record patent database and runs the 50-indicator analysis. The short executive summary lets you rapidly initial-screen for strength judgment; the long version drills down item by item." | TBD |
-| 報告可附入 IC Memo、盡職調查、LP 季報、政府補助 / 標案等各類文件，作為第三方專利評級依據 ——律師告訴你「合不合法」，我們告訴你「強不強」。 | "The report can be attached to IC Memo, due diligence, LP quarterly report, government grants / tenders, and various other documents — as third-party patent-rating evidence. Lawyers tell you 'legal / not'; we tell you 'strong / not'." | TBD |
-
-### Snapshot annotations (highlight callouts)
-
-| 中文原文 | Literal translation | English (TBD) | Role |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
 |---|---|---|---|
-| 三個面向，一個評級 | "Three dimensions, one rating" | TBD | Annotation 1 |
-| 同產業作百分位排名，得出相對應的評級。 | "Run percentile ranking within the same industry; arrive at the corresponding rating." | TBD | Annotation 1 body |
-| 一個引擎，兩種深度 | "One engine, two depths" | TBD | Annotation 2 |
-| 短版 Brief / 長版 Pro，按需隨選。 | "Short Brief / long Pro — select on demand." | TBD | Annotation 2 body |
+| 泰然專利強度評級系統把每件專利打進 同產業 cohort 做百分位排序，產出 SABCD 五級評級。客戶無須整理文件，只需提供專利號，系統自動從 1.8 億筆專利資料庫抽取完整資料、跑完 50 項指標分析。短版執行摘要可快㏿初篩判斷強度，長版逐項下鑽。 | "Tairan Patent Strength Rating System knocks every patent into the same-industry cohort for percentile ranking, producing the SABCD five-tier rating. The customer doesn't need to organize documents — just provide the patent number; the system automatically extracts the full data from the 180-million-record patent database and runs the 50-indicator analysis. The short executive summary lets you rapidly initial-screen for strength judgment; the long version drills down item by item." | TBD | 🟢 2026-05-30 · shipped as body paragraph 1 with two `<strong>` ranges via `data-zh-html`: `同產業 cohort 做百分位排序` and `客戶無須整理文件，只需提供專利號，系統自動從 1.8 億筆專利資料庫抽取完整資料、跑完 50 項指標分析` (the `，產出 SABCD 五級評級。` between them stays plain weight per Miko) |
+| 報告可附入 IC Memo、盡職調查、LP 季報、政府補助 / 標案等各類文件，作為第三方專利評級依據 ——律師告訴你「合不合法」，我們告訴你「強不強」。 | "The report can be attached to IC Memo, due diligence, LP quarterly report, government grants / tenders, and various other documents — as third-party patent-rating evidence. Lawyers tell you 'legal / not'; we tell you 'strong / not'." | TBD | 🟢 2026-05-30 · shipped as body paragraph 2 with `第三方專利評級依據` wrapped in `<strong>`; double em-dash `——` collapsed to single `—` per Miko |
+
+### Snapshot annotations (image callouts — *skipped on homepage per Miko*)
+
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 三個面向，一個評級 *(skipped)* | "Three dimensions, one rating" | — | Annotation 1 | ⚪ per Miko 2026-05-30: content is already implicitly captured in body paragraph 1's `同產業 cohort 做百分位排序，產出 SABCD 五級評級` — skipped on homepage snapshot to reduce duplication; revisit if/when the product page wants the callout treatment |
+| 同產業作百分位排名，得出相對應的評級。 *(skipped)* | "Run percentile ranking within the same industry; arrive at the corresponding rating." | — | Annotation 1 body | ⚪ skipped per above |
+| 一個引擎，兩種深度 *(skipped)* | "One engine, two depths" | — | Annotation 2 | ⚪ per Miko: implicit in body 1's `短版執行摘要可快速初篩判斷強度，長版逐項下鑽` |
+| 短版 Brief / 長版 Pro，按需隨選。 *(skipped)* | "Short Brief / long Pro — select on demand." | — | Annotation 2 body | ⚪ skipped per above |
 
 ### Snapshot CTAs
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 免費預覽報告樣本 | "free preview report sample" | TBD |
-| 聯絡業務 | "contact sales" | TBD |
-| 深入了解 → | "learn more →" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 免費預覽報告樣本 | "free preview report sample" | View Sample Report *(provisional)* | 🟢 2026-05-30 · shipped as primary CTA; href `/product/signal/` (replaces prior `聯絡業務 → #contact`) |
+| 聯絡業務 *(retired from snapshot)* | "contact sales" | — | ⚪ removed from `#pillar-signal` primary CTA slot (still exists in topnav + mobile-nav as the global sales-contact path) |
+| 深入了解 → | "learn more →" | TBD | 🟢 2026-05-30 · kept as secondary CTA; href `/product/signal/` |
 
 ## Slide 29: Signal product page hero
 
