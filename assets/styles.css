@@ -1335,6 +1335,25 @@ main { padding-top: 64px; }
   margin: 0 0 32px;
   max-width: 56ch;
 }
+/* Both product panels — feature list, bold-label inline (no bullets). */
+.pillar-hero-copy .pillar-features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0 0 32px;
+  max-width: 56ch;
+}
+.pillar-hero-copy .pillar-features p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: none;
+}
+.pillar-hero-copy .pillar-features p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
 .pillar-hero-cta {
   display: flex;
   gap: 12px;

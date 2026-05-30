@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-05-30 14:56 +08:00** · Refactored homepage Licensing + Signal product-panel hero copy — replaced dense paragraph + floating side callouts with bold-label feature lists (4 features for Licensing, 3 for Signal); added `.pillar-features` CSS; renamed Signal tab + heading to "Signal Platform" / "Signal 平台" for parallelism with "Licensing Platform".
+
 - **2026-05-30 14:38 +08:00** · Added `documents/chinese-copy-direction.md` as the canonical source for TIS website's Chinese-market copy (33-slide PDF from Irene transcribed verbatim with literal-EN + TBD-EN columns); resynced all four `designs/*-snapshot.md` mirrors to track the upstream `brand-voice.md` rename + section renumber.
 
 - **2026-05-29 00:18 +08:00** · Propagated Innovue database size bump from 170M → 180M (1.7 億 → 1.8 億) across the Signal product page (hero subhead, deliverable, How-it-works check) and Signal lobby ticker — homepage already updated under the prior commit.
