@@ -1038,6 +1038,16 @@ main { padding-top: 64px; }
   margin: 4px 0 0;
 }
 
+/* Attribution variant — "Powered by Innovue" style sub-line. Demoted weight
+   + size + color so it reads as a credit rather than body copy. */
+.pillar-sub--credit {
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--text-tertiary);
+  margin-top: 12px;
+  letter-spacing: 0.01em;
+}
+
 .pillar-actions {
   display: flex; flex-wrap: wrap; gap: 12px;
   justify-content: flex-start;

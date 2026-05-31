@@ -750,7 +750,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 **Status:** Direct edit — apply when ready
 
-**Currently on site:** `website/product/licensing/index.html` line 2418 — `section "How Licensing works"` (the wizard / picker section).
+**Currently on site:** `website/product/licensing/index.html` line 2418 — `section "How Licensing works"` (the wizard / picker section). **Also mirrored on `index.html` `.acc-item[data-step="pick"]` (Licensing accordion item 1) — synced 2026-05-31.**
 
 ### Selector intro headline
 
@@ -787,7 +787,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 **Status:** Direct edit — apply when ready
 
-**Currently on site:** `website/product/licensing/index.html` — within the "How Licensing works" section.
+**Currently on site:** `website/product/licensing/index.html` — within the "How Licensing works" section. **Also mirrored on `index.html` `.acc-item[data-step="ways"]` (Licensing accordion item 2) — synced 2026-05-31.**
 
 ### Section headline
 
@@ -820,7 +820,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 ## Slide 24: Licensing product page — Bundle browse
 
-**Status:** Direct edit — apply when ready
+**Status:** Direct edit — apply when ready · **Also mirrored on `index.html` `.acc-item[data-step="activate"]` (Licensing accordion item 3) — synced 2026-05-31.**
 
 ### Section headline
 
@@ -853,7 +853,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 ## Slide 25: Licensing product page — Lock / swap bundle
 
-**Status:** Direct edit — apply when ready
+**Status:** Direct edit — apply when ready · **Also mirrored on `index.html` `.acc-item[data-step="swap"]` (Licensing accordion item 4) — synced 2026-05-31.**
 
 ### Section headline
 
@@ -885,7 +885,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 ## Slide 26: Licensing product page — Certificates + Badge
 
-**Status:** Direct edit — apply when ready
+**Status:** Direct edit — apply when ready · **Also mirrored on `index.html` `.acc-item[data-step="badge"]` (Licensing accordion item 5) — synced 2026-05-31 with the same 3 → 2 bullet collapse.**
 
 ### Section headline
 
@@ -1048,77 +1048,79 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 **Currently on site:** `website/product/signal/index.html` line 1775 — `section.hero` with `.pillar-title` at line 1783.
 
-### Hero headline (two-part with accent on 「不是幾週」)
+> **Transcription correction (2026-05-31).** Same kind of misframing as slide 21 — the doc previously listed `30 分鐘為 IP 打分。不是幾週。` as the headline and `提交專利號…計算同儕百分位。` as the subhead. Per Miko 2026-05-31, those are **superseded** by the slide-29 "side annotations" below, which are actually Irene's direct replacements: the law-vs-strength wedge becomes the H1, the Peer-Cohort-Snapshot sentence becomes the subhead, and `Powered by Innovue` is a small credit line below.
+
+### Hero headline (insurance / law-vs-strength wedge)
 
 - **Key:** `signal-hero-headline`
 - **File:** `website/product/signal/index.html`
 - **Selector:** `.hero .pillar-title`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 30 分鐘為 IP 打分。不是幾週。 | "30 minutes to score the IP. Not weeks." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 律師告訴你「合不合法」<br>我們告訴你專利「強不強」 | "Lawyers tell you 'legal / not'<br>We tell you the patent is 'strong / not'" | TBD | 🟢 2026-05-31 · two-line H1, second clause em-emphasized; EN preserved structurally (`Grade IP in 30 minutes. / Not weeks.`) and now diverges from ZH meaning — flagged for Miko-lock |
+| 30 分鐘為 IP 打分。不是幾週。 *(superseded)* | "30 minutes to score the IP. Not weeks." | — | ⚪ replaced by the row above |
 
 ### Hero subhead
 
 - **Key:** `signal-hero-subhead`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 提交專利號，半小時內收到 SABCD 評等報告。對 Innovue 1.7 億件全球第四大專利資料庫計算同儕百分位。 | "Submit a patent number; receive the SABCD rating report within half an hour. Compute the peer percentile against Innovue's 170-million-record, world's-4th-largest patent database." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 把目標專利打進 產業池做「同儕基準快照（Peer Cohort Snapshot）」百分位排序，產出 SABCD 五級評級。 | "Knock the target patent into the industry pool to do a 'Peer Cohort Snapshot' percentile ranking; produce the SABCD five-tier rating." | TBD | 🟢 2026-05-31 · shipped as `.pillar-sub` paragraph; EN side preserved (`Submit a patent number; the SABCD-graded Brief lands in thirty minutes. Peer percentile drawn from your industry's curated pool — not a week-long analyst engagement.`) and diverges from ZH meaning |
+| Powered by Innovue | "Powered by Innovue" | "Powered by Innovue" | 🟢 2026-05-31 · shipped as a second `.pillar-sub.pillar-sub--credit` paragraph on its own visual line (new CSS modifier in `assets/styles.css`: 13px, `--text-tertiary` color, `margin-top: 12px`). Same string in both languages. |
+| 提交專利號，半小時內收到 SABCD 評等報告。對 Innovue 1.7 億件全球第四大專利資料庫計算同儕百分位。 *(superseded)* | "Submit a patent number; receive the SABCD rating report within half an hour. Compute the peer percentile against Innovue's 170-million-record, world's-4th-largest patent database." | — | ⚪ replaced by Peer-Cohort-Snapshot row above |
 
 ### Hero CTAs
 
 - **Key:** `signal-hero-cta-primary` / `signal-hero-cta-secondary`
 
-| 中文原文 | Literal translation | English (TBD) | Role |
+| 中文原文 | Literal translation | English (TBD) | Role | Shipped |
+|---|---|---|---|---|
+| 免費預覽報告樣本 | "free preview report sample" | TBD | Primary | 🟢 2026-05-31 · href `/product/signal/lobby/` (existing) |
+| 聯絡業務 | "contact sales" | TBD | Secondary | 🟢 2026-05-31 · href `#contact` (existing, unchanged) |
+| 取得第一份 Brief *(superseded)* | "get your first Brief" | — | Primary (prior) | ⚪ replaced by `免費預覽報告樣本` |
+
+### Hero eyebrow (cleared in ZH)
+
+| 中文原文 | Literal translation | English (TBD) | Shipped |
 |---|---|---|---|
-| 取得第一份 Brief | "get your first Brief" | TBD | Primary (existing) |
-| 免費預覽報告樣本 | "free preview report sample" | TBD | Primary (Irene's replacement / annotation) |
-| 聯絡業務 | "contact sales" | TBD | Secondary |
-
-### Hero side annotations
-
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 律師告訴你「合不合法」 | "Lawyers tell you 'legal / not'" | TBD |
-| 我們告訴你專利「強不強」 | "We tell you the patent is 'strong / not'" | TBD |
-| 把目標專利打進產業池做「同儕基準快照（Peer Cohort Snapshot）」百分位排序，產出 SABCD 五級評級。 | "Knock the target patent into the industry pool to do a 'Peer Cohort Snapshot' percentile ranking; produce the SABCD five-tier rating." | TBD |
-| Powered by Innovue | "Powered by Innovue" | TBD |
+| 代幣制估值 · SABCD 評等 *(retired in ZH)* | "Token-based valuation · SABCD grading" | — | ⚪ ZH `data-zh=""` cleared per Miko 2026-05-31; the existing `.pillar-eyebrow:empty { display: none }` rule hides it. EN side still reads `Token-Based Valuation · SABCD`. |
 
 ## Slide 30: Signal product page — Cohort comparison
 
 **Status:** Direct edit — apply when ready
 
-**Currently on site:** `website/product/signal/index.html` line 1826 — `section "How Signal works"`.
+**Currently on site:** `website/product/signal/index.html` line 1826 — `section "How Signal works"`. **Also mirrored on `index.html` `.acc-item[data-step="pool"]` (Signal accordion item 2) — synced 2026-05-31 with the same 3 → 2 bullet collapse.**
 
 ### Section headline
 
 - **Key:** `signal-cohort-headline`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 對比同儕池 | "Compare against the peer pool" | TBD |
-| 蘋果對蘋果， | "Apples to apples," | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 對比同儕池 | "Compare against the peer pool" | TBD | 🟢 2026-05-31 · `.howit-card[data-step="cohort"] h4` (replaces prior `比對到對的同儕池`) |
+| 蘋果對蘋果， | "Apples to apples," | TBD | 🟢 2026-05-31 · shipped verbatim as card subtitle `<p>` (trailing `，` preserved per PDF; reads as a fragment but matches Miko's literal text) |
 
-### Section body (Irene's copy — note: text on this slide repeats badge-section copy; verify with Irene whether this is intentional or a slide-editing artifact)
+### Section body (badge copy applied verbatim per Miko 2026-05-31)
 
 - **Key:** `signal-cohort-body`
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | "High-spec notarized-e-signature digital license credential — embedded with a unique license number and QR code; 2-second online live verification." | TBD |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | "The 'Tairan × authoritative institution' co-branded license-certification badge — freely printable on international booths, proposal documents, website footers, or product packaging — keeps competitors from easily crossing the line." | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | "High-spec notarized-e-signature digital license credential — embedded with a unique license number and QR code; 2-second online live verification." | TBD | 🟢 2026-05-31 · shipped as bullet 1 (same string also lives on Licensing page slide-26 card 5) |
+| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | "The 'Tairan × authoritative institution' co-branded license-certification badge — freely printable on international booths, proposal documents, website footers, or product packaging — keeps competitors from easily crossing the line." | TBD | 🟢 2026-05-31 · shipped as bullet 2 (Card now has 2 bullets total — collapsed from 3) |
 
-**⚠️ Flagged:** the body copy on slide 30 appears to be reused from slide 26 (badge section). This is a likely slide-editing mistake on Irene's deck — confirm with Irene what the actual cohort-pool body copy should be.
+**⚠️ Note (2026-05-31):** The body copy on slide 30 duplicates slide-26 (Licensing badge section) verbatim — the same two `<li>` strings now render on both `product/licensing/` and `product/signal/`. Miko reviewed and applied as-spec'd; flagged here for Irene's awareness in case the duplication is unintended. EN-side framing on this card (`Matched against the right peer pool` / `Scores you can trust…`) is untouched and now tells a completely different story from the ZH — the largest EN↔ZH semantic divergence on the site, intentional per Miko (will be addressed in a future EN Miko-lock pass).
 
-### Cohort summary bullets
+### Cohort summary bullets (prior UI mini-list — *superseded by slide-30 swap*)
 
-| 中文原文 | Literal translation | English (TBD) |
-|---|---|---|
-| 評分可信賴——校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。 | "Scoring is trustworthy — the calibration target is patents actually competing in the same technical scope, not the whole market flattened." | TBD |
-| IPC 驅動的 12 產業池路由 | "IPC-driven 12-industry-pool routing" | TBD |
-| Innovue 1.7 億件專利資料庫（全球第 4 大） | "Innovue's 170-million-record patent database (world's 4th-largest)" | TBD |
-| 池內樣本不足會於 Brief 上標示警示 | "If the pool sample is insufficient, a warning is marked on the Brief" | TBD |
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 評分可信賴——校準對象是真正在同一技術範疇競爭的專利，而非全市場攤平。 *(superseded)* | "Scoring is trustworthy — the calibration target is patents actually competing in the same technical scope, not the whole market flattened." | — | ⚪ replaced by slide-30 subtitle `蘋果對蘋果，` |
+| IPC 驅動的 12 產業池路由 *(superseded)* | "IPC-driven 12-industry-pool routing" | — | ⚪ replaced by slide-30 body bullet 1 (badge copy) |
+| Innovue 1.7 億件專利資料庫（全球第 4 大） *(superseded)* | "Innovue's 170-million-record patent database (world's 4th-largest)" | — | ⚪ replaced by slide-30 body bullet 2 (badge copy) |
+| 池內樣本不足會於 Brief 上標示警示 *(retired)* | "If the pool sample is insufficient, a warning is marked on the Brief" | — | ⚪ card collapsed from 3 → 2 bullets; this bullet no longer rendered in either language |
 
 ---
 
@@ -1126,7 +1128,7 @@ Irene's note: keep this snapshot block; leave KSPs and how-to detail at the prod
 
 ## Slide 31: English copy correction
 
-**Status:** Direct edit — apply when ready (English-side fix)
+**Status:** 🟢 2026-05-31 · already-resolved (bug not present in current EN copy)
 
 Irene's note about an English-copy bug on the current site:
 
@@ -1134,7 +1136,16 @@ Irene's note about an English-copy bug on the current site:
 
 Literal: "The existing English copy on the official site 'SABCD scores against 170M patents' doesn't match the real product mechanism. Corrected to 'SABCD ranks against industry cohort drawn from TIS's curated pool. Patent search backed by Innovue's 170M-patent database.' is precise."
 
-**Action:** find the English-side string `SABCD scores against 170M patents` in `index.html` / `product/signal/index.html` and replace with the corrected sentence above. This is purely an English-side fix flagged by Irene — no Chinese counterpart needed.
+**Resolution (2026-05-31):** Audited `index.html` and `product/signal/index.html` for the literal string `SABCD scores against 170M patents` — not present. Current EN copy on the Signal page already uses the corrected `industry pool` / `peer cohort` framing Irene wants:
+
+- Hero subhead: `Peer percentile drawn from your industry's curated pool — not a week-long analyst engagement.`
+- Deliverable card: `calibrated against the peers in its industry pool, not the whole market.`
+- How-it-works cohort card: `Scores you can trust — graded against the patents that actually compete with yours, not the whole market.`
+- Meta description (`index.html` + `product/signal/index.html`): `SABCD scoring against your industry's curated patent pool…`
+
+Irene's flagged bug appears to have been fixed in a prior copy pass before this 2026-05-30/31 session. No HTML edit needed.
+
+*(If Irene re-flags this with a specific location, reopen — slide 31 is mark-closed but not deleted.)*
 
 ## Slide 32: New marketing pages (to be built, 1–2 weeks)
 
