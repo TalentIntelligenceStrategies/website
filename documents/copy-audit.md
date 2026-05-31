@@ -17,6 +17,12 @@
 > - `(empty)` — `data-zh=""` exists but is intentionally blank (the element disappears on the Chinese side).
 >
 > **Rich text:** `**bold**` represents `<strong>` from `data-zh-html`. `↵` represents `<br>`.
+>
+> **Row-merging convention** (applied to multi-span title / subhead blocks): use ` / ` to represent `<br>` between visual lines and `*text*` to represent `<em>` emphasis. Applied identically to ZH, Literal EN, and Site EN columns.
+>
+> **History preservation:** when EN or ZH copy is changed, the old text stays in the cell as `~~strikethrough~~<br>new text`. Lives in Site EN for ✏️ edits, in ZH (+ Literal EN) for 🆕 edits, in all three for combined edits. `~~(absent)~~<br>新文字` for ZH added where previously absent.
+>
+> **Retroactive backfill rule:** If a row was edited *before* the strikethrough convention was set (or in a session where it was skipped), retroactively add `~~old~~<br>new` using the prior copy from git history (`git log -p website/documents/copy-audit.md`) — the doc should always reflect the full edit trail, regardless of when the convention was introduced. This applies to any future sessions reopening this doc.
 
 ---
 
@@ -31,7 +37,7 @@
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
 | 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
@@ -47,7 +53,7 @@
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
 | 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
@@ -59,7 +65,7 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
 | 跳至 | Jump to | Jump to | ✅ |
 | 產品 | Products | Products | ✅ |
 | 頁面 | Page | Page | ✅ |
@@ -104,39 +110,30 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 新上線：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣 | Just live: TaiRan Patent Protection Net — 30-patent bundles covering US and Taiwan | Just launched: TIS Licensing Platform — 30-patent bundles across US and Taiwan | ☐ |
+| 即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣 | Coming soon: TaiRan Patent Protection Net — 30-patent bundles covering US and Taiwan | Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan | ☐ |
 | 探索產業 → | Explore industries → | Explore industries → | ☐ |
 
 ## Hero (carousel — 3 slides)
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| (empty) | (intentionally blank on ZH side) | An IP intelligence consultancy | ☐ |
-| 出國保旅平險。 | Travel insurance for going abroad. | Turning patent complexity | ☐ |
-| 出口 | Export | into | ☐ |
-| 保專利險。 | Patent insurance secured. | market position. | ☐ |
-| 律師費 500 萬 + 整批退貨 + 三倍懲罰，水險都買，專利險怎麼能不買？ | Lawyer fees NT$5M + full shipment return + triple damages — you buy marine insurance, how can you not buy patent insurance? | Clarity on IP strength, exposure, and strategic position | ☐ |
-| 月租不到 1 萬，30 件大廠專利授權，立即生效。 | Under NT$10K/month, 30 major-vendor patent licenses, effective immediately. | — in days, not months. | ☐ |
-| 試跑專利包 | Try out the patent bundle | How we work | ☐ |
-| 專利標章加持用法 | Patent badge empowerment / boost usage | Talk to us | ☐ |
+| (empty) | (intentionally blank on ZH side) | An IP intelligence consultancy | ✅ |
+| 出國保旅平險。 / 出口 *保專利險。* | Travel insurance for going abroad. / Export, *patent insurance.* | ~~Turning patent complexity / into *market position.*~~<br>You buy travel insurance to travel. / Buy patent insurance *to export.* | ✏️ ✅ |
+| 律師費 500 萬 + 整批退貨 + 三倍懲罰，水險都買，專利險怎麼能不買？ / 月租不到 1 萬，30 件大廠專利授權，立即生效。 | Lawyer fees NT$5M + full shipment return + triple damages — you buy marine insurance, how can you not buy patent insurance? / Under NT$10K/month, 30 major-vendor patent licenses, effective immediately. | ~~Clarity on IP strength, exposure, and strategic position / — in days, not months.~~<br>Skip patent insurance, pay on three fronts: NT$5M legal fees, full-shipment returns, and treble damages. / Under NT$10K/month. 30 institutional patents. Live immediately. | ✏️ ✅ |
+| 試跑專利包 | Try out the patent bundle | ~~How we work~~<br>Build a bundle | ✏️ ✅ |
+| 專利標章加持用法 | Patent badge empowerment / boost usage | ~~Talk to us~~<br>About the badge | ✏️ ✅ |
 | — | — | — | — |
-| (empty) | (intentionally blank on ZH side) | Licensing Platform | ☐ |
-| 泰然專利包 | TaiRan patent bundle | From patent coverage | ☐ |
-| 為你的 | For your | to an | ☐ |
-| 補助申請加分。 | Adds points to your grant application. | offensive claim. | ☐ |
-| 評審認可的是創智、資策會、陽明交大的優質保證。 | What reviewers recognize is the quality assurance from ITRI, III, and NYCU. | Subscribe to a 30-patent bundle, | ☐ |
-| 30 件合法授權專利以你公司名義可用，月租不到 1 萬。 | 30 legally licensed patents usable under your company's name, under NT$10K/month. | curated for your jurisdiction and industry. | ☐ |
-| 試跑專利包 | Try out the patent bundle | View product | ☐ |
-| 了解授權方案 | Learn about the licensing plan | Contact sales | ☐ |
+| (empty) | (intentionally blank on ZH side) | Licensing Platform | ✅ |
+| 泰然專利包 / 為你的 *補助申請加分。* | TaiRan patent bundle / For your *grant-application boost.* | ~~From patent coverage / to an *offensive claim.*~~<br>License 30 patents. / The edge on your *grant application.* | ✏️ ✅ |
+| 評審認可的是創智、資策會、陽明交大的優質保證。 / 30 件合法授權專利以你公司名義可用，月租不到 1 萬。 | What reviewers recognize is the quality assurance from ITRI, III, and NYCU. / 30 legally licensed patents usable under your company's name, under NT$10K/month. | ~~Subscribe to a 30-patent bundle, / curated for your jurisdiction and industry.~~<br>Sourced from ITRI, III, NYCU — patents every grant reviewer knows. / 30 patents licensed in your company's name. Under NT$10K/month. | ✏️ ✅ |
+| 試跑專利包 | Try out the patent bundle | ~~View product~~<br>Build a bundle | ✏️ ✅ |
+| 了解授權方案 | Learn about the licensing plan | ~~Contact sales~~<br>See licensing plans | ✏️ ✅ |
 | — | — | — | — |
-| (empty) | (intentionally blank on ZH side) | Signal Platform | ☐ |
-| 技術含金量高不高， | Whether the technology's gold content is high or not, | Grading IP strength | ☐ |
-| 看 | look at | into an | ☐ |
-| 排名就知道。 | the ranking and you'll know. | actionable report. | ☐ |
-| SABCD 五級評分 + 同產業 cohort 排名。 | SABCD five-tier scoring + same-industry cohort ranking. | Scored across 50 indicators, against its industry peers | ☐ |
-| 一份可直接附入 IC memo 或 LP 季報的標準化報告。 | A standardized report that can be directly attached to an IC memo or LP quarterly report. | — back in hours, not weeks. | ☐ |
-| 免費預覽報告樣本 | Free preview report sample | View product | ☐ |
-| 專利評級怎麼算 | How patent grading is calculated | Contact sales | ☐ |
+| (empty) | (intentionally blank on ZH side) | Signal Platform | ✅ |
+| 技術含金量高不高， / 看 *排名就知道。* | Is the tech's gold content high or not? / Look — *the ranking tells you.* | ~~Grading IP strength / into an *actionable report.*~~<br>How strong is the patent? / *the ranking settles it.* | ✏️ ✅ |
+| SABCD 五級評分 + 同產業 cohort 排名。 / 一份可直接附入 IC memo 或 LP 季報的標準化報告。 | SABCD five-tier scoring + same-industry cohort ranking. / A standardized report that can be directly attached to an IC memo or LP quarterly report. | ~~Scored across 50 indicators, against its industry peers / — back in hours, not weeks.~~<br>SABCD-graded, ranked against same-industry peers. / Drops into IC memos and LP letters as-is. | ✏️ ✅ |
+| 免費預覽報告樣本 | Free preview report sample | ~~View product~~<br>See a sample report | ✏️ ✅ |
+| 專利評級怎麼算 | How patent grading is calculated | ~~Contact sales~~<br>See the methodology | ✏️ ✅ |
 
 ## Exclusive patent access (partner strip)
 
@@ -405,16 +402,16 @@
 > **Source:** [website/product/licensing/index.html](../product/licensing/index.html) · 176 `data-zh` entries (no `data-zh-html`)
 > Page 2 of 3. Read top-to-bottom against the live page.
 >
-> **⚠️ Cross-page divergence to flag.** The product names in Licensing's top nav / drawer / footer use **short forms** (`授權平台`, `Signal 平台`) while the Homepage uses **full forms** (`泰然專利防護網`, `泰然專利強度評級系統`). Same for the descriptions (`依司法管轄區與產業的專利防護。` vs `精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。`). These need to be reconciled — pick one canonical form per surface.
+> **✅ Cross-page divergence resolved (2026-06-01)** — standardized to full forms (`泰然專利防護網` / `泰然專利強度評級系統`) across all pages, matching Homepage. Product descriptions also standardized to long form (resolved 2026-05-31). Originally Licensing's nav/drawer/footer used short forms; reconciled to one canonical form.
 
 ## Top nav
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
-| 授權平台 | Licensing Platform (lit. "Licensing Platform") | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform (lit. "Licensing Platform")~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
 | 新聞 | News / Press | Press | ✅ |
@@ -428,9 +425,9 @@
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
-| 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
 | 新聞 | News / Press | Press | ✅ |
@@ -443,7 +440,7 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
 | 跳至 | Jump to | Jump to | ✅ |
 | 產品 | Products | Products | ✅ |
 | 頁面 | Page | Page | ✅ |
@@ -670,7 +667,7 @@
 
 ## Footer
 
-> **Note divergence:** Product link names use short forms (`授權平台`, `Signal 平台`) — same as the top nav here, different from Homepage footer.
+> **✅ Resolved (2026-06-01):** Product link names standardized to full forms (`泰然專利防護網` / `泰然專利強度評級系統`) matching Homepage.
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
@@ -678,8 +675,8 @@
 | (absent) | (absent) | Your Email | ☐ |
 | (absent) | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
 | 產品 | Products | Products | ☐ |
-| 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 公司 | Company | Company | ☐ |
 | 關於 | About | About | ☐ |
 | 報告 | Reports | Reports | ☐ |
@@ -709,9 +706,9 @@
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
-| 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
 | 新聞 | News / Press | Press | ✅ |
@@ -725,9 +722,9 @@
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
 | 產品 | Products | Products | ✅ |
-| 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
 | 報告 | Reports | Reports | ✅ |
 | 新聞 | News / Press | Press | ✅ |
@@ -740,7 +737,7 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
 | 跳至 | Jump to | Jump to | ✅ |
 | 產品 | Products | Products | ✅ |
 | 頁面 | Page | Page | ✅ |
@@ -1000,8 +997,8 @@
 | (absent) | (absent) | Your Email | ☐ |
 | (absent) | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
 | 產品 | Products | Products | ☐ |
-| 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| Signal 平台 | Signal Platform | Signal Platform | ☐ |
+| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ |
+| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ |
 | 公司 | Company | Company | ☐ |
 | 關於 | About | About | ☐ |
 | 報告 | Reports | Reports | ☐ |
