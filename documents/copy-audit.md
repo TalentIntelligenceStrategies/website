@@ -2,7 +2,15 @@
 
 > **⚠️ Chinese fidelity rule.** Every ZH cell below is copied **character-for-character** from the source HTML's `data-zh` / `data-zh-html` attributes — same characters, same punctuation (including 、，。「」 and full-width spaces), same order. Nothing is paraphrased, modernized, or converted between traditional/simplified. The only transformation applied is `|` → `\|` to keep table rows intact. **If a Chinese string looks off, the bug is upstream in the HTML** — flag with ❓, do not "fix" the audit doc.
 >
-> **Review legend:** ☐ pending · ✅ approved as-is · ✏️ English needs rewrite · 🔄 pull from ZH side · ❓ needs Irene/Miko sign-off
+> **Review legend:**
+> - ☐ — pending review
+> - ✅ — approved as-is (no edit needed)
+> - ✏️ ✅ — English was edited **and** approved (pencil = edit history, check = current approval)
+> - 🆕 ✅ — Chinese was added or changed **and** approved (new = ZH-side edit history)
+> - ✏️ 🆕 ✅ — both EN and ZH edited + approved
+> - ✏️ / 🆕 — edited, pending re-approval (rare, transient)
+> - 🔄 — pull from ZH side
+> - ❓ — needs Irene/Miko sign-off
 >
 > **Absence markers:**
 > - `(absent)` — no `data-zh` attribute exists; English is unmarked.
@@ -21,15 +29,15 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ✅ |
 
 ## Mobile drawer
 
@@ -37,32 +45,32 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators covering both "quantity" and "quality" — grades patents professionally with evidence. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ✅ |
 
 ## Search modal
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| (absent) | (absent) | Search reports, press, and pages… | ☐ |
-| 跳至 | Jump to | Jump to | ☐ |
-| 產品 | Products | Products | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 關於 | About | About | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 頁面 | Page | Page | ☐ |
+| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| 跳至 | Jump to | Jump to | ✅ |
+| 產品 | Products | Products | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 關於 | About | About | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 聯絡 | Contact | Contact | ✅ |
+| 頁面 | Page | Page | ✅ |
 
 ## IP intelligence drop popup
 
@@ -403,15 +411,15 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 授權平台 | Licensing Platform (lit. "Licensing Platform") | Licensing Platform | ☐ |
-| 依司法管轄區與產業的專利防護。 | Patent protection by jurisdiction and industry. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | Signal 平台 | Signal Platform | Signal Platform | ☐ |
-| 對標同業，為任何專利評分。 | Benchmark against peers, score any patent. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales | Contact sales | ✅ |
 
 ## Mobile drawer
 
@@ -419,15 +427,15 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 依司法管轄區與產業的專利防護。 | Patent protection by jurisdiction and industry. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | Signal 平台 | Signal Platform | Signal Platform | ☐ |
-| 對標同業，為任何專利評分。 | Benchmark against peers, score any patent. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales | Contact sales | ✅ |
 
 ## Search modal
 
@@ -435,18 +443,18 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| (absent) | (absent) | Search reports, press, and pages… | ☐ |
-| 跳至 | Jump to | Jump to | ☐ |
-| 產品 | Products | Products | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 關於 | About | About | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 頁面 | Page | Page | ☐ |
+| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| 跳至 | Jump to | Jump to | ✅ |
+| 產品 | Products | Products | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 關於 | About | About | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 聯絡 | Contact | Contact | ✅ |
+| 頁面 | Page | Page | ✅ |
 
 ## IP intelligence drop popup
 
@@ -700,15 +708,15 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 依司法管轄區與產業的專利防護。 | Patent protection by jurisdiction and industry. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | Signal 平台 | Signal Platform | Signal Platform | ☐ |
-| 對標同業，為任何專利評分。 | Benchmark against peers, score any patent. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales | Contact sales | ✅ |
 
 ## Mobile drawer
 
@@ -716,15 +724,15 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| 產品 | Products | Products | ☐ |
+| 產品 | Products | Products | ✅ |
 | 授權平台 | Licensing Platform | Licensing Platform | ☐ |
-| 依司法管轄區與產業的專利防護。 | Patent protection by jurisdiction and industry. | Patent protection by jurisdiction and industry. | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ |
 | Signal 平台 | Signal Platform | Signal Platform | ☐ |
-| 對標同業，為任何專利評分。 | Benchmark against peers, score any patent. | Score any patent against its industry. | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 關於 | About | About | ☐ |
-| 聯絡業務 | Contact sales | Contact sales | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 關於 | About | About | ✅ |
+| 聯絡業務 | Contact sales | Contact sales | ✅ |
 
 ## Search modal
 
@@ -732,18 +740,18 @@
 
 | ZH | Literal EN | Site EN | ✅ |
 |---|---|---|---|
-| (absent) | (absent) | Search reports, press, and pages… | ☐ |
-| 跳至 | Jump to | Jump to | ☐ |
-| 產品 | Products | Products | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 關於 | About | About | ☐ |
-| 頁面 | Page | Page | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 頁面 | Page | Page | ☐ |
+| 搜尋報告、新聞與頁面… | Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ |
+| 跳至 | Jump to | Jump to | ✅ |
+| 產品 | Products | Products | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 報告 | Reports | Reports | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 新聞 | News / Press | Press | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 關於 | About | About | ✅ |
+| 頁面 | Page | Page | ✅ |
+| 聯絡 | Contact | Contact | ✅ |
+| 頁面 | Page | Page | ✅ |
 
 ## IP intelligence drop popup
 
