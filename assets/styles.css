@@ -102,6 +102,7 @@
   --border-focus:     #252525;
 
   --signal-active:  #22C55E;
+  --signal-warning: #F59E0B;
 
   /* Inverse-surface interaction overlay — design-tokens.md §7.4
      surface-inverse-translucent. Used by .announce-close hover on the dark bar. */
@@ -725,7 +726,7 @@ img, svg { display: block; }
   overflow-y: auto;
   padding: 0 20px;
 }
-.mobile-list a {
+.mobile-list > a {
   display: flex; align-items: center; justify-content: space-between;
   height: 48px;
   font-size: 16px; font-weight: 500;
@@ -2334,6 +2335,9 @@ main { padding-top: 64px; }
   animation: ticker-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   opacity: 0.6;
 }
+/* Amber variant — "Coming soon" / pre-launch state. */
+.ticker-pulse--warning,
+.ticker-pulse--warning::before { background: var(--signal-warning); }
 @keyframes ticker-pulse {
   0%   { transform: scale(1);   opacity: 0.6; }
   100% { transform: scale(2.6); opacity: 0; }
