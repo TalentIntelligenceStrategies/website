@@ -37,6 +37,11 @@
   const i18nEls = document.querySelectorAll('[data-zh]');
   i18nEls.forEach(el => { el.dataset.en = el.textContent.trim(); });
 
+  // Same pattern for `<input>` / `<textarea>` placeholders — data-zh-placeholder
+  // holds the CH form, data-en-placeholder snapshots the original EN placeholder.
+  const i18nPlaceholderEls = document.querySelectorAll('[data-zh-placeholder]');
+  i18nPlaceholderEls.forEach(el => { el.dataset.enPlaceholder = el.placeholder; });
+
   // ── Shimmer cube — extracted from brand/previews/loading-animation-preview.html.
   // Used as a brand-mark transition during user-triggered EN<->ZH language swaps.
   // Skipped on first paint and when prefers-reduced-motion: reduce.
@@ -135,14 +140,19 @@
   // can contain inline markup (e.g. `<strong>` to emphasize a Chinese phrase
   // that has no equivalent in the EN string). EN side still uses textContent
   // since `data-en` is captured from plain textContent at init.
-  const swapText = (lang) => i18nEls.forEach(el => {
-    const target = lang === 'zh' ? el.dataset.zh : el.dataset.en;
-    if (el.hasAttribute('data-zh-html')) {
-      el.innerHTML = target;
-    } else {
-      el.textContent = target;
-    }
-  });
+  const swapText = (lang) => {
+    i18nEls.forEach(el => {
+      const target = lang === 'zh' ? el.dataset.zh : el.dataset.en;
+      if (el.hasAttribute('data-zh-html')) {
+        el.innerHTML = target;
+      } else {
+        el.textContent = target;
+      }
+    });
+    i18nPlaceholderEls.forEach(el => {
+      el.placeholder = lang === 'zh' ? el.dataset.zhPlaceholder : el.dataset.enPlaceholder;
+    });
+  };
 
   const applyLang = (lang, opts = {}) => {
     root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
