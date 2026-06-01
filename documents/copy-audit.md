@@ -165,66 +165,70 @@
 
 ## Products › section heading + pillar toggle
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ☐ |
-| 專利授權 | Patent Licensing | Licensing Platform | ☐ |
-| 專利評級 | Patent Rating | Signal Platform | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 產品 |  | Products | Products | ✅ |
+| 專利授權 |  | Patent Licensing | ~~Licensing Platform~~<br>Patent Licensing | ✏️ ✅ |
+| 專利評級 |  | Patent Rating | ~~Signal Platform~~<br>Patent Rating | ✏️ ✅ |
 
 ## Products › Licensing › Hero
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| **拼出口的台灣頭家，這裡有一張關鍵名片。** | **Taiwan bosses hustling on exports — here's one critical business card.** | For Taiwan exporters — one critical business card to hand over. | ☐ |
-| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 **專利蟑螂**評估攻擊成本後跳過你找下家。 | AI selects 30 legal IPs from the ITRI, III, NYCU institution pools by your export country × industry; effective the day after payment; issues you a high-spec license badge to hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes **patent trolls** weigh the attack cost and skip you for the next target. | AI picks 30 legal IPs from the ITRI / III / NYCU institution pools, matched to your export country × industry. Activates the day after payment and ships a high-spec license badge you can hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes patent trolls weigh the attack cost and skip you for an easier target. | ☐ |
-| 30 個專利橫跨 5 個評級，有質有量兼備。 | 30 patents span 5 tiers — quality and quantity both covered. | 30 patents span 5 tiers — quality and quantity in one bundle. | ☐ |
-| 提供兩種專利包選法 - AI 智選 / FTO 保選。 | Two bundle-selection methods provided — AI smart-pick / FTO-guarded pick. | Two selection methods — AI smart-pick or FTO-guided curation. | ☐ |
-| 查看智選專利包 | View the smart-pick patent bundle | View Smart-Pick Bundle | ☐ |
-| 深入了解 → | Learn more → | Learn more → | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 泰然專利防護網 |  | TaiRan Patent Protection Net | Licensing Platform | ✅ |
+| **拼出口的台灣頭家，這裡有一張關鍵名片。** |  | **Taiwan bosses hustling on exports — here's one critical business card.** | ~~For Taiwan exporters — one critical business card to hand over.~~<br>**For exporters pushing into new markets — one credential that covers every front.** | ✏️ ✅ |
+| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 **專利蟑螂**評估攻擊成本後跳過你找下家。 |  | AI selects 30 legal IPs from the ITRI, III, NYCU institution pools by your export country × industry; effective the day after payment; issues you a high-spec license badge to hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes **patent trolls** weigh the attack cost and skip you for the next target. | ~~AI picks 30 legal IPs from the ITRI / III / NYCU institution pools, matched to your export country × industry. Activates the day after payment and ships a high-spec license badge you can hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes patent trolls weigh the attack cost and skip you for an easier target.~~<br>AI picks 30 legal IPs from the ITRI / III / NYCU pools — matched to your export country × industry, active the day after payment. A high-spec badge for booth, quote, and email signature. Under NT$10K/month — doesn't sell the "never sued" myth, but deters **patent trolls**. | ✏️ ✅ |
+| 30 個專利橫跨 5 個評級，有質有量兼備。 |  | 30 patents span 5 tiers — quality and quantity both covered. | 30 patents span 5 tiers — quality and quantity in one bundle. | ✅ |
+| 提供兩種專利包選法 - AI 智選 / FTO 保選。 |  | Two bundle-selection methods provided — AI smart-pick / FTO-guarded pick. | ~~Two selection methods — AI smart-pick or FTO-guided curation.~~<br>Two selection methods — AI smart-pick or FTO-guarded pick. | ✏️ ✅ |
+| 查看智選專利包 |  | View the smart-pick patent bundle | View Smart-Pick Bundle | ✅ |
+| 深入了解 → |  | Learn more → | Learn more → | ✅ |
 
 ## Products › Licensing › Deliverables (4-card grid)
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 策展覆蓋，當週上線 | Curated coverage, live the same week | Curated coverage, active this week | ☐ |
-| 依司法管轄區 × 產業策展的 30 件專利組合，訂閱當週生效──依你客戶實際所在地，選 US 或 TW。 | A 30-patent bundle curated by jurisdiction × industry, effective the week of subscription — pick US or TW based on where your customers actually are. | Thirty patents, curated by jurisdiction and industry, live the week you subscribe — covering the market your customers actually buy in. | ☐ |
-| 帶著 IP 進入新市場 | Enter new markets carrying IP | Enter new markets with IP in hand | ☐ |
-| 每張訂閱將相關專利請求項放進你的手中，覆蓋你進入的市場──從上市第一天起，就有可防禦的立足點。 | Each subscription puts the relevant patent claims into your hands, covering the markets you enter — from day one of launch, you have defensible footing. | Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later. | ☐ |
-| 一掃即驗 | Verify in one scan | Verifiable in one scan | ☐ |
-| TIS 簽發的數位授權憑證，可即時掃描驗證──向任何要求查驗的人證明你對這些專利的合法使用權。 | A TIS-issued Digital License Credential, scannable for instant verification — proves your legal right to use these patents to anyone who asks. | A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks. | ☐ |
-| 看見組合裡的每一件 | See every piece in the bundle | See exactly what's in the bundle | ☐ |
-| 每件專利皆由 Innovue SABCD 框架評等──典型 30 件組合分布 5 S · 6 A · 9 B · 6 C · 4 D。不是黑盒。 | Every patent graded under the Innovue SABCD framework — a typical 30-patent bundle distributes 5 S · 6 A · 9 B · 6 C · 4 D. Not a black box. | Every patent graded on Innovue's SABCD framework — a typical bundle splits 5 S · 6 A · 9 B · 6 C · 4 D. No black box, no filler. | ☐ |
+> **1:1 with Licensing › Deliverables — canonical here.** The 4 card titles + bodies are byte-identical on `index.html` (lines 543–574) and `product/licensing/index.html` (lines 2390–2421). **Every edit to a row below must land in BOTH files.** The licensing page additionally wraps card 3's body in an `<a href="#artifacts">` whose own `data-zh` is tracked separately under `Licensing › Deliverables`.
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 策展覆蓋，當週上線 |  | Curated coverage, live the same week | Curated coverage, active this week | ☐ |
+| 依司法管轄區 × 產業策展的 30 件專利組合，訂閱當週生效──依你客戶實際所在地，選 US 或 TW。 |  | A 30-patent bundle curated by jurisdiction × industry, effective the week of subscription — pick US or TW based on where your customers actually are. | Thirty patents, curated by jurisdiction and industry, live the week you subscribe — covering the market your customers actually buy in. | ☐ |
+| 帶著 IP 進入新市場 |  | Enter new markets carrying IP | Enter new markets with IP in hand | ☐ |
+| 每張訂閱將相關專利請求項放進你的手中，覆蓋你進入的市場──從上市第一天起，就有可防禦的立足點。 |  | Each subscription puts the relevant patent claims into your hands, covering the markets you enter — from day one of launch, you have defensible footing. | Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later. | ☐ |
+| 一掃即驗 |  | Verify in one scan | Verifiable in one scan | ☐ |
+| TIS 簽發的數位授權憑證，可即時掃描驗證──向任何要求查驗的人證明你對這些專利的合法使用權。 |  | A TIS-issued Digital License Credential, scannable for instant verification — proves your legal right to use these patents to anyone who asks. | A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks. | ☐ |
+| 看見組合裡的每一件 |  | See every piece in the bundle | See exactly what's in the bundle | ☐ |
+| 每件專利皆由 Innovue SABCD 框架評等──典型 30 件組合分布 5 S · 6 A · 9 B · 6 C · 4 D。不是黑盒。 |  | Every patent graded under the Innovue SABCD framework — a typical 30-patent bundle distributes 5 S · 6 A · 9 B · 6 C · 4 D. Not a black box. | Every patent graded on Innovue's SABCD framework — a typical bundle splits 5 S · 6 A · 9 B · 6 C · 4 D. No black box, no filler. | ☐ |
 
 ## Products › Licensing › How it works (5-step accordion)
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 運作方式 | How it operates | How it works | ☐ |
-| 選擇法域 × 產業 × 期間 | Pick jurisdiction × industry × term | Pick your jurisdiction × industry × term | ☐ |
-| 一包專利包支持一個法域、一個產業、一種期間，只為你真正需要的組合付費。 | One bundle covers one jurisdiction, one industry, one term — pay only for the combination you actually need. | Pay for the markets and the term you actually need — nothing you don't. | ☐ |
-| US、TW，兩個主戰場供專利佈局。 | US, TW — two main battlegrounds for patent positioning. | Cover the market your customers buy in | ☐ |
-| 3、6、12、24 個月期，隨時可升級延長授權期間。 | 3, 6, 12, 24-month terms — can upgrade and extend the license period anytime. | Choose the term that fits your runway | ☐ |
-| 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 | A 30-patent SABCD-graded bundle — same-tier patents can be swapped anytime. | Get thirty SABCD-graded patents per bundle | ☐ |
-| 兩種專利包挑選法 | Two patent-bundle picking methods | Two ways to pick the 30 | ☐ |
-| AI 快速取得組合，或提交 FTO 報告精準篩選。 | AI delivers a bundle fast, or submit an FTO report for precise filtering. | A bundle in 15 seconds — or hand us your FTO and we'll route around it. | ☐ |
-| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | Method A — AI smart-pick (free): AI smart-picks a 30-patent bundle matching your needs. | Let the system recommend a bundle, free | ☐ |
-| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | Method B — FTO-guarded pick (paid): Upload your FTO report, or pay extra to commission TIS to produce one — precisely filters the bundle to plug gaps in your patent positioning. | Or hand us your FTO to guide the pick | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | The platform provides a primary 30 and a backup 30 patent list for you to choose from. | Either path ships with a same-tier swap pool | ☐ |
-| 專利包瀏覽 | Patent bundle browse | Relevant bundle suggested | ☐ |
-| 針對特定商品特定市場選取 30 個最佳專利組合。 | For a specific product in a specific market, pick the best 30-patent bundle. | 30 SABCD-graded patents, curated to your market in under 15 seconds. | ☐ |
-| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both covered. | Get a tier-balanced bundle, flagship to long tail | ☐ |
-| 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 | From national-grade ITRI institution, III institution, NYCU academic units and other premium patent pools — quality assured. | Drawn from the Innovue, iPIC, III & NYCU pool | ☐ |
-| 不用等 18 個月或無止盡商務談判，訂 閱到生效快打通關。 | No need to wait 18 months or endure endless commercial negotiations — subscription to activation clears fast. | Go live the week you subscribe | ☐ |
-| 鎖定專利包 | Lock the patent bundle | Swap patents — your call | ☐ |
-| 同評級專利可自選替換，隨你決定，不加價、無等審。 | Same-tier patents can be self-swapped — your call — no surcharge, no review wait. | Don't love a pick? Swap it — no surcharge, no review delay. | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | The platform provides a primary 30 and backup 30 patent list for you to self-swap. | Swap any pick from a same-tier pool | ☐ |
-| 授權期間內可不限次替換同評級專利，提升企業防禦力。 | Within the license term, swap same-tier patents an unlimited number of times — boosts corporate defensibility. | Swap as often as you like, within term | ☐ |
-| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | As long as the tier mix is maintained (5S.6A.9B.6C.4D), swap however you like. | Replace like-for-like — the count stays thirty | ☐ |
-| 展示憑證，展示你的軟實力 | Display the credential, display your soft power | Display the credential — and the full file | ☐ |
-| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | High-spec license-certification badge, for customer lookup — raises the threshold of being sued. | One Document Center — everything you need to display, defend, and prove the license. | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Embed the credential anywhere, PNG or SVG | ☐ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Hand over a PAdES-signed contract and certificate | ☐ |
+> **1:1 with Licensing › How it works — canonical here.** Same 5 steps + headers + bodies + check items on `index.html` (line 577 onward) and `product/licensing/index.html` (line 2432 onward). Layout differs (homepage = accordion; product page = horizontal rail) — copy is byte-identical. **Every edit to a row below must land in BOTH files.**
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 運作方式 |  | How it operates | How it works | ☐ |
+| 選擇法域 × 產業 × 期間 |  | Pick jurisdiction × industry × term | Pick your jurisdiction × industry × term | ☐ |
+| 一包專利包支持一個法域、一個產業、一種期間，只為你真正需要的組合付費。 |  | One bundle covers one jurisdiction, one industry, one term — pay only for the combination you actually need. | Pay for the markets and the term you actually need — nothing you don't. | ☐ |
+| US、TW，兩個主戰場供專利佈局。 |  | US, TW — two main battlegrounds for patent positioning. | Cover the market your customers buy in | ☐ |
+| 3、6、12、24 個月期，隨時可升級延長授權期間。 |  | 3, 6, 12, 24-month terms — can upgrade and extend the license period anytime. | Choose the term that fits your runway | ☐ |
+| 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 |  | A 30-patent SABCD-graded bundle — same-tier patents can be swapped anytime. | Get thirty SABCD-graded patents per bundle | ☐ |
+| 兩種專利包挑選法 |  | Two patent-bundle picking methods | Two ways to pick the 30 | ☐ |
+| AI 快速取得組合，或提交 FTO 報告精準篩選。 |  | AI delivers a bundle fast, or submit an FTO report for precise filtering. | A bundle in 15 seconds — or hand us your FTO and we'll route around it. | ☐ |
+| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 |  | Method A — AI smart-pick (free): AI smart-picks a 30-patent bundle matching your needs. | Let the system recommend a bundle, free | ☐ |
+| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 |  | Method B — FTO-guarded pick (paid): Upload your FTO report, or pay extra to commission TIS to produce one — precisely filters the bundle to plug gaps in your patent positioning. | Or hand us your FTO to guide the pick | ☐ |
+| 平台提供首選 30 和備選 30 專利清單，供你挑選。 |  | The platform provides a primary 30 and a backup 30 patent list for you to choose from. | Either path ships with a same-tier swap pool | ☐ |
+| 專利包瀏覽 |  | Patent bundle browse | Relevant bundle suggested | ☐ |
+| 針對特定商品特定市場選取 30 個最佳專利組合。 |  | For a specific product in a specific market, pick the best 30-patent bundle. | 30 SABCD-graded patents, curated to your market in under 15 seconds. | ☐ |
+| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 |  | Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both covered. | Get a tier-balanced bundle, flagship to long tail | ☐ |
+| 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 |  | From national-grade ITRI institution, III institution, NYCU academic units and other premium patent pools — quality assured. | Drawn from the Innovue, iPIC, III & NYCU pool | ☐ |
+| 不用等 18 個月或無止盡商務談判，訂 閱到生效快打通關。 |  | No need to wait 18 months or endure endless commercial negotiations — subscription to activation clears fast. | Go live the week you subscribe | ☐ |
+| 鎖定專利包 |  | Lock the patent bundle | Swap patents — your call | ☐ |
+| 同評級專利可自選替換，隨你決定，不加價、無等審。 |  | Same-tier patents can be self-swapped — your call — no surcharge, no review wait. | Don't love a pick? Swap it — no surcharge, no review delay. | ☐ |
+| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 |  | The platform provides a primary 30 and backup 30 patent list for you to self-swap. | Swap any pick from a same-tier pool | ☐ |
+| 授權期間內可不限次替換同評級專利，提升企業防禦力。 |  | Within the license term, swap same-tier patents an unlimited number of times — boosts corporate defensibility. | Swap as often as you like, within term | ☐ |
+| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 |  | As long as the tier mix is maintained (5S.6A.9B.6C.4D), swap however you like. | Replace like-for-like — the count stays thirty | ☐ |
+| 展示憑證，展示你的軟實力 |  | Display the credential, display your soft power | Display the credential — and the full file | ☐ |
+| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 |  | High-spec license-certification badge, for customer lookup — raises the threshold of being sued. | One Document Center — everything you need to display, defend, and prove the license. | ☐ |
+| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 |  | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Embed the credential anywhere, PNG or SVG | ☐ |
+| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 |  | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Hand over a PAdES-signed contract and certificate | ☐ |
 
 ## Products › Signal › Hero
 
@@ -239,48 +243,52 @@
 
 ## Products › Signal › Deliverables (4-card grid)
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 看見你的專利排在哪裡 | See where your patent ranks | See how your patent measures up | ☐ |
-| SABCD 評等將每件專利從 Tier S 排到 Tier D，以 Innovue 1.8 億件專利資料庫的同產業池為校準基準。 | SABCD grading ranks every patent from Tier S to Tier D — calibrated against Innovue's 180M-patent database's same-industry pool. | One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market. | ☐ |
-| 壓力測試專利的真實強度 | Pressure-test a patent's true strength | Pressure-test a patent's strength | ☐ |
-| 並列比對請求項、專利家族與引用，對標技術相近的同儕專利，檢驗其有效性與真實強度是否經得起審視。 | Side-by-side compare claims, patent families, and citations; benchmarked against technology-similar peer patents; tests whether validity and true strength withstand scrutiny. | Claim, family, and citation, side by side against technology-similar peers — so you see whether a patent's strength holds up before you bet on it. | ☐ |
-| 策略佈局你的路徑 | Strategically position your path | Strategically position your path | ☐ |
-| 每件專利拆解為 8 大加權支柱──引用影響力（Citation Impact）、前瞻價值（Forward-Looking Value）等──Pro 報告再展開 50 項指標深度分析，協助策略決策。 | Each patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, etc. — and the Pro report expands all 50 indicators for deep analysis, supporting strategic decisions. | Every patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more. Pro opens all 50 indicators beneath them, so you see exactly what anchors the grade. | ☐ |
-| 下注前，先摸清地形 | Before placing the bet, get a feel for the terrain | Know the terrain before you bet | ☐ |
-| 補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。 | Fill in the blind spots that bring risk and costly mistakes. Pre-built by industry and jurisdiction — no need to commission an analyst project. | Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit. | ☐ |
+> **1:1 with Signal › Deliverables — canonical here.** The 4 card titles + bodies are byte-identical on `index.html` (lines 1234–1265) and `product/signal/index.html` (lines 1809–1828). **Every edit to a row below must land in BOTH files.** No anchor-wrapping extras (unlike Licensing card 3) — Signal cards are pure h4+p.
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 看見你的專利排在哪裡 |  | See where your patent ranks | See how your patent measures up | ☐ |
+| SABCD 評等將每件專利從 Tier S 排到 Tier D，以 Innovue 1.8 億件專利資料庫的同產業池為校準基準。 |  | SABCD grading ranks every patent from Tier S to Tier D — calibrated against Innovue's 180M-patent database's same-industry pool. | One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market. | ☐ |
+| 壓力測試專利的真實強度 |  | Pressure-test a patent's true strength | Pressure-test a patent's strength | ☐ |
+| 並列比對請求項、專利家族與引用，對標技術相近的同儕專利，檢驗其有效性與真實強度是否經得起審視。 |  | Side-by-side compare claims, patent families, and citations; benchmarked against technology-similar peer patents; tests whether validity and true strength withstand scrutiny. | Claim, family, and citation, side by side against technology-similar peers — so you see whether a patent's strength holds up before you bet on it. | ☐ |
+| 策略佈局你的路徑 |  | Strategically position your path | Strategically position your path | ☐ |
+| 每件專利拆解為 8 大加權支柱──引用影響力（Citation Impact）、前瞻價值（Forward-Looking Value）等──Pro 報告再展開 50 項指標深度分析，協助策略決策。 |  | Each patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, etc. — and the Pro report expands all 50 indicators for deep analysis, supporting strategic decisions. | Every patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more. Pro opens all 50 indicators beneath them, so you see exactly what anchors the grade. | ☐ |
+| 下注前，先摸清地形 |  | Before placing the bet, get a feel for the terrain | Know the terrain before you bet | ☐ |
+| 補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。 |  | Fill in the blind spots that bring risk and costly mistakes. Pre-built by industry and jurisdiction — no need to commission an analyst project. | Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit. | ☐ |
 
 ## Products › Signal › How it works (5-step accordion)
 
-> ⚠️ **Flagged copy-paste leak.** In step 2 ("Matched against the right peer pool"), the two check-item ZH strings appear to be mistakenly copied from the Licensing "Display the credential" step — they describe license badges, not peer matching. Marked ❓ for review. The bug is upstream in [index.html](../index.html) lines 1312–1313.
+> **1:1 with Signal › How it works — canonical here.** Same ZH + Site EN strings on `index.html` (line 1268 onward) and `product/signal/index.html` (line 1840 onward), with **one EN-only divergence** flagged below (step 2 body). Layout differs (homepage = accordion; product page = horizontal rail) — ZH is fully byte-identical. **Every edit to a row below must land in BOTH files** (except the step 2 body row, which currently differs — see Signal › How it works for the page-specific Site EN).
+>
+> ⚠️ **Flagged copy-paste leak.** In step 2 ("Matched against the right peer pool"), the two check-item ZH strings appear to be mistakenly copied from the Licensing "Display the credential" step — they describe license badges, not peer matching. Marked ❓ for review. The bug is upstream in [index.html](../index.html) lines 1312–1313 (also mirrored on the Signal product page).
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 運作方式 | How it operates | How it works | ☐ |
-| 提交一個專利號 | Submit a patent number | Submit a patent number | ☐ |
-| Brief 30 分鐘內寄達──免分析師，免等一整週。 | Brief arrives within 30 minutes — no analyst needed, no week-long wait. | Your Brief lands in 30 minutes — no analyst, no week-long wait. | ☐ |
-| USPTO · TW · EPO · WO | USPTO · TW · EPO · WO | Grade patents from any major office | ☐ |
-| 可平行 submit | Can submit in parallel | Score a whole batch at once | ☐ |
-| P95 寄達 ≤ 30 分鐘 | P95 delivery ≤ 30 minutes | Skip the week-long analyst wait | ☐ |
-| 對比同儕池 | Compare against the peer pool | Matched against the right peer pool | ☐ |
-| 蘋果對蘋果， | Apples to apples, | Scores you can trust — graded against patents that actually compete in the same category. | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Get matched to your exact technical category | ❓ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Benchmark against the Innovue, iPIC, III & NYCU pool | ❓ |
-| Brief 還是 Pro──你決定 | Brief or Pro — you decide | Brief or Pro — your call | ☐ |
-| 同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。 | One scoring engine, two depths — pay now for what you need now, top up later to upgrade. | One scoring engine, two depths — pay for what you need today, top up later. | ☐ |
-| Brief · 15 點 · 30 分鐘郵件 | Brief · 15 points · 30-minute email | Start with the fast Brief verdict | ☐ |
-| Pro · 30 點 · 即時渲染 | Pro · 30 points · real-time render | Go deeper with Pro when you need it | ☐ |
-| 事後升級無加價 | Upgrade later — no surcharge | Upgrade anytime — no switching premium | ☐ |
-| Brief 報告呈現什麼 | What the Brief report shows | What the Brief report shows you | ☐ |
-| 一分鐘掃完──無需編輯，直接轉發給投資委員會。 | Scannable in a minute — no editing needed, forward directly to the IC. | Scannable in a minute — forward it to your IC without editing. | ☐ |
-| 等級判定 + PSS 分數 | Tier verdict + PSS score | See the tier verdict at a glance | ☐ |
-| 池內百分位 + 池內排名 | In-pool percentile + in-pool rank | Know exactly where it ranks among peers | ☐ |
-| 狀態 · 家族 · IPC · 剩餘年限 · AI 摘要 | Status · Family · IPC · Remaining term · AI summary | Forward it to your IC as-is | ☐ |
-| Pro 將 PSS 拆解成 50 項指標 | Pro breaks the PSS down into 50 indicators | Pro unpacks the PSS into 50 indicators | ☐ |
-| 可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。 | Withstands legal review — see clearly which dimensions anchor the grade and where the sensitivities lie. | Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit. | ☐ |
-| 八大支柱 × 4–8 項指標 = 50 項 | 8 pillars × 4–8 indicators = 50 items | See what anchors the grade | ☐ |
-| 每項指標：原值、百分位、權重 | Each indicator: raw value, percentile, weight | Trace every score to its formula | ☐ |
-| Top 10 驅動因子 + Top 5 敏感度標出 | Top 10 drivers + Top 5 sensitivities marked | Spot the top drivers and risks fast | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 運作方式 |  | How it operates | How it works | ☐ |
+| 提交一個專利號 |  | Submit a patent number | Submit a patent number | ☐ |
+| Brief 30 分鐘內寄達──免分析師，免等一整週。 |  | Brief arrives within 30 minutes — no analyst needed, no week-long wait. | Your Brief lands in 30 minutes — no analyst, no week-long wait. | ☐ |
+| USPTO · TW · EPO · WO |  | USPTO · TW · EPO · WO | Grade patents from any major office | ☐ |
+| 可平行 submit |  | Can submit in parallel | Score a whole batch at once | ☐ |
+| P95 寄達 ≤ 30 分鐘 |  | P95 delivery ≤ 30 minutes | Skip the week-long analyst wait | ☐ |
+| 對比同儕池 |  | Compare against the peer pool | Matched against the right peer pool | ☐ |
+| 蘋果對蘋果， |  | Apples to apples, | Scores you can trust — graded against patents that actually compete in the same category. | ☐ |
+| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 |  | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Get matched to your exact technical category | ❓ |
+| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 |  | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Benchmark against the Innovue, iPIC, III & NYCU pool | ❓ |
+| Brief 還是 Pro──你決定 |  | Brief or Pro — you decide | Brief or Pro — your call | ☐ |
+| 同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。 |  | One scoring engine, two depths — pay now for what you need now, top up later to upgrade. | One scoring engine, two depths — pay for what you need today, top up later. | ☐ |
+| Brief · 15 點 · 30 分鐘郵件 |  | Brief · 15 points · 30-minute email | Start with the fast Brief verdict | ☐ |
+| Pro · 30 點 · 即時渲染 |  | Pro · 30 points · real-time render | Go deeper with Pro when you need it | ☐ |
+| 事後升級無加價 |  | Upgrade later — no surcharge | Upgrade anytime — no switching premium | ☐ |
+| Brief 報告呈現什麼 |  | What the Brief report shows | What the Brief report shows you | ☐ |
+| 一分鐘掃完──無需編輯，直接轉發給投資委員會。 |  | Scannable in a minute — no editing needed, forward directly to the IC. | Scannable in a minute — forward it to your IC without editing. | ☐ |
+| 等級判定 + PSS 分數 |  | Tier verdict + PSS score | See the tier verdict at a glance | ☐ |
+| 池內百分位 + 池內排名 |  | In-pool percentile + in-pool rank | Know exactly where it ranks among peers | ☐ |
+| 狀態 · 家族 · IPC · 剩餘年限 · AI 摘要 |  | Status · Family · IPC · Remaining term · AI summary | Forward it to your IC as-is | ☐ |
+| Pro 將 PSS 拆解成 50 項指標 |  | Pro breaks the PSS down into 50 indicators | Pro unpacks the PSS into 50 indicators | ☐ |
+| 可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。 |  | Withstands legal review — see clearly which dimensions anchor the grade and where the sensitivities lie. | Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit. | ☐ |
+| 八大支柱 × 4–8 項指標 = 50 項 |  | 8 pillars × 4–8 indicators = 50 items | See what anchors the grade | ☐ |
+| 每項指標：原值、百分位、權重 |  | Each indicator: raw value, percentile, weight | Trace every score to its formula | ☐ |
+| Top 10 驅動因子 + Top 5 敏感度標出 |  | Top 10 drivers + Top 5 sensitivities marked | Spot the top drivers and risks fast | ☐ |
 
 ## Latest reports
 
@@ -516,51 +524,17 @@
 
 ## Deliverables (4-card grid)
 
-> All 4 cards have identical `data-zh` / Site EN to Homepage › Licensing › Deliverables. **Extra row** on card 3 (Verifiable in one scan) wraps the body text in an `<a href="#artifacts">` with its own `data-zh` — included below.
+> **Canonical content lives at [Homepage › Products › Licensing › Deliverables](#products--licensing--deliverables-4-card-grid).** The 4 card titles + bodies are identical strings on both pages — `index.html` (lines 543–574) and `product/licensing/index.html` (lines 2390–2421). Edits to those rows must land in both files. This section tracks ONLY the licensing-page extra below.
+>
+> **Licensing-page extra:** card 3 (`一掃即驗 / Verifiable in one scan`) wraps the body text in an `<a href="#artifacts">` whose own `data-zh` is a separate anchor-accessible label.
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 策展覆蓋，當週上線 | Curated coverage, live the same week | Curated coverage, active this week | ☐ |
-| 依司法管轄區 × 產業策展的 30 件專利組合，訂閱當週生效──依你客戶實際所在地，選 US 或 TW。 | A 30-patent bundle curated by jurisdiction × industry, effective the week of subscription — pick US or TW based on where your customers actually are. | Thirty patents, curated by jurisdiction and industry, live the week you subscribe — covering the market your customers actually buy in. | ☐ |
-| 帶著 IP 進入新市場 | Enter new markets carrying IP | Enter new markets with IP in hand | ☐ |
-| 每張訂閱將相關專利請求項放進你的手中，覆蓋你進入的市場──從上市第一天起，就有可防禦的立足點。 | Each subscription puts the relevant patent claims into your hands, covering the markets you enter — from day one of launch, you have defensible footing. | Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later. | ☐ |
-| 一掃即驗 | Verify in one scan | Verifiable in one scan | ☐ |
-| TIS 簽發的數位授權憑證，可即時掃描驗證──向任何要求查驗的人證明你對這些專利的合法使用權。 | A TIS-issued Digital License Credential, scannable for instant verification — proves your legal right to use these patents to anyone who asks. | A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks. | ☐ |
-| 可掃描驗證的數位授權憑證。 | Scannable, verifiable Digital License Credential. | (same anchor — wraps the body above; no separate visible text) | ☐ |
-| 看見組合裡的每一件 | See every piece in the bundle | See exactly what's in the bundle | ☐ |
-| 每件專利皆由 Innovue SABCD 框架評等──典型 30 件組合分布 5 S · 6 A · 9 B · 6 C · 4 D。不是黑盒。 | Every patent graded under the Innovue SABCD framework — a typical 30-patent bundle distributes 5 S · 6 A · 9 B · 6 C · 4 D. Not a black box. | Every patent graded on Innovue's SABCD framework — a typical bundle splits 5 S · 6 A · 9 B · 6 C · 4 D. No black box, no filler. | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 可掃描驗證的數位授權憑證。 |  | Scannable, verifiable Digital License Credential. | (anchor accessible label — wraps card 3 body, no visible separate text) | ☐ |
 
 ## How it works (5-step horizontal rail)
 
-> Identical to Homepage › Products › Licensing › How it works — same 5 steps, same headers, same body, same check items. Verified verbatim against source.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 運作方式 | How it operates | How it works | ☐ |
-| 選擇法域 × 產業 × 期間 | Pick jurisdiction × industry × term | Pick your jurisdiction × industry × term | ☐ |
-| 一包專利包支持一個法域、一個產業、一種期間，只為你真正需要的組合付費。 | One bundle covers one jurisdiction, one industry, one term — pay only for the combination you actually need. | Pay for the markets and the term you actually need — nothing you don't. | ☐ |
-| US、TW，兩個主戰場供專利佈局。 | US, TW — two main battlegrounds for patent positioning. | Cover the market your customers buy in | ☐ |
-| 3、6、12、24 個月期，隨時可升級延長授權期間。 | 3, 6, 12, 24-month terms — can upgrade and extend the license period anytime. | Choose the term that fits your runway | ☐ |
-| 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 | A 30-patent SABCD-graded bundle — same-tier patents can be swapped anytime. | Get thirty SABCD-graded patents per bundle | ☐ |
-| 兩種專利包挑選法 | Two patent-bundle picking methods | Two ways to pick the 30 | ☐ |
-| AI 快速取得組合，或提交 FTO 報告精準篩選。 | AI delivers a bundle fast, or submit an FTO report for precise filtering. | A bundle in 15 seconds — or hand us your FTO and we'll route around it. | ☐ |
-| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | Method A — AI smart-pick (free): AI smart-picks a 30-patent bundle matching your needs. | Let the system recommend a bundle, free | ☐ |
-| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | Method B — FTO-guarded pick (paid): Upload your FTO report, or pay extra to commission TIS to produce one — precisely filters the bundle to plug gaps in your patent positioning. | Or hand us your FTO to guide the pick | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | The platform provides a primary 30 and a backup 30 patent list for you to choose from. | Either path ships with a same-tier swap pool | ☐ |
-| 專利包瀏覽 | Patent bundle browse | Relevant bundle suggested | ☐ |
-| 針對特定商品特定市場選取 30 個最佳專利組合。 | For a specific product in a specific market, pick the best 30-patent bundle. | 30 SABCD-graded patents, curated to your market in under 15 seconds. | ☐ |
-| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both covered. | Get a tier-balanced bundle, flagship to long tail | ☐ |
-| 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 | From national-grade ITRI institution, III institution, NYCU academic units and other premium patent pools — quality assured. | Drawn from the Innovue, iPIC, III & NYCU pool | ☐ |
-| 不用等 18 個月或無止盡商務談判，訂 閱到生效快打通關。 | No need to wait 18 months or endure endless commercial negotiations — subscription to activation clears fast. | Go live the week you subscribe | ☐ |
-| 鎖定專利包 | Lock the patent bundle | Swap patents — your call | ☐ |
-| 同評級專利可自選替換，隨你決定，不加價、無等審。 | Same-tier patents can be self-swapped — your call — no surcharge, no review wait. | Don't love a pick? Swap it — no surcharge, no review delay. | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | The platform provides a primary 30 and backup 30 patent list for you to self-swap. | Swap any pick from a same-tier pool | ☐ |
-| 授權期間內可不限次替換同評級專利，提升企業防禦力。 | Within the license term, swap same-tier patents an unlimited number of times — boosts corporate defensibility. | Swap as often as you like, within term | ☐ |
-| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | As long as the tier mix is maintained (5S.6A.9B.6C.4D), swap however you like. | Replace like-for-like — the count stays thirty | ☐ |
-| 展示憑證，展示你的軟實力 | Display the credential, display your soft power | Display the credential — and the full file | ☐ |
-| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | High-spec license-certification badge, for customer lookup — raises the threshold of being sued. | One Document Center — everything you need to display, defend, and prove the license. | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Embed the credential anywhere, PNG or SVG | ☐ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Hand over a PAdES-signed contract and certificate | ☐ |
+> **Canonical content lives at [Homepage › Products › Licensing › How it works](#products--licensing--how-it-works-5-step-accordion).** Same 5 steps + headers + bodies + check items as the homepage Licensing pillar — byte-identical on `index.html` (line 577 onward) and `product/licensing/index.html` (line 2432 onward). Layout differs (accordion vs horizontal rail) but copy is shared. Edits to those rows must land in both files.
 
 ## Pricing (Build your bundle)
 
@@ -814,52 +788,19 @@
 
 ## Deliverables (4-card grid)
 
-> Verified identical to Homepage › Products › Signal › Deliverables.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 看見你的專利排在哪裡 | See where your patent ranks | See how your patent measures up | ☐ |
-| SABCD 評等將每件專利從 Tier S 排到 Tier D，以 Innovue 1.8 億件專利資料庫的同產業池為校準基準。 | SABCD grading ranks every patent from Tier S to Tier D — calibrated against Innovue's 180M-patent database's same-industry pool. | One SABCD letter, Tier S to Tier D, that your whole team reads the same way — calibrated against the peers in its industry pool, not the whole market. | ☐ |
-| 壓力測試專利的真實強度 | Pressure-test a patent's true strength | Pressure-test a patent's strength | ☐ |
-| 並列比對請求項、專利家族與引用，對標技術相近的同儕專利，檢驗其有效性與真實強度是否經得起審視。 | Side-by-side compare claims, patent families, and citations; benchmarked against technology-similar peer patents; tests whether validity and true strength withstand scrutiny. | Claim, family, and citation, side by side against technology-similar peers — so you see whether a patent's strength holds up before you bet on it. | ☐ |
-| 策略佈局你的路徑 | Strategically position your path | Strategically position your path | ☐ |
-| 每件專利拆解為 8 大加權支柱──引用影響力（Citation Impact）、前瞻價值（Forward-Looking Value）等──Pro 報告再展開 50 項指標深度分析，協助策略決策。 | Each patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, etc. — and the Pro report expands all 50 indicators for deep analysis, supporting strategic decisions. | Every patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more. Pro opens all 50 indicators beneath them, so you see exactly what anchors the grade. | ☐ |
-| 下注前，先摸清地形 | Before placing the bet, get a feel for the terrain | Know the terrain before you bet | ☐ |
-| 補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。 | Fill in the blind spots that bring risk and costly mistakes. Pre-built by industry and jurisdiction — no need to commission an analyst project. | Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit. | ☐ |
+> **Canonical content lives at [Homepage › Products › Signal › Deliverables](#products--signal--deliverables-4-card-grid).** The 4 card titles + bodies are byte-identical on both pages — `index.html` (lines 1234–1265) and `product/signal/index.html` (lines 1809–1828). Edits to those rows must land in both files. No page-unique extras on Signal cards (unlike Licensing card 3's anchor wrap).
 
 ## How it works (5-step horizontal rail)
 
-> ⚠️ **Step 2 leak (same as Homepage).** Lines 1885–1886 in source have two `data-zh` strings copy-pasted from the Licensing "Display the credential" step — they describe license badges, not peer matching. Marked ❓.
+> **Canonical content lives at [Homepage › Products › Signal › How it works](#products--signal--how-it-works-5-step-accordion).** ZH is byte-identical; Site EN is byte-identical except for **one row** (step 2 body) which is tracked below as a page-specific divergence. Layout differs (accordion vs horizontal rail). Edits to canonical rows must land in both `index.html` (line 1268 onward) and `product/signal/index.html` (line 1840 onward).
 >
-> One small EN-side divergence vs Homepage on step 2 body: Signal says `Scores you can trust — graded against the patents that actually compete with yours, not the whole market.` (Homepage: `Scores you can trust — graded against patents that actually compete in the same category.`). ZH side (`蘋果對蘋果，`) is identical.
+> ⚠️ **Step 2 check-item leak** (same upstream bug as homepage) — see canonical section's note.
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 運作方式 | How it operates | How it works | ☐ |
-| 提交一個專利號 | Submit a patent number | Submit a patent number | ☐ |
-| Brief 30 分鐘內寄達──免分析師，免等一整週。 | Brief arrives within 30 minutes — no analyst needed, no week-long wait. | Your Brief lands in 30 minutes — no analyst, no week-long wait. | ☐ |
-| USPTO · TW · EPO · WO | USPTO · TW · EPO · WO | Grade patents from any major office | ☐ |
-| 可平行 submit | Can submit in parallel | Score a whole batch at once | ☐ |
-| P95 寄達 ≤ 30 分鐘 | P95 delivery ≤ 30 minutes | Skip the week-long analyst wait | ☐ |
-| 對比同儕池 | Compare against the peer pool | Matched against the right peer pool | ☐ |
-| 蘋果對蘋果， | Apples to apples, | Scores you can trust — graded against the patents that actually compete with yours, not the whole market. | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Get matched to your exact technical category | ❓ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Benchmark against the Innovue, iPIC, III & NYCU pool | ❓ |
-| Brief 還是 Pro──你決定 | Brief or Pro — you decide | Brief or Pro — your call | ☐ |
-| 同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。 | One scoring engine, two depths — pay now for what you need now, top up later to upgrade. | One scoring engine, two depths — pay for what you need today, top up later. | ☐ |
-| Brief · 15 點 · 30 分鐘郵件 | Brief · 15 points · 30-minute email | Start with the fast Brief verdict | ☐ |
-| Pro · 30 點 · 即時渲染 | Pro · 30 points · real-time render | Go deeper with Pro when you need it | ☐ |
-| 事後升級無加價 | Upgrade later — no surcharge | Upgrade anytime — no switching premium | ☐ |
-| Brief 報告呈現什麼 | What the Brief report shows | What the Brief report shows you | ☐ |
-| 一分鐘掃完──無需編輯，直接轉發給投資委員會。 | Scannable in a minute — no editing needed, forward directly to the IC. | Scannable in a minute — forward it to your IC without editing. | ☐ |
-| 等級判定 + PSS 分數 | Tier verdict + PSS score | See the tier verdict at a glance | ☐ |
-| 池內百分位 + 池內排名 | In-pool percentile + in-pool rank | Know exactly where it ranks among peers | ☐ |
-| 狀態 · 家族 · IPC · 剩餘年限 · AI 摘要 | Status · Family · IPC · Remaining term · AI summary | Forward it to your IC as-is | ☐ |
-| Pro 將 PSS 拆解成 50 項指標 | Pro breaks the PSS down into 50 indicators | Pro unpacks the PSS into 50 indicators | ☐ |
-| 可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。 | Withstands legal review — see clearly which dimensions anchor the grade and where the sensitivities lie. | Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit. | ☐ |
-| 八大支柱 × 4–8 項指標 = 50 項 | 8 pillars × 4–8 indicators = 50 items | See what anchors the grade | ☐ |
-| 每項指標：原值、百分位、權重 | Each indicator: raw value, percentile, weight | Trace every score to its formula | ☐ |
-| Top 10 驅動因子 + Top 5 敏感度標出 | Top 10 drivers + Top 5 sensitivities marked | Spot the top drivers and risks fast | ☐ |
+**Page-specific divergence** (only row that differs from canonical Site EN):
+
+| ZH | ZH ✓ | Literal EN | Site EN (Signal page only) | Status |
+|---|---|---|---|---|
+| 蘋果對蘋果， |  | Apples to apples, | Scores you can trust — graded against the patents that actually compete with yours, not the whole market. | ☐ |
 
 ## Pricing (3-tier — Standard / Pro / Max)
 
