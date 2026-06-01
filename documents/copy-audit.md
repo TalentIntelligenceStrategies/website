@@ -168,18 +168,18 @@
 | ZH | ZH ✓ | Literal EN | Site EN | Status |
 |---|---|---|---|---|
 | 產品 |  | Products | Products | ✅ |
-| 專利授權 |  | Patent Licensing | ~~Licensing Platform~~<br>Patent Licensing | ✏️ ✅ |
-| 專利評級 |  | Patent Rating | ~~Signal Platform~~<br>Patent Rating | ✏️ ✅ |
+| 專利授權 |  | Patent Licensing | ~~Licensing Platform~~<br>Patent Licensing | ✏️ ✅ 🚀 |
+| 專利評級 |  | Patent Rating | ~~Signal Platform~~<br>Patent Rating | ✏️ ✅ 🚀 |
 
 ## Products › Licensing › Hero
 
 | ZH | ZH ✓ | Literal EN | Site EN | Status |
 |---|---|---|---|---|
 | 泰然專利防護網 |  | TaiRan Patent Protection Net | Licensing Platform | ✅ |
-| **拼出口的台灣頭家，這裡有一張關鍵名片。** |  | **Taiwan bosses hustling on exports — here's one critical business card.** | ~~For Taiwan exporters — one critical business card to hand over.~~<br>**For exporters pushing into new markets — one credential that covers every front.** | ✏️ ✅ |
-| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 **專利蟑螂**評估攻擊成本後跳過你找下家。 |  | AI selects 30 legal IPs from the ITRI, III, NYCU institution pools by your export country × industry; effective the day after payment; issues you a high-spec license badge to hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes **patent trolls** weigh the attack cost and skip you for the next target. | ~~AI picks 30 legal IPs from the ITRI / III / NYCU institution pools, matched to your export country × industry. Activates the day after payment and ships a high-spec license badge you can hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes patent trolls weigh the attack cost and skip you for an easier target.~~<br>AI picks 30 legal IPs from the ITRI / III / NYCU pools — matched to your export country × industry, active the day after payment. A high-spec badge for booth, quote, and email signature. Under NT$10K/month — doesn't sell the "never sued" myth, but deters **patent trolls**. | ✏️ ✅ |
+| **拼出口的台灣頭家，這裡有一張關鍵名片。** |  | **Taiwan bosses hustling on exports — here's one critical business card.** | ~~For Taiwan exporters — one critical business card to hand over.~~<br>**For exporters pushing into new markets — one credential that covers every front.** | ✏️ ✅ 🚀 |
+| AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 **專利蟑螂**評估攻擊成本後跳過你找下家。 |  | AI selects 30 legal IPs from the ITRI, III, NYCU institution pools by your export country × industry; effective the day after payment; issues you a high-spec license badge to hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes **patent trolls** weigh the attack cost and skip you for the next target. | ~~AI picks 30 legal IPs from the ITRI / III / NYCU institution pools, matched to your export country × industry. Activates the day after payment and ships a high-spec license badge you can hang on booth signage, quotes, or email signatures. Under NT$10K/month — doesn't sell the "you'll never be sued" myth, but makes patent trolls weigh the attack cost and skip you for an easier target.~~<br>AI picks 30 legal IPs from the ITRI / III / NYCU pools — matched to your export country × industry, active the day after payment. A high-spec badge for booth, quote, and email signature. Under NT$10K/month — doesn't sell the "never sued" myth, but deters **patent trolls**. | ✏️ ✅ 🚀 |
 | 30 個專利橫跨 5 個評級，有質有量兼備。 |  | 30 patents span 5 tiers — quality and quantity both covered. | 30 patents span 5 tiers — quality and quantity in one bundle. | ✅ |
-| 提供兩種專利包選法 - AI 智選 / FTO 保選。 |  | Two bundle-selection methods provided — AI smart-pick / FTO-guarded pick. | ~~Two selection methods — AI smart-pick or FTO-guided curation.~~<br>Two selection methods — AI smart-pick or FTO-guarded pick. | ✏️ ✅ |
+| 提供兩種專利包選法 - AI 智選 / FTO 保選。 |  | Two bundle-selection methods provided — AI smart-pick / FTO-guarded pick. | ~~Two selection methods — AI smart-pick or FTO-guided curation.~~<br>Two selection methods — AI smart-pick or FTO-guarded pick. | ✏️ ✅ 🚀 |
 | 查看智選專利包 |  | View the smart-pick patent bundle | View Smart-Pick Bundle | ✅ |
 | 深入了解 → |  | Learn more → | Learn more → | ✅ |
 
