@@ -154,14 +154,14 @@
 |---|---|---|---|---|
 | 專屬資料庫 |  | Proprietary database | Proprietary database | ✅ |
 | (absent) |  | (absent) | 180M | ✅ |
-| Innovue 專屬資料庫所收錄的專利數 - **每日**與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 |  | The patent count held in Innovue's proprietary database — synced **daily** with official sources; the world's 4th-largest complete patent database, searches that miss no clue. | ~~patents powered by Innovue's WEBPAT database — with over 21 years of experience in providing IP services.~~<br>patents in Innovue's proprietary database — synced **daily** with official patent offices. World's 4th-largest patent index — searches that miss no trace. | ✏️ ✅ |
-| ~~專利強度評分 — PSS~~<br>(absent) |  | ~~Patent Strength Score — PSS~~<br>(absent) | Patent Strength Score — PSS | 🆕 ✅ |
+| Innovue 專屬資料庫所收錄的專利數 - **每日**與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 |  | The patent count held in Innovue's proprietary database — synced **daily** with official sources; the world's 4th-largest complete patent database, searches that miss no clue. | ~~patents powered by Innovue's WEBPAT database — with over 21 years of experience in providing IP services.~~<br>patents in Innovue's proprietary database — synced **daily** with official patent offices. World's 4th-largest patent index — searches that miss no trace. | ✏️ ✅ 🚀 |
+| ~~專利強度評分 — PSS~~<br>(absent) |  | ~~Patent Strength Score — PSS~~<br>(absent) | Patent Strength Score — PSS | 🆕 ✅ 🚀 |
 | (absent) |  | (absent) | 50 | ✅ |
-| ~~項量化指標歸納入八大支柱 — 匯整為 0–100 強度評分，依同業基準評等。~~<br>項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。 | ☐ | ~~Quantitative indicators folded into eight pillars — combined into a 0–100 strength score, graded against industry benchmarks.~~<br>[50] indicators compose every PSS grade — 8 weighted pillars, 0–100 score, benchmarked against industry standards. | ~~quantitative indicators folded into 8 pillars — combined into a 0–100 strength score, graded against industry peers.~~<br>indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers. | ✏️ 🆕 ✅ |
-| ~~覆蓋~~<br>司法管轄區覆蓋 | ☐ | ~~Coverage~~<br>Jurisdiction coverage | ~~Coverage~~<br>Jurisdiction coverage | ✏️ 🆕 ✅ |
+| ~~項量化指標歸納入八大支柱 — 匯整為 0–100 強度評分，依同業基準評等。~~<br>項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。 | ☐ | ~~Quantitative indicators folded into eight pillars — combined into a 0–100 strength score, graded against industry benchmarks.~~<br>[50] indicators compose every PSS grade — 8 weighted pillars, 0–100 score, benchmarked against industry standards. | ~~quantitative indicators folded into 8 pillars — combined into a 0–100 strength score, graded against industry peers.~~<br>indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers. | ✏️ 🆕 ✅ 🚀 |
+| ~~覆蓋~~<br>司法管轄區覆蓋 | ☐ | ~~Coverage~~<br>Jurisdiction coverage | ~~Coverage~~<br>Jurisdiction coverage | ✏️ 🆕 ✅ 🚀 |
 | (absent) |  | (absent) | 100+ | ✅ |
-| 專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。 |  | The patent database covers over 100 countries globally, including US, EU, Japan, Taiwan, Korea — the best partner for global patent positioning. | ~~jurisdictions actively indexed daily from official Patent Office sources — US, TW, EU, JP, KR, and many more.~~<br>jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning. | ✏️ ✅ |
-| ~~技術提供~~<br>(absent) |  | ~~Technology provided by~~<br>(absent) | Powered by | 🆕 ✅ |
+| 專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。 |  | The patent database covers over 100 countries globally, including US, EU, Japan, Taiwan, Korea — the best partner for global patent positioning. | ~~jurisdictions actively indexed daily from official Patent Office sources — US, TW, EU, JP, KR, and many more.~~<br>jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning. | ✏️ ✅ 🚀 |
+| ~~技術提供~~<br>(absent) |  | ~~Technology provided by~~<br>(absent) | Powered by | 🆕 ✅ 🚀 |
 
 ## Products › section heading + pillar toggle
 
