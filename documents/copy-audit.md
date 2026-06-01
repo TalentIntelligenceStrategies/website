@@ -40,78 +40,72 @@
 
 ## Top nav
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ✅ 🚀 |
+> **1:1 across all 3 pages AND within each page (Top nav + Mobile drawer share the same `data-zh` set, duplicated for desktop vs. mobile markup) — canonical here.** Covers 6 HTML locations total: Top nav on `index.html` / `product/licensing/index.html` / `product/signal/index.html` + the mirrored Mobile drawer rows on the same 3 files. **Every edit to a row below must land in ALL 6 spans across the 3 files.**
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 產品 |  | Products | Products | ✅ 🚀 |
+| 泰然專利防護網 |  | TaiRan Patent Protection Net | Licensing Platform | ☐ |
+| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 |  | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
+| 泰然專利強度評級系統 |  | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
+| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 |  | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
+| 報告 |  | Reports | Reports | ✅ 🚀 |
+| 新聞 |  | News / Press | Press | ✅ 🚀 |
+| 關於 |  | About | About | ✅ 🚀 |
+| 聯絡業務 |  | Contact sales (lit. "contact business") | Contact sales | ✅ 🚀 |
 
 ## Mobile drawer
 
-> Identical `data-zh` set to Top nav — duplicated markup for the mobile menu. Same rows; review once and apply to both.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales (lit. "contact business") | Contact sales | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Top nav](#top-nav).** Mobile drawer is the same `data-zh` set as Top nav, just duplicated in the mobile menu markup. See canonical section for full row tracking.
 
 ## Search modal
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ 🚀 |
-| 跳至 | Jump to | Jump to | ✅ 🚀 |
-| 產品 | Products | Products | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 聯絡 | Contact | Contact | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
+> **1:1 across all 3 pages — canonical here.** Byte-identical on `index.html`, `product/licensing/index.html`, and `product/signal/index.html`. **Every edit to a row below must land in all 3 files.**
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| ~~(absent)~~<br>搜尋報告、新聞與頁面… |  | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ 🚀 |
+| 跳至 |  | Jump to | Jump to | ✅ 🚀 |
+| 產品 |  | Products | Products | ✅ 🚀 |
+| 頁面 |  | Page | Page | ✅ 🚀 |
+| 報告 |  | Reports | Reports | ✅ 🚀 |
+| 頁面 |  | Page | Page | ✅ 🚀 |
+| 新聞 |  | News / Press | Press | ✅ 🚀 |
+| 頁面 |  | Page | Page | ✅ 🚀 |
+| 關於 |  | About | About | ✅ 🚀 |
+| 頁面 |  | Page | Page | ✅ 🚀 |
+| 聯絡 |  | Contact | Contact | ✅ 🚀 |
+| 頁面 |  | Page | Page | ✅ 🚀 |
 
 ## IP intelligence drop popup
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 重要的專利動態。 | Important patent moves. | The patent moves that matter. | ☐ |
-| 一年四份簡報。精選非匯總。 | Four briefs a year. Curated, not aggregated. | Four briefs a year. Curated, not aggregated. | ☐ |
-| 角色 | Role | Role | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 請選擇… | Please select… | Select… | ☐ |
-| 創辦人 / 高階主管 | Founder / Senior executive | Founder / C-suite | ☐ |
-| 智財 / 法務 | IP / Legal | IP / Legal | ☐ |
-| 研發 / 工程 | R&D / Engineering | R&D / Engineering | ☐ |
-| 投資人 / 分析師 | Investor / Analyst | Investor / Analyst | ☐ |
-| 其他 | Other | Other | ☐ |
-| 產業 | Industry | Industry | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 所有產業 | All industries | All industries | ☐ |
-| 電子 | Electronics | Electronics | ☐ |
-| 機械 | Mechanical | Mechanical | ☐ |
-| 綠能 | Green Energy | Green Energy | ☐ |
-| 生醫 | Biomedical | Biomedical | ☐ |
-| 材料 | Materials | Materials | ☐ |
-| 工作信箱 | Work email | Work email | ☐ |
-| (absent) | (absent) | you@company.com | ☐ |
-| 訂閱下一份簡報 | Subscribe to the next brief | Get the next brief | ☐ |
-| 每季一封信。 | One email per quarter. | One email per quarter. | ☐ |
-| 隱私政策 | Privacy policy | Privacy | ☐ |
+> **1:1 across all 3 pages — canonical here.** The popup is byte-identical on `index.html` (lines 219–280), `product/licensing/index.html` (lines 2276–2337), and `product/signal/index.html` (lines 1696–1757). **Every edit to a row below must land in ALL 3 files.** No page-unique extras.
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 重要的專利動態。 |  | Important patent moves. | The patent moves that matter. | ☐ |
+| 一年四份簡報。精選非匯總。 |  | Four briefs a year. Curated, not aggregated. | Four briefs a year. Curated, not aggregated. | ☐ |
+| 角色 |  | Role | Role | ☐ |
+| · 選填 |  | · Optional | · optional | ☐ |
+| 請選擇… |  | Please select… | Select… | ☐ |
+| 創辦人 / 高階主管 |  | Founder / Senior executive | Founder / C-suite | ☐ |
+| 智財 / 法務 |  | IP / Legal | IP / Legal | ☐ |
+| 研發 / 工程 |  | R&D / Engineering | R&D / Engineering | ☐ |
+| 投資人 / 分析師 |  | Investor / Analyst | Investor / Analyst | ☐ |
+| 其他 |  | Other | Other | ☐ |
+| 產業 |  | Industry | Industry | ☐ |
+| · 選填 |  | · Optional | · optional | ☐ |
+| 所有產業 |  | All industries | All industries | ☐ |
+| 電子 |  | Electronics | Electronics | ☐ |
+| 機械 |  | Mechanical | Mechanical | ☐ |
+| 綠能 |  | Green Energy | Green Energy | ☐ |
+| 生醫 |  | Biomedical | Biomedical | ☐ |
+| 材料 |  | Materials | Materials | ☐ |
+| 工作信箱 |  | Work email | Work email | ☐ |
+| (absent) |  | (absent) | you@company.com | ☐ |
+| 訂閱下一份簡報 |  | Subscribe to the next brief | Get the next brief | ☐ |
+| 每季一封信。 |  | One email per quarter. | One email per quarter. | ☐ |
+| 隱私政策 |  | Privacy policy | Privacy | ☐ |
 
 ## Announcement banner
 
@@ -290,45 +284,9 @@
 | 每項指標：原值、百分位、權重 |  | Each indicator: raw value, percentile, weight | Trace every score to its formula | ☐ |
 | Top 10 驅動因子 + Top 5 敏感度標出 |  | Top 10 drivers + Top 5 sensitivities marked | Spot the top drivers and risks fast | ☐ |
 
-## Latest reports
+## Latest reports + Press releases — placeholder content, no audit needed
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 近期 | Recent | Recent | ☐ |
-| 最新報告 | Latest reports | Latest reports | ☐ |
-| 焦點 · 2026 Q2 | Featured · 2026 Q2 | Featured · Q2 2026 | ☐ |
-| 半導體 | Semiconductors | Semiconductors | ☐ |
-| 台 × 美 | TW × US | TW × US | ☐ |
-| 14 分鐘 | 14 minutes | 14 min read | ☐ |
-| 外國公司對台灣 PCB 的專利申請量為本地的 4 倍。 | Foreign companies' patent filing volume on Taiwan PCB is 4× the local volume. | Foreign filings into Taiwan PCB outpaced domestic 4-to-1. | ☐ |
-| 三年外國對台灣 PCB 群聚的專利申請，與本地反向申請進行比對。護城河在哪裡正在收緊——又在哪裡沒有。 | Three years of foreign patent filings on Taiwan PCB clusters, compared with domestic reverse filings. Where the moat is tightening — and where it isn't. | Three years of foreign filings against Taiwan PCB clusters, mapped against domestic counter-filings. Where the moat is closing — and where it isn't. | ☐ |
-| 更多報告 | More reports | More reports | ☐ |
-| 查看全部 | See all | See all | ☐ |
-| 對 14 家 Series A 公司套用 SABCD。 | SABCD applied to 14 Series A companies. | SABCD applied to a 14-company Series A cohort. | ☐ |
-| VC IPDD · SABCD · 12 分鐘 | VC IPDD · SABCD · 12 minutes | VC IPDD · SABCD · 12 min | ☐ |
-| MedTech IP 群聚：生物辨識與植入式專利在哪裡交會。 | MedTech IP clusters: where biometric and implantable patents converge. | MedTech IP clusters: where biometric and implantable patents converge. | ☐ |
-| MedTech · 跨司法管轄區 · 10 分鐘 | MedTech · Cross-jurisdiction · 10 minutes | MedTech · Cross-jurisdiction · 10 min | ☐ |
-| 電動車動力總成請求項家族在台灣與德國 OEM 之間交會。 | EV powertrain claim families converge between Taiwan and German OEMs. | EV powertrain claim families converge between Taiwan and German OEMs. | ☐ |
-| 汽車 · 台 × 德 · 9 分鐘 | Automotive · TW × DE · 9 minutes | Automotive · TW × DE · 9 min | ☐ |
-| 太陽能 PV 申請在 CBAM 實施前集中於三個歐盟司法管轄區。 | Solar PV filings concentrate in three EU jurisdictions before CBAM enforcement. | Solar PV filings concentrate in three EU jurisdictions ahead of CBAM enforcement. | ☐ |
-| 再生能源 · 跨歐盟 · 11 分鐘 | Renewables · Cross-EU · 11 minutes | Renewables · Cross-EU · 11 min | ☐ |
-
-## Press releases
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 媒體報導 | Media coverage | In the press | ☐ |
-| 新聞稿 | Press release(s) | Press releases | ☐ |
-| 查看全部新聞 | See all press | See all press | ☐ |
-| 合作 | Partnership / Collaboration | Partnership | ☐ |
-| (absent) | (absent) | 2026-03-05 | ☐ |
-| TIS 與 Innovue 正式結盟，撐起 1.8 億件專利情報層。 | TIS and Innovue formally allied, propping up the 180M-patent intelligence layer. | TIS and Innovue formalize the alliance behind the 180M-patent intelligence layer. | ☐ |
-| 平台上線 | Platform launch | Platform launch | ☐ |
-| (absent) | (absent) | 2026-02-12 | ☐ |
-| 泰然專利防護網上線——以司法管轄區 × 產業為單位的 30 件專利組合。 | TaiRan Patent Protection Net launches — 30-patent bundles per jurisdiction × industry. | TIS launches the Licensing Platform — 30-patent bundles per jurisdiction × industry. | ☐ |
-| DigiTimes · 專訪 | DigiTimes · Interview | DigiTimes · Interview | ☐ |
-| (absent) | (absent) | 2026-03-18 | ☐ |
-| TIS 為何將授權視為佈局，而非保險。 | Why TIS treats licensing as positioning, not insurance. | Why TIS treats licensing as offense, not insurance. | ☐ |
+> **Skipped.** Both the "Latest reports" and "Press releases" sections on the homepage are filler / generated placeholder content — invented illustrative entries (PCB Taiwan × US, Series A SABCD cohort, MedTech IP clusters, EV powertrain, Solar PV CBAM, etc., plus fake-dated press items like "TIS × Innovue alliance" and "Platform launch") used as visual scaffolding while the real reports and press releases are still being written. **No copy edits needed in the audit doc here.** When real reports / press releases land, replace the placeholder HTML and expand this header into the standard audit format (ZH / ZH ✓ / Literal EN / Site EN / Status).
 
 ## About
 
@@ -359,56 +317,60 @@
 
 ## Contact
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 與我們聯絡。 | Contact us. | Get in touch. | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 姓名 | Name / Full name | Full Name | ☐ |
-| (absent) | (absent) | e.g. Alexander Chen | ☐ |
-| 電子郵件 | Email | Email Address | ☐ |
-| (absent) | (absent) | name@company.com | ☐ |
-| 機構 | Organization / Institution | Organization | ☐ |
-| (absent) | (absent) | Company | ☐ |
-| 諮詢類型 | Inquiry type | Inquiry Type | ☐ |
-| 請選擇… | Please select… | Select… | ☐ |
-| 專利授權 | Patent Licensing | Patent Licensing | ☐ |
-| 專利評級 | Patent Rating | Patent Rating | ☐ |
-| 專利評估報告 | Patent Evaluation Report | Patent Evaluation Report | ☐ |
-| 產業報告 | Industry Report | Industry Report | ☐ |
-| 媒體採訪 | Media Interview | Media Interview | ☐ |
-| 其他 | Other | Other | ☐ |
-| 您的需求 | Your requirements | Your Inquiry | ☐ |
-| (absent) | (absent) | Briefly describe your requirements… | ☐ |
-| 台北 (UTC+8) | Taipei (UTC+8) | Taipei (UTC+8) | ☐ |
-| 週一至週五 | Mon–Fri | Mon–Fri | ☐ |
-| 服務時間 | Service hours | Office hours | ☐ |
-| (absent) | (absent) | 09:00 – 18:00 | ☐ |
-| 送出諮詢 | Submit inquiry | Send Inquiry | ☐ |
-| 訊息已送出。 | Message sent. | Message sent. | ☐ |
-| 已收到您的諮詢。我們將於 1–2 個工作天內回覆。 | Your inquiry has been received. We'll reply within 1–2 business days. | Inquiry received. We'll be in touch within 1–2 business days. | ☐ |
+> **Canonical for the shared form structure.** All form fields (header, contact email, Name / Email / Organization / Your Inquiry / Office hours / Submit / Success message) are 1:1 across all 3 HTML pages — `index.html`, `product/licensing/index.html`, `product/signal/index.html`. **Every shared-field edit must land in all 3 files.** The **Inquiry Type dropdown** is the only divergence: Homepage carries 6 generic options (tracked below); the product pages override with 4 product-specific options + a page-specific default value (tracked in their own pointer sections).
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 與我們聯絡。 |  | Contact us. | Get in touch. | ☐ |
+| (absent) |  | (absent) | contact@tisglobalinc.com | ☐ |
+| 姓名 |  | Name / Full name | Full Name | ☐ |
+| (absent) |  | (absent) | e.g. Alexander Chen | ☐ |
+| 電子郵件 |  | Email | Email Address | ☐ |
+| (absent) |  | (absent) | name@company.com | ☐ |
+| 機構 |  | Organization / Institution | Organization | ☐ |
+| (absent) |  | (absent) | Company | ☐ |
+| 諮詢類型 |  | Inquiry type | Inquiry Type | ☐ |
+| 請選擇… |  | Please select… | Select… | ☐ |
+| 專利授權 |  | Patent Licensing | Patent Licensing | ☐ |
+| 專利評級 |  | Patent Rating | Patent Rating | ☐ |
+| 專利評估報告 |  | Patent Evaluation Report | Patent Evaluation Report | ☐ |
+| 產業報告 |  | Industry Report | Industry Report | ☐ |
+| 媒體採訪 |  | Media Interview | Media Interview | ☐ |
+| 其他 |  | Other | Other | ☐ |
+| 您的需求 |  | Your requirements | Your Inquiry | ☐ |
+| (absent) |  | (absent) | Briefly describe your requirements… | ☐ |
+| 台北 (UTC+8) |  | Taipei (UTC+8) | Taipei (UTC+8) | ☐ |
+| 週一至週五 |  | Mon–Fri | Mon–Fri | ☐ |
+| 服務時間 |  | Service hours | Office hours | ☐ |
+| (absent) |  | (absent) | 09:00 – 18:00 | ☐ |
+| 送出諮詢 |  | Submit inquiry | Send Inquiry | ☐ |
+| 訊息已送出。 |  | Message sent. | Message sent. | ☐ |
+| 已收到您的諮詢。我們將於 1–2 個工作天內回覆。 |  | Your inquiry has been received. We'll reply within 1–2 business days. | Inquiry received. We'll be in touch within 1–2 business days. | ☐ |
 
 ## Footer
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 訂閱最新動態 | Subscribe to the latest updates | Get Our Latest News | ☐ |
-| (absent) | (absent) | Your Email | ☐ |
-| (absent) | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
-| 產品 | Products | Products | ☐ |
-| 泰然專利防護網 | TaiRan Patent Protection Net | Licensing Platform | ☐ |
-| 泰然專利強度評級系統 | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
-| 公司 | Company | Company | ☐ |
-| 關於 | About | About | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 法律 | Legal | Legal | ☐ |
-| 服務條款 | Terms of Service | Terms | ☐ |
-| 隱私政策 | Privacy Policy | Privacy | ☐ |
-| 揭露聲明 | Disclosure(s) | Disclosures | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 台北 · 台灣 | Taipei · Taiwan | Taipei, Taiwan | ☐ |
+> **1:1 across all 3 pages — canonical here.** Text content is byte-identical on `index.html` (lines 1635–1694), `product/licensing/index.html` (lines 2871–2930), and `product/signal/index.html` (lines 2229–2288). Only `href` values differ structurally (homepage uses `#about`/`#reports`/`#press`; product pages use `/#about`/`/#reports`/`/#press` to point back to homepage anchors) — this is URL plumbing, not copy. **Every text edit to a row below must land in ALL 3 files.**
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 訂閱最新動態 |  | Subscribe to the latest updates | Get Our Latest News | ☐ |
+| (absent) |  | (absent) | Your Email | ☐ |
+| (absent) |  | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
+| 產品 |  | Products | Products | ☐ |
+| 泰然專利防護網 |  | TaiRan Patent Protection Net | Licensing Platform | ☐ |
+| 泰然專利強度評級系統 |  | TaiRan Patent Strength Rating System | Signal Platform | ☐ |
+| 公司 |  | Company | Company | ☐ |
+| 關於 |  | About | About | ☐ |
+| 報告 |  | Reports | Reports | ☐ |
+| 新聞 |  | News / Press | Press | ☐ |
+| 聯絡 |  | Contact | Contact | ☐ |
+| 法律 |  | Legal | Legal | ☐ |
+| 服務條款 |  | Terms of Service | Terms | ☐ |
+| 隱私政策 |  | Privacy Policy | Privacy | ☐ |
+| 揭露聲明 |  | Disclosure(s) | Disclosures | ☐ |
+| 聯絡 |  | Contact | Contact | ☐ |
+| (absent) |  | (absent) | contact@tisglobalinc.com | ☐ |
+| 台北 · 台灣 |  | Taipei · Taiwan | Taipei, Taiwan | ☐ |
 
 ---
 
@@ -421,82 +383,21 @@
 
 ## Top nav
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform (lit. "Licensing Platform")~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales | Contact sales | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Top nav](#top-nav).** Same `data-zh` set on this page (both desktop top nav AND mobile drawer markup). Edits land across all 6 spans (3 files × 2 markups). See canonical section for full row tracking.
+>
+> *(Historical note: this page's product-name rows were updated 2026-06-01 from short forms `授權平台 / Signal 平台` and old descriptions to match Homepage — see commits 5b8ba0f / af537f8.)*
 
 ## Mobile drawer
 
-> Same `data-zh` set as Top nav above — duplicated markup for the mobile menu.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales | Contact sales | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Top nav](#top-nav).** Mobile drawer mirrors Top nav (same `data-zh` set). See canonical section for full row tracking.
 
 ## Search modal
 
-> Verified identical to Homepage › Search modal. Same 11 rows (1 absent input placeholder + 10 marked entries).
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ 🚀 |
-| 跳至 | Jump to | Jump to | ✅ 🚀 |
-| 產品 | Products | Products | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 聯絡 | Contact | Contact | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Search modal](#search-modal).** Byte-identical across all 3 HTML files. See canonical section for full row tracking.
 
 ## IP intelligence drop popup
 
-> Verified identical to Homepage › IP intelligence drop popup. Same 22 rows + 1 absent email placeholder.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 重要的專利動態。 | Important patent moves. | The patent moves that matter. | ☐ |
-| 一年四份簡報。精選非匯總。 | Four briefs a year. Curated, not aggregated. | Four briefs a year. Curated, not aggregated. | ☐ |
-| 角色 | Role | Role | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 請選擇… | Please select… | Select… | ☐ |
-| 創辦人 / 高階主管 | Founder / Senior executive | Founder / C-suite | ☐ |
-| 智財 / 法務 | IP / Legal | IP / Legal | ☐ |
-| 研發 / 工程 | R&D / Engineering | R&D / Engineering | ☐ |
-| 投資人 / 分析師 | Investor / Analyst | Investor / Analyst | ☐ |
-| 其他 | Other | Other | ☐ |
-| 產業 | Industry | Industry | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 所有產業 | All industries | All industries | ☐ |
-| 電子 | Electronics | Electronics | ☐ |
-| 機械 | Mechanical | Mechanical | ☐ |
-| 綠能 | Green Energy | Green Energy | ☐ |
-| 生醫 | Biomedical | Biomedical | ☐ |
-| 材料 | Materials | Materials | ☐ |
-| 工作信箱 | Work email | Work email | ☐ |
-| (absent) | (absent) | you@company.com | ☐ |
-| 訂閱下一份簡報 | Subscribe to the next brief | Get the next brief | ☐ |
-| 每季一封信。 | One email per quarter. | One email per quarter. | ☐ |
-| 隱私政策 | Privacy policy | Privacy | ☐ |
+> **Canonical content lives at [Homepage › IP intelligence drop popup](#ip-intelligence-drop-popup).** Byte-identical across all 3 HTML files. Edits land in all three. See canonical section for full row tracking.
 
 ## H1 (screen-reader only)
 
@@ -618,58 +519,23 @@
 
 ## Contact
 
-> Same form structure as Homepage › Contact, but the Inquiry Type dropdown is **different** — 4 options here (Licensing bundle / Signal valuation / Press & media / General) vs Homepage's 6.
+> **Shared form structure lives at [Homepage › Contact](#contact)** — header / contact email / Name / Email / Organization / Your Inquiry / Office hours / Submit / Success message all match Homepage byte-for-byte. Edits to those rows must land in all 3 files. This section tracks ONLY the **Inquiry Type dropdown override** (4 product-specific options + a Licensing-default value, vs Homepage's 6 generic options).
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 與我們聯絡。 | Contact us. | Get in touch. | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 姓名 | Name / Full name | Full Name | ☐ |
-| (absent) | (absent) | e.g. Alexander Chen | ☐ |
-| 電子郵件 | Email | Email Address | ☐ |
-| (absent) | (absent) | name@company.com | ☐ |
-| 機構 | Organization / Institution | Organization | ☐ |
-| (absent) | (absent) | Company | ☐ |
-| 諮詢類型 | Inquiry type | Inquiry Type | ☐ |
-| 授權組合 | Licensing bundle | Licensing bundle | ☐ |
-| 授權組合 | Licensing bundle | Licensing bundle | ☐ |
-| Signal / 估值 | Signal / Valuation | Signal / valuation | ☐ |
-| 媒體採訪 | Media interview | Press & media | ☐ |
-| 其他 | Other | General | ☐ |
-| 您的需求 | Your requirements | Your Inquiry | ☐ |
-| (absent) | (absent) | Briefly describe your requirements… | ☐ |
-| 台北 (UTC+8) | Taipei (UTC+8) | Taipei (UTC+8) | ☐ |
-| 週一至週五 | Mon–Fri | Mon–Fri | ☐ |
-| 服務時間 | Service hours | Office hours | ☐ |
-| (absent) | (absent) | 09:00 – 18:00 | ☐ |
-| 送出諮詢 | Submit inquiry | Send Inquiry | ☐ |
-| 訊息已送出。 | Message sent. | Message sent. | ☐ |
-| 已收到您的諮詢。我們將於 1–2 個工作天內回覆。 | Your inquiry has been received. We'll reply within 1–2 business days. | Inquiry received. We'll be in touch within 1–2 business days. | ☐ |
+**Page-specific Inquiry Type override** (Licensing-page default = `授權組合 / Licensing bundle`):
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 授權組合 |  | Licensing bundle | Licensing bundle | ☐ |
+| 授權組合 |  | Licensing bundle | Licensing bundle | ☐ |
+| Signal / 估值 |  | Signal / Valuation | Signal / valuation | ☐ |
+| 媒體採訪 |  | Media interview | Press & media | ☐ |
+| 其他 |  | Other | General | ☐ |
 
 ## Footer
 
-> **✅ Resolved (2026-06-01):** Product link names standardized to full forms (`泰然專利防護網` / `泰然專利強度評級系統`) matching Homepage.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 訂閱最新動態 | Subscribe to the latest updates | Get Our Latest News | ☐ |
-| (absent) | (absent) | Your Email | ☐ |
-| (absent) | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
-| 產品 | Products | Products | ☐ |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 公司 | Company | Company | ☐ |
-| 關於 | About | About | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 法律 | Legal | Legal | ☐ |
-| 服務條款 | Terms of Service | Terms | ☐ |
-| 隱私政策 | Privacy Policy | Privacy | ☐ |
-| 揭露聲明 | Disclosure(s) | Disclosures | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 台北 · 台灣 | Taipei · Taiwan | Taipei, Taiwan | ☐ |
+> **Canonical content lives at [Homepage › Footer](#footer).** Text content is byte-identical across all 3 HTML files; only `href` values differ structurally (this page uses `/#about` etc. to link back to homepage anchors). Edits land in all three. See canonical section for full row tracking.
+>
+> *(Historical note: this page's product link names were updated 2026-06-01 from short forms `授權平台 / Signal 平台` to full forms `泰然專利防護網 / 泰然專利強度評級系統` matching Homepage — see commit 5b8ba0f.)*
 
 ---
 
@@ -682,84 +548,21 @@
 
 ## Top nav
 
-> Same `data-zh` set as Licensing › Top nav (short product names). Different from Homepage › Top nav.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales | Contact sales | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Top nav](#top-nav).** Same `data-zh` set on this page (both desktop top nav AND mobile drawer markup). Edits land across all 6 spans (3 files × 2 markups). See canonical section for full row tracking.
+>
+> *(Historical note: this page's product-name rows were updated 2026-06-01 from short forms `授權平台 / Signal 平台` and old descriptions to match Homepage — see commits 5b8ba0f / af537f8.)*
 
 ## Mobile drawer
 
-> Same as Top nav above.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 產品 | Products | Products | ✅ 🚀 |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~依司法管轄區與產業的專利防護。~~<br>精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。 | ~~Patent protection by jurisdiction and industry.~~<br>Curated, matched patent-protection bundle — patent insurance for export goods; fast activation, saves time, effort, budget. | ~~Patent protection by jurisdiction and industry.~~<br>Patent insurance for exporters. Curated 30 patent bundles, fast to activate. | ✏️ ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。 | Compares against same-industry patents; across 50 indicators that cover both "quantity" and "quality" — grades patents professionally with evidence. | Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry. | ✏️ ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 聯絡業務 | Contact sales | Contact sales | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Top nav](#top-nav).** Mobile drawer mirrors Top nav (same `data-zh` set). See canonical section for full row tracking.
 
 ## Search modal
 
-> Verified identical to Homepage / Licensing search modals.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| ~~(absent)~~<br>搜尋報告、新聞與頁面… | ~~(absent)~~<br>Search reports, press, and pages… | Search reports, press, and pages… | 🆕 ✅ 🚀 |
-| 跳至 | Jump to | Jump to | ✅ 🚀 |
-| 產品 | Products | Products | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 報告 | Reports | Reports | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 新聞 | News / Press | Press | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 關於 | About | About | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
-| 聯絡 | Contact | Contact | ✅ 🚀 |
-| 頁面 | Page | Page | ✅ 🚀 |
+> **Canonical content lives at [Homepage › Search modal](#search-modal).** Byte-identical across all 3 HTML files. See canonical section for full row tracking.
 
 ## IP intelligence drop popup
 
-> Verified identical to Homepage / Licensing IP popup.
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 重要的專利動態。 | Important patent moves. | The patent moves that matter. | ☐ |
-| 一年四份簡報。精選非匯總。 | Four briefs a year. Curated, not aggregated. | Four briefs a year. Curated, not aggregated. | ☐ |
-| 角色 | Role | Role | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 請選擇… | Please select… | Select… | ☐ |
-| 創辦人 / 高階主管 | Founder / Senior executive | Founder / C-suite | ☐ |
-| 智財 / 法務 | IP / Legal | IP / Legal | ☐ |
-| 研發 / 工程 | R&D / Engineering | R&D / Engineering | ☐ |
-| 投資人 / 分析師 | Investor / Analyst | Investor / Analyst | ☐ |
-| 其他 | Other | Other | ☐ |
-| 產業 | Industry | Industry | ☐ |
-| · 選填 | · Optional | · optional | ☐ |
-| 所有產業 | All industries | All industries | ☐ |
-| 電子 | Electronics | Electronics | ☐ |
-| 機械 | Mechanical | Mechanical | ☐ |
-| 綠能 | Green Energy | Green Energy | ☐ |
-| 生醫 | Biomedical | Biomedical | ☐ |
-| 材料 | Materials | Materials | ☐ |
-| 工作信箱 | Work email | Work email | ☐ |
-| (absent) | (absent) | you@company.com | ☐ |
-| 訂閱下一份簡報 | Subscribe to the next brief | Get the next brief | ☐ |
-| 每季一封信。 | One email per quarter. | One email per quarter. | ☐ |
-| 隱私政策 | Privacy policy | Privacy | ☐ |
+> **Canonical content lives at [Homepage › IP intelligence drop popup](#ip-intelligence-drop-popup).** Byte-identical across all 3 HTML files. Edits land in all three. See canonical section for full row tracking.
 
 ## H1 (screen-reader only)
 
@@ -907,58 +710,23 @@
 
 ## Contact
 
-> Same form structure as Licensing › Contact. Default inquiry value is `Signal / 估值` instead of `授權組合`.
+> **Shared form structure lives at [Homepage › Contact](#contact)** — header / contact email / Name / Email / Organization / Your Inquiry / Office hours / Submit / Success message all match Homepage byte-for-byte. Edits to those rows must land in all 3 files. This section tracks ONLY the **Inquiry Type dropdown override** (4 product-specific options + a Signal-default value; same 4 options as Licensing page but the page-default differs).
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 與我們聯絡。 | Contact us. | Get in touch. | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 姓名 | Name / Full name | Full Name | ☐ |
-| (absent) | (absent) | e.g. Alexander Chen | ☐ |
-| 電子郵件 | Email | Email Address | ☐ |
-| (absent) | (absent) | name@company.com | ☐ |
-| 機構 | Organization / Institution | Organization | ☐ |
-| (absent) | (absent) | Company | ☐ |
-| 諮詢類型 | Inquiry type | Inquiry Type | ☐ |
-| Signal / 估值 | Signal / Valuation | Signal / valuation | ☐ |
-| 授權組合 | Licensing bundle | Licensing bundle | ☐ |
-| Signal / 估值 | Signal / Valuation | Signal / valuation | ☐ |
-| 媒體採訪 | Media interview | Press & media | ☐ |
-| 其他 | Other | General | ☐ |
-| 您的需求 | Your requirements | Your Inquiry | ☐ |
-| (absent) | (absent) | Briefly describe your requirements… | ☐ |
-| 台北 (UTC+8) | Taipei (UTC+8) | Taipei (UTC+8) | ☐ |
-| 週一至週五 | Mon–Fri | Mon–Fri | ☐ |
-| 服務時間 | Service hours | Office hours | ☐ |
-| (absent) | (absent) | 09:00 – 18:00 | ☐ |
-| 送出諮詢 | Submit inquiry | Send Inquiry | ☐ |
-| 訊息已送出。 | Message sent. | Message sent. | ☐ |
-| 已收到您的諮詢。我們將於 1–2 個工作天內回覆。 | Your inquiry has been received. We'll reply within 1–2 business days. | Inquiry received. We'll be in touch within 1–2 business days. | ☐ |
+**Page-specific Inquiry Type override** (Signal-page default = `Signal / 估值 / Signal / valuation`):
+
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| Signal / 估值 |  | Signal / Valuation | Signal / valuation | ☐ |
+| 授權組合 |  | Licensing bundle | Licensing bundle | ☐ |
+| Signal / 估值 |  | Signal / Valuation | Signal / valuation | ☐ |
+| 媒體採訪 |  | Media interview | Press & media | ☐ |
+| 其他 |  | Other | General | ☐ |
 
 ## Footer
 
-> Same as Licensing footer (short product-name forms).
-
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 訂閱最新動態 | Subscribe to the latest updates | Get Our Latest News | ☐ |
-| (absent) | (absent) | Your Email | ☐ |
-| (absent) | (absent) | © 2026 Talent Intelligence Strategies | ☐ |
-| 產品 | Products | Products | ☐ |
-| ~~授權平台~~<br>泰然專利防護網 | ~~Licensing Platform~~<br>TaiRan Patent Protection Net | Licensing Platform | 🆕 ✅ 🚀 |
-| ~~Signal 平台~~<br>泰然專利強度評級系統 | ~~Signal Platform~~<br>TaiRan Patent Strength Rating System | Signal Platform | 🆕 ✅ 🚀 |
-| 公司 | Company | Company | ☐ |
-| 關於 | About | About | ☐ |
-| 報告 | Reports | Reports | ☐ |
-| 新聞 | News / Press | Press | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| 法律 | Legal | Legal | ☐ |
-| 服務條款 | Terms of Service | Terms | ☐ |
-| 隱私政策 | Privacy Policy | Privacy | ☐ |
-| 揭露聲明 | Disclosure(s) | Disclosures | ☐ |
-| 聯絡 | Contact | Contact | ☐ |
-| (absent) | (absent) | contact@tisglobalinc.com | ☐ |
-| 台北 · 台灣 | Taipei · Taiwan | Taipei, Taiwan | ☐ |
+> **Canonical content lives at [Homepage › Footer](#footer).** Text content is byte-identical across all 3 HTML files; only `href` values differ structurally (this page uses `/#about` etc. to link back to homepage anchors). Edits land in all three. See canonical section for full row tracking.
+>
+> *(Historical note: this page's product link names were updated 2026-06-01 from short forms `授權平台 / Signal 平台` to full forms `泰然專利防護網 / 泰然專利強度評級系統` matching Homepage — see commit 5b8ba0f.)*
 
 ---
 
