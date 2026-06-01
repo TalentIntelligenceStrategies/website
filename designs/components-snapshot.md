@@ -1000,7 +1000,7 @@ Container `surface-page`, `1px solid border-primary`, radius 16, padding `48 × 
 
 **Body copy.** `flex: 1; min-width: 0`. Single `<p>`: Urbanist `20 / 500 / -0.005em / 1.45`. Silver text gradient via `background: var(--gradient-text-silver-solid); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent` (light); `--gradient-text-silver-luminous` on `[data-theme="dark"]`. Line-height 1.45 (loosened from 1.0) so descenders clear under `background-clip: text`.
 
-**Canonical copy.** "Innovue is an intellectual property company that maintains the world's 4th-largest patent index — a proprietary, continuously refreshed archive of global patent activity." The "4th-largest" anchor is load-bearing per [`brand-voice.md`](./brand-voice.md) §5 — do not paraphrase.
+**Canonical copy.** "Innovue is an intellectual property company that maintains the world's 3rd-largest patent index — a proprietary, continuously refreshed archive of global patent activity." The "3rd-largest" anchor is load-bearing per [`brand-voice.md`](./brand-voice.md) §5 — do not paraphrase.
 
 **Centering note.** Lockup is geometrically centered with the divider midpoint (60px stack — 14px eyebrow − 2px overlap + 48px logo — centered against the v-rule's stretch). Visually, because the eyebrow is light and the logo heavy, the logo glyphs sit ~6px below the divider midpoint. An optical-centering variant — `transform: translateY(-6px)` on the lockup — lands the logo center on the divider with the eyebrow floating above. Both versions referenced in [`archive/previews/partner-strip-preview.html`](./archive/previews/partner-strip-preview.html); geometric centering is the default unless a consumer surface decides otherwise.
 

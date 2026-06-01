@@ -109,10 +109,10 @@
 
 ## Announcement banner
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣 | Coming soon: TaiRan Patent Protection Net — 30-patent bundles covering US and Taiwan | Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan | ☐ |
-| 探索產業 → | Explore industries → | Explore industries → | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣 |  | Coming soon: TaiRan Patent Protection Net — 30-patent bundles covering US and Taiwan | Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan | ☐ |
+| ~~探索產業 →~~<br>探索產品 → | ☐ | ~~Explore industries →~~<br>Explore products → | Explore industries → | 🆕 ✅ |
 
 ## Hero (carousel — 3 slides)
 
@@ -138,9 +138,9 @@
 
 ## Exclusive patent access (partner strip)
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 專屬專利授權 | Exclusive patent licensing | Exclusive Patent Access | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| ~~專屬專利授權~~<br>泰然策略合作夥伴 | ☐ | ~~Exclusive patent licensing~~<br>TIS strategic partners | ~~Exclusive Patent Access~~<br>TIS Strategic Partners | ✏️ 🆕 ✅ |
 
 ## Stats counter
 
@@ -148,7 +148,7 @@
 |---|---|---|---|---|
 | 專屬資料庫 |  | Proprietary database | Proprietary database | ✅ |
 | (absent) |  | (absent) | 180M | ✅ |
-| Innovue 專屬資料庫所收錄的專利數 - **每日**與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 |  | The patent count held in Innovue's proprietary database — synced **daily** with official sources; the world's 4th-largest complete patent database, searches that miss no clue. | ~~patents powered by Innovue's WEBPAT database — with over 21 years of experience in providing IP services.~~<br>patents in Innovue's proprietary database — synced **daily** with official patent offices. World's 4th-largest patent index — searches that miss no trace. | ✏️ ✅ 🚀 |
+| ~~Innovue 專屬資料庫所收錄的專利數 - **每日**與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。~~<br>Innovue 專屬資料庫所收錄的專利數 - **每日**與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 | ☐ | ~~The patent count held in Innovue's proprietary database — synced **daily** with official sources; the world's 4th-largest complete patent database, searches that miss no clue.~~<br>The patent count held in Innovue's proprietary database — synced **daily** with official sources; the world's 3rd-largest complete patent database, searches that miss no clue. | ~~patents powered by Innovue's WEBPAT database — with over 21 years of experience in providing IP services.~~<br>~~patents in Innovue's proprietary database — synced **daily** with official patent offices. World's 4th-largest patent index — searches that miss no trace.~~<br>patents in Innovue's proprietary database — synced **daily** with official patent offices. World's 3rd-largest patent index — searches that miss no trace. | ✏️ 🆕 ✅ |
 | ~~專利強度評分 — PSS~~<br>(absent) |  | ~~Patent Strength Score — PSS~~<br>(absent) | Patent Strength Score — PSS | 🆕 ✅ 🚀 |
 | (absent) |  | (absent) | 50 | ✅ |
 | ~~項量化指標歸納入八大支柱 — 匯整為 0–100 強度評分，依同業基準評等。~~<br>項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。 | ☐ | ~~Quantitative indicators folded into eight pillars — combined into a 0–100 strength score, graded against industry benchmarks.~~<br>[50] indicators compose every PSS grade — 8 weighted pillars, 0–100 score, benchmarked against industry standards. | ~~quantitative indicators folded into 8 pillars — combined into a 0–100 strength score, graded against industry peers.~~<br>indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers. | ✏️ 🆕 ✅ 🚀 |
@@ -186,9 +186,9 @@
 | ~~策展覆蓋，當週上線~~<br>AI 智慧雷達導航 — 免除繁瑣檢索，人機協作精選專利組合 | ☐ | ~~Curated coverage, live the same week~~<br>AI smart radar navigation — eliminates tedious search, human-machine curated bundle | ~~Curated coverage, active this week~~<br>AI does the search — you get a curated 30-patent bundle | ✏️ 🆕 ✅ 🚀 |
 | ~~依司法管轄區 × 產業策展的 30 件專利組合，訂閱當週生效──依你客戶實際所在地，選 US 或 TW。~~<br>別把時間浪費在翻閱幾千件請求項（Claims）上。泰然 AI 引擎依據您企業的出口國 × 產業別 × 產品線三軸進行風險缺口掃描，5 分鐘內自動推薦最相關的 30 件專利組建防護包。支援人機協作與手動替換彈性，不需懂法律，大數據直接幫你罩。 | ☐ | ~~A 30-patent bundle curated by jurisdiction × industry, effective the week of subscription — pick US or TW based on where your customers actually are.~~<br>Don't waste time flipping through thousands of claims. The TaiRan AI engine scans risk gaps along three axes — your export country × industry × product line — and auto-recommends the most relevant 30-patent bundle within 5 minutes. Supports human-machine collaboration and manual swap; no legal expertise needed — big data covers you. | ~~Thirty patents, curated by jurisdiction and industry, live the week you subscribe — covering the market your customers actually buy in.~~<br>Don't waste time reading thousands of claims. The TIS AI engine scans risk gaps across three axes (export country × industry × product line) and auto-recommends the 30 most relevant patents in 5 minutes. Manual swap supported; no legal expertise required. | ✏️ 🆕 ✅ 🚀 |
 | ~~帶著 IP 進入新市場~~<br>權威法人聯合授權 — 創智、資策會、陽明交大合法非獨家專利 | ☐ | ~~Enter new markets carrying IP~~<br>Authoritative-institution joint license — ITRI, III, NYCU legal non-exclusive patents | ~~Enter new markets with IP in hand~~<br>Joint license from reputable institutions — non-exclusive, fully legal | ✏️ 🆕 ✅ 🚀 |
-| ~~每張訂閱將相關專利請求項放進你的手中，覆蓋你進入的市場──從上市第一天起，就有可防禦的立足點。~~<br>由創智、資策會、陽明交大三家權威研發機構，直接以貴公司名義開立 30 件核心專利合法授權。對外，是出海搶單的黃金名片。在國際買家、跨國投資人面前撕掉「代工小廠」的標籤，用機構級的真實 IP 後盾，讓客戶審查與合作談判都對你刮目相看。對內，是主動式的防啃骨頭盾。專利流氓（NPE）篩選敲詐目標時，一看到你背後拉起三家機構合法 IP 防線、攻擊成本高得多，自然會跳過你，去找更好下手的下家。 | ☐ | ~~Each subscription puts the relevant patent claims into your hands, covering the markets you enter — from day one of launch, you have defensible footing.~~<br>Three authoritative R&D institutions — ITRI, III, NYCU — issue 30 core patent legal licenses directly in your company's name. **Externally**, it's a golden business card for export hustle: peel off the "small OEM workshop" label in front of international buyers and cross-border investors, with institution-level real IP backing that earns new respect in customer reviews and partnership talks. **Internally**, it's an active "anti-bone-gnaw" shield: when patent trolls (NPE) screen extortion targets and see three institutions' legal IP defense behind you and a much higher attack cost, they naturally skip you and find an easier next target. | ~~Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later.~~<br>ITRI / III / NYCU issue 30 legal IPs directly in your company's name — one credential, every front. International buyers and investors see institution-level IP backing, not a "small OEM" label. **Patent trolls** (NPEs) see a defense too costly to attack. | ✏️ 🆕 ✅ 🚀 |
+| ~~每張訂閱將相關專利請求項放進你的手中，覆蓋你進入的市場──從上市第一天起，就有可防禦的立足點。~~<br>~~由創智、資策會、陽明交大三家權威研發機構，直接以貴公司名義開立 30 件核心專利合法授權。對外，是出海搶單的黃金名片。在國際買家、跨國投資人面前撕掉「代工小廠」的標籤，用機構級的真實 IP 後盾，讓客戶審查與合作談判都對你刮目相看。對內，是主動式的防啃骨頭盾。專利流氓（NPE）篩選敲詐目標時，一看到你背後拉起三家機構合法 IP 防線、攻擊成本高得多，自然會跳過你，去找更好下手的下家。~~<br>由創智、資策會、陽明交大三家權威研發機構，直接以貴公司名義開立 30 件核心專利合法授權。 對外，是出海搶單的黃金名片。 在國際買家、跨國投資人面前撕掉「代工小廠」的標籤，用機構級的真實 IP 後盾，讓客戶審查與合作談判都對你刮目相看。 對內，是主動式的防啃骨頭盾。 專利流氓（NPE）篩選敲詐目標時，一看到你背後拉起三家機構合法 IP 防線、攻擊成本高得多，自然會跳過你，去找更好下手的下家。 | ☐ | ~~Each subscription puts the relevant patent claims into your hands, covering the markets you enter — from day one of launch, you have defensible footing.~~<br>Three authoritative R&D institutions — ITRI, III, NYCU — issue 30 core patent legal licenses directly in your company's name. **Externally**, it's a golden business card for export hustle: peel off the "small OEM workshop" label in front of international buyers and cross-border investors, with institution-level real IP backing that earns new respect in customer reviews and partnership talks. **Internally**, it's an active "anti-bone-gnaw" shield: when patent trolls (NPE) screen extortion targets and see three institutions' legal IP defense behind you and a much higher attack cost, they naturally skip you and find an easier next target. | ~~Each subscription puts real patent claims in your hands for the markets you're entering — defensible ground from the day you ship, not months later.~~<br>ITRI / III / NYCU issue 30 legal IPs directly in your company's name — one credential, every front. International buyers and investors see institution-level IP backing, not a "small OEM" label. **Patent trolls** (NPEs) see a defense too costly to attack. | ✏️ 🆕 ✅ |
 | ~~一掃即驗~~<br>付款隔日立即生效 — DLC 數位憑證與雙品牌動態標章 | ☐ | ~~Verify in one scan~~<br>Payment-next-day activation — DLC Digital Credential and dual-brand dynamic badge | ~~Verifiable in one scan~~<br>Active the day after payment — Digital License Credential (DLC) + co-branded badge | ✏️ 🆕 ✅ 🚀 |
-| ~~TIS 簽發的數位授權憑證，可即時掃描驗證──向任何要求查驗的人證明你對這些專利的合法使用權。~~<br>金流確認隔日防護網立即啟動。平台同步交付包含公證電子簽章的數位授權憑證（DLC），以及帶有「TIS × 權威機構」的聯名授權認證標章（Badge）。內嵌獨一授權編號與 QR Code，2 秒線上即時驗證，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，對手不敢輕易踩線。 | ☐ | ~~A TIS-issued Digital License Credential, scannable for instant verification — proves your legal right to use these patents to anyone who asks.~~<br>Once payment is confirmed, the protection net activates the next day. The platform delivers a notarized-e-signature Digital License Credential (DLC) plus a co-branded "TIS × authoritative institution" license certification badge. Embedded with unique license number and QR code, verified online in 2 seconds, freely printable on international booths, proposals, website footer, or product packaging — competitors don't dare cross the line easily. | ~~A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks.~~<br>The DLC carries a notarized e-signature; the "TIS × institution" badge carries a unique license number and QR code — verified online in 2 seconds. Print on booth signage, proposals, website footer, or product packaging. Competitors think twice. | ✏️ 🆕 ✅ 🚀 |
+| ~~TIS 簽發的數位授權憑證，可即時掃描驗證──向任何要求查驗的人證明你對這些專利的合法使用權。~~<br>~~金流確認隔日防護網立即啟動。平台同步交付包含公證電子簽章的數位授權憑證（DLC），以及帶有「TIS × 權威機構」的聯名授權認證標章（Badge）。內嵌獨一授權編號與 QR Code，2 秒線上即時驗證，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，對手不敢輕易踩線。~~<br>金流確認隔日防護網立即啟動。平台同步交付包含公證電子簽章的數位授權憑證（DLC），以及帶有「TIS × 權威機構」★ 的聯名授權認證標章（Badge）。內嵌獨一授權編號與 QR Code，2 秒線上即時驗證，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，對手不敢輕易踩線。 | ☐ | ~~A TIS-issued Digital License Credential, scannable for instant verification — proves your legal right to use these patents to anyone who asks.~~<br>Once payment is confirmed, the protection net activates the next day. The platform delivers a notarized-e-signature Digital License Credential (DLC) plus a co-branded "TIS × authoritative institution" license certification badge. Embedded with unique license number and QR code, verified online in 2 seconds, freely printable on international booths, proposals, website footer, or product packaging — competitors don't dare cross the line easily. | ~~A TIS-issued Digital License Credential, scannable in two seconds — proof of your right to use the patents, for anyone who asks.~~<br>The DLC carries a notarized e-signature; the "TIS × institution" badge carries a unique license number and QR code — verified online in 2 seconds. Print on booth signage, proposals, website footer, or product packaging. Competitors think twice. | ✏️ 🆕 ✅ |
 | ~~看見組合裡的每一件~~<br>專利轉化為 OpEx 租賃保險 — 月均不到 1 萬，多樣期別彈性方案 | ☐ | ~~See every piece in the bundle~~<br>Patent transformed into OpEx rental insurance — monthly under NT$10K, varied flexible-term plans | ~~See exactly what's in the bundle~~<br>Patent licensing as OpEx — under NT$10K/month, flexible terms | ✏️ 🆕 ✅ 🚀 |
 | ~~每件專利皆由 Innovue SABCD 框架評等──典型 30 件組合分布 5 S · 6 A · 9 B · 6 C · 4 D。不是黑盒。~~<br>愛拼才會贏，但不需要盲目打軍備競賽。自行申請 1 件專利需花費 NT$50,000+ 與 18 個月等待；聘請專職 IP 工程師年資產營運成本破百萬；而 TIS 訂閱讓您月均支出控制在萬元以下。提供 3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折優惠。 | ☐ | ~~Every patent graded under the Innovue SABCD framework — a typical 30-patent bundle distributes 5 S · 6 A · 9 B · 6 C · 4 D. Not a black box.~~<br>Hard work wins, but no blind arms race needed. Self-applying for 1 patent costs NT$50,000+ and 18 months of wait; hiring a dedicated IP engineer breaks NT$1M in annual operating cost; a TIS subscription keeps your monthly average under NT$10K. Offers 3 / 6 / 12 / 24-month flexible terms — up to 12% off on 2-year plans. | ~~Every patent graded on Innovue's SABCD framework — a typical bundle splits 5 S · 6 A · 9 B · 6 C · 4 D. No black box, no filler.~~<br>Filing 1 patent yourself runs NT$50,000+ and 18 months. Hiring a dedicated IP engineer breaks NT$1M a year. A TIS subscription keeps you under NT$10K/month — flexible 3-24 month terms, up to 12% off on 2-year plans. | ✏️ 🆕 ✅ 🚀 |
 
@@ -199,8 +199,8 @@
 | ZH | ZH ✓ | Literal EN | Site EN | Status |
 |---|---|---|---|---|
 | 運作方式 |  | How it operates | How it works | ☐ |
-| 選擇法域 × 產業 × 期間 |  | Pick jurisdiction × industry × term | Pick your jurisdiction × industry × term | ☐ |
-| 一包專利包支持一個法域、一個產業、一種期間，只為你真正需要的組合付費。 |  | One bundle covers one jurisdiction, one industry, one term — pay only for the combination you actually need. | Pay for the markets and the term you actually need — nothing you don't. | ☐ |
+| ~~選擇法域 × 產業 × 期間~~<br>選擇國家 × 產業 × 期間 | ☐ | ~~Pick jurisdiction × industry × term~~<br>Pick country × industry × term | ~~Pick your jurisdiction × industry × term~~<br>Pick your country × industry × term | ✏️ 🆕 ✅ |
+| ~~一包專利包支持一個法域、一個產業、一種期間，只為你真正需要的組合付費。~~<br>一包專利包支持一個國家、一個產業、一種期間，只為你真正需要的組合付費。 | ☐ | ~~One bundle covers one jurisdiction, one industry, one term — pay only for the combination you actually need.~~<br>One bundle covers one country, one industry, one term — pay only for the combination you actually need. | Pay for the markets and the term you actually need — nothing you don't. | 🆕 ✅ |
 | US、TW，兩個主戰場供專利佈局。 |  | US, TW — two main battlegrounds for patent positioning. | Cover the market your customers buy in | ☐ |
 | 3、6、12、24 個月期，隨時可升級延長授權期間。 |  | 3, 6, 12, 24-month terms — can upgrade and extend the license period anytime. | Choose the term that fits your runway | ☐ |
 | 30 件 SABCD 評級專利組合，同評級專利隨時可更換。 |  | A 30-patent SABCD-graded bundle — same-tier patents can be swapped anytime. | Get thirty SABCD-graded patents per bundle | ☐ |
@@ -213,7 +213,7 @@
 | 針對特定商品特定市場選取 30 個最佳專利組合。 |  | For a specific product in a specific market, pick the best 30-patent bundle. | 30 SABCD-graded patents, curated to your market in under 15 seconds. | ☐ |
 | 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 |  | Spans 5 tiers (5S.6A.9B.6C.4D) — quality and quantity both covered. | Get a tier-balanced bundle, flagship to long tail | ☐ |
 | 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 |  | From national-grade ITRI institution, III institution, NYCU academic units and other premium patent pools — quality assured. | Drawn from the Innovue, iPIC, III & NYCU pool | ☐ |
-| 不用等 18 個月或無止盡商務談判，訂 閱到生效快打通關。 |  | No need to wait 18 months or endure endless commercial negotiations — subscription to activation clears fast. | Go live the week you subscribe | ☐ |
+| ~~不用等 18 個月或無止盡商務談判，訂 閱到生效快打通關。~~<br>不用等 18 個月或無止盡商務談判，訂 閱到生效快速打通關。 | ☐ | No need to wait 18 months or endure endless commercial negotiations — subscription to activation clears fast. | Go live the week you subscribe | 🆕 ✅ |
 | 鎖定專利包 |  | Lock the patent bundle | Swap patents — your call | ☐ |
 | 同評級專利可自選替換，隨你決定，不加價、無等審。 |  | Same-tier patents can be self-swapped — your call — no surcharge, no review wait. | Don't love a pick? Swap it — no surcharge, no review delay. | ☐ |
 | 平台提供首選 30 和備選 30 專利清單，供你自選替換。 |  | The platform provides a primary 30 and backup 30 patent list for you to self-swap. | Swap any pick from a same-tier pool | ☐ |
@@ -248,31 +248,32 @@
 | ~~策略佈局你的路徑~~<br>同步雙版專利評級 — 可附入 IC Memo、Data Room 與 LP 季報 | ☐ | ~~Strategically position your path~~<br>Synchronized dual-version patent rating — attachable to IC Memo, Data Room, and LP quarterly report | ~~Strategically position your path~~<br>Brief + Pro reports — IC Memo, Data Room, LP-quarterly ready | ✏️ 🆕 ✅ 🚀 |
 | ~~每件專利拆解為 8 大加權支柱──引用影響力（Citation Impact）、前瞻價值（Forward-Looking Value）等──Pro 報告再展開 50 項指標深度分析，協助策略決策。~~<br>採 2 SKU 計費（Brief 15 點 / Pro 30 點），1 點 = NT$100。系統同步生成兩版報告——Brief 是執行摘要（給 partner 快速 go/no-go），Pro 是深度版（含 50 項指標、跨方案穩定性、授權策略建議）。單買、雙買、按情境配置點數。 一鍵產出含用戶 Email 浮水印、防外流的權威 PDF，可直接附入投資建議書（IC Memo）、Data Room 或向 LP 進行季度風險報告。 | ☐ | ~~Each patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, etc. — and the Pro report expands all 50 indicators for deep analysis, supporting strategic decisions.~~<br>2 SKU pricing (Brief 15 points / Pro 30 points), 1 point = NT$100. The system synchronously generates two reports — Brief is the executive summary (for partner's fast go/no-go), Pro is the deep version (with 50 indicators, cross-plan stability, licensing strategy recommendations). Buy single, double, or allocate points by scenario. One-click generate authoritative leak-resistant PDF with user Email watermark, directly attachable to investment recommendation (IC Memo), Data Room, or quarterly LP risk reporting. | ~~Every patent breaks into 8 weighted pillars — Citation Impact, Forward-Looking Value, and more. Pro opens all 50 indicators beneath them, so you see exactly what anchors the grade.~~<br>Brief is 15 points; Pro is 30 points; 1 point = NT$100. Brief is partner-grade go/no-go. Pro unpacks 50 indicators, cross-plan stability, and licensing-strategy recommendations. Buy single, both, or allocate by deal. One-click leak-resistant PDF with Email watermark — drops into IC Memo, Data Room, or LP quarterly. | ✏️ 🆕 ✅ 🚀 |
 | ~~下注前，先摸清地形~~<br>新穎 1.8 億筆底層大數據 — 刺破公開 AI 搜尋的數據盲區 | ☐ | ~~Before placing the bet, get a feel for the terrain~~<br>Innovue's 180M-record underlying big data — pierces the blind spots of public AI search | ~~Know the terrain before you bet~~<br>Innovue's 180M-patent database — past public AI's blind spots | ✏️ 🆕 ✅ 🚀 |
-| ~~補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。~~<br>本產品技術由新穎數位支援全球第四大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。 | ☐ | ~~Fill in the blind spots that bring risk and costly mistakes. Pre-built by industry and jurisdiction — no need to commission an analyst project.~~<br>This product's technology is supported by Innovue Digital — the world's 4th-largest, covering 100+ countries, daily-synced 180M-record WEBPAT patent database. Customers only need to provide the patent number; the system automatically extracts the full patent text from the database and runs 50-indicator analysis. All analysis completed inside a closed proprietary database — the hard-core underlying data layer that public AI tools cannot reach, ensuring the most rigorous due diligence won't slip. | ~~Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit.~~<br>Innovue's WEBPAT database backs every analysis — 180M patents, 4th-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools. | ✏️ 🆕 ✅ 🚀 |
+| ~~補上會帶來風險與昂貴錯誤的盲點。依產業與司法管轄區預製──免委派分析師專案。~~<br>~~本產品技術由新穎數位支援全球第四大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。~~<br>本產品技術由新穎數位支援全球第三大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。 | ☐ | ~~Fill in the blind spots that bring risk and costly mistakes. Pre-built by industry and jurisdiction — no need to commission an analyst project.~~<br>~~This product's technology is supported by Innovue Digital — the world's 4th-largest, covering 100+ countries, daily-synced 180M-record WEBPAT patent database. Customers only need to provide the patent number; the system automatically extracts the full patent text from the database and runs 50-indicator analysis. All analysis completed inside a closed proprietary database — the hard-core underlying data layer that public AI tools cannot reach, ensuring the most rigorous due diligence won't slip.~~<br>This product's technology is supported by Innovue Digital — the world's 3rd-largest, covering 100+ countries, daily-synced 180M-record WEBPAT patent database. Customers only need to provide the patent number; the system automatically extracts the full patent text from the database and runs 50-indicator analysis. All analysis completed inside a closed proprietary database — the hard-core underlying data layer that public AI tools cannot reach, ensuring the most rigorous due diligence won't slip. | ~~Pre-built landscapes by industry and jurisdiction — concentration, whitespace, filing surge. The blind spots that turn into expensive mistakes, closed before you commit.~~<br>~~Innovue's WEBPAT database backs every analysis — 180M patents, 4th-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools.~~<br>Innovue's WEBPAT database backs every analysis — 180M patents, 3rd-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools. | ✏️ 🆕 ✅ |
 
 ## Products › Signal › How it works (5-step accordion)
 
 > **1:1 with Signal › How it works — canonical here.** Same ZH + Site EN strings on `index.html` (line 1268 onward) and `product/signal/index.html` (line 1840 onward), with **one EN-only divergence** flagged below (step 2 body). Layout differs (homepage = accordion; product page = horizontal rail) — ZH is fully byte-identical. **Every edit to a row below must land in BOTH files** (except the step 2 body row, which currently differs — see Signal › How it works for the page-specific Site EN).
 >
-> ⚠️ **Flagged copy-paste leak.** In step 2 ("Matched against the right peer pool"), the two check-item ZH strings appear to be mistakenly copied from the Licensing "Display the credential" step — they describe license badges, not peer matching. Marked ❓ for review. The bug is upstream in [index.html](../index.html) lines 1312–1313 (also mirrored on the Signal product page).
+> ~~⚠️ **Flagged copy-paste leak.** In step 2 ("Matched against the right peer pool"), the two check-item ZH strings appear to be mistakenly copied from the Licensing "Display the credential" step — they describe license badges, not peer matching. Marked ❓ for review. The bug is upstream in [index.html](../index.html) lines 1312–1313 (also mirrored on the Signal product page).~~ **Resolved 2026-06-01** — step 2 bullets rewritten with the correct peer-pool copy (6 patent pools + peer-only comparison + Innovue 3rd-largest benchmark); the misplaced badge ZH is gone from this step.
 
 | ZH | ZH ✓ | Literal EN | Site EN | Status |
 |---|---|---|---|---|
 | 運作方式 |  | How it operates | How it works | ☐ |
 | 提交一個專利號 |  | Submit a patent number | Submit a patent number | ☐ |
-| Brief 30 分鐘內寄達──免分析師，免等一整週。 |  | Brief arrives within 30 minutes — no analyst needed, no week-long wait. | Your Brief lands in 30 minutes — no analyst, no week-long wait. | ☐ |
-| USPTO · TW · EPO · WO |  | USPTO · TW · EPO · WO | Grade patents from any major office | ☐ |
-| 可平行 submit |  | Can submit in parallel | Score a whole batch at once | ☐ |
-| P95 寄達 ≤ 30 分鐘 |  | P95 delivery ≤ 30 minutes | Skip the week-long analyst wait | ☐ |
+| ~~Brief 30 分鐘內寄達──免分析師，免等一整週。~~<br>只要有專利號，就能評級專利強度，免分析師，免等事務所排號。 | ☐ | ~~Brief arrives within 30 minutes — no analyst needed, no week-long wait.~~<br>With just a patent number, you can grade patent strength — no analyst, no waiting in a firm's queue. | Your Brief lands in 30 minutes — no analyst, no week-long wait. | 🆕 ✅ |
+| ~~USPTO · TW · EPO · WO~~<br>Innovue 全球第 3 大專利資料庫，囊括 USPTO、TW、EPO、WO 等官方即時更新資料，專利家族一把抓。 | ☐ | ~~USPTO · TW · EPO · WO~~<br>Innovue's globally 3rd-largest patent database — covers USPTO, TW, EPO, WO and other official real-time-updated sources; pulls the whole patent family at once. | Grade patents from any major office | 🆕 ✅ |
+| ~~可平行 submit~~<br>可同時申請多個專利強度評級報告，不需要排隊。 | ☐ | ~~Can submit in parallel~~<br>Can submit multiple patent-strength rating reports concurrently — no queueing. | Score a whole batch at once | 🆕 ✅ |
+| ~~P95 寄達 ≤ 30 分鐘~~<br>免等分析師安排資源和報價，申請、付款、取報告一次完成。 | ☐ | ~~P95 delivery ≤ 30 minutes~~<br>No waiting for analysts to arrange resources or quotes — apply, pay, and fetch the report in one go. | Skip the week-long analyst wait | 🆕 ✅ |
 | 對比同儕池 |  | Compare against the peer pool | Matched against the right peer pool | ☐ |
-| 蘋果對蘋果， |  | Apples to apples, | Scores you can trust — graded against patents that actually compete in the same category. | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 |  | High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification. | Get matched to your exact technical category | ❓ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 |  | The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily. | Benchmark against the Innovue, iPIC, III & NYCU pool | ❓ |
-| Brief 還是 Pro──你決定 |  | Brief or Pro — you decide | Brief or Pro — your call | ☐ |
-| 同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。 |  | One scoring engine, two depths — pay now for what you need now, top up later to upgrade. | One scoring engine, two depths — pay for what you need today, top up later. | ☐ |
-| Brief · 15 點 · 30 分鐘郵件 |  | Brief · 15 points · 30-minute email | Start with the fast Brief verdict | ☐ |
-| Pro · 30 點 · 即時渲染 |  | Pro · 30 points · real-time render | Go deeper with Pro when you need it | ☐ |
-| 事後升級無加價 |  | Upgrade later — no surcharge | Upgrade anytime — no switching premium | ☐ |
+| ~~蘋果對蘋果，~~<br>蘋果對蘋果才公平。 | ☐ | ~~Apples to apples,~~<br>Apples to apples — only then is it fair. | ~~Scores you can trust — graded against patents that actually compete in the same category.~~<br>Apples to apples — fair comparison, by design. | ✏️ 🆕 ✅ |
+| ~~高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。~~<br>6 大類專利池 - 晶片半導體設計製造、網路通訊、計算機系統、綜合應用、多媒體影音/影像處理、淨零碳排。 | ☐ | ~~High-spec notarized e-signature Digital License Credential — embeds a unique license number and QR code; 2-second online instant verification.~~<br>6 patent-pool categories — chip & semiconductor design and manufacturing, network communications, computer systems, integrated applications, multimedia audio-video / image processing, and net-zero carbon. | ~~Get matched to your exact technical category~~<br>6 patent pools — chip, network, compute, integrated, multimedia, net-zero | ✏️ 🆕 ✅ |
+| ~~「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。~~<br>評級專利對應正確專利池，不跨行，只跟同行比。 | ☐ | ~~The "TIS × authoritative institutions" co-branded license-certification badge — freely printable on international booths, proposals, website footer, or product packaging; competitors won't dare to cross the line easily.~~<br>Each rated patent maps to the correct pool — no cross-industry, only peer-to-peer comparison. | ~~Benchmark against the Innovue, iPIC, III & NYCU pool~~<br>Graded inside its own pool — peers only, no cross-industry | ✏️ 🆕 ✅ |
+| ~~(absent)~~<br>專利評級內容對標 Innovue 全球第 3 大專利資料庫，只評估官方記錄。 | ☐ | ~~(absent)~~<br>Patent rating content benchmarked against Innovue's globally 3rd-largest patent database — assesses official records only. | ~~(absent)~~<br>Benchmarked against Innovue's 3rd-largest patent database — official records only | ✏️ 🆕 ✅ |
+| ~~Brief 還是 Pro──你決定~~<br>Brief (短版) / Pro (深度版) 報告，按需隨選。 | ☐ | ~~Brief or Pro — you decide~~<br>Brief (short version) / Pro (in-depth version) reports — pick on demand. | ~~Brief or Pro — your call~~<br>Brief or Pro — pick by need | ✏️ 🆕 ✅ |
+| ~~同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。~~<br>**(removed 2026-06-01)** body `<p>` deleted from HTML on both pages; the new bullets replace its content. | n/a | ~~One scoring engine, two depths — pay now for what you need now, top up later to upgrade.~~<br>**(removed)** | ~~One scoring engine, two depths — pay for what you need today, top up later.~~<br>**(removed)** | ✏️ 🆕 ✅ |
+| ~~Brief · 15 點 · 30 分鐘郵件~~<br>Brief 短版報告馬上告訴你專利強不強，提供執行摘要讓你快速作決定。 | ☐ | ~~Brief · 15 points · 30-minute email~~<br>The Brief short-version report tells you immediately whether the patent is strong, with an executive summary for quick decisions. | ~~Start with the fast Brief verdict~~<br>Brief — fast strong/weak verdict, executive summary | ✏️ 🆕 ✅ |
+| ~~Pro · 30 點 · 即時渲染~~<br>Pro 深度版報告包含全部評級指標深度分析說明，豐富你的投資或盡職報告。 | ☐ | ~~Pro · 30 points · real-time render~~<br>The Pro in-depth report includes deep-analysis commentary on every rating indicator — enriches your investment or due-diligence report. | ~~Go deeper with Pro when you need it~~<br>Pro — full indicator deep-dive for your IC memo or DD pack | ✏️ 🆕 ✅ |
+| ~~事後升級無加價~~<br>Brief 版不夠，加買 Pro 版，只要付 Pro 版差額即可獲得雙版。 | ☐ | ~~Upgrade later — no surcharge~~<br>Brief not enough? Buy Pro on top — pay only the Pro-vs-Brief delta and you get both versions. | ~~Upgrade anytime — no switching premium~~<br>Started with Brief? Pay the Pro delta to unlock both | ✏️ 🆕 ✅ |
 | Brief 報告呈現什麼 |  | What the Brief report shows | What the Brief report shows you | ☐ |
 | 一分鐘掃完──無需編輯，直接轉發給投資委員會。 |  | Scannable in a minute — no editing needed, forward directly to the IC. | Scannable in a minute — forward it to your IC without editing. | ☐ |
 | 等級判定 + PSS 分數 |  | Tier verdict + PSS score | See the tier verdict at a glance | ☐ |
@@ -290,30 +291,30 @@
 
 ## About
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 一間 IP 情報顧問公司， | An IP intelligence consultancy, | An IP intelligence consultancy, | ☐ |
-| 將專利地形轉化為市場佈局。 | turning the patent landscape into market positioning. | turning the patent landscape into market position. | ☐ |
-| 01 / 立場 | 01 / Stance | 01 / Stance | ☐ |
-| 主動佈局，而非被動防禦。 | Active positioning, not passive defense. | Active offense, not passive defense. | ☐ |
-| 我們的客戶要進入的市場，專利地形早已被人測繪——而且通常不利於他們。我們把那片地形變成策略。 | The markets our clients want to enter — the patent terrain has already been mapped by others, and usually against them. We turn that terrain into strategy. | Our clients sell into markets where the patent terrain is already mapped — often against them. We turn that terrain into strategy. | ☐ |
-| 02 / 資料來源 | 02 / Source | 02 / Source | ☐ |
-| 紮根於 1.8 億件專利。 | Rooted in 180M patents. | Grounded in 180M patents. | ☐ |
-| 營運全球第四大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。 | Operates the world's 4th-largest patent index — proprietary, continuously updated, and unreachable by any standard AI tool. | maintains the world's 4th-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool. | ☐ |
-| 03 / 方法 | 03 / Method | 03 / Method | ☐ |
-| 交付成果，而非工具。 | Deliver outcomes, not tools. | Deliverables, not tools. | ☐ |
-| 壓力之下泰然處之，依循證據逐步推進。客戶不必懂專利——那是我們的事。 | Under pressure, stay TaiRan (composed); advance step by step with evidence. Clients need not understand patents — that's our job. | Composed under pressure, methodical through evidence. Clients shouldn't need patent expertise — that's what we're for. | ☐ |
-| 董事會 | Board (of Directors) | Board of Directors | ☐ |
-| (absent) | (absent) | Dr. Eric Huang | ☐ |
-| 董事 | Board Director | Board Director | ☐ |
-| (absent) | (absent) | Ray Wu | ☐ |
-| 董事 | Board Director | Board Director | ☐ |
-| (absent) | (absent) | Ming-I Peng | ☐ |
-| 董事長 / 董事 | Chairman / Board Director | Chairman / Board Director | ☐ |
-| (absent) | (absent) | Jackson Hwang | ☐ |
-| 董事 | Board Director | Board Director | ☐ |
-| (absent) | (absent) | Ming Cheng | ☐ |
-| 監察人 / 董事 | Supervisor / Board Director | Supervisor / Board Director | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| 一間 IP 情報顧問公司， |  | An IP intelligence consultancy, | An IP intelligence consultancy, | ☐ |
+| 將專利地形轉化為市場佈局。 |  | turning the patent landscape into market positioning. | turning the patent landscape into market position. | ☐ |
+| 01 / 立場 |  | 01 / Stance | 01 / Stance | ☐ |
+| 主動佈局，而非被動防禦。 |  | Active positioning, not passive defense. | Active offense, not passive defense. | ☐ |
+| 我們的客戶要進入的市場，專利地形早已被人測繪——而且通常不利於他們。我們把那片地形變成策略。 |  | The markets our clients want to enter — the patent terrain has already been mapped by others, and usually against them. We turn that terrain into strategy. | Our clients sell into markets where the patent terrain is already mapped — often against them. We turn that terrain into strategy. | ☐ |
+| 02 / 資料來源 |  | 02 / Source | 02 / Source | ☐ |
+| 紮根於 1.8 億件專利。 |  | Rooted in 180M patents. | Grounded in 180M patents. | ☐ |
+| ~~營運全球第四大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。~~<br>營運全球第三大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。 | ☐ | ~~Operates the world's 4th-largest patent index — proprietary, continuously updated, and unreachable by any standard AI tool.~~<br>Operates the world's 3rd-largest patent index — proprietary, continuously updated, and unreachable by any standard AI tool. | ~~maintains the world's 4th-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool.~~<br>maintains the world's 3rd-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool. | ✏️ 🆕 ✅ |
+| 03 / 方法 |  | 03 / Method | 03 / Method | ☐ |
+| 交付成果，而非工具。 |  | Deliver outcomes, not tools. | Deliverables, not tools. | ☐ |
+| 壓力之下泰然處之，依循證據逐步推進。客戶不必懂專利——那是我們的事。 |  | Under pressure, stay TaiRan (composed); advance step by step with evidence. Clients need not understand patents — that's our job. | Composed under pressure, methodical through evidence. Clients shouldn't need patent expertise — that's what we're for. | ☐ |
+| ~~董事會~~<br>董事會成員 | ☐ | ~~Board (of Directors)~~<br>Board members | Board of Directors | 🆕 ✅ |
+| (absent) |  | (absent) | Dr. Eric Huang | ☐ |
+| 董事 |  | Board Director | Board Director | ☐ |
+| (absent) |  | (absent) | Ray Wu | ☐ |
+| 董事 |  | Board Director | Board Director | ☐ |
+| (absent) |  | (absent) | Ming-I Peng | ☐ |
+| 董事長 / 董事 |  | Chairman / Board Director | Chairman / Board Director | ☐ |
+| (absent) |  | (absent) | Jackson Hwang | ☐ |
+| 董事 |  | Board Director | Board Director | ☐ |
+| (absent) |  | (absent) | Ming Cheng | ☐ |
+| 監察人 / 董事 |  | Supervisor / Board Director | Supervisor / Board Director | ☐ |
 
 ## Contact
 
@@ -325,8 +326,12 @@
 | (absent) |  | (absent) | contact@tisglobalinc.com | ☐ |
 | 姓名 |  | Name / Full name | Full Name | ☐ |
 | (absent) |  | (absent) | e.g. Alexander Chen | ☐ |
+| 職稱 | ☐ | Job title | Job Title | ✏️ ✅ |
+| (absent) |  | (absent) | e.g. VP, Legal | ✏️ ✅ |
 | 電子郵件 |  | Email | Email Address | ☐ |
 | (absent) |  | (absent) | name@company.com | ☐ |
+| 電話 | ☐ | Phone / Contact phone | Phone Number | ✏️ ✅ |
+| (absent) |  | (absent) | +886 2 1234 5678 | ✏️ ✅ |
 | 機構 |  | Organization / Institution | Organization | ☐ |
 | (absent) |  | (absent) | Company | ☐ |
 | 諮詢類型 |  | Inquiry type | Inquiry Type | ☐ |
@@ -684,11 +689,11 @@
 
 ## Patent band CTA
 
-| ZH | Literal EN | Site EN | Status |
-|---|---|---|---|
-| 對照同儕池來評等， | Benchmark against a peer pool, | Benchmark against a pool, | ☐ |
-| 池由可信機構策展。 | the pool curated by trusted institutions. | drawn from reputable institutions | ☐ |
-| 取得第一份 Brief | Get the first Brief | Get your first Brief | ☐ |
+| ZH | ZH ✓ | Literal EN | Site EN | Status |
+|---|---|---|---|---|
+| ~~對照同儕池來評等，~~<br>~~同儕池專利~~<br>同儕池專利來自國家級 | ☐ | ~~Benchmark against a peer pool,~~<br>~~Peer-pool patents~~<br>Peer-pool patents, from national-level | ~~Benchmark against a pool,~~<br>~~Peer-pool patents,~~<br>Peer-pool patents, from national | ✏️ 🆕 ✅ |
+| ~~池由可信機構策展。~~<br>~~來自國家級法人及學術研究單位~~<br>法人及學術研究單位 | ☐ | ~~the pool curated by trusted institutions.~~<br>~~drawn from national-level institutions and academic research units~~<br>institutions and academic research units | ~~drawn from reputable institutions~~<br>~~from national institutions and academic research~~<br>institutions and academic research | ✏️ 🆕 ✅ |
+| 取得第一份 Brief |  | Get the first Brief | Get your first Brief | ☐ |
 
 ## FAQ
 

@@ -79,7 +79,7 @@ From slide 33 — copy cannot ship until these resolve:
 2. **Signal Token pricing visibility** — Path 2 (don't disclose amounts) duration; sales pipeline quote mechanism; VC fund-level annual plan availability. Owner: product team.
 3. **MVP August timeline** — FR-01 (visitor feed) / FR-03 (transparent pricing page) / FR-24 (badge) / FR-26 (public verification page). These are CTA destinations — any delay blocks copy from shipping. Owner: engineering / product.
 4. **New marketing page ownership** — `/badge-showcase` and `/methodology`. Spec in B / C v1.0. Owner: design / marketing.
-5. **Innovue "Top 4" confirmation** (slide 17) — Confirm with Innovue before publishing the "4th-largest patent database" claim. Owner: BD / Innovue liaison.
+5. **Innovue rank anchor** (slide 17) — ~~Confirm with Innovue before publishing the "4th-largest patent database" claim.~~ Resolved 2026-06-01: anchor flipped to **3rd-largest** per Irene; site copy + [brand/brand-voice.md](../../brand/brand-voice.md) §5 updated. Owner: BD / Innovue liaison.
 
 ---
 
@@ -525,7 +525,7 @@ Irene's rationale:
 | 中文原文 | Literal translation | English (TBD) | Element |
 |---|---|---|---|
 | 新穎 1.8 億筆底層大數據 — 刺破公開 AI 搜尋的數據盲區 | "Innovue's 180-million-record underlying big data — pierce the data blind spots of public AI search" | TBD | Title |
-| 本產品技術由新穎數位支援全球第四大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。 | "This product's technology is supported by Innovue's world's-4th-largest, 100+-country-covering, daily-synced 180-million-record WEBPAT patent database. Customers only need to provide the patent number; the system automatically extracts the full patent text from the database and runs the 50-indicator analysis. All analysis is completed inside the closed professional database — a hardcore underlying data layer completely unreachable by public AI tools — ensuring the most stringent due diligence never comes up empty." | TBD | Body |
+| 本產品技術由新穎數位支援全球第三大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。 | "This product's technology is supported by Innovue's world's-3rd-largest, 100+-country-covering, daily-synced 180-million-record WEBPAT patent database. Customers only need to provide the patent number; the system automatically extracts the full patent text from the database and runs the 50-indicator analysis. All analysis is completed inside the closed professional database — a hardcore underlying data layer completely unreachable by public AI tools — ensuring the most stringent due diligence never comes up empty." | TBD | Body |
 
 ---
 
@@ -596,7 +596,7 @@ Irene's annotations:
 
 | 中文原文 | Literal translation | English (TBD) | Shipped |
 |---|---|---|---|
-| 每日與官方同步更新資料，全球第四大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 | "Daily-synced with official sources, world's 4th-largest complete patent database; retrieval misses no traces or clues." | TBD | 🟢 2026-05-30 · shipped with subject-clause prefix added: `Innovue 專屬資料庫所收錄的專利數 - …`. EN still reads `patents powered by Innovue's WEBPAT database — with over 21 years of experience…` (pending Miko-lock). |
+| 每日與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。 | "Daily-synced with official sources, world's 3rd-largest complete patent database; retrieval misses no traces or clues." | TBD | 🟢 2026-05-30 · shipped with subject-clause prefix added: `Innovue 專屬資料庫所收錄的專利數 - …`. EN still reads `patents powered by Innovue's WEBPAT database — with over 21 years of experience…` (pending Miko-lock). 2026-06-01 · rank anchor flipped 第四大 → 第三大 per Irene (local edit, pending push). |
 
 Irene asks: **Highlight 「每日」** ("daily"). *Honored 2026-05-30 — `每日` wrapped in `<strong>` via new `data-zh-html` opt-in mechanism in `assets/site.js`.*
 
@@ -1257,5 +1257,5 @@ Flagged during transcription, needing her clarification:
 1. **Slide 17 middle stat** — slide annotation says "13 ？？？" but current site shows `data-target="50"` and `data-target="100"`. Confirm intended counter values for all 3 stat positions and what the middle one represents.
 2. **Slide 19 number drift** — Signal product card description says 1.7 億 (170M); slide 17 prefers 180M. Reconcile to one value before shipping.
 3. **Slide 30 cohort-section body copy** — the text on this slide appears identical to slide 26's badge-section copy. Confirm whether this is intentional reuse or a slide-editing artifact, and provide the actual cohort-pool body copy if it's the latter.
-4. **Slide 17 Innovue "Top 4" confirmation** — confirm with Innovue whether the "4th-largest" claim is still accurate before publishing.
+4. **Slide 17 Innovue rank anchor** — ~~confirm with Innovue whether the "4th-largest" claim is still accurate before publishing.~~ Resolved 2026-06-01: anchor flipped to **3rd-largest** per Irene.
 5. **Persona-A hero slot placement** — should slide 7 banner replace existing hero slide 1 (`#hero-slide-0`, currently 'positioning' pillar), be added as a new slide, or supplement slide 2 (`#hero-slide-1`, currently 'licensing')? Same question for personas B (slide 8) and C (slide 9).

@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=2">
+<link rel="stylesheet" href="/assets/styles.css?v=9">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -995,6 +995,14 @@ a, button,
 .section--page-hero > .container { z-index: 2; }
 .section--page-hero .pillar-hero { position: relative; }
 .section--page-hero .pillar-hero-copy { min-height: 420px; }
+
+/* Anchor the Signal hero pillar to the top of the .hero box. The .hero is
+   flex-centered (assets/styles.css §.hero) and Signal's column is one row
+   taller than Licensing's (extra `.pillar-sub--credit` line). Without this,
+   bumping the credit row's footprint shifts the headline upward in step
+   with the column-height delta. Scoped via aria-label so Licensing's
+   hero stays centered. */
+section.hero[aria-label="Signal hero"] { align-items: flex-start; }
 .section--page-hero .pillar-hero-shot {
   position: absolute;
   top: 0;
@@ -1058,7 +1066,7 @@ a, button,
 
 /* Exclusive Patent Access + paired CTA — full-bleed hairline band that
    doubles as the final intra-page CTA before the Contact form. One-line
-   horizontal layout (headline · 4 logos · button) at ≥1100px, stacks to
+   horizontal layout (headline · 3 logos · button) at ≥1100px, stacks to
    3 rows below. Color-at-rest logos via .partner-strip--color (same
    modifier the lobby uses); the "Exclusive Patent Access" caption is
    intentionally dropped — the headline carries the meaning. */
@@ -1761,13 +1769,13 @@ a, button,
           <span data-zh="律師告訴你「合不合法」">Grade IP in 30 minutes.</span><br>
           <em data-zh="我們告訴你專利「強不強」">Not weeks.</em>
         </h1>
-        <p class="pillar-sub">
-          <span data-zh="把目標專利打進 產業池做「同儕基準快照（Peer Cohort Snapshot）」百分位排序，">Submit a patent number; the SABCD-graded Brief lands in thirty minutes.</span><br>
-          <span data-zh="產出 SABCD 五級評級。">Peer percentile drawn from your industry’s curated pool — not a week-long analyst engagement.</span>
+        <p class="pillar-sub" data-zh="把目標專利打進 產業池做「同儕基準快照（Peer Cohort Snapshot）」百分位排序，產出 SABCD 五級評級。">Submit a patent number; the SABCD-graded Brief lands in thirty minutes. Peer percentile drawn from your industry’s curated pool — not a week-long analyst engagement.</p>
+        <p class="pillar-sub pillar-sub--credit">
+          <span data-zh="Powered by">Powered by</span>
+          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
         </p>
-        <p class="pillar-sub pillar-sub--credit" data-zh="Powered by Innovue">Powered by Innovue</p>
         <div class="pillar-actions">
-          <a href="/product/signal/lobby.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">Get your first Brief</a>
+          <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">Get your first Brief</a>
           <a href="#contact" class="btn btn-secondary" data-zh="聯絡業務">Talk to sales</a>
         </div>
       </article>
@@ -1797,7 +1805,7 @@ a, button,
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
           <h4 data-zh="新穎 1.8 億筆底層大數據 — 刺破公開 AI 搜尋的數據盲區">Innovue's 180M-patent database — past public AI's blind spots</h4>
-          <p data-zh="本產品技術由新穎數位支援全球第四大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。">Innovue's WEBPAT database backs every analysis — 180M patents, 4th-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools.</p>
+          <p data-zh="本產品技術由新穎數位支援全球第三大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。">Innovue's WEBPAT database backs every analysis — 180M patents, 3rd-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools.</p>
         </article>
       </div>
 
@@ -1835,11 +1843,11 @@ a, button,
             </div>
             <div class="howit-card-body">
               <h4 data-zh="提交一個專利號">Submit a patent number</h4>
-              <p data-zh="Brief 30 分鐘內寄達──免分析師，免等一整週。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
+              <p data-zh="只要有專利號，就能評級專利強度，免分析師，免等事務所排號。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
               <ul class="howit-checks">
-                <li data-zh="USPTO · TW · EPO · WO">Grade patents from any major office</li>
-                <li data-zh="可平行 submit">Score a whole batch at once</li>
-                <li data-zh="P95 寄達 ≤ 30 分鐘">Skip the week-long analyst wait</li>
+                <li data-zh="Innovue 全球第 3 大專利資料庫，囊括 USPTO、TW、EPO、WO 等官方即時更新資料，專利家族一把抓。">Grade patents from any major office</li>
+                <li data-zh="可同時申請多個專利強度評級報告，不需要排隊。">Score a whole batch at once</li>
+                <li data-zh="免等分析師安排資源和報價，申請、付款、取報告一次完成。">Skip the week-long analyst wait</li>
               </ul>
             </div>
           </article>
@@ -1856,10 +1864,11 @@ a, button,
             </div>
             <div class="howit-card-body">
               <h4 data-zh="對比同儕池">Matched against the right peer pool</h4>
-              <p data-zh="蘋果對蘋果，">Scores you can trust — graded against the patents that actually compete with yours, not the whole market.</p>
+              <p data-zh="蘋果對蘋果才公平。">Apples to apples — fair comparison, by design.</p>
               <ul class="howit-checks">
-                <li data-zh="高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。">Get matched to your exact technical category</li>
-                <li data-zh="「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。">Benchmark against the Innovue, iPIC, III &amp; NYCU pool</li>
+                <li data-zh="6 大類專利池 - 晶片半導體設計製造、網路通訊、計算機系統、綜合應用、多媒體影音/影像處理、淨零碳排。">6 patent pools — chip, network, compute, integrated, multimedia, net-zero</li>
+                <li data-zh="評級專利對應正確專利池，不跨行，只跟同行比。">Graded inside its own pool — peers only, no cross-industry</li>
+                <li data-zh="專利評級內容對標 Innovue 全球第 3 大專利資料庫，只評估官方記錄。">Benchmarked against Innovue's 3rd-largest patent database — official records only</li>
               </ul>
             </div>
           </article>
@@ -1875,12 +1884,11 @@ a, button,
               </div>
             </div>
             <div class="howit-card-body">
-              <h4 data-zh="Brief 還是 Pro──你決定">Brief or Pro — your call</h4>
-              <p data-zh="同一個評分引擎、兩種深度──當下付當下要的，事後可補繳升級。">One scoring engine, two depths — pay for what you need today, top up later.</p>
+              <h4 data-zh="Brief (短版) / Pro (深度版) 報告，按需隨選。">Brief or Pro — pick by need</h4>
               <ul class="howit-checks">
-                <li data-zh="Brief · 15 點 · 30 分鐘郵件">Start with the fast Brief verdict</li>
-                <li data-zh="Pro · 30 點 · 即時渲染">Go deeper with Pro when you need it</li>
-                <li data-zh="事後升級無加價">Upgrade anytime — no switching premium</li>
+                <li data-zh="Brief 短版報告馬上告訴你專利強不強，提供執行摘要讓你快速作決定。">Brief — fast strong/weak verdict, executive summary</li>
+                <li data-zh="Pro 深度版報告包含全部評級指標深度分析說明，豐富你的投資或盡職報告。">Pro — full indicator deep-dive for your IC memo or DD pack</li>
+                <li data-zh="Brief 版不夠，加買 Pro 版，只要付 Pro 版差額即可獲得雙版。">Started with Brief? Pay the Pro delta to unlock both</li>
               </ul>
             </div>
           </article>
@@ -2038,17 +2046,16 @@ a, button,
 
   <!-- ─── 8. Exclusive Patent Access + paired CTA — full-bleed hairline band
        doubles as the final intra-page CTA. Replaces the prior .cta-banner so
-       the credibility (Innovue · iPIC · III · NYCU) lands paired with the
+       the credibility (iPIC · III · NYCU) lands paired with the
        trial action, then flows into the Contact form. -->
   <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="signal-cta-heading">
     <div class="container">
       <div class="partner-strip partner-strip--color">
         <h2 id="signal-cta-heading" class="partner-cta-heading">
-          <span data-zh="對照同儕池來評等，">Benchmark against a pool,</span>
-          <span data-zh="池由可信機構策展。">drawn from reputable institutions</span>
+          <span data-zh="同儕池專利來自國家級">Peer-pool patents, from national</span>
+          <span data-zh="法人及學術研究單位">institutions and academic research</span>
         </h2>
         <div class="partner-logos">
-          <a href="https://www.innovue.ltd/" class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
           <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
           <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
           <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
@@ -2144,8 +2151,18 @@ a, button,
               <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
             </div>
             <div class="field">
+              <label for="contact-title" data-zh="職稱">Job Title</label>
+              <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="field">
               <label for="contact-email" data-zh="電子郵件">Email Address</label>
               <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
+            </div>
+            <div class="field">
+              <label for="contact-phone" data-zh="電話">Phone Number</label>
+              <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+886 2 1234 5678" />
             </div>
           </div>
           <div class="contact-row">

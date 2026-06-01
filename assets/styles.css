@@ -1039,14 +1039,28 @@ main { padding-top: 64px; }
   margin: 4px 0 0;
 }
 
-/* Attribution variant — "Powered by Innovue" style sub-line. Demoted weight
-   + size + color so it reads as a credit rather than body copy. */
+/* Attribution variant — "Powered by Innovue" style sub-line. Mirrors the
+   .stats-frame-foot treatment (italic, tertiary, inline wordmark) but sized
+   slightly larger to balance the hero's surrounding type. */
 .pillar-sub--credit {
-  font-size: 13px;
-  font-weight: 450;
-  color: var(--text-tertiary);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-secondary);
   margin-top: 12px;
   letter-spacing: 0.01em;
+}
+.pillar-sub--credit .innovue-logo {
+  height: 16px;
+  width: auto;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .pillar-actions {
