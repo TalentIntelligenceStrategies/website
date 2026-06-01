@@ -17,14 +17,8 @@
 <link rel="stylesheet" href="/assets/styles.css?v=2">
 
 <script>
-  // Theme init — sync to avoid FOUC. Reads tis-theme + tis-lang from localStorage and sets <html> attrs before paint.
+  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
   (() => {
-    const t = localStorage.getItem('tis-theme');
-    const choice = (t === 'system' || t === 'light' || t === 'dark') ? t : 'system';
-    const resolved = choice === 'system'
-      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : choice;
-    document.documentElement.setAttribute('data-theme', resolved);
     const lang = localStorage.getItem('tis-lang');
     if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
   })();

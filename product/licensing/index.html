@@ -33,14 +33,8 @@
 <link rel="stylesheet" href="/assets/styles.css?v=2">
 
 <script>
-  // Theme init — sync to avoid FOUC. Reads tis-theme + tis-lang from localStorage and sets <html> attrs before paint.
+  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
   (() => {
-    const t = localStorage.getItem('tis-theme');
-    const choice = (t === 'system' || t === 'light' || t === 'dark') ? t : 'system';
-    const resolved = choice === 'system'
-      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : choice;
-    document.documentElement.setAttribute('data-theme', resolved);
     const lang = localStorage.getItem('tis-lang');
     if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
   })();
@@ -2144,27 +2138,6 @@ a, button,
     </nav>
 
     <div class="topnav-controls">
-      <!-- Theme toggle — 3-segment pill: System / Light / Dark -->
-      <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme">
-        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="3" width="20" height="14" rx="2"/>
-            <path d="M8 21h8M12 17v4"/>
-          </svg>
-        </button>
-        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-          </svg>
-        </button>
-        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-      </div>
-
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
         <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">

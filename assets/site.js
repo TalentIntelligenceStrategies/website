@@ -1,31 +1,9 @@
-// ─── Universal site chrome: theme, language, mobile drawer, search, forms, pillar tabs ───
+// ─── Universal site chrome: language, mobile drawer, search, forms, pillar tabs ───
+// Note: dark mode is parked for the MVP. `[data-theme="dark"]` token blocks and
+// component overrides remain in styles.css as dormant infrastructure — re-enable
+// later by restoring the toggle markup + a `data-theme` setter here.
 (() => {
-  // ──────────────── Theme — system / light / dark ────────────────
   const root = document.documentElement;
-  const themeSegs = document.querySelectorAll('[data-theme-set]');
-  const prefersDark = matchMedia('(prefers-color-scheme: dark)');
-
-  const resolveTheme = (choice) =>
-    choice === 'system' ? (prefersDark.matches ? 'dark' : 'light') : choice;
-
-  const applyTheme = (choice) => {
-    root.setAttribute('data-theme', resolveTheme(choice));
-    localStorage.setItem('tis-theme', choice);
-    themeSegs.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === choice)));
-  };
-
-  const storedChoice = localStorage.getItem('tis-theme');
-  const initialChoice = (storedChoice === 'system' || storedChoice === 'light' || storedChoice === 'dark')
-    ? storedChoice
-    : 'system';
-  applyTheme(initialChoice);
-
-  themeSegs.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeSet)));
-
-  // Live-track OS preference while in System mode
-  prefersDark.addEventListener('change', () => {
-    if (localStorage.getItem('tis-theme') === 'system') applyTheme('system');
-  });
 
   // ──────────────── Language ────────────────
   const langWrap = document.getElementById('lang-wrap');
