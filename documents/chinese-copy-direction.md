@@ -1191,6 +1191,53 @@ From slide 33 (already captured in §Open sign-off items at the top):
 
 ---
 
+# Part G — Patent preview (new page, 2026-06-01)
+
+Not from Irene's PDF — added by Miko on 2026-06-01 to address Troy's feedback (meeting notes): users hit `/product/licensing/` and are forced into sign-up at the lobby before they can see what patents are actually on offer. This new page (`/product/licensing/patent-preview.html`) lets visitors browse the inventory before committing, with industry / jurisdiction / SABCD-tier filters and 30/page pagination over ~120 mock records. Real inventory will swap in by replacing the inline `PATENTS` array. Two teaser sections (homepage + product page) that point at this destination are deferred (Plan B / another idea); HTML slot markers are reserved.
+
+ZH copy below is Miko-authored placeholder — awaiting Irene review. Filter labels and utility strings (`Industry`, `Tier`, `Any`, `Clear`, `Prev`, etc.) live in [copy-audit.md › Patent Preview](copy-audit.md) only; this doc covers only the marketing-positioning surface.
+
+## Page H1 + intro
+
+- **Key:** `patent-preview-hero-h1`
+- **File:** [website/product/licensing/patent-preview.html](../product/licensing/patent-preview.html)
+- **Selector:** `#pp-hero-heading` + sibling `.pp-intro`
+- **Status:** Direct edit — apply when ready
+
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 專利庫存 | Patent inventory | Patent inventory | 🟢 2026-06-01 |
+| 瀏覽我們手上 1,000+ 件可授權專利。 | Browse the 1,000+ licensable patents we have on hand. | Browse the 1,000+ patents we license. | 🟢 2026-06-01 |
+| 依產業、司法管轄區與 SABCD 評等篩選，逐件查看你的領域可用的專利 — 無需註冊，看清楚再決定要不要訂閱組合。 | Filter by industry, jurisdiction, and SABCD rating; view each patent available in your field one by one — no registration needed, look clearly before deciding whether to subscribe to a bundle. | Filter by industry, jurisdiction, and SABCD tier. See exactly what's available in your field before subscribing — no sign-up required to look. | 🟢 2026-06-01 |
+
+## Bottom CTA band
+
+- **Key:** `patent-preview-cta-band`
+- **File:** [website/product/licensing/patent-preview.html](../product/licensing/patent-preview.html)
+- **Selector:** `#pp-cta-heading` + sibling `p` + `.pp-cta-row a`
+- **Status:** Direct edit — apply when ready
+
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 找到適合你的專利？ | Found patents that suit you? | See patents you can use? | 🟢 2026-06-01 |
+| 訂閱 30 件專利組合，依司法管轄區與產業組合。NT$8,990/月起，3 個月起跳。 | Subscribe to a 30-patent bundle, by jurisdiction × industry combination. From NT$8,990/month, 3-month minimum. | Subscribe to a curated 30-patent bundle in your jurisdiction and industry. From NT$8,990/month, 3-month minimum. | 🟢 2026-06-01 |
+| 查看定價 → | View pricing → | View pricing → | 🟢 2026-06-01 |
+| 聯絡業務 | Contact sales | Talk to sales | 🟢 2026-06-01 |
+
+## Top nav CTA divergence (this page only)
+
+- **Key:** `patent-preview-topnav-cta`
+- **File:** [website/product/licensing/patent-preview.html](../product/licensing/patent-preview.html)
+- **Selector:** `.topnav-cta` (also `.mobile-auth .btn`)
+- **Status:** Direct edit — apply when ready
+- **Note:** Canonical Top nav across the other 3 pages uses `聯絡業務 / Contact sales` linking to `#contact`. This page swaps to `查看定價 / View pricing` linking to `/product/licensing/#pricing` because the browse surface's natural next step is *pricing*, not *contact*.
+
+| 中文原文 | Literal translation | English (TBD) | Shipped |
+|---|---|---|---|
+| 查看定價 | View pricing | View pricing | 🟢 2026-06-01 |
+
+---
+
 # Appendix A: Transcription notes
 
 PDF transcription quirks worth flagging:
