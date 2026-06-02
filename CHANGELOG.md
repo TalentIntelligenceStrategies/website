@@ -10,6 +10,10 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-02 12:59 +08:00** · Converted Signal product page How-it-works from sliding cards to accordion to match Licensing (all 5 steps × ZH+EN copy preserved 1:1, verified character-by-character); removed the now-dead inline `[data-howit-rail]` arrow-pagination script from `product/signal/index.html`.
+
+- **2026-06-02 12:49 +08:00** · Removed homepage `#products` section (toggle + duplicate deliverables + duplicate How-it-works); migrated the two pillar hero blocks (Licensing patent-grid + Signal cascading reports) into `product/licensing/index.html` and `product/signal/index.html` below the 4× deliverables; converted Licensing product page How-it-works from sliding-cards to accordion (copy was already 1:1 with homepage); dropped the now-dead pillar-toggle JS in `assets/site.js`; un-scoped pillar gradient CSS from `#products` to `[data-pillar]` so gradients cascade through `<main data-pillar>` on each product page.
+
 - **2026-06-02 09:48 +08:00** · Reworked `patent-preview.html` hero to match the homepage's licensing slide — base linear-gradient fades to white at 85% so the warm color reads as a top-center pour instead of a full fill; added 48px top padding to `.pp-section` for breathing room above the search bar; tightened list-view ID + Owner columns to content (`width: 1%`) so Title absorbs the leftover row width; centered Owner / Jurisdiction / Tier columns and renamed the "Country" filter + table header to "Jurisdiction" (ZH `司法管轄區`) on this page only.
 
 - **2026-06-02 09:43 +08:00** · Synced both product lobby pages to the "TIS Strategic Partners / 泰然策略合作夥伴" partner-strip label, matching the homepage; push also unstuck the prior `c20d640` Pages deploy (runner-shutdown failure) so the homepage rename went live in the same build.

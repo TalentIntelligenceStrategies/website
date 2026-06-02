@@ -375,17 +375,6 @@
     counters.forEach(el => el.textContent = el.dataset.target);
   }
 
-  // ──────────────── Product pillar toggle ────────────────
-  const pillarTabs = document.querySelectorAll('[data-pillar-tab]');
-  const pillarPanels = document.querySelectorAll('.pillar-panel');
-  const productsSection = document.getElementById('products');
-  const showPillarPanel = (id) => {
-    pillarPanels.forEach(p => p.classList.toggle('is-active', p.id === 'pillar-' + id));
-    pillarTabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.pillarTab === id)));
-    if (productsSection) productsSection.setAttribute('data-pillar', id);
-  };
-  pillarTabs.forEach(t => t.addEventListener('click', () => showPillarPanel(t.dataset.pillarTab)));
-
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {

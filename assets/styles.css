@@ -1363,6 +1363,14 @@ main { padding-top: 64px; }
   line-height: 1.2;
   margin: 0 0 32px;
 }
+/* Migrated pillar hero (product pages) — promoted to old "Products" header size. */
+.pillar-hero-copy .pillar-hero-copy-h2 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 32px;
+}
 .pillar-hero-copy p {
   font-size: 18px;
   line-height: 1.55;
@@ -1468,12 +1476,16 @@ main { padding-top: 64px; }
 }
 
 /* ───────── Per-pillar gradient theming — components.md §Gradients (focal level)
-   Scoped to #products via [data-pillar]; hero/Innovue card/counters stay neutral.
-     Licensing Platform        → warm  (S → D vivid)
-     Signal  → cool  (A → B → C vivid)
-   Themed surfaces: pillar h3 (gradient text), pillar visual placeholder (gradient bg),
-   active toggle tab (gradient fill). Body, CTA, deliverable cards stay neutral. ───── */
-#products {
+   Scoped via [data-pillar] on <main> (product pages) or any container; the
+   homepage #products section is gone but the same gradients now apply to the
+   migrated pillar showcase on each product page.
+     Licensing Platform → warm  (S → D vivid)
+     Signal             → cool  (A → B → C vivid)
+   Themed surfaces: migrated pillar h2 (gradient text), howitworks h3,
+   pillar visual placeholder (gradient bg), primary CTA inside the
+   migrated showcase (gradient fill). ───── */
+[data-pillar="licensing"],
+[data-pillar="signal"] {
   --score-s-vivid: #D4A017;
   --score-d-vivid: #F97316;
   --score-a-vivid: #10B981;
@@ -1482,70 +1494,70 @@ main { padding-top: 64px; }
   --warm-body: #7A4A0F;
   --cool-body: #1E3A5F;
 }
-/* Pillar h3 — gradient text */
-#products[data-pillar="licensing"] .pillar-panel.is-active .pillar-hero-copy h3,
-#products[data-pillar="licensing"] .pillar-panel.is-active .howitworks > h3 {
+/* Migrated pillar h2 — gradient text */
+[data-pillar="licensing"] .pillar-hero-copy-h2,
+[data-pillar="licensing"] .howitworks > h3 {
   background-image: linear-gradient(90deg,
     var(--score-s-vivid) 0%, var(--score-d-vivid) 100%);
   background-clip: text; -webkit-background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
 }
-#products[data-pillar="signal"] .pillar-panel.is-active .pillar-hero-copy h3 {
+[data-pillar="signal"] .pillar-hero-copy-h2 {
   background-image: linear-gradient(90deg,
     var(--score-a-vivid) 0%, var(--score-b-vivid) 50%, var(--score-c-vivid) 100%);
   background-clip: text; -webkit-background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
 }
 
-/* Pillar CTAs — gradient fill (dashboard-preview.html §.btn-shell.primary).
-   Licensing = warm S→D; Signal = cool A→B→C. Scoped so each pillar's
-   CTA carries its own pillar accent without bleeding into the other. */
-#pillar-licensing .btn-primary {
+/* Migrated pillar primary CTA — gradient fill (dashboard-preview.html §.btn-shell.primary).
+   Licensing = warm S→D; Signal = cool A→B→C. Scoped to the migrated showcase only —
+   doesn't bleed into the top-of-page hero CTA on the same product page. */
+[data-pillar="licensing"] .section--migrated-pillar .btn-primary {
   background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
   color: #FFFFFF;
   border: 0;
   box-shadow: 0 1px 2px rgba(180,83,9,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
 }
-#pillar-licensing .btn-primary:hover {
+[data-pillar="licensing"] .section--migrated-pillar .btn-primary:hover {
   background: linear-gradient(135deg, #B45309 0%, #C2410C 100%);
 }
-#pillar-signal .btn-primary {
+[data-pillar="signal"] .section--migrated-pillar .btn-primary {
   background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
   color: #FFFFFF;
   border: 0;
   box-shadow: 0 1px 2px rgba(3,105,161,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
 }
-#pillar-signal .btn-primary:hover {
+[data-pillar="signal"] .section--migrated-pillar .btn-primary:hover {
   background: linear-gradient(135deg, #047857 0%, #0369A1 50%, #6D28D9 100%);
 }
-[data-theme="dark"] #pillar-licensing .btn-primary,
-[data-theme="dark"] #pillar-signal .btn-primary {
+[data-theme="dark"] [data-pillar="licensing"] .section--migrated-pillar .btn-primary,
+[data-theme="dark"] [data-pillar="signal"] .section--migrated-pillar .btn-primary {
   box-shadow: 0 1px 2px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12);
 }
 /* Visual placeholders — gradient bg wash + paired body color.
    Applies to both .pillar-hero-visual (top of panel) and .howitworks-visual (lower in panel). */
-#products[data-pillar="licensing"] .pillar-panel.is-active .pillar-hero-visual,
-#products[data-pillar="licensing"] .pillar-panel.is-active .howitworks-visual {
+[data-pillar="licensing"] .pillar-hero-visual,
+[data-pillar="licensing"] .howitworks-visual {
   background: linear-gradient(90deg,
     #FFFFFF 0%, #FDF6E0 35%, #FAF3DC 65%, #FFF7ED 100%);
   color: var(--warm-body);
   border-color: rgba(122, 74, 15, 0.15);
 }
-#products[data-pillar="signal"] .pillar-panel.is-active .pillar-hero-visual,
-#products[data-pillar="signal"] .pillar-panel.is-active .howitworks-visual {
+[data-pillar="signal"] .pillar-hero-visual,
+[data-pillar="signal"] .howitworks-visual {
   background: linear-gradient(90deg,
     #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%);
   color: var(--cool-body);
   border-color: rgba(30, 58, 95, 0.15);
 }
-[data-theme="dark"] #products[data-pillar="licensing"] .pillar-panel.is-active .pillar-hero-visual,
-[data-theme="dark"] #products[data-pillar="licensing"] .pillar-panel.is-active .howitworks-visual {
+[data-theme="dark"] [data-pillar="licensing"] .pillar-hero-visual,
+[data-theme="dark"] [data-pillar="licensing"] .howitworks-visual {
   background: linear-gradient(90deg,
     #161616 0%, rgba(212,160,23,0.10) 50%, rgba(249,115,22,0.12) 100%);
   color: #F5E4A8; border-color: rgba(245, 228, 168, 0.15);
 }
-[data-theme="dark"] #products[data-pillar="signal"] .pillar-panel.is-active .pillar-hero-visual,
-[data-theme="dark"] #products[data-pillar="signal"] .pillar-panel.is-active .howitworks-visual {
+[data-theme="dark"] [data-pillar="signal"] .pillar-hero-visual,
+[data-theme="dark"] [data-pillar="signal"] .howitworks-visual {
   background: linear-gradient(90deg,
     #161616 0%, rgba(16,185,129,0.10) 35%, rgba(14,165,233,0.10) 70%, rgba(139,92,246,0.10) 100%);
   color: #A7F3D0; border-color: rgba(167, 243, 208, 0.15);
