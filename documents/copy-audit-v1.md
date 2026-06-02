@@ -140,7 +140,7 @@
 
 | ZH | ZH ✓ | Literal EN | Site EN | Status |
 |---|---|---|---|---|
-| ~~專屬專利授權~~<br>泰然策略合作夥伴 | ☐ | ~~Exclusive patent licensing~~<br>TIS strategic partners | ~~Exclusive Patent Access~~<br>TIS Strategic Partners | ✏️ 🆕 ✅ |
+| ~~專屬專利授權~~<br>泰然策略合作夥伴 | ☐ | ~~Exclusive patent licensing~~<br>TIS strategic partners | ~~Exclusive Patent Access~~<br>TIS Strategic Partners | ✏️ 🆕 ✅ 🚀 |
 
 ## Stats counter
 
@@ -772,7 +772,7 @@
 |---|---|---|---|---|
 | 專利庫存 | ☐ | Patent inventory | Patent inventory | 🆕 ☐ |
 | 瀏覽我們手上 1,000+ 件可授權專利。 | ☐ | Browse the 1,000+ licensable patents we have on hand. | Browse the 1,000+ patents we license. | 🆕 ☐ |
-| 依產業、司法管轄區與 SABCD 評等篩選，逐件查看你的領域可用的專利 — 無需註冊，看清楚再決定要不要訂閱組合。 | ☐ | Filter by industry, jurisdiction, and SABCD rating; view each patent available in your field one by one — no registration needed, look clearly before deciding whether to subscribe to a bundle. | Filter by industry, jurisdiction, and SABCD tier. See exactly what's available in your field before subscribing — no sign-up required to look. | 🆕 ☐ |
+| ~~依產業、司法管轄區與 SABCD 評等篩選，逐件查看你的領域可用的專利 — 無需註冊，看清楚再決定要不要訂閱組合。~~<br>~~訂閱前先探索你的產業與國家可授權的專利 — 組建你的 30 件專利包，可逐件替換直到符合你的需求。繳款隔日啟用。~~<br>**探索**所有可授權的專利，依你的產業與司法管轄區**篩選**最相關的選項，**組建**符合公司需求的專利包。 | ☐ | ~~Filter by industry, jurisdiction, and SABCD rating; view each patent available in your field one by one — no registration needed, look clearly before deciding whether to subscribe to a bundle.~~<br>~~Explore patents available to license in your industry and country before subscribing — build your 30-patent bundle, swap each one until it matches your needs. Activates the day after payment.~~<br>**Explore** all patents available to license; **filter** by industry and jurisdiction to the most relevant options; **build** a patent bundle that matches your company's needs. | ~~Filter by industry, jurisdiction, and SABCD tier. See exactly what's available in your field before subscribing — no sign-up required to look.~~<br>~~Discover what's licensable in your industry and country before subscribing — build a 30-patent bundle, swap any until it matches your specs. Active the day after payment.~~<br>**Explore** every patent available to license, **narrow** to the ones that match your industry and jurisdiction, and **build** a bundle around your business. | ✏️ 🆕 ✅ |
 
 ## Filter bar — labels
 

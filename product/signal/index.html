@@ -995,14 +995,6 @@ a, button,
 .section--page-hero > .container { z-index: 2; }
 .section--page-hero .pillar-hero { position: relative; }
 .section--page-hero .pillar-hero-copy { min-height: 420px; }
-
-/* Anchor the Signal hero pillar to the top of the .hero box. The .hero is
-   flex-centered (assets/styles.css §.hero) and Signal's column is one row
-   taller than Licensing's (extra `.pillar-sub--credit` line). Without this,
-   bumping the credit row's footprint shifts the headline upward in step
-   with the column-height delta. Scoped via aria-label so Licensing's
-   hero stays centered. */
-section.hero[aria-label="Signal hero"] { align-items: flex-start; }
 .section--page-hero .pillar-hero-shot {
   position: absolute;
   top: 0;
@@ -1743,8 +1735,8 @@ section.hero[aria-label="Signal hero"] { align-items: flex-start; }
   <!-- §Announcement banner — TIS-system chrome (identical across all surfaces). -->
   <div class="announce" data-announce-id="2026-q2-signal-beta" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
-      <span class="announce-msg" data-zh="Signal Beta 開放 — 首次專利評估免費贈送 50 點。">Signal beta is open — try your first patent valuation free with 50 credits.</span>
-      <a class="announce-link" href="#signup" data-zh="立即試用 →">Try Signal free →</a>
+      <span class="announce-msg" data-zh="SABCD 報告 30 分鐘到手 — 含同產業 cohort 排名。">SABCD report in hand in 30 minutes — same-industry rank per patent.</span>
+      <a class="announce-link" href="#signup" data-zh="立即試用 →">Try Signal →</a>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>

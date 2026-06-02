@@ -275,6 +275,12 @@
   --partner-innovue:        url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_ch.svg');
 }
 
+/* Language-conditional visibility — for hero titles where EN and ZH need
+   different line-break positions inside the same h2. */
+.lang-zh-only { display: none; }
+[lang^="zh"] .lang-en-only { display: none; }
+[lang^="zh"] .lang-zh-only { display: inline; }
+
 /* Center text within the JS-locked EN min-width footprint so the shorter CH form
    sits centered in its EN-sized box. .topnav-cta inherits centering from .btn. */
 .topnav-link {

@@ -73,10 +73,10 @@
   position: relative;
   padding: 128px 0 80px;
   overflow: hidden;
-  background: linear-gradient(180deg, #FFFCF6 0%, #FFF6EA 100%);
+  background: linear-gradient(180deg, #FFF7EE 0%, #FFFFFF 85%);
 }
 [data-theme="dark"] .pp-hero {
-  background: linear-gradient(180deg, #1A1614 0%, #1F1916 100%);
+  background: linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 .pp-hero::before {
   content: ""; position: absolute; inset: 0;
@@ -89,7 +89,7 @@
 }
 [data-theme="dark"] .pp-hero::before {
   background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(255,140,60,0.08) 0%, rgba(255,140,60,0.04) 35%, transparent 70%),
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(120,74,15,0.42) 0%, rgba(80,50,10,0.26) 35%, transparent 70%),
     repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
 }
@@ -137,12 +137,13 @@
   max-width: 60ch;
   margin: 4px 0 0;
 }
+.pp-hero .pillar-sub strong { font-weight: 700; color: var(--text-primary); }
 @media (max-width: 768px) {
   .pp-hero { padding: 96px 0 56px; }
 }
 
 /* Section spacing for the grid+filters block. */
-.pp-section { padding: 0 0 96px; }
+.pp-section { padding: 48px 0 96px; }
 
 /* Juris chip — pill, one of 5 jurisdictions. */
 .juris-chip {
@@ -897,21 +898,28 @@
   font-size: 14px; color: var(--text-primary);
 }
 .pp-table tbody tr:last-child td { border-bottom: 0; }
+.pp-table th.pp-row-id,
+.pp-table td.pp-row-id {
+  width: 1%; white-space: nowrap;
+}
 .pp-table td.pp-row-id {
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px; letter-spacing: 0.05em;
-  white-space: nowrap;
   color: var(--text-primary);
 }
 .pp-table td.pp-row-title {
   max-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+.pp-table th.pp-row-owner,
+.pp-table td.pp-row-owner { width: 1%; white-space: nowrap; text-align: center; }
 .pp-table td.pp-row-owner strong {
   font-weight: 600; color: var(--text-primary);
 }
+.pp-table th.pp-row-country,
 .pp-table td.pp-row-country,
-.pp-table td.pp-row-tier { width: 1%; white-space: nowrap; }
+.pp-table th.pp-row-tier,
+.pp-table td.pp-row-tier { width: 1%; white-space: nowrap; text-align: center; }
 /* Override the global mono/uppercase .tier-chip inside list rows too —
    matches the brand-canonical pill, same as on cards. */
 .pp-table .tier-chip {
@@ -1189,7 +1197,7 @@
         <h1 id="pp-hero-heading" class="pillar-title">
           <span data-zh="瀏覽">Browse the</span> <em data-zh="XXXX+ 件">XXXX+ patents</em> <span data-zh="可供授權。">available to license.</span>
         </h1>
-        <p class="pillar-sub" data-zh="訂閱前先探索你的產業與國家可授權的專利 — 組建你的 30 件專利包，可逐件替換直到符合你的需求。繳款隔日啟用。">Discover what's licensable in your industry and country before subscribing — build a 30-patent bundle, swap any until it matches your specs. Active the day after payment.</p>
+        <p class="pillar-sub" data-zh-html data-zh="<strong>探索</strong>所有可授權的專利，依你的產業與司法管轄區<strong>篩選</strong>最相關的選項，<strong>組建</strong>符合公司需求的專利包。"><strong>Explore</strong> every patent available to license, <strong>narrow</strong> to the ones that match your industry and jurisdiction, and <strong>build</strong> a bundle around your business.</p>
       </article>
     </div>
   </section>
@@ -1236,14 +1244,14 @@
           </div>
 
           <div class="fb-group">
-            <span class="fb-label" data-zh="國家">Country</span>
+            <span class="fb-label" data-zh="司法管轄區">Jurisdiction</span>
             <div class="select-wrap" data-f="juris" data-value="any" data-default="any">
-              <button type="button" class="select-trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Country filter">
-                <span class="label" data-zh="所有國家">All countries</span>
+              <button type="button" class="select-trigger" aria-expanded="false" aria-haspopup="listbox" aria-label="Jurisdiction filter">
+                <span class="label" data-zh="所有司法管轄區">All jurisdictions</span>
                 <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
               </button>
               <div class="select-menu" role="listbox" hidden>
-                <div class="select-item" role="option" data-value="any" data-zh="所有國家">All countries</div>
+                <div class="select-item" role="option" data-value="any" data-zh="所有司法管轄區">All jurisdictions</div>
                 <div class="select-item" role="option" data-value="US" data-zh="美國">United States</div>
                 <div class="select-item" role="option" data-value="TW" data-zh="台灣">Taiwan</div>
                 <div class="select-item" role="option" data-value="EU" data-zh="歐盟">Europe</div>
@@ -1375,7 +1383,7 @@
               <th class="pp-row-id" data-zh="專利編號">ID</th>
               <th class="pp-row-title" data-zh="標題">Title</th>
               <th class="pp-row-owner" data-zh="權利人">Owner</th>
-              <th class="pp-row-country" data-zh="國家">Country</th>
+              <th class="pp-row-country" data-zh="司法管轄區">Jurisdiction</th>
               <th class="pp-row-tier" data-zh="評等">Tier</th>
             </tr>
           </thead>
