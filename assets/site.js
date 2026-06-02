@@ -10,10 +10,16 @@
   const langTrigger = document.getElementById('lang-trigger');
   const langButtons = langWrap.querySelectorAll('[data-lang-set]');
 
-  // Capture each translatable element's source-of-truth EN copy on init so the swap
-  // is reversible (data-zh holds the CH form; data-en is the original textContent).
+  // Capture each translatable element's source-of-truth EN copy on init so the
+  // swap is reversible. Elements opting into `data-zh-html` carry inline markup
+  // (e.g. <strong>) in their EN content too, so capture innerHTML for those —
+  // otherwise the markup would be stripped on the first EN→ZH→EN cycle.
   const i18nEls = document.querySelectorAll('[data-zh]');
-  i18nEls.forEach(el => { el.dataset.en = el.textContent.trim(); });
+  i18nEls.forEach(el => {
+    el.dataset.en = el.hasAttribute('data-zh-html')
+      ? el.innerHTML.trim()
+      : el.textContent.trim();
+  });
 
   // Same pattern for `<input>` / `<textarea>` placeholders — data-zh-placeholder
   // holds the CH form, data-en-placeholder snapshots the original EN placeholder.
@@ -130,6 +136,9 @@
     i18nPlaceholderEls.forEach(el => {
       el.placeholder = lang === 'zh' ? el.dataset.zhPlaceholder : el.dataset.enPlaceholder;
     });
+    // Re-render any state-driven labels that don't use data-zh (e.g. the
+    // inventory teaser's filter pills, which read their values from JS state).
+    if (typeof window.__inventoryTeaserRefresh === 'function') window.__inventoryTeaserRefresh();
   };
 
   const applyLang = (lang, opts = {}) => {
@@ -675,4 +684,258 @@
       bar.addEventListener('transitionend', done, { once: true });
     });
   });
+})();
+
+// ─── Patent inventory teaser ─────────────────────────────────────────
+// Bordered card with ticker rows + search input + Industry / Jurisdiction /
+// Tier filter dropdowns (AND logic with the search query). Each rendered
+// card links to /product/licensing/patent-preview.html. Two modes share
+// the same chrome — variant chosen by markup:
+//   • Tiered (default `.v2-section`) — 3 rows, one per tier (S / A / B).
+//   • Flat (`.v2-section.is-flat`)   — 2 rows, cards distributed by a
+//     seeded Fisher–Yates shuffle so the random split is deterministic
+//     across reloads.
+// Class names (.v2-*, .v1-fb-*, .ts-*) come from the iteration sheet that
+// produced this component. This IIFE sits at top level so it runs on any
+// page with a `.v2-section`, not just pages that have a hero slider.
+(() => {
+  const teaserSection = document.querySelector('.v2-section');
+  if (!teaserSection) return;
+
+  // Seed — 37 patents spanning all 5 tiers, two jurisdictions (US/TW),
+  // ITRI/NYCU/III assignees. Edit this list to swap displayed inventory.
+  const SEED = [
+      // Chip & semiconductor (10)
+      {id:'US10142368', title:'Thin-film capacitor electrode formation on multilayer ceramic substrate', ass:'ITRI', juris:'US', ipc:'H01G 4/30',    ind:'chip',       tier:'S'},
+      {id:'US10218547', title:'Low-loss high-frequency connector with shielded contact array for 5G',    ass:'NYCU', juris:'US', ipc:'H01R 13/02',   ind:'chip',       tier:'S'},
+      {id:'US10456789', title:'Self-aligned contact for sub-3nm gate-all-around transistors',            ass:'NYCU', juris:'US', ipc:'H01L 21/768',  ind:'chip',       tier:'S'},
+      {id:'TWI678234',  title:'Printed-circuit-board lamination with reduced thermal stress',            ass:'ITRI', juris:'TW', ipc:'H05K 3/46',    ind:'chip',       tier:'S'},
+      {id:'US10456823', title:'EMI suppression layer for high-density flexible printed circuit',         ass:'ITRI', juris:'US', ipc:'H05K 9/00',    ind:'chip',       tier:'A'},
+      {id:'US10567823', title:'High-density interposer for 2.5D advanced packaging',                     ass:'ITRI', juris:'US', ipc:'H01L 23/498',  ind:'chip',       tier:'A'},
+      {id:'TWI734512',  title:'High-aspect-ratio etch profile control for 3D NAND flash',                ass:'NYCU', juris:'TW', ipc:'H01L 21/3065', ind:'chip',       tier:'B'},
+      {id:'TWI745623',  title:'Wafer-to-wafer bonding alignment using fiducial pattern interferometry',  ass:'ITRI', juris:'TW', ipc:'H01L 21/02',   ind:'chip',       tier:'B'},
+      {id:'US11098723', title:'Coplanar-waveguide-fed patch antenna with tunable dielectric',            ass:'NYCU', juris:'US', ipc:'H01Q 9/04',    ind:'chip',       tier:'C'},
+      {id:'US11412678', title:'Solder-pad geometry for assembly yield at 0201 component pitch',          ass:'NYCU', juris:'US', ipc:'H05K 3/34',    ind:'chip',       tier:'D'},
+
+      // Integrated applications (7)
+      {id:'US10334528', title:'Vibration-damping bearing mount for industrial spindle assembly',         ass:'NYCU', juris:'US', ipc:'F16F 15/00',   ind:'integrated', tier:'S'},
+      {id:'US10723891', title:'Wearable continuous glucose monitor with optical sensing',                ass:'NYCU', juris:'US', ipc:'A61B 5/145',   ind:'integrated', tier:'S'},
+      {id:'US10487291', title:'Modular linear-motion stage with integrated load-sensing element',        ass:'III',  juris:'US', ipc:'B23Q 1/00',    ind:'integrated', tier:'A'},
+      {id:'TWI723891',  title:'Microneedle patch for transdermal vaccine delivery',                      ass:'NYCU', juris:'TW', ipc:'A61M 37/00',   ind:'integrated', tier:'A'},
+      {id:'TWI712456',  title:'Vibration-damped industrial bearing housing structure',                   ass:'III',  juris:'TW', ipc:'F16F 15/00',   ind:'integrated', tier:'A'},
+      {id:'US11034789', title:'Wearable EEG headband with dry-contact electrodes',                       ass:'III',  juris:'US', ipc:'A61B 5/291',   ind:'integrated', tier:'B'},
+      {id:'US11256812', title:'Disposable lateral-flow test with smartphone readout',                    ass:'III',  juris:'US', ipc:'G01N 33/558',  ind:'integrated', tier:'C'},
+
+      // Net-zero & carbon (5)
+      {id:'US10712389', title:'Pitch-control algorithm for variable-speed wind turbine in turbulent inflow', ass:'ITRI', juris:'US', ipc:'F03D 7/04',ind:'netzero',    tier:'S'},
+      {id:'US10876543', title:'Thermal management for grid-tied photovoltaic inverter',                  ass:'NYCU', juris:'US', ipc:'H02M 1/00',    ind:'netzero',    tier:'A'},
+      {id:'US10987234', title:'Modular battery-string control for utility-scale energy storage',         ass:'III',  juris:'US', ipc:'H02J 7/00',    ind:'netzero',    tier:'A'},
+      {id:'US11023456', title:'Grid-forming converter with virtual-inertia control for weak grids',      ass:'ITRI', juris:'US', ipc:'H02M 7/12',    ind:'netzero',    tier:'A'},
+      {id:'US11198345', title:'Yaw-bearing condition-monitoring sensor for offshore wind turbines',      ass:'NYCU', juris:'US', ipc:'F03D 17/00',   ind:'netzero',    tier:'B'},
+
+      // Multimedia & display (5)
+      {id:'US10589234', title:'Micro-LED transfer process with selective laser lift-off',                ass:'NYCU', juris:'US', ipc:'H01L 33/00',   ind:'multimedia', tier:'S'},
+      {id:'US10712567', title:'Pixel-array driver IC for high-density VR microdisplays',                 ass:'III',  juris:'US', ipc:'G09G 3/32',    ind:'multimedia', tier:'A'},
+      {id:'US10812789', title:'OLED stack with extended blue-emitter lifetime',                          ass:'ITRI', juris:'US', ipc:'H10K 50/11',   ind:'multimedia', tier:'A'},
+      {id:'TWI812456',  title:'Micro-LED interposer with active matrix driving',                         ass:'NYCU', juris:'TW', ipc:'H01L 33/62',   ind:'multimedia', tier:'A'},
+      {id:'TWI789234',  title:'Foldable OLED encapsulation with multi-layer barrier film',               ass:'III',  juris:'TW', ipc:'H10K 50/84',   ind:'multimedia', tier:'B'},
+
+      // Networking & comms (5)
+      {id:'US10678912', title:'Massive-MIMO beamforming algorithm for 5G base stations',                 ass:'III',  juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'S'},
+      {id:'US11034567', title:'WiFi-7 channel-bonding scheduler for low-latency XR',                     ass:'III',  juris:'US', ipc:'H04W 28/08',   ind:'networking', tier:'A'},
+      {id:'TWI856789',  title:'Multi-band antenna array for 5G smartphone integration',                  ass:'III',  juris:'TW', ipc:'H01Q 21/06',   ind:'networking', tier:'A'},
+      {id:'US11145789', title:'Hybrid beamforming codebook design for mmWave 5G',                        ass:'ITRI', juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'B'},
+      {id:'US11456789', title:'Reconfigurable-intelligent-surface placement optimization',               ass:'III',  juris:'US', ipc:'H04B 7/04',    ind:'networking', tier:'C'},
+
+      // Computing & AI (5)
+      {id:'US10812456', title:'On-device neural-network quantization for embedded inference',            ass:'III',  juris:'US', ipc:'G06N 3/063',   ind:'computing',  tier:'S'},
+      {id:'US10923567', title:'Federated learning protocol for cross-silo healthcare data',              ass:'NYCU', juris:'US', ipc:'G06N 20/00',   ind:'computing',  tier:'A'},
+      {id:'US11034678', title:'Adversarial-robustness training for vision-model deployment',             ass:'ITRI', juris:'US', ipc:'G06N 3/08',    ind:'computing',  tier:'A'},
+      {id:'US11145723', title:'Memory-bandwidth-aware transformer inference scheduling',                 ass:'III',  juris:'US', ipc:'G06F 9/50',    ind:'computing',  tier:'B'},
+      {id:'TWI867812',  title:'Domain-adaptation fine-tuning for industrial vision models',              ass:'III',  juris:'TW', ipc:'G06N 3/08',    ind:'computing',  tier:'B'},
+    ];
+
+    const DEST = '/product/licensing/patent-preview.html';
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    const cardHtml = (p, dup) => {
+      const tierEl  = `<span class="ts-tier ts-tier-${p.tier.toLowerCase()}">Tier ${p.tier}</span>`;
+      const jurisEl = `<span class="ts-juris ts-juris-${p.juris.toLowerCase()}">${p.juris}</span>`;
+      const hay     = `${p.id} ${p.title} ${p.ass} ${p.ipc} tier ${p.tier} ${p.juris} ${p.ind || ''}`.toLowerCase();
+      return `<a class="ts-card" href="${DEST}" tabindex="0"`
+           +   ` data-search="${esc(hay)}"`
+           +   ` data-ind="${esc(p.ind || '')}"`
+           +   ` data-juris="${esc(p.juris)}"`
+           +   ` data-tier="${esc(p.tier)}"${dup ? ' data-dup="1"' : ''}>`
+           + `<div class="ts-card-top">`
+           +   `<span class="ts-pid">${esc(p.id)}</span>`
+           +   `<div class="ts-chips">${tierEl}${jurisEl}</div>`
+           + `</div>`
+           + `<div class="ts-title">${esc(p.title)}</div>`
+           + `<div class="ts-meta">${esc(p.ass)} · ${esc(p.ipc)}</div>`
+           + `</a>`;
+    };
+
+    // Render a list of patents into a track. Cards are rendered twice so the
+    // translateX(-50%) marquee loops seamlessly; duplicates carry data-dup="1"
+    // so the unique-count math in applyFilter() divides cleanly.
+    const renderInto = (trackId, list) => {
+      const html = list.map(p => cardHtml(p, false)).join('') +
+                   list.map(p => cardHtml(p, true)).join('');
+      const track = document.getElementById(trackId);
+      if (track) track.innerHTML = html;
+    };
+
+    // Two modes share the same chrome:
+    //   • Tiered (default) — 3 rows, one per tier (S / A / B).
+    //   • Flat (`.v2-section.is-flat`) — 2 rows, cards distributed by a
+    //     seeded Fisher–Yates shuffle so the random split is deterministic
+    //     across reloads.
+    if (teaserSection.classList.contains('is-flat')) {
+      const shuffleSeeded = (arr, seed) => {
+        const a = arr.slice();
+        let s = seed >>> 0;
+        for (let i = a.length - 1; i > 0; i--) {
+          s = (s * 1664525 + 1013904223) >>> 0;
+          const j = s % (i + 1);
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      };
+      const shuffled = shuffleSeeded(SEED, 42);
+      const half     = Math.ceil(shuffled.length / 2);
+      renderInto('v2-track-flat-top',    shuffled.slice(0, half));
+      renderInto('v2-track-flat-bottom', shuffled.slice(half));
+    } else {
+      renderInto('v2-track-s', SEED.filter(p => p.tier === 'S'));
+      renderInto('v2-track-a', SEED.filter(p => p.tier === 'A'));
+      renderInto('v2-track-b', SEED.filter(p => p.tier === 'B'));
+    }
+
+    // ── Search + filter wiring ──
+    const input          = document.getElementById('v2-search');
+    const searchClearBtn = document.getElementById('v2-search-clear');
+    const filterClearBtn = document.getElementById('v2-fb-clear');
+    const status         = document.getElementById('v2-search-status');
+    const cards          = teaserSection.querySelectorAll('.ts-card');
+    const groups         = Array.from(teaserSection.querySelectorAll('.v1-fb-group'));
+
+    const state = { ind: '', juris: '', tier: '' };
+
+    const SHORT_EN = {
+      ind:   { '': 'All', chip: 'Chip', integrated: 'Integrated', netzero: 'Net-zero', multimedia: 'Multimedia', networking: 'Networking', computing: 'Computing' },
+      juris: { '': 'All', US: 'US', TW: 'TW' },
+      tier:  { '': 'All', S: 'Tier S', A: 'Tier A', B: 'Tier B', C: 'Tier C', D: 'Tier D' },
+    };
+    const SHORT_ZH = {
+      ind:   { '': '所有', chip: '晶片', integrated: '整合應用', netzero: '淨零', multimedia: '多媒體', networking: '網路', computing: '運算' },
+      juris: { '': '所有', US: '美國', TW: '台灣' },
+      tier:  { '': '所有', S: 'Tier S', A: 'Tier A', B: 'Tier B', C: 'Tier C', D: 'Tier D' },
+    };
+    const isZh = () => (document.documentElement.getAttribute('lang') || 'en').startsWith('zh');
+    const labelFor = (key, value) => (isZh() ? SHORT_ZH : SHORT_EN)[key][value] || (isZh() ? '所有' : 'All');
+
+    const closeAllMenus = () => {
+      teaserSection.querySelectorAll('.v1-fb-menu').forEach(m => { m.hidden = true; });
+      teaserSection.querySelectorAll('.v1-fb-pill').forEach(p => p.setAttribute('aria-expanded', 'false'));
+    };
+
+    const renderLabels = () => {
+      groups.forEach(group => {
+        const pill    = group.querySelector('.v1-fb-pill');
+        const valueEl = pill.querySelector('.v1-fb-value');
+        const key     = group.dataset.filterKey;
+        valueEl.textContent = labelFor(key, state[key]);
+        pill.classList.toggle('is-active', state[key] !== '');
+      });
+    };
+
+    const applyFilter = () => {
+      const q         = (input.value || '').trim().toLowerCase();
+      const hasQuery  = q !== '';
+      const hasFilter = state.ind !== '' || state.juris !== '' || state.tier !== '';
+      const hasAny    = hasQuery || hasFilter;
+
+      teaserSection.classList.toggle('is-searching', hasAny);
+      searchClearBtn.hidden   = !hasQuery;
+      filterClearBtn.disabled = !hasFilter;
+
+      let dupedMatchCount = 0;
+      cards.forEach(card => {
+        const haystack   = card.dataset.search || '';
+        const matchQuery = !hasQuery || haystack.includes(q);
+        const matchInd   = state.ind   === '' || card.dataset.ind   === state.ind;
+        const matchJur   = state.juris === '' || card.dataset.juris === state.juris;
+        const matchTier  = state.tier  === '' || card.dataset.tier  === state.tier;
+        const isMatch    = matchQuery && matchInd && matchJur && matchTier;
+        card.classList.toggle('is-match', isMatch);
+        if (isMatch) dupedMatchCount++;
+      });
+
+      renderLabels();
+
+      if (!hasAny) { status.textContent = ''; return; }
+      const unique = Math.ceil(dupedMatchCount / 2); // cards render twice
+      if (unique === 0)      status.textContent = isZh() ? '無符合' : 'No matches';
+      else if (unique === 1) status.textContent = isZh() ? '1 件符合' : '1 match';
+      else                   status.textContent = isZh() ? unique + ' 件符合' : unique + ' matches';
+    };
+
+    // Wire each dropdown
+    groups.forEach(group => {
+      const pill = group.querySelector('.v1-fb-pill');
+      const menu = group.querySelector('.v1-fb-menu');
+      const key  = group.dataset.filterKey;
+      pill.addEventListener('click', e => {
+        e.stopPropagation();
+        const wasOpen = !menu.hidden;
+        closeAllMenus();
+        menu.hidden = wasOpen;
+        pill.setAttribute('aria-expanded', String(!wasOpen));
+      });
+      menu.querySelectorAll('.v1-fb-option').forEach(opt => {
+        opt.addEventListener('click', e => {
+          e.stopPropagation();
+          state[key] = opt.dataset.value;
+          menu.querySelectorAll('.v1-fb-option').forEach(o => {
+            o.setAttribute('aria-selected', o === opt ? 'true' : 'false');
+          });
+          closeAllMenus();
+          applyFilter();
+        });
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.v2-section .v1-fb-group')) closeAllMenus();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeAllMenus();
+    });
+
+    filterClearBtn.addEventListener('click', () => {
+      state.ind = ''; state.juris = ''; state.tier = '';
+      groups.forEach(group => {
+        group.querySelectorAll('.v1-fb-option').forEach(o => {
+          o.setAttribute('aria-selected', o.dataset.value === '' ? 'true' : 'false');
+        });
+      });
+      applyFilter();
+    });
+
+    input.addEventListener('input', applyFilter);
+    searchClearBtn.addEventListener('click', () => {
+      input.value = '';
+      applyFilter();
+      input.focus();
+    });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { input.value = ''; applyFilter(); input.blur(); }
+    });
+
+    // Pill labels are state-driven (not data-zh), so the page-wide language
+    // toggle needs to re-render them after swapping the `lang` attribute.
+    window.__inventoryTeaserRefresh = applyFilter;
+
+  applyFilter(); // initialize
 })();

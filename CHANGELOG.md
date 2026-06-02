@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-02 14:14 +08:00** · Shipped Patent Inventory teaser — homepage full-bleed variant (rows flow off the viewport via 8% edge mask) + Licensing flat variant (2 rows, random distribution); added `data-zh-html` i18n path so `<strong>` markup survives EN↔ZH swaps; bumped `.partner-strip-label` to weight 600 + primary color to match the `.v2-eyebrow strong` treatment.
+
 - **2026-06-02 12:59 +08:00** · Converted Signal product page How-it-works from sliding cards to accordion to match Licensing (all 5 steps × ZH+EN copy preserved 1:1, verified character-by-character); removed the now-dead inline `[data-howit-rail]` arrow-pagination script from `product/signal/index.html`.
 
 - **2026-06-02 12:49 +08:00** · Removed homepage `#products` section (toggle + duplicate deliverables + duplicate How-it-works); migrated the two pillar hero blocks (Licensing patent-grid + Signal cascading reports) into `product/licensing/index.html` and `product/signal/index.html` below the 4× deliverables; converted Licensing product page How-it-works from sliding-cards to accordion (copy was already 1:1 with homepage); dropped the now-dead pillar-toggle JS in `assets/site.js`; un-scoped pillar gradient CSS from `#products` to `[data-pillar]` so gradients cascade through `<main data-pillar>` on each product page.

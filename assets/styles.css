@@ -115,6 +115,16 @@
   --score-c: #6D28D9; --score-c-bg: #F5F3FF;
   --score-d: #C2410C; --score-d-bg: #FFF7ED;
 
+  /* Jurisdiction accent ramp — design-tokens.md §7.4 (text + tinted bg pairs).
+     Used by jurisdiction chips on patent cards (Licensing Platform + the
+     homepage inventory teaser). Five hues to keep US/TW separable from the
+     SABCD ramp at chip scale. */
+  --juris-us: #4338CA; --juris-us-bg: #EEF2FF;
+  --juris-tw: #3F6212; --juris-tw-bg: #ECFCCB;
+  --juris-eu: #475569; --juris-eu-bg: #F1F5F9;
+  --juris-jp: #A21CAF; --juris-jp-bg: #FAE8FF;
+  --juris-kr: #BE123C; --juris-kr-bg: #FFF1F2;
+
   /* Vivid SABCD ramp — used for pillar gradients, accent fills, icon strokes.
      Same hex regardless of theme; promoted to :root so per-pillar surfaces
      outside #products (e.g. /product/licensing/, /product/signal/) can use them. */
@@ -227,6 +237,13 @@
   --score-b: #0EA5E9; --score-b-bg: rgba(14,165,233,0.14);
   --score-c: #8B5CF6; --score-c-bg: rgba(139,92,246,0.14);
   --score-d: #F97316; --score-d-bg: rgba(249,115,22,0.14);
+
+  /* Jurisdiction accent ramp — dark variants (light text + translucent bg) */
+  --juris-us: #C7D2FE; --juris-us-bg: rgba(67,56,202,0.18);
+  --juris-tw: #D9F99D; --juris-tw-bg: rgba(63,98,18,0.20);
+  --juris-eu: #CBD5E1; --juris-eu-bg: rgba(71,85,105,0.22);
+  --juris-jp: #F0ABFC; --juris-jp-bg: rgba(162,28,175,0.18);
+  --juris-kr: #FDA4AF; --juris-kr-bg: rgba(190,18,60,0.18);
 
   --shadow-low:    0 2px 4px rgba(0,0,0,0.5);
   --shadow-medium: 0 4px 24px rgba(0,0,0,0.55);
@@ -2613,9 +2630,9 @@ main { padding-top: 64px; }
   background: var(--surface-page);
   font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.01em;
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   white-space: nowrap;
 }
 .partner-logos {
@@ -2648,6 +2665,289 @@ main { padding-top: 64px; }
 /* iPIC + NYCU are wired light-mode desktop only for now. In dark mode they fall through
    to the generic [data-theme="dark"] .partner invert rule above — dedicated dark variants
    (and any per-mark tuning) are deferred to the dark-mode pass. */
+
+/* ───────── Patent inventory teaser — bordered card holding three tier-organized
+   ticker rows (S / A / B), a search input + Industry / Jurisdiction / Tier filter
+   dropdowns, and the shared `.ts-card` patent card. Class prefixes (`.v2-*`,
+   `.v1-fb-*`, `.ts-*`) come from the iteration-sheet origin of the component;
+   kept as-is to avoid touch-volume in this port. Renders + filter wiring live
+   in site.js (Patent inventory teaser section). ───────── */
+
+/* Shared patent card — compact version, links to /product/licensing/patent-preview.html */
+.ts-card {
+  display: flex; flex-direction: column; gap: 6px;
+  width: 260px; height: 108px;
+  padding: 12px 14px;
+  background: var(--surface-page);
+  border: 1px solid var(--border-tertiary);
+  border-radius: 10px;
+  box-shadow: var(--shadow-low);
+  text-decoration: none; color: inherit;
+  flex-shrink: 0;
+  transition: border-color 120ms linear, box-shadow 120ms linear, transform 120ms cubic-bezier(0.2, 1, 0.3, 1);
+}
+.ts-card:hover {
+  border-color: var(--text-primary);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+.ts-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 6px;
+}
+.ts-pid {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+  color: var(--text-primary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.ts-chips { display: flex; gap: 4px; flex-shrink: 0; }
+.ts-tier, .ts-juris {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700; line-height: 1.2;
+  letter-spacing: 0; padding: 2px 7px;
+  border-radius: 9999px; white-space: nowrap; flex-shrink: 0;
+}
+.ts-tier-s { background: var(--score-s-bg); color: var(--score-s); }
+.ts-tier-a { background: var(--score-a-bg); color: var(--score-a); }
+.ts-tier-b { background: var(--score-b-bg); color: var(--score-b); }
+.ts-tier-c { background: var(--score-c-bg); color: var(--score-c); }
+.ts-tier-d { background: var(--score-d-bg); color: var(--score-d); }
+.ts-juris-us { background: var(--juris-us-bg); color: var(--juris-us); }
+.ts-juris-tw { background: var(--juris-tw-bg); color: var(--juris-tw); }
+.ts-juris-eu { background: var(--juris-eu-bg); color: var(--juris-eu); }
+.ts-juris-jp { background: var(--juris-jp-bg); color: var(--juris-jp); }
+.ts-juris-kr { background: var(--juris-kr-bg); color: var(--juris-kr); }
+.ts-title {
+  font-size: 13px; font-weight: 500; line-height: 1.4;
+  color: var(--text-primary);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.ts-meta {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 11px; line-height: 1.4;
+  color: var(--text-secondary);
+  margin-top: auto;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Section frame + on-border eyebrow */
+.v2-section {
+  position: relative;
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  padding: 56px 20px 8px;
+  background: var(--surface-page);
+  overflow: visible;
+}
+.v2-eyebrow {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2px 16px;
+  background: var(--surface-page);
+  font-family: inherit;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  z-index: 2;
+  max-width: calc(100% - 40px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.v2-eyebrow strong { font-weight: 600; color: var(--text-primary); }
+
+/* Search bar + right-aligned filter dropdowns inside */
+.v2-search-bar {
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 4px;
+  padding: 8px 14px;
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  transition: border-color 120ms linear, box-shadow 120ms linear;
+}
+.v2-search-bar .v1-fb-menu { left: auto; right: 0; }
+.v2-search-bar:focus-within {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--text-primary);
+}
+.v2-search-bar::before {
+  content: ""; width: 14px; height: 14px;
+  background: var(--text-tertiary);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") center/contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") center/contain no-repeat;
+  flex-shrink: 0;
+}
+.v2-search-input {
+  flex: 1; min-width: 0;
+  font-family: inherit;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 0; outline: 0;
+  padding: 4px 0;
+}
+.v2-search-input::placeholder { color: var(--text-tertiary); font-weight: 400; }
+.v2-search-clear {
+  font-family: inherit; font-size: 16px; line-height: 1;
+  color: var(--text-tertiary);
+  background: transparent; border: 0; cursor: pointer;
+  padding: 2px 8px; border-radius: 6px;
+  transition: color 120ms linear, background-color 120ms linear;
+}
+.v2-search-clear:hover { color: var(--text-primary); background: var(--surface-tertiary); }
+.v2-search-status {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 11px; color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Filter pill component (Industry / Jurisdiction / Tier dropdowns) */
+.v1-fb-group { position: relative; }
+.v1-fb-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  color: var(--text-primary);
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 9999px;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: border-color 120ms linear, background-color 120ms linear;
+}
+.v1-fb-pill:hover { border-color: var(--border-tertiary); }
+.v1-fb-pill:focus-visible { outline: 1px solid var(--border-focus); outline-offset: 2px; }
+.v1-fb-pill[aria-expanded="true"] { border-color: var(--text-primary); }
+.v1-fb-pill.is-active { background: var(--surface-tertiary); border-color: var(--border-tertiary); }
+.v1-fb-label { color: var(--text-tertiary); font-weight: 500; }
+.v1-fb-value { color: var(--text-primary); font-weight: 600; }
+.v1-fb-chev {
+  color: var(--text-tertiary); font-size: 10px; line-height: 1;
+  transition: transform 150ms cubic-bezier(0.2, 1, 0.3, 1);
+}
+.v1-fb-pill[aria-expanded="true"] .v1-fb-chev { transform: rotate(180deg); }
+.v1-fb-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 60;
+  min-width: 200px;
+  max-height: 320px; overflow-y: auto;
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+  box-shadow: var(--shadow-medium);
+  padding: 4px;
+}
+.v1-fb-menu[hidden] { display: none; }
+.v1-fb-option {
+  display: flex; align-items: center; justify-content: flex-start;
+  width: 100%;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  color: var(--text-primary);
+  background: transparent; border: 0; border-radius: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 80ms linear;
+}
+.v1-fb-option:hover { background: var(--surface-tertiary); }
+.v1-fb-option[aria-selected="true"] {
+  background: var(--surface-tertiary);
+  font-weight: 600;
+}
+.v1-fb-clear {
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  color: var(--text-tertiary);
+  background: transparent; border: 0; cursor: pointer;
+  padding: 4px 8px; border-radius: 6px;
+  transition: color 120ms linear, background-color 120ms linear;
+}
+.v1-fb-clear:hover:not([disabled]) { color: var(--text-primary); background: var(--surface-tertiary); }
+.v1-fb-clear[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+/* Three tier rows + per-row marquee tracks */
+.v2-rows { display: flex; flex-direction: column; gap: 0; }
+.v2-row {
+  display: flex;
+  /* overflow: clip + padding-block creates internal breathing room so the
+     card hover lift (-1px) + 24px shadow blur render fully without being
+     clipped at the row edge. overflow-clip-margin-block extends the clip
+     area on browsers that honor it; padding handles the rest. */
+  overflow: clip;
+  overflow-clip-margin-block: 32px;
+  padding-block: 8px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
+}
+.v2-track {
+  display: flex; gap: 16px;
+  flex-shrink: 0;
+  padding-inline: 8px;
+}
+.v2-row-left  .v2-track { animation: v2-marquee-left  120s linear infinite; }
+.v2-row-right .v2-track { animation: v2-marquee-right 120s linear infinite; }
+.v2-row:hover .v2-track { animation-play-state: paused; }
+
+@keyframes v2-marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes v2-marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-row-left .v2-track,
+  .v2-row-right .v2-track { animation: none; }
+}
+
+/* Search/filter-active state: pause animations, drop the edge-fade mask
+   so matches at the row edges stay crisp, and fade non-matching cards. */
+.v2-section.is-searching .v2-track { animation-play-state: paused; }
+.v2-section.is-searching .v2-row {
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+.v2-section.is-searching .ts-card {
+  transition: opacity 200ms linear, filter 200ms linear;
+}
+.v2-section.is-searching .ts-card:not(.is-match) {
+  opacity: 0.08;
+  filter: grayscale(0.6);
+  pointer-events: none;
+}
+.v2-section.is-searching .ts-card.is-match { opacity: 1; }
+
+/* `.v2-section.is-flat` — flat-random variant (two rows, cards distributed
+   randomly across them, no tier grouping). Top row sweeps faster, bottom
+   slower for an asymmetric rhythm that matches V2's busy/light tier-row feel.
+   Used on the licensing page; default V2 stays symmetric at 120s/120s. */
+.v2-section.is-flat .v2-row-left  .v2-track { animation-duration: 120s; }
+.v2-section.is-flat .v2-row-right .v2-track { animation-duration: 180s; }
+
+/* Full-bleed inventory variant — escape the container so the row mask's
+   8%/92% taper maps to the viewport edges, making the marquee feel like it
+   flows off-screen. Section keeps top/bottom border for definition; side
+   borders + radius drop. Header/search get their own inline margin so they
+   stay visually contained while the rows reach the edges. */
+.section--inventory > .container {
+  max-width: none;
+  padding-inline: 0;
+}
+.section--inventory .v2-section {
+  border-radius: 0;
+  border-inline: 0;
+  padding-inline: 0;
+}
+.section--inventory .v2-search-bar {
+  margin-inline: clamp(20px, 4vw, 32px);
+}
 
 /* ───────── Reports + Press ───────── */
 .section-head {

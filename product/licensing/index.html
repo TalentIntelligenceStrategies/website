@@ -2563,7 +2563,102 @@ a, button,
     </div>
   </section>
 
-  <!-- TEASER SLOT — Plan A destination ready at /product/licensing/patent-preview.html. Teaser section deferred (Plan B / another idea). -->
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Patent inventory teaser — flat variant: two ticker rows with cards   ║
+       ║ randomly distributed (no tier grouping), asymmetric speeds (top      ║
+       ║ 120s / bottom 180s). Search input + Industry / Jurisdiction / Tier   ║
+       ║ filter dropdowns wired with AND logic. Each card links to            ║
+       ║ /product/licensing/patent-preview.html. Component lives in           ║
+       ║ styles.css (`.v2-section` + `.is-flat` modifier) and site.js         ║
+       ║ (Patent inventory teaser IIFE, branches on the modifier).            ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section section--tight" aria-label="Patent inventory teaser">
+    <div class="container">
+      <div class="v2-section is-flat" aria-label="Patent inventory ticker — flat random">
+        <span class="v2-eyebrow" data-zh-html data-zh="<strong>泰然專利庫存</strong> — 1,000+ 件專利，涵蓋美國與台灣 — 依產業、地區、SABCD 等級篩選"><strong>TIS Patent Inventory</strong> — 1,000+ patents across U.S. and Taiwan — filter by industry, jurisdiction, and SABCD tier</span>
+
+        <div class="v2-search-bar">
+          <input type="text" class="v2-search-input" id="v2-search" placeholder="Search by ID, title, owner, IPC…" data-zh-placeholder="依專利編號、名稱、權利人、IPC 搜尋…" aria-label="Search patents">
+          <button class="v2-search-clear" type="button" id="v2-search-clear" aria-label="Clear search" hidden>×</button>
+
+          <!-- Functional filter dropdowns, right-aligned inside the search bar -->
+          <div class="v1-fb-group" data-filter-key="ind">
+            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="v1-fb-label" data-zh="產業：">Industry:</span>
+              <span class="v1-fb-value">All</span>
+              <span class="v1-fb-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="v1-fb-menu" role="listbox" hidden>
+              <button class="v1-fb-option" role="option" type="button" data-value=""           data-zh="所有產業"      aria-selected="true">All industries</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="chip"       data-zh="晶片與半導體">Chip &amp; semiconductor</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="integrated" data-zh="整合應用">Integrated applications</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="netzero"    data-zh="淨零與碳">Net-zero &amp; carbon</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="multimedia" data-zh="多媒體與顯示">Multimedia &amp; display</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="networking" data-zh="網路與通訊">Networking &amp; comms</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="computing"  data-zh="運算與 AI">Computing &amp; AI</button>
+            </div>
+          </div>
+          <div class="v1-fb-group" data-filter-key="juris">
+            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="v1-fb-label" data-zh="地區：">Jurisdiction:</span>
+              <span class="v1-fb-value">All</span>
+              <span class="v1-fb-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="v1-fb-menu" role="listbox" hidden>
+              <button class="v1-fb-option" role="option" type="button" data-value=""   data-zh="所有地區" aria-selected="true">All jurisdictions</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="US">United States</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="TW" data-zh="台灣">Taiwan</button>
+            </div>
+          </div>
+          <div class="v1-fb-group" data-filter-key="tier">
+            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="v1-fb-label" data-zh="等級：">Tier:</span>
+              <span class="v1-fb-value">All</span>
+              <span class="v1-fb-chev" aria-hidden="true">▾</span>
+            </button>
+            <div class="v1-fb-menu" role="listbox" hidden>
+              <button class="v1-fb-option" role="option" type="button" data-value=""  data-zh="所有等級" aria-selected="true">All tiers</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="S">Tier S</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="A">Tier A</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="B">Tier B</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="C">Tier C</button>
+              <button class="v1-fb-option" role="option" type="button" data-value="D">Tier D</button>
+            </div>
+          </div>
+          <button class="v1-fb-clear" type="button" id="v2-fb-clear" disabled data-zh="清除">Clear</button>
+
+          <span class="v2-search-status" id="v2-search-status" aria-live="polite"></span>
+        </div>
+
+        <div class="v2-rows">
+          <div class="v2-row v2-row-left"><div class="v2-track" id="v2-track-flat-top"></div></div>
+          <div class="v2-row v2-row-right"><div class="v2-track" id="v2-track-flat-bottom"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Exclusive Patent Access + paired CTA — full-bleed hairline band
+       sitting right under the inventory teaser, so the patents above are
+       immediately attributed to the institutions (iPIC · III · NYCU) that
+       grant TIS access, and the "Build your bundle" CTA closes the loop
+       before the visitor lands on Pricing. -->
+  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="lic-cta-heading">
+    <div class="container">
+      <div class="partner-strip partner-strip--color">
+        <h2 id="lic-cta-heading" class="partner-cta-heading">
+          <span data-zh="從這些機構所授權的">Find your position on patents</span>
+          <span data-zh="專利中，找到你的位置。">from established institutions</span>
+        </h2>
+        <div class="partner-logos">
+          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <a href="/product/licensing/patent-preview.html" class="btn btn-primary btn-lg partner-cta-btn" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
+      </div>
+    </div>
+  </section>
 
   <!-- ─── 3. Pricing (moved up; was section 7) ─── -->
   <section class="section section--alt" id="pricing" aria-labelledby="lic-pricing-heading">
@@ -2714,27 +2809,6 @@ a, button,
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- ─── 8. Exclusive Patent Access + paired CTA — full-bleed hairline band
-       doubles as the final intra-page CTA. Replaces the prior .cta-banner so
-       the credibility (iPIC · III · NYCU) lands paired with the
-       trial action, then flows into the Contact form. -->
-  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="lic-cta-heading">
-    <div class="container">
-      <div class="partner-strip partner-strip--color">
-        <h2 id="lic-cta-heading" class="partner-cta-heading">
-          <span data-zh="從這些機構所授權的">Find your position on patents</span>
-          <span data-zh="專利中，找到你的位置。">from established institutions</span>
-        </h2>
-        <div class="partner-logos">
-          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-        <a href="/product/licensing/patent-preview.html" class="btn btn-primary btn-lg partner-cta-btn" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
-      </div>
     </div>
   </section>
 
