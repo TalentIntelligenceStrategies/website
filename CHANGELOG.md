@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-02 16:01 +08:00** · Normalized section spacing on `product/licensing/index.html` + `product/signal/index.html` to the homepage rhythm — removed the inline 160px Stripe override on `.section` + per-section 32px squashes, and neutralized `.section--alt` (Pricing) to `clamp(48px, 6vw, 80px)`.
+
 - **2026-06-02 14:14 +08:00** · Shipped Patent Inventory teaser — homepage full-bleed variant (rows flow off the viewport via 8% edge mask) + Licensing flat variant (2 rows, random distribution); added `data-zh-html` i18n path so `<strong>` markup survives EN↔ZH swaps; bumped `.partner-strip-label` to weight 600 + primary color to match the `.v2-eyebrow strong` treatment.
 
 - **2026-06-02 12:59 +08:00** · Converted Signal product page How-it-works from sliding cards to accordion to match Licensing (all 5 steps × ZH+EN copy preserved 1:1, verified character-by-character); removed the now-dead inline `[data-howit-rail]` arrow-pagination script from `product/signal/index.html`.

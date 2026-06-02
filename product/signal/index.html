@@ -374,16 +374,6 @@
   text-align: left;
 }
 
-/* Inter-section padding override — tight rhythm between the upper
-   product sections (Hero → Deliverables → How it works → Pricing).
-   Each transition sums to 64px (32+32) instead of the Stripe-default
-   160+160 = 320px chasm. Keeps the page reading as a single product
-   story until the visitor lands at Pricing. */
-section[aria-label="Signal hero"] { padding-bottom: 32px; }
-section[aria-label="Signal deliverables"] { padding-top: 32px; padding-bottom: 32px; }
-section[aria-label="How Signal works"] { padding-top: 32px; padding-bottom: 32px; }
-section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
-
 /* ============================================================
    Pricing card overrides — Standard · Pro · Max
    - Eyebrow dot removed (was a B-vivid 8px circle in shared CSS).
@@ -822,28 +812,10 @@ body,
   font-weight: 600;
 }
 
-/* Stripe section vertical padding — 160px top/bottom on standard
-   sections (was clamp(48px, 6vw, 80px) — about half). This gives
-   the page much more breathing room between major sections, the
-   single biggest visual change from this token pass. */
-.section { padding-block: var(--tis-section-padding-y); }
-.section--alt { padding-block: var(--tis-section-padding-y); }
-@media (max-width: 768px) {
-  .section,
-  .section--alt { padding-block: clamp(80px, 12vw, 120px); }
-}
-
-/* Inter-section padding override v2 — same as above but applied AFTER
-   the Stripe 160px section-padding upgrade. Tight 32+32 transitions
-   between Hero → Deliverables → How it works → Pricing. */
-section[aria-label="Signal hero"] { padding-bottom: 32px; }
-section[aria-label="Signal deliverables"] { padding-top: 32px; padding-bottom: 32px; }
-section[aria-label="How Signal works"] { padding-top: 32px; padding-bottom: 32px; }
-section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
-/* FAQ top pulled to 32 so the Patent-band CTA sits with 64px gap on each
-   side (matches the upper-page rhythm). FAQ bottom stays default 160 so the
-   Contact form still gets generous breath above it. */
-section[aria-labelledby="signal-faq-heading"] { padding-top: 32px; }
+/* Section vertical padding — match homepage rhythm (clamp(48px, 6vw, 80px)).
+   .section--alt (Pricing) is normalized to the same scale so it doesn't
+   read as a heavier 112px block compared to the rest of the page. */
+.section--alt { padding-block: clamp(48px, 6vw, 80px); }
 
 /* Copy max-width — Stripe constrains paragraph body text to 810px
    (75% of 1080 layout). Applied to hero p + section paragraphs so

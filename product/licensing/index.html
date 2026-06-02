@@ -818,17 +818,6 @@
   text-align: left;
 }
 
-/* Inter-section padding override — How it works section bottom + Pricing
-   section top sum to 64px (= the in-section gap between How it works'
-   h3 and its 4 cards). Default .section is clamp(48px,6vw,80px) and
-   .section--alt is 112px; both reduced to 32px here so the visual
-   rhythm between sections matches the rhythm inside How it works. */
-/* Stale — Licensing Platform overview section was split into Hero +
-   Deliverables + How Licensing works. Kept for safety in case any
-   other artifacts still use this aria-label. */
-section[aria-label="Licensing Platform overview"] { padding-bottom: 32px; }
-section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
-
 /* "Licensing Platform" h3 — bump from .pillar-hero-copy's default
    clamp(24px,2.5vw,32px)/600 to match .howitworks h3 sizing exactly so
    the section heading rhythm is consistent down the page.
@@ -1445,24 +1434,10 @@ body,
   font-weight: 400;
 }
 
-/* Section vertical padding — 160px Stripe rhythm (was clamp(48-80)). */
-.section { padding-block: var(--tis-section-padding-y); }
-.section--alt { padding-block: var(--tis-section-padding-y); }
-@media (max-width: 768px) {
-  .section, .section--alt { padding-block: clamp(80px, 12vw, 120px); }
-}
-
-/* Inter-section tight transitions — Hero → Deliverables → How it works
-   → Pricing all use 32+32 padding to keep the upper product story
-   tight before Pricing breaks into normal 160 rhythm. */
-section[aria-label="Licensing hero"] { padding-bottom: 32px; }
-section[aria-label="Licensing deliverables"] { padding-top: 32px; padding-bottom: 32px; }
-section[aria-label="How Licensing works"] { padding-top: 32px; padding-bottom: 32px; }
-section#pricing.section--alt { padding-top: 32px; padding-bottom: 32px; }
-/* FAQ top pulled to 32 so the Patent-band CTA sits with 64px gap on each
-   side (matches the upper-page rhythm). FAQ bottom stays default 160 so the
-   Contact form still gets generous breath above it. */
-section[aria-labelledby="lic-faq-heading"] { padding-top: 32px; }
+/* Section vertical padding — match homepage rhythm (clamp(48px, 6vw, 80px)).
+   .section--alt (Pricing) is normalized to the same scale so it doesn't
+   read as a heavier 112px block compared to the rest of the page. */
+.section--alt { padding-block: clamp(48px, 6vw, 80px); }
 
 /* Copy max-width — 810px (75% of 1080) for body paragraphs. */
 .pillar-hero-copy p,
