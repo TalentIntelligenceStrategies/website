@@ -1,3 +1,5 @@
+<!-- Snapshot of TIS/brand/components.md — do NOT edit here. Edit upstream in brand/ and resync. -->
+
 # TIS Components
 
 Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, IP intelligence drop popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
@@ -490,6 +492,30 @@ Full-width single-line notice that sits **directly below the §Top nav and above
 **Accessibility.** Wrap in `role="region"` with `aria-label="Site announcement"`. The notice is informational, not urgent — do **not** use `role="alert"`/`aria-live` (that would interrupt screen-reader flow on every page load). Close button is a real `<button>`, keyboard-focusable, focus-visible ring per the global rule; on dismiss, focus moves to the §Top nav so it doesn't land in void.
 
 Pairs with §Top nav (sits flush beneath it) and the §Hero on each lobby (sits flush above it). Don't reach for §Toast (transient async feedback) or §Modal (blocking) for standing announcements — this bar is the ambient, dismissible, top-of-page channel. One banner per page; don't stack two.
+
+---
+
+## Announcement feed (lobby)
+
+Surfaces: Marketing — Licensing lobby (`website/product/licensing/lobby.html`). Stacked recent-activity card that replaces the earlier ticker variant on the lobby surface. Where §Announcement banner is system-level chrome carrying *one* TIS-wide message, the lobby feed is **partner-level activity** — a short list of recent licensor onboardings, bundle launches, and patent-pool additions, each row credited to the partner that drove it (ITRI, III, NYCU, etc.). Reads like a release feed; not a status alert, not a CTA strip.
+
+- **Consumes:** `surface-page` (row fill), `surface-tertiary` (hover state + mark backdrop), `border-primary` (row outline + section divider), `text-primary` (message), `text-tertiary` (relative timestamp). Timestamp type is **Inconsolata** (mono) — the timestamp is purely numeric / number-prefixed (`2h ago` / `1d ago`), the only place mono is allowed per [`design-tokens.md`](./design-tokens.md) §3 rule on Inconsolata. Partner submark glyphs come from [`brand/assets/logos/partners/{itri,iii,nycu,…}/`](../brand/assets/logos/partners/).
+- **Variants:** default (3 rows, partner-led) / single-row (one item only, taller padding). No dismiss control — informational, persists across visits; freshness is signaled by the relative timestamp moving forward and by rows rotating out as new activity arrives.
+- **States:** rest, row-hover (background flips to `surface-tertiary`), row-focus (focus-ring per the global rule).
+
+**Placement & flow.** In-flow, full-width inside the page container (`max-width: 1440`, `padding-inline: 32 / 20` below `md`), sits between the §Top nav and the lobby split-screen. Top padding `12`, bottom padding `0` so the lobby panels meet the feed flush. Vertical stack with `gap: 6` between rows.
+
+**Anatomy (per row, `display: grid; grid-template-columns: 28px 1fr auto; gap: 12; align-items: center; padding: 10 14`).**
+
+- **Mark** — 28×28 rounded-6 chip carrying the partner submark (22×22 SVG, `object-fit: contain`). Backdrop is `surface-tertiary` so partner marks in their own colors stay legible on light *and* dark themes. The mark is the per-row signal — no separate colour token, no per-partner accent on the row itself.
+- **Body** — single line, `copy-13 / weight 500 / text-primary`, with the partner name as a leading micro-prefix ("ITRI · …"). Keep messages to one clause; this is a release-line, not a sentence.
+- **Timestamp** — right-aligned, **Inconsolata 12 / 500 / +0.04em / `text-tertiary`**, relative form (`2h ago`, `1d ago`, `3d ago`). The relative-time string is purely number-prefixed so it falls inside the §3 Inconsolata rule (numeric / number-prefixed only). Absolute dates live in the linked release page, not here.
+
+The whole row is the click target (anchored `<a>` element); hover flips the row to `surface-tertiary` background. No close button, no per-row dismiss — these rotate naturally as activity arrives.
+
+**Accessibility.** Wrap in `<aside role="region" aria-label="Recent partner activity">`. Each row is a real `<a>` with a meaningful destination; focus-visible follows the global focus-ring rule. The feed is *informational, not urgent* — do not use `role="alert"`/`aria-live`. Decorative partner marks carry empty `alt=""` and the partner name lives in the visible message.
+
+**Use this, not §Announcement banner, when:** the surface needs to show *multiple* recent items at once, when each item is partner-credited, or when the items should persist (no dismiss) as a standing release feed. Reach for §Announcement banner when you have *one* TIS-wide system message that needs to be dismissible and absent on the next session. Don't stack a banner *and* a feed on the same surface — pick one channel.
 
 ---
 

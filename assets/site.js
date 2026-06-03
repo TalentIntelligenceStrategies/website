@@ -689,7 +689,7 @@
 // ─── Patent inventory teaser ─────────────────────────────────────────
 // Bordered card with ticker rows + search input + Industry / Jurisdiction /
 // Tier filter dropdowns (AND logic with the search query). Each rendered
-// card links to /product/licensing/patent-preview.html. Two modes share
+// card links to /product/licensing/lobby.html. Two modes share
 // the same chrome — variant chosen by markup:
 //   • Tiered (default `.v2-section`) — 3 rows, one per tier (S / A / B).
 //   • Flat (`.v2-section.is-flat`)   — 2 rows, cards distributed by a
@@ -755,7 +755,7 @@
       {id:'TWI867812',  title:'Domain-adaptation fine-tuning for industrial vision models',              ass:'III',  juris:'TW', ipc:'G06N 3/08',    ind:'computing',  tier:'B'},
     ];
 
-    const DEST = '/product/licensing/patent-preview.html';
+    const DEST = '/product/licensing/lobby.html';
     const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
     const cardHtml = (p, dup) => {

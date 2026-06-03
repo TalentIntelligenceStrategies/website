@@ -10,6 +10,12 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-03 13:20 +08:00** · `product/licensing/lobby.html` — recomposed: OAuth-first auth card (Google + Apple with email progressive-disclosure inside a fixed-min-height card), Log-in CTA in the topnav, shortened title to "Licensing Platform", left-column rebuilt with a date-led "Platform updates" ledger (5 rows, most-recent on top, TIS submark on bundle launches), and the announcement banner converted to a calm scrolling ticker with pulsing green dots on bundle-launch entries.
+
+- **2026-06-03 11:54 +08:00** · Retired the public patent-inventory browse flow — removed the homepage `section--inventory` block (eyebrow + search + S/A/B tickers), moved `product/licensing/patent-preview.html` to `brand/archive/previews/`, retargeted 5 CTAs (homepage ×2 + licensing index ×3) and the `.v2-section` card-click DEST in `site.js` to `/product/licensing/lobby.html`, updated companion CSS/JS/HTML comments, and deleted the Patent Preview blocks from `copy-audit-v1.md`, `copy-audit-v2.md`, and Part G of `chinese-copy-direction.md`.
+
+- **2026-06-03 10:03 +08:00** · `product/licensing/lobby.html` — added Google + Apple OAuth tiles above the email form on both sign-up and log-in panels; replaced the scrolling ticker announcement banner with the new §Announcement feed (lobby) component (ITRI / III / NYCU partner-led rows with relative timestamps); resynced `designs/components-snapshot.md` from brand monorepo to include the new §Announcement feed spec.
+
 - **2026-06-02 16:20 +08:00** · Renamed the patent-preview batch action-bar label from "View shortlist / 檢視清單" to "Watchlist / 關注清單" — better matches the gauging-interest framing (underlying IDs + sheet copy still say `shortlist`).
 
 - **2026-06-02 16:01 +08:00** · Normalized section spacing on `product/licensing/index.html` + `product/signal/index.html` to the homepage rhythm — removed the inline 160px Stripe override on `.section` + per-section 32px squashes, and neutralized `.section--alt` (Pricing) to `clamp(48px, 6vw, 80px)`.

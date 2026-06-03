@@ -2673,7 +2673,7 @@ main { padding-top: 64px; }
    kept as-is to avoid touch-volume in this port. Renders + filter wiring live
    in site.js (Patent inventory teaser section). ───────── */
 
-/* Shared patent card — compact version, links to /product/licensing/patent-preview.html */
+/* Shared patent card — compact version, links to /product/licensing/lobby.html */
 .ts-card {
   display: flex; flex-direction: column; gap: 6px;
   width: 260px; height: 108px;

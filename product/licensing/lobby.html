@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Get started — Licensing — TIS</title>
-<meta name="description" content="Sign in to manage your patent bundles, or create an account to build your first 30-patent Licensing bundle." />
+<meta name="description" content="Sign in to manage your patent bundles, or create an account to subscribe to your first 30-patent Licensing bundle." />
 <link rel="canonical" href="https://tisglobalinc.com/product/licensing/lobby.html" />
 <meta name="robots" content="noindex" />
 
@@ -43,8 +43,9 @@ body {
   overflow: hidden;
 }
 
-/* The stripped lobby topnav has only the lang toggle — no theme/search/CTA
-   cluster to divide from — so suppress the global controls hairline. */
+/* The lobby topnav skips the global hairline that normally divides the
+   controls cluster from the nav links — there are no nav links on this
+   surface, so the divider would just float in space. */
 .topnav-controls::before { display: none; }
 
 /* main owns the warm pour + blueprint grid so the fixed topnav (translucent
@@ -99,23 +100,24 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 .lobby-marketing {
   position: relative; z-index: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: clamp(72px, 11vh, 144px) 32px clamp(40px, 6vh, 72px);
+  padding: clamp(24px, 3vh, 40px) 24px;
 }
 .lobby-marketing-inner {
   width: 100%;
   max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 36px;
 }
 
 .lobby-title {
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700; letter-spacing: -0.02em; line-height: 1.08;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
   color: var(--text-primary);
-  margin: 0; max-width: 14ch;
+  margin: 0;
+  white-space: nowrap;
 }
 .lobby-props {
   list-style: none; margin: 8px 0 0; padding: 0;
@@ -136,25 +138,105 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 .lobby-auth {
   position: relative; z-index: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: clamp(72px, 11vh, 144px) 32px clamp(40px, 4vh, 56px);
+  padding: clamp(24px, 3vh, 40px) 24px;
 }
-.lobby-card { width: 100%; max-width: 420px; }
+.lobby-card {
+  width: 100%; max-width: 480px;
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 44px;
+}
+/* Each view (OAuth, email form) reserves the same min vertical space so the
+   card chrome doesn't visibly resize when toggling between them. */
+.auth-view {
+  min-height: 320px;
+}
 .lobby-card-head {
   font-size: clamp(26px, 3vw, 32px); font-weight: 700;
   letter-spacing: -0.02em; line-height: 1.1;
   color: var(--text-primary);
   margin: 0 0 8px;
+  text-align: center;
 }
+/* Signup head has no sub copy beneath it — bump its bottom margin so the OAuth
+   stack sits with the same air the login head + sub has. */
+#panel-signup .lobby-card-head { margin-bottom: 22px; }
 .lobby-card-sub {
   font-size: 15px; line-height: 1.5;
   color: var(--text-secondary);
   margin: 0 0 22px;
+  text-align: center;
 }
 .lobby-auth .field { margin-bottom: 16px; }
 .lobby-auth .btn { width: 100%; margin-top: 10px; gap: 10px; }
 .lobby-auth .btn svg { width: 16px; height: 16px; }
+
+/* ── OAuth stack — Google + Apple as full-width vertical buttons (Netlify-
+   style low-friction signup). Each tile is 48px tall, provider glyph at left,
+   centered label. Border + surface, not filled. The card is OAuth-first;
+   "Continue with email →" toggles to the email form (see auth-view rule). */
+.oauth-stack {
+  display: flex; flex-direction: column;
+  gap: 10px;
+}
+.oauth-tile {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 12px;
+  height: 48px; padding: 0 16px;
+  width: 100%;
+  font: inherit; font-size: 15px; font-weight: 600;
+  color: var(--text-primary);
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+.oauth-tile:hover { background: var(--surface-tertiary); border-color: var(--text-tertiary); }
+.oauth-tile:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+.oauth-tile svg { flex-shrink: 0; width: 20px; height: 20px; }
+
+/* ── "Continue with email →" link beneath the OAuth stack. Single source of
+   email-form disclosure; toggling reveals the email .auth-view below. */
+.oauth-email-link {
+  display: block;
+  margin: 18px auto 0;
+  font: inherit; font-size: 14px; font-weight: 600;
+  color: var(--text-primary);
+  background: none; border: 0; padding: 8px 4px;
+  cursor: pointer;
+  text-align: center;
+}
+.oauth-email-link:hover { text-decoration: underline; }
+
+/* ── Email-form back link — returns from .auth-view[email] to [oauth].
+   Sits at the BOTTOM of the email form, in the same spot the "Continue with
+   email →" link sat in the OAuth view. Symmetric — same place, opposite arrow. */
+.auth-back-link {
+  display: block;
+  margin: 18px auto 0;
+  font: inherit; font-size: 14px; font-weight: 600;
+  color: var(--text-primary);
+  background: none; border: 0; padding: 8px 4px;
+  cursor: pointer;
+  text-align: center;
+}
+.auth-back-link:hover { text-decoration: underline; }
+
+/* ── Terms line — sits below the active auth-view on the signup panel. */
+.lobby-terms {
+  margin: 20px 0 0; text-align: center;
+  font-size: 12px; line-height: 1.5;
+  color: var(--text-tertiary);
+}
+.lobby-terms a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+}
+.lobby-terms a:hover { color: var(--text-primary); }
 
 /* Password field — show/hide eye over the underline input */
 .field-pass .field-input { position: relative; }
@@ -179,96 +261,97 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 .lobby-forgot-row { text-align: right; margin: -6px 0 4px; }
 .lobby-forgot { font-size: 13px; color: var(--text-tertiary); }
 
-/* ── Announce-bar ticker — continuous horizontal scroll, stock-ticker style.
-   Items render twice (duplicated in markup) so the -50% translate loops
-   seamlessly. Pauses on hover. Reduced-motion users see static items. */
-.announce.announce--ticker {
-  padding-inline: 24px;
-  justify-content: stretch;
-  gap: 0;
+/* ── Platform updates — date-led ledger with the section header as the anchor
+   and entries as secondary rows. No card chrome. Three columns per row:
+   tabular date · partner mark · message. Hairlines between rows. */
+.lobby-updates {
+  display: flex; flex-direction: column;
 }
-.ticker-viewport {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
-          mask-image: linear-gradient(to right, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
+.lobby-updates-head {
+  font-size: 18px; font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0 0 12px;
 }
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker-scroll 38s linear infinite;
-  will-change: transform;
+.lobby-updates-row {
+  display: grid;
+  grid-template-columns: 30px 20px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 10px 0;
+  color: inherit;
+  font-size: 13px; line-height: 1.4;
+  border-top: 1px solid var(--border-primary);
 }
-.ticker-track:hover { animation-play-state: paused; }
-.ticker-set {
-  display: flex; align-items: center;
-  flex-shrink: 0;
-}
-.ticker-item {
-  display: inline-flex; align-items: center; gap: 10px;
+/* Date and mark sit on the same baseline as the first line of the message —
+   nudge them down a touch so they align optically with the 13px text. */
+.lobby-updates-row .updates-date { padding-top: 2px; }
+.lobby-updates-row .updates-mark { margin-top: 1px; }
+.lobby-updates-row:first-of-type { border-top: 0; padding-top: 4px; }
+.lobby-updates-row .updates-date {
+  font-size: 12px; font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
   white-space: nowrap;
 }
-.ticker-item::after {
-  content: "·";
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 14px;
-  padding: 0 28px;           /* equal space on both sides of the dot */
+.lobby-updates-row .updates-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px;
 }
-.ticker-date {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.65);
+.lobby-updates-row .updates-mark img {
+  width: 20px; height: 20px; object-fit: contain;
 }
-.ticker-title {
-  font-size: 13px;
-  font-weight: 500;
+.lobby-updates-row .updates-msg {
+  font-weight: 400; color: var(--text-secondary);
+  min-width: 0; /* lets the grid track shrink and wrap when needed */
+}
+
+/* ── Announcement ticker — overrides the global .announce shell (dark inverse
+   strip) for a horizontal scrolling marquee instead of a centered cluster.
+   Content mirrors the Platform updates rows one-to-one (no logo, no pulse).
+   Not dismissable; respects prefers-reduced-motion. */
+.announce--ticker {
+  justify-content: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+.announce-ticker-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 72px;          /* wide gap replaces the removed separator glyph */
+  padding: 0 24px;
+  white-space: nowrap;
+  animation: announce-ticker-scroll 120s linear infinite;
+}
+.announce--ticker:hover .announce-ticker-track { animation-play-state: paused; }
+.announce-ticker-item {
+  font-size: 14px; font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--text-inverse);
+  flex-shrink: 0;
 }
-@keyframes ticker-scroll {
+/* Bundle-launch ticker items lead with a pulsing green dot. */
+.announce-ticker-item--pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+@keyframes announce-ticker-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track { animation: none; }
+  .announce-ticker-track { animation: none; justify-content: center; width: 100%; flex-wrap: wrap; gap: 24px; }
 }
-
-/* ── Exclusive Patent Access — inline credibility row inside the marketing
-   column (no full-bleed band). Logos in primary colors at rest, 2×2 grid. */
-.lobby-partners { margin-top: 8px; }
-.lobby-partners-label {
-  font-size: 13px; font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--text-tertiary);
-  margin: 0 0 18px;
-}
-.lobby-partners-row {
-  display: grid;
-  grid-template-columns: repeat(2, max-content);
-  column-gap: 56px;
-  row-gap: 32px;
-  align-items: center;
-}
-.lobby-partners-row .partner {
-  height: 40px;
-  width: 180px;
-  background-position: left center;
-  filter: none;
-  opacity: 1;
-  transition: none;
-}
-.lobby-partners-row .partner--innovue { background-image: var(--partner-innovue-color); }
-[data-theme="dark"] .lobby-partners-row .partner { filter: none; opacity: 1; }
-[data-theme="dark"] .lobby-partners-row .partner--innovue { filter: none; opacity: 1; }
 
 /* ── Slim footer */
 .lobby-legal {
   border-top: 1px solid var(--border-primary);
   padding: 18px 0;
   font-size: 12px; color: var(--text-tertiary);
-  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  display: flex; justify-content: center;
 }
 .lobby-legal a { color: var(--text-secondary); text-decoration: none; }
 .lobby-legal a:hover { text-decoration: underline; }
@@ -305,6 +388,11 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
           <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
         </div>
       </div>
+
+      <!-- Log in CTA — mirrors the homepage topnav "Contact sales" pattern
+           (.btn .btn-primary .topnav-cta). Toggles the auth card to the Log in
+           panel via the shared data-tab-link handler. -->
+      <button type="button" class="btn btn-primary topnav-cta" data-tab-link="login" data-zh="登入">Log in</button>
     </div>
   </div>
 </header>
@@ -313,41 +401,35 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 
   <h1 class="sr-only" data-zh="授權平台 — 開始使用">Licensing Platform — get started</h1>
 
-  <!-- §Announcement banner — ticker variant, scrolling recent updates feed.
-       Items are duplicated in markup so the -50% translate animation loops
-       seamlessly. No dismiss control — informational by design. -->
-  <div class="announce announce--ticker" data-pillar="silver" data-announce-id="2026-q2-licensing-lobby-ticker-v1" role="region" aria-label="Recent updates">
-    <div class="ticker-viewport">
-      <div class="ticker-track">
-        <div class="ticker-set" aria-live="off">
-          <span class="ticker-item">
-            <span class="ticker-date">2026-05-22</span>
-            <span class="ticker-title" data-zh="台灣 × 半導體專利組合正式上線">Taiwan × Semiconductor bundle now live</span>
-          </span>
-          <span class="ticker-item">
-            <span class="ticker-date">2026-05-10</span>
-            <span class="ticker-title" data-zh="日本 FTO 涵蓋擴增至 30 件專利">Japan FTO coverage expanded to 30 patents</span>
-          </span>
-          <span class="ticker-item">
-            <span class="ticker-date">2026-04-28</span>
-            <span class="ticker-title" data-zh="新增歐盟司法管轄區，橫跨 6 個產業">EU jurisdiction added across 6 industries</span>
-          </span>
-        </div>
-        <div class="ticker-set" aria-hidden="true">
-          <span class="ticker-item">
-            <span class="ticker-date">2026-05-22</span>
-            <span class="ticker-title" data-zh="台灣 × 半導體專利組合正式上線">Taiwan × Semiconductor bundle now live</span>
-          </span>
-          <span class="ticker-item">
-            <span class="ticker-date">2026-05-10</span>
-            <span class="ticker-title" data-zh="日本 FTO 涵蓋擴增至 30 件專利">Japan FTO coverage expanded to 30 patents</span>
-          </span>
-          <span class="ticker-item">
-            <span class="ticker-date">2026-04-28</span>
-            <span class="ticker-title" data-zh="新增歐盟司法管轄區，橫跨 6 個產業">EU jurisdiction added across 6 industries</span>
-          </span>
-        </div>
-      </div>
+  <!-- §Announcement ticker — same .announce shell as the homepage (inverse
+       dark strip), but in scrolling-ticker mode. Mirrors the Platform updates
+       chart one-to-one (no logos, no pulse, not dismissable). The item row
+       is duplicated so translateX(-50%) loops seamlessly. -->
+  <div class="announce announce--ticker" role="region" aria-label="Recent platform updates">
+    <div class="announce-ticker-track">
+      <span class="announce-ticker-item announce-ticker-item--pulse">
+        <span class="ticker-pulse" aria-hidden="true"></span>
+        <span data-zh="晶片半導體組合上線 · 1 天前">Chip &amp; semiconductor bundle now available · 1d</span>
+      </span>
+      <span class="announce-ticker-item" data-zh="NYCU 加入授權方 · 2 天前">NYCU joined as a contributing licensor · 2d</span>
+      <span class="announce-ticker-item announce-ticker-item--pulse">
+        <span class="ticker-pulse" aria-hidden="true"></span>
+        <span data-zh="計算機系統組合上線 · 5 天前">Computing systems bundle now available · 5d</span>
+      </span>
+      <span class="announce-ticker-item" data-zh="III 加入授權方 · 1 週前">III joined as a contributing licensor · 1w</span>
+      <span class="announce-ticker-item" data-zh="ITRI 加入授權方 · 3 週前">ITRI joined as a contributing licensor · 3w</span>
+      <!-- Duplicated for seamless loop -->
+      <span class="announce-ticker-item announce-ticker-item--pulse" aria-hidden="true">
+        <span class="ticker-pulse" aria-hidden="true"></span>
+        <span data-zh="晶片半導體組合上線 · 1 天前">Chip &amp; semiconductor bundle now available · 1d</span>
+      </span>
+      <span class="announce-ticker-item" aria-hidden="true" data-zh="NYCU 加入授權方 · 2 天前">NYCU joined as a contributing licensor · 2d</span>
+      <span class="announce-ticker-item announce-ticker-item--pulse" aria-hidden="true">
+        <span class="ticker-pulse" aria-hidden="true"></span>
+        <span data-zh="計算機系統組合上線 · 5 天前">Computing systems bundle now available · 5d</span>
+      </span>
+      <span class="announce-ticker-item" aria-hidden="true" data-zh="III 加入授權方 · 1 週前">III joined as a contributing licensor · 1w</span>
+      <span class="announce-ticker-item" aria-hidden="true" data-zh="ITRI 加入授權方 · 3 週前">ITRI joined as a contributing licensor · 3w</span>
     </div>
   </div>
 
@@ -355,7 +437,7 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
     <!-- Left — marketing -->
     <section class="lobby-marketing" aria-label="About Licensing">
       <div class="lobby-marketing-inner">
-      <h2 class="lobby-title" data-zh="同儕池專利來自國家級法人及學術研究單位">Peer-pool patents, from national institutions and academic research</h2>
+      <h2 class="lobby-title" data-zh="泰然專利防護網">Licensing Platform</h2>
       <ul class="lobby-props">
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
@@ -367,18 +449,49 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-          <span data-zh="非專屬授權，3 至 36 個月彈性期程，每月 NT$7,990–9,990。">Non-exclusive terms from 3 to 36 months, NT$7,990–9,990/mo.</span>
+          <span data-zh="非專屬授權，3 至 36 個月彈性期程。">Non-exclusive terms from 3 to 36 months.</span>
         </li>
       </ul>
 
-      <!-- Exclusive Patent Access — inline credibility row (no full-bleed band). -->
-      <div class="lobby-partners" aria-label="Exclusive patent access">
-        <p class="lobby-partners-label" data-zh="泰然策略合作夥伴">TIS Strategic Partners</p>
-        <div class="lobby-partners-row">
-          <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+      <!-- Platform updates — date-led ledger; static log (no link / no hover).
+           Most-recent update sits on top. Per-row partner mark between date
+           and message; bundle-launch rows use the TIS cube submark. -->
+      <div class="lobby-updates" aria-label="Platform updates">
+        <div class="lobby-updates-head" data-zh="平台動態">Platform updates</div>
+        <div class="lobby-updates-row">
+          <span class="updates-date" data-zh="1 天前">1d</span>
+          <span class="updates-mark" aria-hidden="true">
+            <img src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="" />
+          </span>
+          <span class="updates-msg" data-zh="晶片半導體組合上線">Chip &amp; semiconductor bundle now available</span>
+        </div>
+        <div class="lobby-updates-row">
+          <span class="updates-date" data-zh="2 天前">2d</span>
+          <span class="updates-mark" aria-hidden="true">
+            <img src="/designs/assets/logos/partners/nycu/nycu_seal.svg" alt="" />
+          </span>
+          <span class="updates-msg" data-zh="NYCU 加入授權方">NYCU joined as a contributing licensor</span>
+        </div>
+        <div class="lobby-updates-row">
+          <span class="updates-date" data-zh="5 天前">5d</span>
+          <span class="updates-mark" aria-hidden="true">
+            <img src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="" />
+          </span>
+          <span class="updates-msg" data-zh="計算機系統組合上線">Computing systems bundle now available</span>
+        </div>
+        <div class="lobby-updates-row">
+          <span class="updates-date" data-zh="1 週前">1w</span>
+          <span class="updates-mark" aria-hidden="true">
+            <img src="/designs/assets/logos/partners/iii/logo_iii_submark.svg" alt="" />
+          </span>
+          <span class="updates-msg" data-zh="III 加入授權方">III joined as a contributing licensor</span>
+        </div>
+        <div class="lobby-updates-row">
+          <span class="updates-date" data-zh="3 週前">3w</span>
+          <span class="updates-mark" aria-hidden="true">
+            <img src="/designs/assets/logos/partners/itri/itrilogo_submark.svg" alt="" />
+          </span>
+          <span class="updates-msg" data-zh="ITRI 加入授權方">ITRI joined as a contributing licensor</span>
         </div>
       </div>
       </div>
@@ -391,26 +504,60 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
         <!-- Sign up -->
         <div id="panel-signup" role="tabpanel">
           <h2 class="lobby-card-head" data-zh="建立你的帳號">Create your account</h2>
-          <p class="lobby-card-sub" data-zh="建立帳號以組建你的第一個 30 件專利組合，或登入管理你的防護範圍。">Create an account to build your first 30-patent bundle, or sign in to manage your coverage.</p>
-          <div class="field">
-            <label for="su-company" data-zh="公司">Company</label>
-            <input id="su-company" type="text" autocomplete="organization" placeholder="Acme Inc." />
-          </div>
-          <div class="field">
-            <label for="su-email" data-zh="公司電子郵件">Work email</label>
-            <input id="su-email" type="email" autocomplete="email" placeholder="you@company.com" />
-          </div>
-          <div class="field field-pass">
-            <label for="su-pass" data-zh="密碼">Password</label>
-            <div class="field-input">
-              <input id="su-pass" type="password" autocomplete="new-password" placeholder="••••••••" />
-              <button type="button" class="field-eye" aria-label="Show password"></button>
+
+          <!-- View 1: OAuth-first (default). Two full-width tiles + email link. -->
+          <div class="auth-view" data-view="oauth">
+            <div class="oauth-stack" role="group" aria-label="Continue with single sign-on">
+              <button type="button" class="oauth-tile" data-provider="google">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4" d="M22.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h5.92a5.07 5.07 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.11z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.99 7.28-2.62l-3.56-2.76c-.99.66-2.25 1.05-3.72 1.05-2.86 0-5.28-1.93-6.15-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
+                  <path fill="#FBBC05" d="M5.85 14.14a6.62 6.62 0 0 1 0-4.28V7.02H2.18a11.01 11.01 0 0 0 0 9.96l3.67-2.84z"/>
+                  <path fill="#EA4335" d="M12 5.39c1.62 0 3.07.56 4.21 1.65l3.16-3.16C17.45 2.13 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.02l3.67 2.84C6.72 7.32 9.14 5.39 12 5.39z"/>
+                </svg>
+                <span data-zh="使用 Google 繼續">Continue with Google</span>
+              </button>
+              <button type="button" class="oauth-tile" data-provider="apple">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                  <path d="M16.37 12.61c-.02-2.34 1.91-3.46 2-3.52-1.09-1.6-2.79-1.82-3.39-1.85-1.45-.15-2.83.85-3.56.85-.74 0-1.87-.83-3.07-.8-1.58.02-3.04.92-3.85 2.33-1.64 2.85-.42 7.07 1.18 9.38.78 1.13 1.7 2.4 2.92 2.35 1.17-.05 1.62-.76 3.03-.76 1.41 0 1.81.76 3.05.74 1.26-.02 2.06-1.14 2.83-2.28a9.4 9.4 0 0 0 1.28-2.65c-.03-.01-2.45-.94-2.42-3.79zM14.07 5.61c.64-.78 1.08-1.86.96-2.94-.93.04-2.05.62-2.72 1.39-.6.69-1.13 1.79-.99 2.85 1.04.08 2.1-.53 2.75-1.3z"/>
+                </svg>
+                <span data-zh="使用 Apple 繼續">Continue with Apple</span>
+              </button>
             </div>
+            <button type="button" class="oauth-email-link" data-view-link="email">
+              <span data-zh="使用電子郵件繼續 →">Continue with email →</span>
+            </button>
           </div>
-          <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg">
-            <span data-zh="建立帳號">Create account</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+
+          <!-- View 2: Email form. Hidden by default; revealed by the email link above. -->
+          <div class="auth-view" data-view="email" hidden>
+            <div class="field">
+              <label for="su-email" data-zh="公司電子郵件">Work email</label>
+              <input id="su-email" type="email" autocomplete="email" placeholder="you@company.com" />
+            </div>
+            <div class="field field-pass">
+              <label for="su-pass" data-zh="密碼">Password</label>
+              <div class="field-input">
+                <input id="su-pass" type="password" autocomplete="new-password" placeholder="••••••••" />
+                <button type="button" class="field-eye" aria-label="Show password"></button>
+              </div>
+            </div>
+            <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg">
+              <span data-zh="建立帳號">Create account</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <button type="button" class="auth-back-link" data-view-link="oauth">
+              <span data-zh="← 返回登入選項">← Back to sign-in options</span>
+            </button>
+          </div>
+
+          <p class="lobby-terms">
+            <span data-zh="註冊即表示你同意我們的">By joining, you agree to our</span>
+            <a href="/legal/terms.html" data-zh="服務條款">Terms of Service</a>
+            <span data-zh="和">and</span>
+            <a href="/legal/privacy.html" data-zh="隱私權政策">Privacy Policy</a><span data-zh="。">.</span>
+          </p>
+
           <p class="lobby-foot">
             <span data-zh="已有帳號？">Already have an account?</span>
             <button type="button" class="lobby-forgot" data-tab-link="login" data-zh="登入">Log in</button>
@@ -421,24 +568,56 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
         <div id="panel-login" role="tabpanel" hidden>
           <h2 class="lobby-card-head" data-zh="歡迎回來">Welcome back</h2>
           <p class="lobby-card-sub" data-zh="你的組合都在原處等你。">Your bundles are right where you left them.</p>
-          <div class="field">
-            <label for="li-email" data-zh="公司電子郵件">Work email</label>
-            <input id="li-email" type="email" autocomplete="email" placeholder="you@company.com" />
-          </div>
-          <div class="field field-pass">
-            <label for="li-pass" data-zh="密碼">Password</label>
-            <div class="field-input">
-              <input id="li-pass" type="password" autocomplete="current-password" placeholder="••••••••" />
-              <button type="button" class="field-eye" aria-label="Show password"></button>
+
+          <!-- View 1: OAuth-first (default). -->
+          <div class="auth-view" data-view="oauth">
+            <div class="oauth-stack" role="group" aria-label="Continue with single sign-on">
+              <button type="button" class="oauth-tile" data-provider="google">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4" d="M22.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h5.92a5.07 5.07 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.11z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.99 7.28-2.62l-3.56-2.76c-.99.66-2.25 1.05-3.72 1.05-2.86 0-5.28-1.93-6.15-4.53H2.18v2.84A11 11 0 0 0 12 23z"/>
+                  <path fill="#FBBC05" d="M5.85 14.14a6.62 6.62 0 0 1 0-4.28V7.02H2.18a11.01 11.01 0 0 0 0 9.96l3.67-2.84z"/>
+                  <path fill="#EA4335" d="M12 5.39c1.62 0 3.07.56 4.21 1.65l3.16-3.16C17.45 2.13 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.02l3.67 2.84C6.72 7.32 9.14 5.39 12 5.39z"/>
+                </svg>
+                <span data-zh="使用 Google 繼續">Continue with Google</span>
+              </button>
+              <button type="button" class="oauth-tile" data-provider="apple">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                  <path d="M16.37 12.61c-.02-2.34 1.91-3.46 2-3.52-1.09-1.6-2.79-1.82-3.39-1.85-1.45-.15-2.83.85-3.56.85-.74 0-1.87-.83-3.07-.8-1.58.02-3.04.92-3.85 2.33-1.64 2.85-.42 7.07 1.18 9.38.78 1.13 1.7 2.4 2.92 2.35 1.17-.05 1.62-.76 3.03-.76 1.41 0 1.81.76 3.05.74 1.26-.02 2.06-1.14 2.83-2.28a9.4 9.4 0 0 0 1.28-2.65c-.03-.01-2.45-.94-2.42-3.79zM14.07 5.61c.64-.78 1.08-1.86.96-2.94-.93.04-2.05.62-2.72 1.39-.6.69-1.13 1.79-.99 2.85 1.04.08 2.1-.53 2.75-1.3z"/>
+                </svg>
+                <span data-zh="使用 Apple 繼續">Continue with Apple</span>
+              </button>
             </div>
+            <button type="button" class="oauth-email-link" data-view-link="email">
+              <span data-zh="使用電子郵件繼續 →">Continue with email →</span>
+            </button>
           </div>
-          <div class="lobby-forgot-row">
-            <button type="button" class="lobby-forgot" data-zh="忘記密碼？">Forgot password?</button>
+
+          <!-- View 2: Email form. -->
+          <div class="auth-view" data-view="email" hidden>
+            <div class="field">
+              <label for="li-email" data-zh="公司電子郵件">Work email</label>
+              <input id="li-email" type="email" autocomplete="email" placeholder="you@company.com" />
+            </div>
+            <div class="field field-pass">
+              <label for="li-pass" data-zh="密碼">Password</label>
+              <div class="field-input">
+                <input id="li-pass" type="password" autocomplete="current-password" placeholder="••••••••" />
+                <button type="button" class="field-eye" aria-label="Show password"></button>
+              </div>
+            </div>
+            <div class="lobby-forgot-row">
+              <button type="button" class="lobby-forgot" data-zh="忘記密碼？">Forgot password?</button>
+            </div>
+            <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg">
+              <span data-zh="登入">Log in</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <button type="button" class="auth-back-link" data-view-link="oauth">
+              <span data-zh="← 返回登入選項">← Back to sign-in options</span>
+            </button>
           </div>
-          <a href="https://licensing.tisglobalinc.com/start" class="btn btn-primary btn-lg">
-            <span data-zh="登入">Log in</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+
           <p class="lobby-foot">
             <span data-zh="第一次使用 TIS 授權？">New to TIS Licensing?</span>
             <button type="button" class="lobby-forgot" data-tab-link="signup" data-zh="建立帳號">Create an account</button>
@@ -450,9 +629,8 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 </main>
 
 <footer class="lobby-legal">
-  <div class="container topnav-inner" style="justify-content: space-between;">
+  <div class="container topnav-inner" style="justify-content: center;">
     <span data-zh="© 2026 泰然策略解密">© 2026 Talent Intelligence Strategies</span>
-    <a href="/product/licensing/" data-zh="← 返回授權產品頁">← Back to Licensing</a>
   </div>
 </footer>
 
@@ -525,13 +703,31 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
       });
     });
 
-    // ── Switch between Sign up / Log in panels (via the in-form cross-links)
+    // ── Switch between Sign up / Log in panels. When switching panels we
+    // also reset to the OAuth view so an in-progress email form on one panel
+    // doesn't carry over visually to the other.
     const panels = { signup: document.getElementById('panel-signup'), login: document.getElementById('panel-login') };
+    const setView = (panel, target) => {
+      panel.querySelectorAll('.auth-view').forEach(v => { v.hidden = v.dataset.view !== target; });
+    };
     const activate = (name) => {
-      Object.entries(panels).forEach(([k, el]) => { el.hidden = k !== name; });
+      Object.entries(panels).forEach(([k, el]) => {
+        el.hidden = k !== name;
+        if (k === name) setView(el, 'oauth');
+      });
     };
     document.querySelectorAll('[data-tab-link]').forEach(a =>
       a.addEventListener('click', () => activate(a.dataset.tabLink)));
+
+    // ── Within-panel view toggle: OAuth ↔ email form. Driven by the
+    // "Continue with email →" button and the "← Back" button inside the form.
+    document.querySelectorAll('[data-view-link]').forEach(b =>
+      b.addEventListener('click', () => {
+        const panel = b.closest('[role="tabpanel"]');
+        if (!panel) return;
+        setView(panel, b.dataset.viewLink);
+      }));
+
   })();
 </script>
 </body>
