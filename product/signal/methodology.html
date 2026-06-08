@@ -152,7 +152,7 @@
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/#products" class="search-link" data-zh="產品">
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -201,6 +201,172 @@
           <a href="/product/signal/" class="btn btn-secondary" data-zh="回到 Signal">Back to Signal</a>
         </div>
       </article>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Companies by patent strength — the SABCD method rolled up to a      ║
+       ║ portfolio. Each gauge = mean PSS across a company's graded patents; ║
+       ║ gauge stays monochrome, the tier chip carries the grade.            ║
+       ║ Illustrative sample data (mirrors the signal-flow preview).         ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section" id="portfolio-signal" aria-labelledby="cscore-heading">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2 id="cscore-heading" class="h-section grad-text-silver-solid" data-zh="依專利強度排序的公司">Companies by patent strength</h2>
+          <p class="section-dek" data-zh="每個量規為該公司已評分專利的 PSS 平均值，彙整為單一 SABCD 聚合等級——同一套八大支柱方法，延伸至整個專利組合。下方分布條顯示 S–D 的構成。">Each gauge is the mean PSS across a company's graded patents, resolved to one aggregate SABCD tier — the same eight-pillar method, rolled up to a portfolio. The strip below shows how it distributes across S–D.</p>
+        </div>
+      </header>
+
+      <div class="coscore-grid">
+
+        <!-- S — Macrosilicon Mfg -->
+        <article class="coscore-card">
+          <div class="cs-head">
+            <div>
+              <h3 class="cs-name">Macrosilicon Mfg</h3>
+              <div class="cs-meta"><span class="cs-juris">TW</span><span class="cs-pool" data-zh="半導體 / IC 設計">Semiconductor / IC design</span></div>
+            </div>
+            <span class="tier-chip tier-chip--s">Tier S</span>
+          </div>
+          <div class="cs-gauge">
+            <div class="r-metric-arc">
+              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="249 283"/>
+              </svg>
+              <div class="r-metric-arc-val">88<small>/100</small></div>
+            </div>
+          </div>
+          <p class="cs-strength" data-zh="強 · PSS 平均">Strong · avg PSS</p>
+          <div class="cs-dist" aria-label="Tier distribution">
+            <div class="cell"><span class="tl tl-s">S</span><span class="ct">9</span></div>
+            <div class="cell"><span class="tl tl-a">A</span><span class="ct">18</span></div>
+            <div class="cell"><span class="tl tl-b">B</span><span class="ct">11</span></div>
+            <div class="cell"><span class="tl tl-c">C</span><span class="ct">3</span></div>
+            <div class="cell"><span class="tl tl-d">D</span><span class="ct">1</span></div>
+          </div>
+          <p class="cs-desc"><strong data-zh="42 件已評分專利">42 graded patents</strong> <span data-zh="在 183 件半導體 / IC 設計池中。SEP 密集，國際家族深厚。">in the 183-patent semiconductor / IC design pool. SEP-dense, deep international families.</span></p>
+        </article>
+
+        <!-- A — Vivid Imaging -->
+        <article class="coscore-card">
+          <div class="cs-head">
+            <div>
+              <h3 class="cs-name">Vivid Imaging</h3>
+              <div class="cs-meta"><span class="cs-juris">US</span><span class="cs-pool" data-zh="影像感測器">Image sensors</span></div>
+            </div>
+            <span class="tier-chip tier-chip--a">Tier A</span>
+          </div>
+          <div class="cs-gauge">
+            <div class="r-metric-arc">
+              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="201 283"/>
+              </svg>
+              <div class="r-metric-arc-val">71<small>/100</small></div>
+            </div>
+          </div>
+          <p class="cs-strength" data-zh="中 · PSS 平均">Mid · avg PSS</p>
+          <div class="cs-dist" aria-label="Tier distribution">
+            <div class="cell"><span class="tl tl-s">S</span><span class="ct">3</span></div>
+            <div class="cell"><span class="tl tl-a">A</span><span class="ct">14</span></div>
+            <div class="cell"><span class="tl tl-b">B</span><span class="ct">13</span></div>
+            <div class="cell"><span class="tl tl-c">C</span><span class="ct">5</span></div>
+            <div class="cell"><span class="tl tl-d">D</span><span class="ct zero">1</span></div>
+          </div>
+          <p class="cs-desc"><strong data-zh="36 件已評分專利">36 graded patents</strong> <span data-zh="在 124 件影像感測器池中。被引強度高，地理布局較窄。">in the 124-patent image-sensor pool. Strong citation impact, narrower geographic reach.</span></p>
+        </article>
+
+        <!-- B — Yuan Bio Tech -->
+        <article class="coscore-card">
+          <div class="cs-head">
+            <div>
+              <h3 class="cs-name">Yuan Bio Tech</h3>
+              <div class="cs-meta"><span class="cs-juris">TW</span><span class="cs-pool" data-zh="生物科技">Biotech</span></div>
+            </div>
+            <span class="tier-chip tier-chip--b">Tier B</span>
+          </div>
+          <div class="cs-gauge">
+            <div class="r-metric-arc">
+              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="147 283"/>
+              </svg>
+              <div class="r-metric-arc-val">52<small>/100</small></div>
+            </div>
+          </div>
+          <p class="cs-strength" data-zh="中 · PSS 平均">Mid · avg PSS</p>
+          <div class="cs-dist" aria-label="Tier distribution">
+            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">1</span></div>
+            <div class="cell"><span class="tl tl-a">A</span><span class="ct">5</span></div>
+            <div class="cell"><span class="tl tl-b">B</span><span class="ct">13</span></div>
+            <div class="cell"><span class="tl tl-c">C</span><span class="ct">7</span></div>
+            <div class="cell"><span class="tl tl-d">D</span><span class="ct">2</span></div>
+          </div>
+          <p class="cs-desc"><strong data-zh="28 件已評分專利">28 graded patents</strong> <span data-zh="在 91 件生物科技池中。核心覆蓋紮實，技術活躍且可防禦。">in the 91-patent biotech pool. Solid core coverage; technically active, defensible.</span></p>
+        </article>
+
+        <!-- C — AIChip Co. -->
+        <article class="coscore-card">
+          <div class="cs-head">
+            <div>
+              <h3 class="cs-name">AIChip Co.</h3>
+              <div class="cs-meta"><span class="cs-juris">EP</span><span class="cs-pool" data-zh="AI 加速器">AI accelerators</span></div>
+            </div>
+            <span class="tier-chip tier-chip--c">Tier C</span>
+          </div>
+          <div class="cs-gauge">
+            <div class="r-metric-arc">
+              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="76 283"/>
+              </svg>
+              <div class="r-metric-arc-val">27<small>/100</small></div>
+            </div>
+          </div>
+          <p class="cs-strength" data-zh="弱 · PSS 平均">Weak · avg PSS</p>
+          <div class="cs-dist" aria-label="Tier distribution">
+            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">0</span></div>
+            <div class="cell"><span class="tl tl-a">A</span><span class="ct zero">1</span></div>
+            <div class="cell"><span class="tl tl-b">B</span><span class="ct">4</span></div>
+            <div class="cell"><span class="tl tl-c">C</span><span class="ct">10</span></div>
+            <div class="cell"><span class="tl tl-d">D</span><span class="ct">4</span></div>
+          </div>
+          <p class="cs-desc"><strong data-zh="19 件已評分專利">19 graded patents</strong> <span data-zh="在 67 件 AI 加速器池中。範圍狹窄，多為防禦性布局。">in the 67-patent AI-accelerator pool. Narrow scope; largely defensive positioning.</span></p>
+        </article>
+
+        <!-- D — Hongchen Power -->
+        <article class="coscore-card">
+          <div class="cs-head">
+            <div>
+              <h3 class="cs-name">Hongchen Power</h3>
+              <div class="cs-meta"><span class="cs-juris">CN</span><span class="cs-pool" data-zh="功率電子">Power electronics</span></div>
+            </div>
+            <span class="tier-chip tier-chip--d">Tier D</span>
+          </div>
+          <div class="cs-gauge">
+            <div class="r-metric-arc">
+              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
+                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="31 283"/>
+              </svg>
+              <div class="r-metric-arc-val">11<small>/100</small></div>
+            </div>
+          </div>
+          <p class="cs-strength" data-zh="弱 · PSS 平均">Weak · avg PSS</p>
+          <div class="cs-dist" aria-label="Tier distribution">
+            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">0</span></div>
+            <div class="cell"><span class="tl tl-a">A</span><span class="ct zero">0</span></div>
+            <div class="cell"><span class="tl tl-b">B</span><span class="ct">2</span></div>
+            <div class="cell"><span class="tl tl-c">C</span><span class="ct">6</span></div>
+            <div class="cell"><span class="tl tl-d">D</span><span class="ct">15</span></div>
+          </div>
+          <p class="cs-desc"><strong data-zh="23 件已評分專利">23 graded patents</strong> <span data-zh="在 142 件功率電子池中。布局廣但被引低，屬老化的基礎布局。">in the 142-patent power-electronics pool. Broad but low-citation, ageing foundation layout.</span></p>
+        </article>
+
+      </div>
     </div>
   </section>
 

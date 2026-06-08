@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=2">
+<link rel="stylesheet" href="/assets/styles.css?v=12">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -806,6 +806,197 @@
   color: var(--text-primary);
   box-shadow: var(--shadow-low);
 }
+
+/* ============================================================
+   Pricing card — single split card (ported from a card reference to
+   vanilla + tokens). Left = title + term toggle + price + CTA; right
+   (muted) = titled feature groups (Industries / Proof & delivery) plus a
+   nested institution trust strip. The term toggle is the only
+   interactive control; jurisdiction is folded into the subhead.
+   ============================================================ */
+.pcard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  background: var(--surface-page);
+}
+/* Body holds the left + right split; the desktop row behavior lives here. */
+.pcard-body { display: flex; flex-direction: column; }
+@media (min-width: 920px) { .pcard-body { flex-direction: row; } }
+
+.pcard-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(28px, 3vw, 44px);
+}
+@media (min-width: 920px) { .pcard-left { width: 40%; flex: none; } }
+
+.pcard-title {
+  font-size: clamp(26px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin: 0;
+}
+.pcard-desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 10px 0 0;
+  max-width: 38ch;
+}
+/* term toggle, left-aligned inside the card (override centered auto margin) */
+.pcard .bp-toggle { margin: 24px 0 0; }
+
+.pcard-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 6px;
+  margin-top: 22px;
+}
+.pcard-amt {
+  font-family: var(--prod-font-mono, ui-monospace, monospace);
+  font-size: clamp(40px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text-primary);
+}
+.pcard-unit {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: -4px;
+}
+.pcard-save {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--success-bg);
+  color: var(--success-fg);
+  font-family: var(--prod-font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.pcard-save:empty { display: none; }
+/* Term line now carries the savings pill inline beside it (moved off the
+   price row). Flex keeps label + pill on one baseline with a gap. */
+.pcard-term {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+.pcard-cta { width: 100%; justify-content: center; }
+
+/* Bottom group of the left column — dashed rule + CTA, pinned under the
+   price block (parent uses justify-content: space-between). */
+.pcard-left-foot { display: flex; flex-direction: column; gap: 20px; }
+.pcard-rule {
+  border: 0;
+  border-top: 1px dashed var(--border-primary);
+  margin: 0;
+}
+
+.pcard-right {
+  background: var(--surface-tertiary);
+  padding: clamp(28px, 3vw, 44px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+@media (min-width: 920px) { .pcard-right { width: 60%; flex: none; } }
+
+.pcard-feat + .pcard-feat {
+  padding-top: 24px;
+  border-top: 1px dashed var(--border-primary);
+}
+.pcard-feat-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+.pcard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+@media (max-width: 560px) { .pcard-list { grid-template-columns: 1fr; } }
+/* keep the 4-segment term toggle inside the card on narrow widths */
+@media (max-width: 600px) {
+  .pcard .bp-toggle { width: 100%; }
+  .pcard .bp-toggle-seg {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 8px 4px;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    text-align: center;
+  }
+}
+.pcard-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.pcard-list .prod-check {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Trust strip — institution marks nested in the right column, directly
+   under the Proof & delivery group. Mirrors the .pcard-feat structure
+   exactly: dashed top divider + 24px top, an h4.pcard-feat-title heading
+   (its own 14px bottom margin sets the heading→content rhythm), and a row
+   of logos as the content. Logos shown in full primary color at rest. */
+.pcard-trust {
+  padding-top: 24px;
+  border-top: 1px dashed var(--border-primary);
+}
+.pcard-logos {
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 36px;
+}
+.pcard-logos .partner {
+  height: 28px;
+  width: 130px;
+  filter: none;
+  opacity: 1;
+}
+.pcard-logos .partner:hover { filter: none; opacity: 1; }
+/* Keep the marks in primary color in dark mode too (override the global
+   invert/dim applied to .partner). */
+[data-theme="dark"] .pcard-logos .partner { filter: none; opacity: 1; }
+@media (max-width: 560px) {
+  .pcard-logos { gap: 24px; }
+  .pcard-logos .partner { width: 112px; height: 24px; }
+}
+
 /* Section heading — matches .howitworks h3 sizing + 64px bottom margin
    so Pricing reads with the same weight + rhythm as How it works above.
    Left-aligned (no .section-head--centered wrapper). */
@@ -1506,15 +1697,15 @@ a, button,
   color: var(--text-primary);
 }
 
-/* Pricing section heading — match the "How it works" h3 spec
-   (clamp(22px, 2.5vw, 32px) / 600 / -0.015em / 1.25). Scoped to
-   .bp-section-heading only — CTA heads stay at the larger
-   clamp(28,3.5vw,44) h2 scale defined above. */
+/* Pricing section heading — match the sibling section heads it sits
+   between (.walkaway-head + .bundlegrid-head): clamp(28px, 3.6vw, 42px)
+   / 700 / -0.02em / 1.16. Scoped to .bp-section-heading only — CTA heads
+   stay at the larger clamp(28,3.5vw,44) h2 scale defined above. */
 .bp-section-heading {
-  font-size: clamp(22px, 2.5vw, 32px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.16;
 }
 
 /* FAQ accordion — adopt the deliverable / How it works card
@@ -1642,90 +1833,9 @@ a, button,
   .section--page-hero .pillar-hero-shot .frame-wrap { max-width: 688px; }
 }
 
-/* Exclusive Patent Access + paired CTA — full-bleed hairline band that
-   doubles as the final intra-page CTA before the Contact form. One-line
-   horizontal layout (headline · 3 logos · button) at ≥1100px, stacks to
-   3 rows below. Color-at-rest logos via .partner-strip--color (same
-   modifier the lobby uses); the "Exclusive Patent Access" caption is
-   intentionally dropped — the headline carries the meaning. */
-.section--patent-band.patent-band--cta {
-  padding-block: 32px;
-  margin-block-end: 0;
-  border-block: 0;
-}
-.section--patent-band.patent-band--cta .partner-strip {
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.partner-cta-heading {
-  margin: 0;
-  flex: 0 1 auto;
-  font-size: clamp(16px, 1.4vw, 20px);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  color: var(--text-primary);
-  text-align: left;
-}
-/* Per-line spans force the visual break and survive the language toggle —
-   same pattern as the homepage About headline. */
-.partner-cta-heading span { display: block; }
-.section--patent-band.patent-band--cta .partner-logos {
-  flex: 0 0 auto;
-  gap: 40px;
-}
-.section--patent-band.patent-band--cta .partner {
-  height: 36px;
-  width: 180px;
-}
-.section--patent-band.patent-band--cta .partner-cta-btn {
-  flex: 0 0 auto;
-}
-/* Color-at-rest reinforcement — match .partner-strip--color from the lobby:
-   drop the grayscale filter and opacity dim entirely, no hover transition. */
-.partner-strip--color .partner {
-  filter: none;
-  opacity: 1;
-  transition: none;
-}
-.partner-strip--color .partner:hover {
-  filter: none;
-  opacity: 1;
-}
-.partner-strip--color .partner--innovue {
-  background-image: var(--partner-innovue-color);
-}
-[data-theme="dark"] .partner-strip--color .partner {
-  filter: none;
-  opacity: 1;
-}
-[data-theme="dark"] .partner-strip--color .partner--innovue {
-  filter: none;
-  opacity: 1;
-}
-/* Fall back to a centered 3-row stack below 1100px (text / logos / button) —
-   logos and headline scale back up to the section's standard size. */
-@media (max-width: 1100px) {
-  .section--patent-band.patent-band--cta .partner-strip {
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 28px;
-  }
-  .partner-cta-heading {
-    text-align: center;
-    max-width: 540px;
-  }
-  .section--patent-band.patent-band--cta .partner-logos {
-    gap: 48px;
-  }
-  .section--patent-band.patent-band--cta .partner {
-    height: 40px;
-    width: 200px;
-  }
-}
+/* (Removed) Exclusive Patent Access band — the institution marks (iPIC ·
+   III · NYCU) now live in the Pricing card footer (.pcard-footer). See the
+   Pricing card block below for the relocated logo + badge styles. */
 
 /* Contact section — repaint the silver bloom in the Licensing pillar's warm
    palette. Mirrors styles.css §Get in touch: same axis flip (radial origin
@@ -1798,6 +1908,1019 @@ a, button,
   color: var(--text-secondary);
   padding-left: 12px;
   margin: 0;
+}
+
+/* ============================================================
+   Licensing deliverables — feature-grid treatment (6 cards).
+   Ported from a Tailwind/React features-4 reference to vanilla +
+   tokens: 3-col grid with solid 1px dividers + outer border, small
+   monochrome lucide icon inline beside each title, no accent line,
+   no pattern wash — strict black & white. Scoped to --feature so
+   the shared .deliverable-grid (signal page) is untouched.
+   ============================================================ */
+/* Deliverables section sits flush against the hero — its 3×2 grid top
+   touches the hero's bottom edge (drop the .section top padding to 0). */
+.section--flush-hero { padding-block-start: 0; }
+
+.deliverable-grid--feature {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 0 0 96px;
+  border-top: 1px solid var(--border-primary);
+  border-left: 1px solid var(--border-primary);
+}
+@media (max-width: 1100px) {
+  .deliverable-grid--feature { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .deliverable-grid--feature { grid-template-columns: 1fr; }
+}
+/* card = grid: [icon · title] on row 1, body spanning row 2 — no
+   wrapper div needed; the icon/h4/p siblings auto-place into cells */
+.deliverable-grid--feature .deliverable-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: 8px;
+  row-gap: 10px;
+  padding: 40px;
+  border-right: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+}
+/* icon is small + monochrome, optically aligned to the title's first line */
+.deliverable-grid--feature .deliverable-card .icon {
+  grid-column: 1;
+  width: auto;
+  height: auto;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+}
+.deliverable-grid--feature .deliverable-card .icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-primary);
+}
+.deliverable-grid--feature .deliverable-card h4 {
+  grid-column: 2;
+  align-self: center;
+  padding-left: 0;
+}
+.deliverable-grid--feature .deliverable-card h4::before { display: none; }
+.deliverable-grid--feature .deliverable-card p {
+  grid-column: 1 / -1;
+  padding-left: 0;
+}
+.deliverable-grid--feature .deliverable-card p a { color: inherit; }
+
+/* ============================================================
+   Cover-the-gap — bento reimagining (ported from a Tailwind/React bento
+   reference to vanilla + tokens). Asymmetric 3-col bento:
+   row 1 = Headline (wide) + Why now;  row 2 = Go it alone + Subscribe (wide).
+   Trimmed card chrome (icon chip + title + content). The TIS card uses
+   persistent-depth emphasis (always-on shadow + dot-grid), neutral palette.
+   ============================================================ */
+/* tighten the gap above this section (Deliverables above is flush-hero, so the
+   default doubled section padding read as oversized here) */
+.gapcover { padding-block-start: clamp(24px, 3vw, 40px); }
+
+.gapcover .gbento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "headline headline subscribe"
+    "goalone  whynow   subscribe";
+  gap: 16px;
+}
+.gapcover .gba-headline  { grid-area: headline; }
+.gapcover .gba-goalone   { grid-area: goalone; }
+.gapcover .gba-whynow    { grid-area: whynow; }
+.gapcover .gba-subscribe { grid-area: subscribe; }
+.gapcover .gba-subscribe .gbento-list--tis { grid-template-columns: 1fr; }
+.gapcover .gbento-card {
+  position: relative;
+  grid-column: span 1;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  background: var(--surface-page);
+  padding: clamp(20px, 2vw, 28px);
+  transition: transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease;
+}
+.gapcover .gbento-card--wide { grid-column: span 2; }
+.gapcover .gbento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--tis-shadow-s);
+}
+
+/* dot-grid overlay — fades in on hover (always-on for the persistent card) */
+.gapcover .gbento-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background-image: radial-gradient(circle at center, rgba(37, 37, 37, 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+.gapcover .gbento-card:hover .gbento-dots { opacity: 1; }
+.gapcover .gbento-card--persist { box-shadow: var(--tis-shadow-s); border-color: var(--text-primary); }
+.gapcover .gbento-card--persist .gbento-dots { opacity: 1; }
+
+/* 2-bad / 1-good weighting — recede the two cost paths, spotlight Subscribe */
+.gapcover .gbento-card--trap {
+  background: var(--surface-secondary);
+  opacity: 0.6;
+  transition: transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease, opacity 300ms ease;
+}
+.gapcover .gbento-card--trap:hover {
+  opacity: 1;
+  border-color: #C0392B;
+  background: rgba(192, 57, 43, 0.055);
+}
+
+.gapcover .gbento-inner { position: relative; z-index: 1; }
+
+/* icon chip */
+.gapcover .gbento-icon {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
+  margin-bottom: clamp(16px, 2.4vw, 28px);
+}
+.gapcover .gbento-icon svg { width: 18px; height: 18px; }
+
+/* icon + title on one row */
+.gapcover .gbento-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.gapcover .gbento-head .gbento-icon { margin-bottom: 0; }
+.gapcover .gbento-head .gbento-title { margin: 0; }
+
+/* card label (Why now / Go it alone / Subscribe to TIS) */
+.gapcover .gbento-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+/* headline card — the framing statement */
+.gapcover .gbento-headline {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+  max-width: none;
+}
+
+/* bullet list (Why now + TIS) */
+.gapcover .gbento-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gapcover .gbento-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.gapcover .gbento-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+
+/* Go it alone — two named paths */
+.gapcover .gbento-diy + .gbento-diy { margin-top: 16px; }
+.gapcover .gbento-diy-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+.gapcover .gbento-diy-detail {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* TIS list — neutral check marks, two columns on the wide card */
+.gapcover .gbento-list--tis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 28px;
+}
+.gapcover .gbento-list--tis li {
+  color: var(--text-primary);
+  padding-left: 22px;
+}
+.gapcover .gbento-list--tis li::before {
+  content: '';
+  left: 0;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  background: none;
+  border-left: 2px solid var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
+  transform: rotate(-45deg);
+}
+.gapcover .gbento-cta { margin-top: 22px; }
+
+/* Subscribe card: pin CTA to bottom-right */
+.gapcover .gbento-card--persist .gbento-inner { display: flex; flex-direction: column; height: 100%; }
+.gapcover .gbento-card--persist .gbento-cta { margin-top: auto; align-self: flex-end; }
+
+@media (max-width: 820px) {
+  .gapcover .gbento-grid { grid-template-columns: 1fr; grid-template-areas: none; }
+  .gapcover .gbento-card,
+  .gapcover .gbento-card--wide { grid-column: span 1; }
+  .gapcover .gba-headline,
+  .gapcover .gba-goalone,
+  .gapcover .gba-whynow,
+  .gapcover .gba-subscribe { grid-area: auto; }
+  .gapcover .gbento-list--tis { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gapcover .gbento-card { transition: none; }
+  .gapcover .gbento-card:hover { transform: none; }
+}
+
+/* ============================================================
+   Bundle grid — tailark-style asymmetric bento (vanilla + tokens).
+   5-col base, 3 rows; cards alternate wide(3)+narrow(2) with the
+   offset flipping each row (3+2 / 2+3 / 3+2). Cluster reads as one
+   rounded panel (outer corners rounded, inner square), 8px seams.
+   Cohesion-with-variety: WIDE cards bleed a framed content mock to
+   the bottom edge; NARROW cards center a compact cluster. Each card's
+   visual is matched to its content (30-grid, SABCD bar, source-pool
+   logo grid, upload flow, swap row, verified badge). Shared radial
+   fade melts every visual into the body. Light theme; tokens only.
+   ============================================================ */
+.bundlegrid .bundlegrid-head {
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 760px;
+  margin: 0 0 clamp(40px, 5vw, 60px);
+  text-wrap: balance;
+}
+
+.bundlegrid .bundlegrid-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+/* alternating wide(3)+narrow(2) rhythm — 3+2 / 2+3 / 3+2 */
+.bundlegrid .bbx:nth-child(1) { grid-column: span 3; } /* Why thirty   — wide  */
+.bundlegrid .bbx:nth-child(2) { grid-column: span 2; } /* SABCD        — narrow*/
+.bundlegrid .bbx:nth-child(3) { grid-column: span 2; } /* Smart-pick   — narrow*/
+.bundlegrid .bbx:nth-child(4) { grid-column: span 3; } /* FTO upload   — wide  */
+.bundlegrid .bbx:nth-child(5) { grid-column: span 3; } /* Swap         — wide  */
+.bundlegrid .bbx:nth-child(6) { grid-column: span 2; } /* Badge        — narrow*/
+
+.bundlegrid .bbx {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  background: var(--surface-page);
+  box-shadow: var(--tis-shadow-xs);
+  transition: box-shadow var(--tis-hover-transition);
+}
+.bundlegrid .bbx:hover { box-shadow: var(--tis-shadow-s); }
+
+/* outer corners of the 2×3 cluster rounded; inner corners square */
+.bundlegrid .bbx:nth-child(1) { border-top-left-radius: 16px; }
+.bundlegrid .bbx:nth-child(2) { border-top-right-radius: 16px; }
+.bundlegrid .bbx:nth-child(5) { border-bottom-left-radius: 16px; }
+.bundlegrid .bbx:nth-child(6) { border-bottom-right-radius: 16px; }
+
+.bundlegrid .bbx-head {
+  padding: clamp(22px, 2.4vw, 32px) clamp(22px, 2.4vw, 32px) 0;
+}
+.bundlegrid .bbx-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
+}
+.bundlegrid .bbx-body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 10px 0 0;
+  max-width: 42ch;
+}
+
+/* framed visual zone — grows to fill the card, bleeds to the bottom edge;
+   radial fade melts it into the body. Empty = faint panel + placeholder
+   glyph (drop an <img> inside .bbx-frame to replace). */
+.bundlegrid .bbx-visual {
+  position: relative;
+  flex: 1 1 auto;
+  margin-top: clamp(22px, 2.6vw, 30px);
+  padding-left: clamp(22px, 3vw, 44px);
+  min-height: 170px;
+}
+.bundlegrid .bbx-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(80% 95% at 50% 0%, transparent, var(--surface-page) 100%);
+}
+.bundlegrid .bbx-frame {
+  height: 100%;
+  min-height: 150px;
+  border-top: 1px solid var(--border-secondary);
+  border-left: 1px solid var(--border-secondary);
+  border-top-left-radius: 10px;
+  background: var(--surface-tertiary);
+  padding: 10px 0 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.bundlegrid .bbx-frame svg {
+  width: 34px;
+  height: 34px;
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+.bundlegrid .bbx-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 6px;
+}
+
+/* mock variant of the frame — content starts top-left and bleeds down
+   (used by the WIDE cards) instead of the centered placeholder glyph */
+.bundlegrid .bbx-frame--mock {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: clamp(16px, 1.8vw, 22px) 0 0 clamp(16px, 1.8vw, 22px);
+}
+
+/* centered-cluster zone — replaces the bleeding frame on NARROW cards.
+   No bottom bleed, no left inset; content sits centered in the card. */
+.bundlegrid .bbx--center .bbx-visual { padding-left: 0; }
+.bundlegrid .bbx-center {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px clamp(22px, 2.6vw, 30px) clamp(24px, 2.8vw, 32px);
+}
+
+/* ── Card 1 · Why thirty — pierced vs. repelled, in the Smart-pick spatial idiom.
+   Soft one-tone (slate) cells like the Smart-pick field; the lone patent sits
+   isolated on the left and a warm threat-dart punches THROUGH it (it shatters),
+   while the 30 form a wall that fills the card and bleeds off the right edge
+   under a mask — the same dart hits its face, flashes, and is REPELLED. Roomy
+   cells, edges melt (bbx-fade restored). Theme-safe (juris-eu + score-d carry
+   their own dark-mode values). ── */
+.bundlegrid .bbx--why .bbx-center { padding-right: 0; }   /* let the wall reach + bleed off the right edge */
+.bundlegrid .b30 {
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center; gap: clamp(20px, 2.6vw, 38px);
+}
+/* the lone patent — one isolated cell, an easy target */
+.bundlegrid .b30-lone {
+  position: relative; flex: 0 0 auto;
+  width: clamp(46px, 5.2vw, 58px); height: clamp(58px, 6.6vw, 76px);
+  display: flex; margin-left: clamp(2px, 1vw, 12px);
+}
+.bundlegrid .b30-cell {
+  width: 50%; height: 100%;
+  background: var(--juris-eu-bg); border: 1px solid var(--juris-eu);
+  animation: b30-shatter-l 4.6s ease-in-out infinite both;
+}
+.bundlegrid .b30-cell--l { border-radius: 8px 0 0 8px; border-right: none; }
+.bundlegrid .b30-cell--r { border-radius: 0 8px 8px 0; animation-name: b30-shatter-r; }
+/* the 30 — a wall of the same soft cells, filling the card, bleeding off the right */
+.bundlegrid .b30-wallwrap { position: relative; flex: 1 1 auto; height: 100%; display: flex; align-items: center; overflow: visible; }
+.bundlegrid .b30-wall {
+  display: grid;
+  grid-template-columns: repeat(10, clamp(30px, 3.3vw, 40px));
+  gap: clamp(6px, 0.8vw, 9px);
+  -webkit-mask-image: linear-gradient(to right, #000 70%, transparent 100%);
+          mask-image: linear-gradient(to right, #000 70%, transparent 100%);
+}
+.bundlegrid .b30-wall i {
+  aspect-ratio: 1 / 1; border-radius: 6px;
+  background: var(--juris-eu-bg); border: 1px solid var(--juris-eu);
+  animation: b30-ripple 4.6s ease-in-out infinite both;
+}
+/* impact ripple — the wall flexes left→right and holds (Smart-pick column stagger) */
+.bundlegrid .b30-wall i:nth-child(10n+1) { animation-delay: 0s; }
+.bundlegrid .b30-wall i:nth-child(10n+2) { animation-delay: .02s; }
+.bundlegrid .b30-wall i:nth-child(10n+3) { animation-delay: .04s; }
+.bundlegrid .b30-wall i:nth-child(10n+4) { animation-delay: .06s; }
+.bundlegrid .b30-wall i:nth-child(10n+5) { animation-delay: .08s; }
+.bundlegrid .b30-wall i:nth-child(10n+6) { animation-delay: .1s; }
+.bundlegrid .b30-wall i:nth-child(10n+7) { animation-delay: .12s; }
+.bundlegrid .b30-wall i:nth-child(10n+8) { animation-delay: .14s; }
+.bundlegrid .b30-wall i:nth-child(10n+9) { animation-delay: .16s; }
+.bundlegrid .b30-wall i:nth-child(10n+10){ animation-delay: .18s; }
+/* the threat-dart — punches through the lone patent, bounces off the wall */
+.bundlegrid .b30-dart {
+  position: absolute; left: -32px; top: 50%; width: 0; height: 0;
+  border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+  border-left: 11px solid var(--score-d); opacity: 0;
+}
+.bundlegrid .b30-lone .b30-dart { animation: b30-dart-pierce 4.6s ease-in-out infinite both; }
+.bundlegrid .b30-wallwrap .b30-dart { animation: b30-dart-bounce 4.6s ease-in-out infinite both; }
+/* impact shockwave at the wall face — the threat is repelled */
+.bundlegrid .b30-shield {
+  position: absolute; left: -5px; top: 50%; width: 3px; height: clamp(96px, 12vw, 128px);
+  transform: translateY(-50%); border-radius: 2px;
+  background: var(--score-d); box-shadow: 0 0 10px 1px var(--score-d);
+  opacity: 0; animation: b30-shield 4.6s ease-in-out infinite both;
+}
+@keyframes b30-dart-pierce {
+  0%       { transform: translate(0, -50%);    opacity: 0; }
+  8%       { transform: translate(0, -50%);    opacity: 1; }
+  30%      { transform: translate(50px, -50%); opacity: 1; }   /* into the cell */
+  48%      { transform: translate(98px, -50%); opacity: 0; }   /* through + gone */
+  100%     { transform: translate(98px, -50%); opacity: 0; }
+}
+@keyframes b30-dart-bounce {
+  0%       { transform: translate(0, -50%);    opacity: 0; }
+  8%       { transform: translate(0, -50%);    opacity: 1; }
+  30%      { transform: translate(26px, -50%); opacity: 1; }   /* hits the wall face */
+  33%      { transform: translate(22px, -50%); opacity: 1; }   /* recoil */
+  50%      { transform: translate(-8px, -50%); opacity: 0; }   /* bounced back */
+  100%     { transform: translate(-8px, -50%); opacity: 0; }
+}
+@keyframes b30-shatter-l {
+  0%, 30%   { transform: rotate(0) translate(0, 0);            opacity: 1; }
+  33%       { transform: rotate(-3deg) translate(-1px, 1px);   opacity: 1; }   /* shudder */
+  50%       { transform: rotate(-22deg) translate(-11px, 13px); opacity: .14; } /* shatters away */
+  80%       { transform: rotate(-22deg) translate(-11px, 13px); opacity: .1; }
+  94%, 100% { transform: rotate(0) translate(0, 0);            opacity: 1; }
+}
+@keyframes b30-shatter-r {
+  0%, 30%   { transform: rotate(0) translate(0, 0);            opacity: 1; }
+  33%       { transform: rotate(3deg) translate(1px, 1px);     opacity: 1; }
+  50%       { transform: rotate(22deg) translate(11px, 15px);  opacity: .14; }
+  80%       { transform: rotate(22deg) translate(11px, 15px);  opacity: .1; }
+  94%, 100% { transform: rotate(0) translate(0, 0);            opacity: 1; }
+}
+@keyframes b30-ripple {
+  0%, 26%   { transform: scale(1); }
+  31%       { transform: scale(1.08); }   /* flexes as it absorbs the hit */
+  42%, 100% { transform: scale(1); }
+}
+@keyframes b30-shield {
+  0%, 28%   { opacity: 0; transform: translateY(-50%) scaleY(.55); }
+  31%       { opacity: .9; transform: translateY(-50%) scaleY(1); }
+  46%       { opacity: 0; transform: translateY(-50%) scaleY(1.15); }
+  100%      { opacity: 0; transform: translateY(-50%) scaleY(.55); }
+}
+
+/* ── Card 2 · SABCD — stacked proportion bar + chip legend (centered) ── */
+.bundlegrid .bsabcd { width: 100%; max-width: 100%; transition: transform var(--tis-hover-transition); }
+/* Weighting bar — proportional SABCD distribution rebuilt in the catalog
+   Tier-stat-card grammar (components.md §Tier stat card): connected cells,
+   shared internal hairlines, neutral strip. Tier identity reads through its
+   soft-bg tint (--score-*-bg) + a deep-ramp baseline rule (--score-*) — never
+   the gradient-only vivid ramp as a solid fill. */
+.bundlegrid .bsabcd-bar {
+  display: flex;
+  height: 34px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-page);
+}
+.bundlegrid .bsabcd-bar i {
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid var(--border-primary);
+  border-bottom: 2px solid currentColor;
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  font-size: 13px; font-weight: 600; font-style: normal;
+  font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums;
+  animation: bsabcd-fill 4.2s ease-in-out infinite both;
+}
+.bundlegrid .bsabcd-bar i:last-child { border-right: 0; }
+.bundlegrid .bsabcd-bar .seg-s { flex: 5; background: var(--score-s-bg); color: var(--score-s); animation-delay: 0s; }
+.bundlegrid .bsabcd-bar .seg-a { flex: 6; background: var(--score-a-bg); color: var(--score-a); animation-delay: .18s; }
+.bundlegrid .bsabcd-bar .seg-b { flex: 9; background: var(--score-b-bg); color: var(--score-b); animation-delay: .36s; }
+.bundlegrid .bsabcd-bar .seg-c { flex: 6; background: var(--score-c-bg); color: var(--score-c); animation-delay: .54s; }
+.bundlegrid .bsabcd-bar .seg-d { flex: 4; background: var(--score-d-bg); color: var(--score-d); animation-delay: .72s; }
+/* segments build left→right in tier order (S→A→B→C→D), hold, reset */
+@keyframes bsabcd-fill {
+  0%, 6%    { clip-path: inset(0 100% 0 0); opacity: .85; }
+  24%       { clip-path: inset(0 0 0 0);    opacity: 1; }
+  86%       { clip-path: inset(0 0 0 0);    opacity: 1; }
+  94%, 100% { clip-path: inset(0 100% 0 0); opacity: .85; }
+}
+.bundlegrid .bsabcd-legend {
+  display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 6px;
+  margin-top: 14px;
+}
+.bundlegrid .bsabcd-legend .tier-chip {
+  font-size: 12px; padding: 4px 10px; letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+/* ── Card 3 · Smart-pick — abstract "scan the pool, light up the picks". A
+   dense field of faint candidate cells (the 170M pool); the engine sweeps it
+   (scan band) and lights a scattered selection in the canonical jurisdiction +
+   tier CHIP background colours. Fills the card width so it fades out at the
+   edges (not early). Theme-safe (chip tokens carry their own dark-mode
+   values). ── */
+.bundlegrid .bpick {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 6px;
+  isolation: isolate;
+}
+.bundlegrid .bpick i {
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-secondary);
+}
+/* picked cells — canonical chip backgrounds (jurisdiction + tier), with the
+   chip's identity colour as a hairline. Each cell carries its target colour in
+   --pk-bg / --pk-bd; the static rule shows it (reduced-motion fallback), while
+   the reveal animation starts each cell as bare pool and paints in its colour
+   when the scan band reaches its column (per-cell animation-delay in markup,
+   keyed to column), holds, then resets with the ~4.5s loop. */
+.bundlegrid .bpick i.pk {
+  background: var(--pk-bg);
+  border-color: var(--pk-bd);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  animation: bpick-reveal 4.5s ease-in-out infinite both;
+}
+.bundlegrid .bpick i.s  { --pk-bg: var(--score-s-bg);  --pk-bd: var(--score-s); }
+.bundlegrid .bpick i.a  { --pk-bg: var(--score-a-bg);  --pk-bd: var(--score-a); }
+.bundlegrid .bpick i.b  { --pk-bg: var(--score-b-bg);  --pk-bd: var(--score-b); }
+.bundlegrid .bpick i.c  { --pk-bg: var(--score-c-bg);  --pk-bd: var(--score-c); }
+.bundlegrid .bpick i.d  { --pk-bg: var(--score-d-bg);  --pk-bd: var(--score-d); }
+.bundlegrid .bpick i.us { --pk-bg: var(--juris-us-bg); --pk-bd: var(--juris-us); }
+.bundlegrid .bpick i.tw { --pk-bg: var(--juris-tw-bg); --pk-bd: var(--juris-tw); }
+.bundlegrid .bpick i.eu { --pk-bg: var(--juris-eu-bg); --pk-bd: var(--juris-eu); }
+.bundlegrid .bpick i.jp { --pk-bg: var(--juris-jp-bg); --pk-bd: var(--juris-jp); }
+.bundlegrid .bpick i.kr { --pk-bg: var(--juris-kr-bg); --pk-bd: var(--juris-kr); }
+@keyframes bpick-reveal {
+  0%, 3%    { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  9%, 72%   { background: var(--pk-bg); border-color: var(--pk-bd); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10); }
+  84%, 100% { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+}
+/* scan sweep — leads the reveal quickly across the field, then clears for the
+   hold (snappy ~1.4s sweep on the ~4.5s loop) */
+.bundlegrid .bpick::after {
+  content: "";
+  position: absolute; inset: -4px; z-index: 2; pointer-events: none;
+  background: linear-gradient(100deg, transparent 40%, rgba(37, 37, 37, 0.06) 50%, transparent 60%);
+  transform: translateX(-60%);
+  animation: bpick-scan 4.5s ease-in-out infinite;
+}
+@keyframes bpick-scan {
+  0%        { transform: translateX(-60%); opacity: 0; }
+  6%        { opacity: 1; }
+  30%       { transform: translateX(60%); opacity: 1; }
+  36%, 100% { transform: translateX(60%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bpick::after { animation: none; opacity: 0; }
+  .bundlegrid .bpick i.pk { animation: none; }   /* picks shown in their static chip colour */
+}
+
+/* ── Card 4 · FTO-guarded pick — the GUIDED twin of Smart-pick (Card 3). The
+   fto.pdf box sits CENTRED and the candidate mesh fills the whole card around it
+   (box punched into a cleared moat). Calm ~9s loop: the file drops into the box
+   → a soft line scans up and down while the field resolves → keepers (.pk) bloom
+   in place into their tier/jurisdiction chip colours, flagged cells (.ex) simply
+   dim away (no strike) → long hold → reset. Reuses bpick's chip tokens →
+   theme-safe, a matched pair w/ Card 3. ── */
+.bundlegrid .bfto { position: relative; width: 100%; min-height: clamp(150px, 17vw, 188px); }
+/* candidate mesh — fills the card; faint pool + chip picks, same as .bpick */
+.bundlegrid .bfto-mesh {
+  position: absolute; inset: 0; z-index: 0;
+  display: grid; grid-template-columns: repeat(20, 1fr); gap: 6px;
+  align-content: center;
+}
+.bundlegrid .bfto-mesh i {
+  aspect-ratio: 1 / 1; border-radius: 3px;
+  background: var(--surface-tertiary); border: 1px solid var(--border-secondary);
+}
+/* keepers — resting look is the resolved chip colour (also reduced-motion) */
+.bundlegrid .bfto-mesh i.pk {
+  background: var(--pk-bg); border-color: var(--pk-bd);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+}
+.bundlegrid .bfto-mesh i.s  { --pk-bg: var(--score-s-bg);  --pk-bd: var(--score-s); }
+.bundlegrid .bfto-mesh i.a  { --pk-bg: var(--score-a-bg);  --pk-bd: var(--score-a); }
+.bundlegrid .bfto-mesh i.b  { --pk-bg: var(--score-b-bg);  --pk-bd: var(--score-b); }
+.bundlegrid .bfto-mesh i.c  { --pk-bg: var(--score-c-bg);  --pk-bd: var(--score-c); }
+.bundlegrid .bfto-mesh i.us { --pk-bg: var(--juris-us-bg); --pk-bd: var(--juris-us); }
+.bundlegrid .bfto-mesh i.tw { --pk-bg: var(--juris-tw-bg); --pk-bd: var(--juris-tw); }
+.bundlegrid .bfto-mesh i.jp { --pk-bg: var(--juris-jp-bg); --pk-bd: var(--juris-jp); }
+/* two-pass reveal, keyed to the scan: flagship (S/A) bloom on the DOWN-pass,
+   everyone else (B/C + jurisdictions) on the UP-pass. --d staggers within each. */
+.bundlegrid .bfto-mesh i.s,
+.bundlegrid .bfto-mesh i.a {
+  animation: bfto-bloom-a 10.5s ease-in-out infinite both;
+  animation-delay: calc(var(--d, 0) * 0.1s);
+}
+.bundlegrid .bfto-mesh i.b,
+.bundlegrid .bfto-mesh i.c,
+.bundlegrid .bfto-mesh i.us,
+.bundlegrid .bfto-mesh i.tw,
+.bundlegrid .bfto-mesh i.jp {
+  animation: bfto-bloom-b 10.5s ease-in-out infinite both;
+  animation-delay: calc(var(--d, 0) * 0.1s);
+}
+/* flagged exposure — no strike: the cell quietly dims, fading its fill + outline
+   into the card background so it recedes next to the lit keepers. Paint animation
+   (bg + border-colour). */
+.bundlegrid .bfto-mesh i.ex {
+  background: var(--surface-page); border-color: transparent;
+  animation: bfto-dim 10.5s ease-in-out infinite both;
+  animation-delay: calc(var(--d, 0) * 0.12s);
+}
+/* centred fto.pdf unit — box + icon + scan + label, punched into the field */
+.bundlegrid .bfto-src {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+/* the cleared moat — a soft disc of the frame colour pushes the mesh off the box */
+.bundlegrid .bfto-src::before {
+  content: ""; position: absolute; z-index: -1;
+  left: 50%; top: 38%; width: 116px; height: 116px; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, var(--surface-page) 58%, transparent);
+}
+.bundlegrid .bfto-box {
+  position: relative; overflow: hidden;
+  width: clamp(58px, 6vw, 70px); height: clamp(62px, 6.6vw, 74px);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-secondary); border-radius: 10px;
+  background: var(--surface-page); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+/* the file, dropping into the box — lighter stroke (set inline on the svg) */
+.bundlegrid .bfto-pdf {
+  width: 26px; height: 26px; color: var(--text-tertiary);
+  animation: bfto-drop 10.5s ease-in-out infinite both;
+}
+/* soft sweep line — runs up and down inside the box while the field resolves */
+.bundlegrid .bfto-scan {
+  position: absolute; left: 9px; right: 9px; top: 6px; height: 2px;
+  border-radius: 2px; opacity: 0; z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--text-secondary), transparent);
+  animation: bfto-sweep 10.5s ease-in-out infinite both;
+}
+.bundlegrid .bfto-file {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px; color: var(--text-secondary);
+}
+/* ── master ~10.5s timeline — a single, slow scan round-trip drives a two-pass
+   reveal: drop 0–10% · scan DOWN 12→32% (flagship S/A bloom) · scan UP 32→54%
+   (rest bloom + flagged cells dim) · hold ~56–88% · reset 88–100% ── */
+@keyframes bfto-drop {
+  0%        { opacity: 0; transform: translateY(-26px); }
+  6%        { opacity: 1; }
+  10%, 88%  { opacity: 1; transform: translateY(0); }
+  94%, 100% { opacity: 0; transform: translateY(-26px); }
+}
+/* one slow down-then-up pass, then rest */
+@keyframes bfto-sweep {
+  0%, 12%   { opacity: 0; top: 6px; }
+  17%       { opacity: .85; }
+  32%       { opacity: .85; top: 54px; }   /* bottom — end of DOWN-pass */
+  54%       { opacity: .85; top: 6px; }    /* back to top — end of UP-pass */
+  58%, 100% { opacity: 0; top: 6px; }
+}
+/* flagship (S/A) — reveal during the DOWN-pass */
+@keyframes bfto-bloom-a {
+  0%, 16%   { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  28%, 88%  { background: var(--pk-bg); border-color: var(--pk-bd); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10); }
+  94%, 100% { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+}
+/* the rest (B/C + jurisdictions) — reveal during the UP-pass */
+@keyframes bfto-bloom-b {
+  0%, 38%   { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  50%, 88%  { background: var(--pk-bg); border-color: var(--pk-bd); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10); }
+  94%, 100% { background: var(--surface-tertiary); border-color: var(--border-secondary); box-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+}
+/* flagged exposure — dims during the UP-pass, alongside the second reveal */
+@keyframes bfto-dim {
+  0%, 38%   { background: var(--surface-tertiary); border-color: var(--border-secondary); }
+  50%, 88%  { background: var(--surface-page);     border-color: transparent; }
+  94%, 100% { background: var(--surface-tertiary); border-color: var(--border-secondary); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bfto-pdf { animation: none; opacity: 1; transform: none; }
+  .bundlegrid .bfto-scan { animation: none; opacity: 0; }
+  .bundlegrid .bfto-mesh i.pk { animation: none; }
+  .bundlegrid .bfto-mesh i.ex { animation: none; }
+}
+
+/* ── Card 5 · Swap — uniform patent cards in two columns ("Your bundle" / "Live
+   pool"). Two same-tier pairs are live and share row lines: Tier-C (row 3) and
+   Tier-A (row 2). They TAKE TURNS — Tier C lifts, crosses the centre on an offset
+   lane, trades seats with its pool match and settles; then Tier A does the same;
+   then both cross back; loop. Same-size cards throughout, a subtle raised shadow
+   while a card moves (no scale), and a flat hairline ghost where a card is away.
+   Geometry: each flyer fills its column-width seat and travels translateX(100% +
+   gap) to the same row of the opposite column — exact + responsive. The standard
+   bbx-fade melts the top/edges. Pure CSS, theme-safe. ── */
+.bundlegrid .bswap {
+  --g: clamp(28px, 4vw, 60px);            /* centre gap — and each card's extra travel */
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: var(--g); width: 100%;
+}
+.bundlegrid .bswap-col { flex: 1 1 0; min-width: 0; max-width: 224px; }
+.bundlegrid .bswap-cap {
+  display: block; margin-bottom: 10px; padding-left: 2px;
+  font: 600 10px/1 'Urbanist', sans-serif;
+  text-transform: uppercase; letter-spacing: .09em;
+  color: var(--text-tertiary);
+}
+.bundlegrid .bswap-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.bundlegrid .bswap-pid {
+  flex: 1 1 auto;
+  font: 600 clamp(11.5px, 1.05vw, 13px)/1 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: .01em; color: var(--text-primary); white-space: nowrap;
+}
+.bundlegrid .bswap-pid b { font-weight: 700; margin-right: 6px; }
+.bundlegrid .bswap .us b { color: var(--juris-us); }
+.bundlegrid .bswap .tw b { color: var(--juris-tw); }
+
+/* a uniform patent card — clean white surface, hairline, whisper of a shadow */
+.bundlegrid .bswap-card {
+  display: flex; align-items: center; gap: 9px;
+  height: clamp(31px, 3.3vw, 37px); padding: 0 10px 0 12px;
+  border-radius: 8px;
+  background: var(--surface-page); border: 1px solid var(--border-primary);
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+/* tier chip — canonical "Tier X" pill, score-coloured */
+.bundlegrid .bswap-tier {
+  flex: 0 0 auto;
+  padding: 3px 8px; border-radius: 999px;
+  font: 700 9.5px/1 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: .03em; white-space: nowrap;
+  background: var(--tier-bg); color: var(--tier-fg); border: 1px solid var(--tier-fg);
+}
+.bundlegrid .bswap-tier.s { --tier-bg: var(--score-s-bg); --tier-fg: var(--score-s); }
+.bundlegrid .bswap-tier.a { --tier-bg: var(--score-a-bg); --tier-fg: var(--score-a); }
+.bundlegrid .bswap-tier.b { --tier-bg: var(--score-b-bg); --tier-fg: var(--score-b); }
+.bundlegrid .bswap-tier.c { --tier-bg: var(--score-c-bg); --tier-fg: var(--score-c); }
+.bundlegrid .bswap-tier.d { --tier-bg: var(--score-d-bg); --tier-fg: var(--score-d); }
+
+/* the swap seat — a FLAT hairline ghost (no recess); the card rests on top and hides
+   it, so the dashed outline shows only the instant a card is mid-swap */
+.bundlegrid .bswap-seat {
+  position: relative;
+  height: clamp(31px, 3.3vw, 37px); border-radius: 8px;
+  border: 1px dashed var(--border-secondary);
+}
+/* the flying card — same size as every other card; fills its seat and trades across */
+.bundlegrid .bswap-fly { position: absolute; inset: -1px; z-index: 5; will-change: transform; }
+.bundlegrid .bswap-fly--cr { animation: bswap-right 11s cubic-bezier(.6, 0, .4, 1) infinite both; }
+.bundlegrid .bswap-fly--cl { animation: bswap-left  11s cubic-bezier(.6, 0, .4, 1) infinite both; }
+.bundlegrid .bswap-fly--ar { animation: bswap-right 11s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 2.75s; }
+.bundlegrid .bswap-fly--al { animation: bswap-left  11s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 2.75s; }
+/* bundle cards go right, pool cards go left, on offset lanes so a pair never collides.
+   Per pair: rest → cross out (6→18%) → settle on the partner seat (18→44%) → cross
+   back (44→56%) → rest. Tier-A is the same motion delayed 25% of the loop, so the two
+   pairs take turns. Lift = a raised shadow only (no size change). */
+@keyframes bswap-right {
+  0%, 6%    { transform: translate(0, 0);                          box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  12%       { transform: translate(calc(50% + var(--g) / 2), 17px); box-shadow: 0 9px 20px rgba(0,0,0,.15); }
+  18%, 44%  { transform: translate(calc(100% + var(--g)), 0);      box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  50%       { transform: translate(calc(50% + var(--g) / 2), 17px); box-shadow: 0 9px 20px rgba(0,0,0,.15); }
+  56%, 100% { transform: translate(0, 0);                          box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+}
+@keyframes bswap-left {
+  0%, 6%    { transform: translate(0, 0);                           box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  12%       { transform: translate(calc(-50% - var(--g) / 2), -17px); box-shadow: 0 9px 20px rgba(0,0,0,.15); }
+  18%, 44%  { transform: translate(calc(-100% - var(--g)), 0);      box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  50%       { transform: translate(calc(-50% - var(--g) / 2), -17px); box-shadow: 0 9px 20px rgba(0,0,0,.15); }
+  56%, 100% { transform: translate(0, 0);                           box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+}
+
+/* reduced-motion — every animated card settles on a sensible static end-state */
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .b30-cell { animation: none; transform: none; opacity: 1; }
+  .bundlegrid .b30-wall i { animation: none; transform: none; }
+  .bundlegrid .b30-dart, .bundlegrid .b30-shield { animation: none; opacity: 0; }
+  .bundlegrid .bsabcd-bar i { animation: none; clip-path: none; }
+  .bundlegrid .bswap-fly { animation: none; transform: none; }   /* chips rest in their seats */
+}
+
+/* ── Card 6 · Verified License Badge — mini credential card (centered) ── */
+/* Real Verified License Badge strip render — scaled to fit the card width so
+   the whole strip stays visible; the .bbx-fade radial mask above still melts
+   the top edge into the card body. */
+.bundlegrid .bbadge-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform var(--tis-hover-transition);
+}
+/* hover — the centered visual lifts up out of the bottom fade while the radial
+   mask recedes, so it surfaces cleanly above the card body (badge strip + SABCD
+   weighting bar share the treatment) */
+.bundlegrid .bbx--badge .bbx-fade,
+.bundlegrid .bbx--sabcd .bbx-fade { transition: opacity var(--tis-hover-transition); }
+.bundlegrid .bbx--badge:hover .bbx-fade,
+.bundlegrid .bbx--sabcd:hover .bbx-fade { opacity: 0; }
+.bundlegrid .bbx--badge:hover .bbadge-img,
+.bundlegrid .bbx--sabcd:hover .bsabcd { transform: translateY(-10px); }
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bbx--badge:hover .bbadge-img,
+  .bundlegrid .bbx--sabcd:hover .bsabcd { transform: none; }
+}
+
+/* Live Verified License Badge inside card 6 — same component + motion as the
+   badge.html hero, scaled down to fit the narrow card. Only sizing changes;
+   the look (light-lock, seals, QR) and the tilt/shine JS stay identical. */
+.bundlegrid .bbx-badge-live { width: 100%; perspective: 1000px; }
+.bundlegrid .bbx-badge-live .seal-pill {
+  padding: 12px 16px; gap: 9px;
+  box-shadow: 0 10px 28px -10px rgba(0,0,0,0.16), 0 4px 10px rgba(0,0,0,0.07);
+}
+.bundlegrid .bbx-badge-live .vlb-seal.is-standalone { width: 70px; height: 70px; }
+.bundlegrid .bbx-badge-live .vlb-seal.is-standalone .seal-mark { width: 20px; height: 20px; }
+.bundlegrid .bbx-badge-live .vlb-seal.is-itri.is-standalone .seal-mark { width: 16px; height: 16px; }
+.bundlegrid .bbx-badge-live .seal-pill-divider { height: 50px; }
+.bundlegrid .bbx-badge-live .seal-pill-credential { gap: 7px; }
+.bundlegrid .bbx-badge-live .seal-pill-credential .qr { width: 46px; height: 46px; border-radius: 7px; }
+.bundlegrid .bbx-badge-live .seal-pill-credential .lic-no { font-size: 9px; }
+/* keep the card's existing "surface on hover" lift, now on the live badge */
+.bundlegrid .bbx--badge .bbx-badge-live { transition: transform var(--tis-hover-transition); }
+.bundlegrid .bbx--badge:hover .bbx-badge-live { transform: translateY(-10px); }
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bbx--badge:hover .bbx-badge-live { transform: none; }
+}
+
+@media (max-width: 720px) {
+  /* single column — every card spans full width, rhythm collapses */
+  .bundlegrid .bbx { grid-column: 1 / -1 !important; }
+  .bundlegrid .bundlegrid-grid { grid-template-columns: 1fr; }
+  /* single column — clear the desktop outer-corner rounding (same nth-child
+     specificity so it actually overrides), then round only the very top +
+     very bottom card corners. */
+  .bundlegrid .bbx:nth-child(2) { border-top-right-radius: 0; }
+  .bundlegrid .bbx:nth-child(5) { border-bottom-left-radius: 0; }
+  .bundlegrid .bbx:nth-child(1) { border-top-left-radius: 16px; border-top-right-radius: 16px; }
+  .bundlegrid .bbx:nth-child(6) { border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+  .bundlegrid .bbx-visual { min-height: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bbx { transition: none; }
+}
+
+/* ============================================================
+   Walk-away — condensed PRD §5 + §10 as a horizontal 4-beat row.
+   Numbered mono eyebrow (top) → big 2-line headline → supporting line
+   → "Learn more →" link, columns split by vertical hairlines. No literal
+   Day/Week labels. Tokens only; theme-aware; neutral (no warm accent).
+   ============================================================ */
+.walkaway .walkaway-head {
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+.walkaway .walkaway-sub {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 8px 0 clamp(40px, 5vw, 60px);
+}
+
+/* 1px gap over a border-colored backdrop → vertical hairlines between the
+   four columns; no outer border (open top/bottom, like the reference). */
+.walkaway .walkaway-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-primary);
+}
+.walkaway .wa-col {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.4vw, 32px);
+  min-height: clamp(300px, 26vw, 380px);
+  background: var(--surface-page);
+}
+/* Fills the space under the eyebrow; on ≥561px a fixed gap drops the title
+   row to a shared line (titles top-anchored, so all four line up) and the
+   link is pinned to the bottom (see media query). */
+.walkaway .wa-col-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.walkaway .wa-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  margin: 0;
+  transition: color var(--tis-hover-transition);
+}
+/* Eyebrow reads as one uniform weight — the number is not emphasized. */
+.walkaway .wa-num { color: inherit; }
+
+.walkaway .wa-title {
+  font-size: clamp(20px, 1.7vw, 26px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+/* Caption-like supporting line — streamlined to a uniform ~2 lines so the
+   bodies read evenly across the four columns. */
+.walkaway .wa-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 12px 0 0;
+}
+.walkaway .wa-link {
+  align-self: flex-start;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color var(--tis-hover-transition);
+}
+/* Hovering anywhere on the column tints the meta elements (eyebrow + link)
+   up to the body shade — one step below the title, still subordinate. */
+.walkaway .wa-col:hover .wa-eyebrow,
+.walkaway .wa-col:hover .wa-link,
+.walkaway .wa-link:hover { color: var(--text-secondary); }
+
+/* ≥561px: a fixed airy gap below the eyebrow puts every title row on the
+   same line (titles top-anchored), and the link is pinned to the bottom
+   edge so all four "Learn more →" align too. */
+@media (min-width: 561px) {
+  .walkaway .wa-col-body { margin-top: clamp(72px, 10vw, 132px); }
+  .walkaway .wa-link { margin-top: auto; }
+}
+
+@media (max-width: 980px) {
+  .walkaway .walkaway-grid { grid-template-columns: repeat(2, 1fr); }
+  .walkaway .wa-col { min-height: clamp(260px, 40vw, 320px); }
+}
+@media (max-width: 560px) {
+  .walkaway .walkaway-grid { grid-template-columns: 1fr; }
+  .walkaway .wa-col { min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walkaway .wa-eyebrow,
+  .walkaway .wa-link { transition: none; }
 }
 
 /* How it works rail — 3 cards in 1080 container, 4th peeks past right rail.
@@ -2068,6 +3191,264 @@ a, button,
   gap: 14px;
 }
 
+/* ============================================================
+   How it works — stepped feature carousel (ported from a React
+   feature-carousel reference to vanilla + tokens). Theme-aware card,
+   neutral white/grey step accents, auto-advancing (paused on hover +
+   reduced-motion); click the stage or a pill to navigate. Layout: step
+   pills → title + description → screenshot → 3 checks (3-across).
+   ============================================================ */
+.hiw-frame {
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 28px;
+  padding: 8px;
+}
+.hiw-carousel {
+  position: relative;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 22px;
+  padding: clamp(24px, 3vw, 40px);
+  overflow: hidden;
+}
+
+/* ── step pills ── */
+.hiw-steps ol {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center;
+}
+.hiw-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 13px 6px 8px;
+  border: 0; border-radius: 9999px;
+  background: var(--surface-tertiary);
+  cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 600;
+  color: var(--text-tertiary);
+  transition: color var(--tis-hover-transition), background var(--tis-hover-transition), transform var(--tis-hover-transition);
+}
+.hiw-pill:hover { color: var(--text-secondary); }
+.hiw-pill.is-done { color: var(--text-secondary); }
+.hiw-pill.is-current {
+  color: var(--text-primary);
+  background: var(--surface-page);
+  box-shadow: var(--shadow-low, 0 1px 2px rgba(0,0,0,0.06));
+  transform: scale(1.04);
+}
+.hiw-dot {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 9999px;
+  background: var(--border-secondary); color: var(--text-tertiary);
+  font-size: 11px; font-weight: 700; line-height: 1;
+}
+.hiw-pill.is-current .hiw-dot { background: var(--text-primary); color: var(--surface-page); }
+.hiw-pill.is-done .hiw-dot    { background: var(--text-secondary); color: var(--surface-page); }
+.hiw-dot .hiw-check { width: 11px; height: 11px; display: none; }
+.hiw-pill.is-done .hiw-num   { display: none; }
+.hiw-pill.is-done .hiw-check { display: block; }
+
+/* ── stage + panels ── */
+.hiw-stage {
+  position: relative;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  min-height: clamp(340px, 36vw, 460px);
+  cursor: pointer;
+}
+.hiw-panel { display: none; }
+.hiw-panel.is-active { display: block; }
+.hiw-title {
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
+  color: var(--text-primary); margin: 0;
+}
+.hiw-desc {
+  font-size: 14px; line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 8px 0 0; max-width: 62ch;
+}
+.hiw-shotwrap {
+  position: relative;
+  margin: clamp(18px, 2vw, 26px) auto 0;
+  max-width: 760px;
+  aspect-ratio: 2 / 1;            /* locked 2:1 window (the "Two ways" size) */
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+/* ============================================================
+   Live step visual ("hiw-screen") — clean condensed product UI
+   rendered as real DOM (no images), built from the licensing
+   flow vocabulary in brand/previews/licensing-flow-preview.html.
+   Tokens are pinned to LIGHT values so the visual stays a bright
+   product window even when the page is in dark mode.
+   All classes are hs- namespaced + scoped to avoid colliding
+   with page-level .card/.btn/.chip/.opt/.signal styles.
+   ============================================================ */
+.hiw-screen {
+  --hs-page:#FFFFFF; --hs-sec:#FAFAFA; --hs-ter:#F3F3F3; --hs-quat:#EEEEEE; --hs-inv:#252525;
+  --hs-tp:#252525; --hs-ts:#474747; --hs-tt:#8A8F98; --hs-tq:#A5A5A5; --hs-ti:#FFFFFF;
+  --hs-bp:#EEEEEE; --hs-bs:#E8E8E8; --hs-bt:#D5D5D5;
+  --hs-suc-bg:#F0FDF4; --hs-suc-fg:#15803D; --hs-sig:#22C55E;
+  --hs-s:#8B6914; --hs-a:#047857; --hs-b:#0369A1; --hs-c:#6D28D9; --hs-d:#C2410C;
+  --hs-s-bg:#FAF3DC; --hs-a-bg:#ECFDF5; --hs-b-bg:#F0F9FF; --hs-c-bg:#F5F3FF; --hs-d-bg:#FFF7ED;
+  --hs-us:#4338CA; --hs-tw:#3F6212; --hs-eu:#475569;
+  --hs-us-bg:#EEF2FF; --hs-tw-bg:#ECFCCB; --hs-eu-bg:#F1F5F9;
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+  padding: 26px 30px;
+  background: var(--hs-sec);
+  font-family: 'Urbanist', sans-serif;
+  color: var(--hs-tp);
+  line-height: 1.4;
+}
+.hiw-screen .hs-mono { font-family: 'Inconsolata', ui-monospace, monospace; font-feature-settings: "tnum"; }
+.hiw-screen svg { display: block; }
+
+/* eyebrow / section label — preview weight 500, +0.20em, tertiary */
+.hiw-screen .hs-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
+
+/* layout helpers */
+.hiw-screen .hs-cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.hiw-screen .hs-coleyebrow { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); margin-bottom: 10px; }
+.hiw-screen .hs-headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+
+/* chips — tier/juris, weight 700 per components.md weight asymmetry */
+.hiw-screen .hs-jchip, .hiw-screen .hs-tchip { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; line-height: 1.2; padding: 4px 10px; border-radius: 9999px; white-space: nowrap; }
+.hiw-screen .hs-jchip.us { background: var(--hs-us-bg); color: var(--hs-us); }
+.hiw-screen .hs-jchip.tw { background: var(--hs-tw-bg); color: var(--hs-tw); }
+.hiw-screen .hs-jchip.eu { background: var(--hs-eu-bg); color: var(--hs-eu); }
+.hiw-screen .hs-tchip.s { background: var(--hs-s-bg); color: var(--hs-s); }
+.hiw-screen .hs-tchip.a { background: var(--hs-a-bg); color: var(--hs-a); }
+.hiw-screen .hs-tchip.b { background: var(--hs-b-bg); color: var(--hs-b); }
+.hiw-screen .hs-tchip.c { background: var(--hs-c-bg); color: var(--hs-c); }
+.hiw-screen .hs-tchip.d { background: var(--hs-d-bg); color: var(--hs-d); }
+.hiw-screen .hs-tierdist { display: flex; align-items: center; gap: 6px; }
+
+/* option rows — preview .opt: roomy padding, name w500, selected = dark border only */
+.hiw-screen .hs-optlist { display: flex; flex-direction: column; gap: 8px; }
+.hiw-screen .hs-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 12px 16px; }
+.hiw-screen .hs-opt .hs-lft { display: flex; align-items: center; gap: 10px; }
+.hiw-screen .hs-opt .hs-nm { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
+.hiw-screen .hs-opt .hs-sb { font-size: 11px; font-weight: 500; letter-spacing: .10em; text-transform: uppercase; color: var(--hs-tt); }
+.hiw-screen .hs-opt .hs-rgt { font-size: 13px; font-weight: 500; color: var(--hs-ts); }
+.hiw-screen .hs-opt.sel { border-color: var(--hs-inv); }
+.hiw-screen .hs-opt.muted { opacity: .5; }
+
+/* scope / summary bar — quiet inset strip (surface-tertiary, borderless) */
+.hiw-screen .hs-scope { display: flex; align-items: center; gap: 10px; background: var(--hs-ter); border-radius: 10px; padding: 12px 16px; }
+.hiw-screen .hs-scope .lab { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
+.hiw-screen .hs-scope .val { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
+.hiw-screen .hs-scope .n { margin-left: auto; font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 500; color: var(--hs-ts); }
+
+/* path cards (step 2) — preview .path-card: radio + eyebrow + title; selected = dark border + ring + filled radio */
+.hiw-screen .hs-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hiw-screen .hs-path { position: relative; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.hiw-screen .hs-path.sel { border-color: var(--hs-inv); box-shadow: inset 0 0 0 1px var(--hs-inv); }
+.hiw-screen .hs-phead { display: flex; align-items: center; gap: 10px; }
+.hiw-screen .hs-pradio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--hs-bt); flex: 0 0 auto; position: relative; }
+.hiw-screen .hs-path.sel .hs-pradio { border-color: var(--hs-inv); }
+.hiw-screen .hs-path.sel .hs-pradio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--hs-inv); }
+.hiw-screen .hs-ptag { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
+.hiw-screen .hs-pt { font-size: 16px; font-weight: 600; color: var(--hs-tp); }
+.hiw-screen .hs-pd { font-size: 13px; line-height: 1.55; color: var(--hs-ts); }
+.hiw-screen .hs-drop { margin-top: 2px; border: 1.5px dashed var(--hs-bt); border-radius: 10px; padding: 14px; text-align: center; font-size: 12px; font-weight: 500; color: var(--hs-tt); }
+
+/* patent rows (step 3) — preview patent-card vocabulary: mono ID w600, title w500, dark checkbox */
+.hiw-screen .hs-prow { display: grid; grid-template-columns: 18px 108px 1fr auto auto; align-items: center; column-gap: 14px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
+.hiw-screen .hs-prow + .hs-prow { margin-top: 7px; }
+.hiw-screen .hs-cbx { width: 18px; height: 18px; border-radius: 5px; background: var(--hs-inv); border: 1.5px solid var(--hs-inv); display: flex; align-items: center; justify-content: center; color: #fff; }
+.hiw-screen .hs-cbx svg { width: 11px; height: 11px; stroke-width: 3; }
+.hiw-screen .hs-pid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; color: var(--hs-tp); letter-spacing: .05em; }
+.hiw-screen .hs-ptitle { font-size: 13px; font-weight: 500; color: var(--hs-tp); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* swap (step 4) */
+.hiw-screen .hs-swap { display: grid; grid-template-columns: 1fr 30px 1fr; align-items: center; gap: 12px; }
+.hiw-screen .hs-arrow { display: flex; align-items: center; justify-content: center; color: var(--hs-tt); }
+.hiw-screen .hs-arrow svg { width: 22px; height: 22px; }
+.hiw-screen .hs-pcard { background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-low, 0 2px 4px rgba(0,0,0,0.06)); }
+.hiw-screen .hs-pcard.out { opacity: .55; box-shadow: none; }
+.hiw-screen .hs-pctop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.hiw-screen .hs-pcid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; letter-spacing: .05em; }
+.hiw-screen .hs-pcttl { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--hs-tp); }
+.hiw-screen .hs-poollab { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); margin-bottom: 8px; }
+.hiw-screen .hs-poolrow { display: flex; align-items: center; gap: 10px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 9px; padding: 9px 12px; }
+.hiw-screen .hs-poolrow + .hs-poolrow { margin-top: 6px; }
+.hiw-screen .hs-poolrow.pick { border-color: var(--hs-inv); }
+.hiw-screen .hs-poolrow .hs-pid { font-size: 13px; }
+.hiw-screen .hs-rep { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--hs-tp); }
+
+/* term & payment (step 5) — preview .pay: selected = dark border; flag = dark pill on top edge */
+.hiw-screen .hs-pay { position: relative; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px 16px; }
+.hiw-screen .hs-pay.sel { border-color: var(--hs-inv); }
+.hiw-screen .hs-pnm { font-size: 15px; font-weight: 600; color: var(--hs-tp); }
+.hiw-screen .hs-pds { font-size: 12px; line-height: 1.5; color: var(--hs-ts); margin-top: 4px; }
+.hiw-screen .hs-payflag { position: absolute; top: -9px; right: 14px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: var(--hs-inv); color: #fff; }
+.hiw-screen .hs-total { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; background: var(--hs-ter); border-radius: 10px; padding: 14px 16px; }
+.hiw-screen .hs-total .k { font-size: 13px; color: var(--hs-ts); }
+.hiw-screen .hs-total .v { font-family: 'Inconsolata', monospace; font-size: 22px; font-weight: 600; color: var(--hs-tp); }
+.hiw-screen .hs-total .v small { font-size: 12px; color: var(--hs-tt); }
+.hiw-screen .hs-disc { font-size: 13px; font-weight: 600; color: var(--hs-suc-fg); }
+
+/* active license (step 6) */
+.hiw-screen .hs-licgrid { display: grid; grid-template-columns: 230px 1fr; gap: 16px; }
+.hiw-screen .hs-badge { background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 9px; }
+.hiw-screen .hs-seal { width: 64px; height: 64px; border-radius: 50%; background: var(--hs-inv); display: flex; align-items: center; justify-content: center; }
+.hiw-screen .hs-seal img { width: 30px; height: 30px; }
+.hiw-screen .hs-btop { font-size: 10px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
+.hiw-screen .hs-qr { width: 46px; height: 46px; border: 1px solid var(--hs-bp); border-radius: 6px; }
+.hiw-screen .hs-blic { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 500; color: var(--hs-ts); letter-spacing: .12em; }
+.hiw-screen .hs-docs { display: flex; flex-direction: column; gap: 8px; }
+.hiw-screen .hs-doc { display: flex; align-items: center; gap: 12px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
+.hiw-screen .hs-dic { width: 30px; height: 30px; border-radius: 8px; background: var(--hs-ter); display: flex; align-items: center; justify-content: center; color: var(--hs-ts); flex: 0 0 auto; }
+.hiw-screen .hs-dic svg { width: 15px; height: 15px; }
+.hiw-screen .hs-dt { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
+.hiw-screen .hs-ds { font-size: 11px; color: var(--hs-tt); margin-top: 2px; }
+.hiw-screen .hs-da { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--hs-tp); display: flex; align-items: center; gap: 3px; }
+.hiw-screen .hs-da svg { width: 12px; height: 12px; }
+.hiw-screen .hs-signal { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-suc-fg); }
+.hiw-screen .hs-signal .d { width: 8px; height: 8px; border-radius: 50%; background: var(--hs-sig); }
+
+/* Mobile: release the 2:1 lock and let the visual reflow to its content. */
+@media (max-width: 800px) {
+  .hiw-shotwrap { aspect-ratio: auto; }
+  .hiw-screen { position: static; inset: auto; padding: 20px; }
+  .hiw-screen .hs-cols2,
+  .hiw-screen .hs-paths,
+  .hiw-screen .hs-licgrid,
+  .hiw-screen .hs-swap { grid-template-columns: 1fr; }
+  .hiw-screen .hs-arrow { transform: rotate(90deg); }
+}
+.hiw-checks {
+  list-style: none; margin: clamp(16px, 1.8vw, 22px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px;
+}
+.hiw-checks li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; line-height: 1.4; color: var(--text-secondary);
+}
+.hiw-checks .hiw-ck { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--text-tertiary); }
+
+/* entrance animation — re-triggered on each step change */
+@keyframes hiwIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to   { opacity: 1; transform: none; }
+}
+.hiw-panel.hiw-anim { animation: hiwIn 380ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+@media (max-width: 720px) {
+  .hiw-checks { grid-template-columns: 1fr; gap: 10px; }
+  .hiw-stage { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hiw-panel.hiw-anim { animation: none; }
+  .hiw-pill { transition: none; }
+}
+
 </style>
 </head>
 
@@ -2192,7 +3573,7 @@ a, button,
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/#products" class="search-link" data-zh="產品">
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -2315,12 +3696,12 @@ a, button,
       <article class="pillar" data-pillar="licensing">
         <p class="pillar-eyebrow" data-zh="泰然專利防護網">TIS Licensing Platform</p>
         <h1 class="pillar-title">
-          <span data-zh="出口買專利險，">30-patent shield.</span><br>
-          <em data-zh="30 件專利包輕裝上陣。">Active this week.</em>
+          <span data-zh="出口買專利險，">Patent insurance for your exports.</span><br>
+          <em data-zh="30 件專利包輕裝上陣。">Thirty patents, none of the overhead.</em>
         </h1>
         <p class="pillar-sub">
-          <span data-zh="1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級，">One subscription, thirty SABCD-graded patents, curated for your jurisdiction and industry</span><br>
-          <span data-zh="戴上授權認證標章立刻從被動防禦轉為主動佈局。">— passive defense to active position the week you subscribe.</span>
+          <span data-zh="1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級，">Pick country × industry × term — two paths, five SABCD grades.</span><br>
+          <span data-zh="戴上授權認證標章立刻從被動防禦轉為主動佈局。">With a Verified License Badge, passive defense becomes active position.</span>
         </p>
         <div class="pillar-actions">
           <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg" data-target="licensing-signup" data-zh="試跑專利包">Build your bundle</a>
@@ -2331,456 +3712,755 @@ a, button,
   </section>
 
   <!-- ─── 2. Deliverables (4 cards, directly below hero) ─── -->
-  <section class="section" aria-label="Licensing deliverables">
+  <section class="section section--flush-hero" aria-label="Licensing deliverables">
     <div class="container">
 
-      <div class="deliverable-grid">
+      <div class="deliverable-grid deliverable-grid--feature">
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg>
           </span>
-          <h4 data-zh="AI 智慧雷達導航 — 免除繁瑣檢索，人機協作精選專利組合">AI does the search — you get a curated 30-patent bundle</h4>
-          <p data-zh="別把時間浪費在翻閱幾千件請求項（Claims）上。泰然 AI 引擎依據您企業的出口國 × 產業別 × 產品線三軸進行風險缺口掃描，5 分鐘內自動推薦最相關的 30 件專利組建防護包。支援人機協作與手動替換彈性，不需懂法律，大數據直接幫你罩。">Don't waste time reading thousands of claims. The TIS AI engine scans risk gaps across three axes (export country × industry × product line) and auto-recommends the 30 most relevant patents in 5 minutes. Manual swap supported; no legal expertise required.</p>
+          <h4 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart Pick</h4>
+          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，5 分鐘內推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
         </article>
 
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
           </span>
-          <h4 data-zh="權威法人聯合授權 — 創智、資策會、陽明交大合法非獨家專利">Joint license from reputable institutions — non-exclusive, fully legal</h4>
-          <p data-zh="由創智、資策會、陽明交大三家權威研發機構，直接以貴公司名義開立 30 件核心專利合法授權。 對外，是出海搶單的黃金名片。 在國際買家、跨國投資人面前撕掉「代工小廠」的標籤，用機構級的真實 IP 後盾，讓客戶審查與合作談判都對你刮目相看。 對內，是主動式的防啃骨頭盾。 專利流氓（NPE）篩選敲詐目標時，一看到你背後拉起三家機構合法 IP 防線、攻擊成本高得多，自然會跳過你，去找更好下手的下家。">ITRI / III / NYCU issue 30 legal IPs directly in your company's name — one credential, every front. International buyers and investors see institution-level IP backing, not a "small OEM" label. <strong>Patent trolls</strong> (NPEs) see a defense too costly to attack.</p>
+          <h4 data-zh="權威法人聯合授權">Co-licensed in your name</h4>
+          <p data-zh-html data-zh="創智、資策會、陽明交大以貴公司名義開立 30 件合法非獨家專利。在國際買家與投資人面前，是機構級 IP 後盾，撕掉「代工小廠」的標籤。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> issue <strong style="font-weight:600">legal</strong>, <strong style="font-weight:600">non-exclusive</strong> patents in your company's name — institution-grade and reputable, recognized by buyers and investors.</p>
         </article>
 
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
           </span>
-          <h4 data-zh="付款隔日立即生效 — DLC 數位憑證與雙品牌動態標章">Active the day after payment — Digital License Credential (DLC) + co-branded badge</h4>
-          <p data-zh="金流確認隔日防護網立即啟動。平台同步交付包含公證電子簽章的數位授權憑證（DLC），以及帶有「TIS × 權威機構」★ 的聯名授權認證標章（Badge）。內嵌獨一授權編號與 QR Code，2 秒線上即時驗證，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，對手不敢輕易踩線。"><a href="#artifacts" data-zh="可掃描驗證的數位授權憑證。">The DLC carries a notarized e-signature; the "TIS × institution" badge carries a unique license number and QR code — verified online in 2 seconds. Print on booth signage, proposals, website footer, or product packaging. Competitors think twice.</a></p>
+          <h4 data-zh="主動式防護盾">An active IP shield</h4>
+          <p data-zh-html data-zh="專利流氓（NPE）只挑好下手的目標。三家機構的合法 IP 防線拉高攻擊成本，他們自然跳過你。從被動防禦轉為主動佈局。">Patent trolls (NPEs) pick easy targets. Institutions' legal IP line raises the cost of attack — <strong style="font-weight:600">passive defense</strong> becomes <strong style="font-weight:600">active position</strong>.</p>
         </article>
 
         <article class="deliverable-card">
           <span class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21V13"/><path d="M10 21V9"/><path d="M14 21V5"/><path d="M18 21V11"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"/><polyline points="14 2 14 8 20 8"/><path d="m3 15 2 2 4-4"/></svg>
           </span>
-          <h4 data-zh="專利轉化為 OpEx 租賃保險 — 月均不到 1 萬，多樣期別彈性方案">Patent licensing as OpEx — under NT$10K/month, flexible terms</h4>
-          <p data-zh="愛拼才會贏，但不需要盲目打軍備競賽。自行申請 1 件專利需花費 NT$50,000+ 與 18 個月等待；聘請專職 IP 工程師年資產營運成本破百萬；而 TIS 訂閱讓您月均支出控制在萬元以下。提供 3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折優惠。">Filing 1 patent yourself runs NT$50,000+ and 18 months. Hiring a dedicated IP engineer breaks NT$1M a year. A TIS subscription keeps you under NT$10K/month — flexible 3-24 month terms, up to 12% off on 2-year plans.</p>
+          <h4 data-zh="付款隔日立即生效">Live the day after payment</h4>
+          <p data-zh-html data-zh="金流確認隔日防護網生效。交付含公證電子簽章的數位授權憑證（DLC），以及「TIS × 權威機構」聯名授權認證標章。">You receive a <strong style="font-weight:600">Digital License Credential (DLC)</strong> carrying a notarized e-signature, plus a co-branded "TIS × authoritative institution" <strong style="font-weight:600">Verified License Badge</strong>.</p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+          </span>
+          <h4 data-zh="2 秒驗證，自由展示">Verify in 2 seconds, display anywhere</h4>
+          <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
+        </article>
+
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>
+          </span>
+          <h4 data-zh="專利轉化為 OpEx 租賃保險">Patents turned into OpEx</h4>
+          <p data-zh-html data-zh="自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle keeps you under NT$10K/month, with <strong style="font-weight:600">flexible</strong> terms.</p>
         </article>
       </div>
 
     </div>
   </section>
 
-  <!-- ─── 2.5 Migrated Licensing pillar showcase (from old homepage #products) ─── -->
-  <section class="section section--migrated-pillar" id="pillar-licensing" aria-label="Licensing pillar showcase">
+  <!-- ─── 2.25 Cover-the-gap (condensed PRD §3 + §4) — asymmetric bento ───
+       4 cards: Headline (wide) + Why now / Go it alone + Subscribe to TIS (wide,
+       persistent-depth). Bento aesthetic ported from a Tailwind/React reference
+       to vanilla + tokens; trimmed chrome (icon + title + content), neutral
+       palette (no warm accent). ZH recombined/condensed from
+       chinese-copy-direction.md §3/§4 verbatim — flag for a Miko ZH-lock pass.
+       Cost figures echo deliverable card 4 + the pillar showcase; reconcile later. -->
+  <section class="section gapcover" aria-label="Three ways to cover the patent gap">
     <div class="container">
-      <div class="pillar-hero">
-        <div class="pillar-hero-copy">
-          <h2 class="pillar-hero-copy-h2" data-zh="泰然專利防護網">Licensing Platform</h2>
-          <p data-zh-html data-zh="<strong>拼出口的台灣頭家，這裡有一張關鍵名片。</strong>"><strong>For exporters pushing into new markets — one credential that covers every front.</strong></p>
-          <div class="pillar-features">
-            <p data-zh-html data-zh="AI 依您出口國 × 產業，從創智、資策會、陽明交大三家機構池中挑 30 件合法 IP，付款隔日生效，發您一張可掛展位、報價單、Email 簽名的高規授權標章。月不到 1 萬，不賣「絕對不被告」的神話，但讓 <strong>專利蟑螂</strong>評估攻擊成本後跳過你找下家。">AI picks 30 legal IPs from the ITRI / III / NYCU pools — matched to your export country × industry, active the day after payment. A high-spec badge for booth, quote, and email signature. Under NT$10K/month — doesn't sell the "never sued" myth, but deters <strong>patent trolls</strong>.</p>
-            <p data-zh="30 個專利橫跨 5 個評級，有質有量兼備。">30 patents span 5 tiers — quality and quantity in one bundle.</p>
-            <p data-zh="提供兩種專利包選法 - AI 智選 / FTO 保選。">Two selection methods — AI smart-pick or FTO-guarded pick.</p>
+      <div class="gbento-grid">
+
+        <!-- Card 1 — Headline (wide) -->
+        <article class="gbento-card gbento-card--wide gba-headline">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <h2 class="gbento-headline" data-zh-html data-zh="補專利缺口有三條路，只有一條出口商走得起。">Three ways to cover the patent gap.<br>Only one adds up for an exporting SME.</h2>
           </div>
-          <div class="pillar-hero-cta">
-            <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg" data-zh="查看智選專利包">View Smart-Pick Bundle</a>
+        </article>
+
+        <!-- Card 2 — Why now (the exposure) -->
+        <article class="gbento-card gbento-card--trap gba-whynow">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="為什麼是現在">Why now</h3>
+            </div>
+            <ul class="gbento-list">
+              <li data-zh="買家下單前，先對你做專利檢索。">Your buyer runs a patent search before they place the order.</li>
+              <li data-zh="名下專利單薄，整批貨就卡在海關。">Thin on patents, and the whole shipment stalls at customs.</li>
+              <li data-zh-html data-zh="律師費 500 萬，外加三倍懲罰性賠償。">Lawyer's fee <strong style="font-weight:600">NT$5M</strong>, <strong style="font-weight:600">treble damages</strong> on top.</li>
+            </ul>
           </div>
-        </div>
-        <div class="pillar-hero-shot" aria-hidden="true">
-          <div class="frame-wrap">
-            <div class="browser-frame" data-chrome="bare">
-              <div class="frame-canvas">
-                <div class="shot-inner">
-                  <div class="shot-perspective warm-light flat">
-                    <div class="stage-3d">
-                      <div class="grid-3d">
-                        <div class="btile"><div class="tt"><span class="pid">US10892431</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">H01L 27/12</div><div class="bot"><span class="cites">412 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I783922</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">G06F 9/455</div><div class="bot"><span class="cites">287 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US11456778</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">G06N 3/08</div><div class="bot"><span class="cites">198 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3987654</span><span class="tier-chip tier-chip--s">S</span></div><div class="ipc">H04W 28/02</div><div class="bot"><span class="cites">156 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10987112</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06F 16/901</div><div class="bot"><span class="cites">142 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I765444</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01L 21/3105</div><div class="bot"><span class="cites">118 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US11234556</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06N 20/00</div><div class="bot"><span class="cites">103 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10661220</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06N 3/045</div><div class="bot"><span class="cites">96 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10334221</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06K 9/62</div><div class="bot"><span class="cites">94 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3812998</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H04L 9/0631</div><div class="bot"><span class="cites">88 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I714005</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01L 21/762</div><div class="bot"><span class="cites">81 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10665021</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">G06F 12/0815</div><div class="bot"><span class="cites">76 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I812445</span><span class="tier-chip tier-chip--a">A</span></div><div class="ipc">H01M 10/0525</div><div class="bot"><span class="cites">71 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I798220</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 9/30</div><div class="bot"><span class="cites">62 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10421889</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 23/367</div><div class="bot"><span class="cites">59 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10772114</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06N 5/04</div><div class="bot"><span class="cites">54 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3656770</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 21/602</div><div class="bot"><span class="cites">48 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I799015</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 27/108</div><div class="bot"><span class="cites">45 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10999241</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 13/16</div><div class="bot"><span class="cites">41 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US11098334</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H04W 72/04</div><div class="bot"><span class="cites">37 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3422119</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 1/3287</div><div class="bot"><span class="cites">34 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I720332</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">H01L 29/78</div><div class="bot"><span class="cites">31 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10551987</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 9/4881</div><div class="bot"><span class="cites">29 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10889553</span><span class="tier-chip tier-chip--b">B</span></div><div class="ipc">G06F 16/903</div><div class="bot"><span class="cites">26 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US11005612</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">H04L 12/707</div><div class="bot"><span class="cites">22 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3801559</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">G06F 8/41</div><div class="bot"><span class="cites">19 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">TW I801772</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">G06N 3/063</div><div class="bot"><span class="cites">17 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US10778445</span><span class="tier-chip tier-chip--c">C</span></div><div class="ipc">H01L 25/065</div><div class="bot"><span class="cites">14 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">US11111223</span><span class="tier-chip tier-chip--d">D</span></div><div class="ipc">G06F 11/14</div><div class="bot"><span class="cites">11 cites</span></div></div>
-                        <div class="btile"><div class="tt"><span class="pid">EP3445120</span><span class="tier-chip tier-chip--d">D</span></div><div class="ipc">H04L 67/12</div><div class="bot"><span class="cites">9 cites</span></div></div>
-                      </div>
-                    </div>
-                  </div>
+        </article>
+
+        <!-- Card 3 — Go it alone (two DIY paths) -->
+        <article class="gbento-card gbento-card--trap gba-goalone">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="自己跑">Go it alone</h3>
+            </div>
+            <div class="gbento-diy">
+              <p class="gbento-diy-name" data-zh="自行申請">File your own</p>
+              <p class="gbento-diy-detail" data-zh="NT$50,000+／件，等 18 個月核准。1 件不是佈局，是被告的標靶。">NT$50,000+ per patent, 18 months to grant. One patent isn't a position, it's a target.</p>
+            </div>
+            <div class="gbento-diy">
+              <p class="gbento-diy-name" data-zh="聘專職工程師">Hire the engineer</p>
+              <p class="gbento-diy-detail" data-zh="專職 IP 工程師年成本破百萬，買到的是薪水，不是防護。">NT$1M+ a year for a dedicated IP engineer. You get a salary, not coverage.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 — Subscribe to TIS (wide, persistent-depth) -->
+        <article class="gbento-card gbento-card--wide gbento-card--persist gba-subscribe">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="訂閱泰然">Subscribe to a TIS Patent Bundle</h3>
+            </div>
+            <ul class="gbento-list gbento-list--tis">
+              <li data-zh="月均不到 1 萬。">Monthly subscription average under NT$10K.</li>
+              <li data-zh="30 件專利，橫跨 5 個評級。">30 Patents, SABCD-tier graded against industry peers.</li>
+              <li data-zh="以貴公司名義合法開立。">Legally Issued in your company's name.</li>
+              <li data-zh="訂閱當週生效上線。">Active the week you subscribe.</li>
+            </ul>
+            <a href="/product/licensing/lobby.html" class="btn btn-primary gbento-cta" data-target="licensing-signup" data-zh="試跑專利包">Build your bundle</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 2.35 Inside the bundle (PRD §5–§9) — tailark-style 2×3 bento ───
+       6 cards, 2 cols × 3 rows: why 30 | SABCD / AI smart-pick | FTO-guarded
+       pick / you swap | Verified Badge. Rounded outer-corner cluster, framed
+       visual drop-zones (real art added later). ZH condensed from
+       chinese-copy-direction.md §5/§6/§8/§9 — flag for a Miko ZH-lock pass
+       (esp. 1.7 億件 / 170M). Content echoes deliverable card 1, the pillar
+       showcase, the how-it-works accordion, and the .walkaway badge story
+       below; reconcile when those sections are revised. -->
+  <section class="section bundlegrid" aria-label="What's inside your bundle">
+    <div class="container">
+      <h2 class="bundlegrid-head" data-zh="你的專利包裡有什麼，又是怎麼建起來的。">What's inside your bundle, and how it's built.</h2>
+
+      <div class="bundlegrid-grid">
+        <!-- Box 1 — Why thirty, not one -->
+        <article class="bbx bbx--center bbx--why">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="為什麼是 30 件，不是 1 件">Why thirty, not one</h3>
+            <p class="bbx-body" data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent is just a target: the day it issues, the other side knows the one claim to design around. Thirty is the smallest spread that deters; past it, only the bill climbs.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <div class="b30">
+                <div class="b30-lone">
+                  <span class="b30-cell b30-cell--l"></span><span class="b30-cell b30-cell--r"></span>
+                  <div class="b30-dart"></div>
+                </div>
+                <div class="b30-wallwrap">
+                  <div class="b30-dart"></div>
+                  <div class="b30-shield"></div>
+                  <div class="b30-wall"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </article>
+
+        <!-- Box 2 — Inside the bundle: SABCD -->
+        <article class="bbx bbx--center bbx--sabcd">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="專利包內容：SABCD">Inside the bundle: SABCD</h3>
+            <p class="bbx-body" data-zh="30 件分布 5 個評級：5 S、6 A、9 B、6 C、4 D。旗艦級 (S/A) 上談判桌，密度級 (B) 覆蓋戰場，長尾 (C/D) 壓低成本，每季重新平衡。">Five tiers, thirty patents: 5 S, 6 A, 9 B, 6 C, 4 D. Flagship (S/A) face the counter-party, density (B) covers the field, the long tail (C/D) keeps cost down, rebalanced quarterly.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <div class="bsabcd">
+                <div class="bsabcd-bar"><i class="seg-s">5x</i><i class="seg-a">6x</i><i class="seg-b">9x</i><i class="seg-c">6x</i><i class="seg-d">4x</i></div>
+                <div class="bsabcd-legend">
+                  <span class="tier-chip tier-chip--s">Tier S</span>
+                  <span class="tier-chip tier-chip--a">Tier A</span>
+                  <span class="tier-chip tier-chip--b">Tier B</span>
+                  <span class="tier-chip tier-chip--c">Tier C</span>
+                  <span class="tier-chip tier-chip--d">Tier D</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 3 — How AI Smart-pick builds your bundle -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="AI 智選如何組建你的專利包">How AI Smart-pick builds your bundle</h3>
+            <p class="bbx-body" data-zh="泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，比對 Innovue 1.7 億件專利庫，5 分鐘給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。">Across three axes (country, industry, product line), the engine scans Innovue's 170M-patent pool and returns a tier-balanced thirty from ITRI / III / NYCU in five minutes.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <div class="bpick">
+                <i></i><i class="pk b" style="animation-delay:.1s"></i><i></i><i></i><i></i><i></i><i class="pk us" style="animation-delay:.6s"></i><i></i><i></i><i></i><i class="pk a" style="animation-delay:1s"></i><i></i><i></i>
+                <i></i><i></i><i></i><i class="pk c" style="animation-delay:.3s"></i><i></i><i></i><i></i><i></i><i class="pk tw" style="animation-delay:.8s"></i><i></i><i></i><i></i><i class="pk s" style="animation-delay:1.2s"></i>
+                <i class="pk jp" style="animation-delay:0s"></i><i></i><i></i><i></i><i></i><i class="pk b" style="animation-delay:.5s"></i><i></i><i></i><i></i><i class="pk a" style="animation-delay:.9s"></i><i></i><i></i><i></i>
+                <i></i><i></i><i class="pk eu" style="animation-delay:.2s"></i><i></i><i></i><i></i><i></i><i class="pk d" style="animation-delay:.7s"></i><i></i><i></i><i></i><i class="pk c" style="animation-delay:1.1s"></i><i></i>
+                <i class="pk kr" style="animation-delay:0s"></i><i></i><i></i><i></i><i class="pk b" style="animation-delay:.4s"></i><i></i><i></i><i></i><i></i><i class="pk us" style="animation-delay:.9s"></i><i></i><i></i><i></i>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 4 — FTO-guarded pick (NEW; the second way to pick the 30, beside
+             AI Smart-pick). Copy from PRD §9 "two ways" + FAQ Q3 (upload spec/FTO
+             → candidate bundle in 24 hrs). ZH condensed — flag for Miko ZH-lock. -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="FTO 保選">FTO-guarded pick</h3>
+            <p class="bbx-body" data-zh="已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件，24 小時內交付。">Already have a freedom-to-operate report or product spec? Upload it and we scope the candidate thirty to your real exposure, back within 24 hours.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <div class="bfto">
+                <!-- candidate field fills the card at the SAME cell size as Card 3's bpick
+                     (wider frame ⇒ more cells); box punched into the centre. Flagship (S/A)
+                     bloom on the down-pass, the rest on the up-pass, .ex cells dim away. The
+                     centre cols of the middle rows are empty — the box + moat sit there. -->
+                <div class="bfto-mesh">
+                  <i></i><i class="ex" style="--d:5"></i><i></i><i></i><i></i><i></i><i class="pk a" style="--d:3"></i><i class="pk s" style="--d:2"></i><i></i><i></i><i></i><i></i><i class="pk a" style="--d:2"></i><i></i><i></i><i class="pk jp" style="--d:4"></i><i></i><i class="pk tw" style="--d:5"></i><i class="ex" style="--d:5"></i><i></i>
+                  <i class="pk us" style="--d:5"></i><i class="pk s" style="--d:5"></i><i class="pk a" style="--d:5"></i><i></i><i class="ex" style="--d:3"></i><i class="pk a" style="--d:3"></i><i class="pk a" style="--d:2"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="pk b" style="--d:4"></i><i class="pk a" style="--d:5"></i><i></i><i class="ex" style="--d:5"></i>
+                  <i class="pk jp" style="--d:5"></i><i class="pk s" style="--d:5"></i><i class="pk c" style="--d:5"></i><i></i><i></i><i class="pk b" style="--d:3"></i><i class="pk c" style="--d:2"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="pk s" style="--d:2"></i><i></i><i></i><i></i><i></i><i class="pk s" style="--d:5"></i><i class="pk c" style="--d:5"></i>
+                  <i></i><i class="pk c" style="--d:5"></i><i class="pk s" style="--d:5"></i><i></i><i></i><i></i><i class="ex" style="--d:2"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="ex" style="--d:3"></i><i></i><i class="pk s" style="--d:4"></i><i class="pk b" style="--d:5"></i><i></i><i></i>
+                  <i class="ex" style="--d:5"></i><i></i><i></i><i class="pk b" style="--d:4"></i><i></i><i></i><i class="pk tw" style="--d:3"></i><i></i><i></i><i></i><i></i><i></i><i class="pk b" style="--d:2"></i><i></i><i class="pk a" style="--d:3"></i><i></i><i class="pk us" style="--d:4"></i><i></i><i class="pk s" style="--d:5"></i><i></i>
+                </div>
+                <!-- centred fto.pdf: box + scan + lighter icon + label -->
+                <div class="bfto-src">
+                  <div class="bfto-box">
+                    <span class="bfto-scan"></span>
+                    <svg class="bfto-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><line x1="8" y1="9" x2="10" y2="9"/></svg>
+                  </div>
+                  <span class="bfto-file">fto.pdf</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 5 — You set the direction, swap until it fits -->
+        <article class="bbx bbx--center bbx--swap">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="你定方向，替換到滿意為止">You set the direction, swap until it fits</h3>
+            <p class="bbx-body" data-zh="AI 推薦，你做主。簽約前可從動態池手動替換任一件，不需懂法律；最後這份專利包是你的決定，不是演算法的猜測。">AI proposes; you decide. Swap any pick by hand from the live pool before you sign, no legal expertise needed. The bundle ends up yours, not an algorithm's best guess.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <div class="bswap">
+                <!-- Uniform patent cards in two columns. Two pairs are live, sharing
+                     row lines: the Tier-C pair (row 3) and the Tier-A pair (row 2). They
+                     take turns — Tier C lifts, crosses the centre and trades seats with
+                     its pool match; it settles; then Tier A does the same; loop. Same-size
+                     cards, a subtle lift while moving, a flat ghost where a card is away.
+                     Geometry: each flyer fills its column-width seat and travels
+                     translateX(100% + gap) to the same row in the opposite column. -->
+                <div class="bswap-col bswap-col--bundle">
+                  <span class="bswap-cap">Your bundle</span>
+                  <ul class="bswap-list">
+                    <li class="bswap-card us"><span class="bswap-pid"><b>US</b>11842076</span><span class="bswap-tier s">Tier S</span></li>
+                    <li class="bswap-seat">
+                      <span class="bswap-card bswap-fly bswap-fly--ar tw"><span class="bswap-pid"><b>TW</b>I795432</span><span class="bswap-tier a">Tier A</span></span>
+                    </li>
+                    <li class="bswap-seat">
+                      <span class="bswap-card bswap-fly bswap-fly--cr us"><span class="bswap-pid"><b>US</b>10773920</span><span class="bswap-tier c">Tier C</span></span>
+                    </li>
+                    <li class="bswap-card tw"><span class="bswap-pid"><b>TW</b>I689412</span><span class="bswap-tier d">Tier D</span></li>
+                  </ul>
+                </div>
+                <div class="bswap-col bswap-col--pool">
+                  <span class="bswap-cap">Live pool</span>
+                  <ul class="bswap-list">
+                    <li class="bswap-card us"><span class="bswap-pid"><b>US</b>11556204</span><span class="bswap-tier b">Tier B</span></li>
+                    <li class="bswap-seat">
+                      <span class="bswap-card bswap-fly bswap-fly--al tw"><span class="bswap-pid"><b>TW</b>I812355</span><span class="bswap-tier a">Tier A</span></span>
+                    </li>
+                    <li class="bswap-seat">
+                      <span class="bswap-card bswap-fly bswap-fly--cl us"><span class="bswap-pid"><b>US</b>12044193</span><span class="bswap-tier c">Tier C</span></span>
+                    </li>
+                    <li class="bswap-card us"><span class="bswap-pid"><b>US</b>10998471</span><span class="bswap-tier s">Tier S</span></li>
+                    <li class="bswap-card tw"><span class="bswap-pid"><b>TW</b>I734201</span><span class="bswap-tier d">Tier D</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 6 — Verified License Badge (NEW). Copy from PRD §5 Beat 3. NOTE:
+             overlaps the .walkaway section below (the credential/verify story);
+             reconcile when that section is revised. ZH — flag for Miko ZH-lock. -->
+        <article class="bbx bbx--center bbx--badge">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="授權認證標章">Verified License Badge</h3>
+            <p class="bbx-body" data-zh="每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。">Every bundle ships a "TIS × institution" badge with a unique license number and QR code, verified online in two seconds.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- Live Verified License Badge (same component + 3D idle-float / tilt /
+                   shine as the badge.html hero), scaled down to the card via .bbx--badge
+                   overrides below. Markup 1:1 with brand/catalog §Verified License Badge. -->
+              <div class="badge-stage bbx-badge-live">
+                <div class="seal-pill badge-tilt">
+
+                  <div class="vlb-seal is-standalone is-tis">
+                    <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                      <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                      <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                      <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                      <defs>
+                        <path id="bg-seal-tis-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                        <path id="bg-seal-tis-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                      </defs>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-tis-top" startOffset="50%">TIS ISSUED VERIFIED LICENSE</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-tis-bot" startOffset="50%">LIC-12345</textPath></text>
+                    </svg>
+                    <span class="seal-mark"></span>
+                  </div>
+
+                  <div class="seal-pill-divider"></div>
+
+                  <div class="vlb-seal is-standalone is-nycu">
+                    <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                      <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                      <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                      <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                      <defs>
+                        <path id="bg-seal-nycu-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                        <path id="bg-seal-nycu-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                      </defs>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-nycu-top" startOffset="50%">NATIONAL YANG MING CHIAO TUNG UNIVERSITY</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-nycu-bot" startOffset="50%">18 PATENTS</textPath></text>
+                    </svg>
+                    <span class="seal-mark"></span>
+                  </div>
+
+                  <div class="vlb-seal is-standalone is-itri">
+                    <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                      <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                      <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                      <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                      <defs>
+                        <path id="bg-seal-itri-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                        <path id="bg-seal-itri-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                      </defs>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-itri-top" startOffset="50%">INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-itri-bot" startOffset="50%">7 PATENTS</textPath></text>
+                    </svg>
+                    <span class="seal-mark"></span>
+                  </div>
+
+                  <div class="vlb-seal is-standalone is-iii">
+                    <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                      <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                      <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                      <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                      <defs>
+                        <path id="bg-seal-iii-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                        <path id="bg-seal-iii-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                      </defs>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-iii-top" startOffset="50%">INSTITUTE FOR INFORMATION INDUSTRY</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-iii-bot" startOffset="50%">5 PATENTS</textPath></text>
+                    </svg>
+                    <span class="seal-mark"></span>
+                  </div>
+
+                  <div class="seal-pill-divider"></div>
+
+                  <div class="seal-pill-credential">
+                    <span class="qr"></span>
+                    <div class="lic-no">LIC-12345</div>
+                  </div>
+
+                  <span class="seal-pill-sheen" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ─── 3. How Licensing works (accordion — migrated from old homepage #products) ─── -->
-  <section class="section" aria-label="How Licensing works">
+  <!-- ─── 2.4 What you walk away with (condensed PRD §5 Beats 2-3 + §10) — 4-beat row ───
+       Horizontal 4-up, vertical hairline dividers, numbered eyebrow → headline →
+       supporting line → "Learn more →". Recast §10's post-subscribe timeline WITHOUT
+       literal Day/Week labels (per Miko); only the "two-second" verify duration remains.
+       ZH condensed from chinese-copy-direction.md §5/§10 verbatim — flag for Miko ZH-lock
+       (§10 markers were already [ZH NEEDED]). Echoes deliverable card 3 + the how-it-works
+       accordion; reconcile when those are revised. -->
+  <section class="section walkaway" aria-label="What you walk away with">
     <div class="container">
+      <h2 class="walkaway-head" data-zh="你拿到的是這些。">What you walk away with.</h2>
+      <p class="walkaway-sub" data-zh="從被動防禦轉為主動佈局。">Passive defense to active position.</p>
 
-      <div class="howitworks">
-        <h3 data-zh="運作方式">How it works</h3>
-        <div class="howitworks-grid">
-          <div class="howitworks-visual howitworks-visual--steps howitworks-visual--shots" data-pillar-howit="licensing" aria-hidden="true">
-            <div class="howitworks-step-panel howitworks-step-panel--shot is-active" data-step="pick" data-grad="1">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/01-pick-picker.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="ways" data-grad="2">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/02-ways-paths.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="activate" data-grad="3">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/03-activate-bundle.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="swap" data-grad="4">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/04-swap-actions.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="badge" data-grad="5">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/licensing/05-badge-license.png" alt="" loading="lazy" decoding="async">
-            </div>
+      <div class="walkaway-grid">
+        <!-- 1 — Issued -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>1.0</span> 開立"><span class="wa-num">1.0</span> Issued</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="標章以貴公司名義生效">Your badge goes live, in your name</h3>
+            <p class="wa-body" data-zh="憑證與標章同步開立，內嵌授權編號與 QR Code。">The credential and badge issue together — a license number and QR code.</p>
+            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
           </div>
-          <div class="acc-list">
-            <div class="acc-item is-open" data-step="pick">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="選擇國家 × 產業 × 期間">Pick your country × industry × term</span>
-                <span class="acc-mark" aria-hidden="true">−</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="一包專利包支持一個國家、一個產業、一種期間，只為你真正需要的組合付費。">Pay for the markets and the term you actually need — nothing you don't.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="US、TW，兩個主戰場供專利佈局。">Cover the market your customers buy in</li>
-                  <li data-zh="3、6、12、24 個月期，隨時可升級延長授權期間。">Choose the term that fits your runway</li>
-                  <li data-zh="30 件 SABCD 評級專利組合，同評級專利隨時可更換。">Get thirty SABCD-graded patents per bundle</li>
-                </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="ways">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="兩種專利包挑選法">Two ways to pick the 30</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="AI 快速取得組合，或提交 FTO 報告精準篩選。">A bundle in 15 seconds — or hand us your FTO and we'll route around it.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。">Let the system recommend a bundle, free</li>
-                  <li data-zh="方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。">Or hand us your FTO to guide the pick</li>
-                  <li data-zh="平台提供首選 30 和備選 30 專利清單，供你挑選。">Either path ships with a same-tier swap pool</li>
-                </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="activate">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="專利包瀏覽">Relevant bundle suggested</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="針對特定商品特定市場選取 30 個最佳專利組合。">30 SABCD-graded patents, curated to your market in under 15 seconds.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。">Get a tier-balanced bundle, flagship to long tail</li>
-                  <li data-zh="來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。">Drawn from the Innovue, iPIC, III &amp; NYCU pool</li>
-                  <li data-zh="不用等 18 個月或無止盡商務談判，訂 閱到生效快速打通關。">Go live the week you subscribe</li>
-                </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="swap">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="鎖定專利包">Swap patents — your call</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="同評級專利可自選替換，隨你決定，不加價、無等審。">Don't love a pick? Swap it — no surcharge, no review delay.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="平台提供首選 30 和備選 30 專利清單，供你自選替換。">Swap any pick from a same-tier pool</li>
-                  <li data-zh="授權期間內可不限次替換同評級專利，提升企業防禦力。">Swap as often as you like, within term</li>
-                  <li data-zh="只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。">Replace like-for-like — the count stays thirty</li>
-                </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="badge">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="展示憑證，展示你的軟實力">Display the credential — and the full file</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="高規格授權認證標章，供客戶查詢，拉高被告門檻。">One Document Center — everything you need to display, defend, and prove the license.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。">Embed the credential anywhere, PNG or SVG</li>
-                  <li data-zh="「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。">Hand over a PAdES-signed contract and certificate</li>
-                </ul>
-              </div></div>
-            </div>
+        </article>
+
+        <!-- 2 — Reviewed -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>2.0</span> 複核"><span class="wa-num">2.0</span> Reviewed</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="法務複核的是成品，不是草稿">Your counsel reviews a finished file</h3>
+            <p class="wa-body" data-zh="PAdES 簽章的憑證與合約，是成品，不是草稿。">A PAdES-signed certificate and contract — a finished file, not a draft.</p>
+            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
           </div>
-        </div>
-      </div>
+        </article>
 
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Patent inventory teaser — flat variant: two ticker rows with cards   ║
-       ║ randomly distributed (no tier grouping), asymmetric speeds (top      ║
-       ║ 120s / bottom 180s). Search input + Industry / Jurisdiction / Tier   ║
-       ║ filter dropdowns wired with AND logic. Each card links to            ║
-       ║ /product/licensing/lobby.html. Component lives in           ║
-       ║ styles.css (`.v2-section` + `.is-flat` modifier) and site.js         ║
-       ║ (Patent inventory teaser IIFE, branches on the modifier).            ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight" aria-label="Patent inventory teaser">
-    <div class="container">
-      <div class="v2-section is-flat" aria-label="Patent inventory ticker — flat random">
-        <span class="v2-eyebrow" data-zh-html data-zh="<strong>泰然專利庫存</strong> — 1,000+ 件專利，涵蓋美國與台灣 — 依產業、地區、SABCD 等級篩選"><strong>TIS Patent Inventory</strong> — 1,000+ patents across U.S. and Taiwan — filter by industry, jurisdiction, and SABCD tier</span>
-
-        <div class="v2-search-bar">
-          <input type="text" class="v2-search-input" id="v2-search" placeholder="Search by ID, title, owner, IPC…" data-zh-placeholder="依專利編號、名稱、權利人、IPC 搜尋…" aria-label="Search patents">
-          <button class="v2-search-clear" type="button" id="v2-search-clear" aria-label="Clear search" hidden>×</button>
-
-          <!-- Functional filter dropdowns, right-aligned inside the search bar -->
-          <div class="v1-fb-group" data-filter-key="ind">
-            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="v1-fb-label" data-zh="產業：">Industry:</span>
-              <span class="v1-fb-value">All</span>
-              <span class="v1-fb-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="v1-fb-menu" role="listbox" hidden>
-              <button class="v1-fb-option" role="option" type="button" data-value=""           data-zh="所有產業"      aria-selected="true">All Industries</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="chip"       data-zh="晶片與半導體">Chip &amp; Semiconductor</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="integrated" data-zh="整合應用">Integrated Applications</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="netzero"    data-zh="淨零與碳">Net-Zero &amp; Carbon</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="multimedia" data-zh="多媒體與顯示">Multimedia &amp; Display</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="networking" data-zh="網路與通訊">Networking &amp; Comms</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="computing"  data-zh="運算與 AI">Computing &amp; AI</button>
-            </div>
+        <!-- 3 — Displayed -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>3.0</span> 展示"><span class="wa-num">3.0</span> Displayed</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh-html data-zh="上展位，<br>進提案">On the booth,<br>in the deck</h3>
+            <p class="wa-body" data-zh="標章可印製於展位、提案書、官網或外包裝，支援 PNG / SVG。">Print the badge on booths, proposals, your footer, or the box — PNG or SVG.</p>
+            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
           </div>
-          <div class="v1-fb-group" data-filter-key="juris">
-            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="v1-fb-label" data-zh="地區：">Jurisdiction:</span>
-              <span class="v1-fb-value">All</span>
-              <span class="v1-fb-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="v1-fb-menu" role="listbox" hidden>
-              <button class="v1-fb-option" role="option" type="button" data-value=""   data-zh="所有地區" aria-selected="true">All jurisdictions</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="US">United States</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="TW" data-zh="台灣">Taiwan</button>
-            </div>
-          </div>
-          <div class="v1-fb-group" data-filter-key="tier">
-            <button class="v1-fb-pill" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="v1-fb-label" data-zh="等級：">Tier:</span>
-              <span class="v1-fb-value">All</span>
-              <span class="v1-fb-chev" aria-hidden="true">▾</span>
-            </button>
-            <div class="v1-fb-menu" role="listbox" hidden>
-              <button class="v1-fb-option" role="option" type="button" data-value=""  data-zh="所有等級" aria-selected="true">All tiers</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="S">Tier S</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="A">Tier A</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="B">Tier B</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="C">Tier C</button>
-              <button class="v1-fb-option" role="option" type="button" data-value="D">Tier D</button>
-            </div>
-          </div>
-          <button class="v1-fb-clear" type="button" id="v2-fb-clear" disabled data-zh="清除">Clear</button>
+        </article>
 
-          <span class="v2-search-status" id="v2-search-status" aria-live="polite"></span>
-        </div>
-
-        <div class="v2-rows">
-          <div class="v2-row v2-row-left"><div class="v2-track" id="v2-track-flat-top"></div></div>
-          <div class="v2-row v2-row-right"><div class="v2-track" id="v2-track-flat-bottom"></div></div>
-        </div>
+        <!-- 4 — Verified -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>4.0</span> 驗證"><span class="wa-num">4.0</span> Verified</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="買家 2 秒完成驗證">A buyer verifies it in two seconds</h3>
+            <p class="wa-body" data-zh="買家掃描 QR Code，授權即在線上 2 秒驗證通過。">A buyer scans the QR code and the license verifies online in two seconds.</p>
+            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ─── Exclusive Patent Access + paired CTA — full-bleed hairline band
-       sitting right under the inventory teaser, so the patents above are
-       immediately attributed to the institutions (iPIC · III · NYCU) that
-       grant TIS access, and the "Build your bundle" CTA closes the loop
-       before the visitor lands on Pricing. -->
-  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="lic-cta-heading">
-    <div class="container">
-      <div class="partner-strip partner-strip--color">
-        <h2 id="lic-cta-heading" class="partner-cta-heading">
-          <span data-zh="從這些機構所授權的">Find your position on patents</span>
-          <span data-zh="專利中，找到你的位置。">from established institutions</span>
-        </h2>
-        <div class="partner-logos">
-          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-        <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg partner-cta-btn" data-target="licensing-signup" data-zh="組建你的組合">Build your bundle</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 3. Pricing (moved up; was section 7) ─── -->
+  <!-- ─── 3. Pricing (placed directly under "What you walk away with") ───
+       The institution marks (iPIC · III · NYCU) that used to sit in a
+       standalone "Exclusive Patent Access" band now live nested in the
+       card under Proof & delivery (.pcard-trust), closing the trust loop. -->
   <section class="section section--alt" id="pricing" aria-labelledby="lic-pricing-heading">
     <div class="container">
-      <h2 id="lic-pricing-heading" class="bp-section-heading" data-zh="專利授權套件組合">Pricing — Build your bundle.</h2>
+      <h2 id="lic-pricing-heading" class="bp-section-heading" data-zh="依期間定價。">Price by term.</h2>
 
-      <!-- Build-a-bundle picker — horizontal term toggle on top, two-column
-           picker below: Jurisdiction + Industry on the left, sticky estimate
-           + compact "Every bundle includes" checklist on the right. The top
-           toggle is the single source of truth for term (3/6/12/24 months).
-           Price is industry-independent — duration only.
-           Defaults: US · Computing Systems · 12-month → NT$8,990/mo. -->
-      <div class="bp-wrap" data-bundle-picker>
+      <!-- Pricing card — single split card. The term toggle (3/6/12/24) is the
+           one interactive control and drives the per-month price + savings;
+           jurisdiction & industry are folded into the feature list (real
+           selection happens at lobby.html). Reimagined from the old
+           jurisdiction×industry picker + estimate panel. Price by term:
+           3mo NT$9,990 · 6mo 9,490 · 12mo 8,990 (default) · 24mo 8,490.
+           ZH on new feature lines is condensed — flag for a Miko ZH-lock. -->
+      <div class="pcard" data-bundle-picker>
 
-        <div class="bp-toggle" role="tablist" aria-label="Subscription term">
-          <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
-          <button type="button" class="bp-toggle-seg" data-bp-term="6" role="tab" aria-selected="false" data-zh="6 個月">6 months</button>
-          <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" role="tab" aria-selected="true" data-zh="12 個月">12 months</button>
-          <button type="button" class="bp-toggle-seg" data-bp-term="24" role="tab" aria-selected="false" data-zh="24 個月">24 months</button>
-        </div>
+        <div class="pcard-body">
 
-        <div class="bp-grid">
+          <div class="pcard-left">
+            <div>
+              <h3 class="pcard-title" data-zh="打造你的專利包">Build your bundle</h3>
+              <!-- ZH provisional (jurisdiction folded into subhead) — flag for a Miko ZH-lock. -->
+              <p class="pcard-desc" data-zh="一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。">One subscription, thirty SABCD-graded patents in the US or Taiwan.</p>
 
-          <!-- LEFT — three picker groups -->
-          <div class="bp-cols">
-
-            <div class="bp-group">
-              <p class="bp-label" data-zh="選擇國家">Jurisdiction</p>
-              <div class="bp-list" data-bp-list="juris">
-                <button type="button" class="bp-opt selected" data-bp-value="US">
-                  <span class="opt-lft">
-                    <span class="bp-juris-chip us">US</span>
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="美國">United States</span>
-                      <span class="opt-sb">61M filings</span>
-                    </span>
-                  </span>
-                </button>
-                <button type="button" class="bp-opt" data-bp-value="TW">
-                  <span class="opt-lft">
-                    <span class="bp-juris-chip tw">TW</span>
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="台灣">Taiwan</span>
-                      <span class="opt-sb">2.1M + IP Bank</span>
-                    </span>
-                  </span>
-                </button>
+              <div class="bp-toggle" role="tablist" aria-label="Subscription term">
+                <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
+                <button type="button" class="bp-toggle-seg" data-bp-term="6" role="tab" aria-selected="false" data-zh="6 個月">6 months</button>
+                <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" role="tab" aria-selected="true" data-zh="12 個月">12 months</button>
+                <button type="button" class="bp-toggle-seg" data-bp-term="24" role="tab" aria-selected="false" data-zh="24 個月">24 months</button>
               </div>
+
+              <div class="pcard-price">
+                <span class="pcard-amt" data-bp-summary="price">NT$8,990</span>
+                <span class="pcard-unit" data-zh="/ 月">/ month</span>
+              </div>
+              <p class="pcard-term"><span data-bp-summary="termlabel">on a 12-month term</span><span class="pcard-save" data-bp-summary="save">Save 10%</span></p>
             </div>
 
-            <div class="bp-group bp-group--grow">
-              <p class="bp-label" data-zh="選擇產業">Industry</p>
-              <div class="bp-list" data-bp-list="industry">
-                <button type="button" class="bp-opt" data-bp-value="chip">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="晶片半導體設計製造">Semiconductor Design & Manufacturing</span>
-                      <span class="opt-sb">2.4M in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-                <button type="button" class="bp-opt" data-bp-value="networking">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="網路通訊">Networking & Communications</span>
-                      <span class="opt-sb">1.9M in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-                <button type="button" class="bp-opt selected" data-bp-value="computing">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="計算機系統">Computing Systems</span>
-                      <span class="opt-sb">1.5M in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-                <button type="button" class="bp-opt" data-bp-value="integrated">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="綜合應用">Integrated Applications (AI · AV · EV)</span>
-                      <span class="opt-sb">1.2M in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-                <button type="button" class="bp-opt" data-bp-value="multimedia">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="多媒體影音/影像處理">Multimedia & Image Processing</span>
-                      <span class="opt-sb">980K in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-                <button type="button" class="bp-opt" data-bp-value="netzero">
-                  <span class="opt-lft">
-                    <span class="opt-stack">
-                      <span class="opt-nm" data-zh="淨零碳排">Net-Zero & Carbon</span>
-                      <span class="opt-sb">820K in pool</span>
-                    </span>
-                  </span>
-                  <span class="opt-rgt" data-zh="30 / 包">30 / bundle</span>
-                </button>
-              </div>
+            <div class="pcard-left-foot">
+              <hr class="pcard-rule">
+              <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg pcard-cta" data-target="licensing-signup" data-zh="訂閱">Subscribe</a>
             </div>
-
           </div>
 
-          <!-- RIGHT — sticky estimate panel + Subscribe CTA + compact
-               "Every bundle includes" checklist underneath. -->
-          <aside class="bp-estimate" aria-label="Bundle estimate">
-            <p class="bp-estimate-label" data-zh="單包金額預估">Single-bundle estimate</p>
-            <div class="bp-estimate-rows">
-              <div class="bp-estimate-row"><span data-zh="國家">Jurisdiction</span><span class="v" data-bp-summary="juris">US</span></div>
-              <div class="bp-estimate-row"><span data-zh="產業">Industry</span><span class="v" data-bp-summary="industry">Computing Systems</span></div>
-              <div class="bp-estimate-row"><span data-zh="期別">Term</span><span class="v" data-bp-summary="term">12 months</span></div>
-            </div>
-            <div class="bp-estimate-total">
-              <span class="lbl" data-zh="月均額">Per month</span>
-              <span class="row">
-                <span class="num" data-bp-summary="price">NT$8,990</span>
-                <span class="unit" data-zh="/ 月">/ month</span>
-                <span class="bp-estimate-save" data-bp-summary="save">Save 10%</span>
-              </span>
-            </div>
-            <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg bp-estimate-cta" data-target="licensing-signup" data-zh="訂閱">Subscribe</a>
-
-            <!-- Every bundle includes — compact checklist (7 features) -->
-            <div class="bp-includes">
-              <p class="bp-includes-label" data-zh="每組組合內含">Every bundle includes</p>
-              <ul class="bp-includes-list">
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="30 件 SABCD 評等專利">30 SABCD-graded patents</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="授權認證標章">Verified License Badge + QR verifier</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="DLC 數位授權憑證（PAdES · eIDAS）">DLC digital credential (PAdES · eIDAS)</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="MOICA 政府電子簽章">MOICA / government e-signature</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="不限次同級專利替換">Dynamic-pool compensation</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="AI 智選">AI matching (24-hr turnaround)</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="標章運用於參展/宣傳物">Badge usage on booths &amp; promo materials</span></li>
+          <div class="pcard-right">
+            <!-- Industries — the six MVP sectors, expanded from the old single
+                 "6 sectors" line per the canonical INDUSTRIES list in
+                 brand/previews/licensing-flow-preview.html. ZH provisional —
+                 flag for a Miko ZH-lock. -->
+            <div class="pcard-feat">
+              <h4 class="pcard-feat-title" data-zh="適用產業（6 大領域）">Industries (6 sectors)</h4>
+              <ul class="pcard-list">
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="半導體設計與製造">Semiconductor design &amp; manufacturing</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="網通與通訊">Networking &amp; communications</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="運算系統">Computing systems</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="整合應用（AI · 自駕 · 電動車）">Integrated applications (AI · AV · EV)</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="多媒體與影像處理">Multimedia &amp; image processing</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="淨零與碳管理">Net-Zero &amp; carbon</span></li>
               </ul>
             </div>
 
-          </aside>
+            <div class="pcard-feat">
+              <h4 class="pcard-feat-title" data-zh="憑證與交付">Proof &amp; delivery</h4>
+              <ul class="pcard-list">
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="授權認證標章 + QR 驗證">Verified License Badge + QR verifier</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="DLC 數位授權憑證（PAdES · eIDAS）">DLC digital credential (PAdES · eIDAS)</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="MOICA 政府電子簽章">MOICA / government e-signature</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="標章可用於展位與宣傳物">Badge usage on booths &amp; promo</span></li>
+              </ul>
+            </div>
 
+            <!-- Trust strip — institution marks, nested under Proof & delivery
+                 (relocated from the deleted Exclusive-Patent-Access band).
+                 Full primary-color logos at rest. -->
+            <div class="pcard-trust">
+              <h4 class="pcard-feat-title" data-zh="專利授權自權威機構">Licensed from established institutions</h4>
+              <div class="partner-logos pcard-logos">
+                <a href="https://www.ipic.tw/"      class="partner partner--ipic" aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+                <a href="https://www.iii.org.tw/en"  class="partner partner--iii"  aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+                <a href="https://www.nycu.edu.tw/"   class="partner partner--nycu" aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 3. From signup to a live license (onboarding walkthrough — was "How it works") ─── -->
+  <section class="section" aria-label="From signup to a live license">
+    <div class="container">
+
+      <div class="howitworks">
+        <!-- Section head matched to "Price by term." (.bp-section-heading);
+             h2 (not h3) so the [data-pillar] .howitworks > h3 warm-gradient
+             rule no longer applies — renders solid text-primary like Pricing.
+             Reframed from "How it works" to an onboarding walkthrough: six
+             steps from signup to an active, productive license. -->
+        <h2 class="bp-section-heading" data-zh="從註冊到生效授權">From signup to a live license</h2>
+        <!-- Stepped feature carousel — 6 onboarding steps. Pills + auto-cycling
+             panels (title → description → step visual → checks). Step visuals
+             (.hiw-screen) are live HTML/CSS — clean condensed product UI built
+             from the licensing flow vocabulary in
+             brand/previews/licensing-flow-preview.html, scoped + pinned to light
+             tokens (a bright product window even in dark mode), locked to a
+             uniform 2:1 frame. Pill labels + new ZH on steps 1/5 are provisional
+             — flag for a Miko ZH-lock. -->
+        <div class="hiw-frame">
+          <div class="hiw-carousel" data-hiw-carousel>
+
+            <nav class="hiw-steps" aria-label="Progress">
+              <ol role="list">
+                <li><button type="button" class="hiw-pill" data-hiw-pill="0" aria-selected="true"><span class="hiw-dot"><span class="hiw-num">1</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="選擇">Pick</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="1" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">2</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="智選">Smart Pick</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="2" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">3</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="專利包">Bundle</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="3" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">4</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="替換">Swap</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="4" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">5</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="付款">Payment</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="5" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">6</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="生效">Active</span></button></li>
+              </ol>
+            </nav>
+
+            <div class="hiw-stage" role="group" aria-label="How it works steps">
+
+              <article class="hiw-panel is-active" data-hiw-panel="0">
+                <h4 class="hiw-title" data-zh="選擇你的國家與產業">Pick your jurisdiction and industry</h4>
+                <p class="hiw-desc" data-zh="一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。">Pay for the market you're actually entering — one jurisdiction, one industry.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-cols2">
+                    <div>
+                      <div class="hs-coleyebrow">Jurisdiction</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-jchip us">US</span><span class="hs-nm">United States</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-jchip tw">TW</span><span class="hs-nm">Taiwan</span></span></div>
+                        <div class="hs-opt muted"><span class="hs-lft"><span class="hs-jchip eu">EU</span><span class="hs-nm">Europe</span></span><span class="hs-sb">Soon</span></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="hs-coleyebrow">Industry</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-nm">Semiconductors</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Networking</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Computing</span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Bundle scope</span><span class="hs-jchip us">US</span><span class="val">Semiconductors</span><span class="n">30 patents</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="US、TW，兩個主戰場供專利佈局。">Cover the market your customers buy in</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="一包專利包對應單一國家 × 單一產業，聚焦不臃腫。">One jurisdiction × one industry per bundle</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="30 件 SABCD 評級專利組合，針對該市場精準佈局。">Thirty SABCD-graded patents, scoped to that market</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="1">
+                <h4 class="hiw-title" data-zh="兩種建立 30 專利包的方法">Two ways to build your 30</h4>
+                <p class="hiw-desc" data-zh="AI 快速取得組合，或提交 FTO 報告精準篩選。">A bundle in 15 seconds — or hand us your FTO and we'll route around it.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-paths">
+                    <div class="hs-path sel">
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">AI · Free</span></div>
+                      <div class="hs-pt">AI Smart Pick</div>
+                      <div class="hs-pd">The system builds a tier-balanced 30 for your market in about 15 seconds. No FTO required.</div>
+                    </div>
+                    <div class="hs-path">
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">FTO · Guided</span></div>
+                      <div class="hs-pt">FTO Upload</div>
+                      <div class="hs-pd">Hand us your freedom-to-operate report and we route the bundle around your gaps.</div>
+                      <div class="hs-drop">Drop your FTO report (PDF)</div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Either path</span><span class="val">ships with a same-tier swap pool</span><span class="n">30 patents</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。">Let the system recommend a bundle, free</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。">Or hand us your FTO to guide the pick</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你挑選。">Either path ships with a same-tier swap pool</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="2">
+                <h4 class="hiw-title" data-zh="檢視你的 30 專利包">Review your 30-patent bundle</h4>
+                <p class="hiw-desc" data-zh="針對特定商品特定市場選取 30 個最佳專利組合。">30 SABCD-graded patents, curated to your market in under 15 seconds.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-headrow">
+                    <div class="hs-coleyebrow" style="margin:0">Your 30 patents</div>
+                    <div class="hs-tierdist"><span class="hs-tchip s">5S</span><span class="hs-tchip a">6A</span><span class="hs-tchip b">9B</span><span class="hs-tchip c">6C</span><span class="hs-tchip d">4D</span></div>
+                  </div>
+                  <div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10142368</span><span class="hs-ptitle">Thin-film capacitor electrode on ceramic substrate</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10218547</span><span class="hs-ptitle">Low-loss high-frequency connector for 5G</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10612938</span><span class="hs-ptitle">Integrated passive device for mm-wave modules</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10678451</span><span class="hs-ptitle">Embedded inductor with patterned ferrite core</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Curated from</span><span class="val">Innovue · iPIC · III · NYCU pool</span><span class="n">30 / 30</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。">Get a tier-balanced bundle, flagship to long tail</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。">Drawn from the Innovue, iPIC, III &amp; NYCU pool</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="不用等 18 個月或無止盡商務談判，訂閱到生效快速打通關。">Go live the week you subscribe</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="3">
+                <h4 class="hiw-title" data-zh="鎖定專利包">Swap patents — your call</h4>
+                <p class="hiw-desc" data-zh="同評級專利可自選替換，隨你決定，不加價、無等審。">Don't love a pick? Swap it — no surcharge, no review delay.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-swap">
+                    <div class="hs-pcard out">
+                      <div class="hs-pctop"><span class="hs-pcid">US10678451</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-pcttl">Embedded inductor with patterned ferrite core</div>
+                    </div>
+                    <div class="hs-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16"/><path d="M16 4l4 4-4 4"/><path d="M20 16H4"/><path d="M8 12l-4 4 4 4"/></svg></div>
+                    <div>
+                      <div class="hs-poollab">Same-tier pool · B</div>
+                      <div class="hs-poolrow pick"><span class="hs-pid">US10845120</span><span class="hs-tchip b">B</span><span class="hs-rep">Replace</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">US10912677</span><span class="hs-tchip b">B</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">TW I712345</span><span class="hs-tchip b">B</span></div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Within term</span><span class="val">Swap as often as you like — like-for-like</span><span class="n">count stays 30</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你自選替換。">Swap any pick from a same-tier pool</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="授權期間內可不限次替換同評級專利，提升企業防禦力。">Swap as often as you like, within term</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。">Replace like-for-like — the count stays thirty</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="4">
+                <h4 class="hiw-title" data-zh="期間與付款">Term and payment</h4>
+                <p class="hiw-desc" data-zh="選擇授權期間，以信用卡或電匯付款；款項到帳即刻啟用。">Pick your term, then settle by card or wire — the bundle activates the moment payment clears.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-cols2">
+                    <div>
+                      <div class="hs-coleyebrow">Subscription term</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt"><span class="hs-nm">3 months</span></div>
+                        <div class="hs-opt sel"><span class="hs-nm">12 months</span><span class="hs-rgt hs-disc">10% off</span></div>
+                        <div class="hs-opt"><span class="hs-nm">24 months</span><span class="hs-rgt hs-disc">12% off</span></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="hs-coleyebrow">Payment method</div>
+                      <div class="hs-optlist">
+                        <div class="hs-pay sel"><span class="hs-payflag">Instant</span><div class="hs-pnm">Credit / debit card</div><div class="hs-pds">Charged at confirmation.</div></div>
+                        <div class="hs-pay"><div class="hs-pnm">Wire transfer</div><div class="hs-pds">14-day grace. Issues when funds clear.</div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="hs-total"><span class="k">US · Semiconductors · 12 months</span><span class="v">NT$8,991<small> /mo</small></span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="3、6、12、24 個月期，隨時可升級延長授權期間。">Choose the term that fits your runway</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="期間越長，月費越低。">Longer terms, lower monthly rate</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="信用卡或電匯付款，開立新台幣發票。">Pay by card or wire — NT$ invoice issued</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="5">
+                <h4 class="hiw-title" data-zh="展示憑證，展示你的軟實力">Display the credential — and the full file</h4>
+                <p class="hiw-desc" data-zh="高規格授權認證標章，供客戶查詢，拉高被告門檻。">One Document Center — everything you need to display, defend, and prove the license.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-headrow">
+                    <div class="hs-coleyebrow" style="margin:0">License TIS-US-2401</div>
+                    <span class="hs-signal"><span class="d"></span>ACTIVE</span>
+                  </div>
+                  <div class="hs-licgrid">
+                    <div class="hs-badge">
+                      <div class="hs-seal"><img src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt=""></div>
+                      <div class="hs-btop">TIS Issued · Verified License</div>
+                      <svg class="hs-qr" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><path fill="#252525" d="M0 0h7v7H0zM8 0h1v1H8zM10 0h2v1h-2zM13 0h1v2h-1zM15 0h1v1h-1zM17 0h2v1h-2zM22 0h7v7h-7zM2 2h3v3H2zM24 2h3v3h-3zM9 1h1v2H9zM11 2h1v3h-1zM16 1h1v3h-1zM19 1h1v2h-1zM8 4h1v2H8zM13 3h2v1h-2zM18 4h2v1h-2zM10 5h2v1h-2zM14 5h1v3h-1zM20 5h1v3h-1zM0 8h1v2H0zM3 8h2v1H3zM6 8h2v2H6zM9 8h1v1H9zM11 8h3v1h-3zM16 8h2v1h-2zM22 8h1v2h-1zM25 8h2v1h-2zM28 8h1v3h-1zM2 10h1v3H2zM4 10h3v1H4zM9 10h2v2H9zM12 10h1v2h-1zM15 10h1v4h-1zM18 10h2v1h-2zM24 10h2v2h-2zM0 12h2v1H0zM5 12h2v3H5zM17 12h1v3h-1zM21 12h3v1h-3zM26 12h2v1h-2zM8 13h1v3H8zM11 13h3v1h-3zM19 13h2v2h-2zM3 14h1v3H3zM13 15h2v1h-2zM23 14h2v3h-2zM27 14h1v3h-1zM0 16h1v3H0zM6 16h2v1H6zM10 16h2v2h-2zM16 16h1v3h-1zM20 16h2v1h-2zM2 17h1v3H2zM9 17h1v2H9zM13 17h2v1h-2zM18 17h1v3h-1zM25 17h2v1h-2zM5 18h2v2H5zM12 18h1v3h-1zM21 18h3v1h-3zM0 22h7v7H0zM8 20h1v2H8zM11 20h2v1h-2zM15 20h2v2h-2zM19 20h1v3h-1zM23 20h1v3h-1zM26 20h2v2h-2zM2 24h3v3H2zM9 22h2v1H9zM13 22h1v3h-1zM17 22h2v1h-2zM21 22h1v3h-1zM25 22h1v3h-1zM28 22h1v3h-1zM10 24h2v2h-2zM15 24h1v3h-1zM18 24h2v1h-2zM23 24h2v1h-2zM9 26h1v3H9zM12 27h3v1h-3zM17 26h1v3h-1zM20 26h3v1h-3zM26 26h2v2h-2z"/></svg>
+                      <div class="hs-blic">TIS-US-2401</div>
+                    </div>
+                    <div class="hs-docs">
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><div><div class="hs-dt">Contract</div><div class="hs-ds">PAdES three-party signature</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="hs-dt">License certificate</div><div class="hs-ds">QR-linked to public registry</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></span><div><div class="hs-dt">Verified License Badge</div><div class="hs-ds">PNG + SVG · embed-ready</div></div><span class="hs-da">Get<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                    </div>
+                  </div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。">Embed the credential anywhere, PNG or SVG</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。">Hand over a PAdES-signed contract and certificate</span></li>
+                </ul>
+              </article>
+
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -2832,7 +4512,7 @@ a, button,
             <span class="acc-mark" aria-hidden="true">+</span>
           </button>
           <div class="acc-content"><div>
-            <p data-zh="同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 15%。續約 MSRP。整段非專屬。"><strong>Same-tier replacement at no extra cost.</strong> S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 15% off on 24-month. Renewals at MSRP. Non-exclusive throughout.</p>
+            <p data-zh="同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 12%。續約 MSRP。整段非專屬。"><strong>Same-tier replacement at no extra cost.</strong> S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 12% off on 24-month. Renewals at MSRP. Non-exclusive throughout.</p>
           </div></div>
         </div>
 
@@ -3006,98 +4686,44 @@ a, button,
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=2" defer></script>
+<script src="/assets/site.js?v=4" defer></script>
 <script>
-  // Build-a-bundle picker — jurisdiction × industry × term picker with a
-  // live estimate. Replaces the old 6-card grid + .prod-term-toggle.
-  // Mirrors brand/previews/licensing-flow-preview.html Step 1.
+  // Pricing card — the term toggle (3/6/12/24) is the only interactive
+  // control; it drives the per-month price, savings badge, and term line.
+  // Price is duration-only (jurisdiction/industry don't affect it).
   document.addEventListener('DOMContentLoaded', () => {
     const root = document.querySelector('[data-bundle-picker]');
     if (!root) return;
 
-    // Pricing table: term → NT$ per month. Industry-independent — price
-    // varies by duration only (longer term, deeper discount).
-    // 24-month price set as midpoint between 12 and old-36 baselines (Save 15%).
-    const PRICES = { '3': 9990, '6': 9490, '12': 8990, '24': 8490 };
-    const JURIS_LABEL    = { US: 'US', TW: 'Taiwan' };
-    const JURIS_LABEL_ZH = { US: '美國', TW: '台灣' };
-    const INDUSTRY_LABEL = {
-      chip:       'Semiconductor Design & Manufacturing',
-      networking: 'Networking & Communications',
-      computing:  'Computing Systems',
-      integrated: 'Integrated Applications (AI · AV · EV)',
-      multimedia: 'Multimedia & Image Processing',
-      netzero:    'Net-Zero & Carbon',
-    };
-    const INDUSTRY_LABEL_ZH = {
-      chip:       '晶片半導體設計製造',
-      networking: '網路通訊',
-      computing:  '計算機系統',
-      integrated: '綜合應用',
-      multimedia: '多媒體影音/影像處理',
-      netzero:    '淨零碳排',
-    };
-    const TERM_LABEL    = { '3': '3 months', '6': '6 months', '12': '12 months', '24': '24 months' };
-    const TERM_LABEL_ZH = { '3': '3 個月', '6': '6 個月', '12': '12 個月', '24': '24 個月' };
-    const TERM_SAVE     = { '3': '', '6': 'Save 5%', '12': 'Save 10%', '24': 'Save 15%' };
-    const TERM_SAVE_ZH  = { '3': '', '6': '95折優惠', '12': '9折優惠', '24': '85折優惠' };
+    const PRICES        = { '3': 9990, '6': 9490, '12': 8990, '24': 8490 };
+    const TERM_LABEL    = { '3': 'on a 3-month term', '6': 'on a 6-month term', '12': 'on a 12-month term', '24': 'on a 24-month term' };
+    const TERM_LABEL_ZH = { '3': '3 個月期', '6': '6 個月期', '12': '12 個月期', '24': '24 個月期' };
+    const TERM_SAVE     = { '3': '', '6': 'Save 5%', '12': 'Save 10%', '24': 'Save 12%' };
+    const TERM_SAVE_ZH  = { '3': '', '6': '95折優惠', '12': '9折優惠', '24': '88折優惠' };
     const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
-
-    // State seeded from the .selected option in each list + the .is-active
-    // segment in the top term toggle. Defaults: US · Computing · 12-month.
-    const state = {};
-    root.querySelectorAll('[data-bp-list]').forEach(list => {
-      const key = list.getAttribute('data-bp-list');
-      const sel = list.querySelector('.bp-opt.selected');
-      state[key] = sel ? sel.getAttribute('data-bp-value') : null;
-    });
-    const toggleEl = root.querySelector('.bp-toggle');
-    if (toggleEl) {
-      const activeSeg = toggleEl.querySelector('.bp-toggle-seg.is-active');
-      state.term = activeSeg ? activeSeg.getAttribute('data-bp-term') : '12';
-    }
-
     const fmt = n => 'NT$' + n.toLocaleString('en-US');
+
+    const toggleEl = root.querySelector('.bp-toggle');
+    const state = { term: '12' };
+    const activeSeg = toggleEl && toggleEl.querySelector('.bp-toggle-seg.is-active');
+    if (activeSeg) state.term = activeSeg.getAttribute('data-bp-term');
+
+    const els = {
+      price: root.querySelector('[data-bp-summary="price"]'),
+      save:  root.querySelector('[data-bp-summary="save"]'),
+      term:  root.querySelector('[data-bp-summary="termlabel"]'),
+    };
     const render = () => {
       const zh = isZh();
-      const jurisMap    = zh ? JURIS_LABEL_ZH    : JURIS_LABEL;
-      const industryMap = zh ? INDUSTRY_LABEL_ZH : INDUSTRY_LABEL;
-      const termMap     = zh ? TERM_LABEL_ZH     : TERM_LABEL;
-      const saveMap     = zh ? TERM_SAVE_ZH      : TERM_SAVE;
-      const sumEls = {
-        juris:    root.querySelector('[data-bp-summary="juris"]'),
-        industry: root.querySelector('[data-bp-summary="industry"]'),
-        term:     root.querySelector('[data-bp-summary="term"]'),
-        price:    root.querySelector('[data-bp-summary="price"]'),
-        save:     root.querySelector('[data-bp-summary="save"]'),
-      };
-      if (sumEls.juris)    sumEls.juris.textContent    = jurisMap[state.juris]       || '—';
-      if (sumEls.industry) sumEls.industry.textContent = industryMap[state.industry] || '—';
-      if (sumEls.term)     sumEls.term.textContent     = termMap[state.term]         || '—';
-      const price = PRICES[state.term];
-      if (sumEls.price)    sumEls.price.textContent    = price ? fmt(price) : 'NT$—';
-      if (sumEls.save)     sumEls.save.textContent     = saveMap[state.term] || '';
+      if (els.price) els.price.textContent = fmt(PRICES[state.term]);
+      if (els.save)  els.save.textContent  = (zh ? TERM_SAVE_ZH : TERM_SAVE)[state.term] || '';
+      if (els.term)  els.term.textContent  = (zh ? TERM_LABEL_ZH : TERM_LABEL)[state.term] || '';
     };
 
-    // Re-render summary text when the language toggle flips html[lang] —
-    // labels like "Per month" / "Save 10%" / industry names need to swap with
-    // the rest of the page. (data-zh-driven swap runs in site.js.)
+    // Re-render when the language toggle flips html[lang] (save / term line
+    // are JS-driven, not data-zh, so site.js's swap doesn't touch them).
     new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
-    // Picker-list clicks (jurisdiction + industry)
-    root.querySelectorAll('[data-bp-list]').forEach(list => {
-      const key = list.getAttribute('data-bp-list');
-      list.addEventListener('click', e => {
-        const btn = e.target.closest('.bp-opt[data-bp-value]');
-        if (!btn) return;
-        state[key] = btn.getAttribute('data-bp-value');
-        list.querySelectorAll('.bp-opt').forEach(o =>
-          o.classList.toggle('selected', o === btn));
-        render();
-      });
-    });
-
-    // Top term toggle (3 / 6 / 12 months)
     if (toggleEl) {
       toggleEl.addEventListener('click', e => {
         const btn = e.target.closest('[data-bp-term]');
@@ -3142,6 +4768,57 @@ a, button,
     rail.addEventListener('scroll', updateArrows, { passive: true });
     window.addEventListener('resize', updateArrows);
     updateArrows();
+  });
+
+  // How it works — stepped feature carousel (ported from a React reference).
+  // Auto-advances every 3.5s + advance on click/pill; pauses on hover and on
+  // prefers-reduced-motion (no auto-cycle, no entrance animation for those).
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.querySelector('[data-hiw-carousel]');
+    if (!root) return;
+
+    const pills  = Array.from(root.querySelectorAll('[data-hiw-pill]'));
+    const panels = Array.from(root.querySelectorAll('[data-hiw-panel]'));
+    const stage  = root.querySelector('.hiw-stage');
+    const total  = panels.length;
+    if (!total) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const INTERVAL = 3500;
+    let cur = 0;
+    let timer = null;
+
+    const render = () => {
+      panels.forEach((p, i) => {
+        const active = i === cur;
+        p.classList.toggle('is-active', active);
+        if (active && !reduced) {
+          // re-trigger the entrance animation on each switch
+          p.classList.remove('hiw-anim');
+          void p.offsetWidth;
+          p.classList.add('hiw-anim');
+        }
+      });
+      pills.forEach((b, i) => {
+        b.classList.toggle('is-current', i === cur);
+        b.classList.toggle('is-done', i < cur);
+        b.setAttribute('aria-selected', i === cur ? 'true' : 'false');
+      });
+    };
+
+    const go    = (i) => { cur = (i + total) % total; render(); };
+    const next  = () => go(cur + 1);
+    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+    const start = () => { if (reduced) return; stop(); timer = setInterval(next, INTERVAL); };
+
+    pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); start(); }));
+    if (stage) stage.addEventListener('click', () => { next(); start(); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+
+    render();
+    start();
   });
 
 </script>

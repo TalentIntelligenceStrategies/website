@@ -160,7 +160,7 @@
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="#products" class="search-link" data-zh="產品">
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -260,7 +260,7 @@
     <span class="announce-cluster">
       <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
       <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
-      <a class="announce-link" href="#products" data-zh="探索產品 →">Explore industries →</a>
+      <a class="announce-link" href="/product/licensing/" data-zh="探索產品 →">Explore industries →</a>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -427,84 +427,75 @@
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Latest reports  —  Content card row                                 ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--editorial" id="reports" aria-labelledby="reports-heading">
+  <section class="section" id="reports" aria-labelledby="reports-heading">
     <div class="container">
       <header class="section-head">
         <div>
-          <p class="eyebrow" data-zh="近期">Recent</p>
           <h2 id="reports-heading" class="h-section grad-text-silver-solid" data-zh="最新報告">Latest reports</h2>
+          <p class="section-dek" data-zh="每季解讀 IP 地形——專利佈局如何在各產業與司法管轄區之間移動。">Quarterly reads on the IP landscape — how patent positions shift across industries and jurisdictions.</p>
+        </div>
+        <div class="report-nav">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" aria-controls="reports-carousel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" aria-controls="reports-carousel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </header>
 
-      <div class="editorial-grid">
-        <!-- Feature report (left) — banner thumb + bottom-anchored body -->
-        <a href="#" class="feature-report" aria-labelledby="reports-feature-h">
-          <div class="feature-report-thumb">
-            <span class="feature-report-tag" data-zh="焦點 · 2026 Q2">Featured · Q2 2026</span>
-          </div>
-          <div class="feature-report-body">
-            <div class="feature-report-meta">
-              <span data-zh="半導體">Semiconductors</span><span class="sep">·</span><span data-zh="台 × 美">TW × US</span><span class="sep">·</span><span data-zh="14 分鐘">14 min read</span>
-            </div>
-            <h3 id="reports-feature-h" class="feature-report-title" data-zh="外國公司對台灣 PCB 的專利申請量為本地的 4 倍。">Foreign filings into Taiwan PCB outpaced domestic 4-to-1.</h3>
-            <p class="feature-report-dek" data-zh="三年外國對台灣 PCB 群聚的專利申請，與本地反向申請進行比對。護城河在哪裡正在收緊——又在哪裡沒有。">Three years of foreign filings against Taiwan PCB clusters, mapped against domestic counter-filings. Where the moat is closing — and where it isn't.</p>
-          </div>
-        </a>
-
-        <!-- More reports rail (right). Q3/Q2 2025 entries are placeholder copy
-             — replace as real reports publish. -->
-        <aside class="report-rail" aria-labelledby="reports-more-h">
-          <div class="report-rail-head">
-            <h3 id="reports-more-h" data-zh="更多報告">More reports</h3>
-            <a href="#" class="arrow-link" style="font-size:12px;">
-              <span data-zh="查看全部">See all</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      <!-- Reports carousel. Q3/Q2 2025 entries are placeholder copy
+           — replace as real reports publish. -->
+      <div class="report-carousel" id="reports-carousel">
+        <ul class="report-carousel-track">
+          <li class="report-card-cell">
+            <a href="#" class="report-card" aria-labelledby="reports-card-1">
+              <div class="report-card-body">
+                <h3 id="reports-card-1" class="report-card-title" data-zh="外國公司對台灣 PCB 的專利申請量為本地的 4 倍。">Foreign filings into Taiwan PCB outpaced domestic 4-to-1.</h3>
+                <p class="report-card-dek" data-zh="三年外國對台灣 PCB 群聚的專利申請，與本地反向申請進行比對。護城河在哪裡正在收緊——又在哪裡沒有。">Three years of foreign filings against Taiwan PCB clusters, mapped against domestic counter-filings. Where the moat is closing — and where it isn't.</p>
+                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              </div>
             </a>
-          </div>
-          <ul class="report-rail-list">
-            <li>
-              <a href="#" class="report-rail-item">
-                <time class="report-rail-quarter">Q1 2026</time>
-                <div>
-                  <p class="report-rail-title" data-zh="對 14 家 Series A 公司套用 SABCD。">SABCD applied to a 14-company Series A cohort.</p>
-                  <p class="report-rail-meta" data-zh="VC IPDD · SABCD · 12 分鐘">VC IPDD · SABCD · 12 min</p>
-                </div>
-                <svg class="report-rail-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="report-rail-item">
-                <time class="report-rail-quarter">Q4 2025</time>
-                <div>
-                  <p class="report-rail-title" data-zh="MedTech IP 群聚：生物辨識與植入式專利在哪裡交會。">MedTech IP clusters: where biometric and implantable patents converge.</p>
-                  <p class="report-rail-meta" data-zh="MedTech · 跨司法管轄區 · 10 分鐘">MedTech · Cross-jurisdiction · 10 min</p>
-                </div>
-                <svg class="report-rail-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="report-rail-item">
-                <time class="report-rail-quarter">Q3 2025</time>
-                <div>
-                  <p class="report-rail-title" data-zh="電動車動力總成請求項家族在台灣與德國 OEM 之間交會。">EV powertrain claim families converge between Taiwan and German OEMs.</p>
-                  <p class="report-rail-meta" data-zh="汽車 · 台 × 德 · 9 分鐘">Automotive · TW × DE · 9 min</p>
-                </div>
-                <svg class="report-rail-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="report-rail-item">
-                <time class="report-rail-quarter">Q2 2025</time>
-                <div>
-                  <p class="report-rail-title" data-zh="太陽能 PV 申請在 CBAM 實施前集中於三個歐盟司法管轄區。">Solar PV filings concentrate in three EU jurisdictions ahead of CBAM enforcement.</p>
-                  <p class="report-rail-meta" data-zh="再生能源 · 跨歐盟 · 11 分鐘">Renewables · Cross-EU · 11 min</p>
-                </div>
-                <svg class="report-rail-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </a>
-            </li>
-          </ul>
-        </aside>
+          </li>
+          <li class="report-card-cell">
+            <a href="#" class="report-card" aria-labelledby="reports-card-2">
+              <div class="report-card-body">
+                <h3 id="reports-card-2" class="report-card-title" data-zh="對 14 家 Series A 公司套用 SABCD。">SABCD applied to a 14-company Series A cohort.</h3>
+                <p class="report-card-dek" data-zh="每件專利以 SABCD 評級，再彙整為各基金可據以行動的投資組合訊號。">Every patent in the cohort graded S through D, then rolled up into a portfolio signal each fund could act on.</p>
+                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              </div>
+            </a>
+          </li>
+          <li class="report-card-cell">
+            <a href="#" class="report-card" aria-labelledby="reports-card-3">
+              <div class="report-card-body">
+                <h3 id="reports-card-3" class="report-card-title" data-zh="MedTech IP 群聚：生物辨識與植入式專利在哪裡交會。">MedTech IP clusters: where biometric and implantable patents converge.</h3>
+                <p class="report-card-dek" data-zh="生物辨識感測與植入式請求項家族橫跨四個司法管轄區追蹤，並標記重疊區的營運自由度風險。">Biometric-sensing and implantable claim families traced across four jurisdictions, with the overlap zones flagged for freedom-to-operate risk.</p>
+                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              </div>
+            </a>
+          </li>
+          <li class="report-card-cell">
+            <a href="#" class="report-card" aria-labelledby="reports-card-4">
+              <div class="report-card-body">
+                <h3 id="reports-card-4" class="report-card-title" data-zh="電動車動力總成請求項家族在台灣與德國 OEM 之間交會。">EV powertrain claim families converge between Taiwan and German OEMs.</h3>
+                <p class="report-card-dek" data-zh="台灣供應商與德國 OEM 對相同動力總成請求項的申請交會處——以及哪些家族留有迴避設計空間。">Where Taiwanese suppliers and German OEMs file against the same powertrain claims — and which families leave room to design around.</p>
+                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              </div>
+            </a>
+          </li>
+          <li class="report-card-cell">
+            <a href="#" class="report-card" aria-labelledby="reports-card-5">
+              <div class="report-card-body">
+                <h3 id="reports-card-5" class="report-card-title" data-zh="太陽能 PV 申請在 CBAM 實施前集中於三個歐盟司法管轄區。">Solar PV filings concentrate in three EU jurisdictions ahead of CBAM enforcement.</h3>
+                <p class="report-card-dek" data-zh="申請量對照 CBAM 時程追蹤，顯示歐盟太陽能專利活動在實施前集中之處。">Filing volume tracked against the CBAM timeline, showing where EU solar patent activity is clustering before enforcement begins.</p>
+                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+              </div>
+            </a>
+          </li>
+        </ul>
       </div>
+      <div class="report-dots" role="tablist" aria-label="Report slides"></div>
     </div>
   </section>
 
@@ -515,8 +506,8 @@
     <div class="container">
       <header class="section-head">
         <div>
-          <p class="eyebrow" data-zh="媒體報導">In the press</p>
           <h2 id="press-heading" class="h-section grad-text-silver-solid" data-zh="新聞稿">Press releases</h2>
+          <p class="section-dek" data-zh="公司動態、合作公告與精選媒體報導。">Company news, partnership announcements, and select press coverage.</p>
         </div>
         <a href="#" class="arrow-link">
           <span data-zh="查看全部新聞">See all press</span>

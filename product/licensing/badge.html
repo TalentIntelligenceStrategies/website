@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=9">
+<link rel="stylesheet" href="/assets/styles.css?v=12">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -152,7 +152,7 @@
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/#products" class="search-link" data-zh="產品">
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -189,8 +189,8 @@
     <div class="hero-silver" aria-hidden="true"></div>
     <div class="hero-signal" aria-hidden="true"></div>
 
-    <div class="container hero-inner">
-      <article class="pillar" data-pillar="licensing">
+    <div class="container hero-inner hero--badge-showcase">
+      <article class="pillar pillar--centered" data-pillar="licensing">
         <p class="pillar-eyebrow" data-zh="泰然專利防護網">TIS Licensing Platform</p>
         <h1 class="pillar-title">
           <span data-zh="專利標章加持用法">How to use the Badge.</span>
@@ -201,6 +201,85 @@
           <a href="/product/licensing/" class="btn btn-secondary" data-zh="回到專利防護網">Back to Licensing</a>
         </div>
       </article>
+
+      <!-- Verified License Badge — markup ported 1:1 from brand/catalog/components-preview.html
+           §Verified License Badge. The .badge-tilt wrapper + .seal-pill-sheen drive the
+           idle-float / mouse-tilt / shine motion (see site.js). Look is pixel-faithful. -->
+      <div class="badge-stage">
+        <div class="seal-pill badge-tilt">
+
+          <div class="vlb-seal is-standalone is-tis">
+            <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+              <circle class="seal-disc" cx="100" cy="100" r="92"/>
+              <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+              <defs>
+                <path id="seal-tis-cb-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                <path id="seal-tis-cb-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+              </defs>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-tis-cb-top" startOffset="50%">TIS ISSUED VERIFIED LICENSE</textPath></text>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-tis-cb-bot" startOffset="50%">LIC-12345</textPath></text>
+            </svg>
+            <span class="seal-mark" aria-label="TIS"></span>
+          </div>
+
+          <div class="seal-pill-divider"></div>
+
+          <div class="vlb-seal is-standalone is-nycu">
+            <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+              <circle class="seal-disc" cx="100" cy="100" r="92"/>
+              <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+              <defs>
+                <path id="seal-nycu-cb-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                <path id="seal-nycu-cb-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+              </defs>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-nycu-cb-top" startOffset="50%">NATIONAL YANG MING CHIAO TUNG UNIVERSITY</textPath></text>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-nycu-cb-bot" startOffset="50%">18 PATENTS</textPath></text>
+            </svg>
+            <span class="seal-mark" aria-label="NYCU"></span>
+          </div>
+
+          <div class="vlb-seal is-standalone is-itri">
+            <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+              <circle class="seal-disc" cx="100" cy="100" r="92"/>
+              <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+              <defs>
+                <path id="seal-itri-cb-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                <path id="seal-itri-cb-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+              </defs>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-itri-cb-top" startOffset="50%">INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE</textPath></text>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-itri-cb-bot" startOffset="50%">7 PATENTS</textPath></text>
+            </svg>
+            <span class="seal-mark" aria-label="ITRI"></span>
+          </div>
+
+          <div class="vlb-seal is-standalone is-iii">
+            <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+              <circle class="seal-disc" cx="100" cy="100" r="92"/>
+              <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+              <defs>
+                <path id="seal-iii-cb-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                <path id="seal-iii-cb-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+              </defs>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-iii-cb-top" startOffset="50%">INSTITUTE FOR INFORMATION INDUSTRY</textPath></text>
+              <text class="seal-text" text-anchor="middle"><textPath href="#seal-iii-cb-bot" startOffset="50%">5 PATENTS</textPath></text>
+            </svg>
+            <span class="seal-mark" aria-label="III"></span>
+          </div>
+
+          <div class="seal-pill-divider"></div>
+
+          <div class="seal-pill-credential">
+            <span class="qr" aria-label="Verification QR"></span>
+            <div class="lic-no">LIC-12345</div>
+          </div>
+
+          <span class="seal-pill-sheen" aria-hidden="true"></span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -271,7 +350,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=2" defer></script>
+<script src="/assets/site.js?v=4" defer></script>
 
 </body>
 </html>

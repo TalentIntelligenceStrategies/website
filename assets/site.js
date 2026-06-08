@@ -384,6 +384,26 @@
     counters.forEach(el => el.textContent = el.dataset.target);
   }
 
+  // ──────────────── Scroll-reveal — [data-reveal] fades/rises into view once ────────────────
+  // Guarded so it no-ops on pages without [data-reveal] elements (homepage, signal).
+  // Under prefers-reduced-motion or no IntersectionObserver, elements show immediately.
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  if (revealEls.length) {
+    if (reduced || !('IntersectionObserver' in window)) {
+      revealEls.forEach(el => el.classList.add('is-revealed'));
+    } else {
+      const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      revealEls.forEach(el => revealObserver.observe(el));
+    }
+  }
+
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
@@ -938,4 +958,166 @@
     window.__inventoryTeaserRefresh = applyFilter;
 
   applyFilter(); // initialize
+})();
+
+// ─── Reports carousel: scroll-snap track, prev/next arrows, dot indicators ───
+(() => {
+  const carousel = document.getElementById('reports-carousel');
+  if (!carousel) return;
+  const track = carousel.querySelector('.report-carousel-track');
+  const cells = Array.from(carousel.querySelectorAll('.report-card-cell'));
+  if (!track || cells.length < 2) return;
+
+  const section  = carousel.closest('section');
+  const prevBtn  = section && section.querySelector('.report-nav-btn[data-dir="prev"]');
+  const nextBtn  = section && section.querySelector('.report-nav-btn[data-dir="next"]');
+  const dotsWrap = section && section.querySelector('.report-dots');
+
+  // Build one dot per card.
+  const dots = cells.map((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'report-dot';
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to report ${i + 1}`);
+    dot.addEventListener('click', () => scrollToCell(i));
+    if (dotsWrap) dotsWrap.appendChild(dot);
+    return dot;
+  });
+
+  const cellStep = () => {
+    if (cells.length < 2) return cells[0].offsetWidth;
+    return cells[1].offsetLeft - cells[0].offsetLeft; // card width + gap
+  };
+
+  const nearestIndex = () => {
+    const x = track.scrollLeft;
+    let best = 0, bestDist = Infinity;
+    cells.forEach((cell, i) => {
+      const d = Math.abs(cell.offsetLeft - track.offsetLeft - x);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  };
+
+  const scrollToCell = (i) => {
+    const idx = Math.max(0, Math.min(cells.length - 1, i));
+    track.scrollTo({ left: cells[idx].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  };
+
+  const sync = () => {
+    const active = nearestIndex();
+    dots.forEach((d, i) => d.setAttribute('aria-selected', String(i === active)));
+    const atStart = track.scrollLeft <= 2;
+    const atEnd   = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    if (prevBtn) prevBtn.disabled = atStart;
+    if (nextBtn) nextBtn.disabled = atEnd;
+  };
+
+  if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -cellStep(), behavior: 'smooth' }));
+  if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left:  cellStep(), behavior: 'smooth' }));
+
+  let raf = null;
+  track.addEventListener('scroll', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = null; sync(); });
+  });
+  window.addEventListener('resize', sync);
+
+  sync();
+})();
+
+/* ════════════════════════════════════════════════════════════════════════
+   Verified License Badge — 3D idle-float + mouse-follow tilt + shine.
+   At rest the pill sways gently in 3D; on hover it leans toward the cursor
+   (refined ±~11°) while a specular highlight tracks the pointer. Respects
+   prefers-reduced-motion (static, flat) with a live change listener.
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const stages = document.querySelectorAll('.badge-stage');
+  if (!stages.length) return;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const initStage = (stage) => {
+  const card  = stage.querySelector('.badge-tilt');
+  if (!card) return;
+  const sheen = card.querySelector('.seal-pill-sheen');
+
+  // Idle sway state — very subtle bounded oscillation (the at-rest "breathe").
+  const rot   = { x: 1.6, y: -2.2, z: 0.5 };
+  const speed = { x: 0.022, y: 0.03, z: 0.006 };
+  const IDLE_LIMIT = { x: 2, y: 2.6, z: 0.8 };
+  const TILT_MAX = 11; // hover cap, degrees — refined/premium
+
+  let hovered = false;
+  let raf = null;
+
+  const apply = (scale) => {
+    card.style.transform =
+      `rotateX(${rot.x.toFixed(2)}deg) rotateY(${rot.y.toFixed(2)}deg) rotateZ(${rot.z.toFixed(2)}deg)` +
+      (scale ? ` scale(${scale})` : '');
+  };
+
+  const idleStep = () => {
+    if (hovered) { raf = null; return; }
+    rot.x += speed.x; rot.y += speed.y; rot.z += speed.z;
+    if (Math.abs(rot.x) > IDLE_LIMIT.x) speed.x *= -1;
+    if (Math.abs(rot.y) > IDLE_LIMIT.y) speed.y *= -1;
+    if (Math.abs(rot.z) > IDLE_LIMIT.z) speed.z *= -1;
+    apply();
+    raf = requestAnimationFrame(idleStep);
+  };
+
+  const startIdle = () => { if (!raf) raf = requestAnimationFrame(idleStep); };
+  const stopIdle  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+
+  const onMove = (e) => {
+    if (!hovered) return;
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = (e.clientX - cx) / (r.width / 2);   // -1 … 1
+    const dy = (e.clientY - cy) / (r.height / 2);  // -1 … 1
+    rot.x = -dy * TILT_MAX;
+    rot.y =  dx * TILT_MAX;
+    rot.z = Math.max(-3, Math.min(3, dx * dy * 4));
+    apply(1.015);
+    if (sheen) {
+      sheen.style.setProperty('--sx', `${((e.clientX - r.left) / r.width) * 100}%`);
+      sheen.style.setProperty('--sy', `${((e.clientY - r.top) / r.height) * 100}%`);
+    }
+  };
+
+  const onEnter = () => {
+    if (reduceMotion.matches) return;
+    hovered = true;
+    stopIdle();
+  };
+
+  const onLeave = () => {
+    hovered = false;
+    if (sheen) { sheen.style.removeProperty('--sx'); sheen.style.removeProperty('--sy'); }
+    if (reduceMotion.matches) return;
+    startIdle();
+  };
+
+  const enable = () => {
+    if (reduceMotion.matches) {
+      stopIdle();
+      hovered = false;
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
+      return;
+    }
+    startIdle();
+  };
+
+  stage.addEventListener('mouseenter', onEnter);
+  stage.addEventListener('mousemove', onMove);
+  stage.addEventListener('mouseleave', onLeave);
+  reduceMotion.addEventListener('change', enable);
+
+  enable();
+  };
+
+  stages.forEach(initStage);
 })();
