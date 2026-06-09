@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════════════
+  TIS · Licensing Page — Live Copy Review
+  ════════════════════════════════════════════════════════════════════════
+  Standalone review tool. Lists every copy string on the licensing product
+  page, lets a reviewer flag Fix/Pass, propose EN/ZH rewrites, and leave
+  visual + general suggestions. Edits sync live to a Google Sheet so they
+  come back to you without exchanging files.
+
+  ── HOW THE LIVE SYNC WORKS ────────────────────────────────────────────
+  This file is static (GitHub Pages). To capture edits centrally it talks to
+  a tiny Google Apps Script web app that reads/writes a Google Sheet in your
+  Drive. Until ENDPOINT below is set, the tool runs in LOCAL mode (edits save
+  to this browser only — fine for testing, not shared).
+
+  ── ONE-TIME SETUP (≈5 min) ─────────────────────────────────────────────
+  1. Create a blank Google Sheet in your Drive. Name it e.g.
+     "Licensing Copy Review". Note: leave the first tab named "Sheet1".
+  2. Extensions → Apps Script. Delete the stub, paste the script in the
+     APPS SCRIPT block at the very bottom of this file (after </html>).
+  3. Deploy → New deployment → type "Web app".
+        • Execute as: Me
+        • Who has access: Anyone
+     Deploy → authorize → copy the Web app URL (ends in /exec).
+  4. Paste that URL into the ENDPOINT constant in the <script> below, then
+     redeploy this HTML. Done — edits now write to the Sheet, and the Sheet
+     is your readable log of every flag + rewrite.
+
+  Security note: an open "Anyone" endpoint on a public page means anyone with
+  the link can read/write. Fine for low-stakes copy review. To gate it, set
+  PASSCODE below to a shared word — reviewers enter it once.
+  ════════════════════════════════════════════════════════════════════════
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Licensing Page — Copy Review · TIS</title>
+<link rel="icon" type="image/svg+xml" href="../designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" />
+
+<style>
+/* ───────── Fonts ───────── */
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:400;font-display:swap;src:url('../designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');}
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:600;font-display:swap;src:url('../designs/assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf') format('truetype');}
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:700;font-display:swap;src:url('../designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf') format('truetype');}
+@font-face{font-family:'Inconsolata';font-style:normal;font-weight:400;font-display:swap;src:url('../designs/assets/fonts/Inconsolata/static/Inconsolata-Regular.ttf') format('truetype');}
+@font-face{font-family:'Noto Sans TC';font-style:normal;font-weight:400;font-display:swap;src:url('../designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Regular.ttf') format('truetype');}
+@font-face{font-family:'Noto Sans TC';font-style:normal;font-weight:600;font-display:swap;src:url('../designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-SemiBold.ttf') format('truetype');}
+@font-face{font-family:'Noto Sans TC';font-style:normal;font-weight:700;font-display:swap;src:url('../designs/assets/fonts/Noto%20Sans%20TC/static/NotoSansTC-Bold.ttf') format('truetype');}
+
+/* ───────── Tokens ───────── */
+:root{
+  --n1:#FFFFFF;--n2:#FAFAFA;--n3:#F3F3F3;--n4:#EEEEEE;--n10:#252525;
+  --text-primary:#252525;--text-secondary:#5a5a5a;--text-tertiary:#8a8a8a;--text-quaternary:#b0b0b0;
+  --border:#EEEEEE;--border-strong:#e0e0e0;
+  --surface-page:#FFFFFF;--surface-2:#FAFAFA;--surface-3:#F3F3F3;
+  --surface-page-translucent:rgba(255,255,255,.72);
+  --inverse:#252525;--inverse-hover:#3a3a3a;--text-inverse:#FFFFFF;
+  --danger:#B91C1C;--danger-bg:#FEE2E2;
+  --success:#15803D;--success-bg:#F0FDF4;
+  --warn:#A16207;--warn-bg:#FEF9C3;
+  --accent-warm:linear-gradient(90deg,#D4A017 0%,#F97316 100%);
+  --accent-warm-solid:#C2410C;
+  --shadow-low:0 2px 4px rgba(0,0,0,.06);
+  --shadow-med:0 4px 24px rgba(0,0,0,.08);
+  --logo-secondary:url('../designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
+  --logo-submark:url('../designs/assets/logos/tis/tis_cubelogo_submark_dark.svg');
+  --font-sans:'Urbanist','Noto Sans TC',system-ui,sans-serif;
+  --font-mono:'Inconsolata',ui-monospace,monospace;
+}
+[lang="zh-Hant"]{--logo-secondary:url('../designs/assets/logos/tis/tis_secondarylogo_dark_ch.svg');}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:var(--font-sans);
+  color:var(--text-primary);
+  background:var(--surface-2);
+  line-height:1.5;
+  padding-top:64px;
+}
+:lang(zh-Hant){font-family:'Noto Sans TC','Urbanist',sans-serif;}
+.num{font-family:var(--font-mono);}
+a{color:inherit;}
+
+/* ───────── Top nav ───────── */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;
+  background:var(--surface-page-translucent);backdrop-filter:saturate(140%) blur(20px);
+  -webkit-backdrop-filter:saturate(140%) blur(20px);border-bottom:1px solid var(--border);}
+.topnav-inner{display:flex;align-items:center;height:100%;gap:20px;
+  max-width:1320px;margin:0 auto;padding:0 28px;}
+.topnav-logo{height:26px;width:230px;aspect-ratio:1467.19/167.59;
+  background:var(--logo-secondary) left center/contain no-repeat;flex-shrink:0;}
+[lang="zh-Hant"] .topnav-logo{aspect-ratio:626.7/167.58;width:100px;}
+.topnav-spacer{flex:1;}
+.topnav-controls{display:flex;align-items:center;gap:10px;}
+
+/* identity chip */
+.idwrap{position:relative;}
+.idchip{font-family:inherit;display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;
+  padding:7px 12px;border-radius:8px;background:var(--inverse);color:var(--text-inverse);
+  border:0;cursor:pointer;}
+.idchip .who{opacity:.6;font-weight:600;}
+.idmenu{position:absolute;top:calc(100% + 8px);right:0;min-width:180px;background:var(--surface-page);
+  border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-med);padding:6px;
+  display:none;z-index:200;}
+.idmenu.open{display:block;}
+.idmenu button{font-family:inherit;display:block;width:100%;text-align:left;font-size:13px;font-weight:600;
+  padding:9px 11px;border:0;background:transparent;color:var(--text-primary);border-radius:6px;cursor:pointer;}
+.idmenu button:hover{background:var(--surface-3);}
+.idmenu input{font-family:inherit;width:100%;font-size:13px;padding:8px 10px;border:1px solid var(--border-strong);
+  border-radius:6px;margin-top:4px;}
+
+/* ───────── Page shell ───────── */
+.wrap{max-width:1320px;margin:0 auto;padding:36px 28px 120px;}
+.lede{margin-bottom:32px;}
+.lede h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px;}
+.lede p{font-size:15px;color:var(--text-secondary);max-width:760px;}
+.lede .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+.tag{font-size:12px;font-weight:600;padding:5px 11px;border-radius:9999px;background:var(--surface-3);color:var(--text-secondary);}
+.tag b{color:var(--text-primary);}
+.tag-link{text-decoration:none;background:var(--inverse);color:var(--text-inverse);transition:background .12s;}
+.tag-link:hover{background:var(--inverse-hover);}
+
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;font-size:13px;color:var(--text-secondary);
+  background:var(--surface-page);border:1px solid var(--border);border-radius:12px;padding:14px 18px;}
+.legend span{display:inline-flex;align-items:center;gap:7px;}
+.swatch{width:18px;height:18px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;}
+.sw-fix{background:var(--danger-bg);color:var(--danger);}
+.sw-pass{background:var(--success-bg);color:var(--success);}
+
+/* ───────── Section card ───────── */
+.section{background:var(--surface-page);border:1px solid var(--border);border-radius:16px;
+  margin-top:18px;overflow:hidden;box-shadow:var(--shadow-low);}
+.section-head{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none;
+  border-bottom:1px solid transparent;transition:border-color .15s;}
+.section.open .section-head{border-bottom-color:var(--border);}
+.section-num{font-family:var(--font-mono);font-size:13px;font-weight:400;color:var(--text-inverse);
+  background:var(--inverse);width:30px;height:30px;border-radius:8px;display:inline-flex;
+  align-items:center;justify-content:center;flex-shrink:0;}
+.section-titles{flex:1;min-width:0;}
+.section-titles h2{font-size:18px;font-weight:700;letter-spacing:-.01em;}
+.section-titles .maps{font-size:12.5px;color:var(--text-tertiary);margin-top:2px;}
+.section.secondary .section-num{background:var(--surface-3);color:var(--text-tertiary);}
+.progress{display:flex;gap:6px;align-items:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.pill{padding:3px 9px;border-radius:9999px;background:var(--surface-3);color:var(--text-tertiary);}
+.pill.has-fix{background:var(--danger-bg);color:var(--danger);}
+.pill.has-pass{background:var(--success-bg);color:var(--success);}
+.chev{width:18px;height:18px;color:var(--text-quaternary);transition:transform .2s;flex-shrink:0;}
+.section.open .chev{transform:rotate(180deg);}
+.section-body{display:none;padding:6px 22px 22px;}
+.section.open .section-body{display:block;}
+
+/* ───────── Rows ───────── */
+.rowhead,.row{display:grid;grid-template-columns:172px 1fr 1fr 138px 200px;gap:14px;align-items:start;}
+.rowhead{padding:10px 12px 8px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--text-quaternary);border-bottom:1px solid var(--border);}
+.rowgroup{border-bottom:1px solid var(--border);}
+.rowgroup:last-child{border-bottom:0;}
+.row{padding:14px 12px;}
+.loc{font-size:13.5px;font-weight:700;color:var(--text-primary);}
+.loc .hint{display:block;font-size:11.5px;font-weight:500;color:var(--text-quaternary);margin-top:2px;}
+.copy{font-size:13.5px;color:var(--text-primary);white-space:pre-wrap;word-break:break-word;}
+.copy:lang(zh-Hant),.copy.zh{font-family:'Noto Sans TC',sans-serif;}
+.copy.empty{color:var(--text-quaternary);font-style:italic;}
+.copy s{color:var(--text-quaternary);}
+.copy .new{display:block;margin-top:6px;color:var(--accent-warm-solid);font-weight:600;}
+.copy .revert{font-family:inherit;margin-top:6px;font-size:11px;font-weight:700;color:var(--text-secondary);
+  background:var(--surface-3);border:0;border-radius:6px;padding:3px 9px;cursor:pointer;}
+.copy .revert:hover{background:var(--n4);}
+
+.status{display:flex;gap:6px;}
+.stbtn{font-family:inherit;flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  font-size:12px;font-weight:700;padding:7px 6px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--surface-page);color:var(--text-tertiary);
+  transition:all .12s;}
+.stbtn:hover{border-color:var(--text-quaternary);}
+.stbtn.fix[aria-pressed="true"]{background:var(--danger-bg);color:var(--danger);border-color:var(--danger);}
+.stbtn.pass[aria-pressed="true"]{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+
+.vis{width:100%;}
+.vis textarea{font-family:inherit;width:100%;font-size:12.5px;color:var(--text-primary);
+  border:1px solid var(--border-strong);border-radius:8px;padding:8px 10px;resize:vertical;min-height:38px;
+  background:var(--surface-2);line-height:1.4;}
+.vis textarea:focus{outline:none;border-color:var(--text-secondary);background:var(--surface-page);}
+
+/* save-edit button + box footer */
+.boxfoot,.ep-foot{display:flex;align-items:center;gap:10px;margin-top:7px;}
+.boxfoot .stamp,.ep-foot .stamp{margin-top:0;}
+.savebtn{font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:7px;
+  border:1px solid var(--border-strong);background:var(--surface-page);color:var(--text-quaternary);
+  cursor:pointer;transition:all .12s;white-space:nowrap;}
+.savebtn:hover{border-color:var(--text-tertiary);color:var(--text-secondary);}
+.savebtn.dirty{background:var(--inverse);color:var(--text-inverse);border-color:var(--inverse);}
+.savebtn.dirty:hover{background:var(--inverse-hover);}
+.savebtn.saved{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+
+/* latest-edit meta + collapsible history */
+.copy .editmeta,.noteitem .editmeta,.histitem .editmeta{display:block;margin-top:3px;font-size:10.5px;color:var(--text-quaternary);}
+.histtoggle{font-family:inherit;margin-top:7px;font-size:10.5px;font-weight:700;color:var(--text-secondary);
+  background:var(--surface-3);border:0;border-radius:6px;padding:3px 9px;cursor:pointer;display:inline-block;}
+.histtoggle:hover{background:var(--n4);}
+.histlist{margin-top:7px;border-left:2px solid var(--border-strong);padding-left:10px;display:flex;flex-direction:column;gap:8px;}
+.histlist[hidden]{display:none;}
+.histitem{display:flex;flex-direction:column;gap:1px;}
+.histitem .hv,.histitem .nv{font-size:12px;color:var(--text-secondary);white-space:pre-wrap;word-break:break-word;}
+.histitem .hv.zh,.histitem .nv.zh{font-family:'Noto Sans TC',sans-serif;}
+.histitem--orig .hv{color:var(--text-quaternary);}
+.notelist{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+.noteitem{background:var(--surface-page);border:1px solid var(--border);border-radius:7px;padding:7px 9px;}
+.noteitem .nv{font-size:12.5px;color:var(--text-primary);white-space:pre-wrap;word-break:break-word;}
+
+/* edit panel */
+.editpanel{display:none;grid-column:1/-1;margin:0 12px 14px;padding:14px 16px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:10px;}
+.rowgroup.editing .editpanel{display:block;}
+.editpanel .ep-title{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent-warm-solid);margin-bottom:10px;}
+.ep-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ep-field label{display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:5px;}
+.ep-field textarea{font-family:inherit;width:100%;font-size:13.5px;border:1px solid var(--border-strong);
+  border-radius:8px;padding:9px 11px;resize:vertical;min-height:56px;background:var(--surface-page);line-height:1.45;}
+.ep-field textarea.zh{font-family:'Noto Sans TC',sans-serif;}
+.ep-field textarea:focus{outline:none;border-color:var(--accent-warm-solid);}
+
+/* general suggestion */
+.general{margin-top:16px;padding:16px 18px;background:var(--surface-2);border:1px dashed var(--border-strong);border-radius:12px;}
+.general label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-secondary);margin-bottom:8px;}
+.general textarea{font-family:inherit;width:100%;font-size:14px;border:1px solid var(--border-strong);
+  border-radius:8px;padding:11px 13px;resize:vertical;min-height:64px;background:var(--surface-page);line-height:1.5;}
+.general textarea:focus{outline:none;border-color:var(--text-secondary);}
+
+.stamp{font-size:11px;color:var(--text-quaternary);margin-top:6px;min-height:14px;}
+
+/* roadmap — in-progress pages */
+.roadmap{margin-top:40px;padding-top:28px;border-top:1px dashed var(--border-strong);}
+.roadmap-head{display:flex;align-items:center;gap:12px;}
+.roadmap-head h2{font-size:20px;font-weight:700;letter-spacing:-.01em;}
+.rm-tag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--warn);
+  background:var(--warn-bg);padding:4px 10px;border-radius:9999px;}
+.roadmap-sub{font-size:13.5px;color:var(--text-secondary);margin-top:8px;max-width:680px;}
+.rm-item{background:var(--surface-page);border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;margin-top:14px;box-shadow:var(--shadow-low);}
+.rm-meta{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.rm-name{font-size:16px;font-weight:700;color:var(--text-primary);}
+.rm-path{font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);}
+.rm-desc{font-size:13.5px;color:var(--text-secondary);line-height:1.5;margin:8px 0 12px;max-width:760px;}
+.rm-item textarea{font-family:inherit;width:100%;font-size:13.5px;border:1px solid var(--border-strong);
+  border-radius:8px;padding:10px 12px;resize:vertical;min-height:52px;background:var(--surface-2);line-height:1.5;}
+.rm-item textarea:focus{outline:none;border-color:var(--text-secondary);background:var(--surface-page);}
+
+/* passcode gate */
+.gate{position:fixed;inset:0;z-index:500;background:rgba(37,37,37,.55);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;}
+.gate.show{display:flex;}
+.gate-card{background:var(--surface-page);border-radius:16px;padding:32px;width:340px;box-shadow:var(--shadow-med);text-align:center;}
+.gate-card h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+.gate-card p{font-size:13px;color:var(--text-secondary);margin-bottom:16px;}
+.gate-card input{font-family:inherit;width:100%;font-size:15px;padding:11px 13px;border:1px solid var(--border-strong);border-radius:8px;text-align:center;}
+.gate-card button{font-family:inherit;width:100%;margin-top:12px;font-size:13px;font-weight:700;letter-spacing:.08em;
+  padding:12px;border:0;border-radius:10px;background:var(--inverse);color:var(--text-inverse);cursor:pointer;}
+
+@media (max-width:1080px){
+  .rowhead,.row{grid-template-columns:140px 1fr 1fr 120px;}
+  .rowhead .h-vis,.row .vis{grid-column:1/-1;}
+  .row .vis{margin-top:4px;}
+}
+@media (max-width:720px){
+  .rowhead{display:none;}
+  .row{grid-template-columns:1fr;gap:10px;}
+  .ep-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ───────── Header chrome (mirrors site .topnav) ───────── -->
+<header class="topnav">
+  <div class="topnav-inner">
+    <span class="topnav-logo" aria-hidden="true"></span>
+    <span class="topnav-spacer"></span>
+    <div class="topnav-controls">
+      <div class="idwrap">
+        <button type="button" class="idchip" id="idchip"><span class="who">You are</span><span id="idname">—</span> ▾</button>
+        <div class="idmenu" id="idmenu">
+          <button type="button" data-id="Irene">Irene</button>
+          <button type="button" data-id="Michael">Michael</button>
+          <button type="button" data-id="Ming-I">Ming-I</button>
+          <button type="button" data-id="Troy">Troy</button>
+          <input type="text" id="idcustom" placeholder="Other name…" />
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="lede">
+    <h1 data-en="Licensing Page — Copy Review" data-zh="授權頁 — 文案審閱">Licensing Page — Copy Review</h1>
+    <p>Every line of copy on the Licensing page and lobby — Chinese and English, side by side. <strong>How it works:</strong> pick your name (top-right), mark each line Fix or Pass, propose an EN / 中文 rewrite, and Save. Saved edits are captured to a shared log; nothing is overwritten — prior versions stay under “history”.</p>
+    <div class="meta">
+      <a class="tag tag-link" href="https://tisglobalinc.com/product/licensing/" target="_blank" rel="noopener">Open the live page ↗</a>
+      <span class="tag"><b id="stat-fix" class="num">0</b>&nbsp;<span data-en="to fix" data-zh="待修改">to fix</span></span>
+      <span class="tag"><b id="stat-pass" class="num">0</b>&nbsp;<span data-en="passed" data-zh="已通過">passed</span></span>
+      <span class="tag"><b id="stat-left" class="num">0</b>&nbsp;<span data-en="left" data-zh="未審">left</span></span>
+    </div>
+    <div class="legend">
+      <span><i class="swatch sw-fix">✗</i><span data-en="Needs a fix" data-zh="需要修改">Needs a fix</span></span>
+      <span><i class="swatch sw-pass">✓</i><span data-en="Approved as-is" data-zh="維持原樣通過">Approved as-is</span></span>
+      <span data-en="On Fix, the original is struck through and your version shows below; prior versions sit under “history”." data-zh="標記「修改」後，原文會被劃掉、你的版本顯示在下方；先前版本收於「history」。">On Fix, the original is struck through and your version shows below; prior versions sit under “history”.</span>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+  <div id="roadmap"></div>
+</div>
+
+<!-- passcode gate (hidden unless PASSCODE set) -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <h3 data-en="Enter passcode" data-zh="輸入通行碼">Enter passcode</h3>
+    <p data-en="This review is passcode-protected." data-zh="此審閱已設定通行碼保護。">This review is passcode-protected.</p>
+    <input type="password" id="gate-input" autocomplete="off" />
+    <button type="button" id="gate-go" data-en="Enter" data-zh="進入">Enter</button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════
+   CONFIG — set these after deploying the Apps Script (see top comment)
+   ════════════════════════════════════════════════════════════════════ */
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbw0oKmk7glDidqMuuj8k5LBC0--g0nAsabyxyI7JZ2rWE7518AZfLBMBYKGVwNQWOih/exec";          // ← Apps Script /exec URL
+const PASSCODE = "";          // ← optional shared word; leave "" for open access
+const POLL_MS  = 4000;        // live-refresh cadence
+
+/* ════════════════════════════════════════════════════════════════════
+   LOCATIONS — the section/string map. engOriginal/zhOriginal stay EMPTY
+   until the "populate" step pulls them from product/licensing/index.html.
+   IDs are stable; do not renumber.
+   ════════════════════════════════════════════════════════════════════ */
+const SECTIONS = [
+  { id:"hero", num:"1", title:{en:"Hero & Announcement", zh:"主視覺與公告列"},
+    maps:{en:"Announcement banner + hero block", zh:"公告列 + 主視覺"},
+    locs:[
+      ["ann-eyebrow",   "Announcement — text",   "30-patent bundles starting at NT$3,390/month line"],
+      ["ann-link",      "Announcement — link",   "“View pricing →”"],
+      ["hero-eyebrow",  "Hero — eyebrow",         "Product name above headline"],
+      ["hero-headline", "Hero — headline",        "Main two-line headline"],
+      ["hero-subhead",  "Hero — subhead",         "Supporting paragraph"],
+      ["hero-cta-1",    "Hero — primary CTA",     "“Build your bundle”"],
+      ["hero-cta-2",    "Hero — secondary CTA",   "“Talk to sales”"],
+    ]},
+  { id:"deliverables", num:"2", title:{en:"The Six Deliverables", zh:"六大交付重點"},
+    maps:{en:"6 feature cards (title + body each)", zh:"六張功能卡（標題＋內文）"},
+    locs:[
+      ["d1-title","Deliverable 1 — title",""],["d1-body","Deliverable 1 — body",""],
+      ["d2-title","Deliverable 2 — title",""],["d2-body","Deliverable 2 — body",""],
+      ["d3-title","Deliverable 3 — title",""],["d3-body","Deliverable 3 — body",""],
+      ["d4-title","Deliverable 4 — title",""],["d4-body","Deliverable 4 — body",""],
+      ["d5-title","Deliverable 5 — title",""],["d5-body","Deliverable 5 — body",""],
+      ["d6-title","Deliverable 6 — title",""],["d6-body","Deliverable 6 — body",""],
+    ]},
+  { id:"gap", num:"3", title:{en:"Why This Matters / Cover the Gap", zh:"為何重要／補上缺口"},
+    maps:{en:"Why now · Go it alone · Subscribe bento", zh:"為什麼是現在 · 自己跑 · 訂閱 區塊"},
+    locs:[
+      ["gap-headline",     "Section headline",          "“Three ways to cover the patent gap…”"],
+      ["gap-now-title",    "Why now — title",           "“Why now”"],
+      ["gap-now-1",        "Why now — point 1",         ""],
+      ["gap-now-2",        "Why now — point 2",         ""],
+      ["gap-now-3",        "Why now — point 3",         ""],
+      ["gap-alone-title",  "Go it alone — title",       "“Go it alone”"],
+      ["gap-alone-file",   "Go it alone — file your own", "label + detail"],
+      ["gap-alone-hire",   "Go it alone — hire engineer", "label + detail"],
+      ["gap-sub-title",    "Subscribe — title",         "“Subscribe to a TIS Patent Bundle”"],
+      ["gap-sub-1",        "Subscribe — point 1",       ""],
+      ["gap-sub-2",        "Subscribe — point 2",       ""],
+      ["gap-sub-3",        "Subscribe — point 3",       ""],
+      ["gap-sub-4",        "Subscribe — point 4",       ""],
+      ["gap-sub-cta",      "Subscribe — CTA",           "“Build your bundle”"],
+    ]},
+  { id:"bundle", num:"4", title:{en:"Inside the Bundle", zh:"專利包內容"},
+    maps:{en:"6-card bento (why 30 · SABCD · AI pick · FTO · swap · badge)", zh:"六卡區塊"},
+    locs:[
+      ["b1-title","Card 1 — title","Why thirty, not one"],["b1-body","Card 1 — body",""],
+      ["b2-title","Card 2 — title","Inside the bundle: SABCD"],["b2-body","Card 2 — body",""],
+      ["b3-title","Card 3 — title","How AI Smart-pick builds…"],["b3-body","Card 3 — body",""],
+      ["b4-title","Card 4 — title","FTO-guarded pick"],["b4-body","Card 4 — body",""],
+      ["b5-title","Card 5 — title","You set the direction…"],["b5-body","Card 5 — body",""],
+      ["b6-title","Card 6 — title","Verified License Badge"],["b6-body","Card 6 — body",""],
+    ]},
+  { id:"walkaway", num:"5", title:{en:"What You Walk Away With", zh:"你最終擁有什麼"},
+    maps:{en:"4-beat row (Issued · Reviewed · Displayed · Verified)", zh:"四段：開立 · 複核 · 展示 · 驗證"},
+    locs:[
+      ["w1-eyebrow","Beat 1 — eyebrow","1.0 Issued"],["w1-title","Beat 1 — title",""],["w1-body","Beat 1 — body",""],
+      ["w2-eyebrow","Beat 2 — eyebrow","2.0 Reviewed"],["w2-title","Beat 2 — title",""],["w2-body","Beat 2 — body",""],
+      ["w3-eyebrow","Beat 3 — eyebrow","3.0 Displayed"],["w3-title","Beat 3 — title",""],["w3-body","Beat 3 — body",""],
+      ["w4-eyebrow","Beat 4 — eyebrow","4.0 Verified"],["w4-title","Beat 4 — title",""],["w4-body","Beat 4 — body",""],
+      ["w-link","Shared link label","“Learn more →”"],
+    ]},
+  { id:"pricing", num:"6", title:{en:"Pricing", zh:"定價"},
+    maps:{en:"Pricing card · term toggle · industries · proof", zh:"定價卡 · 期別 · 產業 · 交付證明"},
+    locs:[
+      ["pr-title",    "Section title",        "“Price by term.”"],
+      ["pr-card-title","Card title",          "“Build your bundle”"],
+      ["pr-card-desc","Card description",     ""],
+      ["pr-terms",    "Term toggle labels",   "3 / 6 / 12 / 24 months"],
+      ["pr-permonth", "“/ month” label",      ""],
+      ["pr-termnote", "Per-term note",        "“on a [term] term”"],
+      ["pr-savings",  "Savings badge",        "“Save X%”"],
+      ["pr-cta",      "Subscribe CTA",        "“Subscribe”"],
+      ["pr-industries","Industries list",     "6 sector names"],
+      ["pr-proof",    "Proof & delivery list","4 items"],
+      ["pr-institutions","Institutions heading","“Licensed from…”"],
+    ]},
+  { id:"steps", num:"7", title:{en:"From Signup to Live License", zh:"從註冊到生效授權"},
+    maps:{en:"6-step carousel (Pick → Active)", zh:"六步流程（選擇 → 生效）"},
+    locs:[
+      ["s-title","Section title","“From signup to a live license”"],
+      ["s1-label","Step 1 — pill label","Pick"],["s1-title","Step 1 — title",""],["s1-desc","Step 1 — description",""],
+      ["s2-label","Step 2 — pill label","Smart Pick"],["s2-title","Step 2 — title",""],["s2-desc","Step 2 — description",""],
+      ["s3-label","Step 3 — pill label","Bundle"],["s3-title","Step 3 — title",""],["s3-desc","Step 3 — description",""],
+      ["s4-label","Step 4 — pill label","Swap"],["s4-title","Step 4 — title",""],["s4-desc","Step 4 — description",""],
+      ["s5-label","Step 5 — pill label","Payment"],["s5-title","Step 5 — title",""],["s5-desc","Step 5 — description",""],
+      ["s6-label","Step 6 — pill label","Active"],["s6-title","Step 6 — title",""],["s6-desc","Step 6 — description",""],
+    ]},
+  { id:"faq", num:"8", title:{en:"FAQ", zh:"常見問題"},
+    maps:{en:"5 accordion Q&A pairs", zh:"五組問答"},
+    locs:[
+      ["faq1-q","FAQ 1 — question",""],["faq1-a","FAQ 1 — answer",""],
+      ["faq2-q","FAQ 2 — question",""],["faq2-a","FAQ 2 — answer",""],
+      ["faq3-q","FAQ 3 — question",""],["faq3-a","FAQ 3 — answer",""],
+      ["faq4-q","FAQ 4 — question",""],["faq4-a","FAQ 4 — answer",""],
+      ["faq5-q","FAQ 5 — question",""],["faq5-a","FAQ 5 — answer",""],
+    ]},
+  { id:"lobby", num:"9", title:{en:"Lobby Page (Path to Sign-up)", zh:"大廳頁（註冊入口）"},
+    maps:{en:"/product/licensing/lobby.html — get-started / account gateway", zh:"/product/licensing/lobby.html — 開始使用／帳號入口"},
+    locs:[
+      ["lb-eyebrow",      "Eyebrow / page title",       "“Licensing Platform — get started”"],
+      ["lb-headline",     "Brand panel — headline",      "“Licensing Platform”"],
+      ["lb-value-1",      "Brand panel — value 1",       "FTO active in hours, not months"],
+      ["lb-value-2",      "Brand panel — value 2",       "30-patent bundles by jurisdiction × industry"],
+      ["lb-value-3",      "Brand panel — value 3",       "Non-exclusive, 3–36 month terms"],
+      ["lb-updates-title","Platform updates — title",    "“Platform updates”"],
+      ["lb-updates-items","Platform updates — feed items","bundle / licensor announcements"],
+      ["lb-form-title",   "Form — title",                "“Create your account”"],
+      ["lb-social",       "Form — social buttons",       "Continue with Google / Apple / email"],
+      ["lb-email",        "Form — work email label",     "“Work email”"],
+      ["lb-password",     "Form — password label",       "“Password”"],
+      ["lb-login",        "Form — log in CTA",           "“Log in”"],
+      ["lb-welcome",      "Returning — heading",         "“Welcome back”"],
+      ["lb-forgot",       "Returning — forgot password", "“Forgot password?”"],
+      ["lb-create",       "Toggle — create account",     "“Create an account”"],
+    ]},
+];
+
+/* ════════════════════════════════════════════════════════════════════
+   STATE + persistence
+   ════════════════════════════════════════════════════════════════════ */
+const LS_LOG = "tis-licensing-copyreview-log-v3";
+const LS_DRAFTS = "tis-licensing-copyreview-drafts-v3";
+const LS_QUEUE = "tis-licensing-copyreview-queue-v3";
+const LS_EDITOR = "tis-copyreview-editor";
+let log = [];                   // append-only event log: {evId,ts,editor,locationId,section,textLocation,field,value}
+let queue = [];                 // unsent events (persisted) — the ONLY local truth; pull treats the Sheet as authoritative otherwise
+let stateById = {};             // derived: latest (current) value per location
+let histById = {};              // derived: full history arrays per location → field → [{value,editor,ts}]
+let drafts = {};                // "id:field" -> string  (uncommitted text; local only, never synced until "Save")
+let editor = localStorage.getItem(LS_EDITOR) || "";
+let lang = "en";
+let evCounter = 0;
+const focused = new Set();       // field-keys currently focused (don't rebuild while editing)
+const SAVE_LABEL = { engEdit:"Save edit", zhEdit:"Save edit", visualNote:"Save note", generalNote:"Save note" };
+const fkey = (id,field) => id+":"+field;
+function inputVal(id,field){ const k=fkey(id,field); return (k in drafts) ? drafts[k] : ""; }  // boxes start blank
+function isDirty(id,field){ const k=fkey(id,field); return (k in drafts) && drafts[k].length>0; }
+
+// In-progress pages — description + one comment box each (no per-line copy tables yet)
+const ROADMAP = [
+  { id:"rm-badge",        name:"Verified License Badge",          path:"/product/licensing/badge.html",
+    desc:"The embeddable, public badge — unique license number + QR code that a buyer scans to verify a license in ~2 seconds. Co-branded TIS × issuing institution; printable on booths, decks, and packaging." },
+  { id:"rm-signal-method",name:"Signal — Methodology",            path:"/product/signal/methodology.html",
+    desc:"Explainer for the SABCD grading: the 50 evidence-based indicators and how each patent is scored and peer-ranked against its own industry. The trust/credibility page behind Signal." },
+  { id:"rm-signal-sample",name:"Signal — Sample Report",          path:"/product/signal/sample-report.html",
+    desc:"A full example patent-valuation report (SABCD grade, evidence, comparison, work-around guidance) that prospects can view before subscribing — the proof-of-value artifact." },
+  { id:"rm-signal-index", name:"Signal — Product Page",           path:"/product/signal/index.html",
+    desc:"The Signal deep-dive (the Patent Intelligence SaaS): token-based patent valuation, comparison, and pre-built report sales — aimed at VCs / PE funds and incubators running IP due diligence." },
+  { id:"rm-signal-lobby", name:"Signal — Lobby (Path to Sign-up)", path:"/product/signal/lobby.html",
+    desc:"The get-started / account gateway for Signal — sign-up + login, mirroring the licensing lobby's split-screen brand panel + form." },
+];
+
+// id -> {section, textLocation} for readable Sheet rows
+const META = {};
+SECTIONS.forEach(sec=>{
+  sec.locs.forEach(([id,label])=>{ META[id]={section:sec.title.en, textLocation:label}; });
+  META[sec.id+".__general"]={section:sec.title.en, textLocation:"§ General suggestion"};
+});
+ROADMAP.forEach(p=>{ META[p.id]={section:"Coming next", textLocation:p.name}; });
+
+function loadLog(){ try{ log = JSON.parse(localStorage.getItem(LS_LOG)) || []; }catch(e){ log = []; } }
+function saveLog(){ localStorage.setItem(LS_LOG, JSON.stringify(log)); }
+function loadQueue(){ try{ queue = JSON.parse(localStorage.getItem(LS_QUEUE)) || []; }catch(e){ queue = []; } }
+function saveQueue(){ localStorage.setItem(LS_QUEUE, JSON.stringify(queue)); }
+function loadDrafts(){ try{ drafts = JSON.parse(localStorage.getItem(LS_DRAFTS)) || {}; }catch(e){ drafts = {}; } }
+function saveDrafts(){ localStorage.setItem(LS_DRAFTS, JSON.stringify(drafts)); }
+function hasDrafts(){ return Object.values(drafts).some(v => (v||"").length>0); }
+
+// Rebuild current-state + history from the event log (append-only → derived).
+function derive(){
+  stateById = {}; histById = {};
+  [...log].sort((a,b)=> a.ts<b.ts ? -1 : a.ts>b.ts ? 1 : 0).forEach(ev=>{
+    const id=ev.locationId; if(!id||!ev.field) return;
+    if(!stateById[id]) stateById[id]={status:"",engEdit:"",zhEdit:"",visualNote:"",generalNote:"",editor:"",updatedAt:""};
+    if(!histById[id])  histById[id]={status:[],engEdit:[],zhEdit:[],visualNote:[],generalNote:[]};
+    stateById[id][ev.field]=ev.value; stateById[id].editor=ev.editor; stateById[id].updatedAt=ev.ts;
+    (histById[id][ev.field] || (histById[id][ev.field]=[])).push({value:ev.value, editor:ev.editor, ts:ev.ts});
+  });
+}
+function rec(id){ return stateById[id] || {status:"",engEdit:"",zhEdit:"",visualNote:"",generalNote:"",editor:"",updatedAt:""}; }
+function hist(id,field){ return (histById[id] && histById[id][field]) || []; }
+function origEN(id){ return (ORIGINALS[id]&&ORIGINALS[id].en)||""; }
+function origZH(id){ return (ORIGINALS[id]&&ORIGINALS[id].zh)||""; }
+function nowStamp(){ return new Date().toISOString(); }
+function newEvId(){ return (editor||"anon")+"-"+Date.now()+"-"+(evCounter++); }
+function fmtStamp(iso){ if(!iso) return ""; try{ const d=new Date(iso);
+  return d.toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}); }catch(e){ return ""; } }
+
+/* ════════════════════════════════════════════════════════════════════
+   Backend sync (Apps Script). text/plain body avoids CORS preflight.
+   ════════════════════════════════════════════════════════════════════ */
+const online = () => ENDPOINT && ENDPOINT.length > 10;
+
+function postEvent(ev){ if(!online()) return; queue.push(ev); saveQueue(); flushQueue(); }
+let flushing=false;
+async function flushQueue(){
+  if(flushing || !queue.length) return; flushing=true;
+  while(queue.length){
+    try{
+      await fetch(ENDPOINT, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(queue[0])});
+      queue.shift(); saveQueue();                                   // sent — drop from the unsent queue
+    }catch(e){ flushing=false; setTimeout(flushQueue,5000); return; }  // still unsent, retry later
+  }
+  flushing=false;
+}
+
+async function pull(){
+  if(!online()) return;
+  try{
+    const res = await fetch(ENDPOINT, {method:"GET"});
+    const rows = await res.json();
+    const server = (rows||[]).filter(r => r && r.evId && r.locationId);
+    const seen = new Set(server.map(r => r.evId));
+    // Sheet is authoritative. Only the still-unsent queue is local truth; everything else mirrors the Sheet.
+    const pendingLocal = queue.filter(e => !seen.has(e.evId));
+    const before = log.map(e=>e.evId).sort().join("|");
+    log = server.concat(pendingLocal);
+    const after = log.map(e=>e.evId).sort().join("|");
+    saveLog(); derive();
+    if(before !== after){
+      // never rebuild while someone is mid-edit — would drop unsaved text
+      if(focused.size===0 && !hasDrafts()) renderAll(); else updateStats();
+    }
+  }catch(e){ /* offline — try again next poll */ }
+}
+
+function appendLocalEvent(id, field, value){
+  const m = META[id] || {section:"", textLocation:""};
+  const ev = { evId:newEvId(), ts:nowStamp(), editor:editor, locationId:id,
+               section:m.section, textLocation:m.textLocation, field:field, value:value };
+  log.push(ev); saveLog(); derive(); postEvent(ev);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Rendering
+   ════════════════════════════════════════════════════════════════════ */
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function meta(o){ return `<span class="editmeta">${o.editor?esc(o.editor)+" · ":""}${fmtStamp(o.ts)}</span>`; }
+
+// ZH/ENG cell: original struck through + latest edit as current + collapsible history of prior edits.
+function copyCell(id, kind /* 'en'|'zh' */){
+  const field = kind==="en" ? "engEdit" : "zhEdit";
+  const orig = kind==="en" ? origEN(id) : origZH(id);
+  const zh = kind==="zh" ? " zh" : "";
+  const h = hist(id, field);
+  const latest = h.length ? h[h.length-1] : null;
+  if(!orig && !latest) return `<div class="copy empty${zh}">—</div>`;
+  if(!latest) return `<div class="copy${zh}">${esc(orig)}</div>`;
+  let html = `<div class="copy${zh}"><s>${esc(orig)||"—"}</s><span class="new">${esc(latest.value)}</span>${meta(latest)}`;
+  const priors = h.length-1;
+  if(priors>0){
+    html += `<button class="histtoggle" data-histkey="${id}:${field}">history (${priors}) ▾</button>`;
+    html += `<div class="histlist" data-hist="${id}:${field}" hidden>`;
+    for(let i=h.length-2;i>=0;i--) html += `<div class="histitem"><span class="hv${zh}">${esc(h[i].value)||"—"}</span>${meta(h[i])}</div>`;
+    html += `<div class="histitem histitem--orig"><span class="hv${zh}">${esc(orig)||"—"}</span><span class="editmeta">original</span></div>`;
+    html += `</div>`;
+  }
+  return html + `</div>`;
+}
+
+// Note display (visual / general): latest saved note + collapsible history of prior notes.
+function noteDisplay(id, field){
+  const h = hist(id, field);
+  let html = `<div class="notelist" data-notelist="${id}:${field}">`;
+  if(h.length){
+    const latest=h[h.length-1];
+    html += `<div class="noteitem"><span class="nv">${esc(latest.value)}</span>${meta(latest)}</div>`;
+    if(h.length>1){
+      html += `<button class="histtoggle" data-histkey="${id}:${field}">history (${h.length-1}) ▾</button>`;
+      html += `<div class="histlist" data-hist="${id}:${field}" hidden>`;
+      for(let i=h.length-2;i>=0;i--) html += `<div class="histitem"><span class="nv">${esc(h[i].value)}</span>${meta(h[i])}</div>`;
+      html += `</div>`;
+    }
+  }
+  return html + `</div>`;
+}
+
+function saveBtn(id,field){
+  const dirty=isDirty(id,field);
+  return `<button class="savebtn${dirty?" dirty":""}" data-id="${id}" data-field="${field}">${SAVE_LABEL[field]}</button>`;
+}
+
+function rowHTML(loc){
+  const [id,label,hint] = loc;
+  const r=rec(id);
+  const editing = r.status==="fix";
+  return `<div class="rowgroup${editing?" editing":""}" data-group="${id}">
+    <div class="row">
+      <div class="loc">${esc(label)}${hint?`<span class="hint">${esc(hint)}</span>`:""}</div>
+      <div class="cell-zh">${copyCell(id,"zh")}</div>
+      <div class="cell-en">${copyCell(id,"en")}</div>
+      <div class="status">
+        <button class="stbtn fix"  data-st="fix"  data-id="${id}" aria-pressed="${r.status==="fix"}">✗ Fix</button>
+        <button class="stbtn pass" data-st="pass" data-id="${id}" aria-pressed="${r.status==="pass"}">✓ Pass</button>
+      </div>
+      <div class="vis">
+        <textarea data-field="visualNote" data-id="${id}" placeholder="Add a visual / layout note…">${esc(inputVal(id,"visualNote"))}</textarea>
+        <div class="boxfoot">${saveBtn(id,"visualNote")}</div>
+        ${noteDisplay(id,"visualNote")}
+      </div>
+    </div>
+    <div class="editpanel">
+      <div class="ep-title">Propose a rewrite — add a new version of EN, ZH, or both, then Save edit</div>
+      <div class="ep-grid">
+        <div class="ep-field"><label>English rewrite</label>
+          <textarea data-field="engEdit" data-id="${id}" placeholder="${origEN(id)?'New English copy…':'(original not yet populated)'}">${esc(inputVal(id,"engEdit"))}</textarea>
+          <div class="ep-foot">${saveBtn(id,"engEdit")}</div></div>
+        <div class="ep-field"><label>中文改寫</label>
+          <textarea class="zh" data-field="zhEdit" data-id="${id}" placeholder="${origZH(id)?'新的中文文案…':'（原文尚未填入）'}">${esc(inputVal(id,"zhEdit"))}</textarea>
+          <div class="ep-foot">${saveBtn(id,"zhEdit")}</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function sectionHTML(sec){
+  const rows = sec.locs.map(rowHTML).join("");
+  const gid = sec.id+".__general";
+  return `<div class="section${sec.secondary?" secondary":""}" data-sec="${sec.id}">
+    <div class="section-head" data-toggle="${sec.id}">
+      <span class="section-num num">${sec.num}</span>
+      <div class="section-titles">
+        <h2>${sec.title[lang]||sec.title.en}</h2>
+        <div class="maps">${sec.maps[lang]||sec.maps.en}</div>
+      </div>
+      <div class="progress" id="prog-${sec.id}"></div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="rowhead"><span>Text location</span><span>ZH copy</span><span>ENG copy</span><span>Status</span><span class="h-vis">Visual suggestion</span></div>
+      ${rows}
+      <div class="general">
+        <label>${lang==="zh"?"整體建議 — 視覺、文案、方向、敘事、節奏…":"General suggestion — visuals, copy, direction, storytelling, flow…"}</label>
+        <textarea data-field="generalNote" data-id="${gid}" placeholder="${lang==="zh"?"新增整體層級的想法…":"Add a section-level note…"}">${esc(inputVal(gid,"generalNote"))}</textarea>
+        <div class="boxfoot">${saveBtn(gid,"generalNote")}</div>
+        ${noteDisplay(gid,"generalNote")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function roadmapHTML(){
+  return `<div class="roadmap">
+    <div class="roadmap-head"><h2>Coming next</h2><span class="rm-tag">in progress · unlinked</span></div>
+    <p class="roadmap-sub">Pages still being built — descriptions only for now, no copy to review yet. Drop early direction in any box and it's captured like everything else.</p>
+    ${ROADMAP.map(p=>`
+      <div class="rm-item">
+        <div class="rm-meta"><span class="rm-name">${esc(p.name)}</span><span class="rm-path">${esc(p.path)}</span></div>
+        <p class="rm-desc">${esc(p.desc)}</p>
+        <textarea data-field="generalNote" data-id="${p.id}" placeholder="Early thoughts on this page — direction, must-haves, concerns…">${esc(inputVal(p.id,"generalNote"))}</textarea>
+        <div class="boxfoot">${saveBtn(p.id,"generalNote")}</div>
+        ${noteDisplay(p.id,"generalNote")}
+      </div>`).join("")}
+  </div>`;
+}
+
+let openSections = new Set(["hero"]);
+function renderAll(){
+  const host=document.getElementById("sections");
+  host.innerHTML = SECTIONS.map(sectionHTML).join("");
+  SECTIONS.forEach(sec=>{ if(openSections.has(sec.id)){ const el=host.querySelector(`[data-sec="${sec.id}"]`); if(el) el.classList.add("open"); } });
+  const rm=document.getElementById("roadmap"); if(rm) rm.innerHTML = roadmapHTML();
+  updateStats();
+  applyLang();
+}
+
+/* ORIGINALS — populated later from index.html. Shape: { locationId:{en,zh} }.
+   Leave empty for the scaffold. */
+const ORIGINALS = {
+  "ann-eyebrow": { en: "30-patent bundles starting at NT$3,390/month.", zh: "30 件專利組合，每月 NT$3,390 起。" },
+  "ann-link": { en: "View pricing →", zh: "查看定價 →" },
+  "hero-eyebrow": { en: "TIS Licensing Platform", zh: "泰然專利防護網" },
+  "hero-headline": { en: "Patent insurance for your exports. Thirty patents, none of the overhead.", zh: "出口買專利險， 30 件專利包輕裝上陣。" },
+  "hero-subhead": { en: "Pick country × industry × term — two paths, five SABCD grades. With a Verified License Badge, passive defense becomes active position.", zh: "1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級， 戴上授權認證標章立刻從被動防禦轉為主動佈局。" },
+  "hero-cta-1": { en: "Build your bundle", zh: "試跑專利包" },
+  "hero-cta-2": { en: "Talk to sales", zh: "聯絡業務" },
+
+  "d1-title": { en: "Patent Bundle by AI Smart-Pick", zh: "AI 智慧雷達導航" },
+  "d1-body": { en: "Scans gaps across your industry × export country and suggests the 30 relevant patents, with manual swaps supported — no legal expertise required.", zh: "依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。" },
+  "d2-title": { en: "Co-licensed in your name", zh: "權威法人聯合授權" },
+  "d2-body": { en: "III, iPIC, and NYCU issue legal, non-exclusive patents in your company's name — institution-grade and reputable, recognized by buyers and investors.", zh: "創智、資策會、陽明交大以貴公司名義開立 30 件合法非獨家專利。在國際買家與投資人面前，是機構級 IP 後盾，撕掉「代工小廠」的標籤。" },
+  "d3-title": { en: "An active IP shield", zh: "主動式防護盾" },
+  "d3-body": { en: "Patent trolls (NPEs) pick easy targets. Institutions' legal IP line raises the cost of attack — passive defense becomes active position.", zh: "專利流氓（NPE）只挑好下手的目標。三家機構的合法 IP 防線拉高攻擊成本，他們自然跳過你。從被動防禦轉為主動佈局。" },
+  "d4-title": { en: "Live the day after payment", zh: "付款隔日立即生效" },
+  "d4-body": { en: "You receive a Digital License Credential (DLC) carrying a notarized e-signature, plus a co-branded \"TIS × authoritative institution\" Verified License Badge.", zh: "金流確認隔日防護網生效。交付含公證電子簽章的數位授權憑證（DLC），以及「TIS × 權威機構」聯名授權認證標章。" },
+  "d5-title": { en: "Verify in 2 seconds, display anywhere", zh: "2 秒驗證，自由展示" },
+  "d5-body": { en: "The badge embeds a unique license number and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.", zh: "標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。" },
+  "d6-title": { en: "Patents turned into OpEx", zh: "專利轉化為 OpEx 租賃保險" },
+  "d6-body": { en: "Filing patents is slow and expensive, and an IP hire is overhead. A TIS patent bundle keeps you under NT$10K/month, with flexible terms.", zh: "自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。" },
+
+  "gap-headline": { en: "Three ways to cover the patent gap. Only one adds up for an exporting SME.", zh: "補專利缺口有三條路，只有一條出口商走得起。" },
+  "gap-now-title": { en: "Why now", zh: "為什麼是現在" },
+  "gap-now-1": { en: "Your buyer runs a patent search before they place the order.", zh: "買家下單前，先對你做專利檢索。" },
+  "gap-now-2": { en: "Thin on patents, and the whole shipment stalls at customs.", zh: "名下專利單薄，整批貨就卡在海關。" },
+  "gap-now-3": { en: "Lawyer's fee NT$5M, treble damages on top.", zh: "律師費 500 萬，外加三倍懲罰性賠償。" },
+  "gap-alone-title": { en: "Go it alone", zh: "自己跑" },
+  "gap-alone-file": { en: "File your own NT$50,000+ per patent, 18 months to grant. One patent isn't a position, it's a target.", zh: "自行申請 NT$50,000+／件，等 18 個月核准。1 件不是佈局，是被告的標靶。" },
+  "gap-alone-hire": { en: "Hire the engineer NT$1M+ a year for a dedicated IP engineer. You get a salary, not coverage.", zh: "聘專職工程師 專職 IP 工程師年成本破百萬，買到的是薪水，不是防護。" },
+  "gap-sub-title": { en: "Subscribe to a TIS Patent Bundle", zh: "訂閱泰然" },
+  "gap-sub-1": { en: "Monthly subscription average under NT$10K.", zh: "月均不到 1 萬。" },
+  "gap-sub-2": { en: "30 Patents, SABCD-tier graded against industry peers.", zh: "30 件專利，橫跨 5 個評級。" },
+  "gap-sub-3": { en: "Legally Issued in your company's name.", zh: "以貴公司名義合法開立。" },
+  "gap-sub-4": { en: "Active the week you subscribe.", zh: "訂閱當週生效上線。" },
+  "gap-sub-cta": { en: "View Pricing", zh: "查看定價" },
+
+  "b1-title": { en: "Why thirty, not one", zh: "為什麼是 30 件，不是 1 件" },
+  "b1-body": { en: "One patent isn't a position — it's a target: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing.", zh: "1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。" },
+  "b2-title": { en: "Inside the bundle: SABCD", zh: "專利包內容：SABCD" },
+  "b2-body": { en: "30 patents across all 5 tiers. S and A are the strategic top tier that go on offense; B, C and D blanket the field around them — quality and quantity in one bundle.", zh: "30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。" },
+  "b3-title": { en: "How AI Smart-pick builds your bundle", zh: "AI 智選如何組建你的專利包" },
+  "b3-body": { en: "Across country × industry × product line, the AI engine scans for your risk gaps and assembles a tier-balanced 30 from TIS's curated iPIC / III / NYCU pools.", zh: "泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。" },
+  "b4-title": { en: "FTO-guided pick", zh: "FTO 保選" },
+  "b4-body": { en: "Already have an FTO report or product spec? Upload it and we build your 30 around the exact gaps it reveals.", zh: "已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件。" },
+  "b5-title": { en: "Swap within tier — then lock it in", zh: "同級替換，由你鎖定" },
+  "b5-body": { en: "AI proposes; you decide. Swap any pick for a same-tier alternate — no extra cost, no review wait.", zh: "AI 推薦，你做主。同級專利自選替換，不加價、無等審。" },
+  "b6-title": { en: "Verified License Badge", zh: "授權認證標章" },
+  "b6-body": { en: "Every bundle ships a co-branded \"TIS × institution\" badge — unique license number and QR code, verified by any buyer in two seconds.", zh: "每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。" },
+
+  "w1-eyebrow": { en: "1.0 Issue", zh: "1.0 開立" },
+  "w1-title": { en: "Your badge goes live, in your name", zh: "標章以貴公司名義生效" },
+  "w1-body": { en: "Credential and badge issue together — embedded license number and QR code.", zh: "憑證與標章同步開立，內嵌授權編號與 QR Code。" },
+  "w2-eyebrow": { en: "2.0 Notarize", zh: "2.0 公證" },
+  "w2-title": { en: "A credential with legal weight", zh: "具法律效力的授權憑證" },
+  "w2-body": { en: "A PAdES · eIDAS credential and contract — high-spec, notarized.", zh: "PAdES · eIDAS 數位憑證與合約，高規格公證簽章。" },
+  "w3-eyebrow": { en: "3.0 Display", zh: "3.0 展示" },
+  "w3-title": { en: "On the booth, in the deck", zh: "上展位，進提案" },
+  "w3-body": { en: "Print it on booth signage, proposals, your website, or the product box.", zh: "標章可印製於展位、提案書、官網或外包裝。" },
+  "w4-eyebrow": { en: "4.0 Verify", zh: "4.0 驗證" },
+  "w4-title": { en: "A buyer verifies it in two seconds", zh: "買家 2 秒完成驗證" },
+  "w4-body": { en: "They scan the QR code; the license confirms online, on the spot.", zh: "買家掃描 QR Code，授權即在線上 2 秒驗證通過。" },
+  "w-link": { en: "Learn more →", zh: "了解更多 →" },
+
+  "pr-title": { en: "Price by term.", zh: "依期間定價。" },
+  "pr-card-title": { en: "Build your bundle", zh: "打造你的專利包" },
+  "pr-card-desc": { en: "One subscription, 30 SABCD-graded patents in the US or Taiwan.", zh: "一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。" },
+  "pr-terms": { en: "3 months / 6 months / 12 months / 24 months", zh: "3 個月 / 6 個月 / 12 個月 / 24 個月" },
+  "pr-permonth": { en: "/ month", zh: "/ 月" },
+  "pr-termnote": { en: "on a 12-month term", zh: "" },
+  "pr-savings": { en: "Save 10%", zh: "" },
+  "pr-cta": { en: "Subscribe", zh: "訂閱" },
+  "pr-industries": { en: "Semiconductor design & manufacturing · Networking & communications · Computing systems · Integrated applications (AI · AV · EV) · Multimedia & image processing · Net-Zero & carbon management", zh: "半導體設計與製造 · 網通與通訊 · 運算系統 · 整合應用（AI · 自駕 · 電動車） · 多媒體與影像處理 · 淨零與碳管理" },
+  "pr-proof": { en: "Verified License Badge + QR verifier · DLC digital license credential (PAdES · eIDAS) · MOICA government e-signature · Badge usage on booths & promo", zh: "授權認證標章 + QR 驗證 · DLC 數位授權憑證（PAdES · eIDAS） · MOICA 政府電子簽章 · 標章可用於展位與宣傳物" },
+  "pr-institutions": { en: "Licensed from established institutions", zh: "專利授權自權威機構" },
+
+  "s-title": { en: "From signup to a live license", zh: "從註冊到生效授權" },
+  "s1-label": { en: "Pick", zh: "選擇" },
+  "s1-title": { en: "Pick your jurisdiction and industry", zh: "選擇你的國家與產業" },
+  "s1-desc": { en: "Pay only for the market you actually need — one jurisdiction, one industry.", zh: "一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。" },
+  "s2-label": { en: "Smart-Pick", zh: "智選" },
+  "s2-title": { en: "Two ways to build your 30", zh: "兩種建立 30 專利包的方法" },
+  "s2-desc": { en: "AI builds your bundle — or submit your FTO for a precise pick.", zh: "AI 快速取得組合，或提交 FTO 報告精準篩選。" },
+  "s3-label": { en: "Bundle", zh: "專利包" },
+  "s3-title": { en: "Review your 30-patent bundle", zh: "檢視你的 30 專利包" },
+  "s3-desc": { en: "The 30 best-fit patents for your product and market.", zh: "針對特定商品特定市場選取 30 個最佳專利組合。" },
+  "s4-label": { en: "Swap", zh: "替換" },
+  "s4-title": { en: "Swap freely — then lock it in", zh: "自選替換，由你鎖定" },
+  "s4-desc": { en: "Swap any same-tier pick, your call — no extra cost, no review wait.", zh: "同評級專利可自選替換，隨你決定，不加價、無等審。" },
+  "s5-label": { en: "Payment", zh: "付款" },
+  "s5-title": { en: "Term and payment", zh: "期間與付款" },
+  "s5-desc": { en: "Pick your term, then settle by card or wire — the bundle goes live the next day.", zh: "選擇授權期間，以信用卡或電匯付款；款項到帳，隔日生效。" },
+  "s6-label": { en: "Active", zh: "生效" },
+  "s6-title": { en: "Display the credential, show your standing", zh: "展示憑證，展示你的軟實力" },
+  "s6-desc": { en: "A high-spec badge buyers can verify — raising the bar to sue you.", zh: "高規格授權認證標章，供客戶查詢，拉高被告門檻。" },
+
+  "faq1-q": { en: "Where do the patents come from?", zh: "專利從哪裡來？" },
+  "faq1-a": { en: "Every patent comes from our partner institutions — iPIC, III, and NYCU — and is SABCD-graded before it enters a bundle.", zh: "每件專利來自合作機構創智、資策會、陽明交大，進入組合池前皆完成 SABCD 評級。" },
+  "faq2-q": { en: "How do you decide which 30 patents go into our bundle?", zh: "你們怎麼決定我們組合裡的 30 件？" },
+  "faq2-a": { en: "Upload your product spec or FTO report. We map it against the industry pool and pick the patents that cover your real exposure. Anything that doesn't fit, swap for a same-tier alternate before you sign.", zh: "上傳你的產品說明書或 FTO 報告。我們比對產業池，挑出真正涵蓋你暴露風險的專利。不合適的，簽約前都能換成同評級替代。" },
+  "faq3-q": { en: "Does subscribing actually stop me from being sued?", zh: "訂閱之後就不會被告了嗎？" },
+  "faq3-a": { en: "No product can promise that. But 30 patents in your name and a verifiable badge raise the cost of attacking you — so trolls move to an easier target.", zh: "沒有任何產品能保證這點。但以你公司名義持有 30 件專利、加上可驗證的標章，會拉高攻擊你的成本——專利蟑螂自然轉向更好下手的對象。" },
+  "faq4-q": { en: "It's non-exclusive — what stops a competitor licensing the same patents?", zh: "非專屬授權，競爭對手不就能拿到一樣的專利？" },
+  "faq4-a": { en: "Exclusivity isn't the point — standing in your own name is. Your bundle is scoped to your exposure and badged as yours, and the pools run deep — two firms rarely hold the same 30.", zh: "重點不在獨佔，而在以你名義持有的合法授權。專利包依你的暴露風險組建、標章掛你公司名；專利池夠深，兩家公司很少拿到同一組 30 件。" },
+  "faq5-q": { en: "What happens if a patent gets invalidated mid-contract?", zh: "合約期內若有專利被撤銷會發生什麼事？" },
+  "faq5-a": { en: "Same-tier replacement at no extra cost. S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 12% off on 24-month. Renewals at MSRP. Non-exclusive throughout.", zh: "同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 12%。續約 MSRP。整段非專屬。" },
+
+  "lb-eyebrow": { en: "Licensing Platform — get started", zh: "授權平台 — 開始使用" },
+  "lb-headline": { en: "Licensing Platform", zh: "泰然專利防護網" },
+  "lb-value-1": { en: "30-patent bundles, curated per jurisdiction × industry.", zh: "依司法管轄區 × 產業精選的 30 件專利組合。" },
+  "lb-value-2": { en: "Freedom to Operate, active the next day — not months.", zh: "隔日啟用 Freedom to Operate，而非數月。" },
+  "lb-value-3": { en: "Non-exclusive terms from 3 to 24 months.", zh: "非專屬授權，3 至 24 個月彈性期程。" },
+  "lb-updates-title": { en: "Platform updates", zh: "平台動態" },
+  "lb-updates-items": { en: "Chip & semiconductor bundle now available · NYCU joined as a contributing licensor · Computing systems bundle now available · III joined as a contributing licensor · ITRI joined as a contributing licensor", zh: "晶片半導體組合上線 · NYCU 加入授權方 · 計算機系統組合上線 · III 加入授權方 · ITRI 加入授權方" },
+  "lb-form-title": { en: "Create your account", zh: "建立你的帳號" },
+  "lb-social": { en: "Continue with Google · Continue with Apple · Continue with email →", zh: "使用 Google 繼續 · 使用 Apple 繼續 · 使用電子郵件繼續 →" },
+  "lb-email": { en: "Work email", zh: "公司電子郵件" },
+  "lb-password": { en: "Password", zh: "密碼" },
+  "lb-login": { en: "Log in", zh: "登入" },
+  "lb-welcome": { en: "Welcome back", zh: "歡迎回來" },
+  "lb-forgot": { en: "Forgot password?", zh: "忘記密碼？" },
+  "lb-create": { en: "Create an account", zh: "建立帳號" },
+};
+
+function updateStats(){
+  let fix=0,pass=0,total=0;
+  SECTIONS.forEach(sec=>{
+    let f=0,p=0,t=sec.locs.length;
+    sec.locs.forEach(([id])=>{ const s=rec(id).status; if(s==="fix"){f++;fix++;} else if(s==="pass"){p++;pass++;} });
+    total+=t;
+    const prog=document.getElementById("prog-"+sec.id);
+    if(prog){ const left=t-f-p;
+      prog.innerHTML = `<span class="pill has-pass">${p} ✓</span><span class="pill has-fix">${f} ✗</span><span class="pill">${left} ${lang==="zh"?"未審":"left"}</span>`; }
+  });
+  document.getElementById("stat-fix").textContent=fix;
+  document.getElementById("stat-pass").textContent=pass;
+  document.getElementById("stat-left").textContent=total-fix-pass;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Interactions
+   ════════════════════════════════════════════════════════════════════ */
+function requireEditor(){
+  if(editor) return true;
+  document.getElementById("idmenu").classList.add("open");
+  return false;
+}
+
+/* Targeted DOM updates — never rebuild the whole table while a box may hold
+   unsaved text. These touch only the cells/displays/buttons that changed. */
+function refreshRow(id){
+  const grp=document.querySelector(`.rowgroup[data-group="${id}"]`); if(!grp) return;
+  const r=rec(id);
+  const z=grp.querySelector(".cell-zh"); if(z) z.innerHTML=copyCell(id,"zh");
+  const en=grp.querySelector(".cell-en"); if(en) en.innerHTML=copyCell(id,"en");
+  grp.querySelectorAll(".stbtn").forEach(b=>b.setAttribute("aria-pressed", r.status===b.dataset.st));
+  grp.classList.toggle("editing", r.status==="fix");
+  const nl=grp.querySelector(`.notelist[data-notelist="${id}:visualNote"]`);
+  if(nl) nl.outerHTML = noteDisplay(id,"visualNote");   // refresh note display, not the textarea
+}
+function refreshGeneral(id){
+  const nl=document.querySelector(`.notelist[data-notelist="${id}:generalNote"]`);
+  if(nl) nl.outerHTML = noteDisplay(id,"generalNote");
+}
+// Commit the box's text as a NEW event (append-only). Returns false on empty (nothing saved).
+function commitField(id,field){
+  const ta=document.querySelector(`textarea[data-id="${id}"][data-field="${field}"]`);
+  const k=fkey(id,field);
+  const val = ta ? ta.value : (drafts[k]||"");
+  if(!val.trim()){ delete drafts[k]; saveDrafts(); return false; }
+  appendLocalEvent(id, field, val);
+  if(ta) ta.value="";                  // clear box — each save is a fresh proposal
+  delete drafts[k]; saveDrafts();
+  if(field==="generalNote") refreshGeneral(id); else refreshRow(id);
+  updateStats();
+  return true;
+}
+
+document.addEventListener("click", e=>{
+  const t=e.target;
+  // section toggle
+  const head=t.closest("[data-toggle]");
+  if(head){ const id=head.dataset.toggle; const sec=document.querySelector(`[data-sec="${id}"]`);
+    sec.classList.toggle("open"); if(sec.classList.contains("open")) openSections.add(id); else openSections.delete(id); return; }
+  // Save edit / Save note → append a new version
+  if(t.classList.contains("savebtn")){
+    if(!requireEditor()) return;
+    const id=t.dataset.id, field=t.dataset.field;
+    if(commitField(id, field)){
+      t.classList.remove("dirty"); t.classList.add("saved"); t.textContent="Saved ✓";
+      setTimeout(()=>{ t.classList.remove("saved"); t.textContent=SAVE_LABEL[field]; }, 1500);
+    }
+    return;
+  }
+  // history toggle
+  if(t.classList.contains("histtoggle")){
+    const list=document.querySelector(`.histlist[data-hist="${t.dataset.histkey}"]`);
+    if(list){ const open=!list.hasAttribute("hidden");
+      if(open){ list.setAttribute("hidden",""); t.textContent=t.textContent.replace("▴","▾"); }
+      else { list.removeAttribute("hidden"); t.textContent=t.textContent.replace("▾","▴"); } }
+    return;
+  }
+  // status buttons (append a status event; targeted refresh)
+  if(t.classList.contains("stbtn")){
+    if(!requireEditor()) return;
+    const id=t.dataset.id, st=t.dataset.st, cur=rec(id).status;
+    appendLocalEvent(id, "status", (cur===st) ? "" : st);
+    refreshRow(id); updateStats(); return;
+  }
+  // identity menu
+  if(t.id==="idchip"){ document.getElementById("idmenu").classList.toggle("open"); return; }
+  if(t.dataset.id && t.closest("#idmenu")){ setEditor(t.dataset.id); return; }
+  if(!t.closest(".idwrap")) document.getElementById("idmenu").classList.remove("open");
+});
+
+// text fields — typing only updates a local draft; nothing syncs until "Save edit"
+document.addEventListener("input", e=>{
+  const t=e.target;
+  if(t.id==="idcustom") return;
+  const id=t.dataset.id, field=t.dataset.field;
+  if(!id||!field) return;
+  if(!requireEditor()){ t.blur(); return; }
+  drafts[fkey(id,field)]=t.value; saveDrafts();
+  const btn=document.querySelector(`.savebtn[data-id="${id}"][data-field="${field}"]`);
+  if(btn){ btn.classList.toggle("dirty", t.value.trim().length>0); btn.classList.remove("saved"); btn.textContent=SAVE_LABEL[field]; }
+});
+document.addEventListener("focusin", e=>{ const t=e.target;
+  if(t.dataset&&t.dataset.id&&t.dataset.field) focused.add(fkey(t.dataset.id,t.dataset.field)); });
+document.addEventListener("focusout", e=>{ const t=e.target;
+  if(t.dataset&&t.dataset.id&&t.dataset.field) focused.delete(fkey(t.dataset.id,t.dataset.field)); });
+
+document.getElementById("idcustom").addEventListener("keydown", e=>{
+  if(e.key==="Enter" && e.target.value.trim()) setEditor(e.target.value.trim()); });
+
+function setEditor(name){ editor=name; localStorage.setItem(LS_EDITOR,name);
+  document.getElementById("idname").textContent=name; document.getElementById("idmenu").classList.remove("open"); }
+
+/* ════════════════════════════════════════════════════════════════════
+   UI language — fixed to English (toggle removed). ZH copy is still
+   reviewed in the ZH column; this only governs the tool's own chrome.
+   ════════════════════════════════════════════════════════════════════ */
+function applyLang(){
+  document.documentElement.lang = "en";
+  document.querySelectorAll("[data-en]").forEach(el=>{ if(el.dataset.en!==undefined) el.textContent=el.dataset.en; });
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Passcode gate
+   ════════════════════════════════════════════════════════════════════ */
+function initGate(){
+  if(!PASSCODE){ start(); return; }
+  if(sessionStorage.getItem("cr-gate")==="ok"){ start(); return; }
+  const g=document.getElementById("gate"); g.classList.add("show");
+  const go=()=>{ if(document.getElementById("gate-input").value===PASSCODE){
+      sessionStorage.setItem("cr-gate","ok"); g.classList.remove("show"); start();
+    } else { document.getElementById("gate-input").value=""; document.getElementById("gate-input").placeholder="Try again"; } };
+  document.getElementById("gate-go").addEventListener("click", go);
+  document.getElementById("gate-input").addEventListener("keydown", e=>{ if(e.key==="Enter") go(); });
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Boot
+   ════════════════════════════════════════════════════════════════════ */
+function start(){
+  loadLog();
+  loadDrafts();
+  loadQueue();
+  derive();
+  if(editor) document.getElementById("idname").textContent=editor;
+  renderAll();
+  if(online()){ flushQueue(); pull(); setInterval(pull, POLL_MS); }
+}
+initGate();
+</script>
+</body>
+</html>
+
+<!--
+════════════════════════════════════════════════════════════════════════
+  APPS SCRIPT — paste into Extensions → Apps Script, then deploy as Web app
+  (Execute as: Me · Access: Anyone). The Sheet's first tab must be "Sheet1".
+════════════════════════════════════════════════════════════════════════
+
+// APPEND-ONLY edit log: every Save is a new row, nothing is ever overwritten.
+const HEADERS = ["evId","ts","editor","locationId","section","textLocation","field","value"];
+
+function sheet_() {
+  const sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
+  return sh;
+}
+
+function doGet() {
+  const sh = sheet_();
+  const data = sh.getDataRange().getValues();
+  const head = data.shift() || HEADERS;
+  const rows = data.map(r => { const o = {}; head.forEach((h, i) => o[h] = r[i]); return o; })
+                   .filter(o => o.evId && o.locationId);
+  return ContentService.createTextOutput(JSON.stringify(rows)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const b = JSON.parse(e.postData.contents);
+    sheet_().appendRow(HEADERS.map(h => b[h] !== undefined ? b[h] : ""));   // append only — never search/overwrite
+    return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+════════════════════════════════════════════════════════════════════════
+-->
