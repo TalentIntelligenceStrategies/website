@@ -2195,6 +2195,8 @@ a, button,
   gap: 8px;
 }
 
+.bundlegrid .bundlegrid-cta { margin-top: 32px; display: flex; justify-content: flex-end; }
+
 /* alternating wide(3)+narrow(2) rhythm — 3+2 / 2+3 / 3+2 */
 .bundlegrid .bbx:nth-child(1) { grid-column: span 3; } /* Why thirty   — wide  */
 .bundlegrid .bbx:nth-child(2) { grid-column: span 2; } /* SABCD        — narrow*/
@@ -2214,6 +2216,10 @@ a, button,
   transition: box-shadow var(--tis-hover-transition);
 }
 .bundlegrid .bbx:hover { box-shadow: var(--tis-shadow-s); }
+/* Badge card is a whole-card link (→ badge.html). Reset anchor styling; the
+   shared .bbx:hover shadow-lift is the clickable affordance. */
+.bundlegrid a.bbx { text-decoration: none; color: inherit; cursor: pointer; }
+.bundlegrid a.bbx:hover { box-shadow: var(--tis-shadow-m); }
 
 /* outer corners of the 2×3 cluster rounded; inner corners square */
 .bundlegrid .bbx:nth-child(1) { border-top-left-radius: 16px; }
@@ -2239,6 +2245,10 @@ a, button,
   margin: 10px 0 0;
   max-width: 42ch;
 }
+/* Why-thirty is the wide lead card (span 3) — let its body run wider so the
+   longer line lands on 3 lines instead of 4, and balance the line lengths so
+   there's no short orphan. Scoped to this card only. */
+.bundlegrid .bbx--why .bbx-body { max-width: 64ch; text-wrap: balance; }
 
 /* framed visual zone — grows to fill the card, bleeds to the bottom edge;
    radial fade melts it into the body. Empty = faint panel + placeholder
@@ -2305,111 +2315,116 @@ a, button,
   padding: 4px clamp(22px, 2.6vw, 30px) clamp(24px, 2.8vw, 32px);
 }
 
-/* ── Card 1 · Why thirty — pierced vs. repelled, in the Smart-pick spatial idiom.
-   Soft one-tone (slate) cells like the Smart-pick field; the lone patent sits
-   isolated on the left and a warm threat-dart punches THROUGH it (it shatters),
-   while the 30 form a wall that fills the card and bleeds off the right edge
-   under a mask — the same dart hits its face, flashes, and is REPELLED. Roomy
-   cells, edges melt (bbx-fade restored). Theme-safe (juris-eu + score-d carry
-   their own dark-mode values). ── */
-.bundlegrid .bbx--why .bbx-center { padding-right: 0; }   /* let the wall reach + bleed off the right edge */
+/* ── Card 1 · Why thirty — "the protected thirty vs. the targeted one". On the
+   right, THREE monochrome isometric stacks of translucent rounded-diamond layers
+   (abstract thick "30"s) clustered together and ringed by a glowing Tier-A green
+   barrier — a protective moat (confidence / "protected & safe") that forms,
+   energises, then breathes around them. On the left, one matching patent shown
+   STRAIGHT-ON as an upright portrait card, exposed: a small neutral crosshair
+   locks onto it as its corner brackets converge. No intruder. ~6.5s loop. Stacks
+   + lone card monochrome via text-primary alpha; the moat uses Tier-A green
+   (score-a); the crosshair is neutral text-secondary. Theme-safe (dark-mode ok). ── */
+.bundlegrid .bbx--why .bbx-center { padding-right: 0; }
 .bundlegrid .b30 {
   position: relative; width: 100%; height: 100%;
-  display: flex; align-items: center; gap: clamp(20px, 2.6vw, 38px);
+  --L: clamp(58px, 7vw, 78px);                                       /* one card / one stack-layer edge */
+  --iso: .30;                                                        /* isometric vertical squish */
+  --dy: clamp(9px, 1.2vw, 13px);                                     /* per-layer screen offset */
+  --moat-inx: clamp(14px, 1.8vw, 22px);                              /* moat horizontal inset */
+  --moat-iny: clamp(10px, 1.4vw, 16px);                              /* moat vertical inset */
+  --stack-h: calc(var(--L) * 1.414 * var(--iso) + 5 * var(--dy));    /* one cluster's height */
+  --moat-h: calc(var(--stack-h) + 2 * var(--moat-iny));              /* moat's settled (scale-1) height */
+  --stack-fill: color-mix(in srgb, var(--text-primary) 11%, transparent);
+  --stack-edge: color-mix(in srgb, var(--text-primary) 22%, transparent);
+  display: flex; align-items: center; justify-content: center; gap: clamp(24px, 2.8vw, 42px);
 }
-/* the lone patent — one isolated cell, an easy target */
+/* the lone patent — shown STRAIGHT-ON: an upright portrait card matched to the
+   moat's settled height, vertically centred and exposed; a crosshair locks on */
 .bundlegrid .b30-lone {
+  position: relative; flex: 0 0 auto; z-index: 2;
+  width: clamp(62px, 7.8vw, 88px); height: var(--moat-h);
+}
+.bundlegrid .b30-lone > i {
+  position: absolute; inset: 0;
+  border-radius: clamp(8px, 1vw, 12px);
+  background: var(--stack-fill); border: 1.5px solid var(--stack-edge);
+}
+/* the crosshair — a small neutral reticle whose corner brackets converge to lock */
+.bundlegrid .b30-cross {
+  position: absolute; left: 50%; top: 50%; z-index: 3;
+  width: clamp(26px, 3.2vw, 38px); height: clamp(26px, 3.2vw, 38px);
+  transform: translate(-50%, -50%);
+}
+.bundlegrid .b30-cross::after {                        /* tiny centre tick (the crosshair point) */
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 3px; height: 3px; margin: -1.5px; border-radius: 50%;
+  background: var(--text-secondary); opacity: .8;
+}
+.bundlegrid .b30-cross span {                          /* four converging corner brackets */
+  position: absolute; width: clamp(8px, 1vw, 11px); height: clamp(8px, 1vw, 11px);
+  animation: b30-bracket 9s ease-in-out infinite both;
+}
+.bundlegrid .b30-cross .tl { top: 0; left: 0;     --sx: -1; --sy: -1; border-top: 1.5px solid var(--text-secondary); border-left: 1.5px solid var(--text-secondary); }
+.bundlegrid .b30-cross .tr { top: 0; right: 0;    --sx:  1; --sy: -1; border-top: 1.5px solid var(--text-secondary); border-right: 1.5px solid var(--text-secondary); }
+.bundlegrid .b30-cross .bl { bottom: 0; left: 0;  --sx: -1; --sy:  1; border-bottom: 1.5px solid var(--text-secondary); border-left: 1.5px solid var(--text-secondary); }
+.bundlegrid .b30-cross .br { bottom: 0; right: 0; --sx:  1; --sy:  1; border-bottom: 1.5px solid var(--text-secondary); border-right: 1.5px solid var(--text-secondary); }
+/* the 30s — three thick iso stacks, clustered and ringed by the moat */
+.bundlegrid .b30-stackwrap {
   position: relative; flex: 0 0 auto;
-  width: clamp(46px, 5.2vw, 58px); height: clamp(58px, 6.6vw, 76px);
-  display: flex; margin-left: clamp(2px, 1vw, 12px);
+  display: flex; align-items: center; overflow: visible;
 }
-.bundlegrid .b30-cell {
-  width: 50%; height: 100%;
-  background: var(--juris-eu-bg); border: 1px solid var(--juris-eu);
-  animation: b30-shatter-l 4.6s ease-in-out infinite both;
+.bundlegrid .b30-cluster {
+  position: relative; display: inline-flex; align-items: center;
+  gap: clamp(8px, 1.2vw, 13px);
 }
-.bundlegrid .b30-cell--l { border-radius: 8px 0 0 8px; border-right: none; }
-.bundlegrid .b30-cell--r { border-radius: 0 8px 8px 0; animation-name: b30-shatter-r; }
-/* the 30 — a wall of the same soft cells, filling the card, bleeding off the right */
-.bundlegrid .b30-wallwrap { position: relative; flex: 1 1 auto; height: 100%; display: flex; align-items: center; overflow: visible; }
-.bundlegrid .b30-wall {
-  display: grid;
-  grid-template-columns: repeat(10, clamp(30px, 3.3vw, 40px));
-  gap: clamp(6px, 0.8vw, 9px);
-  -webkit-mask-image: linear-gradient(to right, #000 70%, transparent 100%);
-          mask-image: linear-gradient(to right, #000 70%, transparent 100%);
+/* the protective moat — a glowing GREEN barrier ringing the cluster */
+.bundlegrid .b30-moat {
+  position: absolute; z-index: 0;
+  inset: calc(-1 * var(--moat-iny)) calc(-1 * var(--moat-inx));
+  border: 1.5px solid var(--score-a);
+  border-radius: clamp(16px, 2.2vw, 28px);
+  background: color-mix(in srgb, var(--score-a) 7%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--score-a) 40%, transparent),
+              inset 0 0 7px color-mix(in srgb, var(--score-a) 22%, transparent);
+  transform-origin: center;
+  animation: b30-moat 9s ease-in-out infinite both;
 }
-.bundlegrid .b30-wall i {
-  aspect-ratio: 1 / 1; border-radius: 6px;
-  background: var(--juris-eu-bg); border: 1px solid var(--juris-eu);
-  animation: b30-ripple 4.6s ease-in-out infinite both;
+.bundlegrid .b30-stack {
+  position: relative; z-index: 1;
+  width: calc(var(--L) * 1.414);
+  height: var(--stack-h);
 }
-/* impact ripple — the wall flexes left→right and holds (Smart-pick column stagger) */
-.bundlegrid .b30-wall i:nth-child(10n+1) { animation-delay: 0s; }
-.bundlegrid .b30-wall i:nth-child(10n+2) { animation-delay: .02s; }
-.bundlegrid .b30-wall i:nth-child(10n+3) { animation-delay: .04s; }
-.bundlegrid .b30-wall i:nth-child(10n+4) { animation-delay: .06s; }
-.bundlegrid .b30-wall i:nth-child(10n+5) { animation-delay: .08s; }
-.bundlegrid .b30-wall i:nth-child(10n+6) { animation-delay: .1s; }
-.bundlegrid .b30-wall i:nth-child(10n+7) { animation-delay: .12s; }
-.bundlegrid .b30-wall i:nth-child(10n+8) { animation-delay: .14s; }
-.bundlegrid .b30-wall i:nth-child(10n+9) { animation-delay: .16s; }
-.bundlegrid .b30-wall i:nth-child(10n+10){ animation-delay: .18s; }
-/* the threat-dart — punches through the lone patent, bounces off the wall */
-.bundlegrid .b30-dart {
-  position: absolute; left: -32px; top: 50%; width: 0; height: 0;
-  border-top: 6px solid transparent; border-bottom: 6px solid transparent;
-  border-left: 11px solid var(--score-d); opacity: 0;
+.bundlegrid .b30-stack i {
+  position: absolute; left: 50%; top: 50%;
+  width: var(--L); height: var(--L); margin: calc(var(--L) / -2);
+  border-radius: 30%;
+  background: var(--stack-fill); border: 1.5px solid var(--stack-edge);
+  transform: translateY(calc((var(--k) - 2.5) * var(--dy))) scaleY(var(--iso)) rotate(45deg);
+  z-index: calc(30 - var(--k));
 }
-.bundlegrid .b30-lone .b30-dart { animation: b30-dart-pierce 4.6s ease-in-out infinite both; }
-.bundlegrid .b30-wallwrap .b30-dart { animation: b30-dart-bounce 4.6s ease-in-out infinite both; }
-/* impact shockwave at the wall face — the threat is repelled */
-.bundlegrid .b30-shield {
-  position: absolute; left: -5px; top: 50%; width: 3px; height: clamp(96px, 12vw, 128px);
-  transform: translateY(-50%); border-radius: 2px;
-  background: var(--score-d); box-shadow: 0 0 10px 1px var(--score-d);
-  opacity: 0; animation: b30-shield 4.6s ease-in-out infinite both;
+/* ── moat forms (scale-in + brighten), energises, then breathes; ~6.5s ── */
+@keyframes b30-moat {
+  0%   { opacity: .5;  transform: scale(1.06);
+         box-shadow: 0 0 6px color-mix(in srgb, var(--score-a) 30%, transparent),  inset 0 0 6px color-mix(in srgb, var(--score-a) 18%, transparent); }
+  18%  { opacity: 1;   transform: scale(1);
+         box-shadow: 0 0 17px color-mix(in srgb, var(--score-a) 55%, transparent), inset 0 0 11px color-mix(in srgb, var(--score-a) 30%, transparent); }
+  60%  { opacity: .92; transform: scale(1);
+         box-shadow: 0 0 9px color-mix(in srgb, var(--score-a) 35%, transparent),  inset 0 0 7px color-mix(in srgb, var(--score-a) 20%, transparent); }
+  100% { opacity: .5;  transform: scale(1.06);
+         box-shadow: 0 0 6px color-mix(in srgb, var(--score-a) 30%, transparent),  inset 0 0 6px color-mix(in srgb, var(--score-a) 18%, transparent); }
 }
-@keyframes b30-dart-pierce {
-  0%       { transform: translate(0, -50%);    opacity: 0; }
-  8%       { transform: translate(0, -50%);    opacity: 1; }
-  30%      { transform: translate(50px, -50%); opacity: 1; }   /* into the cell */
-  48%      { transform: translate(98px, -50%); opacity: 0; }   /* through + gone */
-  100%     { transform: translate(98px, -50%); opacity: 0; }
+/* ── crosshair lock-on: brackets start spread out + faint, snap inward to the
+   corners (locked), blink once, hold, then reset; ~6.5s ── */
+@keyframes b30-bracket {
+  0%        { opacity: 0; transform: translate(calc(var(--sx) * 8px), calc(var(--sy) * 8px)); }
+  14%       { opacity: 1; transform: translate(0, 0); }            /* snapped to corner — locked */
+  18%       { opacity: .4; }                                       /* blink */
+  22%       { opacity: 1; }
+  86%       { opacity: 1; transform: translate(0, 0); }
+  96%, 100% { opacity: 0; transform: translate(calc(var(--sx) * 8px), calc(var(--sy) * 8px)); }
 }
-@keyframes b30-dart-bounce {
-  0%       { transform: translate(0, -50%);    opacity: 0; }
-  8%       { transform: translate(0, -50%);    opacity: 1; }
-  30%      { transform: translate(26px, -50%); opacity: 1; }   /* hits the wall face */
-  33%      { transform: translate(22px, -50%); opacity: 1; }   /* recoil */
-  50%      { transform: translate(-8px, -50%); opacity: 0; }   /* bounced back */
-  100%     { transform: translate(-8px, -50%); opacity: 0; }
-}
-@keyframes b30-shatter-l {
-  0%, 30%   { transform: rotate(0) translate(0, 0);            opacity: 1; }
-  33%       { transform: rotate(-3deg) translate(-1px, 1px);   opacity: 1; }   /* shudder */
-  50%       { transform: rotate(-22deg) translate(-11px, 13px); opacity: .14; } /* shatters away */
-  80%       { transform: rotate(-22deg) translate(-11px, 13px); opacity: .1; }
-  94%, 100% { transform: rotate(0) translate(0, 0);            opacity: 1; }
-}
-@keyframes b30-shatter-r {
-  0%, 30%   { transform: rotate(0) translate(0, 0);            opacity: 1; }
-  33%       { transform: rotate(3deg) translate(1px, 1px);     opacity: 1; }
-  50%       { transform: rotate(22deg) translate(11px, 15px);  opacity: .14; }
-  80%       { transform: rotate(22deg) translate(11px, 15px);  opacity: .1; }
-  94%, 100% { transform: rotate(0) translate(0, 0);            opacity: 1; }
-}
-@keyframes b30-ripple {
-  0%, 26%   { transform: scale(1); }
-  31%       { transform: scale(1.08); }   /* flexes as it absorbs the hit */
-  42%, 100% { transform: scale(1); }
-}
-@keyframes b30-shield {
-  0%, 28%   { opacity: 0; transform: translateY(-50%) scaleY(.55); }
-  31%       { opacity: .9; transform: translateY(-50%) scaleY(1); }
-  46%       { opacity: 0; transform: translateY(-50%) scaleY(1.15); }
-  100%      { opacity: 0; transform: translateY(-50%) scaleY(.55); }
-}
+/* reduced-motion settles Card 1 on a static end-state — see the consolidated
+   @media (prefers-reduced-motion) block below Card 5. */
 
 /* ── Card 2 · SABCD — stacked proportion bar + chip legend (centered) ── */
 .bundlegrid .bsabcd { width: 100%; max-width: 100%; transition: transform var(--tis-hover-transition); }
@@ -2433,14 +2448,16 @@ a, button,
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
   font-size: 13px; font-weight: 600; font-style: normal;
   font-feature-settings: "tnum" 1; font-variant-numeric: tabular-nums;
-  animation: bsabcd-fill 4.2s ease-in-out infinite both;
+  animation: bsabcd-fill 6s ease-in-out infinite both;
 }
+/* -3s desync offset folded into each segment delay (the per-seg rules below
+   override the base animation-delay) so the card starts mid-cycle. */
 .bundlegrid .bsabcd-bar i:last-child { border-right: 0; }
-.bundlegrid .bsabcd-bar .seg-s { flex: 5; background: var(--score-s-bg); color: var(--score-s); animation-delay: 0s; }
-.bundlegrid .bsabcd-bar .seg-a { flex: 6; background: var(--score-a-bg); color: var(--score-a); animation-delay: .18s; }
-.bundlegrid .bsabcd-bar .seg-b { flex: 9; background: var(--score-b-bg); color: var(--score-b); animation-delay: .36s; }
-.bundlegrid .bsabcd-bar .seg-c { flex: 6; background: var(--score-c-bg); color: var(--score-c); animation-delay: .54s; }
-.bundlegrid .bsabcd-bar .seg-d { flex: 4; background: var(--score-d-bg); color: var(--score-d); animation-delay: .72s; }
+.bundlegrid .bsabcd-bar .seg-s { flex: 5; background: var(--score-s-bg); color: var(--score-s); animation-delay: calc(-3s + 0s); }
+.bundlegrid .bsabcd-bar .seg-a { flex: 6; background: var(--score-a-bg); color: var(--score-a); animation-delay: calc(-3s + .18s); }
+.bundlegrid .bsabcd-bar .seg-b { flex: 9; background: var(--score-b-bg); color: var(--score-b); animation-delay: calc(-3s + .36s); }
+.bundlegrid .bsabcd-bar .seg-c { flex: 6; background: var(--score-c-bg); color: var(--score-c); animation-delay: calc(-3s + .54s); }
+.bundlegrid .bsabcd-bar .seg-d { flex: 4; background: var(--score-d-bg); color: var(--score-d); animation-delay: calc(-3s + .72s); }
 /* segments build left→right in tier order (S→A→B→C→D), hold, reset */
 @keyframes bsabcd-fill {
   0%, 6%    { clip-path: inset(0 100% 0 0); opacity: .85; }
@@ -2458,7 +2475,7 @@ a, button,
 }
 
 /* ── Card 3 · Smart-pick — abstract "scan the pool, light up the picks". A
-   dense field of faint candidate cells (the 170M pool); the engine sweeps it
+   dense field of faint candidate cells (the iPIC/III/NYCU candidate pool); the engine sweeps it
    (scan band) and lights a scattered selection in the canonical jurisdiction +
    tier CHIP background colours. Fills the card width so it fades out at the
    edges (not early). Theme-safe (chip tokens carry their own dark-mode
@@ -2487,7 +2504,7 @@ a, button,
   background: var(--pk-bg);
   border-color: var(--pk-bd);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-  animation: bpick-reveal 4.5s ease-in-out infinite both;
+  animation: bpick-reveal 6.5s ease-in-out infinite both;
 }
 .bundlegrid .bpick i.s  { --pk-bg: var(--score-s-bg);  --pk-bd: var(--score-s); }
 .bundlegrid .bpick i.a  { --pk-bg: var(--score-a-bg);  --pk-bd: var(--score-a); }
@@ -2511,7 +2528,7 @@ a, button,
   position: absolute; inset: -4px; z-index: 2; pointer-events: none;
   background: linear-gradient(100deg, transparent 40%, rgba(37, 37, 37, 0.06) 50%, transparent 60%);
   transform: translateX(-60%);
-  animation: bpick-scan 4.5s ease-in-out infinite;
+  animation: bpick-scan 6.5s ease-in-out infinite;
 }
 @keyframes bpick-scan {
   0%        { transform: translateX(-60%); opacity: 0; }
@@ -2558,24 +2575,24 @@ a, button,
    everyone else (B/C + jurisdictions) on the UP-pass. --d staggers within each. */
 .bundlegrid .bfto-mesh i.s,
 .bundlegrid .bfto-mesh i.a {
-  animation: bfto-bloom-a 10.5s ease-in-out infinite both;
-  animation-delay: calc(var(--d, 0) * 0.1s);
+  animation: bfto-bloom-a 13s ease-in-out infinite both;
+  animation-delay: calc(-5s + var(--d, 0) * 0.1s);   /* -5s desync, per-cell stagger preserved */
 }
 .bundlegrid .bfto-mesh i.b,
 .bundlegrid .bfto-mesh i.c,
 .bundlegrid .bfto-mesh i.us,
 .bundlegrid .bfto-mesh i.tw,
 .bundlegrid .bfto-mesh i.jp {
-  animation: bfto-bloom-b 10.5s ease-in-out infinite both;
-  animation-delay: calc(var(--d, 0) * 0.1s);
+  animation: bfto-bloom-b 13s ease-in-out infinite both;
+  animation-delay: calc(-5s + var(--d, 0) * 0.1s);   /* -5s desync, per-cell stagger preserved */
 }
 /* flagged exposure — no strike: the cell quietly dims, fading its fill + outline
    into the card background so it recedes next to the lit keepers. Paint animation
    (bg + border-colour). */
 .bundlegrid .bfto-mesh i.ex {
   background: var(--surface-page); border-color: transparent;
-  animation: bfto-dim 10.5s ease-in-out infinite both;
-  animation-delay: calc(var(--d, 0) * 0.12s);
+  animation: bfto-dim 13s ease-in-out infinite both;
+  animation-delay: calc(-5s + var(--d, 0) * 0.12s);   /* -5s desync, per-cell stagger preserved */
 }
 /* centred fto.pdf unit — box + icon + scan + label, punched into the field */
 .bundlegrid .bfto-src {
@@ -2598,14 +2615,16 @@ a, button,
 /* the file, dropping into the box — lighter stroke (set inline on the svg) */
 .bundlegrid .bfto-pdf {
   width: 26px; height: 26px; color: var(--text-tertiary);
-  animation: bfto-drop 10.5s ease-in-out infinite both;
+  animation: bfto-drop 13s ease-in-out infinite both;
+  animation-delay: -5s;            /* -5s desync — matches the other bfto layers */
 }
 /* soft sweep line — runs up and down inside the box while the field resolves */
 .bundlegrid .bfto-scan {
   position: absolute; left: 9px; right: 9px; top: 6px; height: 2px;
   border-radius: 2px; opacity: 0; z-index: 1;
   background: linear-gradient(90deg, transparent, var(--text-secondary), transparent);
-  animation: bfto-sweep 10.5s ease-in-out infinite both;
+  animation: bfto-sweep 13s ease-in-out infinite both;
+  animation-delay: -5s;            /* -5s desync — matches the other bfto layers */
 }
 .bundlegrid .bfto-file {
   font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
@@ -2716,10 +2735,10 @@ a, button,
 }
 /* the flying card — same size as every other card; fills its seat and trades across */
 .bundlegrid .bswap-fly { position: absolute; inset: -1px; z-index: 5; will-change: transform; }
-.bundlegrid .bswap-fly--cr { animation: bswap-right 11s cubic-bezier(.6, 0, .4, 1) infinite both; }
-.bundlegrid .bswap-fly--cl { animation: bswap-left  11s cubic-bezier(.6, 0, .4, 1) infinite both; }
-.bundlegrid .bswap-fly--ar { animation: bswap-right 11s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 2.75s; }
-.bundlegrid .bswap-fly--al { animation: bswap-left  11s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 2.75s; }
+.bundlegrid .bswap-fly--cr { animation: bswap-right 14s cubic-bezier(.6, 0, .4, 1) infinite both; }
+.bundlegrid .bswap-fly--cl { animation: bswap-left  14s cubic-bezier(.6, 0, .4, 1) infinite both; }
+.bundlegrid .bswap-fly--ar { animation: bswap-right 14s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 3.5s; }
+.bundlegrid .bswap-fly--al { animation: bswap-left  14s cubic-bezier(.6, 0, .4, 1) infinite both; animation-delay: 3.5s; }
 /* bundle cards go right, pool cards go left, on offset lanes so a pair never collides.
    Per pair: rest → cross out (6→18%) → settle on the partner seat (18→44%) → cross
    back (44→56%) → rest. Tier-A is the same motion delayed 25% of the loop, so the two
@@ -2741,9 +2760,9 @@ a, button,
 
 /* reduced-motion — every animated card settles on a sensible static end-state */
 @media (prefers-reduced-motion: reduce) {
-  .bundlegrid .b30-cell { animation: none; transform: none; opacity: 1; }
-  .bundlegrid .b30-wall i { animation: none; transform: none; }
-  .bundlegrid .b30-dart, .bundlegrid .b30-shield { animation: none; opacity: 0; }
+  .bundlegrid .b30-stack i { animation: none; }
+  .bundlegrid .b30-moat { animation: none; opacity: 1; transform: none; }   /* steady protective ring */
+  .bundlegrid .b30-cross span { animation: none; opacity: 1; transform: none; }   /* brackets locked, static */
   .bundlegrid .bsabcd-bar i { animation: none; clip-path: none; }
   .bundlegrid .bswap-fly { animation: none; transform: none; }   /* chips rest in their seats */
 }
@@ -3440,9 +3459,17 @@ a, button,
 }
 .hiw-panel.hiw-anim { animation: hiwIn 380ms cubic-bezier(0.23, 1, 0.32, 1); }
 
+/* ── inline commit CTA — pinned to the bottom-right of the stage, riding the
+   active step's checks row (the panels run taller than the stage min-height, so
+   the checks already sit at the bottom). The checks reserve a right gutter so
+   they never run under it. ── */
+.hiw-checks { padding-right: clamp(150px, 17vw, 210px); }
+.hiw-cta { position: absolute; right: 0; bottom: 0; white-space: nowrap; }
+
 @media (max-width: 720px) {
-  .hiw-checks { grid-template-columns: 1fr; gap: 10px; }
+  .hiw-checks { grid-template-columns: 1fr; gap: 10px; padding-right: 0; }
   .hiw-stage { min-height: 0; }
+  .hiw-cta { position: static; width: 100%; margin-top: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hiw-panel.hiw-anim { animation: none; }
@@ -3720,8 +3747,8 @@ a, button,
           <span class="icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg>
           </span>
-          <h4 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart Pick</h4>
-          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，5 分鐘內推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
+          <h4 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart-Pick</h4>
+          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
         </article>
 
         <article class="deliverable-card">
@@ -3842,7 +3869,7 @@ a, button,
               <li data-zh="以貴公司名義合法開立。">Legally Issued in your company's name.</li>
               <li data-zh="訂閱當週生效上線。">Active the week you subscribe.</li>
             </ul>
-            <a href="/product/licensing/lobby.html" class="btn btn-primary gbento-cta" data-target="licensing-signup" data-zh="試跑專利包">Build your bundle</a>
+            <a href="#pricing" class="btn btn-primary gbento-cta" data-zh="查看定價">View Pricing</a>
           </div>
         </article>
 
@@ -3854,8 +3881,10 @@ a, button,
        6 cards, 2 cols × 3 rows: why 30 | SABCD / AI smart-pick | FTO-guarded
        pick / you swap | Verified Badge. Rounded outer-corner cluster, framed
        visual drop-zones (real art added later). ZH condensed from
-       chinese-copy-direction.md §5/§6/§8/§9 — flag for a Miko ZH-lock pass
-       (esp. 1.7 億件 / 170M). Content echoes deliverable card 1, the pillar
+       chinese-copy-direction.md §5/§6/§8/§9 — flag for a Miko ZH-lock pass.
+       (Card 3 Innovue/170M removed 2026-06-09 per Irene's mechanism fix — the
+       30 come from the iPIC/III/NYCU pools; Innovue is search-backing only.)
+       Content echoes deliverable card 1, the pillar
        showcase, the how-it-works accordion, and the .walkaway badge story
        below; reconcile when those sections are revised. -->
   <section class="section bundlegrid" aria-label="What's inside your bundle">
@@ -3867,20 +3896,29 @@ a, button,
         <article class="bbx bbx--center bbx--why">
           <div class="bbx-head">
             <h3 class="bbx-title" data-zh="為什麼是 30 件，不是 1 件">Why thirty, not one</h3>
-            <p class="bbx-body" data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent is just a target: the day it issues, the other side knows the one claim to design around. Thirty is the smallest spread that deters; past it, only the bill climbs.</p>
+            <p class="bbx-body" data-zh-html data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent isn't a <strong style="font-weight:600">position</strong> — it's a <strong style="font-weight:600">target</strong>: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
             <div class="bbx-center">
               <div class="b30">
                 <div class="b30-lone">
-                  <span class="b30-cell b30-cell--l"></span><span class="b30-cell b30-cell--r"></span>
-                  <div class="b30-dart"></div>
+                  <i></i>
+                  <div class="b30-cross"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
                 </div>
-                <div class="b30-wallwrap">
-                  <div class="b30-dart"></div>
-                  <div class="b30-shield"></div>
-                  <div class="b30-wall"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="b30-stackwrap">
+                  <div class="b30-cluster">
+                    <div class="b30-moat"></div>
+                    <div class="b30-stack">
+                      <i style="--k:5"></i><i style="--k:4"></i><i style="--k:3"></i><i style="--k:2"></i><i style="--k:1"></i><i style="--k:0"></i>
+                    </div>
+                    <div class="b30-stack">
+                      <i style="--k:5"></i><i style="--k:4"></i><i style="--k:3"></i><i style="--k:2"></i><i style="--k:1"></i><i style="--k:0"></i>
+                    </div>
+                    <div class="b30-stack">
+                      <i style="--k:5"></i><i style="--k:4"></i><i style="--k:3"></i><i style="--k:2"></i><i style="--k:1"></i><i style="--k:0"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3891,7 +3929,7 @@ a, button,
         <article class="bbx bbx--center bbx--sabcd">
           <div class="bbx-head">
             <h3 class="bbx-title" data-zh="專利包內容：SABCD">Inside the bundle: SABCD</h3>
-            <p class="bbx-body" data-zh="30 件分布 5 個評級：5 S、6 A、9 B、6 C、4 D。旗艦級 (S/A) 上談判桌，密度級 (B) 覆蓋戰場，長尾 (C/D) 壓低成本，每季重新平衡。">Five tiers, thirty patents: 5 S, 6 A, 9 B, 6 C, 4 D. Flagship (S/A) face the counter-party, density (B) covers the field, the long tail (C/D) keeps cost down, rebalanced quarterly.</p>
+            <p class="bbx-body" data-zh-html data-zh="30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。">30 patents across all 5 tiers. S and A are the strategic top tier that go on <strong style="font-weight:600">offense</strong>; B, C and D blanket the field around them — <strong style="font-weight:600">quality</strong> and <strong style="font-weight:600">quantity</strong> in one bundle.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
@@ -3914,7 +3952,7 @@ a, button,
         <article class="bbx bbx--center">
           <div class="bbx-head">
             <h3 class="bbx-title" data-zh="AI 智選如何組建你的專利包">How AI Smart-pick builds your bundle</h3>
-            <p class="bbx-body" data-zh="泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，比對 Innovue 1.7 億件專利庫，5 分鐘給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。">Across three axes (country, industry, product line), the engine scans Innovue's 170M-patent pool and returns a tier-balanced thirty from ITRI / III / NYCU in five minutes.</p>
+            <p class="bbx-body" data-zh-html data-zh="泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。">Across country × industry × product line, the AI engine scans for your <strong style="font-weight:600">risk gaps</strong> and assembles a tier-balanced 30 from TIS's curated iPIC / III / NYCU pools.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
@@ -3935,8 +3973,8 @@ a, button,
              → candidate bundle in 24 hrs). ZH condensed — flag for Miko ZH-lock. -->
         <article class="bbx bbx--center">
           <div class="bbx-head">
-            <h3 class="bbx-title" data-zh="FTO 保選">FTO-guarded pick</h3>
-            <p class="bbx-body" data-zh="已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件，24 小時內交付。">Already have a freedom-to-operate report or product spec? Upload it and we scope the candidate thirty to your real exposure, back within 24 hours.</p>
+            <h3 class="bbx-title" data-zh="FTO 保選">FTO-guided pick</h3>
+            <p class="bbx-body" data-zh-html data-zh="已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件。">Already have an FTO report or product spec? Upload it and we build your 30 around the <strong style="font-weight:600">exact gaps</strong> it reveals.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
@@ -3969,8 +4007,8 @@ a, button,
         <!-- Box 5 — You set the direction, swap until it fits -->
         <article class="bbx bbx--center bbx--swap">
           <div class="bbx-head">
-            <h3 class="bbx-title" data-zh="你定方向，替換到滿意為止">You set the direction, swap until it fits</h3>
-            <p class="bbx-body" data-zh="AI 推薦，你做主。簽約前可從動態池手動替換任一件，不需懂法律；最後這份專利包是你的決定，不是演算法的猜測。">AI proposes; you decide. Swap any pick by hand from the live pool before you sign, no legal expertise needed. The bundle ends up yours, not an algorithm's best guess.</p>
+            <h3 class="bbx-title" data-zh-html data-zh="同級替換，由你鎖定">Swap within tier — then <strong style="font-weight:600">lock it in</strong></h3>
+            <p class="bbx-body" data-zh-html data-zh="AI 推薦，你做主。同級專利自選替換，不加價、無等審。">AI proposes; you decide. Swap any pick for a <strong style="font-weight:600">same-tier</strong> alternate — <strong style="font-weight:600">no extra cost</strong>, no review wait.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
@@ -4018,10 +4056,10 @@ a, button,
         <!-- Box 6 — Verified License Badge (NEW). Copy from PRD §5 Beat 3. NOTE:
              overlaps the .walkaway section below (the credential/verify story);
              reconcile when that section is revised. ZH — flag for Miko ZH-lock. -->
-        <article class="bbx bbx--center bbx--badge">
+        <a class="bbx bbx--center bbx--badge" href="/product/licensing/badge.html" aria-label="Verified License Badge — see how to use the badge">
           <div class="bbx-head">
             <h3 class="bbx-title" data-zh="授權認證標章">Verified License Badge</h3>
-            <p class="bbx-body" data-zh="每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。">Every bundle ships a "TIS × institution" badge with a unique license number and QR code, verified online in two seconds.</p>
+            <p class="bbx-body" data-zh-html data-zh="每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。">Every bundle ships a <strong style="font-weight:600">co-branded</strong> "TIS × institution" badge — unique license number and QR code, verified by any <strong style="font-weight:600">buyer</strong> in two seconds.</p>
           </div>
           <div class="bbx-visual" aria-hidden="true">
             <div class="bbx-fade"></div>
@@ -4106,7 +4144,13 @@ a, button,
               </div>
             </div>
           </div>
-        </article>
+        </a>
+      </div>
+
+      <!-- Commit CTA — after the bundle showcase, send the convinced straight
+           to signup. Right-aligned, primary weight. ZH reuses the hero verb. -->
+      <div class="bundlegrid-cta">
+        <a href="/product/licensing/lobby.html" class="btn btn-primary" data-target="licensing-signup" data-zh="試跑專利包">Build your bundle</a>
       </div>
     </div>
   </section>
@@ -4126,48 +4170,263 @@ a, button,
       <div class="walkaway-grid">
         <!-- 1 — Issued -->
         <article class="wa-col">
-          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>1.0</span> 開立"><span class="wa-num">1.0</span> Issued</p>
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>1.0</span> 開立"><span class="wa-num">1.0</span> Issue</p>
           <div class="wa-col-body">
             <h3 class="wa-title" data-zh="標章以貴公司名義生效">Your badge goes live, in your name</h3>
-            <p class="wa-body" data-zh="憑證與標章同步開立，內嵌授權編號與 QR Code。">The credential and badge issue together — a license number and QR code.</p>
-            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
+            <p class="wa-body" data-zh="憑證與標章同步開立，內嵌授權編號與 QR Code。">Credential and badge issue together — embedded license number and QR code.</p>
+            <a class="wa-link" href="/product/licensing/badge.html#issue" data-zh="了解更多 →">Learn more →</a>
           </div>
         </article>
 
         <!-- 2 — Reviewed -->
         <article class="wa-col">
-          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>2.0</span> 複核"><span class="wa-num">2.0</span> Reviewed</p>
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>2.0</span> 公證"><span class="wa-num">2.0</span> Notarize</p>
           <div class="wa-col-body">
-            <h3 class="wa-title" data-zh="法務複核的是成品，不是草稿">Your counsel reviews a finished file</h3>
-            <p class="wa-body" data-zh="PAdES 簽章的憑證與合約，是成品，不是草稿。">A PAdES-signed certificate and contract — a finished file, not a draft.</p>
-            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
+            <h3 class="wa-title" data-zh="具法律效力的授權憑證">A credential with legal weight</h3>
+            <p class="wa-body" data-zh="PAdES · eIDAS 數位憑證與合約，高規格公證簽章。">A PAdES · eIDAS credential and contract — high-spec, notarized.</p>
+            <a class="wa-link" href="/product/licensing/badge.html#credential" data-zh="了解更多 →">Learn more →</a>
           </div>
         </article>
 
         <!-- 3 — Displayed -->
         <article class="wa-col">
-          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>3.0</span> 展示"><span class="wa-num">3.0</span> Displayed</p>
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>3.0</span> 展示"><span class="wa-num">3.0</span> Display</p>
           <div class="wa-col-body">
             <h3 class="wa-title" data-zh-html data-zh="上展位，<br>進提案">On the booth,<br>in the deck</h3>
-            <p class="wa-body" data-zh="標章可印製於展位、提案書、官網或外包裝，支援 PNG / SVG。">Print the badge on booths, proposals, your footer, or the box — PNG or SVG.</p>
-            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
+            <p class="wa-body" data-zh="標章可印製於展位、提案書、官網或外包裝。">Print it on booth signage, proposals, your website, or the product box.</p>
+            <a class="wa-link" href="/product/licensing/badge.html#display" data-zh="看實際應用 →">See it in action →</a>
           </div>
         </article>
 
         <!-- 4 — Verified -->
         <article class="wa-col">
-          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>4.0</span> 驗證"><span class="wa-num">4.0</span> Verified</p>
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>4.0</span> 驗證"><span class="wa-num">4.0</span> Verify</p>
           <div class="wa-col-body">
             <h3 class="wa-title" data-zh="買家 2 秒完成驗證">A buyer verifies it in two seconds</h3>
-            <p class="wa-body" data-zh="買家掃描 QR Code，授權即在線上 2 秒驗證通過。">A buyer scans the QR code and the license verifies online in two seconds.</p>
-            <a class="wa-link" href="/product/licensing/lobby.html" data-zh="了解更多 →">Learn more →</a>
+            <p class="wa-body" data-zh="買家掃描 QR Code，授權即在線上 2 秒驗證通過。">They scan the QR code; the license confirms online, on the spot.</p>
+            <a class="wa-link" href="/product/licensing/badge.html#verify" data-zh="驗證範例 →">Verify a sample →</a>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ─── 3. Pricing (placed directly under "What you walk away with") ───
+  <!-- ─── 3. From signup to a live license (onboarding walkthrough — was "How it works") ─── -->
+  <section class="section" aria-label="From signup to a live license">
+    <div class="container">
+
+      <div class="howitworks">
+        <!-- Section head matched to "Price by term." (.bp-section-heading);
+             h2 (not h3) so the [data-pillar] .howitworks > h3 warm-gradient
+             rule no longer applies — renders solid text-primary like Pricing.
+             Reframed from "How it works" to an onboarding walkthrough: six
+             steps from signup to an active, productive license. -->
+        <h2 class="bp-section-heading" data-zh="從註冊到生效授權">From signup to a live license</h2>
+        <!-- Stepped feature carousel — 6 onboarding steps. Pills + auto-cycling
+             panels (title → description → step visual → checks). Step visuals
+             (.hiw-screen) are live HTML/CSS — clean condensed product UI built
+             from the licensing flow vocabulary in
+             brand/previews/licensing-flow-preview.html, scoped + pinned to light
+             tokens (a bright product window even in dark mode), locked to a
+             uniform 2:1 frame. Pill labels + new ZH on steps 1/5 are provisional
+             — flag for a Miko ZH-lock. -->
+        <div class="hiw-frame">
+          <div class="hiw-carousel" data-hiw-carousel>
+
+            <nav class="hiw-steps" aria-label="Progress">
+              <ol role="list">
+                <li><button type="button" class="hiw-pill" data-hiw-pill="0" aria-selected="true"><span class="hiw-dot"><span class="hiw-num">1</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="選擇">Pick</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="1" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">2</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="智選">Smart-Pick</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="2" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">3</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="專利包">Bundle</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="3" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">4</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="替換">Swap</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="4" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">5</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="付款">Payment</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="5" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">6</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="生效">Active</span></button></li>
+              </ol>
+            </nav>
+
+            <div class="hiw-stage" role="group" aria-label="How it works steps">
+
+              <article class="hiw-panel is-active" data-hiw-panel="0">
+                <h4 class="hiw-title" data-zh="選擇你的國家與產業">Pick your jurisdiction and industry</h4>
+                <p class="hiw-desc" data-zh="一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。">Pay only for the market you actually need — one jurisdiction, one industry.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-cols2">
+                    <div>
+                      <div class="hs-coleyebrow">Jurisdiction</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-jchip us">US</span><span class="hs-nm">United States</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-jchip tw">TW</span><span class="hs-nm">Taiwan</span></span></div>
+                        <div class="hs-opt muted"><span class="hs-lft"><span class="hs-jchip eu">EU</span><span class="hs-nm">Europe</span></span><span class="hs-sb">Soon</span></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="hs-coleyebrow">Industry</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-nm">Semiconductors</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Networking</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Computing</span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Bundle scope</span><span class="hs-jchip us">US</span><span class="val">Semiconductors</span><span class="n">30 patents</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="US、TW，兩個主戰場供專利佈局。">US and Taiwan — the two markets to position in</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="一包專利包對應單一國家 × 單一產業，聚焦不臃腫。">One jurisdiction × one industry per bundle</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="30 件 SABCD 評級專利組合，針對該市場精準佈局。">30 SABCD-graded patents, scoped to that market</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="1">
+                <h4 class="hiw-title" data-zh="兩種建立 30 專利包的方法">Two ways to build your 30</h4>
+                <p class="hiw-desc" data-zh="AI 快速取得組合，或提交 FTO 報告精準篩選。">AI builds your bundle — or submit your FTO for a precise pick.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-paths">
+                    <div class="hs-path sel">
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">AI · Free</span></div>
+                      <div class="hs-pt">AI Smart-Pick</div>
+                      <div class="hs-pd">The system builds a tier-balanced 30 for your market. No FTO required.</div>
+                    </div>
+                    <div class="hs-path">
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">FTO · Guided</span></div>
+                      <div class="hs-pt">FTO Upload</div>
+                      <div class="hs-pd">Hand us your freedom-to-operate report and we route the bundle around your gaps.</div>
+                      <div class="hs-drop">Drop your FTO report (PDF)</div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Either path</span><span class="val">ships with a same-tier swap pool</span><span class="n">30 patents</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。">AI Smart-pick — 30 matched to your needs</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。">FTO-guided — upload your FTO, or we'll produce one</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你挑選。">Pick from a primary 30 and an alternate 30</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="2">
+                <h4 class="hiw-title" data-zh="檢視你的 30 專利包">Review your 30-patent bundle</h4>
+                <p class="hiw-desc" data-zh="針對特定商品特定市場選取 30 個最佳專利組合。">The 30 best-fit patents for your product and market.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-headrow">
+                    <div class="hs-coleyebrow" style="margin:0">Your 30 patents</div>
+                    <div class="hs-tierdist"><span class="hs-tchip s">5S</span><span class="hs-tchip a">6A</span><span class="hs-tchip b">9B</span><span class="hs-tchip c">6C</span><span class="hs-tchip d">4D</span></div>
+                  </div>
+                  <div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10142368</span><span class="hs-ptitle">Thin-film capacitor electrode on ceramic substrate</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10218547</span><span class="hs-ptitle">Low-loss high-frequency connector for 5G</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10612938</span><span class="hs-ptitle">Integrated passive device for mm-wave modules</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10678451</span><span class="hs-ptitle">Embedded inductor with patterned ferrite core</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Curated from</span><span class="val">iPIC · III · NYCU pool</span><span class="n">30 / 30</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。">Tier-balanced — quality and quantity in one</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。">Drawn from the iPIC, III &amp; NYCU pool</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="不用等 18 個月或無止盡商務談判，訂閱到生效快速打通關。">Go live the week you subscribe — not in 18 months</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="3">
+                <h4 class="hiw-title" data-zh="自選替換，由你鎖定">Swap freely — then lock it in</h4>
+                <p class="hiw-desc" data-zh="同評級專利可自選替換，隨你決定，不加價、無等審。">Swap any same-tier pick, your call — no extra cost, no review wait.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-swap">
+                    <div class="hs-pcard out">
+                      <div class="hs-pctop"><span class="hs-pcid">US10678451</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-pcttl">Embedded inductor with patterned ferrite core</div>
+                    </div>
+                    <div class="hs-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16"/><path d="M16 4l4 4-4 4"/><path d="M20 16H4"/><path d="M8 12l-4 4 4 4"/></svg></div>
+                    <div>
+                      <div class="hs-poollab">Same-tier pool · B</div>
+                      <div class="hs-poolrow pick"><span class="hs-pid">US10845120</span><span class="hs-tchip b">B</span><span class="hs-rep">Replace</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">US10912677</span><span class="hs-tchip b">B</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">TW I712345</span><span class="hs-tchip b">B</span></div>
+                    </div>
+                  </div>
+                  <div class="hs-scope"><span class="lab">Within term</span><span class="val">Swap as often as you like — like-for-like</span><span class="n">count stays 30</span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你自選替換。">Swap from a primary 30 and an alternate 30</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="授權期間內可不限次替換同評級專利，提升企業防禦力。">Swap as often as you like, within term</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。">Replace like-for-like — the count stays 30</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="4">
+                <h4 class="hiw-title" data-zh="期間與付款">Term and payment</h4>
+                <p class="hiw-desc" data-zh="選擇授權期間，以信用卡或電匯付款；款項到帳，隔日生效。">Pick your term, then settle by card or wire — the bundle goes live the next day.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-cols2">
+                    <div>
+                      <div class="hs-coleyebrow">Subscription term</div>
+                      <div class="hs-optlist">
+                        <div class="hs-opt"><span class="hs-nm">3 months</span></div>
+                        <div class="hs-opt sel"><span class="hs-nm">12 months</span><span class="hs-rgt hs-disc">10% off</span></div>
+                        <div class="hs-opt"><span class="hs-nm">24 months</span><span class="hs-rgt hs-disc">12% off</span></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="hs-coleyebrow">Payment method</div>
+                      <div class="hs-optlist">
+                        <div class="hs-pay sel"><span class="hs-payflag">Instant</span><div class="hs-pnm">Credit / debit card</div><div class="hs-pds">Charged at confirmation.</div></div>
+                        <div class="hs-pay"><div class="hs-pnm">Wire transfer</div><div class="hs-pds">14-day grace. Issues when funds clear.</div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="hs-total"><span class="k">US · Semiconductors · 12 months</span><span class="v">NT$8,991<small> /mo</small></span></div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="3、6、12、24 個月期，隨時可升級延長授權期間。">3, 6, 12, or 24 months — upgrade anytime to extend</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="期間越長，月費越低。">Longer terms, lower monthly rate</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="信用卡或電匯付款，開立新台幣發票。">Pay by card or wire — NT$ invoice issued</span></li>
+                </ul>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="5">
+                <h4 class="hiw-title" data-zh="展示憑證，展示你的軟實力">Display the credential, show your standing</h4>
+                <p class="hiw-desc" data-zh="高規格授權認證標章，供客戶查詢，拉高被告門檻。">A high-spec badge buyers can verify — raising the bar to sue you.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <div class="hs-headrow">
+                    <div class="hs-coleyebrow" style="margin:0">License TIS-US-2401</div>
+                    <span class="hs-signal"><span class="d"></span>ACTIVE</span>
+                  </div>
+                  <div class="hs-licgrid">
+                    <div class="hs-badge">
+                      <div class="hs-seal"><img src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt=""></div>
+                      <div class="hs-btop">TIS Issued · Verified License</div>
+                      <svg class="hs-qr" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><path fill="#252525" d="M0 0h7v7H0zM8 0h1v1H8zM10 0h2v1h-2zM13 0h1v2h-1zM15 0h1v1h-1zM17 0h2v1h-2zM22 0h7v7h-7zM2 2h3v3H2zM24 2h3v3h-3zM9 1h1v2H9zM11 2h1v3h-1zM16 1h1v3h-1zM19 1h1v2h-1zM8 4h1v2H8zM13 3h2v1h-2zM18 4h2v1h-2zM10 5h2v1h-2zM14 5h1v3h-1zM20 5h1v3h-1zM0 8h1v2H0zM3 8h2v1H3zM6 8h2v2H6zM9 8h1v1H9zM11 8h3v1h-3zM16 8h2v1h-2zM22 8h1v2h-1zM25 8h2v1h-2zM28 8h1v3h-1zM2 10h1v3H2zM4 10h3v1H4zM9 10h2v2H9zM12 10h1v2h-1zM15 10h1v4h-1zM18 10h2v1h-2zM24 10h2v2h-2zM0 12h2v1H0zM5 12h2v3H5zM17 12h1v3h-1zM21 12h3v1h-3zM26 12h2v1h-2zM8 13h1v3H8zM11 13h3v1h-3zM19 13h2v2h-2zM3 14h1v3H3zM13 15h2v1h-2zM23 14h2v3h-2zM27 14h1v3h-1zM0 16h1v3H0zM6 16h2v1H6zM10 16h2v2h-2zM16 16h1v3h-1zM20 16h2v1h-2zM2 17h1v3H2zM9 17h1v2H9zM13 17h2v1h-2zM18 17h1v3h-1zM25 17h2v1h-2zM5 18h2v2H5zM12 18h1v3h-1zM21 18h3v1h-3zM0 22h7v7H0zM8 20h1v2H8zM11 20h2v1h-2zM15 20h2v2h-2zM19 20h1v3h-1zM23 20h1v3h-1zM26 20h2v2h-2zM2 24h3v3H2zM9 22h2v1H9zM13 22h1v3h-1zM17 22h2v1h-2zM21 22h1v3h-1zM25 22h1v3h-1zM28 22h1v3h-1zM10 24h2v2h-2zM15 24h1v3h-1zM18 24h2v1h-2zM23 24h2v1h-2zM9 26h1v3H9zM12 27h3v1h-3zM17 26h1v3h-1zM20 26h3v1h-3zM26 26h2v2h-2z"/></svg>
+                      <div class="hs-blic">TIS-US-2401</div>
+                    </div>
+                    <div class="hs-docs">
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><div><div class="hs-dt">Contract</div><div class="hs-ds">PAdES three-party signature</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="hs-dt">License certificate</div><div class="hs-ds">QR-linked to public registry</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></span><div><div class="hs-dt">Verified License Badge</div><div class="hs-ds">PNG + SVG · embed-ready</div></div><span class="hs-da">Get<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+                    </div>
+                  </div>
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。">Notarized credential — QR-verified in two seconds</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。">Co-branded TIS × institution badge — print it anywhere</span></li>
+                </ul>
+              </article>
+
+              <!-- Persistent commit CTA — pinned to the bottom-right of the
+                   stage, riding the active step's checks row. Inside the stage,
+                   so its click is stopped from bubbling to the step-advance
+                   handler (see script). ZH provisional. -->
+              <a href="/product/licensing/lobby.html" class="btn btn-primary hiw-cta" data-target="licensing-signup" data-zh="試跑專利包">Build your bundle</a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 3. Pricing (process-then-price: placed after the signup walkthrough,
+       directly above the FAQ so price objections are handled next) ───
        The institution marks (iPIC · III · NYCU) that used to sit in a
        standalone "Exclusive Patent Access" band now live nested in the
        card under Proof & delivery (.pcard-trust), closing the trust loop. -->
@@ -4190,7 +4449,7 @@ a, button,
             <div>
               <h3 class="pcard-title" data-zh="打造你的專利包">Build your bundle</h3>
               <!-- ZH provisional (jurisdiction folded into subhead) — flag for a Miko ZH-lock. -->
-              <p class="pcard-desc" data-zh="一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。">One subscription, thirty SABCD-graded patents in the US or Taiwan.</p>
+              <p class="pcard-desc" data-zh="一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。">One subscription, 30 SABCD-graded patents in the US or Taiwan.</p>
 
               <div class="bp-toggle" role="tablist" aria-label="Subscription term">
                 <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
@@ -4225,7 +4484,7 @@ a, button,
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="運算系統">Computing systems</span></li>
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="整合應用（AI · 自駕 · 電動車）">Integrated applications (AI · AV · EV)</span></li>
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="多媒體與影像處理">Multimedia &amp; image processing</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="淨零與碳管理">Net-Zero &amp; carbon</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="淨零與碳管理">Net-Zero &amp; carbon management</span></li>
               </ul>
             </div>
 
@@ -4233,8 +4492,8 @@ a, button,
               <h4 class="pcard-feat-title" data-zh="憑證與交付">Proof &amp; delivery</h4>
               <ul class="pcard-list">
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="授權認證標章 + QR 驗證">Verified License Badge + QR verifier</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="DLC 數位授權憑證（PAdES · eIDAS）">DLC digital credential (PAdES · eIDAS)</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="MOICA 政府電子簽章">MOICA / government e-signature</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="DLC 數位授權憑證（PAdES · eIDAS）">DLC digital license credential (PAdES · eIDAS)</span></li>
+                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="MOICA 政府電子簽章">MOICA government e-signature</span></li>
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="標章可用於展位與宣傳物">Badge usage on booths &amp; promo</span></li>
               </ul>
             </div>
@@ -4259,214 +4518,6 @@ a, button,
     </div>
   </section>
 
-  <!-- ─── 3. From signup to a live license (onboarding walkthrough — was "How it works") ─── -->
-  <section class="section" aria-label="From signup to a live license">
-    <div class="container">
-
-      <div class="howitworks">
-        <!-- Section head matched to "Price by term." (.bp-section-heading);
-             h2 (not h3) so the [data-pillar] .howitworks > h3 warm-gradient
-             rule no longer applies — renders solid text-primary like Pricing.
-             Reframed from "How it works" to an onboarding walkthrough: six
-             steps from signup to an active, productive license. -->
-        <h2 class="bp-section-heading" data-zh="從註冊到生效授權">From signup to a live license</h2>
-        <!-- Stepped feature carousel — 6 onboarding steps. Pills + auto-cycling
-             panels (title → description → step visual → checks). Step visuals
-             (.hiw-screen) are live HTML/CSS — clean condensed product UI built
-             from the licensing flow vocabulary in
-             brand/previews/licensing-flow-preview.html, scoped + pinned to light
-             tokens (a bright product window even in dark mode), locked to a
-             uniform 2:1 frame. Pill labels + new ZH on steps 1/5 are provisional
-             — flag for a Miko ZH-lock. -->
-        <div class="hiw-frame">
-          <div class="hiw-carousel" data-hiw-carousel>
-
-            <nav class="hiw-steps" aria-label="Progress">
-              <ol role="list">
-                <li><button type="button" class="hiw-pill" data-hiw-pill="0" aria-selected="true"><span class="hiw-dot"><span class="hiw-num">1</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="選擇">Pick</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="1" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">2</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="智選">Smart Pick</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="2" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">3</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="專利包">Bundle</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="3" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">4</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="替換">Swap</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="4" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">5</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="付款">Payment</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="5" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">6</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="生效">Active</span></button></li>
-              </ol>
-            </nav>
-
-            <div class="hiw-stage" role="group" aria-label="How it works steps">
-
-              <article class="hiw-panel is-active" data-hiw-panel="0">
-                <h4 class="hiw-title" data-zh="選擇你的國家與產業">Pick your jurisdiction and industry</h4>
-                <p class="hiw-desc" data-zh="一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。">Pay for the market you're actually entering — one jurisdiction, one industry.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-cols2">
-                    <div>
-                      <div class="hs-coleyebrow">Jurisdiction</div>
-                      <div class="hs-optlist">
-                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-jchip us">US</span><span class="hs-nm">United States</span></span></div>
-                        <div class="hs-opt"><span class="hs-lft"><span class="hs-jchip tw">TW</span><span class="hs-nm">Taiwan</span></span></div>
-                        <div class="hs-opt muted"><span class="hs-lft"><span class="hs-jchip eu">EU</span><span class="hs-nm">Europe</span></span><span class="hs-sb">Soon</span></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="hs-coleyebrow">Industry</div>
-                      <div class="hs-optlist">
-                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-nm">Semiconductors</span></span></div>
-                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Networking</span></span></div>
-                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Computing</span></span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="hs-scope"><span class="lab">Bundle scope</span><span class="hs-jchip us">US</span><span class="val">Semiconductors</span><span class="n">30 patents</span></div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="US、TW，兩個主戰場供專利佈局。">Cover the market your customers buy in</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="一包專利包對應單一國家 × 單一產業，聚焦不臃腫。">One jurisdiction × one industry per bundle</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="30 件 SABCD 評級專利組合，針對該市場精準佈局。">Thirty SABCD-graded patents, scoped to that market</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="1">
-                <h4 class="hiw-title" data-zh="兩種建立 30 專利包的方法">Two ways to build your 30</h4>
-                <p class="hiw-desc" data-zh="AI 快速取得組合，或提交 FTO 報告精準篩選。">A bundle in 15 seconds — or hand us your FTO and we'll route around it.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-paths">
-                    <div class="hs-path sel">
-                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">AI · Free</span></div>
-                      <div class="hs-pt">AI Smart Pick</div>
-                      <div class="hs-pd">The system builds a tier-balanced 30 for your market in about 15 seconds. No FTO required.</div>
-                    </div>
-                    <div class="hs-path">
-                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">FTO · Guided</span></div>
-                      <div class="hs-pt">FTO Upload</div>
-                      <div class="hs-pd">Hand us your freedom-to-operate report and we route the bundle around your gaps.</div>
-                      <div class="hs-drop">Drop your FTO report (PDF)</div>
-                    </div>
-                  </div>
-                  <div class="hs-scope"><span class="lab">Either path</span><span class="val">ships with a same-tier swap pool</span><span class="n">30 patents</span></div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。">Let the system recommend a bundle, free</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。">Or hand us your FTO to guide the pick</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你挑選。">Either path ships with a same-tier swap pool</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="2">
-                <h4 class="hiw-title" data-zh="檢視你的 30 專利包">Review your 30-patent bundle</h4>
-                <p class="hiw-desc" data-zh="針對特定商品特定市場選取 30 個最佳專利組合。">30 SABCD-graded patents, curated to your market in under 15 seconds.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-headrow">
-                    <div class="hs-coleyebrow" style="margin:0">Your 30 patents</div>
-                    <div class="hs-tierdist"><span class="hs-tchip s">5S</span><span class="hs-tchip a">6A</span><span class="hs-tchip b">9B</span><span class="hs-tchip c">6C</span><span class="hs-tchip d">4D</span></div>
-                  </div>
-                  <div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10142368</span><span class="hs-ptitle">Thin-film capacitor electrode on ceramic substrate</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10218547</span><span class="hs-ptitle">Low-loss high-frequency connector for 5G</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10612938</span><span class="hs-ptitle">Integrated passive device for mm-wave modules</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10678451</span><span class="hs-ptitle">Embedded inductor with patterned ferrite core</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
-                  </div>
-                  <div class="hs-scope"><span class="lab">Curated from</span><span class="val">Innovue · iPIC · III · NYCU pool</span><span class="n">30 / 30</span></div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。">Get a tier-balanced bundle, flagship to long tail</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。">Drawn from the Innovue, iPIC, III &amp; NYCU pool</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="不用等 18 個月或無止盡商務談判，訂閱到生效快速打通關。">Go live the week you subscribe</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="3">
-                <h4 class="hiw-title" data-zh="鎖定專利包">Swap patents — your call</h4>
-                <p class="hiw-desc" data-zh="同評級專利可自選替換，隨你決定，不加價、無等審。">Don't love a pick? Swap it — no surcharge, no review delay.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-swap">
-                    <div class="hs-pcard out">
-                      <div class="hs-pctop"><span class="hs-pcid">US10678451</span><span class="hs-tchip b">Tier B</span></div>
-                      <div class="hs-pcttl">Embedded inductor with patterned ferrite core</div>
-                    </div>
-                    <div class="hs-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16"/><path d="M16 4l4 4-4 4"/><path d="M20 16H4"/><path d="M8 12l-4 4 4 4"/></svg></div>
-                    <div>
-                      <div class="hs-poollab">Same-tier pool · B</div>
-                      <div class="hs-poolrow pick"><span class="hs-pid">US10845120</span><span class="hs-tchip b">B</span><span class="hs-rep">Replace</span></div>
-                      <div class="hs-poolrow"><span class="hs-pid">US10912677</span><span class="hs-tchip b">B</span></div>
-                      <div class="hs-poolrow"><span class="hs-pid">TW I712345</span><span class="hs-tchip b">B</span></div>
-                    </div>
-                  </div>
-                  <div class="hs-scope"><span class="lab">Within term</span><span class="val">Swap as often as you like — like-for-like</span><span class="n">count stays 30</span></div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你自選替換。">Swap any pick from a same-tier pool</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="授權期間內可不限次替換同評級專利，提升企業防禦力。">Swap as often as you like, within term</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。">Replace like-for-like — the count stays thirty</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="4">
-                <h4 class="hiw-title" data-zh="期間與付款">Term and payment</h4>
-                <p class="hiw-desc" data-zh="選擇授權期間，以信用卡或電匯付款；款項到帳即刻啟用。">Pick your term, then settle by card or wire — the bundle activates the moment payment clears.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-cols2">
-                    <div>
-                      <div class="hs-coleyebrow">Subscription term</div>
-                      <div class="hs-optlist">
-                        <div class="hs-opt"><span class="hs-nm">3 months</span></div>
-                        <div class="hs-opt sel"><span class="hs-nm">12 months</span><span class="hs-rgt hs-disc">10% off</span></div>
-                        <div class="hs-opt"><span class="hs-nm">24 months</span><span class="hs-rgt hs-disc">12% off</span></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="hs-coleyebrow">Payment method</div>
-                      <div class="hs-optlist">
-                        <div class="hs-pay sel"><span class="hs-payflag">Instant</span><div class="hs-pnm">Credit / debit card</div><div class="hs-pds">Charged at confirmation.</div></div>
-                        <div class="hs-pay"><div class="hs-pnm">Wire transfer</div><div class="hs-pds">14-day grace. Issues when funds clear.</div></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="hs-total"><span class="k">US · Semiconductors · 12 months</span><span class="v">NT$8,991<small> /mo</small></span></div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="3、6、12、24 個月期，隨時可升級延長授權期間。">Choose the term that fits your runway</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="期間越長，月費越低。">Longer terms, lower monthly rate</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="信用卡或電匯付款，開立新台幣發票。">Pay by card or wire — NT$ invoice issued</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="5">
-                <h4 class="hiw-title" data-zh="展示憑證，展示你的軟實力">Display the credential — and the full file</h4>
-                <p class="hiw-desc" data-zh="高規格授權認證標章，供客戶查詢，拉高被告門檻。">One Document Center — everything you need to display, defend, and prove the license.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <div class="hs-headrow">
-                    <div class="hs-coleyebrow" style="margin:0">License TIS-US-2401</div>
-                    <span class="hs-signal"><span class="d"></span>ACTIVE</span>
-                  </div>
-                  <div class="hs-licgrid">
-                    <div class="hs-badge">
-                      <div class="hs-seal"><img src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt=""></div>
-                      <div class="hs-btop">TIS Issued · Verified License</div>
-                      <svg class="hs-qr" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><path fill="#252525" d="M0 0h7v7H0zM8 0h1v1H8zM10 0h2v1h-2zM13 0h1v2h-1zM15 0h1v1h-1zM17 0h2v1h-2zM22 0h7v7h-7zM2 2h3v3H2zM24 2h3v3h-3zM9 1h1v2H9zM11 2h1v3h-1zM16 1h1v3h-1zM19 1h1v2h-1zM8 4h1v2H8zM13 3h2v1h-2zM18 4h2v1h-2zM10 5h2v1h-2zM14 5h1v3h-1zM20 5h1v3h-1zM0 8h1v2H0zM3 8h2v1H3zM6 8h2v2H6zM9 8h1v1H9zM11 8h3v1h-3zM16 8h2v1h-2zM22 8h1v2h-1zM25 8h2v1h-2zM28 8h1v3h-1zM2 10h1v3H2zM4 10h3v1H4zM9 10h2v2H9zM12 10h1v2h-1zM15 10h1v4h-1zM18 10h2v1h-2zM24 10h2v2h-2zM0 12h2v1H0zM5 12h2v3H5zM17 12h1v3h-1zM21 12h3v1h-3zM26 12h2v1h-2zM8 13h1v3H8zM11 13h3v1h-3zM19 13h2v2h-2zM3 14h1v3H3zM13 15h2v1h-2zM23 14h2v3h-2zM27 14h1v3h-1zM0 16h1v3H0zM6 16h2v1H6zM10 16h2v2h-2zM16 16h1v3h-1zM20 16h2v1h-2zM2 17h1v3H2zM9 17h1v2H9zM13 17h2v1h-2zM18 17h1v3h-1zM25 17h2v1h-2zM5 18h2v2H5zM12 18h1v3h-1zM21 18h3v1h-3zM0 22h7v7H0zM8 20h1v2H8zM11 20h2v1h-2zM15 20h2v2h-2zM19 20h1v3h-1zM23 20h1v3h-1zM26 20h2v2h-2zM2 24h3v3H2zM9 22h2v1H9zM13 22h1v3h-1zM17 22h2v1h-2zM21 22h1v3h-1zM25 22h1v3h-1zM28 22h1v3h-1zM10 24h2v2h-2zM15 24h1v3h-1zM18 24h2v1h-2zM23 24h2v1h-2zM9 26h1v3H9zM12 27h3v1h-3zM17 26h1v3h-1zM20 26h3v1h-3zM26 26h2v2h-2z"/></svg>
-                      <div class="hs-blic">TIS-US-2401</div>
-                    </div>
-                    <div class="hs-docs">
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><div><div class="hs-dt">Contract</div><div class="hs-ds">PAdES three-party signature</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="hs-dt">License certificate</div><div class="hs-ds">QR-linked to public registry</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></span><div><div class="hs-dt">Verified License Badge</div><div class="hs-ds">PNG + SVG · embed-ready</div></div><span class="hs-da">Get<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                    </div>
-                  </div>
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。">Embed the credential anywhere, PNG or SVG</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。">Hand over a PAdES-signed contract and certificate</span></li>
-                </ul>
-              </article>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
   <!-- ─── 4. FAQ (moved up under Pricing) ─── -->
   <section class="section" aria-labelledby="lic-faq-heading">
     <div class="container">
@@ -4482,17 +4533,7 @@ a, button,
             <span class="acc-mark" aria-hidden="true">−</span>
           </button>
           <div class="acc-content"><div>
-            <p data-zh="每組組合策展自 Innovue WEBPAT 與策略合作夥伴。所有專利在進入組合池前皆通過 PSS 引擎預先評等。">Every bundle is curated from <strong>Innovue's WEBPAT</strong> and strategic aligned partners. Every patent is pre-scored on the PSS engine before it's eligible for any bundle.</p>
-          </div></div>
-        </div>
-
-        <div class="acc-item">
-          <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="為什麼每組都是固定的 5/6/9/6/4 分布？">Why does every bundle have the same 5/6/9/6/4 split?</span>
-            <span class="acc-mark" aria-hidden="true">+</span>
-          </button>
-          <div class="acc-content"><div>
-            <p data-zh="初始分布：5 件 S + 6 件 A + 9 件 B + 6 件 C + 4 件 D，依產業池每季再平衡。旗艦級 (S/A) 在談判桌上面對對手；密度級 (B) 覆蓋戰場；長尾 (C/D) 補洞並維持價格。可預測，且能撐住真實授權方所遇到的各種反制。">Thirty patents — initial split <strong>5 S + 6 A + 9 B + 6 C + 4 D</strong>, rebalanced quarterly per industry pool. The flagship tiers (S/A) face the counter-party at the negotiation table. The density tier (B) covers the battlefield. The long tail (C/D) plugs gaps and holds the price down. Predictable, and it holds up under the kind of pushback real licensees see.</p>
+            <p data-zh-html data-zh="每件專利來自合作機構創智、資策會、陽明交大，進入組合池前皆完成 SABCD 評級。">Every patent comes from our partner institutions — <strong>iPIC, III, and NYCU</strong> — and is SABCD-graded before it enters a bundle.</p>
           </div></div>
         </div>
 
@@ -4502,7 +4543,27 @@ a, button,
             <span class="acc-mark" aria-hidden="true">+</span>
           </button>
           <div class="acc-content"><div>
-            <p data-zh="上傳你的產品說明書或 FTO 報告。24 小時內收到組合候選。同源評分引擎（與 Signal 共用）跨產業池計算交集密度。若有 5–7 件不適配你的產品線，可在簽約前從動態池中替換。">Upload your <strong>product spec</strong> or your <strong>FTO report</strong>. Within 24 hours, you get a candidate bundle. The same scoring engine that drives Signal computes overlap density against the industry pool. If 5–7 patents don't fit your product line, you can swap them out from the dynamic pool before you sign.</p>
+            <p data-zh-html data-zh="上傳你的產品說明書或 FTO 報告。我們比對產業池，挑出真正涵蓋你暴露風險的專利。不合適的，簽約前都能換成同評級替代。">Upload your <strong>product spec</strong> or <strong>FTO report</strong>. We map it against the industry pool and pick the patents that cover your real exposure. Anything that doesn't fit, swap for a <strong>same-tier</strong> alternate before you sign.</p>
+          </div></div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger">
+            <span class="acc-title" data-zh="訂閱之後就不會被告了嗎？">Does subscribing actually stop me from being sued?</span>
+            <span class="acc-mark" aria-hidden="true">+</span>
+          </button>
+          <div class="acc-content"><div>
+            <p data-zh-html data-zh="沒有任何產品能保證這點。但以你公司名義持有 30 件專利、加上可驗證的標章，會拉高攻擊你的成本——專利蟑螂自然轉向更好下手的對象。">No product can promise that. But 30 patents in your name and a verifiable badge <strong>raise the cost of attacking you</strong> — so trolls move to an easier target.</p>
+          </div></div>
+        </div>
+
+        <div class="acc-item">
+          <button type="button" class="acc-trigger">
+            <span class="acc-title" data-zh="非專屬授權，競爭對手不就能拿到一樣的專利？">It's non-exclusive — what stops a competitor licensing the same patents?</span>
+            <span class="acc-mark" aria-hidden="true">+</span>
+          </button>
+          <div class="acc-content"><div>
+            <p data-zh-html data-zh="重點不在獨佔，而在以你名義持有的合法授權。專利包依你的暴露風險組建、標章掛你公司名；專利池夠深，兩家公司很少拿到同一組 30 件。">Exclusivity isn't the point — <strong>standing in your own name</strong> is. Your bundle is scoped to your exposure and badged as yours, and the pools run deep — two firms rarely hold the same 30.</p>
           </div></div>
         </div>
 
@@ -4512,19 +4573,10 @@ a, button,
             <span class="acc-mark" aria-hidden="true">+</span>
           </button>
           <div class="acc-content"><div>
-            <p data-zh="同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 12%。續約 MSRP。整段非專屬。"><strong>Same-tier replacement at no extra cost.</strong> S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 12% off on 24-month. Renewals at MSRP. Non-exclusive throughout.</p>
+            <p data-zh-html data-zh="同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 12%。續約 MSRP。整段非專屬。"><strong>Same-tier replacement at no extra cost.</strong> S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 12% off on 24-month. Renewals at MSRP. Non-exclusive throughout.</p>
           </div></div>
         </div>
 
-        <div class="acc-item">
-          <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="從訂閱到拿到徽章需要多久？">How long from subscribing to having the badge in hand?</span>
-            <span class="acc-mark" aria-hidden="true">+</span>
-          </button>
-          <div class="acc-content"><div>
-            <p data-zh="約一週。15 分鐘填完六步引導（法域 → 產業 → 期間 → 路徑 → 公司 → 結果）。AI 24 小時內回傳候選組合。簽約後徽章於 72 小時內以你的名義生效。">About a week. <strong>Fifteen minutes</strong> to fill out the six-step wizard (jurisdiction → industry → term → path → company → results). AI returns a candidate bundle within <strong>24 hours</strong>. Once you sign, the badge is active in your name within <strong>72 hours</strong>.</p>
-          </div></div>
-        </div>
         </div>
       </div>
     </div>
@@ -4771,7 +4823,7 @@ a, button,
   });
 
   // How it works — stepped feature carousel (ported from a React reference).
-  // Auto-advances every 3.5s + advance on click/pill; pauses on hover and on
+  // Auto-advances every 7s + advance on click/pill; pauses on hover and on
   // prefers-reduced-motion (no auto-cycle, no entrance animation for those).
   document.addEventListener('DOMContentLoaded', () => {
     const root = document.querySelector('[data-hiw-carousel]');
@@ -4780,11 +4832,12 @@ a, button,
     const pills  = Array.from(root.querySelectorAll('[data-hiw-pill]'));
     const panels = Array.from(root.querySelectorAll('[data-hiw-panel]'));
     const stage  = root.querySelector('.hiw-stage');
+    const cta    = root.querySelector('.hiw-cta');
     const total  = panels.length;
     if (!total) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const INTERVAL = 3500;
+    const INTERVAL = 7000;
     let cur = 0;
     let timer = null;
 
@@ -4812,6 +4865,8 @@ a, button,
     const start = () => { if (reduced) return; stop(); timer = setInterval(next, INTERVAL); };
 
     pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); start(); }));
+    // the CTA lives inside the stage — don't let its click advance the carousel
+    if (cta) cta.addEventListener('click', (e) => e.stopPropagation());
     if (stage) stage.addEventListener('click', () => { next(); start(); });
     root.addEventListener('mouseenter', stop);
     root.addEventListener('mouseleave', start);

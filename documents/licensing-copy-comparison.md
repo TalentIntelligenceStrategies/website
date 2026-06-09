@@ -68,7 +68,7 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 > **copy-audit-v1:** [§ Licensing › Deliverables](copy-audit-v1.md) tracks a **4-card grid shared with the homepage** — those strings are **not on this page anymore.** Obsolete; needs re-baselining to these 6.
 > **direction-doc:** no entry. This is new copy.
 >
-> **Reading:** EN **headings** are a different register from the ZH headings (ZH = punchy metaphor labels; EN = benefit sentences). EN **bodies** roughly track the ZH meaning. Two factual snags flagged below: institution naming (創智 vs "ITRI") and the discount figure (88折/12% here vs 15% in the FAQ).
+> **Reading:** EN **headings** are a different register from the ZH headings (ZH = punchy metaphor labels; EN = benefit sentences). EN **bodies** roughly track the ZH meaning. Two factual snags (both ✅ resolved 2026-06-09): institution naming (創智→iPIC) and the discount figure (now 12%/88折 everywhere).
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
@@ -83,7 +83,7 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 | 2 秒驗證，自由展示 | Verify in 2 seconds, display freely | Verify in 2 seconds, display anywhere | ✅ aligned | ☐ |
 | 標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。 | The badge embeds a unique license number and QR code, verified live online in 2 seconds. Can be printed on international booths, proposals, the website footer, or product packaging. | The badge carries a unique license number and QR code — verified online in 2 seconds. Print it on booth signage, proposals, your website footer, or product packaging. | ✅ body aligned (anchor-wrapped) | ☐ |
 | 專利轉化為 OpEx 租賃保險 | Patents turned into OpEx leasing/insurance | Patent licensing as OpEx — under NT$10K/month, flexible terms | ⚠️ EN↔ZH register differs | ☐ |
-| 自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。 | Filing one patent yourself takes NT$50,000+ and 18 months; a dedicated IP engineer costs over NT$1M a year. A subscription keeps the monthly average under NT$10K — flexible 3/6/12/24-month terms; the 2-year plan is up to 12% off (88折). | Filing one patent yourself runs NT$50,000+ and 18 months; an in-house IP engineer breaks NT$1M a year. A subscription keeps you under NT$10K/month — flexible 3/6/12/24-month terms, up to 12% off on 2-year plans. | ⚠️ **Number mismatch w/ FAQ** — here 24-mo = **88折 / 12% off**; FAQ + Slide 27 say **15% off (85折)**. Reconcile. | ☐ |
+| 自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。 | Filing one patent yourself takes NT$50,000+ and 18 months; a dedicated IP engineer costs over NT$1M a year. A subscription keeps the monthly average under NT$10K — flexible 3/6/12/24-month terms; the 2-year plan is up to 12% off (88折). | Filing one patent yourself runs NT$50,000+ and 18 months; an in-house IP engineer breaks NT$1M a year. A subscription keeps you under NT$10K/month — flexible 3/6/12/24-month terms, up to 12% off on 2-year plans. | ✅ resolved 2026-06-09 — 12% (88折) consistent across FAQ + JS save badge + Irene [direction:455](chinese-copy-direction.md) | ☐ |
 
 ## Cover-the-gap (BRAND-NEW section — untracked)
 
@@ -112,49 +112,57 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 
 ## Inside the bundle (BRAND-NEW section — untracked)
 
-> **HTML:** [3671–3798](../product/licensing/index.html#L3671-L3798) (`.bundlegrid` 2×3 bento). **Not in copy-audit-v1, not in direction-doc.**
+> **HTML:** [3860–4109](../product/licensing/index.html#L3860-L4109) (`.bundlegrid`, now **6 boxes**: Why-30 · SABCD · AI Smart-pick · FTO-guarded · Swap · Verified License Badge). **Not in copy-audit-v1, not in direction-doc.**
 >
-> **Reading:** ZH/EN written together; EN is a tighter editorial paraphrase, meaning holds. One naming note: ZH credits "Innovue 1.7 億件專利庫" (170M pool) in the AI card; EN keeps "Innovue's 170M-patent pool." Consistent. Needs back-filling.
+> **Reading:** ZH/EN written together; EN is a tighter editorial paraphrase, meaning holds. One naming note: ZH credits "Innovue 1.7 億件專利庫" (170M pool) in the AI card; EN keeps "Innovue's 170M-patent pool." Consistent.
+>
+> **Timing-promise sweep (2026-06-09, licensing page only):** removed all *granular delivery SLAs* per Miko — `5 分鐘`/"five minutes" (Box 3 + pillar), "15 seconds" ×3 (EN-only embellishments in the "two ways" section), `24 小時`/"within 24 hours" (Box 4 + FAQ "how do you decide the 30"), `每季再平衡`/"rebalanced quarterly" (FAQ split), and **deleted the entire "How long from subscribing to the badge?" FAQ** (it existed only to promise ~1 week / 24h / 72h). **Kept** the macro positioning (當週上線/"active the week you subscribe", 隔日生效/"day after payment" — Irene-verbatim), the 2-秒/"2-second" verify *feature*, and the 1–2 business-day contact line. ZH edits (Box 3, Box 4, pillar, both FAQs) **flagged for Irene**. PRD timing note ([licensing-page-prd.md:307](licensing-page-prd.md)/[411](licensing-page-prd.md)) NOT yet updated — Miko deferred the PRD pass.
+>
+> **Provenance (2026-06-09):** this bento's ZH is largely **self-authored when the section was built, not from Irene's slides** — only the SABCD distribution `5S.6A.9B.6C.4D` and the 有質有量 framing trace back to the direction doc. So the "ZH is frozen" rule is soft here: ZH rewrites are fair when they adopt Irene's native vocabulary, but each one should be **flagged for Irene review** (marked in the ✓ column). Box-by-box workshop in progress, both languages.
+>
+> **2026-06-09 pass:** Box 3 EN institution name fixed **ITRI → iPIC** (now matches ZH 創智 + partner strip). Remaining holdout: the Box 6 **Verified License Badge SVG** still renders an ITRI seal (`is-itri`, `#00AAEA`, ITRI submark, "INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE"). Swapping it to iPIC is a **brand-component change**, not a copy edit — blocked on (a) no iPIC *submark* asset (only the full `ipic_logo.svg`), (b) no iPIC brand hex in CSS, (c) the Verified License Badge lives in `brand/components.md` + `brand/catalog` so an `is-ipic` variant must be authored upstream and resynced. Tracked as a separate brand task below.
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 你的專利包裡有什麼，又是怎麼建起來的。 | What's in your patent bundle, and how it's built. | What's inside your bundle, and how it's built. | ✅ aligned | ☐ |
 | 為什麼是 30 件，不是 1 件 | Why 30, not 1 | Why thirty, not one | ✅ aligned | ☐ |
-| 1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。 | One patent isn't a position, it's a defendant's target: the moment it issues, the other side knows which claim to design around. Thirty is the true minimum that deters; any more is just an arms race, adding cost. | One patent is just a target: the day it issues, the other side knows the one claim to design around. Thirty is the smallest spread that deters; past it, only the bill climbs. | ✅ aligned | ☐ |
+| 1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。 | One patent isn't a position, it's a defendant's target: the moment it issues, the other side knows which claim to design around. Thirty is the true minimum that deters; any more is just an arms race, adding cost. | One patent isn't a **position** — it's a **target**: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing. | ✅ reworked 2026-06-09 (restores 佈局→"position" + 軍備競賽→"arms race"; `position`/`target` at 600 via `data-zh-html`) | ✅ |
 | 專利包內容：SABCD | Bundle contents: SABCD | Inside the bundle: SABCD | ✅ aligned | ☐ |
-| 30 件分布 5 個評級：5 S、6 A、9 B、6 C、4 D。旗艦級 (S/A) 上談判桌，密度級 (B) 覆蓋戰場，長尾 (C/D) 壓低成本，每季重新平衡。 | 30 patents across 5 tiers: 5 S, 6 A, 9 B, 6 C, 4 D. Flagship (S/A) take the negotiation table, density (B) covers the battlefield, the long tail (C/D) lowers cost — rebalanced quarterly. | Five tiers, thirty patents: 5 S, 6 A, 9 B, 6 C, 4 D. Flagship (S/A) face the counter-party, density (B) covers the field, the long tail (C/D) keeps cost down, rebalanced quarterly. | ✅ aligned | ☐ |
+| 30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。 | 30 patents span 5 tiers: 5 S, 6 A, 9 B, 6 C, 4 D. S and A are top-tier strategic, the can-fight strengths; B, C, D fill out the quantity — quality and quantity in one. | 30 patents across all 5 tiers. S and A are the strategic top tier that go on **offense**; B, C and D blanket the field around them — **quality** and **quantity** in one bundle. | ✅ both-language rewrite 2026-06-09 (`offense` + `quality`/`quantity` at 600, "and" plain); EN drops the 5S6A9B6C4D enumeration (shown in the bar visual) | ⚠️ ZH was self-authored — **needs Irene review** |
 | AI 智選如何組建你的專利包 | How AI Smart-pick builds your bundle | How AI Smart-pick builds your bundle | ✅ aligned | ☐ |
-| 泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，比對 Innovue 1.7 億件專利庫，5 分鐘給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。 | The TIS AI engine scans risk gaps across three axes — export country × industry × product line — matches against Innovue's 170M-patent pool, and in 5 minutes returns a tier-balanced candidate 30 from the 創智/資策會/陽明交大 (iPIC/III/NYCU) pool. | Across three axes (country, industry, product line), the engine scans Innovue's 170M-patent pool and returns a tier-balanced thirty from ITRI / III / NYCU in five minutes. | ⚠️ same **創智 vs ITRI** fact mismatch as Deliverables | ☐ |
-| FTO 保選 | FTO guaranteed-pick | FTO-guarded pick | ✅ aligned | ☐ |
-| 已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件，24 小時內交付。 | Already have an FTO report or product spec? Upload it and we build a candidate 30 based on your actual exposure risk, delivered within 24 hours. | Already have a freedom-to-operate report or product spec? Upload it and we scope the candidate thirty to your real exposure, back within 24 hours. | ✅ aligned | ☐ |
-| 你定方向，替換到滿意為止 | You set the direction, swap until satisfied | You set the direction, swap until it fits | ✅ aligned | ☐ |
-| AI 推薦，你做主。簽約前可從動態池手動替換任一件，不需懂法律；最後這份專利包是你的決定，不是演算法的猜測。 | AI recommends, you decide. Before signing you can manually swap any item from the dynamic pool — no legal knowledge needed; in the end the bundle is your decision, not the algorithm's guess. | AI proposes; you decide. Swap any pick by hand from the live pool before you sign, no legal expertise needed. The bundle ends up yours, not an algorithm's best guess. | ✅ aligned | ☐ |
+| 泰然 AI 引擎依出口國 × 產業 × 產品線三軸掃描風險缺口，給出一份評級均衡、來自創智／資策會／陽明交大池的候選 30 件。 | The TIS AI engine scans for risk gaps across three axes — export country × industry × product line — delivering a tier-balanced candidate 30 from the 創智/資策會/陽明交大 (iPIC/III/NYCU) pool. | Across country × industry × product line, the AI engine scans for your **risk gaps** and assembles a tier-balanced 30 from TIS's curated iPIC / III / NYCU pools. | ✅ **mechanism fix + timing sweep 2026-06-09**: removed false `比對 Innovue 1.7 億件專利庫` (per [direction:1135](chinese-copy-direction.md)) AND the `5 分鐘`/"five minutes" SLA (both langs). `risk gaps` @600. | ⚠️ ZH corrected — **needs Irene review** |
+| FTO 保選 | FTO guided-pick (保=guide/curate; parallels 智選 Smart-pick) | FTO-guided pick | ✅ retitled 2026-06-09 "guarded"→"guided" to match Irene [direction:818](chinese-copy-direction.md)/[695](chinese-copy-direction.md) + the onboarding bullet | ☐ |
+| 已有 FTO 報告或產品說明書？上傳後依你的實際暴露風險組建候選 30 件。 | Already have an FTO report or product spec? Upload it and we build a candidate 30 around your actual exposure risk. | Already have an FTO report or product spec? Upload it and we build your 30 around the **exact gaps** it reveals. | ✅ reworked + timing sweep 2026-06-09: dropped `24 小時內交付`/"within 24 hours" (both langs); tightened opener to "FTO report" + concrete payoff "the exact gaps it reveals"; `exact gaps` @600. | ⚠️ ZH corrected — **needs Irene review** |
+| 同級替換，由你鎖定 | Same-tier swap, you lock it in | Swap within tier — then **lock it in** | ✅ retitled 2026-06-09 to Irene's *lock* framing ([direction:864](chinese-copy-direction.md)) + *same-tier* rule ([875](chinese-copy-direction.md)); replaces self-authored 你定方向…滿意為止. `lock it in` @600 (title now uses `data-zh-html`). | ⚠️ ZH rewritten — **needs Irene review** |
+| AI 推薦，你做主。同級專利自選替換，不加價、無等審。 | AI recommends, you decide. Same-tier patents, swap at your discretion — no extra cost, no review wait. | AI proposes; you decide. Swap any pick for a **same-tier** alternate — **no extra cost**, no review wait. | ✅ reworked 2026-06-09: tightened to near-verbatim Irene [872](chinese-copy-direction.md) (同級…自選替換，不加價、無等審); dropped self-authored "before you sign / dynamic pool / not an algorithm's guess". `same-tier` + `no extra cost` @600. | ⚠️ ZH corrected — **needs Irene review** |
 | 授權認證標章 | License-certification badge | Verified License Badge | ✅ aligned (ZH = standard licensing term) | ☐ |
-| 每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。 | Each bundle comes with a "TIS × authoritative institution" co-branded badge, embedded with a dedicated license number and QR code — buyers verify online in 2 seconds. | Every bundle ships a "TIS × institution" badge with a unique license number and QR code, verified online in two seconds. | ✅ aligned | ☐ |
+| 每組附帶「TIS × 權威機構」聯名標章，內嵌專屬授權編號與 QR Code，買家線上 2 秒驗證。 | Each bundle comes with a "TIS × authoritative institution" co-branded badge, embedded with a dedicated license number and QR code — buyers verify online in 2 seconds. | Every bundle ships a **co-branded** "TIS × institution" badge — unique license number and QR code, verified by any **buyer** in two seconds. | ✅ reworked 2026-06-09 (EN only; ZH = Irene-verbatim, frozen): restored 聯名→"co-branded" + 買家→"any buyer". `co-branded`/`buyer` @600. | ☐ |
 
 ## What you walk away with (BRAND-NEW section — untracked)
 
-> **HTML:** [3806–3854](../product/licensing/index.html#L3806-L3854) (`.walkaway` 4-beat row; eyebrows use `data-zh-html` with a `.wa-num` span). **Not in copy-audit-v1, not in direction-doc.**
+> **HTML:** [4143–4186](../product/licensing/index.html#L4143-L4186) (`.walkaway` 4-beat row; eyebrows use `data-zh-html` with a `.wa-num` span; bodies tuned to a uniform ~2 lines per the CSS). **Not in copy-audit-v1, not in direction-doc.**
 >
-> **Reading:** ZH/EN parallel and clean. The four `了解更多 → / Learn more →` links repeat. Needs back-filling.
+> **Reading:** heading + subhead (the 被動防禦→主動佈局 pivot) kept; "active position" is consistent across the licensing page (cross-page divergence with homepage "active offense" logged separately). The four `了解更多 → / Learn more →` links repeat.
+>
+> **2026-06-09 pass (re-verified vs direction doc only; PRD deleted):** Beat 1 — restored 內嵌/"embedded", trimmed to 2 lines. **Beat 2 — reframed**: its "counsel reviews a finished file, not a draft" framing was **PRD-origin, not in the direction doc**, so retitled to the doc's notarized angle (複核→公證/"Notarized", PAdES·eIDAS). Beat 3 — dropped non-doc "PNG / SVG" (both langs), fixed weak nouns. Beat 4 — de-echoed the body (mechanism, not a restatement of the title). Beats kept **bold-free** (eyebrow+title carry emphasis). Beat-2 ZH rewritten + Beats 1/3 ZH trimmed → **flag for Irene**.
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 你拿到的是這些。 | This is what you get. | What you walk away with. | ✅ aligned | ☐ |
 | 從被動防禦轉為主動佈局。 | Shift from passive defense to active positioning. | Passive defense to active position. | ✅ aligned | ☐ |
-| `1.0` 開立 | 1.0 Issued | `1.0` Issued | ✅ aligned (rich-text `wa-num` span) | ☐ |
+| `1.0` 開立 | 1.0 Issue | `1.0` Issue | ✅ tense 2026-06-09: EN → base verb (matches tenseless ZH 開立); `wa-num` span | ☐ |
 | 標章以貴公司名義生效 | The badge goes live in your company's name | Your badge goes live, in your name | ✅ aligned | ☐ |
-| 憑證與標章同步開立，內嵌授權編號與 QR Code。 | The credential and badge issue together, embedded with a license number and QR code. | The credential and badge issue together — a license number and QR code. | ✅ aligned | ☐ |
-| `2.0` 複核 | 2.0 Reviewed | `2.0` Reviewed | ✅ aligned | ☐ |
-| 法務複核的是成品，不是草稿 | What your legal team reviews is a finished product, not a draft | Your counsel reviews a finished file | ✅ aligned | ☐ |
-| PAdES 簽章的憑證與合約，是成品，不是草稿。 | A PAdES-signed credential and contract — a finished product, not a draft. | A PAdES-signed certificate and contract — a finished file, not a draft. | ✅ aligned | ☐ |
-| `3.0` 展示 | 3.0 Displayed | `3.0` Displayed | ✅ aligned | ☐ |
+| 憑證與標章同步開立，內嵌授權編號與 QR Code。 | The credential and badge issue together, embedded with a license number and QR code. | Credential and badge issue together — embedded license number and QR code. | ✅ reworked 2026-06-09 (restored 內嵌→"embedded"; articles dropped to hold the uniform ~2-line row; bold-free) | ☐ |
+| `2.0` 公證 | 2.0 Notarize | `2.0` Notarize | ✅ reframed 2026-06-09 (複核→公證) + base-verb tense | ⚠️ |
+| 具法律效力的授權憑證 | A license credential with legal force | A credential with legal weight | ✅ **reframed 2026-06-09** — dropped the PRD-origin "counsel reviews a finished file, not a draft" framing (not in direction doc) for the doc-grounded **notarized/legal** angle ([direction:905](chinese-copy-direction.md)/[995](chinese-copy-direction.md)). | ⚠️ ZH rewritten — **needs Irene review** |
+| PAdES · eIDAS 數位憑證與合約，高規格公證簽章。 | PAdES · eIDAS digital credential and contract — high-spec notarized signature. | A PAdES · eIDAS credential and contract — high-spec, notarized. | ✅ reframed 2026-06-09: keeps PAdES (now + eIDAS, [995](chinese-copy-direction.md)); drops 成品/草稿; bold-free. | ⚠️ ZH rewritten — **needs Irene review** |
+| `3.0` 展示 | 3.0 Display | `3.0` Display | ✅ tense 2026-06-09: EN → base verb | ☐ |
 | 上展位，進提案 | On the booth, into the proposal | On the booth, / in the deck | ✅ aligned (`<br>` split) | ☐ |
-| 標章可印製於展位、提案書、官網或外包裝，支援 PNG / SVG。 | The badge can be printed on booths, proposals, the website, or packaging — supports PNG / SVG. | Print the badge on booths, proposals, your footer, or the box — PNG or SVG. | ✅ aligned | ☐ |
-| `4.0` 驗證 | 4.0 Verified | `4.0` Verified | ✅ aligned | ☐ |
+| 標章可印製於展位、提案書、官網或外包裝。 | The badge can be printed on booths, proposals, the website, or packaging. | Print it on booth signage, proposals, your website, or the product box. | ✅ reworked 2026-06-09: dropped non-doc "PNG / SVG" (both langs); fixed weak nouns (footer→website, box→product box). Bold-free. | ⚠️ ZH trimmed — flag for Irene |
+| `4.0` 驗證 | 4.0 Verify | `4.0` Verify | ✅ tense 2026-06-09: EN → base verb | ☐ |
 | 買家 2 秒完成驗證 | The buyer completes verification in 2 seconds | A buyer verifies it in two seconds | ✅ aligned | ☐ |
-| 買家掃描 QR Code，授權即在線上 2 秒驗證通過。 | The buyer scans the QR code and the license verifies online in 2 seconds. | A buyer scans the QR code and the license verifies online in two seconds. | ✅ aligned | ☐ |
-| 了解更多 → | Learn more → | Learn more → | ✅ aligned (×4) | ☐ |
+| 買家掃描 QR Code，授權即在線上 2 秒驗證通過。 | The buyer scans the QR code and the license verifies online in 2 seconds. | They scan the QR code; the license confirms online, on the spot. | ✅ de-echoed 2026-06-09 (EN only; ZH frozen/grounded): body now carries the scan→confirm mechanism, "two seconds" punch stays in the title. Bold-free. | ☐ |
+| CTAs (varied 2026-06-09) | — | 1·Issue & 2·Notarize: **Learn more →** (了解更多) · 3·Display: **See it in action →** (看實際應用) · 4·Verify: **Verify a sample →** (驗證範例) | ✅ broke the 4× "Learn more" repeat; all still → the Get-started lobby (lobby.html) | ⚠️ ZH for beats 3/4 (看實際應用 / 驗證範例) — flag for Irene |
 
 ## Pricing (now a static "Build your bundle" card — estimator removed)
 
@@ -168,7 +176,7 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 |---|---|---|---|---|
 | 依期間定價。 | Priced by term. | Price by term. | ⚠️ ZH — drifted from Slide 27 heading `專利授權套件組合` | ☐ |
 | 打造你的專利包 | Build your patent bundle | Build your bundle | ✅ aligned | ☐ |
-| 一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。 | One subscription, 30 SABCD-graded patents, for the US or Taiwan. | One subscription, thirty SABCD-graded patents in the US or Taiwan. | ✅ aligned | ☐ |
+| 一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。 | One subscription, 30 SABCD-graded patents, for the US or Taiwan. | One subscription, 30 SABCD-graded patents in the US or Taiwan. | ✅ aligned (numeral 30 for consistency, 2026-06-09) | ☐ |
 | 3 個月 / 6 個月 / 12 個月 / 24 個月 | 3 / 6 / 12 / 24 months | 3 / 6 / 12 / 24 months | ✅ aligned · matches Slide 27 (36-mo removed) | ☐ |
 | / 月 | / month | / month | ✅ aligned | ☐ |
 | 訂閱 | Subscribe | Subscribe | ✅ aligned | ☐ |
@@ -178,11 +186,11 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 | 運算系統 | Computing systems | Computing systems | ✅ aligned (reworded vs `計算機系統`) | ☐ |
 | 整合應用（AI · 自駕 · 電動車） | Integrated applications (AI · self-driving · EV) | Integrated applications (AI · AV · EV) | ✅ aligned | ☐ |
 | 多媒體與影像處理 | Multimedia & image processing | Multimedia & image processing | ✅ aligned (reworded vs `多媒體影音/影像處理`) | ☐ |
-| 淨零與碳管理 | Net-zero & carbon management | Net-Zero & carbon | ✅ aligned (reworded vs `淨零碳排`) | ☐ |
+| 淨零與碳管理 | Net-zero & carbon management | Net-Zero & carbon management | ✅ aligned 2026-06-09 (restored 管理/"management"; reworded vs Slide 27 `淨零碳排`) | ☐ |
 | 憑證與交付 | Credentials & delivery | Proof & delivery | ✅ aligned | ☐ |
 | 授權認證標章 + QR 驗證 | License-certification badge + QR verification | Verified License Badge + QR verifier | ✅ aligned | ☐ |
-| DLC 數位授權憑證（PAdES · eIDAS） | DLC digital license credential (PAdES · eIDAS) | DLC digital credential (PAdES · eIDAS) | ✅ aligned | ☐ |
-| MOICA 政府電子簽章 | MOICA government e-signature | MOICA / government e-signature | ✅ aligned | ☐ |
+| DLC 數位授權憑證（PAdES · eIDAS） | DLC digital license credential (PAdES · eIDAS) | DLC digital license credential (PAdES · eIDAS) | ✅ fixed 2026-06-09 (restored "license") | ☐ |
+| MOICA 政府電子簽章 | MOICA government e-signature | MOICA government e-signature | ✅ fixed 2026-06-09 (dropped misleading "/") | ☐ |
 | 標章可用於展位與宣傳物 | The badge can be used on booths and promo materials | Badge usage on booths & promo | ✅ aligned | ☐ |
 | 專利授權自權威機構 | Patents licensed from authoritative institutions | Licensed from established institutions | ✅ aligned · partner strip iPIC / III / NYCU (logos, no ZH text) | ☐ |
 
@@ -199,55 +207,55 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 從註冊到生效授權 | From registration to an active license | From signup to a live license | ✅ aligned | ☐ |
-| 選擇 / 智選 / 專利包 / 替換 / 付款 / 生效 | Pick / Smart-pick / Bundle / Swap / Payment / Active | Pick / Smart Pick / Bundle / Swap / Payment / Active | ✅ aligned (6 pills) | ☐ |
+| 選擇 / 智選 / 專利包 / 替換 / 付款 / 生效 | Pick / Smart-pick / Bundle / Swap / Payment / Active | Pick / Smart-Pick / Bundle / Swap / Payment / Active | ✅ aligned (6 pills); 2026-06-09 hyphenated "Smart Pick"→"Smart-Pick" page-wide (3 spots: pill, pillar title, two-ways panel) to match doc + Box 3 | ☐ |
 
 **Step 1 — Pick**
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 選擇你的國家與產業 | Choose your country and industry | Pick your jurisdiction and industry | ✅ aligned (drifted from Slide 22 `選擇法域 × 產業 × 期間`) | ☐ |
-| 一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。 | One bundle corresponds to one country, one industry — pay only for the market you actually need. | Pay for the market you're actually entering — one jurisdiction, one industry. | ✅ meaning aligned (drifted from Slide 22 body) | ☐ |
-| US、TW，兩個主戰場供專利佈局。 | US, TW — two main battlefields for patent positioning. | Cover the market your customers buy in | ⚠️ EN↔ZH — **different statement** | ☐ |
+| 一包專利包對應一個國家、一個產業，只為你真正需要的市場付費。 | One bundle corresponds to one country, one industry — pay only for the market you actually need. | Pay only for the market you actually need — one jurisdiction, one industry. | ✅ reworked 2026-06-09 — restored 只/"only" + 真正需要/"actually need" (closer to Irene [772](chinese-copy-direction.md)) | ☐ |
+| US、TW，兩個主戰場供專利佈局。 | US, TW — two main battlefields for patent positioning. | US and Taiwan — the two markets to position in | ✅ **fixed 2026-06-09** — EN now carries the ZH (was the generic "cover the market your customers buy in"); names the two jurisdictions per Irene [773](chinese-copy-direction.md) | ☐ |
 | 一包專利包對應單一國家 × 單一產業，聚焦不臃腫。 | One bundle maps to a single country × single industry — focused, not bloated. | One jurisdiction × one industry per bundle | ✅ meaning aligned | ☐ |
-| 30 件 SABCD 評級專利組合，針對該市場精準佈局。 | A 30 SABCD-graded patent bundle, precisely positioned for that market. | Thirty SABCD-graded patents, scoped to that market | ✅ aligned | ☐ |
+| 30 件 SABCD 評級專利組合，針對該市場精準佈局。 | A 30 SABCD-graded patent bundle, precisely positioned for that market. | 30 SABCD-graded patents, scoped to that market | ✅ aligned (numeral 30, 2026-06-09) | ☐ |
 
 **Step 2 — Smart Pick**
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 兩種建立 30 專利包的方法 | Two methods to build the 30-patent bundle | Two ways to build your 30 | ✅ aligned | ☐ |
-| AI 快速取得組合，或提交 FTO 報告精準篩選。 | AI rapidly obtains the bundle, or submit an FTO report for precise filtering. | A bundle in 15 seconds — or hand us your FTO and we'll route around it. | ⚠️ EN↔ZH — EN adds "15 seconds" / "route around"; not in ZH | ☐ |
-| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | Method A — AI Smart-pick (free): AI smart-picks 30 patents matching your needs as the bundle. | Let the system recommend a bundle, free | ⚠️ EN↔ZH — heavily compressed | ☐ |
-| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | Method B — FTO guaranteed-pick (paid): upload your FTO report, or pay extra to commission TIS to produce an FTO report; precisely filter the bundle for gaps in your patent positioning. | Or hand us your FTO to guide the pick | ⚠️ EN↔ZH — EN drops the paid-commission option entirely | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | The platform provides a primary 30 and an alternate 30 patent list for you to choose from. | Either path ships with a same-tier swap pool | ⚠️ EN↔ZH — **different statement** | ☐ |
+| AI 快速取得組合，或提交 FTO 報告精準篩選。 | AI rapidly obtains the bundle, or submit an FTO report for precise filtering. | AI builds your bundle — or submit your FTO for a precise pick. | ✅ reworked 2026-06-09 — dropped "15 seconds" (timing sweep) + "route around it"→"for a precise pick" (精準篩選). (快速/"fast" omitted; vague-speed, left out.) | ☐ |
+| 方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。 | Method A — AI Smart-pick (free): AI smart-picks 30 patents matching your needs as the bundle. | AI Smart-pick — 30 matched to your needs | ✅ reworked 2026-06-09 — restored method name + "30 matched"; (free) dropped (shown in panel path visual) | ☐ |
+| 方法 B - FTO 保選 (付費)：上傳你的 FTO 報告或加價購委托泰然產出 FTO 報告，針對專利佈局不足之處，精準篩選專利包。 | Method B — FTO guided-pick (paid): upload your FTO report, or pay extra to commission TIS to produce an FTO report; precisely filter the bundle for gaps in your patent positioning. | FTO-guided — upload your FTO, or we'll produce one | ✅ **fixed 2026-06-09** — restored the **commission option** ("or we'll produce one"); (paid) dropped | ☐ |
+| 平台提供首選 30 和備選 30 專利清單，供你挑選。 | The platform provides a primary 30 and an alternate 30 patent list for you to choose from. | Pick from a primary 30 and an alternate 30 | ✅ fixed 2026-06-09 — now carries the 首選 30/備選 30 framing (was "same-tier swap pool") | ☐ |
 
 **Step 3 — Bundle**
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 檢視你的 30 專利包 | Review your 30-patent bundle | Review your 30-patent bundle | ✅ aligned | ☐ |
-| 針對特定商品特定市場選取 30 個最佳專利組合。 | Selects the 30 best patents into a bundle for a specific product and specific market. | 30 SABCD-graded patents, curated to your market in under 15 seconds. | ⚠️ EN↔ZH — EN adds "SABCD" + "15 seconds" not in ZH | ☐ |
-| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | Spans 5 tiers (5S.6A.9B.6C.4D) — both quality and quantity. | Get a tier-balanced bundle, flagship to long tail | ✅ meaning aligned | ☐ |
+| 針對特定商品特定市場選取 30 個最佳專利組合。 | Selects the 30 best patents into a bundle for a specific product and specific market. | The 30 best-fit patents for your product and market. | ✅ reworked 2026-06-09 — dropped "15 seconds" (timing sweep) + non-ZH "SABCD"; restored 最佳/"best-fit" + 商品/"product" | ☐ |
+| 橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。 | Spans 5 tiers (5S.6A.9B.6C.4D) — both quality and quantity. | Tier-balanced — quality and quantity in one | ✅ reworked 2026-06-09 — 有質有量→"quality and quantity" (matches Box 2 fix); dropped invented "flagship/long tail" | ☐ |
 | 來自國家級創智法人、資策會法人、陽明交大學術單位等優質專利池，品質有保障。 | From premium patent pools such as the national-grade 創智 (iPIC) institution, 資策會 (III) institution, and 陽明交大 (NYCU) academic units — quality assured. | Drawn from the Innovue, iPIC, III & NYCU pool | ⚠️ EN↔ZH — EN adds **Innovue** (not in ZH); ZH lists 創智/iPIC | ☐ |
-| 不用等 18 個月或無止盡商務談判，訂閱到生效快速打通關。 | No waiting 18 months or endless business negotiations — fast from subscription to going live. | Go live the week you subscribe | ✅ meaning aligned | ☐ |
+| 不用等 18 個月或無止盡商務談判，訂閱到生效快速打通關。 | No waiting 18 months or endless business negotiations — fast from subscription to going live. | Go live the week you subscribe — not in 18 months | ✅ reworked 2026-06-09 — shortened to the 18-month contrast + go-live payoff (dropped 無止盡商務談判/"negotiations" for brevity) | ☐ |
 
 **Step 4 — Swap**
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
-| 鎖定專利包 | Lock the bundle | Swap patents — your call | ⚠️ EN↔ZH — **opposite framing** (ZH "Lock", EN "Swap"). Drifted from Slide 25 (`鎖定專利包`). | ☐ |
-| 同評級專利可自選替換，隨你決定，不加價、無等審。 | Same-tier patents can be freely swapped at your discretion — no surcharge, no review wait. | Don't love a pick? Swap it — no surcharge, no review delay. | ✅ meaning aligned | ☐ |
-| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | The platform provides a primary 30 and an alternate 30 patent list for you to swap. | Swap any pick from a same-tier pool | ✅ meaning aligned | ☐ |
+| 自選替換，由你鎖定 | Swap at your discretion, you lock it in | Swap freely — then lock it in | ✅ **resolved 2026-06-09** — was the Lock-vs-Swap mismatch (ZH 鎖定 / EN Swap); combined swap+lock to match Box 5, honoring Irene's 鎖定 ([864](chinese-copy-direction.md)). | ⚠️ ZH rewritten — **needs Irene review** |
+| 同評級專利可自選替換，隨你決定，不加價、無等審。 | Same-tier patents can be freely swapped at your discretion — no surcharge, no review wait. | Swap any same-tier pick, your call — no extra cost, no review wait. | ✅ reworked 2026-06-09 — restored 同評級/隨你決定; tail aligned to Box 5 ("no extra cost, no review wait"); dropped non-ZH "Don't love a pick?" | ☐ |
+| 平台提供首選 30 和備選 30 專利清單，供你自選替換。 | The platform provides a primary 30 and an alternate 30 patent list for you to swap. | Swap from a primary 30 and an alternate 30 | ✅ reworked 2026-06-09 — restored 首選/備選 30 (parallels Panel 2 bullet C) | ☐ |
 | 授權期間內可不限次替換同評級專利，提升企業防禦力。 | Within the license term, unlimited same-tier swaps — raises enterprise defensive capability. | Swap as often as you like, within term | ✅ aligned | ☐ |
-| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | As long as the tier composition (5S.6A.9B.6C.4D) is maintained, swap however you want. | Replace like-for-like — the count stays thirty | ✅ meaning aligned | ☐ |
+| 只要維持評級組合 (5S.6A.9B.6C.4D)，想怎麼換就怎麼換。 | As long as the tier composition (5S.6A.9B.6C.4D) is maintained, swap however you want. | Replace like-for-like — the count stays 30 | ✅ aligned (numeral 30, 2026-06-09) | ☐ |
 
 **Step 5 — Payment**
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 期間與付款 | Term and payment | Term and payment | ✅ aligned | ☐ |
-| 選擇授權期間，以信用卡或電匯付款；款項到帳即刻啟用。 | Choose the license term, pay by credit card or wire transfer; activates the moment payment arrives. | Pick your term, then settle by card or wire — the bundle activates the moment payment clears. | ✅ aligned | ☐ |
-| 3、6、12、24 個月期，隨時可升級延長授權期間。 | 3 / 6 / 12 / 24-month terms; upgradable anytime to extend the license period. | Choose the term that fits your runway | ⚠️ EN↔ZH — EN drops the upgrade/extend detail | ☐ |
+| 選擇授權期間，以信用卡或電匯付款；款項到帳，隔日生效。 | Choose the license term, pay by credit card or wire transfer; takes effect the next day after payment clears. | Pick your term, then settle by card or wire — the bundle goes live the next day. | ✅ **factual fix 2026-06-09** — was 即刻啟用/"the moment payment clears" (immediate), conflicting with the page's 付款隔日生效/"day after payment" (Irene [444](chinese-copy-direction.md)/[688](chinese-copy-direction.md)); aligned to next-day. | ⚠️ ZH changed — **needs Irene review** |
+| 3、6、12、24 個月期，隨時可升級延長授權期間。 | 3 / 6 / 12 / 24-month terms; upgradable anytime to extend the license period. | 3, 6, 12, or 24 months — upgrade anytime to extend | ✅ reworked 2026-06-09 — restored the 3/6/12/24 terms + 升級延長/"upgrade to extend" (was the generic "fits your runway") | ☐ |
 | 期間越長，月費越低。 | The longer the term, the lower the monthly fee. | Longer terms, lower monthly rate | ✅ aligned | ☐ |
 | 信用卡或電匯付款，開立新台幣發票。 | Pay by credit card or wire; an NT$ invoice is issued. | Pay by card or wire — NT$ invoice issued | ✅ aligned | ☐ |
 
@@ -255,32 +263,34 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
-| 展示憑證，展示你的軟實力 | Display the credential, display your soft power | Display the credential — and the full file | ⚠️ EN↔ZH — different framing (drifted from Slide 26 `展示憑證，展示你的軟實力`) | ☐ |
-| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | A high-spec license-certification badge, for customers to verify — raising the threshold for being sued. | One Document Center — everything you need to display, defend, and prove the license. | ⚠️ EN↔ZH — **entirely different statement** | ☐ |
-| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | A high-spec, notarized-e-signature digital license credential, embedded with a unique license number and QR code — verified live online in 2 seconds. | Embed the credential anywhere, PNG or SVG | ⚠️ EN↔ZH — **entirely different statement** | ☐ |
-| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institution" co-branded license-certification badge — freely printable on international booths, proposals, the website footer, or product packaging — keeps opponents from crossing the line. | Hand over a PAdES-signed contract and certificate | ⚠️ EN↔ZH — **entirely different statement** | ☐ |
+| 展示憑證，展示你的軟實力 | Display the credential, display your soft power | Display the credential, show your standing | ✅ rewritten 2026-06-09 — EN now carries the ZH (was "and the full file"); 軟實力→"standing" | ☐ |
+| 高規格授權認證標章，供客戶查詢，拉高被告門檻。 | A high-spec license-certification badge, for customers to verify — raising the threshold for being sued. | A high-spec badge buyers can verify — raising the bar to sue you. | ✅ **rewritten 2026-06-09** — EN now carries the ZH (供客戶查詢/拉高被告門檻); was the off-ZH "One Document Center" | ☐ |
+| 高規格公證電子簽章的數位授權憑證，內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。 | A high-spec, notarized-e-signature digital license credential, embedded with a unique license number and QR code — verified live online in 2 seconds. | Notarized credential — QR-verified in two seconds | ✅ **rewritten + shortened 2026-06-09** — carries the ZH (公證憑證 + QR + 2 秒驗證), was "Embed… PNG or SVG"; trimmed "unique number/digital" for length | ☐ |
+| 「泰然 × 權威機構」的聯名授權認證標章，可自由印製於國際展位、提案書、官網 Footer 或產品外包裝，讓對手不敢輕易踩線。 | The "TIS × authoritative institution" co-branded license-certification badge — freely printable on international booths, proposals, the website footer, or product packaging — keeps opponents from crossing the line. | Co-branded TIS × institution badge — print it anywhere | ✅ **rewritten 2026-06-09** — EN now carries the ZH (聯名標章 + 印製於展位/提案書/官網/外包裝); was "PAdES-signed contract" | ☐ |
 
 ## FAQ (cleanest section — ZH & EN correspond)
 
-> **HTML:** [4156–4225](../product/licensing/index.html#L4156-L4225). 5 Q&A, EN uses `<strong>` emphasis (ZH plain).
-> **copy-audit-v1:** [§ Licensing › FAQ](copy-audit-v1.md) — transcribed and **matches HTML**.
-> **direction-doc:** no FAQ slide for licensing.
+> **HTML:** [4499–4537](../product/licensing/index.html#L4499-L4537). **4 Q&A** (the "how long to the badge?" item was deleted in the timing sweep). EN uses `<strong>` emphasis (ZH plain).
+> **copy-audit-v1:** [§ Licensing › FAQ](copy-audit-v1.md) — re-baseline needed (was 5 Q&A).
+> **direction-doc:** no FAQ slide for licensing; bodies trace to Slides 14/25/26 badge+swap copy.
 >
-> **Reading:** the one body section where EN is a faithful rendering of the ZH. Already in the audit doc verbatim — **no re-baseline needed**; just carry the ☐ rows forward. ⚠️ **One cross-section number conflict:** the invalidation answer says **"up to 15% off on 24-month"** (= 85折), but the Deliverables card 6 says **88折 / 12% off**. One of the two is wrong.
+> **2026-06-09 pass:** FAQ 1 fixed (Innovue→search-backing, named iPIC/III/NYCU, "PSS engine"→"scoring engine"); FAQ 2 realigned to Box 2 terms (dropped flagship/density/long-tail/negotiation-table/battlefield + "holds the price"); FAQ 3/4 copy unchanged. **Bold-bug fix:** added `data-zh-html` to all four (their `<strong>` previously vanished on the first language toggle — [site.js:19](../assets/site.js#L19)). FAQ 1/2 ZH → flag for Irene.
+>
+> **Reading:** the one body section where EN is a faithful rendering of the ZH. Already in the audit doc verbatim — **no re-baseline needed**; just carry the ☐ rows forward. ✅ **Number conflict resolved 2026-06-09:** the invalidation answer is now **12% off (88折)** on 24-month, consistent with Deliverables card 6 + the JS save badge + Irene [direction:455](chinese-copy-direction.md).
 
 | ZH (HTML) | Literal EN | Site EN (HTML) | Δ | Status |
 |---|---|---|---|---|
 | 常見問題 | Common questions | FAQ | ✅ aligned | ☐ |
 | 專利從哪裡來？ | Where do the patents come from? | Where do the patents come from? | ✅ aligned | ☐ |
-| 每組組合策展自 Innovue WEBPAT 與策略合作夥伴。所有專利在進入組合池前皆通過 PSS 引擎預先評等。 | Every bundle is curated from Innovue WEBPAT and strategic partners. All patents are pre-scored by the PSS engine before entering the bundle pool. | Every bundle is curated from **Innovue's WEBPAT** and strategic aligned partners. Every patent is pre-scored on the PSS engine before it's eligible for any bundle. | ✅ aligned | ☐ |
-| 為什麼每組都是固定的 5/6/9/6/4 分布？ | Why is every bundle a fixed 5/6/9/6/4 distribution? | Why does every bundle have the same 5/6/9/6/4 split? | ✅ aligned | ☐ |
-| 初始分布：5 件 S + 6 件 A + 9 件 B + 6 件 C + 4 件 D，依產業池每季再平衡。旗艦級 (S/A) 在談判桌上面對對手；密度級 (B) 覆蓋戰場；長尾 (C/D) 補洞並維持價格。可預測，且能撐住真實授權方所遇到的各種反制。 | Initial distribution: 5 S + 6 A + 9 B + 6 C + 4 D, rebalanced quarterly by industry pool. Flagship (S/A) face opponents at the negotiation table; density (B) covers the battlefield; the long tail (C/D) plugs holes and holds the price. Predictable, and withstands the counter-moves real licensees face. | Thirty patents — initial split **5 S + 6 A + 9 B + 6 C + 4 D**, rebalanced quarterly per industry pool. The flagship tiers (S/A) face the counter-party at the negotiation table. The density tier (B) covers the battlefield. The long tail (C/D) plugs gaps and holds the price down. Predictable, and it holds up under the kind of pushback real licensees see. | ✅ aligned | ☐ |
+| 每件專利來自合作機構創智、資策會、陽明交大，進入組合池前皆完成 SABCD 評級。 | Every patent comes from partner institutions iPIC / III / NYCU; each completes SABCD grading before entering the pool. | Every patent comes from our partner institutions — **iPIC, III, and NYCU** — and is SABCD-graded before it enters a bundle. | ✅ **decoupled 2026-06-09** — dropped "Innovue's WEBPAT database" (products decoupled); "pre-scored by scoring engine" → "SABCD-graded" (page's own term); +data-zh-html | ⚠️ ZH rewritten — **needs Irene** |
 | 你們怎麼決定我們組合裡的 30 件？ | How do you decide the 30 in our bundle? | How do you decide which 30 patents go into our bundle? | ✅ aligned | ☐ |
-| 上傳你的產品說明書或 FTO 報告。24 小時內收到組合候選。同源評分引擎（與 Signal 共用）跨產業池計算交集密度。若有 5–7 件不適配你的產品線，可在簽約前從動態池中替換。 | Upload your product spec or FTO report. Within 24 hours, receive a candidate bundle. The same-source scoring engine (shared with Signal) computes intersection density across the industry pool. If 5–7 don't fit your product line, swap them from the dynamic pool before signing. | Upload your **product spec** or your **FTO report**. Within 24 hours, you get a candidate bundle. The same scoring engine that drives Signal computes overlap density against the industry pool. If 5–7 patents don't fit your product line, you can swap them out from the dynamic pool before you sign. | ✅ aligned | ☐ |
+| 上傳你的產品說明書或 FTO 報告。我們比對產業池，挑出真正涵蓋你暴露風險的專利。不合適的，簽約前都能換成同評級替代。 | Upload your product spec or FTO report. We compare against the industry pool and pick the patents that truly cover your exposure. Anything unsuitable can be swapped for a same-tier alternate before signing. | Upload your **product spec** or **FTO report**. We map it against the industry pool and pick the patents that cover your real exposure. Anything that doesn't fit, swap for a **same-tier** alternate before you sign. | ✅ **decoupled + fixed 2026-06-09** — dropped "scoring engine that drives Signal" + "overlap density" (Signal decoupled); **removed misleading "5–7"** → unlimited **same-tier** swaps (matches Panel 4 / invalidation FAQ); reuses "real exposure" (Box 4) | ⚠️ ZH rewritten — **needs Irene** |
+| 訂閱之後就不會被告了嗎？ | After subscribing, won't I get sued? | Does subscribing actually stop me from being sued? | ✅ **NEW 2026-06-09** — defensive-value Q; honest "raises the cost" answer per Irene [688](chinese-copy-direction.md) | ⚠️ NEW — **needs Irene** |
+| 沒有任何產品能保證「絕對不被告」，我們也不這麼說。但以你公司名義持有 30 件專利、加上可驗證的標章，會拉高對手的攻擊成本——專利蟑螂評估後，自然轉向更好下手的對象。 | No product can promise "never sued," and we don't claim it. But holding 30 patents in your company's name plus a verifiable badge raises the attacker's cost — patent trolls then turn to an easier target. | No product can promise that. But 30 patents in your name and a verifiable badge **raise the cost of attacking you** — so trolls move to an easier target. | ✅ NEW + tightened 2026-06-09 (less conversational); terms reused (in-your-name, verifiable badge, trolls/專利蟑螂) | ⚠️ NEW — **needs Irene** |
+| 非專屬授權，競爭對手不就能拿到一樣的專利？ | Non-exclusive — can't a competitor get the same patents? | It's non-exclusive — what stops a competitor licensing the same patents? | ✅ **NEW 2026-06-09** — defends the non-exclusive model | ⚠️ NEW — **needs Irene** |
+| 沒有什麼能阻止——這沒關係。保護你的不是獨佔，而是以你名義持有的合法授權：專利包依你的暴露風險組建、標章掛你公司名。專利池夠深，兩家公司很少拿到同一組 30 件。 | Nothing stops them — and that's fine. What protects you isn't a monopoly, it's a legal license in your name: the bundle is built to your exposure, the badge carries your company name. The pools are deep, so two firms rarely get the same 30. | Exclusivity isn't the point — **standing in your own name** is. Your bundle is scoped to your exposure and badged as yours, and the pools run deep — two firms rarely hold the same 30. | ✅ NEW + tightened 2026-06-09 (less conversational); terms reused (scoped to exposure, in-your-name, deep pools, standing) | ⚠️ NEW — **needs Irene** |
 | 合約期內若有專利被撤銷會發生什麼事？ | What happens if a patent is invalidated during the contract period? | What happens if a patent gets invalidated mid-contract? | ✅ aligned | ☐ |
-| 同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 15%。續約 MSRP。整段非專屬。 | Same-tier replacement, no extra cost. S for S. A for A. For the whole contract, 30 stays 30. Terms 3 / 6 / 12 / 24 months, 24-month saves up to 15%. Renewals at MSRP. Non-exclusive throughout. | **Same-tier replacement at no extra cost.** S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 15% off on 24-month. Renewals at MSRP. Non-exclusive throughout. | ⚠️ **15% here vs 12% (88折) in Deliverables card 6** — reconcile | ☐ |
-| 從訂閱到拿到徽章需要多久？ | How long from subscription to getting the badge? | How long from subscribing to having the badge in hand? | ✅ aligned | ☐ |
-| 約一週。15 分鐘填完六步引導（法域 → 產業 → 期間 → 路徑 → 公司 → 結果）。AI 24 小時內回傳候選組合。簽約後徽章於 72 小時內以你的名義生效。 | About a week. 15 minutes to complete the six-step wizard (jurisdiction → industry → term → path → company → results). AI returns a candidate bundle within 24 hours. After signing, the badge goes live in your name within 72 hours. | About a week. **Fifteen minutes** to fill out the six-step wizard (jurisdiction → industry → term → path → company → results). AI returns a candidate bundle within **24 hours**. Once you sign, the badge is active in your name within **72 hours**. | ✅ aligned | ☐ |
+| 同級替換，無需額外費用。S 換 S。A 換 A。整個合約期，30 件就是 30 件。期間 3 / 6 / 12 / 24 個月，24 個月最高省 12%。續約 MSRP。整段非專屬。 | Same-tier replacement, no extra cost. S for S. A for A. For the whole contract, 30 stays 30. Terms 3 / 6 / 12 / 24 months, 24-month saves up to 12%. Renewals at MSRP. Non-exclusive throughout. | **Same-tier replacement at no extra cost.** S replaces S. A replaces A. The number 30 stays 30 for the full term. Terms run 3 / 6 / 12 / 24 months, up to 12% off on 24-month. Renewals at MSRP. Non-exclusive throughout. | ✅ resolved 2026-06-09 — now 12% (88折), consistent w/ Deliverables + JS + Irene [direction:455](chinese-copy-direction.md) | ☐ |
 
 ## Contact (form matches homepage; copy-audit-v1's transcribed values are stale)
 
@@ -318,12 +328,26 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 **Needs a copy update (EN ↔ ZH divergence — the page's main issue):**
 - **Hero** — 6 of 7 rows: EN still on old positioning (incl. CTA "Build your bundle" = superseded ZH).
 - **Deliverables** — 3 heading rows read as a different register from ZH (acceptable if intentional, but flag).
-- **From signup to a live license (onboarding)** — **the worst.** Step 4 title is *opposite* (Lock vs Swap); Step 6's three bullets + subtitle are *entirely different statements* in EN vs ZH; several Step 2/3/5 bullets diverge. **Site EN needs a full rewrite to mirror ZH.**
+- **From signup to a live license (onboarding)** — ✅ **fully reworked 2026-06-09** (all 6 panels: title + subtext + bullets). Step 4 Lock-vs-Swap resolved (combined, matches Box 5); Step 5 immediate→next-day factual fix; Step 6 fully rewritten to carry its ZH. **Two structural notes for later (not copy):** (1) **Panel 6 ("Active") is largely redundant** — its ZH/EN retell the Box 6 badge + walkaway Beats 2/3/4 (notarized credential, QR 2-sec verify, co-branded badge, print-anywhere); consider trimming or giving "Active" a distinct message. (2) Minor pill-vs-title drift: pill "Active/生效" vs panel title "Display the credential" (inherent in Irene's source). Several panel ZH were self-authored/rewritten → **flagged for Irene**.
 
 **Factual / number conflicts to reconcile (not translation — content bugs):**
-- **創智 (iPIC) vs "ITRI"** — ZH says 創智 (matches the iPIC partner strip), EN says ITRI. Appears in Deliverables card 2 **and** Inside-the-bundle AI card. Pick one.
-- **Discount: 12% (88折) vs 15% (85折)** — Deliverables card 6 says 12%; FAQ + Slide 27 say 15%. Pick one.
-- **Innovue** appears in the EN onboarding pool list and Inside-the-bundle, but the ZH onboarding pool list omits it. Decide whether Innovue is named in the pool or just the engine.
+- **創智 (iPIC) vs "ITRI"** — resolved **iPIC** (2026-06-09) on index.html (Deliverables + Box 3). **Still open (blocked on the missing iPIC submark asset):** (a) Box 6 **Verified License Badge SVG** ITRI seal; (b) **lobby.html** — the updates **ticker** ([420](../product/licensing/lobby.html)) + **ledger row** ([492](../product/licensing/lobby.html)) still say "ITRI joined as a contributing licensor" (both langs) with the ITRI submark logo. Deferred per Miko 2026-06-09 — fix ITRI→iPIC text + logo together once the iPIC submark exists (same brand task).
+
+## lobby.html (Get-started page — consumes index.html terms)
+
+> Audited 2026-06-09 against the finalized index.html + direction doc. Auth-form copy + most marketing props already consistent.
+
+| What | Was | Now / status |
+|---|---|---|
+| Term range (marketing prop) | "Non-exclusive terms from **3 to 36 months**" / 3 至 36 個月 | ✅ **3 to 24 months** — was wrong (page max is 24; toggle/FAQ are 3/6/12/24) |
+| FTO activation (marketing prop) | "Freedom to Operate, **active in hours** — not months" / 數小時內啟用 | ✅ **active the next day** — was a stray timing SLA + conflicted with the page's 隔日生效/"next day" (Panel 5) |
+| ITRI (ticker + ledger) | "ITRI joined as a contributing licensor" + ITRI logo | ⏸ **deferred** — bundled with the iPIC-submark brand task (above) |
+| Minors (kept per Miko) | "contributing licensor"; "Freedom to Operate" spelled out | — left as-is |
+
+lobby ZH edits (3→24 個月, 隔日啟用) → **flag for Irene**.
+- **Discount = 12% (88折)** — ✅ **resolved 2026-06-09**. Live HTML is consistent everywhere: JS save badge (24-mo `Save 12%` / `88折優惠`), the invalidation FAQ ([4535](../product/licensing/index.html#L4535)), and Deliverables card 6 — all 12%, matching Irene [direction:455](chinese-copy-direction.md). The old 15%/85折 assumption is gone from the live page. *(Rows 86/277/289 below still quote the stale 15% — doc lag, not a live issue.)*
+- **Innovue is search-backing, NOT a pick-source pool** — ✅ **resolved 2026-06-09** per Irene [direction:1135](chinese-copy-direction.md). The 30 come from the curated iPIC/III/NYCU institution pools; Innovue's DB only backs the search. Fixed in all three live spots on the licensing page: Box 3 AI card (both langs), the onboarding scope chip ([index.html:4386](../product/licensing/index.html#L4386) → "iPIC · III · NYCU pool"), and the how-it-works check ([4390](../product/licensing/index.html#L4390) EN → "iPIC, III & NYCU pool"; its ZH never had Innovue). Signal [2583](../product/signal/index.html#L2583) already phrased it right (Innovue as backing). Innovue stays credited in the dedicated About-Innovue sections.
+- **Figure = 180M, rank = 3rd-largest** — ✅ confirmed by Miko 2026-06-09. Live copy already correct everywhere (homepage + Signal); licensing page had 170M only in two stale HTML comments, now updated. **⚠️ Brand-spec lag:** [brand/brand-voice.md §5](../../brand/brand-voice.md#L82), CLAUDE.md, and business-model.md still anchor **170M** — authoritative spec is stale vs shipped 180M. Needs an upstream brand-doc fix (separate from this copy pass).
 
 **Reference docs are stale — back-fill / re-baseline (doc work, not page work):**
 - **copy-audit-v1.md** §Licensing: Deliverables (4→6 cards), Pricing (estimator removed), How-it-works (5→6 onboarding) all need re-baselining; Contact's homepage transcription needs a refresh.

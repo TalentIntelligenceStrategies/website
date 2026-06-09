@@ -32,6 +32,16 @@
 
 <link rel="stylesheet" href="/assets/styles.css?v=12">
 
+<style>
+  /* Page-scoped scaffolding — #display 4-up image row (one per display surface).
+     Structural only; image containers reuse the shared .placeholder-frame look. */
+  .badge-display-head { max-width: 640px; margin: 0 0 40px; }
+  .badge-surfaces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .badge-surfaces .placeholder-frame { height: 100%; }
+  @media (max-width: 980px) { .badge-surfaces { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
+  @media (max-width: 560px) { .badge-surfaces { grid-template-columns: 1fr; } }
+</style>
+
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
   (() => {
@@ -278,6 +288,122 @@
           </div>
 
           <span class="seal-pill-sheen" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       Body — four SEPARATE, independently anchorable sections.
+       Each owns a stable id (#issue / #credential / #display / #verify) so
+       CTAs elsewhere can deep-link straight to it. Reuses the shared
+       .feature-row alternating layout; eyebrow slot (.feature-row__num) is
+       repurposed as a short label, no step number (per scaffolding decision).
+       [PAGE SCAFFOLDING | COPY NOT WORKED ON | ZH (data-zh) PENDING | VISUALS TBD]
+       ════════════════════════════════════════════════════════════════════ -->
+
+  <!-- (1) ISSUE -->
+  <section class="section" id="issue" aria-labelledby="badge-issue-title">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-row__copy">
+          <p class="feature-row__num">Issue</p>
+          <h2 class="feature-row__title" id="badge-issue-title">Your badge goes live, in your name</h2>
+          <p>Credential and badge issue together — embedded license number and QR code.</p>
+        </div>
+        <div class="feature-row__visual">
+          <div class="placeholder-frame placeholder-frame--compact">
+            <div class="placeholder-body">
+              <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg></div>
+              <p class="placeholder-label">Issued badge</p>
+              <p class="placeholder-meta">image — badge + credential issued together</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (2) CREDENTIAL -->
+  <section class="section" id="credential" aria-labelledby="badge-credential-title">
+    <div class="container">
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__copy">
+          <p class="feature-row__num">Credential</p>
+          <h2 class="feature-row__title" id="badge-credential-title">A credential with legal weight</h2>
+          <p>A PAdES · eIDAS credential and contract — high-spec, notarized.</p>
+        </div>
+        <div class="feature-row__visual">
+          <div class="placeholder-frame placeholder-frame--compact">
+            <div class="placeholder-body">
+              <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg></div>
+              <p class="placeholder-label">Notarized credential</p>
+              <p class="placeholder-meta">image — PAdES · eIDAS credential + contract</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (3) DISPLAY — title + 4-up image row, one container per display surface -->
+  <section class="section" id="display" aria-labelledby="badge-display-title">
+    <div class="container">
+      <div class="badge-display-head">
+        <p class="feature-row__num">Display</p>
+        <h2 class="feature-row__title" id="badge-display-title">On the booth, in the deck</h2>
+        <p>Print it on booth signage, proposals, your website, or the product box.</p>
+      </div>
+      <div class="badge-surfaces">
+        <div class="placeholder-frame placeholder-frame--compact">
+          <div class="placeholder-body">
+            <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="16" rx="1"/><path d="M12 18v4M8 22h8"/></svg></div>
+            <p class="placeholder-label">Booth signage</p>
+            <p class="placeholder-meta">image tbd</p>
+          </div>
+        </div>
+        <div class="placeholder-frame placeholder-frame--compact">
+          <div class="placeholder-body">
+            <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M12 17v4M8 21h8"/></svg></div>
+            <p class="placeholder-label">Proposals / deck</p>
+            <p class="placeholder-meta">image tbd</p>
+          </div>
+        </div>
+        <div class="placeholder-frame placeholder-frame--compact">
+          <div class="placeholder-body">
+            <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg></div>
+            <p class="placeholder-label">Website</p>
+            <p class="placeholder-meta">image tbd</p>
+          </div>
+        </div>
+        <div class="placeholder-frame placeholder-frame--compact">
+          <div class="placeholder-body">
+            <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7z"/><path d="m12 12 9-5M12 12v10M12 12 3 7"/></svg></div>
+            <p class="placeholder-label">Product box</p>
+            <p class="placeholder-meta">image tbd</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (4) VERIFY -->
+  <section class="section" id="verify" aria-labelledby="badge-verify-title">
+    <div class="container">
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__copy">
+          <p class="feature-row__num">Verify</p>
+          <h2 class="feature-row__title" id="badge-verify-title">A buyer verifies it in two seconds</h2>
+          <p>They scan the QR code; the license confirms online, on the spot.</p>
+        </div>
+        <div class="feature-row__visual">
+          <div class="placeholder-frame placeholder-frame--compact">
+            <div class="placeholder-body">
+              <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7M17 21h-3"/></svg></div>
+              <p class="placeholder-label">Verify in 2 seconds</p>
+              <p class="placeholder-meta">image — scan QR → license confirms online</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

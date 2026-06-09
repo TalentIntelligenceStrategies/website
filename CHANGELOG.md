@@ -10,6 +10,7 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-09 09:42 +08:00** · `product/licensing/index.html` — "Why thirty, not one" card reimagined: three monochrome isometric diamond stacks (abstract "30"s) ringed by a glowing Tier-A-green protective moat that forms + breathes, beside one exposed straight-on portrait single card with a small neutral crosshair whose corner brackets converge to lock on; replaces the old shatter/dart motion.
 - **2026-06-08 22:17 +0800** · Removed 7 orphaned `_bundle_harness_*.html` dev files; fixed broken links — `#products`→`/product/licensing/`, `#artifacts`→badge page, lobby `/legal/*`→placeholder `#`.
 
 - **2026-06-08 22:03 +08:00** · `product/signal/methodology.html` — added a "Companies by patent strength" section below the hero: five company portfolio scorecards (monochrome `.r-metric-arc` PSS gauge + SABCD `.tier-chip` + S–D distribution strip), composing existing primitives; layout-only CSS appended to `styles.css` (`.coscore-*`). EN + draft ZH (ZH pending review).
