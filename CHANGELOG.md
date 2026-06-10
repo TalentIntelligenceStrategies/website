@@ -10,6 +10,24 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-10 16:26 +08:00** · Restyled the Signal "Credits per query" table to the Vercel look (striped + hover rows, rounded ends, header rule) with a collapse — first ~4 rows + gradient fade + accessible, language-aware Show more/less toggle — and a bordered footer note.
+
+- **2026-06-10 16:18 +08:00** · Swapped ITRI → iPIC across the licensing surface (badge seals on index/badge pages, lobby ticker + updates copy EN/ZH, inventory teaser assignees); identity-only change, seal colour/layout unchanged; added `ipic_submark.svg` to the partner-logo mirror.
+
+- **2026-06-10 16:08 +08:00** · Reworked the Signal pricing matrix to reflow (4-col desktop → 3-col mobile with full-width feature labels) instead of horizontal-scroll, fixing the narrow-width clipping; airier reference-style spacing, baseline-aligned CTAs, removed the "Most popular" pill.
+
+- **2026-06-10 15:47 +08:00** · Replaced the Signal pricing cards with a tier × feature comparison matrix (Standard/Pro/Max, Pro emphasized, horizontal-scroll on mobile, tier descriptions); dropped the "Everything in X, plus" inheritance pattern.
+
+- **2026-06-10 15:29 +08:00** · Restructured Signal pricing cards to a shadcn-style shell (tier badge + "Most popular" pill + single price + divider + check-list); dropped the blue/trio gradient ring, glow, and check accents for neutral ink.
+
+- **2026-06-10 15:20 +08:00** · Converted Press cards to the Reports dark-tile layout for consistency — date eyebrow + title + dek + "Read more"; added `.report-card-eyebrow`; removed dead `href="#"` page-jump on all report/press cards.
+
+- **2026-06-10 14:47 +08:00** · Replaced the 5 placeholder Reports cards with 4 real report titles (drone / Japan sell-offs / Taiwan transfer market / power & thermal), newest-left to oldest-right, deks drafted from titles.
+
+- **2026-06-10 14:14 +08:00** · Reworked the Press section into a 4-card partnership carousel (Innovue → iPIC → III → NYCU), reusing the Reports scroll/arrow mechanism and dropping the dead "See all press" link.
+
+- **2026-06-10 13:44 +08:00** · Added board-member headshots to the About roster (`assets/imagery/board/`), replacing initials placeholders with `<img>` over an initials fallback.
+
 - **2026-06-09 18:13 +08:00** · Added `documents/licensing-copy-review.html` — standalone bilingual copy-review tool for the Licensing page + lobby; live capture via Google Apps Script, append-only edit history.
 - **2026-06-09 09:42 +08:00** · `product/licensing/index.html` — "Why thirty, not one" card reimagined: three monochrome isometric diamond stacks (abstract "30"s) ringed by a glowing Tier-A-green protective moat that forms + breathes, beside one exposed straight-on portrait single card with a small neutral crosshair whose corner brackets converge to lock on; replaces the old shatter/dart motion.
 - **2026-06-08 22:17 +0800** · Removed 7 orphaned `_bundle_harness_*.html` dev files; fixed broken links — `#products`→`/product/licensing/`, `#artifacts`→badge page, lobby `/legal/*`→placeholder `#`.

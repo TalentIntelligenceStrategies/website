@@ -723,17 +723,17 @@
   if (!teaserSection) return;
 
   // Seed — 37 patents spanning all 5 tiers, two jurisdictions (US/TW),
-  // ITRI/NYCU/III assignees. Edit this list to swap displayed inventory.
+  // iPIC/NYCU/III assignees. Edit this list to swap displayed inventory.
   const SEED = [
       // Chip & semiconductor (10)
-      {id:'US10142368', title:'Thin-film capacitor electrode formation on multilayer ceramic substrate', ass:'ITRI', juris:'US', ipc:'H01G 4/30',    ind:'chip',       tier:'S'},
+      {id:'US10142368', title:'Thin-film capacitor electrode formation on multilayer ceramic substrate', ass:'iPIC', juris:'US', ipc:'H01G 4/30',    ind:'chip',       tier:'S'},
       {id:'US10218547', title:'Low-loss high-frequency connector with shielded contact array for 5G',    ass:'NYCU', juris:'US', ipc:'H01R 13/02',   ind:'chip',       tier:'S'},
       {id:'US10456789', title:'Self-aligned contact for sub-3nm gate-all-around transistors',            ass:'NYCU', juris:'US', ipc:'H01L 21/768',  ind:'chip',       tier:'S'},
-      {id:'TWI678234',  title:'Printed-circuit-board lamination with reduced thermal stress',            ass:'ITRI', juris:'TW', ipc:'H05K 3/46',    ind:'chip',       tier:'S'},
-      {id:'US10456823', title:'EMI suppression layer for high-density flexible printed circuit',         ass:'ITRI', juris:'US', ipc:'H05K 9/00',    ind:'chip',       tier:'A'},
-      {id:'US10567823', title:'High-density interposer for 2.5D advanced packaging',                     ass:'ITRI', juris:'US', ipc:'H01L 23/498',  ind:'chip',       tier:'A'},
+      {id:'TWI678234',  title:'Printed-circuit-board lamination with reduced thermal stress',            ass:'iPIC', juris:'TW', ipc:'H05K 3/46',    ind:'chip',       tier:'S'},
+      {id:'US10456823', title:'EMI suppression layer for high-density flexible printed circuit',         ass:'iPIC', juris:'US', ipc:'H05K 9/00',    ind:'chip',       tier:'A'},
+      {id:'US10567823', title:'High-density interposer for 2.5D advanced packaging',                     ass:'iPIC', juris:'US', ipc:'H01L 23/498',  ind:'chip',       tier:'A'},
       {id:'TWI734512',  title:'High-aspect-ratio etch profile control for 3D NAND flash',                ass:'NYCU', juris:'TW', ipc:'H01L 21/3065', ind:'chip',       tier:'B'},
-      {id:'TWI745623',  title:'Wafer-to-wafer bonding alignment using fiducial pattern interferometry',  ass:'ITRI', juris:'TW', ipc:'H01L 21/02',   ind:'chip',       tier:'B'},
+      {id:'TWI745623',  title:'Wafer-to-wafer bonding alignment using fiducial pattern interferometry',  ass:'iPIC', juris:'TW', ipc:'H01L 21/02',   ind:'chip',       tier:'B'},
       {id:'US11098723', title:'Coplanar-waveguide-fed patch antenna with tunable dielectric',            ass:'NYCU', juris:'US', ipc:'H01Q 9/04',    ind:'chip',       tier:'C'},
       {id:'US11412678', title:'Solder-pad geometry for assembly yield at 0201 component pitch',          ass:'NYCU', juris:'US', ipc:'H05K 3/34',    ind:'chip',       tier:'D'},
 
@@ -747,16 +747,16 @@
       {id:'US11256812', title:'Disposable lateral-flow test with smartphone readout',                    ass:'III',  juris:'US', ipc:'G01N 33/558',  ind:'integrated', tier:'C'},
 
       // Net-zero & carbon (5)
-      {id:'US10712389', title:'Pitch-control algorithm for variable-speed wind turbine in turbulent inflow', ass:'ITRI', juris:'US', ipc:'F03D 7/04',ind:'netzero',    tier:'S'},
+      {id:'US10712389', title:'Pitch-control algorithm for variable-speed wind turbine in turbulent inflow', ass:'iPIC', juris:'US', ipc:'F03D 7/04',ind:'netzero',    tier:'S'},
       {id:'US10876543', title:'Thermal management for grid-tied photovoltaic inverter',                  ass:'NYCU', juris:'US', ipc:'H02M 1/00',    ind:'netzero',    tier:'A'},
       {id:'US10987234', title:'Modular battery-string control for utility-scale energy storage',         ass:'III',  juris:'US', ipc:'H02J 7/00',    ind:'netzero',    tier:'A'},
-      {id:'US11023456', title:'Grid-forming converter with virtual-inertia control for weak grids',      ass:'ITRI', juris:'US', ipc:'H02M 7/12',    ind:'netzero',    tier:'A'},
+      {id:'US11023456', title:'Grid-forming converter with virtual-inertia control for weak grids',      ass:'iPIC', juris:'US', ipc:'H02M 7/12',    ind:'netzero',    tier:'A'},
       {id:'US11198345', title:'Yaw-bearing condition-monitoring sensor for offshore wind turbines',      ass:'NYCU', juris:'US', ipc:'F03D 17/00',   ind:'netzero',    tier:'B'},
 
       // Multimedia & display (5)
       {id:'US10589234', title:'Micro-LED transfer process with selective laser lift-off',                ass:'NYCU', juris:'US', ipc:'H01L 33/00',   ind:'multimedia', tier:'S'},
       {id:'US10712567', title:'Pixel-array driver IC for high-density VR microdisplays',                 ass:'III',  juris:'US', ipc:'G09G 3/32',    ind:'multimedia', tier:'A'},
-      {id:'US10812789', title:'OLED stack with extended blue-emitter lifetime',                          ass:'ITRI', juris:'US', ipc:'H10K 50/11',   ind:'multimedia', tier:'A'},
+      {id:'US10812789', title:'OLED stack with extended blue-emitter lifetime',                          ass:'iPIC', juris:'US', ipc:'H10K 50/11',   ind:'multimedia', tier:'A'},
       {id:'TWI812456',  title:'Micro-LED interposer with active matrix driving',                         ass:'NYCU', juris:'TW', ipc:'H01L 33/62',   ind:'multimedia', tier:'A'},
       {id:'TWI789234',  title:'Foldable OLED encapsulation with multi-layer barrier film',               ass:'III',  juris:'TW', ipc:'H10K 50/84',   ind:'multimedia', tier:'B'},
 
@@ -764,13 +764,13 @@
       {id:'US10678912', title:'Massive-MIMO beamforming algorithm for 5G base stations',                 ass:'III',  juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'S'},
       {id:'US11034567', title:'WiFi-7 channel-bonding scheduler for low-latency XR',                     ass:'III',  juris:'US', ipc:'H04W 28/08',   ind:'networking', tier:'A'},
       {id:'TWI856789',  title:'Multi-band antenna array for 5G smartphone integration',                  ass:'III',  juris:'TW', ipc:'H01Q 21/06',   ind:'networking', tier:'A'},
-      {id:'US11145789', title:'Hybrid beamforming codebook design for mmWave 5G',                        ass:'ITRI', juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'B'},
+      {id:'US11145789', title:'Hybrid beamforming codebook design for mmWave 5G',                        ass:'iPIC', juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'B'},
       {id:'US11456789', title:'Reconfigurable-intelligent-surface placement optimization',               ass:'III',  juris:'US', ipc:'H04B 7/04',    ind:'networking', tier:'C'},
 
       // Computing & AI (5)
       {id:'US10812456', title:'On-device neural-network quantization for embedded inference',            ass:'III',  juris:'US', ipc:'G06N 3/063',   ind:'computing',  tier:'S'},
       {id:'US10923567', title:'Federated learning protocol for cross-silo healthcare data',              ass:'NYCU', juris:'US', ipc:'G06N 20/00',   ind:'computing',  tier:'A'},
-      {id:'US11034678', title:'Adversarial-robustness training for vision-model deployment',             ass:'ITRI', juris:'US', ipc:'G06N 3/08',    ind:'computing',  tier:'A'},
+      {id:'US11034678', title:'Adversarial-robustness training for vision-model deployment',             ass:'iPIC', juris:'US', ipc:'G06N 3/08',    ind:'computing',  tier:'A'},
       {id:'US11145723', title:'Memory-bandwidth-aware transformer inference scheduling',                 ass:'III',  juris:'US', ipc:'G06F 9/50',    ind:'computing',  tier:'B'},
       {id:'TWI867812',  title:'Domain-adaptation fine-tuning for industrial vision models',              ass:'III',  juris:'TW', ipc:'G06N 3/08',    ind:'computing',  tier:'B'},
     ];
@@ -960,9 +960,10 @@
   applyFilter(); // initialize
 })();
 
-// ─── Reports carousel: scroll-snap track, prev/next arrows, dot indicators ───
-(() => {
-  const carousel = document.getElementById('reports-carousel');
+// ─── Card carousel: scroll-snap track, prev/next arrows, dot indicators ───
+// Drives both the Reports and Press sections — same markup classes, two IDs.
+function initCardCarousel(carouselId) {
+  const carousel = document.getElementById(carouselId);
   if (!carousel) return;
   const track = carousel.querySelector('.report-carousel-track');
   const cells = Array.from(carousel.querySelectorAll('.report-card-cell'));
@@ -1025,7 +1026,9 @@
   window.addEventListener('resize', sync);
 
   sync();
-})();
+}
+initCardCarousel('reports-carousel');
+initCardCarousel('press-carousel');
 
 /* ════════════════════════════════════════════════════════════════════════
    Verified License Badge — 3D idle-float + mouse-follow tilt + shine.

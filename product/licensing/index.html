@@ -1516,16 +1516,16 @@
 .howit-vlb-seal.is-standalone { width: 200px; height: 200px; }
 .howit-vlb-seal.is-standalone .seal-mark { width: 58px; height: 58px; }
 .howit-vlb-seal.is-standalone .seal-text { font-size: 16px; }
-.howit-vlb-seal.is-itri .seal-disc { fill: #00AAEA; }
-.howit-vlb-seal.is-itri .seal-thin-ring { stroke: #00AAEA; }
+.howit-vlb-seal.is-ipic .seal-disc { fill: #00AAEA; }
+.howit-vlb-seal.is-ipic .seal-thin-ring { stroke: #00AAEA; }
 .howit-vlb-seal.is-iii  .seal-disc { fill: #14156D; }
 .howit-vlb-seal.is-iii  .seal-thin-ring { stroke: #14156D; }
-.howit-vlb-seal.is-itri .seal-inner-disc,
+.howit-vlb-seal.is-ipic .seal-inner-disc,
 .howit-vlb-seal.is-iii  .seal-inner-disc { fill: #FFFFFF; }
-.howit-vlb-seal.is-itri .seal-text,
+.howit-vlb-seal.is-ipic .seal-text,
 .howit-vlb-seal.is-iii  .seal-text { fill: #FFFFFF; }
-.howit-vlb-seal.is-itri .seal-mark {
-  background: url("/designs/assets/logos/partners/itri/itrilogo_submark.svg") center/contain no-repeat;
+.howit-vlb-seal.is-ipic .seal-mark {
+  background: url("/designs/assets/logos/partners/ipic/ipic_submark.svg") center/contain no-repeat;
 }
 .howit-vlb-seal.is-iii .seal-mark {
   background: url("/designs/assets/logos/partners/iii/logo_iii_submark.svg") center/contain no-repeat;
@@ -1549,7 +1549,7 @@
 }
 .howit-seal-pill .howit-vlb-seal.is-standalone { width: 180px; height: 180px; }
 .howit-seal-pill .howit-vlb-seal.is-standalone .seal-mark { width: 52px; height: 52px; }
-.howit-seal-pill .howit-vlb-seal.is-itri.is-standalone .seal-mark { width: 40px; height: 40px; }
+.howit-seal-pill .howit-vlb-seal.is-ipic.is-standalone .seal-mark { width: 40px; height: 40px; }
 .howit-seal-pill .howit-vlb-seal.is-standalone .seal-text { font-size: 13.5px; }
 .howit-seal-pill-divider {
   width: 1px; height: 130px;
@@ -2801,7 +2801,7 @@ a, button,
 }
 .bundlegrid .bbx-badge-live .vlb-seal.is-standalone { width: 70px; height: 70px; }
 .bundlegrid .bbx-badge-live .vlb-seal.is-standalone .seal-mark { width: 20px; height: 20px; }
-.bundlegrid .bbx-badge-live .vlb-seal.is-itri.is-standalone .seal-mark { width: 16px; height: 16px; }
+.bundlegrid .bbx-badge-live .vlb-seal.is-ipic.is-standalone .seal-mark { width: 16px; height: 16px; }
 .bundlegrid .bbx-badge-live .seal-pill-divider { height: 50px; }
 .bundlegrid .bbx-badge-live .seal-pill-credential { gap: 7px; }
 .bundlegrid .bbx-badge-live .seal-pill-credential .qr { width: 46px; height: 46px; border-radius: 7px; }
@@ -3357,6 +3357,10 @@ a, button,
 .hiw-screen .hs-opt .hs-rgt { font-size: 13px; font-weight: 500; color: var(--hs-ts); }
 .hiw-screen .hs-opt.sel { border-color: var(--hs-inv); }
 .hiw-screen .hs-opt.muted { opacity: .5; }
+/* 2-col mini-grid variant — used for the 6-industry list (step 1) so it
+   stays compact inside the locked 2:1 frame and balances the 2-item
+   jurisdiction column beside it. */
+.hiw-screen .hs-optlist.hs-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 /* scope / summary bar — quiet inset strip (surface-tertiary, borderless) */
 .hiw-screen .hs-scope { display: flex; align-items: center; gap: 10px; background: var(--hs-ter); border-radius: 10px; padding: 12px 16px; }
@@ -3378,12 +3382,22 @@ a, button,
 .hiw-screen .hs-drop { margin-top: 2px; border: 1.5px dashed var(--hs-bt); border-radius: 10px; padding: 14px; text-align: center; font-size: 12px; font-weight: 500; color: var(--hs-tt); }
 
 /* patent rows (step 3) — preview patent-card vocabulary: mono ID w600, title w500, dark checkbox */
-.hiw-screen .hs-prow { display: grid; grid-template-columns: 18px 108px 1fr auto auto; align-items: center; column-gap: 14px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
+.hiw-screen .hs-prow { display: grid; grid-template-columns: 108px 1fr auto auto; align-items: center; column-gap: 14px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
 .hiw-screen .hs-prow + .hs-prow { margin-top: 7px; }
 .hiw-screen .hs-cbx { width: 18px; height: 18px; border-radius: 5px; background: var(--hs-inv); border: 1.5px solid var(--hs-inv); display: flex; align-items: center; justify-content: center; color: #fff; }
 .hiw-screen .hs-cbx svg { width: 11px; height: 11px; stroke-width: 3; }
 .hiw-screen .hs-pid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; color: var(--hs-tp); letter-spacing: .05em; }
 .hiw-screen .hs-ptitle { font-size: 13px; font-weight: 500; color: var(--hs-tp); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* patent list (step 3) — scrollable with a fixed bottom fade cue so it reads
+   as a longer, ongoing list. The fade is an overlay pinned to the wrap (not the
+   scroll content) so it stays put while the list scrolls underneath it. */
+.hiw-screen .hs-plistwrap { position: relative; }
+.hiw-screen .hs-plist { max-height: 236px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--hs-bt) transparent; }
+.hiw-screen .hs-plist::-webkit-scrollbar { width: 6px; }
+.hiw-screen .hs-plist::-webkit-scrollbar-thumb { background: var(--hs-bt); border-radius: 999px; }
+.hiw-screen .hs-plist::-webkit-scrollbar-track { background: transparent; }
+.hiw-screen .hs-plistfade { position: absolute; left: 0; right: 8px; bottom: 0; height: 40px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--hs-sec)); }
 
 /* swap (step 4) */
 .hiw-screen .hs-swap { display: grid; grid-template-columns: 1fr 30px 1fr; align-items: center; gap: 12px; }
@@ -3392,6 +3406,7 @@ a, button,
 .hiw-screen .hs-pcard { background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-low, 0 2px 4px rgba(0,0,0,0.06)); }
 .hiw-screen .hs-pcard.out { opacity: .55; box-shadow: none; }
 .hiw-screen .hs-pctop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.hiw-screen .hs-pcleft { display: flex; align-items: center; gap: 8px; }
 .hiw-screen .hs-pcid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; letter-spacing: .05em; }
 .hiw-screen .hs-pcttl { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--hs-tp); }
 .hiw-screen .hs-poollab { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); margin-bottom: 8px; }
@@ -3400,6 +3415,10 @@ a, button,
 .hiw-screen .hs-poolrow.pick { border-color: var(--hs-inv); }
 .hiw-screen .hs-poolrow .hs-pid { font-size: 13px; }
 .hiw-screen .hs-rep { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--hs-tp); }
+/* tier pill anchored to the right edge of each pool row (canonical placement) */
+.hiw-screen .hs-poolrow .hs-tchip { margin-left: auto; }
+/* decorative "Swap" action pill in the scope strip (visual only) */
+.hiw-screen .hs-swapbtn { margin-left: auto; display: inline-flex; align-items: center; background: var(--hs-inv); color: var(--hs-ti); font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 9999px; letter-spacing: .01em; }
 
 /* term & payment (step 5) — preview .pay: selected = dark border; flag = dark pill on top edge */
 .hiw-screen .hs-pay { position: relative; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px 16px; }
@@ -3431,6 +3450,17 @@ a, button,
 .hiw-screen .hs-da svg { width: 12px; height: 12px; }
 .hiw-screen .hs-signal { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-suc-fg); }
 .hiw-screen .hs-signal .d { width: 8px; height: 8px; border-radius: 50%; background: var(--hs-sig); }
+/* canonical Verified License Badge (seal-pill) — same component as the bento,
+   scaled to the step-6 frame and centered. */
+.hiw-screen .hs-badgewrap { display: flex; justify-content: center; }
+.hiw-screen .hs-badgewrap .seal-pill { align-self: center; padding: 10px 14px; gap: 7px; box-shadow: 0 8px 22px -10px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.06); }
+.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-standalone { width: 52px; height: 52px; }
+.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-standalone .seal-mark { width: 15px; height: 15px; }
+.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-ipic.is-standalone .seal-mark { width: 12px; height: 12px; }
+.hiw-screen .hs-badgewrap .seal-pill-divider { height: 38px; }
+.hiw-screen .hs-badgewrap .seal-pill-credential { gap: 6px; }
+.hiw-screen .hs-badgewrap .seal-pill-credential .qr { width: 38px; height: 38px; border-radius: 6px; }
+.hiw-screen .hs-badgewrap .seal-pill-credential .lic-no { font-size: 8px; }
 
 /* Mobile: release the 2:1 lock and let the visual reflow to its content. */
 @media (max-width: 800px) {
@@ -4102,17 +4132,17 @@ a, button,
                     <span class="seal-mark"></span>
                   </div>
 
-                  <div class="vlb-seal is-standalone is-itri">
+                  <div class="vlb-seal is-standalone is-ipic">
                     <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
                       <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
                       <circle class="seal-disc" cx="100" cy="100" r="92"/>
                       <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
                       <defs>
-                        <path id="bg-seal-itri-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
-                        <path id="bg-seal-itri-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                        <path id="bg-seal-ipic-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                        <path id="bg-seal-ipic-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
                       </defs>
-                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-itri-top" startOffset="50%">INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE</textPath></text>
-                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-itri-bot" startOffset="50%">7 PATENTS</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-ipic-top" startOffset="50%">INTELLECTUAL PROPERTY INNOVATION CORP</textPath></text>
+                      <text class="seal-text" text-anchor="middle"><textPath href="#bg-seal-ipic-bot" startOffset="50%">7 PATENTS</textPath></text>
                     </svg>
                     <span class="seal-mark"></span>
                   </div>
@@ -4256,19 +4286,21 @@ a, button,
                       <div class="hs-optlist">
                         <div class="hs-opt sel"><span class="hs-lft"><span class="hs-jchip us">US</span><span class="hs-nm">United States</span></span></div>
                         <div class="hs-opt"><span class="hs-lft"><span class="hs-jchip tw">TW</span><span class="hs-nm">Taiwan</span></span></div>
-                        <div class="hs-opt muted"><span class="hs-lft"><span class="hs-jchip eu">EU</span><span class="hs-nm">Europe</span></span><span class="hs-sb">Soon</span></div>
                       </div>
                     </div>
                     <div>
                       <div class="hs-coleyebrow">Industry</div>
-                      <div class="hs-optlist">
-                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-nm">Semiconductors</span></span></div>
+                      <div class="hs-optlist hs-grid2">
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Semiconductors</span></span></div>
                         <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Networking</span></span></div>
-                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Computing</span></span></div>
+                        <div class="hs-opt sel"><span class="hs-lft"><span class="hs-nm">Computing</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">AI · AV · EV</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Multimedia</span></span></div>
+                        <div class="hs-opt"><span class="hs-lft"><span class="hs-nm">Net-Zero</span></span></div>
                       </div>
                     </div>
                   </div>
-                  <div class="hs-scope"><span class="lab">Bundle scope</span><span class="hs-jchip us">US</span><span class="val">Semiconductors</span><span class="n">30 patents</span></div>
+                  <div class="hs-scope"><span class="lab">Bundle scope</span><span class="hs-jchip us">US</span><span class="val">Computing</span></div>
                 </div></div>
                 <ul class="hiw-checks">
                   <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="US、TW，兩個主戰場供專利佈局。">US and Taiwan — the two markets to position in</span></li>
@@ -4283,18 +4315,16 @@ a, button,
                 <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
                   <div class="hs-paths">
                     <div class="hs-path sel">
-                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">AI · Free</span></div>
-                      <div class="hs-pt">AI Smart-Pick</div>
-                      <div class="hs-pd">The system builds a tier-balanced 30 for your market. No FTO required.</div>
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-pt">AI Smart-Pick</span></div>
+                      <div class="hs-pd">The AI engine scans for your risk gaps and assembles a tier-balanced 30 patents.</div>
                     </div>
                     <div class="hs-path">
-                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-ptag">FTO · Guided</span></div>
-                      <div class="hs-pt">FTO Upload</div>
-                      <div class="hs-pd">Hand us your freedom-to-operate report and we route the bundle around your gaps.</div>
+                      <div class="hs-phead"><span class="hs-pradio"></span><span class="hs-pt">FTO-guided pick</span></div>
+                      <div class="hs-pd">Already have an FTO report or product spec? Upload it and we build your 30 patents around the exact gaps it reveals.</div>
                       <div class="hs-drop">Drop your FTO report (PDF)</div>
                     </div>
                   </div>
-                  <div class="hs-scope"><span class="lab">Either path</span><span class="val">ships with a same-tier swap pool</span><span class="n">30 patents</span></div>
+                  <div class="hs-scope"><span class="lab">Either path</span><span class="val">swap any pick for a same-tier alternate — no extra cost</span></div>
                 </div></div>
                 <ul class="hiw-checks">
                   <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="方法 A - AI 智選 (免費)：由 AI 為你智選 30 個符合需求的專利包。">AI Smart-pick — 30 matched to your needs</span></li>
@@ -4311,13 +4341,41 @@ a, button,
                     <div class="hs-coleyebrow" style="margin:0">Your 30 patents</div>
                     <div class="hs-tierdist"><span class="hs-tchip s">5S</span><span class="hs-tchip a">6A</span><span class="hs-tchip b">9B</span><span class="hs-tchip c">6C</span><span class="hs-tchip d">4D</span></div>
                   </div>
-                  <div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10142368</span><span class="hs-ptitle">Thin-film capacitor electrode on ceramic substrate</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10218547</span><span class="hs-ptitle">Low-loss high-frequency connector for 5G</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10612938</span><span class="hs-ptitle">Integrated passive device for mm-wave modules</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
-                    <div class="hs-prow"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US10678451</span><span class="hs-ptitle">Embedded inductor with patterned ferrite core</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                  <div class="hs-plistwrap">
+                    <div class="hs-plist">
+                      <div class="hs-prow"><span class="hs-pid">US10142368</span><span class="hs-ptitle">Cache-coherency protocol for multi-core processors</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10218547</span><span class="hs-ptitle">Low-power tensor accelerator datapath</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10311902</span><span class="hs-ptitle">Speculative out-of-order execution engine</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10398715</span><span class="hs-ptitle">Unified virtual memory across CPU and GPU</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10472330</span><span class="hs-ptitle">Hardware root-of-trust for secure boot</span><span class="hs-jchip us">US</span><span class="hs-tchip s">Tier S</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10561284</span><span class="hs-ptitle">Speculative branch-prediction pipeline</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10612938</span><span class="hs-ptitle">Memory-bandwidth compression for GPUs</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10689451</span><span class="hs-ptitle">Mixed-precision matrix-multiply accelerator</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10744120</span><span class="hs-ptitle">Coherent multi-die interconnect fabric</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10812677</span><span class="hs-ptitle">Adaptive voltage-frequency scaling controller</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10897203</span><span class="hs-ptitle">Network-on-chip router with virtual channels</span><span class="hs-jchip us">US</span><span class="hs-tchip a">Tier A</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US10923948</span><span class="hs-ptitle">Out-of-order instruction scheduling unit</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11008372</span><span class="hs-ptitle">Hardware page-table walker with prefetch</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11087655</span><span class="hs-ptitle">Vector load-store coalescing engine</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11154019</span><span class="hs-ptitle">Last-level cache replacement policy engine</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11231204</span><span class="hs-ptitle">Hardware prefetcher with stride detection</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11302588</span><span class="hs-ptitle">DMA engine with scatter-gather descriptors</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11388471</span><span class="hs-ptitle">SIMD lane-masking for predicated execution</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11455120</span><span class="hs-ptitle">Reorder buffer with early register reclaim</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11522934</span><span class="hs-ptitle">On-chip interconnect for accelerator clusters</span><span class="hs-jchip us">US</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11603847</span><span class="hs-ptitle">Coherent cache partitioning for QoS</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11689210</span><span class="hs-ptitle">Thermal-aware core migration scheduler</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11744655</span><span class="hs-ptitle">Instruction-cache way prediction</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11812039</span><span class="hs-ptitle">Store-to-load forwarding predictor</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11889472</span><span class="hs-ptitle">Adaptive thermal throttling for multi-core SoCs</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US11954118</span><span class="hs-ptitle">Configurable interrupt-routing matrix</span><span class="hs-jchip us">US</span><span class="hs-tchip c">Tier C</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US12012677</span><span class="hs-ptitle">Power-gated register file for low-leakage cores</span><span class="hs-jchip us">US</span><span class="hs-tchip d">Tier D</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US12087451</span><span class="hs-ptitle">Debug-trace buffer with timestamping</span><span class="hs-jchip us">US</span><span class="hs-tchip d">Tier D</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US12154930</span><span class="hs-ptitle">Performance-counter sampling unit</span><span class="hs-jchip us">US</span><span class="hs-tchip d">Tier D</span></div>
+                      <div class="hs-prow"><span class="hs-pid">US12231044</span><span class="hs-ptitle">Boundary-scan test access port</span><span class="hs-jchip us">US</span><span class="hs-tchip d">Tier D</span></div>
+                    </div>
+                    <div class="hs-plistfade" aria-hidden="true"></div>
                   </div>
-                  <div class="hs-scope"><span class="lab">Curated from</span><span class="val">iPIC · III · NYCU pool</span><span class="n">30 / 30</span></div>
                 </div></div>
                 <ul class="hiw-checks">
                   <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="橫跨 5 個評級 (5S.6A.9B.6C.4D)，有質有量兼備。">Tier-balanced — quality and quantity in one</span></li>
@@ -4332,18 +4390,18 @@ a, button,
                 <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
                   <div class="hs-swap">
                     <div class="hs-pcard out">
-                      <div class="hs-pctop"><span class="hs-pcid">US10678451</span><span class="hs-tchip b">Tier B</span></div>
-                      <div class="hs-pcttl">Embedded inductor with patterned ferrite core</div>
+                      <div class="hs-pctop"><span class="hs-pcleft"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pcid">US11522934</span></span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-pcttl">On-chip interconnect for accelerator clusters</div>
                     </div>
                     <div class="hs-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16"/><path d="M16 4l4 4-4 4"/><path d="M20 16H4"/><path d="M8 12l-4 4 4 4"/></svg></div>
                     <div>
-                      <div class="hs-poollab">Same-tier pool · B</div>
-                      <div class="hs-poolrow pick"><span class="hs-pid">US10845120</span><span class="hs-tchip b">B</span><span class="hs-rep">Replace</span></div>
-                      <div class="hs-poolrow"><span class="hs-pid">US10912677</span><span class="hs-tchip b">B</span></div>
-                      <div class="hs-poolrow"><span class="hs-pid">TW I712345</span><span class="hs-tchip b">B</span></div>
+                      <div class="hs-poollab">Same-tier pool</div>
+                      <div class="hs-poolrow pick"><span class="hs-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hs-pid">US11781266</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">US11842076</span><span class="hs-tchip b">Tier B</span></div>
+                      <div class="hs-poolrow"><span class="hs-pid">US11907513</span><span class="hs-tchip b">Tier B</span></div>
                     </div>
                   </div>
-                  <div class="hs-scope"><span class="lab">Within term</span><span class="val">Swap as often as you like — like-for-like</span><span class="n">count stays 30</span></div>
+                  <div class="hs-scope"><span class="lab">Within tier</span><span class="val">As often as you like, tier for tier</span><span class="hs-swapbtn">Swap</span></div>
                 </div></div>
                 <ul class="hiw-checks">
                   <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="平台提供首選 30 和備選 30 專利清單，供你自選替換。">Swap from a primary 30 and an alternate 30</span></li>
@@ -4361,6 +4419,7 @@ a, button,
                       <div class="hs-coleyebrow">Subscription term</div>
                       <div class="hs-optlist">
                         <div class="hs-opt"><span class="hs-nm">3 months</span></div>
+                        <div class="hs-opt"><span class="hs-nm">6 months</span><span class="hs-rgt hs-disc">5% off</span></div>
                         <div class="hs-opt sel"><span class="hs-nm">12 months</span><span class="hs-rgt hs-disc">10% off</span></div>
                         <div class="hs-opt"><span class="hs-nm">24 months</span><span class="hs-rgt hs-disc">12% off</span></div>
                       </div>
@@ -4373,7 +4432,6 @@ a, button,
                       </div>
                     </div>
                   </div>
-                  <div class="hs-total"><span class="k">US · Semiconductors · 12 months</span><span class="v">NT$8,991<small> /mo</small></span></div>
                 </div></div>
                 <ul class="hiw-checks">
                   <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="3、6、12、24 個月期，隨時可升級延長授權期間。">3, 6, 12, or 24 months — upgrade anytime to extend</span></li>
@@ -4390,18 +4448,77 @@ a, button,
                     <div class="hs-coleyebrow" style="margin:0">License TIS-US-2401</div>
                     <span class="hs-signal"><span class="d"></span>ACTIVE</span>
                   </div>
-                  <div class="hs-licgrid">
-                    <div class="hs-badge">
-                      <div class="hs-seal"><img src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt=""></div>
-                      <div class="hs-btop">TIS Issued · Verified License</div>
-                      <svg class="hs-qr" viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><path fill="#252525" d="M0 0h7v7H0zM8 0h1v1H8zM10 0h2v1h-2zM13 0h1v2h-1zM15 0h1v1h-1zM17 0h2v1h-2zM22 0h7v7h-7zM2 2h3v3H2zM24 2h3v3h-3zM9 1h1v2H9zM11 2h1v3h-1zM16 1h1v3h-1zM19 1h1v2h-1zM8 4h1v2H8zM13 3h2v1h-2zM18 4h2v1h-2zM10 5h2v1h-2zM14 5h1v3h-1zM20 5h1v3h-1zM0 8h1v2H0zM3 8h2v1H3zM6 8h2v2H6zM9 8h1v1H9zM11 8h3v1h-3zM16 8h2v1h-2zM22 8h1v2h-1zM25 8h2v1h-2zM28 8h1v3h-1zM2 10h1v3H2zM4 10h3v1H4zM9 10h2v2H9zM12 10h1v2h-1zM15 10h1v4h-1zM18 10h2v1h-2zM24 10h2v2h-2zM0 12h2v1H0zM5 12h2v3H5zM17 12h1v3h-1zM21 12h3v1h-3zM26 12h2v1h-2zM8 13h1v3H8zM11 13h3v1h-3zM19 13h2v2h-2zM3 14h1v3H3zM13 15h2v1h-2zM23 14h2v3h-2zM27 14h1v3h-1zM0 16h1v3H0zM6 16h2v1H6zM10 16h2v2h-2zM16 16h1v3h-1zM20 16h2v1h-2zM2 17h1v3H2zM9 17h1v2H9zM13 17h2v1h-2zM18 17h1v3h-1zM25 17h2v1h-2zM5 18h2v2H5zM12 18h1v3h-1zM21 18h3v1h-3zM0 22h7v7H0zM8 20h1v2H8zM11 20h2v1h-2zM15 20h2v2h-2zM19 20h1v3h-1zM23 20h1v3h-1zM26 20h2v2h-2zM2 24h3v3H2zM9 22h2v1H9zM13 22h1v3h-1zM17 22h2v1h-2zM21 22h1v3h-1zM25 22h1v3h-1zM28 22h1v3h-1zM10 24h2v2h-2zM15 24h1v3h-1zM18 24h2v1h-2zM23 24h2v1h-2zM9 26h1v3H9zM12 27h3v1h-3zM17 26h1v3h-1zM20 26h3v1h-3zM26 26h2v2h-2z"/></svg>
-                      <div class="hs-blic">TIS-US-2401</div>
+                  <div class="hs-badgewrap">
+                    <div class="seal-pill">
+                      <div class="vlb-seal is-standalone is-tis">
+                        <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                          <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                          <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                          <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                          <defs>
+                            <path id="s6-seal-tis-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                            <path id="s6-seal-tis-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                          </defs>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-tis-top" startOffset="50%">TIS ISSUED VERIFIED LICENSE</textPath></text>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-tis-bot" startOffset="50%">TIS-US-2401</textPath></text>
+                        </svg>
+                        <span class="seal-mark"></span>
+                      </div>
+                      <div class="seal-pill-divider"></div>
+                      <div class="vlb-seal is-standalone is-nycu">
+                        <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                          <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                          <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                          <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                          <defs>
+                            <path id="s6-seal-nycu-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                            <path id="s6-seal-nycu-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                          </defs>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-nycu-top" startOffset="50%">NATIONAL YANG MING CHIAO TUNG UNIVERSITY</textPath></text>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-nycu-bot" startOffset="50%">18 PATENTS</textPath></text>
+                        </svg>
+                        <span class="seal-mark"></span>
+                      </div>
+                      <div class="vlb-seal is-standalone is-ipic">
+                        <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                          <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                          <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                          <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                          <defs>
+                            <path id="s6-seal-ipic-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                            <path id="s6-seal-ipic-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                          </defs>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-ipic-top" startOffset="50%">INTELLECTUAL PROPERTY INNOVATION CORP</textPath></text>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-ipic-bot" startOffset="50%">7 PATENTS</textPath></text>
+                        </svg>
+                        <span class="seal-mark"></span>
+                      </div>
+                      <div class="vlb-seal is-standalone is-iii">
+                        <svg class="seal-rings" viewBox="0 0 200 200" aria-hidden="true">
+                          <circle class="seal-thin-ring" cx="100" cy="100" r="98"/>
+                          <circle class="seal-disc" cx="100" cy="100" r="92"/>
+                          <circle class="seal-inner-disc" cx="100" cy="100" r="48"/>
+                          <defs>
+                            <path id="s6-seal-iii-top" d="M 45,146 A 72,72 0 1,1 155,146" fill="none"/>
+                            <path id="s6-seal-iii-bot" d="M 24,100 A 76,76 0 0,0 176,100" fill="none"/>
+                          </defs>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-iii-top" startOffset="50%">INSTITUTE FOR INFORMATION INDUSTRY</textPath></text>
+                          <text class="seal-text" text-anchor="middle"><textPath href="#s6-seal-iii-bot" startOffset="50%">5 PATENTS</textPath></text>
+                        </svg>
+                        <span class="seal-mark"></span>
+                      </div>
+                      <div class="seal-pill-divider"></div>
+                      <div class="seal-pill-credential">
+                        <span class="qr"></span>
+                        <div class="lic-no">TIS-US-2401</div>
+                      </div>
+                      <span class="seal-pill-sheen" aria-hidden="true"></span>
                     </div>
-                    <div class="hs-docs">
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><div><div class="hs-dt">Contract</div><div class="hs-ds">PAdES three-party signature</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="hs-dt">License certificate</div><div class="hs-ds">QR-linked to public registry</div></div><span class="hs-da">PDF<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                      <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></span><div><div class="hs-dt">Verified License Badge</div><div class="hs-ds">PNG + SVG · embed-ready</div></div><span class="hs-da">Get<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-                    </div>
+                  </div>
+                  <div class="hs-docs">
+                    <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><div><div class="hs-dt">Contract</div><div class="hs-ds">PAdES three-party signature</div></div></div>
+                    <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="hs-dt">License certificate</div><div class="hs-ds">QR-linked to public registry</div></div></div>
+                    <div class="hs-doc"><span class="hs-dic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/></svg></span><div><div class="hs-dt">Verified License Badge</div><div class="hs-ds">PNG + SVG · embed-ready</div></div></div>
                   </div>
                 </div></div>
                 <ul class="hiw-checks">
@@ -4823,8 +4940,8 @@ a, button,
   });
 
   // How it works — stepped feature carousel (ported from a React reference).
-  // Auto-advances every 7s + advance on click/pill; pauses on hover and on
-  // prefers-reduced-motion (no auto-cycle, no entrance animation for those).
+  // Manual only: advance on click (pill or step visual). The 7s auto-cycle was
+  // removed. prefers-reduced-motion still skips the entrance animation.
   document.addEventListener('DOMContentLoaded', () => {
     const root = document.querySelector('[data-hiw-carousel]');
     if (!root) return;
@@ -4837,9 +4954,7 @@ a, button,
     if (!total) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const INTERVAL = 7000;
     let cur = 0;
-    let timer = null;
 
     const render = () => {
       panels.forEach((p, i) => {
@@ -4859,21 +4974,16 @@ a, button,
       });
     };
 
-    const go    = (i) => { cur = (i + total) % total; render(); };
-    const next  = () => go(cur + 1);
-    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
-    const start = () => { if (reduced) return; stop(); timer = setInterval(next, INTERVAL); };
+    const go   = (i) => { cur = (i + total) % total; render(); };
+    const next = () => go(cur + 1);
 
-    pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); start(); }));
+    pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); }));
     // the CTA lives inside the stage — don't let its click advance the carousel
     if (cta) cta.addEventListener('click', (e) => e.stopPropagation());
-    if (stage) stage.addEventListener('click', () => { next(); start(); });
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+    // Manual click-to-advance retained; the 7s auto-cycle was removed.
+    if (stage) stage.addEventListener('click', () => next());
 
     render();
-    start();
   });
 
 </script>

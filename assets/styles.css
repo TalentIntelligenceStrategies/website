@@ -3108,6 +3108,16 @@ main { padding-top: 64px; }
 .report-card-body {
   display: flex; flex-direction: column; gap: 12px;
 }
+/* Eyebrow above the title — Reports tiles show the quarter (Q1 2026), Press tiles show the date. */
+.report-card-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 -4px;
+}
 .report-card-title {
   font-size: 21px;
   font-weight: 700;
@@ -3513,7 +3523,9 @@ main { padding-top: 64px; }
   color: #94A3B8;
   font-weight: 700;
 }
-.board-photo span { font-size: 1.4rem; letter-spacing: 0.02em; }
+.board-photo img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: cover; }
+/* Jackson's headshot is framed slightly wide/low — zoom in 5% and nudge up. */
+.board-photo--jackson img { transform: scale(1.05) translateY(-3%); }
 .board-name {
   display: block;
   margin-bottom: 2px;
@@ -5851,7 +5863,7 @@ main { padding-top: 64px; }
   color: var(--text-inverse);
 }
 .prod-signature-seal.is-tis { background: #252525; }
-.prod-signature-seal.is-itri { background: #00AAEA; }
+.prod-signature-seal.is-ipic { background: #00AAEA; }
 .prod-signature-seal.is-iii { background: #14156D; }
 .prod-signature-seal.is-moica { background: #B91C1C; }
 .prod-signature .who {
@@ -6528,24 +6540,24 @@ main { padding-top: 64px; }
 }
 .vlb-seal.is-standalone{width:176px;height:176px}
 .vlb-seal.is-standalone .seal-mark{width:50px;height:50px}
-.vlb-seal.is-itri.is-standalone .seal-mark{width:40px;height:40px}
+.vlb-seal.is-ipic.is-standalone .seal-mark{width:40px;height:40px}
 .vlb-seal.is-standalone .seal-text{font-size:13px}
 
 /* Partner variants — brand color as disc fill, white inner disc, white text */
-.vlb-seal.is-itri .seal-disc{fill:#00AAEA}
-.vlb-seal.is-itri .seal-thin-ring{stroke:#00AAEA}
+.vlb-seal.is-ipic .seal-disc{fill:#00AAEA}
+.vlb-seal.is-ipic .seal-thin-ring{stroke:#00AAEA}
 .vlb-seal.is-iii  .seal-disc{fill:#14156D}
 .vlb-seal.is-iii  .seal-thin-ring{stroke:#14156D}
 .vlb-seal.is-nycu .seal-disc{fill:#0033A0}
 .vlb-seal.is-nycu .seal-thin-ring{stroke:#0033A0}
-.vlb-seal.is-itri .seal-inner-disc,
+.vlb-seal.is-ipic .seal-inner-disc,
 .vlb-seal.is-iii  .seal-inner-disc,
 .vlb-seal.is-nycu .seal-inner-disc{fill:#FFFFFF}
-.vlb-seal.is-itri .seal-text,
+.vlb-seal.is-ipic .seal-text,
 .vlb-seal.is-iii  .seal-text,
 .vlb-seal.is-nycu .seal-text{fill:#FFFFFF}
-.vlb-seal.is-itri .seal-mark{
-  background:url("/designs/assets/logos/partners/itri/itrilogo_submark.svg") center/contain no-repeat;
+.vlb-seal.is-ipic .seal-mark{
+  background:url("/designs/assets/logos/partners/ipic/ipic_submark.svg") center/contain no-repeat;
 }
 .vlb-seal.is-iii  .seal-mark{
   background:url("/designs/assets/logos/partners/iii/logo_iii_submark.svg") center/contain no-repeat;
@@ -6594,7 +6606,7 @@ main { padding-top: 64px; }
 }
 .seal-pill .vlb-seal.is-standalone{width:114px;height:114px}
 .seal-pill .vlb-seal.is-standalone .seal-mark{width:33px;height:33px}
-.seal-pill .vlb-seal.is-itri.is-standalone .seal-mark{width:26px;height:26px}
+.seal-pill .vlb-seal.is-ipic.is-standalone .seal-mark{width:26px;height:26px}
 .seal-pill .vlb-seal.is-standalone .seal-text{font-size:13px}
 .seal-pill .seal-pill-divider{
   width:1px;height:80px;background:var(--border-tertiary);

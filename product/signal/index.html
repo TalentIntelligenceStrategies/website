@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=9">
+<link rel="stylesheet" href="/assets/styles.css?v=12">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -389,33 +389,29 @@
    vertical alignment since featured eyebrow is absolutely positioned) */
 .prod-price-tier:not(.is-featured) .prod-price-eyebrow { display: none; }
 
-/* Featured card — relative anchor for the corner badge.
-   Override the shared CSS warm-amber box-shadow with the signal
-   cool trio (emerald + sky + violet) so the glow matches the
-   border ring, Subscribe button, and "How it works" check accents. */
+/* Featured card (Pro) — neutral ink ring + soft elevation. The shared
+   ::before gradient outline is overridden to a solid neutral ring so the
+   card reads on the B&W base with no blue / trio gradient. */
 .prod-price-tier.is-featured {
   position: relative; overflow: visible;
   box-shadow:
-    0 12px 36px rgba(16,185,129,0.16),
-    0 12px 36px rgba(14,165,233,0.18),
-    0 12px 36px rgba(139,92,246,0.16),
-    0 4px 12px rgba(14,165,233,0.10),
+    0 12px 32px -8px rgba(37,37,37,0.14),
+    0 4px 12px -4px rgba(37,37,37,0.08),
     0 1px 2px rgba(0,0,0,0.04);
   transition: transform 240ms cubic-bezier(.2,.7,.2,1),
               box-shadow 240ms ease;
 }
+.prod-price-tier.is-featured::before {
+  background: var(--border-tertiary);
+}
 [data-theme="dark"] .prod-price-tier.is-featured {
   box-shadow:
-    0 12px 36px rgba(16,185,129,0.22),
-    0 12px 36px rgba(14,165,233,0.26),
-    0 12px 36px rgba(139,92,246,0.22),
-    0 4px 12px rgba(0,0,0,0.40),
+    0 12px 32px -8px rgba(0,0,0,0.55),
+    0 4px 12px -4px rgba(0,0,0,0.35),
     0 1px 2px rgba(0,0,0,0.30);
 }
 
-/* Hover — non-featured cards (Standard, Max): lift + sky border accent.
-   Border shifts from neutral to sky #0EA5E9 and a soft cool-tone shadow
-   appears, keeping the trio palette consistent across the page. */
+/* Hover — non-featured cards (Standard, Max): lift + neutral ink border. */
 .prod-price-tier:not(.is-featured) {
   transition: transform 240ms cubic-bezier(.2,.7,.2,1),
               border-color 200ms ease,
@@ -423,30 +419,25 @@
 }
 .prod-price-tier:not(.is-featured):hover {
   transform: translateY(-4px);
-  border-color: #0EA5E9;
+  border-color: var(--border-tertiary);
   box-shadow:
-    0 14px 32px -10px rgba(14,165,233,0.20),
-    0 4px 12px -4px rgba(14,165,233,0.10),
+    0 14px 32px -10px rgba(37,37,37,0.14),
+    0 4px 12px -4px rgba(37,37,37,0.08),
     0 1px 2px rgba(0,0,0,0.04);
 }
 
-/* Hover — Pro (featured): deeper lift + intensified trio glow.
-   Already lifted by -4px in shared CSS; goes to -8px on hover. */
+/* Hover — Pro (featured): deeper lift, same neutral elevation. */
 .prod-price-tier.is-featured:hover {
   transform: translateY(-8px);
   box-shadow:
-    0 20px 48px rgba(16,185,129,0.22),
-    0 20px 48px rgba(14,165,233,0.26),
-    0 20px 48px rgba(139,92,246,0.22),
-    0 6px 16px rgba(14,165,233,0.14),
+    0 20px 48px -12px rgba(37,37,37,0.18),
+    0 6px 16px -6px rgba(37,37,37,0.10),
     0 1px 2px rgba(0,0,0,0.04);
 }
 [data-theme="dark"] .prod-price-tier.is-featured:hover {
   box-shadow:
-    0 20px 48px rgba(16,185,129,0.30),
-    0 20px 48px rgba(14,165,233,0.34),
-    0 20px 48px rgba(139,92,246,0.30),
-    0 6px 16px rgba(0,0,0,0.45),
+    0 20px 48px -12px rgba(0,0,0,0.60),
+    0 6px 16px -6px rgba(0,0,0,0.40),
     0 1px 2px rgba(0,0,0,0.30);
 }
 
@@ -529,78 +520,154 @@ body {
   }
 }
 
-/* "Recommended" badge anchored to top-right corner of featured card.
-   Sentence case (not uppercase), Urbanist (not mono), trio gradient
-   fill matching the border ring + Subscribe button. */
-.prod-price-tier.is-featured .prod-price-eyebrow {
-  position: absolute;
-  top: -12px; right: 18px;
-  margin: 0;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
-  color: #FFFFFF;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 12px; font-weight: 600;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  z-index: 2;
-  box-shadow:
-    0 6px 16px -4px rgba(14,165,233,0.40),
-    inset 0 1px 0 rgba(255,255,255,0.18);
-  min-height: 0;
-}
-
-/* Side-by-side price + credits — used on ALL three cards now so
-   the font hierarchy is identical across the row. */
-.prod-price-block-split {
+/* ============================================================
+   Pricing comparison matrix — tier × feature grid (Standard /
+   Pro / Max). Neutral ink only; Pro is the emphasized (tinted)
+   column on desktop. Reflows from a 4-col (label + 3 tiers)
+   desktop layout to a 3-col mobile layout — feature names become
+   full-width row labels at <1000px, so nothing scrolls or clips.
+   ============================================================ */
+.prod-cmp-scroll { margin: 0; }
+.prod-cmp {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 0;
+  grid-template-columns: repeat(3, 1fr);   /* mobile: three tiers side by side */
   align-items: stretch;
 }
-.prod-price-split-side {
-  display: flex; flex-direction: column; gap: 4px;
+@media (min-width: 1000px) {
+  .prod-cmp { grid-template-columns: minmax(200px, 1.4fr) repeat(3, 1fr); }
 }
-.prod-price-split-side .lbl {
-  font-family: var(--prod-font-mono);
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--text-tertiary);
+
+/* Label-type cells span the full row on mobile, one column on desktop.
+   The empty corner + empty section-row value cells show on desktop only. */
+.prod-cmp-corner,
+.prod-cmp-cell--head { display: none; }
+.prod-cmp-section,
+.prod-cmp-rowlabel { grid-column: 1 / -1; }
+@media (min-width: 1000px) {
+  .prod-cmp-corner { display: block; }
+  .prod-cmp-cell--head { display: flex; }
+  .prod-cmp-section,
+  .prod-cmp-rowlabel { grid-column: auto; }
 }
-.prod-price-split-side .val {
-  font-family: var(--prod-font-mono);
-  font-size: 28px; font-weight: 700;
-  letter-spacing: -0.02em;
+
+/* — Tier header cells — */
+.prod-cmp-tier {
+  display: flex; flex-direction: column;
+  padding: 6px 24px 28px;
+  min-width: 0;            /* let 1fr tracks shrink below content min-width */
+}
+.prod-cmp-name {
+  font-size: 24px; font-weight: 600;
+  letter-spacing: -0.01em; line-height: 1.2;
   color: var(--text-primary);
-  line-height: 1.1;
+  margin: 0 0 8px;
 }
-.prod-price-split-side .sub {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.4;
+.prod-cmp-desc {
+  font-size: 14px; line-height: 1.5;
+  color: var(--text-tertiary);
+  margin: 0; min-height: 42px;
 }
-.prod-price-split-side .save {
-  display: inline-flex; align-self: flex-start;
+.prod-cmp-price {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;
+  margin: 28px 0;            /* airy gap above; min gap below (button pins lower) */
+}
+.prod-cmp-price .amt {
+  font-size: 38px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1;
+  color: var(--text-primary);
+}
+.prod-cmp-price .per { font-size: 14px; color: var(--text-tertiary); }
+.prod-cmp-price .save {
+  align-self: center;
   font-family: var(--prod-font-mono);
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.10em; text-transform: uppercase;
-  color: var(--score-a-vivid);
-  margin-top: 2px;
-}
-.prod-price-split-side.is-credits {
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-tertiary);
+  border-radius: 999px; padding: 3px 8px;
 }
 
-/* Feature bullets — replace shared CSS's "–" with a sky-blue check icon */
+/* CTA — pinned to the bottom so all three align on a shared baseline. */
+.prod-cmp-cta {
+  margin-top: auto;
+  width: 100%;
+  justify-content: center;
+  padding: 13px 18px;
+  font-size: 12px;
+}
+.prod-cmp-cta.is-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-tertiary);
+}
+.prod-cmp-cta.is-outline:hover { background: var(--surface-tertiary); }
+
+/* — Featured (Pro) tint band — desktop only. On mobile the reflowed band
+   would be broken by the full-width labels, so Pro is marked there by its
+   solid Subscribe button alone. — */
+@media (min-width: 1000px) {
+  .prod-cmp-tier.is-featured,
+  .prod-cmp-cell.is-featured { background: var(--surface-secondary); }
+  .prod-cmp-tier.is-featured { border-radius: 14px 14px 0 0; }
+  .prod-cmp-cell--foot { border-radius: 0 0 14px 14px; }
+}
+
+/* — "Features" section heading — */
+.prod-cmp-section {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-primary);
+  padding: 40px 0 14px;
+  display: flex; align-items: flex-end;
+}
+
+/* — Feature rows — */
+.prod-cmp-rowlabel {
+  display: flex; align-items: center;
+  padding: 16px 0;
+  font-size: 15px; line-height: 1.4;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-primary);
+}
+.prod-cmp-cell {
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 20px;
+  font-size: 14px; color: var(--text-secondary);
+  text-align: center;
+  min-width: 0;
+}
+/* Row separators + vertical dividers — desktop only (where label + values
+   share a row). On mobile only the full-width label carries the top rule. */
+@media (min-width: 1000px) {
+  .prod-cmp-tier,
+  .prod-cmp-cell { border-left: 1px solid var(--border-primary); }
+  .prod-cmp-cell { border-top: 1px solid var(--border-primary); }
+  .prod-cmp-cell--head { border-top: 0; }
+}
+
+/* Phone tuning — shrink the 3-up tier headers so NT$ prices fit. */
+@media (max-width: 560px) {
+  .prod-cmp-tier { padding: 4px 9px 18px; }
+  .prod-cmp-name { font-size: 17px; margin-bottom: 6px; }
+  .prod-cmp-desc { font-size: 12px; min-height: 0; }
+  .prod-cmp-price { margin: 16px 0; gap: 2px 6px; }
+  .prod-cmp-price .amt { font-size: 21px; letter-spacing: -0.03em; }
+  .prod-cmp-cta { padding: 11px 8px; }
+  .prod-cmp-cell { padding: 14px 4px; }
+  .prod-cmp-rowlabel { padding: 14px 0 6px; }
+}
+
+/* Check / dash glyphs */
+.cmp-ck   { width: 18px; height: 18px; color: var(--text-primary); }
+.cmp-dash { width: 18px; height: 18px; color: var(--text-tertiary); }
+
+/* Feature bullets — replace shared CSS's "–" with a neutral ink check icon */
 .prod-price-features li::before {
   content: "" !important;
   flex-shrink: 0;
   width: 16px; height: 16px;
   margin-top: 1px;
-  background: #0EA5E9;
+  background: var(--text-primary);
   color: transparent !important;
   font-family: inherit !important;
   -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
@@ -617,7 +684,7 @@ body {
 .prod-price-features li.prod-price-feat-inherit::before {
   content: "+" !important;
   background: transparent !important;
-  color: #0EA5E9 !important;
+  color: var(--text-primary) !important;
   -webkit-mask: none !important;
           mask: none !important;
   font-family: var(--prod-font-mono) !important;
@@ -674,7 +741,7 @@ body {
   height: 16px;
   margin-top: 3px;
   border-radius: 50%;
-  background-color: #0EA5E9;
+  background-color: var(--text-primary);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M4.2 8.4l2.6 2.6L11.8 6' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   background-repeat: no-repeat;
   background-position: center;
@@ -682,6 +749,11 @@ body {
   -webkit-mask: none !important;
           mask: none !important;
   color: transparent !important;
+}
+/* Dark mode: the ink circle is near-white, so swap the check glyph to a
+   dark stroke so it stays legible inside the circle. */
+[data-theme="dark"] .prod-price-features li::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M4.2 8.4l2.6 2.6L11.8 6' stroke='%230E0E0E' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
 /* ============================================================
@@ -708,38 +780,87 @@ body {
   color: var(--text-primary);
   margin: 32px 0 12px;
 }
+
+/* Vercel-style rate card — bordered container (border/radius/bg inherited
+   from styles.css base), striped + hover rows with rounded ends, a header
+   rule, a bordered footer note, and a collapse with a gradient fade +
+   Show more / Show less toggle. */
+.prod-ref-credits { position: relative; }
 .prod-ref-table-wrap {
   max-width: none;
   margin: 0;
+  padding: 12px 16px;
 }
+.prod-ref-clip {
+  position: relative;
+  max-height: 240px;
+  overflow: hidden;
+  transition: max-height 380ms cubic-bezier(.2,.7,.2,1);
+}
+[data-expanded="true"] .prod-ref-clip { max-height: 760px; }
+
 .prod-ref-table th {
   font-family: 'Urbanist', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  text-transform: none;
-  color: var(--text-primary);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0; text-transform: none;
+  color: var(--text-tertiary);
+  background: transparent;
+  padding: 6px 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-primary);
 }
-.prod-ref-table th,
+.prod-ref-table th.right { text-align: right; }
 .prod-ref-table td {
-  padding: 14px 20px;
-  font-size: 15px;
-  line-height: 1.55;
-}
-.prod-ref-table td {
-  font-weight: 400;
-  color: var(--text-secondary);
-}
-.prod-ref-table td.mono {
   font-family: 'Urbanist', sans-serif;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 14px; font-weight: 400; line-height: 1.4;
+  color: var(--text-secondary);
+  padding: 11px 12px;
+  border: 0;
+  text-align: left;
 }
-.prod-ref-table th.right,
-.prod-ref-table td.right {
-  text-align: center;
+.prod-ref-table td.right { text-align: right; }
+.prod-ref-table td.mono { font-weight: 600; color: var(--text-primary); }
+
+/* Striped + hover rows with rounded ends */
+.prod-ref-table tbody td { transition: background-color 120ms ease; }
+.prod-ref-table tbody tr:nth-child(odd) td { background: var(--surface-secondary); }
+.prod-ref-table tbody tr:hover td { background: var(--surface-tertiary); }
+.prod-ref-table tbody td:first-child { border-radius: 4px 0 0 4px; }
+.prod-ref-table tbody td:last-child  { border-radius: 0 4px 4px 0; }
+
+/* Gradient fade over the clipped bottom — collapsed only */
+.prod-ref-fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 64px;
+  background: linear-gradient(to top, var(--surface-page) 12%, transparent);
+  pointer-events: none;
+  transition: opacity 200ms ease;
 }
+[data-expanded="true"] .prod-ref-fade { opacity: 0; }
+
+/* Bordered footer note — always visible */
+.prod-ref-note {
+  margin: 10px -16px 0;
+  padding: 12px 16px 2px;
+  border-top: 1px solid var(--border-primary);
+  font-size: 13px; line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* Show more / Show less toggle */
+.prod-ref-showmore-wrap { display: flex; justify-content: center; }
+.prod-ref-showmore {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 14px auto 0;
+  padding: 8px 16px;
+  border: 1px solid var(--border-tertiary); border-radius: 999px;
+  background: transparent; color: var(--text-primary);
+  font-family: 'Urbanist', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.prod-ref-showmore:hover { background: var(--surface-tertiary); }
+.prod-ref-showmore .chev { width: 14px; height: 14px; transition: transform 220ms ease; }
+[data-expanded="true"] .prod-ref-showmore .chev { transform: rotate(180deg); }
 
 /* ============================================================
    STRIPE DESIGN TOKENS — system layer (layout, type ratios,
@@ -1028,90 +1149,7 @@ a, button,
    gradient washes (they're decorative atop body bg, not solid).
    ============================================================ */
 
-/* Exclusive Patent Access + paired CTA — full-bleed hairline band that
-   doubles as the final intra-page CTA before the Contact form. One-line
-   horizontal layout (headline · 3 logos · button) at ≥1100px, stacks to
-   3 rows below. Color-at-rest logos via .partner-strip--color (same
-   modifier the lobby uses); the "Exclusive Patent Access" caption is
-   intentionally dropped — the headline carries the meaning. */
-.section--patent-band.patent-band--cta {
-  padding-block: 32px;
-  margin-block-end: 0;
-  border-block: 0;
-}
-.section--patent-band.patent-band--cta .partner-strip {
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.partner-cta-heading {
-  margin: 0;
-  flex: 0 1 auto;
-  font-size: clamp(16px, 1.4vw, 20px);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  color: var(--text-primary);
-  text-align: left;
-}
-/* Per-line spans force the visual break and survive the language toggle —
-   same pattern as the homepage About headline. */
-.partner-cta-heading span { display: block; }
-.section--patent-band.patent-band--cta .partner-logos {
-  flex: 0 0 auto;
-  gap: 40px;
-}
-.section--patent-band.patent-band--cta .partner {
-  height: 36px;
-  width: 180px;
-}
-.section--patent-band.patent-band--cta .partner-cta-btn {
-  flex: 0 0 auto;
-}
-/* Color-at-rest reinforcement — match .partner-strip--color from the lobby:
-   drop the grayscale filter and opacity dim entirely, no hover transition. */
-.partner-strip--color .partner {
-  filter: none;
-  opacity: 1;
-  transition: none;
-}
-.partner-strip--color .partner:hover {
-  filter: none;
-  opacity: 1;
-}
-.partner-strip--color .partner--innovue {
-  background-image: var(--partner-innovue-color);
-}
-[data-theme="dark"] .partner-strip--color .partner {
-  filter: none;
-  opacity: 1;
-}
-[data-theme="dark"] .partner-strip--color .partner--innovue {
-  filter: none;
-  opacity: 1;
-}
-/* Fall back to a centered 3-row stack below 1100px (text / logos / button) —
-   logos and headline scale back up to the section's standard size. */
-@media (max-width: 1100px) {
-  .section--patent-band.patent-band--cta .partner-strip {
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 28px;
-  }
-  .partner-cta-heading {
-    text-align: center;
-    max-width: 540px;
-  }
-  .section--patent-band.patent-band--cta .partner-logos {
-    gap: 48px;
-  }
-  .section--patent-band.patent-band--cta .partner {
-    height: 40px;
-    width: 200px;
-  }
-}
+/* (Partner credibility band CSS removed 2026-06-10 with the section it styled.) */
 
 /* Contact section — repaint the silver bloom in the Signal pillar's cool
    palette. Mirrors styles.css §Get in touch: same axis flip (radial origin
@@ -1485,6 +1523,589 @@ a, button,
   background: transparent;
   gap: 14px;
 }
+
+/* ===== Ported from licensing template (gap-cover bento · bundle grid · walk-away · how-it-works carousel) — visuals are placeholder boxes pending HTML/CSS-mock rebuild. Cool palette (#0EA5E9). ===== */
+
+.gapcover { padding-block-start: clamp(24px, 3vw, 40px); }
+
+.gapcover .gbento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "headline headline subscribe"
+    "goalone  whynow   subscribe";
+  gap: 16px;
+}
+.gapcover .gba-headline  { grid-area: headline; }
+.gapcover .gba-goalone   { grid-area: goalone; }
+.gapcover .gba-whynow    { grid-area: whynow; }
+.gapcover .gba-subscribe { grid-area: subscribe; }
+.gapcover .gba-subscribe .gbento-list--tis { grid-template-columns: 1fr; }
+.gapcover .gbento-card {
+  position: relative;
+  grid-column: span 1;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  background: var(--surface-page);
+  padding: clamp(20px, 2vw, 28px);
+  transition: transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease;
+}
+.gapcover .gbento-card--wide { grid-column: span 2; }
+.gapcover .gbento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--tis-shadow-s);
+}
+
+/* dot-grid overlay — fades in on hover (always-on for the persistent card) */
+.gapcover .gbento-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background-image: radial-gradient(circle at center, rgba(37, 37, 37, 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+.gapcover .gbento-card:hover .gbento-dots { opacity: 1; }
+.gapcover .gbento-card--persist { box-shadow: var(--tis-shadow-s); border-color: var(--text-primary); }
+.gapcover .gbento-card--persist .gbento-dots { opacity: 1; }
+
+/* 2-bad / 1-good weighting — recede the two cost paths, spotlight Subscribe */
+.gapcover .gbento-card--trap {
+  background: var(--surface-secondary);
+  opacity: 0.6;
+  transition: transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease, opacity 300ms ease;
+}
+.gapcover .gbento-card--trap:hover {
+  opacity: 1;
+  border-color: #C0392B;
+  background: rgba(192, 57, 43, 0.055);
+}
+
+.gapcover .gbento-inner { position: relative; z-index: 1; }
+
+/* icon chip */
+.gapcover .gbento-icon {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
+  margin-bottom: clamp(16px, 2.4vw, 28px);
+}
+.gapcover .gbento-icon svg { width: 18px; height: 18px; }
+
+/* icon + title on one row */
+.gapcover .gbento-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.gapcover .gbento-head .gbento-icon { margin-bottom: 0; }
+.gapcover .gbento-head .gbento-title { margin: 0; }
+
+/* card label (Why now / Go it alone / Subscribe to TIS) */
+.gapcover .gbento-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+/* headline card — the framing statement */
+.gapcover .gbento-headline {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+  max-width: none;
+}
+
+/* bullet list (Why now + TIS) */
+.gapcover .gbento-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gapcover .gbento-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.gapcover .gbento-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+
+/* Go it alone — two named paths */
+.gapcover .gbento-diy + .gbento-diy { margin-top: 16px; }
+.gapcover .gbento-diy-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+.gapcover .gbento-diy-detail {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* TIS list — neutral check marks, two columns on the wide card */
+.gapcover .gbento-list--tis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 28px;
+}
+.gapcover .gbento-list--tis li {
+  color: var(--text-primary);
+  padding-left: 22px;
+}
+.gapcover .gbento-list--tis li::before {
+  content: '';
+  left: 0;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  background: none;
+  border-left: 2px solid var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
+  transform: rotate(-45deg);
+}
+.gapcover .gbento-cta { margin-top: 22px; }
+
+/* Subscribe card: pin CTA to bottom-right */
+.gapcover .gbento-card--persist .gbento-inner { display: flex; flex-direction: column; height: 100%; }
+.gapcover .gbento-card--persist .gbento-cta { margin-top: auto; align-self: flex-end; }
+
+@media (max-width: 820px) {
+  .gapcover .gbento-grid { grid-template-columns: 1fr; grid-template-areas: none; }
+  .gapcover .gbento-card,
+  .gapcover .gbento-card--wide { grid-column: span 1; }
+  .gapcover .gba-headline,
+  .gapcover .gba-goalone,
+  .gapcover .gba-whynow,
+  .gapcover .gba-subscribe { grid-area: auto; }
+  .gapcover .gbento-list--tis { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gapcover .gbento-card { transition: none; }
+  .gapcover .gbento-card:hover { transform: none; }
+}
+
+/* ============================================================
+   Bundle grid — tailark-style asymmetric bento (FRAME only;
+   visual internals are placeholder boxes).
+   ============================================================ */
+.bundlegrid .bundlegrid-head {
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 760px;
+  margin: 0 0 clamp(40px, 5vw, 60px);
+  text-wrap: balance;
+}
+
+.bundlegrid .bundlegrid-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.bundlegrid .bundlegrid-cta { margin-top: 32px; display: flex; justify-content: flex-end; }
+
+/* alternating wide(3)+narrow(2) rhythm — 3+2 / 2+3 / 3+2 */
+.bundlegrid .bbx:nth-child(1) { grid-column: span 3; }
+.bundlegrid .bbx:nth-child(2) { grid-column: span 2; }
+.bundlegrid .bbx:nth-child(3) { grid-column: span 2; }
+.bundlegrid .bbx:nth-child(4) { grid-column: span 3; }
+.bundlegrid .bbx:nth-child(5) { grid-column: span 3; }
+.bundlegrid .bbx:nth-child(6) { grid-column: span 2; }
+
+.bundlegrid .bbx {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  background: var(--surface-page);
+  box-shadow: var(--tis-shadow-xs);
+  transition: box-shadow var(--tis-hover-transition);
+}
+.bundlegrid .bbx:hover { box-shadow: var(--tis-shadow-s); }
+.bundlegrid a.bbx { text-decoration: none; color: inherit; cursor: pointer; }
+.bundlegrid a.bbx:hover { box-shadow: var(--tis-shadow-m); }
+
+/* outer corners of the 2×3 cluster rounded; inner corners square */
+.bundlegrid .bbx:nth-child(1) { border-top-left-radius: 16px; }
+.bundlegrid .bbx:nth-child(2) { border-top-right-radius: 16px; }
+.bundlegrid .bbx:nth-child(5) { border-bottom-left-radius: 16px; }
+.bundlegrid .bbx:nth-child(6) { border-bottom-right-radius: 16px; }
+
+.bundlegrid .bbx-head {
+  padding: clamp(22px, 2.4vw, 32px) clamp(22px, 2.4vw, 32px) 0;
+}
+.bundlegrid .bbx-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
+}
+.bundlegrid .bbx-body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 10px 0 0;
+  max-width: 42ch;
+}
+.bundlegrid .bbx--why .bbx-body { max-width: 64ch; text-wrap: balance; }
+
+.bundlegrid .bbx-visual {
+  position: relative;
+  flex: 1 1 auto;
+  margin-top: clamp(22px, 2.6vw, 30px);
+  padding-left: clamp(22px, 3vw, 44px);
+  min-height: 170px;
+}
+.bundlegrid .bbx-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(80% 95% at 50% 0%, transparent, var(--surface-page) 100%);
+}
+.bundlegrid .bbx--center .bbx-visual { padding-left: 0; }
+.bundlegrid .bbx-center {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px clamp(22px, 2.6vw, 30px) clamp(24px, 2.8vw, 32px);
+}
+.bundlegrid .bbx--why .bbx-center { padding-right: 0; }
+
+/* placeholder box for the (removed) animated visual internals */
+.bundlegrid .bbx-placeholder{width:100%;height:100%;min-height:120px;border:1px dashed var(--border-primary);border-radius:12px;}
+
+@media (max-width: 720px) {
+  .bundlegrid .bbx { grid-column: 1 / -1 !important; }
+  .bundlegrid .bundlegrid-grid { grid-template-columns: 1fr; }
+  .bundlegrid .bbx:nth-child(2) { border-top-right-radius: 0; }
+  .bundlegrid .bbx:nth-child(5) { border-bottom-left-radius: 0; }
+  .bundlegrid .bbx:nth-child(1) { border-top-left-radius: 16px; border-top-right-radius: 16px; }
+  .bundlegrid .bbx:nth-child(6) { border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+  .bundlegrid .bbx-visual { min-height: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bundlegrid .bbx { transition: none; }
+}
+
+/* ============================================================
+   Walk-away — horizontal 4-beat row, vertical hairline dividers.
+   ============================================================ */
+.walkaway .walkaway-head {
+  font-size: clamp(28px, 3.6vw, 42px);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+.walkaway .walkaway-sub {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 8px 0 clamp(40px, 5vw, 60px);
+}
+
+.walkaway .walkaway-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-primary);
+}
+.walkaway .wa-col {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.4vw, 32px);
+  min-height: clamp(300px, 26vw, 380px);
+  background: var(--surface-page);
+}
+.walkaway .wa-col-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.walkaway .wa-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  margin: 0;
+  transition: color var(--tis-hover-transition);
+}
+.walkaway .wa-num { color: inherit; }
+
+.walkaway .wa-title {
+  font-size: clamp(20px, 1.7vw, 26px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+}
+.walkaway .wa-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 12px 0 0;
+}
+.walkaway .wa-link {
+  align-self: flex-start;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color var(--tis-hover-transition);
+}
+.walkaway .wa-col:hover .wa-eyebrow,
+.walkaway .wa-col:hover .wa-link,
+.walkaway .wa-link:hover { color: var(--text-secondary); }
+
+@media (min-width: 561px) {
+  .walkaway .wa-col-body { margin-top: clamp(72px, 10vw, 132px); }
+  .walkaway .wa-link { margin-top: auto; }
+}
+
+@media (max-width: 980px) {
+  .walkaway .walkaway-grid { grid-template-columns: repeat(2, 1fr); }
+  .walkaway .wa-col { min-height: clamp(260px, 40vw, 320px); }
+}
+@media (max-width: 560px) {
+  .walkaway .walkaway-grid { grid-template-columns: 1fr; }
+  .walkaway .wa-col { min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walkaway .wa-eyebrow,
+  .walkaway .wa-link { transition: none; }
+}
+
+/* ============================================================
+   How it works — stepped feature carousel (frame + screen box;
+   product-UI internals become placeholder boxes).
+   ============================================================ */
+.hiw-frame {
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 28px;
+  padding: 8px;
+}
+.hiw-carousel {
+  position: relative;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 22px;
+  padding: clamp(24px, 3vw, 40px);
+  overflow: hidden;
+}
+
+/* ── step pills ── */
+.hiw-steps ol {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center;
+}
+.hiw-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 13px 6px 8px;
+  border: 0; border-radius: 9999px;
+  background: var(--surface-tertiary);
+  cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 600;
+  color: var(--text-tertiary);
+  transition: color var(--tis-hover-transition), background var(--tis-hover-transition), transform var(--tis-hover-transition);
+}
+.hiw-pill:hover { color: var(--text-secondary); }
+.hiw-pill.is-done { color: var(--text-secondary); }
+.hiw-pill.is-current {
+  color: var(--text-primary);
+  background: var(--surface-page);
+  box-shadow: var(--shadow-low, 0 1px 2px rgba(0,0,0,0.06));
+  transform: scale(1.04);
+}
+.hiw-dot {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 9999px;
+  background: var(--border-secondary); color: var(--text-tertiary);
+  font-size: 11px; font-weight: 700; line-height: 1;
+}
+.hiw-pill.is-current .hiw-dot { background: var(--text-primary); color: var(--surface-page); }
+.hiw-pill.is-done .hiw-dot    { background: var(--text-secondary); color: var(--surface-page); }
+.hiw-dot .hiw-check { width: 11px; height: 11px; display: none; }
+.hiw-pill.is-done .hiw-num   { display: none; }
+.hiw-pill.is-done .hiw-check { display: block; }
+
+/* ── stage + panels ── */
+.hiw-stage {
+  position: relative;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  min-height: clamp(340px, 36vw, 460px);
+  cursor: pointer;
+}
+.hiw-panel { display: none; }
+.hiw-panel.is-active { display: block; }
+.hiw-title {
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
+  color: var(--text-primary); margin: 0;
+}
+.hiw-desc {
+  font-size: 14px; line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 8px 0 0; max-width: 62ch;
+}
+.hiw-shotwrap {
+  position: relative;
+  margin: clamp(18px, 2vw, 26px) auto 0;
+  max-width: 760px;
+  aspect-ratio: 2 / 1;
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+/* base step-visual box (product-UI internals stripped to placeholders) */
+.hiw-screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+  padding: 26px 30px;
+  background: var(--surface-secondary);
+  font-family: 'Urbanist', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+@media (max-width: 800px) {
+  .hiw-shotwrap { aspect-ratio: auto; }
+  .hiw-screen { position: static; inset: auto; padding: 20px; }
+}
+.hiw-checks {
+  list-style: none; margin: clamp(16px, 1.8vw, 22px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px;
+}
+.hiw-checks li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; line-height: 1.4; color: var(--text-secondary);
+}
+.hiw-checks .hiw-ck { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--text-tertiary); }
+
+/* entrance animation — re-triggered on each step change */
+@keyframes hiwIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to   { opacity: 1; transform: none; }
+}
+.hiw-panel.hiw-anim { animation: hiwIn 380ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+.hiw-checks { padding-right: clamp(150px, 17vw, 210px); }
+.hiw-cta { position: absolute; right: 0; bottom: 0; white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .hiw-checks { grid-template-columns: 1fr; gap: 10px; padding-right: 0; }
+  .hiw-stage { min-height: 0; }
+  .hiw-cta { position: static; width: 100%; margin-top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hiw-panel.hiw-anim { animation: none; }
+  .hiw-pill { transition: none; }
+}
+
+/* ===== Deliverables — licensing --feature grid (6 concise cards in a 3-col
+   hairline grid; icon · title on row 1, body spanning row 2). Ported from
+   licensing template. ===== */
+.deliverable-grid--feature {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 0 0 96px;
+  border-top: 1px solid var(--border-primary);
+  border-left: 1px solid var(--border-primary);
+}
+@media (max-width: 1100px) {
+  .deliverable-grid--feature { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .deliverable-grid--feature { grid-template-columns: 1fr; }
+}
+.deliverable-grid--feature .deliverable-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: 8px;
+  row-gap: 10px;
+  padding: 40px;
+  border-right: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+}
+.deliverable-grid--feature .deliverable-card .icon {
+  grid-column: 1;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  /* center the 18px icon on the heading's first 21px line box (15px × 1.4) */
+  margin-top: 1.5px;
+  align-self: start;
+  flex-shrink: 0;
+}
+.deliverable-grid--feature .deliverable-card .icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-primary);
+}
+.deliverable-grid--feature .deliverable-card h4 {
+  grid-column: 2;
+  /* start (not center) so the icon tracks the FIRST line when the heading wraps */
+  align-self: start;
+  padding-left: 0;
+}
+.deliverable-grid--feature .deliverable-card h4::before { display: none; }
+.deliverable-grid--feature .deliverable-card p {
+  grid-column: 1 / -1;
+  padding-left: 0;
+}
+.deliverable-grid--feature .deliverable-card p a { color: inherit; }
 </style>
 </head>
 
@@ -1708,7 +2329,7 @@ a, button,
   <div class="announce" data-announce-id="2026-q2-signal-beta" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
       <span class="announce-msg" data-zh="SABCD 報告 30 分鐘到手 — 含同產業 cohort 排名。">SABCD report in hand in 30 minutes — same-industry rank per patent.</span>
-      <a class="announce-link" href="#signup" data-zh="立即試用 →">Try Signal →</a>
+      <a class="announce-link" href="#pricing" data-zh="立即試用 →">Try Signal →</a>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -1750,680 +2371,371 @@ a, button,
   <section class="section" aria-label="Signal deliverables">
     <div class="container">
 
-      <div class="deliverable-grid">
+      <!-- 6 concise cards (split from the prior 4 dense cards), licensing --feature grid. -->
+      <div class="deliverable-grid deliverable-grid--feature">
         <article class="deliverable-card">
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
-          <h4 data-zh="SABCD 五級戰略評定 — 穿透泡沫，定義技術真實防禦力">SABCD 5-tier rating — past the pitch deck, real defensibility</h4>
-          <p data-zh="拒絕新創團隊在 Pitch Deck 上的數量堆疊。系統透過 50 項指標聚合，將標的專利放進 TIS 同產業池進行同儕基準快照（Peer Cohort Snapshot）。S 級（前 15% 頂級戰略）到 D 級一目了然。法律顧問只能告訴你這件專利「合不合法」，而泰然評級直接斷定它「強不強、能不能打」">Ditch the pitch deck. 50 indicators aggregate into one rating — your patent compared against same-industry peers in a Peer Cohort Snapshot, S (top 15%) to D. Lawyers tell you legal-or-not; we tell you strong-or-not.</p>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
+          <h4 data-zh="SABCD 五級評定">SABCD 5-tier rating</h4>
+          <p data-zh="50 項指標聚合為單一評級——S 級（前 15%）到 D 級——在同產業同儕基準快照（Peer Cohort Snapshot）中對比。">50 indicators aggregate into one rating — S (top 15%) to D — against same-industry peers in a Peer Cohort Snapshot.</p>
         </article>
         <article class="deliverable-card">
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
-          <h4 data-zh="跨標的同儕基準排序 — 建立投委會統一的風控量尺">Peer-cohort benchmarking — one comparable score across deals</h4>
-          <p data-zh="將新創團隊的專利護城河，丟進同產業同儕池中進行全景對比。無論同時評估 5 家還是 10 家被投標的，全部報告皆基於同一個客觀百分位 scale 進行 cross-compare。讓主觀的技術盲點，轉化為投委會與合夥人能直接採信的量化數據。">Every patent moat lands in its industry's peer pool for a panoramic comparison. 5 deals at once, or 10 — same percentile scale, cross-compared. Subjective blind spots become numbers the IC and partners can act on.</p>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h4 data-zh="不只「合不合法」，更是「強不強」">Strong-or-not, not legal-or-not</h4>
+          <p data-zh="律師告訴你專利「合不合法」，泰然評級直接斷定它「強不強、能不能打」——穿透 Pitch Deck 上的數量堆疊。">Lawyers tell you whether a patent is legal. Signal tells you whether it's defensible — past the pitch-deck patent count.</p>
         </article>
         <article class="deliverable-card">
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg></span>
-          <h4 data-zh="同步雙版專利評級 — 可附入 IC Memo、Data Room 與 LP 季報">Brief + Pro reports — IC Memo, Data Room, LP-quarterly ready</h4>
-          <p data-zh="採 2 SKU 計費（Brief 15 點 / Pro 30 點），1 點 = NT$100。系統同步生成兩版報告——Brief 是執行摘要（給 partner 快速 go/no-go），Pro 是深度版（含 50 項指標、跨方案穩定性、授權策略建議）。單買、雙買、按情境配置點數。 一鍵產出含用戶 Email 浮水印、防外流的權威 PDF，可直接附入投資建議書（IC Memo）、Data Room 或向 LP 進行季度風險報告。">Brief is 15 points; Pro is 30 points; 1 point = NT$100. Brief is partner-grade go/no-go. Pro unpacks 50 indicators, cross-plan stability, and licensing-strategy recommendations. Buy single, both, or allocate by deal. One-click leak-resistant PDF with Email watermark — drops into IC Memo, Data Room, or LP quarterly.</p>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
+          <h4 data-zh="跨標的同儕基準排序">Peer-cohort benchmarking</h4>
+          <p data-zh="每件專利打進同產業同儕池，共用同一條百分位量尺——同時評估 5 家或 10 家皆可 cross-compare。主觀盲點轉化為投委會能採信的量化數據。">Every patent lands in its industry's peer pool on one percentile scale — 5 deals or 10, cross-compared. Subjective blind spots become numbers the IC can act on.</p>
         </article>
         <article class="deliverable-card">
-          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
-          <h4 data-zh="新穎 1.8 億筆底層大數據 — 刺破公開 AI 搜尋的數據盲區">Innovue's 180M-patent database — past public AI's blind spots</h4>
-          <p data-zh="本產品技術由新穎數位支援全球第三大、涵蓋 100+ 國、每日同步的 1.8 億筆 WEBPAT 專利資料庫。客戶只需提供專利號，系統自動從資料庫抽取完整專利文本，進行 50 項指標分析。所有分析在封閉式專業資料庫內完成，公開 AI 工具完全無法觸及的硬核底數據層，確保最嚴苛的盡職調查絕不踩空。">Innovue's WEBPAT database backs every analysis — 180M patents, 3rd-largest globally, 100+ countries, daily-synced. Submit a patent number; the system extracts the full text and runs 50 indicators in a closed environment, with DD-grade rigor. Unscrapable by public AI tools.</p>
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 8v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4Z"/><path d="M16 2v4a2 2 0 0 0 2 2h4"/><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/></svg></span>
+          <h4 data-zh="同步雙版報告">Brief + Pro reports</h4>
+          <p data-zh="Brief 是給 partner 的快速 go/no-go（15 點）。Pro 深度版含 50 項指標、跨方案穩定性與授權策略（30 點）。1 點 = NT$100。">Brief is partner-grade go/no-go (15 pts). Pro unpacks 50 indicators, cross-plan stability, and licensing strategy (30 pts). 1 pt = NT$100.</p>
+        </article>
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>
+          <h4 data-zh="可直接附入交易文件">Drops into your deal docs</h4>
+          <p data-zh="一鍵產出含 Email 浮水印、防外流的權威 PDF——可直接附入 IC Memo、Data Room 或 LP 季報。">One-click leak-resistant PDF with an email watermark — attaches straight to an IC Memo, Data Room, or LP quarterly.</p>
+        </article>
+        <article class="deliverable-card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
+          <h4 data-zh="新穎 1.8 億筆專利資料庫">Innovue's 180M-patent database</h4>
+          <p data-zh="只需提供專利號，系統自動從新穎 WEBPAT 抽取完整文本——1.8 億筆、全球第三大、涵蓋 100+ 國——在封閉環境完成 50 項指標分析，公開 AI 工具無法觸及。">Submit a patent number; the system pulls the full text from Innovue's WEBPAT — 180M patents, 3rd-largest globally, 100+ countries — and runs 50 indicators in a closed environment, unscrapable by public AI.</p>
         </article>
       </div>
 
     </div>
   </section>
 
-  <!-- ─── 2.5 Migrated Signal pillar showcase (from old homepage #products) ─── -->
-  <section class="section section--migrated-pillar" id="pillar-signal" aria-label="Signal pillar showcase">
+  <!-- ─── (A) Gap-cover bento — three ways to read a patent's real strength ─── -->
+  <section class="section gapcover" aria-label="Three ways to read a patent's real strength">
     <div class="container">
-      <div class="pillar-hero">
-        <div class="pillar-hero-copy">
-          <h2 class="pillar-hero-copy-h2" data-zh="泰然專利強度評級系統">Signal Platform</h2>
+      <div class="gbento-grid">
+
+        <!-- Card 1 — Headline (wide) -->
+        <article class="gbento-card gbento-card--wide gba-headline">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <h2 class="gbento-headline" data-zh="判斷專利真實強度有三條路——只有一條撐得起整個投資組合。">Three ways to read a patent's real strength — only one scales across a portfolio.</h2>
+          </div>
+        </article>
+
+        <!-- Card 2 — Trust the pitch deck (trap) -->
+        <article class="gbento-card gbento-card--trap gba-whynow">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="相信投影片">Trust the pitch deck</h3>
+            </div>
+            <ul class="gbento-list">
+              <li data-zh="新創在投影片上堆疊專利數量。">Founders stack patent counts on a slide.</li>
+              <li data-zh="沒有同儕基準的數字毫無意義。">Counts without a peer baseline mean nothing.</li>
+              <li data-zh="律師只能告訴你「合不合法」，無法判斷「強不強」。">Lawyers tell you legal-or-not — never strong-or-not.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 3 — Hire an analyst (trap) -->
+        <article class="gbento-card gbento-card--trap gba-goalone">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="請分析師">Hire an analyst</h3>
+            </div>
+            <ul class="gbento-list">
+              <li data-zh="每一筆交易都要排隊等分析師，動輒一週。">A week-long analyst engagement, per deal.</li>
+              <li data-zh="逐案計費、逐案等待。">Per-deal cost, per-deal wait.</li>
+              <li data-zh="主觀判斷——難以跨標的比較。">Subjective — hard to compare across deals.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 4 — Subscribe to Signal (wide, persistent-depth) -->
+        <article class="gbento-card gbento-card--wide gbento-card--persist gba-subscribe">
+          <div class="gbento-dots" aria-hidden="true"></div>
+          <div class="gbento-inner">
+            <div class="gbento-head">
+              <span class="gbento-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <h3 class="gbento-title" data-zh="訂閱 Signal">Subscribe to Signal</h3>
+            </div>
+            <ul class="gbento-list gbento-list--tis">
+              <li data-zh="SABCD 評級 30 分鐘到手——不用等數週。">SABCD grade in 30 minutes — not weeks.</li>
+              <li data-zh="每一筆交易共用同一條百分位量尺。">One percentile scale across every deal.</li>
+              <li data-zh="50 項指標、八大支柱——可追溯到計算公式。">50 indicators, 8 pillars — traceable to the formula.</li>
+              <li data-zh="可直接附入 IC Memo、Data Room 或 LP 季報。">Drops into your IC Memo, Data Room, or LP quarterly.</li>
+            </ul>
+            <a href="#pricing" class="btn btn-primary gbento-cta" data-zh="查看定價">View pricing</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── (B) Bundle-grid bento — what's inside your report, and how it's built ───
+       Lead-in preserves the old Signal pillar-showcase positioning copy verbatim.
+       Each .bbx-visual is an empty placeholder box pending HTML/CSS-mock rebuild. -->
+  <section class="section bundlegrid" id="pillar-signal" aria-label="What's inside your report">
+    <div class="container">
+      <h2 class="bundlegrid-head" data-zh="報告裡有什麼，又是怎麼算出來的。">What's inside your report, and how it's built.</h2>
+
+      <!-- Lead-in — preserved Signal pillar-showcase positioning copy (verbatim) -->
+      <div class="bundlegrid-leadin">
+        <h3 class="pillar-hero-copy-h2" data-zh="泰然專利強度評級系統">Signal Platform</h3>
           <p data-zh-html data-zh="<strong>拼募資的 founder、做盡調的 VC、評估護城河的企業 —專利強不強，看排名就知道。</strong>"><strong>Founders pitching, VCs running diligence, enterprises assessing moats — the ranking settles it.</strong></p>
-          <div class="pillar-features">
-            <p data-zh-html data-zh="泰然專利強度評級系統把每件專利打進 <strong>同產業 cohort 做百分位排序</strong>，產出 SABCD 五級評級。<strong>客戶無須整理文件，只需提供專利號，系統自動從 1.8 億筆專利資料庫抽取完整資料、跑完 50 項指標分析</strong>。短版執行摘要可快速初篩判斷強度，長版逐項下鑽。">Every patent slots into its same-industry cohort for percentile ranking, producing a SABCD grade. <strong>Skip the document prep — provide a patent number and the system pulls the full record from the 180M-patent database and runs all 50 indicators.</strong> Brief gives the fast read; Pro drills down item-by-item.</p>
-            <p data-zh-html data-zh="報告可附入 IC Memo、盡職調查、LP 季報、政府補助 / 標案等各類文件，作為<strong>第三方專利評級依據</strong> —律師告訴你「合不合法」，我們告訴你「強不強」。">Attach a report to your IC Memo, due-diligence files, LP quarterly, or grant / tender submission — a <strong>third-party patent rating</strong>. Lawyers tell you legal-or-not; we tell you strong-or-not.</p>
-          </div>
-          <div class="pillar-hero-cta">
-            <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-zh="免費預覽報告樣本">View Sample Report</a>
-          </div>
+        <div class="pillar-features">
+          <p data-zh-html data-zh="泰然專利強度評級系統把每件專利打進 <strong>同產業 cohort 做百分位排序</strong>，產出 SABCD 五級評級。<strong>客戶無須整理文件，只需提供專利號，系統自動從 1.8 億筆專利資料庫抽取完整資料、跑完 50 項指標分析</strong>。短版執行摘要可快速初篩判斷強度，長版逐項下鑽。">Every patent slots into its same-industry cohort for percentile ranking, producing a SABCD grade. <strong>Skip the document prep — provide a patent number and the system pulls the full record from the 180M-patent database and runs all 50 indicators.</strong> Brief gives the fast read; Pro drills down item-by-item.</p>
+          <p data-zh-html data-zh="報告可附入 IC Memo、盡職調查、LP 季報、政府補助 / 標案等各類文件，作為<strong>第三方專利評級依據</strong> —律師告訴你「合不合法」，我們告訴你「強不強」。">Attach a report to your IC Memo, due-diligence files, LP quarterly, or grant / tender submission — a <strong>third-party patent rating</strong>. Lawyers tell you legal-or-not; we tell you strong-or-not.</p>
         </div>
-        <div class="pillar-hero-shot" aria-hidden="true">
-          <div class="frame-wrap">
-            <div class="browser-frame" data-chrome="bare">
-              <div class="frame-canvas">
-                <div class="shot-inner">
-                  <div class="shot-perspective cool-light flat">
-                    <div class="r-spread-stage is-cascade peek-medium is-expanded">
+      </div>
 
-                      <!-- D-tier · back of the stack -->
-                      <div class="r-page-card is-d">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-08</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="d">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;24.18</span></div>
-                            <div class="r-seal-mark">D</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">117 / 142</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 82.4%</span></div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Cohort percentile</div>
-                            <div class="r-metric-mid">
-                              <div class="r-metric-arc">
-                                <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                                  <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                                  <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="63 283"/>
-                                </svg>
-                                <div class="r-metric-arc-val">22.3<small>%</small></div>
-                              </div>
-                            </div>
-                            <div class="sub">142-patent industrial actuator pool</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Rank in pool</div>
-                            <div class="r-metric-mid">
-                              <div class="val">117<small> / 142</small></div>
-                              <div class="r-metric-dist">
-                                <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
-                                  <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
-                                  <rect class="bar" x="4"   y="104" width="10" height="8"/>
-                                  <rect class="bar" x="17"  y="96"  width="10" height="16"/>
-                                  <rect class="bar" x="30"  y="82"  width="10" height="30"/>
-                                  <rect class="bar is-this" x="43" y="64" width="10" height="48"/>
-                                  <rect class="bar" x="56"  y="42"  width="10" height="70"/>
-                                  <rect class="bar" x="69"  y="22"  width="10" height="90"/>
-                                  <rect class="bar" x="82"  y="10"  width="10" height="102"/>
-                                  <rect class="bar" x="95"  y="6"   width="10" height="106"/>
-                                  <rect class="bar" x="108" y="12"  width="10" height="100"/>
-                                  <rect class="bar" x="121" y="26"  width="10" height="86"/>
-                                  <rect class="bar" x="134" y="46"  width="10" height="66"/>
-                                  <rect class="bar" x="147" y="66"  width="10" height="46"/>
-                                  <rect class="bar" x="160" y="82"  width="10" height="30"/>
-                                  <rect class="bar" x="173" y="90"  width="10" height="22"/>
-                                  <rect class="bar" x="186" y="96"  width="10" height="16"/>
-                                  <rect class="bar" x="199" y="100" width="10" height="12"/>
-                                  <rect class="bar" x="212" y="104" width="10" height="8"/>
-                                  <rect class="bar" x="225" y="108" width="10" height="4"/>
-                                  <polygon class="marker" points="43,0 53,0 48,15"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="sub">Re-ranked weekly as cohort updates</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">PSS score</div>
-                            <div class="r-metric-mid">
-                              <div class="val">24.18</div>
-                              <div class="r-metric-meter-h">
-                                <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 24.18 of 100">
-                                  <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
-                                  <div class="r-metric-meter-h-fill" style="width:24.18%;"></div>
-                                </div>
-                                <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
-                              </div>
-                            </div>
-                            <div class="sub">Composite of 8 pillars · 50 indicators</div>
-                          </div>
-                        </div>
-                        <div class="r-score-section">
-                          <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier D</span></div>
-                          <div class="r-score-grid">
-                            <div class="r-radar-mini">
-                              <svg viewBox="-200 -200 400 400" aria-hidden="true">
-                                <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
-                                <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
-                                <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
-                                <polygon class="polygon" points="0,-29 17.68,-17.68 37,0 7.07,7.07 0,18 -9.9,9.9 -22,0 -24.04,-24.04"/>
-                                <circle class="point" cx="0" cy="-29" r="3.5"/><circle class="point" cx="17.68" cy="-17.68" r="3.5"/><circle class="point" cx="37" cy="0" r="3.5"/><circle class="point" cx="7.07" cy="7.07" r="3.5"/><circle class="point" cx="0" cy="18" r="3.5"/><circle class="point" cx="-9.9" cy="9.9" r="3.5"/><circle class="point" cx="-22" cy="0" r="3.5"/><circle class="point" cx="-24.04" cy="-24.04" r="3.5"/>
-                                <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
-                              </svg>
-                            </div>
-                            <div class="r-thresh-mini">
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">WEAK</span><span class="val">29</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">25</span></div><div class="track"><div class="fill" style="width:25%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">WEAK</span><span class="val">37</span></div><div class="track"><div class="fill" style="width:37%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">10</span></div><div class="track"><div class="fill" style="width:10%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">18</span></div><div class="track"><div class="fill" style="width:18%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">14</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">22</span></div><div class="track"><div class="fill" style="width:22%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">WEAK</span><span class="val">34</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- C-tier -->
-                      <div class="r-page-card is-c">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-15</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="c">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;38.74</span></div>
-                            <div class="r-seal-mark">C</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">88 / 152</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 57.9%</span></div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Cohort percentile</div>
-                            <div class="r-metric-mid">
-                              <div class="r-metric-arc">
-                                <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                                  <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                                  <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="137 283"/>
-                                </svg>
-                                <div class="r-metric-arc-val">48.5<small>%</small></div>
-                              </div>
-                            </div>
-                            <div class="sub">152-patent display backlight pool</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Rank in pool</div>
-                            <div class="r-metric-mid">
-                              <div class="val">88<small> / 152</small></div>
-                              <div class="r-metric-dist">
-                                <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
-                                  <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
-                                  <rect class="bar" x="4"   y="108" width="10" height="4"/>
-                                  <rect class="bar" x="17"  y="102" width="10" height="10"/>
-                                  <rect class="bar" x="30"  y="92"  width="10" height="20"/>
-                                  <rect class="bar" x="43"  y="78"  width="10" height="34"/>
-                                  <rect class="bar" x="56"  y="60"  width="10" height="52"/>
-                                  <rect class="bar" x="69"  y="40"  width="10" height="72"/>
-                                  <rect class="bar" x="82"  y="22"  width="10" height="90"/>
-                                  <rect class="bar" x="95"  y="10"  width="10" height="102"/>
-                                  <rect class="bar" x="108" y="6"   width="10" height="106"/>
-                                  <rect class="bar" x="121" y="14"  width="10" height="98"/>
-                                  <rect class="bar is-this" x="134" y="44" width="10" height="68"/>
-                                  <rect class="bar" x="147" y="42"  width="10" height="70"/>
-                                  <rect class="bar" x="160" y="62"  width="10" height="50"/>
-                                  <rect class="bar" x="173" y="80"  width="10" height="32"/>
-                                  <rect class="bar" x="186" y="92"  width="10" height="20"/>
-                                  <rect class="bar" x="199" y="100" width="10" height="12"/>
-                                  <rect class="bar" x="212" y="106" width="10" height="6"/>
-                                  <rect class="bar" x="225" y="110" width="10" height="2"/>
-                                  <polygon class="marker" points="134,0 144,0 139,15"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="sub">Re-ranked weekly as cohort updates</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">PSS score</div>
-                            <div class="r-metric-mid">
-                              <div class="val">38.74</div>
-                              <div class="r-metric-meter-h">
-                                <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 38.74 of 100">
-                                  <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
-                                  <div class="r-metric-meter-h-fill" style="width:38.74%;"></div>
-                                </div>
-                                <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
-                              </div>
-                            </div>
-                            <div class="sub">Composite of 8 pillars · 50 indicators</div>
-                          </div>
-                        </div>
-                        <div class="r-score-section">
-                          <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier C</span></div>
-                          <div class="r-score-grid">
-                            <div class="r-radar-mini">
-                              <svg viewBox="-200 -200 400 400" aria-hidden="true">
-                                <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
-                                <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
-                                <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
-                                <polygon class="polygon" points="0,-44 28.28,-28.28 52,0 17.68,17.68 0,33 -20.51,20.51 -37,0 -34.65,-34.65"/>
-                                <circle class="point" cx="0" cy="-44" r="3.5"/><circle class="point" cx="28.28" cy="-28.28" r="3.5"/><circle class="point" cx="52" cy="0" r="3.5"/><circle class="point" cx="17.68" cy="17.68" r="3.5"/><circle class="point" cx="0" cy="33" r="3.5"/><circle class="point" cx="-20.51" cy="20.51" r="3.5"/><circle class="point" cx="-37" cy="0" r="3.5"/><circle class="point" cx="-34.65" cy="-34.65" r="3.5"/>
-                                <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
-                              </svg>
-                            </div>
-                            <div class="r-thresh-mini">
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">WEAK</span><span class="val">44</span></div><div class="track"><div class="fill" style="width:44%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">40</span></div><div class="track"><div class="fill" style="width:40%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">52</span></div><div class="track"><div class="fill" style="width:52%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">25</span></div><div class="track"><div class="fill" style="width:25%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">33</span></div><div class="track"><div class="fill" style="width:33%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">29</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">37</span></div><div class="track"><div class="fill" style="width:37%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">WEAK</span><span class="val">49</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- B-tier -->
-                      <div class="r-page-card is-b">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-22</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="b">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;47.30</span></div>
-                            <div class="r-seal-mark">B</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">47 / 198</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 23.7%</span></div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Cohort percentile</div>
-                            <div class="r-metric-mid">
-                              <div class="r-metric-arc">
-                                <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                                  <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                                  <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="205 283"/>
-                                </svg>
-                                <div class="r-metric-arc-val">72.4<small>%</small></div>
-                              </div>
-                            </div>
-                            <div class="sub">198-patent automotive radar pool</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Rank in pool</div>
-                            <div class="r-metric-mid">
-                              <div class="val">47<small> / 198</small></div>
-                              <div class="r-metric-dist">
-                                <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
-                                  <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
-                                  <rect class="bar" x="4"   y="106" width="10" height="6"/>
-                                  <rect class="bar" x="17"  y="98"  width="10" height="14"/>
-                                  <rect class="bar" x="30"  y="86"  width="10" height="26"/>
-                                  <rect class="bar" x="43"  y="70"  width="10" height="42"/>
-                                  <rect class="bar" x="56"  y="50"  width="10" height="62"/>
-                                  <rect class="bar" x="69"  y="28"  width="10" height="84"/>
-                                  <rect class="bar" x="82"  y="14"  width="10" height="98"/>
-                                  <rect class="bar is-this" x="95" y="40" width="10" height="72"/>
-                                  <rect class="bar" x="108" y="8"   width="10" height="104"/>
-                                  <rect class="bar" x="121" y="14"  width="10" height="98"/>
-                                  <rect class="bar" x="134" y="30"  width="10" height="82"/>
-                                  <rect class="bar" x="147" y="52"  width="10" height="60"/>
-                                  <rect class="bar" x="160" y="72"  width="10" height="40"/>
-                                  <rect class="bar" x="173" y="86"  width="10" height="26"/>
-                                  <rect class="bar" x="186" y="94"  width="10" height="18"/>
-                                  <rect class="bar" x="199" y="100" width="10" height="12"/>
-                                  <rect class="bar" x="212" y="104" width="10" height="8"/>
-                                  <rect class="bar" x="225" y="108" width="10" height="4"/>
-                                  <polygon class="marker" points="95,0 105,0 100,15"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="sub">Re-ranked weekly as cohort updates</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">PSS score</div>
-                            <div class="r-metric-mid">
-                              <div class="val">47.30</div>
-                              <div class="r-metric-meter-h">
-                                <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 47.30 of 100">
-                                  <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
-                                  <div class="r-metric-meter-h-fill" style="width:47.30%;"></div>
-                                </div>
-                                <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
-                              </div>
-                            </div>
-                            <div class="sub">Composite of 8 pillars · 50 indicators</div>
-                          </div>
-                        </div>
-                        <div class="r-score-section">
-                          <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier B</span></div>
-                          <div class="r-score-grid">
-                            <div class="r-radar-mini">
-                              <svg viewBox="-200 -200 400 400" aria-hidden="true">
-                                <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
-                                <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
-                                <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
-                                <polygon class="polygon" points="0,-53 34.65,-34.65 61,0 24.04,24.04 0,42 -26.87,26.87 -46,0 -41.01,-41.01"/>
-                                <circle class="point" cx="0" cy="-53" r="3.5"/><circle class="point" cx="34.65" cy="-34.65" r="3.5"/><circle class="point" cx="61" cy="0" r="3.5"/><circle class="point" cx="24.04" cy="24.04" r="3.5"/><circle class="point" cx="0" cy="42" r="3.5"/><circle class="point" cx="-26.87" cy="26.87" r="3.5"/><circle class="point" cx="-46" cy="0" r="3.5"/><circle class="point" cx="-41.01" cy="-41.01" r="3.5"/>
-                                <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
-                              </svg>
-                            </div>
-                            <div class="r-thresh-mini">
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">MID</span><span class="val">53</span></div><div class="track"><div class="fill" style="width:53%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">WEAK</span><span class="val">49</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">61</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">34</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">WEAK</span><span class="val">42</span></div><div class="track"><div class="fill" style="width:42%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">38</span></div><div class="track"><div class="fill" style="width:38%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">WEAK</span><span class="val">46</span></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">MID</span><span class="val">58</span></div><div class="track"><div class="fill" style="width:58%"></div></div></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- A-tier -->
-                      <div class="r-page-card is-a">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-04-29</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="a">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;56.12</span></div>
-                            <div class="r-seal-mark">A</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">18 / 162</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 11.1%</span></div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Cohort percentile</div>
-                            <div class="r-metric-mid">
-                              <div class="r-metric-arc">
-                                <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                                  <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                                  <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="251 283"/>
-                                </svg>
-                                <div class="r-metric-arc-val">88.7<small>%</small></div>
-                              </div>
-                            </div>
-                            <div class="sub">162-patent semiconductor photolithography pool</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Rank in pool</div>
-                            <div class="r-metric-mid">
-                              <div class="val">18<small> / 162</small></div>
-                              <div class="r-metric-dist">
-                                <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
-                                  <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
-                                  <rect class="bar" x="4"   y="100" width="10" height="12"/>
-                                  <rect class="bar" x="17"  y="90"  width="10" height="22"/>
-                                  <rect class="bar" x="30"  y="74"  width="10" height="38"/>
-                                  <rect class="bar" x="43"  y="54"  width="10" height="58"/>
-                                  <rect class="bar" x="56"  y="32"  width="10" height="80"/>
-                                  <rect class="bar" x="69"  y="14"  width="10" height="98"/>
-                                  <rect class="bar" x="82"  y="6"   width="10" height="106"/>
-                                  <rect class="bar" x="95"  y="10"  width="10" height="102"/>
-                                  <rect class="bar" x="108" y="22"  width="10" height="90"/>
-                                  <rect class="bar" x="121" y="40"  width="10" height="72"/>
-                                  <rect class="bar" x="134" y="60"  width="10" height="52"/>
-                                  <rect class="bar" x="147" y="78"  width="10" height="34"/>
-                                  <rect class="bar is-this" x="160" y="68" width="10" height="44"/>
-                                  <rect class="bar" x="173" y="92"  width="10" height="20"/>
-                                  <rect class="bar" x="186" y="98"  width="10" height="14"/>
-                                  <rect class="bar" x="199" y="102" width="10" height="10"/>
-                                  <rect class="bar" x="212" y="104" width="10" height="8"/>
-                                  <rect class="bar" x="225" y="108" width="10" height="4"/>
-                                  <polygon class="marker" points="160,0 170,0 165,15"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="sub">Re-ranked weekly as cohort updates</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">PSS score</div>
-                            <div class="r-metric-mid">
-                              <div class="val">56.12</div>
-                              <div class="r-metric-meter-h">
-                                <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 56.12 of 100">
-                                  <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
-                                  <div class="r-metric-meter-h-fill" style="width:56.12%;"></div>
-                                </div>
-                                <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
-                              </div>
-                            </div>
-                            <div class="sub">Composite of 8 pillars · 50 indicators</div>
-                          </div>
-                        </div>
-                        <div class="r-score-section">
-                          <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier A</span></div>
-                          <div class="r-score-grid">
-                            <div class="r-radar-mini">
-                              <svg viewBox="-200 -200 400 400" aria-hidden="true">
-                                <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
-                                <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
-                                <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
-                                <polygon class="polygon" points="0,-61 40.3,-40.3 69,0 29.7,29.7 0,50 -32.53,32.53 -54,0 -46.67,-46.67"/>
-                                <circle class="point" cx="0" cy="-61" r="3.5"/><circle class="point" cx="40.3" cy="-40.3" r="3.5"/><circle class="point" cx="69" cy="0" r="3.5"/><circle class="point" cx="29.7" cy="29.7" r="3.5"/><circle class="point" cx="0" cy="50" r="3.5"/><circle class="point" cx="-32.53" cy="32.53" r="3.5"/><circle class="point" cx="-54" cy="0" r="3.5"/><circle class="point" cx="-46.67" cy="-46.67" r="3.5"/>
-                                <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
-                              </svg>
-                            </div>
-                            <div class="r-thresh-mini">
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">MID</span><span class="val">61</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">MID</span><span class="val">57</span></div><div class="track"><div class="fill" style="width:57%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">MID</span><span class="val">69</span></div><div class="track"><div class="fill" style="width:69%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">WEAK</span><span class="val">42</span></div><div class="track"><div class="fill" style="width:42%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">MID</span><span class="val">50</span></div><div class="track"><div class="fill" style="width:50%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">WEAK</span><span class="val">46</span></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">MID</span><span class="val">54</span></div><div class="track"><div class="fill" style="width:54%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">MID</span><span class="val">66</span></div><div class="track"><div class="fill" style="width:66%"></div></div></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- S-tier · front of the stack -->
-                      <div class="r-page-card is-s">
-                        <div class="r-letterhead">
-                          <div class="l-brand">
-                            <img class="l-tis is-light" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
-                            <img class="l-tis is-dark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-                            <span class="l-divider" aria-hidden="true"></span>
-                            <img class="l-innovue is-light" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
-                            <img class="l-innovue is-dark" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng.svg" alt="Innovue" />
-                          </div>
-                          <div class="l-meta"><span><b>Pro report</b></span><span>Issued <b>2026-05-06</b></span></div>
-                        </div>
-                        <div class="r-grid-2x2">
-                          <div class="r-seal" data-tier="s">
-                            <div class="r-seal-eyebrow"><span class="r-seal-num">PSS&nbsp;78.91</span></div>
-                            <div class="r-seal-mark">S</div>
-                            <div class="r-seal-tier"><span class="r-seal-rank">4 / 183</span><span class="r-seal-dot" aria-hidden="true">·</span><span class="r-seal-percentile">Top 2.2%</span></div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Cohort percentile</div>
-                            <div class="r-metric-mid">
-                              <div class="r-metric-arc">
-                                <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                                  <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                                  <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="278 283"/>
-                                </svg>
-                                <div class="r-metric-arc-val">98.3<small>%</small></div>
-                              </div>
-                            </div>
-                            <div class="sub">183-patent semiconductor advanced-node process pool</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">Rank in pool</div>
-                            <div class="r-metric-mid">
-                              <div class="val">4<small> / 183</small></div>
-                              <div class="r-metric-dist">
-                                <svg class="r-metric-dist-svg" viewBox="0 0 240 120" preserveAspectRatio="none" aria-hidden="true">
-                                  <line class="baseline" x1="0" y1="112" x2="240" y2="112"/>
-                                  <rect class="bar" x="4"   y="104" width="10" height="8"/>
-                                  <rect class="bar" x="17"  y="96"  width="10" height="16"/>
-                                  <rect class="bar" x="30"  y="82"  width="10" height="30"/>
-                                  <rect class="bar" x="43"  y="64"  width="10" height="48"/>
-                                  <rect class="bar" x="56"  y="42"  width="10" height="70"/>
-                                  <rect class="bar" x="69"  y="22"  width="10" height="90"/>
-                                  <rect class="bar" x="82"  y="10"  width="10" height="102"/>
-                                  <rect class="bar" x="95"  y="6"   width="10" height="106"/>
-                                  <rect class="bar" x="108" y="12"  width="10" height="100"/>
-                                  <rect class="bar" x="121" y="26"  width="10" height="86"/>
-                                  <rect class="bar" x="134" y="46"  width="10" height="66"/>
-                                  <rect class="bar" x="147" y="66"  width="10" height="46"/>
-                                  <rect class="bar" x="160" y="82"  width="10" height="30"/>
-                                  <rect class="bar" x="173" y="90"  width="10" height="22"/>
-                                  <rect class="bar" x="186" y="96"  width="10" height="16"/>
-                                  <rect class="bar" x="199" y="100" width="10" height="12"/>
-                                  <rect class="bar is-this" x="212" y="76" width="10" height="36"/>
-                                  <rect class="bar" x="225" y="106" width="10" height="6"/>
-                                  <polygon class="marker" points="212,0 222,0 217,15"/>
-                                </svg>
-                              </div>
-                            </div>
-                            <div class="sub">Re-ranked weekly as cohort updates</div>
-                          </div>
-                          <div class="r-metric">
-                            <div class="lbl">PSS score</div>
-                            <div class="r-metric-mid">
-                              <div class="val">78.91</div>
-                              <div class="r-metric-meter-h">
-                                <div class="r-metric-meter-h-bar" role="img" aria-label="PSS magnitude 78.91 of 100">
-                                  <span class="r-metric-meter-h-tick t-50" aria-hidden="true"></span>
-                                  <div class="r-metric-meter-h-fill" style="width:78.91%;"></div>
-                                </div>
-                                <div class="r-metric-meter-h-scale"><span>0</span><span>50</span><span>100</span></div>
-                              </div>
-                            </div>
-                            <div class="sub">Composite of 8 pillars · 50 indicators</div>
-                          </div>
-                        </div>
-                        <div class="r-score-section">
-                          <div class="r-score-header"><span>Score &amp; weight · 8 pillars</span><span class="r-score-header-meta">Tier S</span></div>
-                          <div class="r-score-grid">
-                            <div class="r-radar-mini">
-                              <svg viewBox="-200 -200 400 400" aria-hidden="true">
-                                <polygon class="grid inner" points="0,-50 35.36,-35.36 50,0 35.36,35.36 0,50 -35.36,35.36 -50,0 -35.36,-35.36"/>
-                                <polygon class="grid" points="0,-100 70.71,-70.71 100,0 70.71,70.71 0,100 -70.71,70.71 -100,0 -70.71,-70.71"/>
-                                <line class="spoke" x1="0" y1="0" x2="0" y2="-100"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="-70.71"/><line class="spoke" x1="0" y1="0" x2="100" y2="0"/><line class="spoke" x1="0" y1="0" x2="70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="0" y2="100"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="70.71"/><line class="spoke" x1="0" y1="0" x2="-100" y2="0"/><line class="spoke" x1="0" y1="0" x2="-70.71" y2="-70.71"/>
-                                <polygon class="polygon" points="0,-83 55.86,-55.86 91,0 45.25,45.25 0,72 -48.08,48.08 -76,0 -62.23,-62.23"/>
-                                <circle class="point" cx="0" cy="-83" r="3.5"/><circle class="point" cx="55.86" cy="-55.86" r="3.5"/><circle class="point" cx="91" cy="0" r="3.5"/><circle class="point" cx="45.25" cy="45.25" r="3.5"/><circle class="point" cx="0" cy="72" r="3.5"/><circle class="point" cx="-48.08" cy="48.08" r="3.5"/><circle class="point" cx="-76" cy="0" r="3.5"/><circle class="point" cx="-62.23" cy="-62.23" r="3.5"/>
-                                <text class="label" x="0" y="-120" text-anchor="middle">P1</text><text class="label" x="84.85" y="-84.85" text-anchor="start">P2</text><text class="label" x="120" y="0" text-anchor="start" dominant-baseline="middle">P3</text><text class="label" x="84.85" y="84.85" text-anchor="start" dominant-baseline="hanging">P4</text><text class="label" x="0" y="120" text-anchor="middle" dominant-baseline="hanging">P5</text><text class="label" x="-84.85" y="84.85" text-anchor="end" dominant-baseline="hanging">P6</text><text class="label" x="-120" y="0" text-anchor="end" dominant-baseline="middle">P7</text><text class="label" x="-84.85" y="-84.85" text-anchor="end">P8</text>
-                              </svg>
-                            </div>
-                            <div class="r-thresh-mini">
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P1 Citation</span><span class="tier">STRONG</span><span class="val">83</span></div><div class="track"><div class="fill" style="width:83%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P2 Legal</span><span class="tier">MID</span><span class="val">79</span></div><div class="track"><div class="fill" style="width:79%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P3 Technical</span><span class="tier">STRONG</span><span class="val">91</span></div><div class="track"><div class="fill" style="width:91%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P4 Market</span><span class="tier">MID</span><span class="val">64</span></div><div class="track"><div class="fill" style="width:64%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P5 Text</span><span class="tier">MID</span><span class="val">72</span></div><div class="track"><div class="fill" style="width:72%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P6 Network</span><span class="tier">MID</span><span class="val">68</span></div><div class="track"><div class="fill" style="width:68%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P7 Licensing</span><span class="tier">MID</span><span class="val">76</span></div><div class="track"><div class="fill" style="width:76%"></div></div></div>
-                              <div class="r-thresh-row"><div class="head"><span class="lbl">P8 Forward</span><span class="tier">STRONG</span><span class="val">88</span></div><div class="track"><div class="fill" style="width:88%"></div></div></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div class="bundlegrid-grid">
+        <!-- Box 1 — SABCD verdict (wide) -->
+        <article class="bbx bbx--center bbx--why">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="SABCD 評定">SABCD verdict</h3>
+            <p class="bbx-body" data-zh="一個評級，S 級（前 15%）到 D 級。穿透泡沫，真實防禦力。">One rating, S (top 15%) to D. Past the pitch deck — real defensibility.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: SABCD verdict seal/grade visual — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
             </div>
           </div>
-        </div>
+        </article>
+
+        <!-- Box 2 — Peer-cohort percentile (narrow) -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="同儕池百分位">Peer-cohort percentile</h3>
+            <p class="bbx-body" data-zh="在同產業池中的位置——百分位與排名。">Where it ranks in its industry pool — percentile and rank.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: peer-cohort percentile distribution chart — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 3 — 8-pillar radar (narrow) -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="八大支柱雷達">8-pillar radar</h3>
+            <p class="bbx-body" data-zh="引用、法律、技術、市場等八大支柱，各自獨立加權。">Citation, legal, technical, market and four more — eight pillars, independently weighted.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: 8-pillar radar chart — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 4 — 50 indicators (wide) -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="50 項指標">50 indicators</h3>
+            <p class="bbx-body" data-zh="每個支柱拆解為 5–8 項指標：原值、百分位、權重——可追溯到計算公式。">Every pillar unpacks into 5–8 indicators: raw value, percentile, weight — traceable to the formula.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: 50-indicator threshold table — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 5 — Brief vs Pro (wide) -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="Brief 對 Pro">Brief vs Pro</h3>
+            <p class="bbx-body" data-zh="Brief 是快速 go/no-go。Pro 再加深度下鑽、跨場景穩定矩陣與授權策略。">Brief is the fast go/no-go. Pro adds the deep-dive, cross-scenario stability matrix, and licensing strategy.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: Brief vs Pro comparison visual — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Box 6 — Leak-resistant PDF (narrow) -->
+        <article class="bbx bbx--center">
+          <div class="bbx-head">
+            <h3 class="bbx-title" data-zh="防外流 PDF">Leak-resistant PDF</h3>
+            <p class="bbx-body" data-zh="一鍵產出含 Email 浮水印的 PDF——可附入 IC Memo、Data Room 或 LP 季報。">One-click PDF with an email watermark — drops into IC Memo, Data Room, or LP quarterly.</p>
+          </div>
+          <div class="bbx-visual" aria-hidden="true">
+            <div class="bbx-fade"></div>
+            <div class="bbx-center">
+              <!-- PLACEHOLDER: watermarked PDF export visual — rebuild as HTML/CSS mock in a later step -->
+              <div class="bbx-placeholder" aria-hidden="true"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Commit CTA — preserved old "View Sample Report" CTA verbatim -->
+      <div class="bundlegrid-cta">
+        <a href="/product/signal/sample-report.html" class="btn btn-primary" data-zh="免費預覽報告樣本">View Sample Report</a>
       </div>
     </div>
   </section>
 
-  <!-- ─── 3. How Signal works (accordion — converted from sliding cards, copy preserved 1:1) ─── -->
-  <section class="section" aria-label="How Signal works">
+  <!-- ─── (C) Walk-away — submit a patent number, you leave with… ─── -->
+  <section class="section walkaway" aria-label="What you walk away with">
+    <div class="container">
+      <h2 class="walkaway-head" data-zh="提交一個專利號，你帶走的是……">Submit a patent number. You leave with…</h2>
+      <p class="walkaway-sub" data-zh="四個環節，一個連貫的故事。">Four moments, one uninterrupted story.</p>
+
+      <div class="walkaway-grid">
+        <!-- 1 — The verdict -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>1.0</span> 評定結果"><span class="wa-num">1.0</span> The verdict</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="評定結果">The verdict</h3>
+            <p class="wa-body" data-zh="SABCD 評級與 PSS 分數，一分鐘掃完。">A SABCD grade and PSS score, scannable in a minute.</p>
+          </div>
+        </article>
+
+        <!-- 2 — The percentile -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>2.0</span> 同儕百分位"><span class="wa-num">2.0</span> The percentile</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="同儕百分位">The percentile</h3>
+            <p class="wa-body" data-zh="在你真正會競爭的對手中，它排在哪裡。">Exactly where it ranks against the companies you'll actually compete with.</p>
+          </div>
+        </article>
+
+        <!-- 3 — The indicators -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>3.0</span> 指標明細"><span class="wa-num">3.0</span> The indicators</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="指標明細">The indicators</h3>
+            <p class="wa-body" data-zh="八大支柱 50 項指標，每項都能追溯到公式。">50 indicators across 8 pillars, each traceable to its formula.</p>
+          </div>
+        </article>
+
+        <!-- 4 — The deliverable -->
+        <article class="wa-col">
+          <p class="wa-eyebrow" data-zh-html data-zh="<span class=&quot;wa-num&quot;>4.0</span> 可交付文件"><span class="wa-num">4.0</span> The deliverable</p>
+          <div class="wa-col-body">
+            <h3 class="wa-title" data-zh="可交付文件">The deliverable</h3>
+            <p class="wa-body" data-zh="第三方專利評級，原封不動轉發給投委會。">A third-party rating you forward to your IC, untouched.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── (D) How it works — stepped feature carousel (replaces the accordion) ───
+       5 steps, copy preserved 1:1 from the old accordion. Each .hiw-shotwrap holds
+       an empty placeholder box pending HTML/CSS-mock rebuild. -->
+  <section class="section" aria-label="From patent number to a graded Brief">
     <div class="container">
 
       <div class="howitworks">
-        <h3 data-zh="運作方式">How it works</h3>
-        <div class="howitworks-grid">
-          <div class="howitworks-visual howitworks-visual--steps howitworks-visual--shots" data-pillar-howit="signal" aria-hidden="true">
-            <div class="howitworks-step-panel howitworks-step-panel--shot is-active" data-step="submit" data-grad="1">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/01-submit-form.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="pool" data-grad="2">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/02-pool-confirm.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="delivery" data-grad="3">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/03-delivery-pick.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="brief" data-grad="4">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/04-brief-report.png" alt="" loading="lazy" decoding="async">
-            </div>
-            <div class="howitworks-step-panel howitworks-step-panel--shot" data-step="pro" data-grad="5">
-              <img class="howitworks-step-shot" src="/designs/assets/imagery/screenshots/signal/05-pro-report.png" alt="" loading="lazy" decoding="async">
-            </div>
-          </div>
-          <div class="acc-list">
-            <div class="acc-item is-open" data-step="submit">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="提交一個專利號">Submit a patent number</span>
-                <span class="acc-mark" aria-hidden="true">−</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="只要有專利號，就能評級專利強度，免分析師，免等事務所排號。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="Innovue 全球第 3 大專利資料庫，囊括 USPTO、TW、EPO、WO 等官方即時更新資料，專利家族一把抓。">Grade patents from any major office</li>
-                  <li data-zh="可同時申請多個專利強度評級報告，不需要排隊。">Score a whole batch at once</li>
-                  <li data-zh="免等分析師安排資源和報價，申請、付款、取報告一次完成。">Skip the week-long analyst wait</li>
+        <h2 class="bp-section-heading" data-zh="從專利號到評級 Brief">From patent number to a graded Brief</h2>
+
+        <div class="hiw-frame">
+          <div class="hiw-carousel" data-hiw-carousel>
+
+            <nav class="hiw-steps" aria-label="Progress">
+              <ol role="list">
+                <li><button type="button" class="hiw-pill" data-hiw-pill="0" aria-selected="true"><span class="hiw-dot"><span class="hiw-num">1</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="提交">Submit</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="1" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">2</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="同儕池">Pool match</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="2" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">3</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="選版本">Brief or Pro</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="3" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">4</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="Brief">Brief</span></button></li>
+                <li><button type="button" class="hiw-pill" data-hiw-pill="4" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">5</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="Pro">Pro</span></button></li>
+              </ol>
+            </nav>
+
+            <div class="hiw-stage" role="group" aria-label="How it works steps">
+
+              <article class="hiw-panel is-active" data-hiw-panel="0">
+                <h4 class="hiw-title" data-zh="提交一個專利號">Submit a patent number</h4>
+                <p class="hiw-desc" data-zh="只要有專利號，就能評級專利強度，免分析師，免等事務所排號。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <!-- PLACEHOLDER: submit-a-patent form screen — rebuild as HTML/CSS mock in a later step -->
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Innovue 全球第 3 大專利資料庫，囊括 USPTO、TW、EPO、WO 等官方即時更新資料，專利家族一把抓。">Grade patents from any major office</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="可同時申請多個專利強度評級報告，不需要排隊。">Score a whole batch at once</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="免等分析師安排資源和報價，申請、付款、取報告一次完成。">Skip the week-long analyst wait</span></li>
                 </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="pool">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="對比同儕池">Matched against the right peer pool</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="蘋果對蘋果才公平。">Apples to apples — fair comparison, by design.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="6 大類專利池 - 晶片半導體設計製造、網路通訊、計算機系統、綜合應用、多媒體影音/影像處理、淨零碳排。">6 patent pools — chip, network, compute, integrated, multimedia, net-zero</li>
-                  <li data-zh="評級專利對應正確專利池，不跨行，只跟同行比。">Graded inside its own pool — peers only, no cross-industry</li>
-                  <li data-zh="專利評級內容對標 Innovue 全球第 3 大專利資料庫，只評估官方記錄。">Benchmarked against Innovue's 3rd-largest patent database — official records only</li>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="1">
+                <h4 class="hiw-title" data-zh="對比同儕池">Matched against the right peer pool</h4>
+                <p class="hiw-desc" data-zh="蘋果對蘋果才公平。">Apples to apples — fair comparison, by design.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <!-- PLACEHOLDER: peer-pool match screen — rebuild as HTML/CSS mock in a later step -->
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="6 大類專利池 - 晶片半導體設計製造、網路通訊、計算機系統、綜合應用、多媒體影音/影像處理、淨零碳排。">6 patent pools — chip, network, compute, integrated, multimedia, net-zero</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="評級專利對應正確專利池，不跨行，只跟同行比。">Graded inside its own pool — peers only, no cross-industry</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="專利評級內容對標 Innovue 全球第 3 大專利資料庫，只評估官方記錄。">Benchmarked against Innovue's 3rd-largest patent database — official records only</span></li>
                 </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="delivery">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="Brief (短版) / Pro (深度版) 報告，按需隨選。">Brief or Pro — pick by need</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <ul class="howitworks-checks">
-                  <li data-zh="Brief 短版報告馬上告訴你專利強不強，提供執行摘要讓你快速作決定。">Brief — fast strong/weak verdict, executive summary</li>
-                  <li data-zh="Pro 深度版報告包含全部評級指標深度分析說明，豐富你的投資或盡職報告。">Pro — full indicator deep-dive for your IC memo or DD pack</li>
-                  <li data-zh="Brief 版不夠，加買 Pro 版，只要付 Pro 版差額即可獲得雙版。">Started with Brief? Pay the Pro delta to unlock both</li>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="2">
+                <h4 class="hiw-title" data-zh="Brief (短版) / Pro (深度版) 報告，按需隨選。">Brief or Pro — pick by need</h4>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <!-- PLACEHOLDER: Brief-or-Pro delivery picker screen — rebuild as HTML/CSS mock in a later step -->
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Brief 短版報告馬上告訴你專利強不強，提供執行摘要讓你快速作決定。">Brief — fast strong/weak verdict, executive summary</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Pro 深度版報告包含全部評級指標深度分析說明，豐富你的投資或盡職報告。">Pro — full indicator deep-dive for your IC memo or DD pack</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Brief 版不夠，加買 Pro 版，只要付 Pro 版差額即可獲得雙版。">Started with Brief? Pay the Pro delta to unlock both</span></li>
                 </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="brief">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="Brief 報告呈現什麼">What the Brief report shows you</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="等級判定 + PSS 分數">See the tier verdict at a glance</li>
-                  <li data-zh="池內百分位 + 池內排名">Know exactly where it ranks among peers</li>
-                  <li data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Forward it to your IC as-is</li>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="3">
+                <h4 class="hiw-title" data-zh="Brief 報告呈現什麼">What the Brief report shows you</h4>
+                <p class="hiw-desc" data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <!-- PLACEHOLDER: Brief report screen — rebuild as HTML/CSS mock in a later step -->
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="等級判定 + PSS 分數">See the tier verdict at a glance</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="池內百分位 + 池內排名">Know exactly where it ranks among peers</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="狀態 · 家族 · IPC · 剩餘年限 · AI 摘要">Forward it to your IC as-is</span></li>
                 </ul>
-              </div></div>
-            </div>
-            <div class="acc-item" data-step="pro">
-              <button type="button" class="acc-trigger">
-                <span class="acc-title" data-zh="Pro 將 PSS 拆解成 50 項指標">Pro unpacks the PSS into 50 indicators</span>
-                <span class="acc-mark" aria-hidden="true">+</span>
-              </button>
-              <div class="acc-content"><div>
-                <p data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
-                <ul class="howitworks-checks">
-                  <li data-zh="八大支柱 × 4–8 項指標 = 50 項">See what anchors the grade</li>
-                  <li data-zh="每項指標：原值、百分位、權重">Trace every score to its formula</li>
-                  <li data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Spot the top drivers and risks fast</li>
+              </article>
+
+              <article class="hiw-panel" data-hiw-panel="4">
+                <h4 class="hiw-title" data-zh="Pro 將 PSS 拆解成 50 項指標">Pro unpacks the PSS into 50 indicators</h4>
+                <p class="hiw-desc" data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
+                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
+                  <!-- PLACEHOLDER: Pro report 50-indicator screen — rebuild as HTML/CSS mock in a later step -->
+                </div></div>
+                <ul class="hiw-checks">
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="八大支柱 × 4–8 項指標 = 50 項">See what anchors the grade</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="每項指標：原值、百分位、權重">Trace every score to its formula</span></li>
+                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Top 10 驅動因子 + Top 5 敏感度標出">Spot the top drivers and risks fast</span></li>
                 </ul>
-              </div></div>
+              </article>
+
+              <!-- Persistent commit CTA — pinned bottom-right of the stage. -->
+              <a href="/product/signal/sample-report.html" class="btn btn-primary hiw-cta" data-target="signal-signup" data-zh="免費預覽報告樣本">Get your first Brief</a>
+
             </div>
+
           </div>
         </div>
       </div>
@@ -2434,126 +2746,171 @@ a, button,
   <!-- ─── 3. Pricing (moved up; restructured per licensing pattern) ─── -->
   <section class="section section--alt" id="pricing" aria-labelledby="signal-pricing-heading">
     <div class="container">
+      <!-- ▼▼▼ PRICING: user will supply final pricing-card code here. Interim = current 3-tier + credit-table below. ▼▼▼ -->
       <h2 id="signal-pricing-heading" class="bp-section-heading" data-zh="定價 — 按報告付費，或月訂閱。">Pricing — Pay per report. Or subscribe.</h2>
 
-      <div class="prod-pricing-grid">
-        <!-- Tier 1 · Standard — side-by-side, no save tag (0% off / break-even) -->
-        <article class="prod-price-tier">
-          <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
-          <p class="prod-price-name" data-zh="Standard">Standard</p>
-          <div class="prod-price-block-split">
-            <div class="prod-price-split-side">
-              <span class="lbl" data-zh="月費">Monthly</span>
-              <span class="val">NT$4,900</span>
-            </div>
-            <div class="prod-price-split-side is-credits">
-              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
-              <span class="val">49</span>
-              <span class="sub" data-zh="約 3 份 Brief">Roughly 3 Briefs</span>
-            </div>
-          </div>
-          <ul class="prod-price-features">
-            <li data-zh="信箱送達 + 儀表板存取">Email delivery + dashboard access</li>
-            <li data-zh="PDF 浮水印 + 稽核軌跡">Watermarked PDFs + audit trail</li>
-            <li data-zh="月底未用點數歸零">Credits reset monthly</li>
-          </ul>
-          <a href="/product/signal/lobby.html" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
-        </article>
+      <div class="prod-cmp-scroll">
+        <div class="prod-cmp">
+          <!-- ── Tier header row ── -->
+          <div class="prod-cmp-corner"></div>
 
-        <!-- Tier 2 · Pro (featured / Recommended) — side-by-side equal weight -->
-        <article class="prod-price-tier is-featured">
-          <p class="prod-price-eyebrow" data-zh="推薦">Recommended</p>
-          <p class="prod-price-name">Pro</p>
-          <div class="prod-price-block-split">
-            <div class="prod-price-split-side">
-              <span class="lbl" data-zh="月費">Monthly</span>
-              <span class="val">NT$7,900</span>
-              <span class="save">Save 5%</span>
-            </div>
-            <div class="prod-price-split-side is-credits">
-              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
-              <span class="val">83</span>
-              <span class="sub" data-zh="約 5 份 Brief">Roughly 5 Briefs</span>
-            </div>
+          <div class="prod-cmp-tier">
+            <p class="prod-cmp-name" data-zh="Standard">Standard</p>
+            <p class="prod-cmp-desc" data-zh="適合偶爾做專利查核的夥伴。">For partners running the occasional patent check.</p>
+            <p class="prod-cmp-price"><span class="amt">NT$4,900</span><span class="per" data-zh="/月">/mo</span></p>
+            <a href="/product/signal/lobby.html" class="btn prod-cmp-cta is-outline" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
           </div>
-          <ul class="prod-price-features">
-            <li class="prod-price-feat-inherit" data-zh="Standard 全部 + 以下">Everything in Standard, plus:</li>
-            <li data-zh="批次提交：早上 8 份 deck，當天回">Batch submit — 8 morning decks, scored by EOD</li>
-            <li data-zh="優先處理佇列（30 分鐘 SLA）">Priority queue (30-min SLA)</li>
-            <li data-zh="PDF + JSON 匯出">PDF + JSON export</li>
-          </ul>
-          <a href="/product/signal/lobby.html" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
-        </article>
 
-        <!-- Tier 3 · Max — side-by-side, Save 10% -->
-        <article class="prod-price-tier">
-          <p class="prod-price-eyebrow" aria-hidden="true">&nbsp;</p>
-          <p class="prod-price-name">Max</p>
-          <div class="prod-price-block-split">
-            <div class="prod-price-split-side">
-              <span class="lbl" data-zh="月費">Monthly</span>
-              <span class="val">NT$9,900</span>
-              <span class="save">Save 10%</span>
-            </div>
-            <div class="prod-price-split-side is-credits">
-              <span class="lbl" data-zh="點數 / 月">Credits / mo</span>
-              <span class="val">110</span>
-              <span class="sub" data-zh="約 7 份 Brief">Roughly 7 Briefs</span>
-            </div>
+          <div class="prod-cmp-tier is-featured">
+            <p class="prod-cmp-name">Pro</p>
+            <p class="prod-cmp-desc" data-zh="適合同時推進多筆案件的活躍盡調。">For active diligence with several deals in flight.</p>
+            <p class="prod-cmp-price"><span class="amt">NT$7,900</span><span class="per" data-zh="/月">/mo</span><span class="save" data-zh="省 5%">Save 5%</span></p>
+            <a href="/product/signal/lobby.html" class="btn btn-primary prod-cmp-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
           </div>
-          <ul class="prod-price-features">
-            <li class="prod-price-feat-inherit" data-zh="Pro 全部 + 以下">Everything in Pro, plus:</li>
-            <li data-zh="專屬同儕池（自選 IPC 範圍）">Custom cohort selection (IPC / time bands)</li>
-            <li data-zh="月度 LP-report 摘要">Monthly LP-letter summary</li>
-            <li data-zh="Slack / Teams 整合">Slack / Teams hook for new Briefs</li>
-          </ul>
-          <a href="/product/signal/lobby.html" class="btn btn-primary prod-price-cta" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
-        </article>
+
+          <div class="prod-cmp-tier">
+            <p class="prod-cmp-name">Max</p>
+            <p class="prod-cmp-desc" data-zh="適合同儕規模投組與定期 LP 報告。">For cohort-scale portfolios and recurring LP reporting.</p>
+            <p class="prod-cmp-price"><span class="amt">NT$9,900</span><span class="per" data-zh="/月">/mo</span><span class="save" data-zh="省 10%">Save 10%</span></p>
+            <a href="/product/signal/lobby.html" class="btn prod-cmp-cta is-outline" data-target="signal-signup" data-zh="訂閱">Subscribe</a>
+          </div>
+
+          <!-- ── Features section heading ── -->
+          <div class="prod-cmp-section" data-zh="功能比較">Features</div>
+          <div class="prod-cmp-cell prod-cmp-cell--head"></div>
+          <div class="prod-cmp-cell prod-cmp-cell--head is-featured"></div>
+          <div class="prod-cmp-cell prod-cmp-cell--head"></div>
+
+          <!-- Credits / mo -->
+          <div class="prod-cmp-rowlabel" data-zh="點數 / 月">Credits / mo</div>
+          <div class="prod-cmp-cell">49</div>
+          <div class="prod-cmp-cell is-featured">83</div>
+          <div class="prod-cmp-cell">110</div>
+
+          <!-- Briefs / mo -->
+          <div class="prod-cmp-rowlabel" data-zh="每月 Brief 數">Briefs / mo</div>
+          <div class="prod-cmp-cell"><span data-zh="約 3">~3</span></div>
+          <div class="prod-cmp-cell is-featured"><span data-zh="約 5">~5</span></div>
+          <div class="prod-cmp-cell"><span data-zh="約 7">~7</span></div>
+
+          <!-- Email + dashboard -->
+          <div class="prod-cmp-rowlabel" data-zh="信箱送達 + 儀表板存取">Email delivery + dashboard</div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Watermarked PDFs + audit trail -->
+          <div class="prod-cmp-rowlabel" data-zh="PDF 浮水印 + 稽核軌跡">Watermarked PDFs + audit trail</div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Credits reset monthly -->
+          <div class="prod-cmp-rowlabel" data-zh="月底未用點數歸零">Credits reset monthly</div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- PDF + JSON export -->
+          <div class="prod-cmp-rowlabel" data-zh="PDF + JSON 匯出">PDF + JSON export</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Batch submit -->
+          <div class="prod-cmp-rowlabel" data-zh="批次提交（早上 8 份 deck，當天回）">Batch submit — 8 morning decks, EOD</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Priority queue -->
+          <div class="prod-cmp-rowlabel" data-zh="優先處理佇列（30 分鐘 SLA）">Priority queue (30-min SLA)</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Custom cohort selection -->
+          <div class="prod-cmp-rowlabel" data-zh="專屬同儕池（自選 IPC 範圍）">Custom cohort selection (IPC / time bands)</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Monthly LP-letter summary -->
+          <div class="prod-cmp-rowlabel" data-zh="月度 LP-report 摘要">Monthly LP-letter summary</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+          <!-- Slack / Teams hook -->
+          <div class="prod-cmp-rowlabel" data-zh="Slack / Teams 整合">Slack / Teams hook for new Briefs</div>
+          <div class="prod-cmp-cell"><svg class="cmp-dash" viewBox="0 0 16 16" role="img" aria-label="Not included"><path d="M4 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="prod-cmp-cell is-featured prod-cmp-cell--foot"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="prod-cmp-cell"><svg class="cmp-ck" viewBox="0 0 16 16" fill="none" role="img" aria-label="Included"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
       </div>
 
       <h4 class="prod-ref-table-title" data-zh="按報告價目">Credits per query</h4>
-      <div class="prod-ref-table-wrap">
-        <table class="prod-ref-table">
-          <thead><tr>
-            <th data-zh="動作">Action</th>
-            <th class="right" data-zh="點數">Credits</th>
-            <th class="right" data-zh="價格">Price</th>
-            <th class="right" data-zh="折扣">Top-up discount</th>
-          </tr></thead>
-          <tbody>
-            <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
-            <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
-            <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
-            <tr><td data-zh="50 點頂入包">50-credit top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
-            <tr><td data-zh="150 點頂入包">150-credit top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
-            <tr><td data-zh="500 點頂入包">500-credit top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ─── 8. Exclusive Patent Access + paired CTA — full-bleed hairline band
-       doubles as the final intra-page CTA. Replaces the prior .cta-banner so
-       the credibility (iPIC · III · NYCU) lands paired with the
-       trial action, then flows into the Contact form. -->
-  <section class="section--patent-band patent-band--cta" id="signup" aria-labelledby="signal-cta-heading">
-    <div class="container">
-      <div class="partner-strip partner-strip--color">
-        <h2 id="signal-cta-heading" class="partner-cta-heading">
-          <span data-zh="同儕池專利來自國家級">Peer-pool patents, from national</span>
-          <span data-zh="法人及學術研究單位">institutions and academic research</span>
-        </h2>
-        <div class="partner-logos">
-          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+      <div class="prod-ref-credits" data-expanded="false">
+        <div class="prod-ref-table-wrap">
+          <div class="prod-ref-clip" id="credits-clip">
+            <table class="prod-ref-table">
+              <thead><tr>
+                <th data-zh="動作">Action</th>
+                <th class="right" data-zh="點數">Credits</th>
+                <th class="right" data-zh="價格">Price</th>
+                <th class="right" data-zh="折扣">Top-up discount</th>
+              </tr></thead>
+              <tbody>
+                <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+                <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+                <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
+                <tr><td data-zh="50 點頂入包">50-credit top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
+                <tr><td data-zh="150 點頂入包">150-credit top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
+                <tr><td data-zh="500 點頂入包">500-credit top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
+              </tbody>
+            </table>
+            <div class="prod-ref-fade" aria-hidden="true"></div>
+          </div>
+          <p class="prod-ref-note" data-zh="1 點 = NT$100 · 月底未用點數歸零，報告供資訊參考，非投資建議。">1 credit = NT$100 · unused credits expire monthly · reports are informational, not investment advice.</p>
         </div>
-        <a href="/product/signal/lobby.html" class="btn btn-primary btn-lg partner-cta-btn" data-target="signal-signup" data-zh="取得第一份 Brief">Get your first Brief</a>
+        <div class="prod-ref-showmore-wrap">
+          <button type="button" class="prod-ref-showmore" id="credits-showmore" aria-expanded="false" aria-controls="credits-clip" data-zh-more="顯示全部" data-zh-less="收合">
+            <span class="prod-ref-showmore-label">Show more</span>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
+
+      <script>
+        (function () {
+          var wrap = document.querySelector('.prod-ref-credits');
+          if (!wrap) return;
+          var btn = document.getElementById('credits-showmore');
+          var label = btn.querySelector('.prod-ref-showmore-label');
+          function render() {
+            var expanded = wrap.dataset.expanded === 'true';
+            var zh = document.documentElement.getAttribute('lang') === 'zh-Hant';
+            if (zh) { label.textContent = expanded ? btn.dataset.zhLess : btn.dataset.zhMore; }
+            else { label.textContent = expanded ? 'Show less' : 'Show more'; }
+          }
+          btn.addEventListener('click', function () {
+            var next = wrap.dataset.expanded !== 'true';
+            wrap.dataset.expanded = String(next);
+            btn.setAttribute('aria-expanded', String(next));
+            render();
+          });
+          // Keep the label in sync when the language toggle flips <html lang>.
+          new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+          render();
+        })();
+      </script>
+      <!-- ▲▲▲ END PRICING HOOK ▲▲▲ -->
+
     </div>
   </section>
+
+  <!-- Partner credibility band removed 2026-06-10 (per request). The #signup
+       anchor + announcement "Try Signal →" now point to #pricing. -->
 
   <!-- ─── 4. FAQ (moved up under Pricing) ─── -->
   <section class="section" aria-labelledby="signal-faq-heading">
@@ -2773,7 +3130,62 @@ a, button,
 <div id="lang-overlay" aria-hidden="true">
   <div id="lang-cube"></div>
 </div>
-<script src="/assets/site.js?v=2" defer></script>
+<script>
+  // How it works — stepped feature carousel (ported from a React reference).
+  // Auto-advances every 7s + advance on click/pill; pauses on hover and on
+  // prefers-reduced-motion (no auto-cycle, no entrance animation for those).
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.querySelector('[data-hiw-carousel]');
+    if (!root) return;
+
+    const pills  = Array.from(root.querySelectorAll('[data-hiw-pill]'));
+    const panels = Array.from(root.querySelectorAll('[data-hiw-panel]'));
+    const stage  = root.querySelector('.hiw-stage');
+    const cta    = root.querySelector('.hiw-cta');
+    const total  = panels.length;
+    if (!total) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const INTERVAL = 7000;
+    let cur = 0;
+    let timer = null;
+
+    const render = () => {
+      panels.forEach((p, i) => {
+        const active = i === cur;
+        p.classList.toggle('is-active', active);
+        if (active && !reduced) {
+          // re-trigger the entrance animation on each switch
+          p.classList.remove('hiw-anim');
+          void p.offsetWidth;
+          p.classList.add('hiw-anim');
+        }
+      });
+      pills.forEach((b, i) => {
+        b.classList.toggle('is-current', i === cur);
+        b.classList.toggle('is-done', i < cur);
+        b.setAttribute('aria-selected', i === cur ? 'true' : 'false');
+      });
+    };
+
+    const go    = (i) => { cur = (i + total) % total; render(); };
+    const next  = () => go(cur + 1);
+    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+    const start = () => { if (reduced) return; stop(); timer = setInterval(next, INTERVAL); };
+
+    pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); start(); }));
+    // the CTA lives inside the stage — don't let its click advance the carousel
+    if (cta) cta.addEventListener('click', (e) => e.stopPropagation());
+    if (stage) stage.addEventListener('click', () => { next(); start(); });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+
+    render();
+    start();
+  });
+</script>
+<script src="/assets/site.js?v=4" defer></script>
 
 </body>
 </html>
