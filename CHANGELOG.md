@@ -10,6 +10,8 @@ Format: one short entry per editing session, newest on top.
 
 ## Entries
 
+- **2026-06-16 10:21 +08:00** · Sharpened Signal index copy for VC readers (strength-vs-legal hero, EN↔ZH parity); rebuilt methodology.html as a tiers-first data-sheet (8 pillars, 50 indicators, no show-more).
+
 - **2026-06-10 16:26 +08:00** · Restyled the Signal "Credits per query" table to the Vercel look (striped + hover rows, rounded ends, header rule) with a collapse — first ~4 rows + gradient fade + accessible, language-aware Show more/less toggle — and a bordered footer note.
 
 - **2026-06-10 16:18 +08:00** · Swapped ITRI → iPIC across the licensing surface (badge seals on index/badge pages, lobby ticker + updates copy EN/ZH, inventory teaser assignees); identity-only change, seal colour/layout unchanged; added `ipic_submark.svg` to the partner-logo mirror.
