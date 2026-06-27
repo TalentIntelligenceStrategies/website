@@ -253,8 +253,6 @@
 
 <main id="main">
 
-  <h1 class="sr-only">TIS — Strategic patent intelligence, from defense to position</h1>
-
   <!-- §Announcement banner — silver (TIS-overall). Session-dismissed by data-announce-id. -->
   <div class="announce" data-pillar="silver" data-announce-id="2026-q2-licensing-soon" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
@@ -268,105 +266,39 @@
   </div>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  3-pillar carousel on warm-blueprint + silver + cool        ║
-       ║ backdrop swap. Backdrops crossfade via .hero[data-active-pillar=…]. ║
-       ║ Slide 2's 12 metric tiles are lazy-mounted by JS on first activate. ║
+       ║ Hero  —  single static positioning one-liner (brand/positioning.md  ║
+       ║ §3). Carousel retired 2026-06-24 (copy archived in                  ║
+       ║ documents/archivedcopy.md). Scaffolding for the motion hero in      ║
+       ║ documents/hero-video-storyboard.md (1·B) — no animation yet.        ║
+       ║ Backdrops kept as a static layered background; silver (TIS-overall) ║
+       ║ shown via .hero[data-active-pillar="positioning"].                  ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" aria-label="Hero">
-    <!-- Per-slide gradient + 32px-grid backdrops. All three share the
-         positioning placement (top-ellipse gradient + ruled grid), recolored
-         per product; crossfade-toggled via .hero[data-active-pillar="…"]. -->
-    <!-- Warm-gradient backdrop — Licensing slide -->
+  <section class="hero" data-active-pillar="positioning" aria-label="Hero">
+    <!-- Gradient + 32px-grid backdrops (warm / silver / cool). Silver fades in
+         for positioning; warm + signal stay dormant until the motion hero. -->
     <div class="hero-warm" aria-hidden="true"></div>
-
-    <!-- Silver-gradient backdrop — Positioning slide -->
     <div class="hero-silver" aria-hidden="true"></div>
-
-    <!-- Cool-gradient backdrop — Signal slide -->
     <div class="hero-signal" id="hero-signal" aria-hidden="true"></div>
+    <!-- Shifting-lines WebGL shader (three.js) — mounted by the ESM module near
+         </body>. Opaque black canvas at z 2; degrades to the black hero
+         background if WebGL / esm.sh fail. -->
+    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
+    <!-- Faint 32px graph-paper grid over the shader (z 3). -->
+    <div class="hero-grid" aria-hidden="true"></div>
 
     <div class="container hero-inner">
-
-      <div class="hero-slider" id="hero-slider" role="region" aria-roledescription="carousel" aria-label="TIS pillars">
-        <div class="hero-slider-stage">
-
-          <!-- Slide 1 · Strategic positioning (lead) -->
-          <!-- ZH copy: Persona A (王董 · Export SME) per chinese-copy-direction.md slide 7 — insurance metaphor.
-               EN copy preserved (strategic-positioning frame). data-zh swaps only. -->
-          <article class="pillar pillar-slide is-active" data-pillar="positioning" id="hero-slide-0" role="tabpanel" aria-labelledby="hero-dot-0">
-            <p class="pillar-eyebrow" data-zh="">An IP intelligence consultancy</p>
-            <h2 class="pillar-title">
-              <span data-zh="出國保旅平險。">Buy travel insurance to travel.</span><br>
-              <span data-zh="出口">Buy patent insurance</span> <em data-zh="保專利險。">to export.</em>
-            </h2>
-            <p class="pillar-sub">
-              <span data-zh="律師費 500 萬 + 整批退貨 + 三倍懲罰，水險都買，專利險怎麼能不買？">Skip patent insurance, pay on three fronts: NT$5M legal fees, full-shipment returns, and treble damages.</span><br>
-              <span data-zh="月租不到 1 萬，30 件大廠專利授權，立即生效。">Under NT$10K/month. 30 institutional patents. Live immediately.</span>
-            </p>
-            <!-- TODO: ZH CTA destinations per chinese-copy-direction.md slide 7 / open item §4.
-                 Primary "試跑專利包" → Licensee Portal visitor Feed (FR-01, MVP August).
-                 Secondary "專利標章加持用法" → /badge-showcase (new page, 1–2 weeks).
-                 Hrefs left at #about / #contact for now so EN nav keeps working. -->
-            <div class="pillar-actions">
-              <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg" data-zh="試跑專利包">Build a bundle</a>
-              <a href="/product/licensing/badge.html" class="btn btn-secondary" data-zh="專利標章加持用法">About the badge</a>
-            </div>
-          </article>
-
-          <!-- Slide 2 · Licensing Platform -->
-          <!-- ZH copy: Persona C (美玉姐 · Grant/Tender SME) per chinese-copy-direction.md slide 9 — "adds points to your grant application".
-               EN copy preserved (Licensing Platform frame). data-zh swaps only. -->
-          <article class="pillar pillar-slide" data-pillar="licensing" id="hero-slide-1" role="tabpanel" aria-labelledby="hero-dot-1" aria-hidden="true" inert>
-            <p class="pillar-eyebrow" data-zh="">Licensing Platform</p>
-            <h2 class="pillar-title">
-              <span data-zh="泰然專利包">License 30 patents.</span> <br class="lang-zh-only"><span data-zh="為你的">The edge</span><br class="lang-en-only"><span class="lang-en-only">on your </span><em data-zh="補助申請加分。">grant application.</em>
-            </h2>
-            <p class="pillar-sub">
-              <span data-zh="評審認可的是創智、資策會、陽明交大的優質保證。">Sourced from ITRI, III, NYCU — patents every grant reviewer knows.</span><br>
-              <span data-zh="30 件合法授權專利以你公司名義可用，月租不到 1 萬。">30 patents licensed in your company's name. Under NT$10K/month.</span>
-            </p>
-            <!-- TODO: ZH CTA destinations per chinese-copy-direction.md slide 9 / open item §4.
-                 Primary "試跑專利包" → Licensee Portal visitor Feed (FR-01) — /product/licensing/ is the reasonable surrogate.
-                 Secondary "了解授權方案" → transparent pricing page (FR-03).
-                 Secondary href left at #contact until FR-03 ships. -->
-            <div class="pillar-actions">
-              <a href="/product/licensing/lobby.html" class="btn btn-primary btn-lg" data-zh="試跑專利包">Build a bundle</a>
-              <a href="/product/licensing/#pricing"  class="btn btn-secondary" data-zh="了解授權方案">See licensing plans</a>
-            </div>
-          </article>
-
-          <!-- Slide 3 · Signal -->
-          <!-- ZH copy: Persona B (Wang Partner · VC IPDD) per chinese-copy-direction.md slide 8 — "look at the ranking and you'll know".
-               EN copy preserved (Signal Platform frame). data-zh swaps only. -->
-          <article class="pillar pillar-slide" data-pillar="signal" id="hero-slide-2" role="tabpanel" aria-labelledby="hero-dot-2" aria-hidden="true" inert>
-            <p class="pillar-eyebrow" data-zh="">Signal Platform</p>
-            <h2 class="pillar-title">
-              <span data-zh="技術含金量高不高，">How strong is the patent?</span><br>
-              <span data-zh="看"></span><em data-zh="排名就知道。">the ranking settles it.</em>
-            </h2>
-            <p class="pillar-sub">
-              <span data-zh="SABCD 五級評分 + 同產業 cohort 排名。">SABCD-graded, ranked against same-industry peers.</span><br>
-              <span data-zh="一份可直接附入 IC memo 或 LP 季報的標準化報告。">Drops into IC memos and LP letters as-is.</span>
-            </p>
-            <!-- TODO: ZH CTA destinations per chinese-copy-direction.md slide 8 / open item §4.
-                 Primary "免費預覽報告樣本" → Signal 5-tier SABCD sample page (already on site, /product/signal/ — current href fine).
-                 Secondary "專利評級怎麼算" → /methodology (new page, 1–2 weeks).
-                 Secondary href left at #contact until methodology page exists. -->
-            <div class="pillar-actions">
-              <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-zh="免費預覽報告樣本">See a sample report</a>
-              <a href="/product/signal/methodology.html"  class="btn btn-secondary" data-zh="專利評級怎麼算">See the methodology</a>
-            </div>
-          </article>
-
-        </div>
-
-        <div class="hero-slider-dots" role="tablist" aria-label="Select hero slide">
-          <button type="button" class="hero-slider-dot" id="hero-dot-0" role="tab" aria-selected="true"  aria-controls="hero-slide-0" aria-label="Slide 1: An IP intelligence consultancy"></button>
-          <button type="button" class="hero-slider-dot" id="hero-dot-1" role="tab" aria-selected="false" aria-controls="hero-slide-1" aria-label="Slide 2: Licensing Platform"></button>
-          <button type="button" class="hero-slider-dot" id="hero-dot-2" role="tab" aria-selected="false" aria-controls="hero-slide-2" aria-label="Slide 3: Signal Platform"></button>
+      <div class="pillar" data-pillar="positioning">
+        <h1 class="pillar-title">
+          <span data-zh="專利，是這個時代最被低估的資產。">Patents are the most undervalued asset of our time.</span>
+        </h1>
+        <p class="pillar-sub">
+          <span data-zh="我們讓它的價值，被看見、被衡量、被釋放。">We make their value seen, measured, and unlocked.</span>
+        </p>
+        <div class="pillar-actions">
+          <a href="/product/signal/" class="btn btn-primary btn-lg" data-zh="探索平台">Explore the platform</a>
+          <a href="/about/" class="btn btn-secondary" data-zh="關於 TIS">About TIS</a>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -391,36 +323,124 @@
     </div>
   </section>
 
+  <!-- Stats counter moved to /about/ (2026-06-25) — bordered 3-up frame +
+       Innovue attribution. See about/index.html. -->
+
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Stats counter — bordered 3-up frame + Innovue attribution footer.   ║
-       ║ Count-up on scroll (1200ms linear, §7.2). Numbers flow into body    ║
-       ║ sentences (e.g. "180M patents powered by Innovue's WEBPAT…").       ║
+       ║ Offerings — the four value-release lines (static product grid).       ║
+       ║ Simplified 2026-06-27: the scroll-scrubbed "rating-at-core" diagram    ║
+       ║ (core engine chip + connector flows + crossfade heading + motion) was  ║
+       ║ archived to brand/archive/coremap-rating-core.html and removed here to ║
+       ║ keep the homepage focused. Only the four product cards remain, under   ║
+       ║ "We unlock the value of patents." Public-safe copy only (no NPE /      ║
+       ║ drone / raise-target / equity-swap). To restore, see the archive.      ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight section--counter" aria-label="By the numbers">
+  <section class="section offerings" id="offerings" aria-labelledby="offerings-heading">
     <div class="container">
-      <div class="stats-frame">
-        <div class="stats-3up">
-          <div class="stat">
-            <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
-            <h2 class="stat-num"><span class="counter" data-target="180">0</span>M</h2>
-            <p class="stat-body" data-zh-html data-zh="Innovue 專屬資料庫所收錄的專利數 - <strong>每日</strong>與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。">patents in Innovue's proprietary database — synced <strong>daily</strong> with official patent offices. World's 3rd-largest patent index — searches that miss no trace.</p>
-          </div>
-          <div class="stat">
-            <p class="stat-eyebrow">Patent Strength Score — PSS</p>
-            <h2 class="stat-num"><span class="counter" data-target="50">0</span></h2>
-            <p class="stat-body" data-zh="項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。">indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers.</p>
-          </div>
-          <div class="stat">
-            <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
-            <h2 class="stat-num"><span class="counter" data-target="100">0</span>+</h2>
-            <p class="stat-body" data-zh="專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。">jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning.</p>
-          </div>
-        </div>
-        <div class="stats-frame-foot">
-          <span>Powered by</span>
-          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
-        </div>
+      <h2 id="offerings-heading" class="h-section" data-zh="我們釋放專利的價值。">We unlock the value of patents.</h2>
+      <p class="section-dek" data-zh="我們把專利價值化為實用的四種方式。">Four ways we put patent value to work.</p>
+      <div class="offerings-grid">
+
+        <!-- Channel · Patent Reports -->
+        <a class="offer-card offer-card--reports" href="/product/signal/">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" aria-hidden="true">01</span>
+            <span class="offer-card-title" data-zh="專利報告">Patent Reports</span>
+            <span class="offer-card-desc" data-zh="以 50 項指標為每件專利評出 S–D 等級並對標同產業——專利強度、周邊布局，以及團隊可據以行動的結論。">Every patent graded S–D across 50 indicators and ranked against its industry — the strength, landscape, and verdict a deal team can act on.</span>
+            <span class="offer-card-more"><span data-zh="為專利評級">Grade a patent</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
+
+        <!-- Channel · Licensing Platform -->
+        <a class="offer-card offer-card--licensing" href="/product/licensing/">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" aria-hidden="true">02</span>
+            <span class="offer-card-title" data-zh="泰然專利防護網">Licensing Platform</span>
+            <span class="offer-card-desc" data-zh="精選 30 件專利組合，為出口貨物築起防護——勾選國家 × 產業 × 期別，當週上線。">Curated 30-patent bundles that shield exporters — pick country × industry × term, live the week you subscribe.</span>
+            <span class="offer-card-more"><span data-zh="瀏覽專利包">Browse bundles</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
+
+        <!-- Moat · Owned Patents -->
+        <a class="offer-card offer-card--owned" href="/about/">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" aria-hidden="true">03</span>
+            <span class="offer-card-title" data-zh="自有專利">Owned Patents</span>
+            <span class="offer-card-desc" data-zh="我們自有專利的持續累積，為所投資的公司築起一道隱形護城河。">A growing portfolio of our own patents forms an invisible moat around the companies we back.</span>
+            <span class="offer-card-more"><span data-zh="查看自有專利">See our portfolio</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
+
+        <!-- Lead BU · Venture Investment -->
+        <a class="offer-card offer-card--venture" href="/about/">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" aria-hidden="true">04</span>
+            <span class="offer-card-title" data-zh="創投投資">Venture Investment</span>
+            <span class="offer-card-desc" data-zh="我們投資評級引擎判定為被低估、且真正具防禦力的技術。">We back the technologies our rating engine flags as undervalued and genuinely defensible.</span>
+            <span class="offer-card-more"><span data-zh="我們投資什麼">What we back</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
+
       </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ About (teaser)  —  headline + lead + media frame + gateway CTA.     ║
+       ║ Lead reuses the /about/ hero line (positioning.md §3). The 3-pillar  ║
+       ║ grid lives in #offerings above; full story + board roster on /about/.║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <!-- Two full-bleed black panels: About TIS (left) + Partnership with Innovue (right).
+       Each is text-left / dot-gradient image bleeding off the right; the images sit on
+       pure black so the panel background blends seamlessly. [data-reveal] hooks the
+       shared scroll-reveal observer in site.js. -->
+  <section class="section about" id="about" aria-labelledby="about-heading">
+    <div class="about-intro">
+      <h2 id="about-heading" class="h-section" data-zh="我們是誰">Who we are</h2>
+      <p class="section-dek" data-zh="根植台灣、放眼全球——讓專利的價值被看見、被衡量、被釋放。">Taiwan-rooted, globally active — here to make patent value seen, measured, and unlocked.</p>
+    </div>
+    <div class="about-duo">
+
+      <!-- Panel 1 — About TIS -->
+      <article class="about-card" data-reveal>
+        <div class="about-card__body">
+          <h2 class="about-card__title" data-zh="關於 TIS">About TIS</h2>
+          <p class="about-card__lead"><span data-zh="專利往往是企業最大、卻最被低估的資產。">Patents are often a company's largest, most undervalued asset.</span> <span data-zh="當它的價值能被衡量，它就能被信任、被交易、被投資。">When their value can be measured, they can be trusted, traded, and invested.</span></p>
+          <p class="about-card__more">
+            <a href="/about/" class="arrow-link" data-zh="了解完整故事">Read the full story
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </p>
+        </div>
+        <figure class="about-card__media" aria-hidden="true">
+          <img src="/assets/imagery/about-dots.png" alt="" loading="lazy" decoding="async">
+        </figure>
+      </article>
+
+      <!-- Panel 2 — Partnership with Innovue -->
+      <article class="about-card" data-reveal>
+        <div class="about-card__body">
+          <h2 class="about-card__title" data-zh-html data-zh='<span class="innovue-wm" role="img" aria-label="Innovue"></span> 夥伴關係'><span class="innovue-wm" role="img" aria-label="Innovue"></span> Partnership</h2>
+          <p class="about-card__lead" data-zh="我們與股東 Innovue 共同開發的 SABCD 評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是 Innovue 的 1.8 億件專利資料庫。">Co-developed with our shareholder Innovue, the SABCD rating engine grades every patent S to D across 50 indicators — against Innovue's 180M-patent database.</p>
+          <p class="about-card__more">
+            <a href="/about/" class="arrow-link" data-zh="關於這段合作">About the partnership
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </p>
+        </div>
+        <figure class="about-card__media" aria-hidden="true">
+          <img src="/assets/imagery/innovue-dots.png" alt="" loading="lazy" decoding="async">
+        </figure>
+      </article>
+
     </div>
   </section>
 
@@ -431,7 +451,7 @@
     <div class="container">
       <header class="section-head">
         <div>
-          <h2 id="reports-heading" class="h-section grad-text-silver-solid" data-zh="最新報告">Latest reports</h2>
+          <h2 id="reports-heading" class="h-section" data-zh="最新報告">Latest reports</h2>
           <p class="section-dek" data-zh="每季解讀 IP 地形——專利佈局如何在各產業與司法管轄區之間移動。">Quarterly reads on the IP landscape — how patent positions shift across industries and jurisdictions.</p>
         </div>
         <div class="report-nav">
@@ -501,7 +521,7 @@
     <div class="container">
       <header class="section-head">
         <div>
-          <h2 id="press-heading" class="h-section grad-text-silver-solid" data-zh="新聞稿">Press releases</h2>
+          <h2 id="press-heading" class="h-section" data-zh="新聞稿">Press releases</h2>
           <p class="section-dek" data-zh-html data-zh="公司動態、合作公告與精選媒體報導。">Company news, partnership announcements,<br>and select press coverage.</p>
         </div>
         <div class="report-nav">
@@ -568,72 +588,12 @@
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ About  —  voice §3 Tai Ran anchor + §6 audience tones               ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about" id="about" aria-labelledby="about-heading">
-    <div class="container">
-      <header class="about-head">
-        <h2 id="about-heading" class="grad-text-silver-solid"><span data-zh="一間 IP 情報顧問公司，">An IP intelligence consultancy,</span><span data-zh="將專利地形轉化為市場佈局。">turning the patent landscape into market position.</span></h2>
-      </header>
-      <div class="about-grid">
-        <article class="about-pos">
-          <p class="pos-num" data-zh="01 / 立場">01 / Stance</p>
-          <h3 data-zh="主動佈局，而非被動防禦。">Active offense, not passive defense.</h3>
-          <p data-zh="我們的客戶要進入的市場，專利地形早已被人測繪——而且通常不利於他們。我們把那片地形變成策略。">Our clients sell into markets where the patent terrain is already mapped — often against them. We turn that terrain into strategy.</p>
-        </article>
-        <article class="about-pos">
-          <p class="pos-num" data-zh="02 / 資料來源">02 / Source</p>
-          <h3 data-zh="紮根於 1.8 億件專利。">Grounded in 180M patents.</h3>
-          <p><a href="https://www.innovue.ltd/" class="innovue-inline" role="img" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a><span data-zh="營運全球第三大的專利索引——專屬、持續更新，且任何標準 AI 工具都觸及不到。">maintains the world's 3rd-largest patent index — proprietary, continuously refreshed, and unreachable by any standard AI tool.</span></p>
-        </article>
-        <article class="about-pos">
-          <p class="pos-num" data-zh="03 / 方法">03 / Method</p>
-          <h3 data-zh="交付成果，而非工具。">Deliverables, not tools.</h3>
-          <p data-zh="壓力之下泰然處之，依循證據逐步推進。客戶不必懂專利——那是我們的事。">Composed under pressure, methodical through evidence. Clients shouldn't need patent expertise — that's what we're for.</p>
-        </article>
-      </div>
-
-      <!-- Board roster — five members on one line, bracketed by full-width
-           hairlines with a centered straddling title (à la the patent band).
-           The .board-photo gradient shows as fallback if a headshot fails to load. -->
-      <div class="board-roster" role="list" aria-label="Board of Directors">
-        <span class="board-roster__title" data-zh="董事會成員">Board of Directors</span>
-        <div class="board-member" role="listitem">
-          <div class="board-photo" aria-hidden="true"><img src="/assets/imagery/board/eric-huang.png" alt="" loading="lazy" decoding="async"></div>
-          <span class="board-name">Dr. Eric Huang</span>
-          <span class="board-role" data-zh="董事">Board Director</span>
-        </div>
-        <div class="board-member" role="listitem">
-          <div class="board-photo" aria-hidden="true"><img src="/assets/imagery/board/ray-wu.png" alt="" loading="lazy" decoding="async"></div>
-          <span class="board-name">Ray Wu</span>
-          <span class="board-role" data-zh="董事">Board Director</span>
-        </div>
-        <div class="board-member" role="listitem">
-          <div class="board-photo" aria-hidden="true"><img src="/assets/imagery/board/ming-i-peng.png" alt="" loading="lazy" decoding="async"></div>
-          <span class="board-name">Ming-I Peng</span>
-          <span class="board-role" data-zh="董事長 / 董事">Chairman / Board Director</span>
-        </div>
-        <div class="board-member" role="listitem">
-          <div class="board-photo board-photo--jackson" aria-hidden="true"><img src="/assets/imagery/board/jackson-hwang.png" alt="" loading="lazy" decoding="async"></div>
-          <span class="board-name">Jackson Hwang</span>
-          <span class="board-role" data-zh="董事">Board Director</span>
-        </div>
-        <div class="board-member" role="listitem">
-          <div class="board-photo" aria-hidden="true"><img src="/assets/imagery/board/ming-cheng.png" alt="" loading="lazy" decoding="async"></div>
-          <span class="board-name">Ming Cheng</span>
-          <span class="board-role" data-zh="監察人 / 董事">Supervisor / Board Director</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Get in touch  —  components.md §Input (underline variant)           ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="contact" id="contact" aria-labelledby="contact-heading">
     <div class="container contact-grid">
       <aside class="contact-left">
-        <h2 id="contact-heading" class="grad-text-silver-solid" data-zh="與我們聯絡。">Get in touch.</h2>
+        <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
         <a href="mailto:contact@tisglobalinc.com" class="contact-email">contact@tisglobalinc.com</a>
       </aside>
 
@@ -783,6 +743,126 @@
 </div>
 
 <script src="/assets/site.js" defer></script>
+
+<!-- Shifting-lines hero shader. ESM module → three.js core from esm.sh (no build
+     step, no React). Renders a single full-screen quad with a tiny fragment
+     shader (RGB chromatic lines on black), scoped to #hero-shader. Far lighter
+     on the GPU than the retired ShaderGradient sphere. On any failure the catch
+     leaves #hero-shader empty → the black hero background shows through. -->
+<script type="module">
+  (async () => {
+    const mount = document.getElementById('hero-shader');
+    if (!mount) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Animation speed — original snippet used 0.01 per frame; slowed here.
+    const SPEED = 0.003;
+
+    try {
+      const THREE = await import('https://esm.sh/three@0.160.0');
+
+      const vertexShader = `
+        attribute vec3 position;
+        void main() {
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+      const fragmentShader = `
+        precision highp float;
+        uniform vec2 resolution;
+        uniform float time;
+        uniform float xScale;
+        uniform float yScale;
+        uniform float distortion;
+        uniform float yOffset;
+        uniform float saturation;   // 0 = white/grey glow, 1 = full RGB
+
+        void main() {
+          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          // Lift the convergence band upward (positive yOffset = higher on screen).
+          p.y -= yOffset;
+
+          float d = length(p) * distortion;
+
+          float rx = p.x * (1.0 + d);
+          float gx = p.x;
+          float bx = p.x * (1.0 - d);
+
+          float r = 0.05 / abs(p.y + sin((rx + time) * xScale) * yScale);
+          float g = 0.05 / abs(p.y + sin((gx + time) * xScale) * yScale);
+          float b = 0.05 / abs(p.y + sin((bx + time) * xScale) * yScale);
+
+          // Mute the chroma WITHOUT thinning the lines: blend each channel toward
+          // the brightest channel (value), not luminance. Every lit pixel keeps
+          // its full brightness — so glow thickness is preserved — while hue drops.
+          vec3 col = vec3(r, g, b);
+          float val = max(r, max(g, b));
+          col = mix(vec3(val), col, saturation);
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `;
+
+      const canvas = document.createElement('canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setClearColor(new THREE.Color(0x000000));
+      mount.appendChild(canvas);
+      mount.classList.add('is-ready');   // styles.css crossfades the shader in
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1);
+
+      const uniforms = {
+        resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        time:       { value: 0.0 },
+        xScale:     { value: 1.0 },
+        yScale:     { value: 0.5 },
+        distortion: { value: 0.05 },
+        yOffset:    { value: 0.66 },   // >0 shifts the glowing lines up
+        saturation: { value: 1.0 },    // 0 = white glow, 1 = full RGB; lower = more muted
+      };
+
+      const position = [
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0,  1.0, 0.0,
+      ];
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position), 3));
+
+      const material = new THREE.RawShaderMaterial({
+        vertexShader, fragmentShader, uniforms, side: THREE.DoubleSide,
+      });
+      scene.add(new THREE.Mesh(geometry, material));
+
+      // Sizing scoped to the hero box. resolution is passed in CSS px (matching
+      // the original snippet) while setPixelRatio drives the device-px draw
+      // buffer — this reproduces the snippet's exact line scale on retina.
+      const resize = () => {
+        const w = mount.clientWidth, h = mount.clientHeight;
+        renderer.setSize(w, h, false);
+        uniforms.resolution.value = [w, h];
+      };
+      resize();
+      new ResizeObserver(resize).observe(mount);
+
+      const animate = () => {
+        if (!reduce) uniforms.time.value += SPEED;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      };
+      if (reduce) renderer.render(scene, camera);   // render one static frame
+      animate();
+    } catch (err) {
+      console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
+      // #hero-shader stays empty → the black hero background shows through.
+    }
+  })();
+</script>
 
 </body>
 </html>

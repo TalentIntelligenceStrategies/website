@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TIS Hero Film — Script &amp; Storyboard · 1·C</title>
+<style>
+  /* ---- Self-hosted brand fonts (relative to website/documents/) ---- */
+  @font-face { font-family:'Urbanist'; src:url('../designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf')  format('truetype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Urbanist'; src:url('../designs/assets/fonts/Urbanist/static/Urbanist-Medium.ttf')   format('truetype'); font-weight:500; font-display:swap; }
+  @font-face { font-family:'Urbanist'; src:url('../designs/assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf') format('truetype'); font-weight:600; font-display:swap; }
+  @font-face { font-family:'Urbanist'; src:url('../designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf')     format('truetype'); font-weight:700; font-display:swap; }
+  @font-face { font-family:'Noto Sans TC'; src:url('../designs/assets/fonts/Noto Sans TC/static/NotoSansTC-Regular.ttf')  format('truetype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Noto Sans TC'; src:url('../designs/assets/fonts/Noto Sans TC/static/NotoSansTC-Medium.ttf')   format('truetype'); font-weight:500; font-display:swap; }
+  @font-face { font-family:'Noto Sans TC'; src:url('../designs/assets/fonts/Noto Sans TC/static/NotoSansTC-SemiBold.ttf') format('truetype'); font-weight:600; font-display:swap; }
+
+  :root{
+    --ink:#252525;
+    --paper:#ffffff;
+    --muted:#8a8a86;
+    --line:#e6e6e4;
+    --rowalt:#f3f3f1;        /* grey zebra striping */
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#f3f1ec; color:var(--ink);
+    font-family:'Urbanist','Noto Sans TC',-apple-system,system-ui,sans-serif; }
+
+  .page{
+    background:var(--paper);
+    width:1240px; margin:28px auto; padding:46px 54px 38px;
+    box-shadow:0 1px 0 rgba(0,0,0,.04), 0 18px 48px rgba(0,0,0,.07);
+  }
+
+  /* ---- Header ---- */
+  header{ display:flex; align-items:flex-end; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:13px; }
+  .brand img{ width:42px; height:42px; display:block; }
+  .brand .names{ line-height:1; }
+  .brand .zh{ font-family:'Noto Sans TC'; font-weight:700; font-size:21px; letter-spacing:.04em; }
+  .brand .en{ font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted); margin-top:5px; }
+  .doctitle{ text-align:right; }
+  .doctitle h1{ margin:0; font-size:21px; font-weight:700; letter-spacing:-.01em; }
+  .doctitle p{ margin:5px 0 0; font-size:11px; font-weight:500; color:var(--muted); letter-spacing:.01em; }
+
+  .rule{ height:2px; background:var(--ink); margin:14px 0 0; }
+
+  /* ---- Table ---- */
+  table{ width:100%; border-collapse:collapse; margin-top:20px; }
+  thead th{
+    background:var(--ink); color:#fff; text-align:left;
+    font-size:9.5px; font-weight:600; letter-spacing:.13em; text-transform:uppercase;
+    padding:11px 14px;
+  }
+  tbody td{ padding:11px 14px; font-size:12.5px; vertical-align:top; border-bottom:1px solid var(--line); line-height:1.4; }
+  tbody tr:nth-child(even){ background:var(--rowalt); }
+
+  .c-time   { width:78px;  white-space:nowrap; font-weight:600; font-size:12px; }
+  .c-screen { width:118px; white-space:nowrap; color:var(--muted); font-size:11.5px; }
+  .c-screen .sw{ color:var(--ink); font-weight:600; }
+  .c-zh     { width:46%; font-family:'Noto Sans TC'; font-weight:500; }
+  .c-en     { width:46%; }
+
+  .lbl{ font-weight:700; }                 /* OWN/LICENSE/INVEST-style labels */
+  .arrow{ color:var(--ink); font-weight:700; }
+  td.hold{ color:var(--muted); font-style:italic; }
+
+  /* row that swaps to a new scene gets a top hairline accent */
+  tr.scene td{ border-top:2px solid #dededb; }
+
+  /* ---- Footer ---- */
+  footer{ display:flex; justify-content:space-between; align-items:center;
+    margin-top:18px; font-size:10px; color:var(--muted); letter-spacing:.02em; }
+  footer .legend b{ color:var(--ink); }
+
+  @media print{
+    html,body{ background:#fff; }
+    .page{ box-shadow:none; margin:0; width:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="brand">
+      <img src="../designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS">
+      <div class="names">
+        <div class="zh">泰然策略</div>
+        <div class="en">Talent Intelligence Strategies</div>
+      </div>
+    </div>
+    <div class="doctitle">
+      <h1>Hero Film — Script &amp; Storyboard</h1>
+      <p>~30-second on-screen-text film · 1·C — Undervalued-asset → Standard-setter</p>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="c-time">Time</th>
+        <th class="c-screen">Screen</th>
+        <th class="c-zh">中文</th>
+        <th class="c-en">English</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Scene 1 · hook — the market truth -->
+      <tr class="scene">
+        <td class="c-time">0–2s</td>
+        <td class="c-screen"><span class="sw">↻ Scene 1</span></td>
+        <td class="c-zh">專利，是這個時代最被低估的資產。</td>
+        <td class="c-en">Patents are the most undervalued asset of our time.</td>
+      </tr>
+      <tr>
+        <td class="c-time">2–5s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh">我們讓它的價值，被看見、被衡量、被釋放。</td>
+        <td class="c-en">We make their value seen, measured, and unlocked.</td>
+      </tr>
+
+      <!-- Scene 2 · the core — seen &amp; measured -->
+      <tr class="scene">
+        <td class="c-time">5–7s</td>
+        <td class="c-screen"><span class="sw">↻ Scene 2</span></td>
+        <td class="c-zh">一件專利，值多少？</td>
+        <td class="c-en">What is a patent worth?</td>
+      </tr>
+      <tr>
+        <td class="c-time">7–10s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh">以五十項指標為每件專利評出 S 到 D 的等級——與股東 Innovue 共同開發。</td>
+        <td class="c-en">Graded S to D across fifty indicators — with our shareholder Innovue.</td>
+      </tr>
+      <tr>
+        <td class="c-time">10–12s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh">我們的目標，是讓它成為市場公認的專利品質標杆。</td>
+        <td class="c-en">Our goal: the market's benchmark for patent quality.</td>
+      </tr>
+
+      <!-- Scene 3 · value released — unlocked -->
+      <tr class="scene">
+        <td class="c-time">12–14s</td>
+        <td class="c-screen"><span class="sw">↻ Scene 3</span></td>
+        <td class="c-zh">評級為核，價值為綱。</td>
+        <td class="c-en">Rating at the core. Value as the through-line.</td>
+      </tr>
+      <tr>
+        <td class="c-time">14–16s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh"><span class="lbl">評級與情報。</span></td>
+        <td class="c-en"><span class="lbl">Rating &amp; intelligence.</span></td>
+      </tr>
+      <tr>
+        <td class="c-time">16–18s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh"><span class="lbl">授權媒合。</span></td>
+        <td class="c-en"><span class="lbl">A licensing marketplace.</span></td>
+      </tr>
+      <tr>
+        <td class="c-time">18–21s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh"><span class="lbl">以自有資本與自有專利投入我們深具信心的技術。</span></td>
+        <td class="c-en"><span class="lbl">Capital and our own patents — behind the technologies we believe in.</span></td>
+      </tr>
+
+      <!-- Scene 4 · standard-setter close (silent hold first) -->
+      <tr class="scene">
+        <td class="c-time">21–22s</td>
+        <td class="c-screen"><span class="sw">↻ Scene 4</span></td>
+        <td class="c-zh hold">— 靜默停留 —</td>
+        <td class="c-en hold">— silent hold —</td>
+      </tr>
+      <tr>
+        <td class="c-time">22–27s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh">為專利價值，制定標準。</td>
+        <td class="c-en">Setting the standard for patent value.</td>
+      </tr>
+
+      <!-- Scene 5 · logo -->
+      <tr class="scene">
+        <td class="c-time">27–29s</td>
+        <td class="c-screen"><span class="sw">↻ Scene 5</span></td>
+        <td class="c-zh">TIS</td>
+        <td class="c-en">TIS</td>
+      </tr>
+      <tr>
+        <td class="c-time">29–30s</td>
+        <td class="c-screen">↳ same</td>
+        <td class="c-zh">了解更多 <span class="arrow">→</span></td>
+        <td class="c-en">See how <span class="arrow">→</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <div>Talent Intelligence Strategies · 泰然策略</div>
+    <div class="legend"><b>↻</b> = screen swaps to a new scene · <b>↳</b> = same screen, text changes</div>
+  </footer>
+
+</div>
+</body>
+</html>

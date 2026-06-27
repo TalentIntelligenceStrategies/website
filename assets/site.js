@@ -602,92 +602,12 @@
   }
 })();
 
-// ─── Hero pillar slider: auto-advance 6s, dots manual, pause on hover ───
+// ─── Announcement banner — per-session dismiss ───────────────────────
+// Keyed by data-announce-id so a NEW announcement re-shows even within the
+// same session; sessionStorage so it returns on the next visit.
+// (Formerly nested in the hero-slider IIFE, retired with the carousel 2026-06-24.)
 (() => {
-  const slider = document.getElementById('hero-slider');
-  if (!slider) return;
-  const hero       = slider.closest('.hero');
-  const slides     = Array.from(slider.querySelectorAll('.pillar-slide'));
-  const dots       = Array.from(slider.querySelectorAll('.hero-slider-dot'));
-  if (slides.length < 2 || dots.length !== slides.length) return;
-
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const INTERVAL_MS = 6000;
-  let active = 0;
-  let timer = null;
-
-  const setActive = (idx) => {
-    active = ((idx % slides.length) + slides.length) % slides.length;
-    slides.forEach((s, i) => {
-      const on = i === active;
-      s.classList.toggle('is-active', on);
-      if (on) { s.removeAttribute('aria-hidden'); s.removeAttribute('inert'); }
-      else    { s.setAttribute('aria-hidden', 'true'); s.setAttribute('inert', ''); }
-    });
-    // Crossfade backdrop — set data-active-pillar on .hero so the matching
-    // gradient layer fades in.
-    const activePillar = slides[active] && slides[active].dataset.pillar;
-    if (hero && activePillar) {
-      hero.setAttribute('data-active-pillar', activePillar);
-    }
-    dots.forEach((d, i) => {
-      d.setAttribute('aria-selected', String(i === active));
-      d.setAttribute('tabindex', i === active ? '0' : '-1');
-    });
-    // Restart the progress-bar animation across a frame so the keyframe replays.
-    slider.removeAttribute('data-running');
-    if (!reduceMotion.matches) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => slider.setAttribute('data-running', 'true'));
-      });
-    }
-  };
-
-  const start = () => {
-    stop();
-    if (reduceMotion.matches) return;
-    timer = setInterval(() => setActive(active + 1), INTERVAL_MS);
-    slider.setAttribute('data-running', 'true');
-    slider.removeAttribute('data-paused');
-  };
-  const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
-  const pause = () => { if (!timer) return; stop(); slider.setAttribute('data-paused', 'true'); };
-  const resume = () => {
-    if (timer || reduceMotion.matches) return;
-    slider.removeAttribute('data-paused');
-    timer = setInterval(() => setActive(active + 1), INTERVAL_MS);
-  };
-
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { setActive(i); start(); });
-    dot.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); setActive(active + 1); start(); dots[active].focus(); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); setActive(active - 1); start(); dots[active].focus(); }
-      else if (e.key === 'Home') { e.preventDefault(); setActive(0); start(); dots[0].focus(); }
-      else if (e.key === 'End') { e.preventDefault(); setActive(slides.length - 1); start(); dots[slides.length - 1].focus(); }
-    });
-  });
-
-  slider.addEventListener('mouseenter', pause);
-  slider.addEventListener('mouseleave', resume);
-  slider.addEventListener('focusin', pause);
-  slider.addEventListener('focusout', (e) => { if (!slider.contains(e.relatedTarget)) resume(); });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) pause();
-    else if (!slider.matches(':hover') && !slider.contains(document.activeElement)) resume();
-  });
-  reduceMotion.addEventListener('change', () => {
-    if (reduceMotion.matches) { stop(); slider.removeAttribute('data-running'); }
-    else start();
-  });
-
-  setActive(0);
-  start();
-
-  // ──────────────── Announcement banner — per-session dismiss ────────────────
-  // Keyed by data-announce-id so a NEW announcement re-shows even within the
-  // same session; sessionStorage so it returns on the next visit.
   document.querySelectorAll('.announce').forEach((bar) => {
     const key = 'tis-announce-dismissed:' + bar.dataset.announceId;
     let dismissed = false;
@@ -1124,3 +1044,155 @@ initCardCarousel('press-carousel');
 
   stages.forEach(initStage);
 })();
+
+/* ════════════════════════════════════════════════════════════════════════
+   Report Card Stack — cursor-tracked specular sheen (sample-report hero).
+   The splay (rest deck ↔ horizontal fan) is CSS-only (:hover / :focus-within),
+   so it works with JS disabled. This block ONLY moves each card's --sx/--sy
+   highlight toward the pointer while the stage is hovered. Honors
+   prefers-reduced-motion and skips coarse/no-hover pointers (touch).
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const stages = document.querySelectorAll('.rcs-stage');
+  if (!stages.length) return;
+
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer  = matchMedia('(hover: hover) and (pointer: fine)');
+
+  const initStage = (stage) => {
+    const cards  = Array.from(stage.querySelectorAll('.rcs-card'));
+    if (!cards.length) return;
+    const sheens = cards.map(c => c.querySelector('.rcs-sheen'));
+    let hovered = false, raf = null, lastX = 0, lastY = 0;
+
+    const paint = () => {
+      raf = null;
+      for (let i = 0; i < cards.length; i++) {
+        const sheen = sheens[i];
+        if (!sheen) continue;
+        const r = cards[i].getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        sheen.style.setProperty('--sx', ((lastX - r.left) / r.width)  * 100 + '%');
+        sheen.style.setProperty('--sy', ((lastY - r.top)  / r.height) * 100 + '%');
+      }
+    };
+    const onMove = (e) => {
+      if (!hovered) return;
+      lastX = e.clientX; lastY = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);   // one paint per frame
+    };
+    const onEnter = () => {
+      if (reduceMotion.matches || !finePointer.matches) return;
+      hovered = true;
+    };
+    const onLeave = () => {
+      hovered = false;
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      sheens.forEach(s => { if (s) { s.style.removeProperty('--sx'); s.style.removeProperty('--sy'); } });
+    };
+
+    stage.addEventListener('mouseenter', onEnter);
+    stage.addEventListener('mousemove', onMove);
+    stage.addEventListener('mouseleave', onLeave);
+
+    const sync = () => { if (reduceMotion.matches || !finePointer.matches) onLeave(); };
+    reduceMotion.addEventListener('change', sync);
+    finePointer.addEventListener('change', sync);
+  };
+
+  stages.forEach(initStage);
+})();
+
+/* ════════════════════════════════════════════════════════════════════════
+   Sample-report flyout — "View Brief / View Pro report" opens a full-screen
+   viewer showing a static render of the real report, with an ungated
+   Download-PDF action. Mirrors the search-modal open/close pattern
+   (dataset.open + backdrop-click + Escape). Images are set on first open so
+   the large PNGs never load on initial paint.
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const overlay = document.getElementById('smpl-overlay');
+  const modal   = document.getElementById('smpl-modal');
+  if (!overlay || !modal) return;
+
+  const img      = document.getElementById('smpl-img');
+  const dl       = document.getElementById('smpl-download');
+  const titleEl  = document.getElementById('smpl-title');
+  const closeBtn = document.getElementById('smpl-close');
+  const triggers = document.querySelectorAll('.smpl-view[data-sample]');
+
+  const BASE = '/assets/imagery/signal-reports/sample-';
+  const LABEL = {
+    brief: { en: 'Brief report — sample', zh: 'Brief 報告 — 樣本' },
+    pro:   { en: 'Pro report — sample',   zh: 'Pro 報告 — 樣本' },
+  };
+  let lastTrigger = null;
+
+  const open = (kind, trigger) => {
+    const isZh = document.documentElement.getAttribute('lang') === 'zh-Hant';
+    titleEl.textContent = (LABEL[kind] || LABEL.brief)[isZh ? 'zh' : 'en'];
+    // Lazy-load: only (re)set src when the kind changes.
+    const src = BASE + kind + '.png';
+    if (img.getAttribute('src') !== src) { img.setAttribute('src', src); img.alt = titleEl.textContent; }
+    dl.setAttribute('href', BASE + kind + '.pdf');
+    dl.setAttribute('download', 'TIS-Signal-' + kind + '-sample.pdf');
+    overlay.dataset.open = modal.dataset.open = 'true';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('smpl-lock');
+    lastTrigger = trigger || null;
+    setTimeout(() => closeBtn.focus(), 50);
+  };
+  const close = () => {
+    overlay.dataset.open = modal.dataset.open = 'false';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('smpl-lock');
+    const body = modal.querySelector('.smpl-modal-body'); if (body) body.scrollTop = 0;
+    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+  };
+
+  triggers.forEach(t => t.addEventListener('click', () => open(t.dataset.sample, t)));
+  overlay.addEventListener('click', close);
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.dataset.open === 'true') close(); });
+})();
+
+/* ════════════════════════════════════════════════════════════════════════
+   Board of Directors showcase (/about/) — correlated hover/focus highlight.
+   The photo grid and the name list each carry [data-member] ids. Pointing at
+   or focusing any member adds .is-active to every element sharing that id and
+   .is-dimmed to all the others, so the highlight mirrors across both columns.
+   Event-delegated on the .board-roster container; no-ops on pages without it.
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const board = document.querySelector('.board-roster');
+  if (!board) return;
+
+  const members = Array.from(board.querySelectorAll('[data-member]'));
+  if (!members.length) return;
+
+  const setActive = (id) => {
+    members.forEach((el) => {
+      const match = el.dataset.member === id;
+      el.classList.toggle('is-active', match);
+      el.classList.toggle('is-dimmed', id !== null && !match);
+    });
+  };
+  const clear = () => setActive(null);
+
+  // Pointer
+  board.addEventListener('pointerover', (e) => {
+    const el = e.target.closest('[data-member]');
+    if (el) setActive(el.dataset.member);
+  });
+  board.addEventListener('pointerleave', clear);
+
+  // Keyboard focus
+  board.addEventListener('focusin', (e) => {
+    const el = e.target.closest('[data-member]');
+    if (el) setActive(el.dataset.member);
+  });
+  board.addEventListener('focusout', (e) => {
+    if (!board.contains(e.relatedTarget)) clear();
+  });
+})();
+

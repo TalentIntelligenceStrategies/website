@@ -198,6 +198,10 @@
   --gradient-bg-silver-faded:
     radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
     linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
+  /* Cool faded wash — design-tokens.md §7.4 gradient-bg-cool-faded
+     (rating engine / Innovue pillar). Used by .about-figure--cool. */
+  --gradient-bg-cool-faded:
+    linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%);
 
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -227,6 +231,9 @@
 
   --gradient-bg-silver-faded:
     radial-gradient(ellipse 90% 100% at 50% 0%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
+    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
+  --gradient-bg-cool-faded:
+    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(16,80,80,0.30) 0%, rgba(20,40,60,0.20) 35%, transparent 70%),
     linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 
   --success-bg: #052E16; --success-fg: #86EFAC;
@@ -310,7 +317,16 @@ html, body { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
 body {
-  background: var(--surface-page);
+  /* Faint 32px graph-paper grid behind the whole page — dark lines on the white
+     page (mirrors the hero's white-on-black grid, same spacing/faintness).
+     background-attachment: fixed pins it to the viewport so it reads as a steady
+     underlay; transparent sections show it, solid sections (cards, footer, the
+     black hero) cover it. */
+  background-color: var(--surface-page);
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px);
+  background-attachment: fixed;
   color: var(--text-primary);
   /* Urbanist always carries Latin glyphs (consistent metrics across lang toggle);
      Noto Sans TC / PingFang TC sit in the fallback chain for CJK code points only,
@@ -346,8 +362,16 @@ img, svg { display: block; }
   .container { padding-inline: 20px; }
 }
 
+/* Unified section rhythm — 3-tier ratio (~16 : 44 : 80) so spacing encodes hierarchy:
+   subtext hugs its title, header sits clearly above its cards, sections read as separate.
+   --space-section drives top/bottom padding on every content section → equal inter-section
+   gaps (2× = ~56–88px). --space-head-gap is the title-block → content gap. */
+:root {
+  --space-section:  clamp(28px, 3vw, 44px);
+  --space-head-gap: clamp(32px, 3.5vw, 48px);
+}
 .section {
-  padding-block: clamp(48px, 6vw, 80px);
+  padding-block: var(--space-section);
 }
 .section--tight { padding-block: 32px; }
 /* When a regular section follows a tight one, drop its top padding so the tight section
@@ -382,6 +406,15 @@ img, svg { display: block; }
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0;
+}
+/* Offerings + About headings adopt the smaller .section-head h2 hierarchy
+   (matches "Latest reports") rather than the full .h-section display scale. */
+.offerings .h-section,
+.about-intro .h-section {
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
 }
 
 /* ───────── Top nav ───────── */
@@ -437,14 +470,12 @@ img, svg { display: block; }
   letter-spacing: 0;
   color: var(--text-secondary);
   padding: 6px 14px;
-  border-radius: 9999px;
-  transition: color 100ms linear, background 100ms linear;
+  transition: color 100ms linear;
 }
 .topnav-link:hover { color: var(--text-primary); }
-.topnav-link[aria-current="page"] {
-  background: var(--surface-tertiary);
-  color: var(--text-primary);
-}
+/* No active-state treatment — aria-current="page" stays in markup for a11y only
+   (per components.md §Top nav · Active link). The page H1/hero is the wayfinding
+   signal, not a nav pill. */
 
 .topnav-controls {
   display: flex; align-items: center; gap: 8px;
@@ -834,7 +865,9 @@ main { padding-top: 64px; }
   overflow: hidden;
   display: flex;
   align-items: center;
-  background: var(--hero-bp-bg);
+  /* Black backdrop for the shifting-lines shader. Keeps the white hero text
+     readable even if WebGL / esm.sh fail and the canvas never mounts. */
+  background: #000;
 }
 .hero::before {
   content: ""; position: absolute; inset: 0;
@@ -842,12 +875,9 @@ main { padding-top: 64px; }
   pointer-events: none;
   z-index: 1;
 }
-.hero::after {
-  content: ""; position: absolute; inset: 0;
-  background: var(--hero-spotlight);
-  pointer-events: none;
-  z-index: 3;
-}
+/* White-fade spotlight retired — the ShaderGradient backdrop replaces it, and the
+   glow washed out the sphere behind the hero text. */
+.hero::after { content: none; }
 
 /* ───────── Hero — warm-gradient backdrop (Licensing pillar) ─────────
    Default slide. Shares the positioning placement (top-ellipse gradient +
@@ -939,6 +969,35 @@ main { padding-top: 64px; }
 [data-theme="dark"] .hero-silver::before {
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
+}
+
+/* ───────── Hero — ShaderGradient sphere (TIS overall) ─────────
+   WebGL canvas mounted by the ESM module near </body> (React + three.js via
+   esm.sh). Sits at z 2 — over the static .hero-silver gradient, which stays as a
+   graceful fallback if WebGL / esm.sh fail. Starts transparent; the module adds
+   .is-ready once the <canvas> mounts so it crossfades in over the silver layer
+   instead of popping. Spotlight (::after z 3) + text (z 5) stay above it. */
+.hero-shader {
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-card);
+}
+.hero-shader.is-ready { opacity: 1; }
+.hero-shader canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* ───────── Hero — faint graph-paper grid over the shader ─────────
+   32px ruled grid lifted from the old per-pillar backdrops (.hero-*::before),
+   recolored white so it reads over the black shifting-lines shader. Sits at
+   z 3 — above the shader canvas (z 2), below the hero text (z 5). */
+.hero-grid {
+  position: absolute; inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
 }
 
@@ -1045,6 +1104,10 @@ main { padding-top: 64px; }
   color: var(--text-primary);
   margin: 0;
 }
+/* Hero pillar text reads white over the ShaderGradient sphere (fixed in both
+   themes — the backdrop is the same regardless of light/dark). */
+.hero .pillar-title { color: #fff; }
+.hero .pillar-sub { color: rgba(255, 255, 255, 0.82); }
 .pillar-title em {
   font-style: normal;
   background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
@@ -2615,18 +2678,25 @@ main { padding-top: 64px; }
      stacking context since .hero creates none) so the caption — which straddles
      up onto the top rule into the hero's bottom edge — isn't painted over. */
   z-index: 6;
-  border-block: 1px solid var(--border-primary);
+  /* Top hairline dropped (gradient meets white cleanly). The "TIS Strategic
+     Partners" label is the inline legend on the bottom hairline below the logos. */
+  border-bottom: 1px solid var(--border-primary);
   padding-block: 42px;
-  margin-block-end: 48px;
+  /* Gap from the bottom hairline (where the "TIS Strategic Partners" label sits)
+     to the offerings heading below — offerings zeroes its own top padding
+     (.section--tight + .section), so this margin owns the whole gap. */
+  margin-block-end: clamp(40px, 4vw, 56px);
 }
 /* Sentence-case caption centered on the band's top rule. Positioned out of flow
    (relative to the section) so the logo row keeps its centered spacing; the
    surface-page background masks the hairline behind the text. */
 .partner-strip-label {
   position: absolute;
-  top: 0; left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 0; left: 50%;
+  transform: translate(-50%, 50%);
   padding: 2px 16px;
+  /* Inline legend on the BOTTOM hairline — the white background masks the rule so
+     the label sits centered in it (below the logos). */
   background: var(--surface-page);
   font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
   font-size: 13px;
@@ -2647,20 +2717,24 @@ main { padding-top: 64px; }
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: grayscale(1);
-  opacity: 0.55;
+  /* Light mode: full primary color at rest — no grey-out. (Dark mode keeps the
+     invert treatment below for now.) */
+  filter: none;
+  opacity: 1;
   transition: filter 250ms cubic-bezier(0.2,1,0.3,1), opacity 250ms linear;
 }
 .partner:hover { filter: none; opacity: 1; }
 .partner--ipic    { background-image: var(--partner-ipic); }
 .partner--nycu    { background-image: var(--partner-nycu); }
 .partner--iii     { background-image: var(--partner-iii); }
-.partner--innovue { background-image: var(--partner-innovue); }
+.partner--innovue { background-image: var(--partner-innovue-color); }   /* full-color blue at rest */
 .partner--innovue:hover { background-image: var(--partner-innovue-color); }
 
 [data-theme="dark"] .partner { filter: grayscale(1) invert(1) brightness(1.4); opacity: 0.6; }
 [data-theme="dark"] .partner:hover { filter: none; opacity: 1; }
-[data-theme="dark"] .partner--innovue { filter: none; opacity: 0.7; }
+/* Dark keeps the light/white Innovue wordmark (unchanged) — re-asserts the base
+   image so the light-mode colour override above doesn't leak into dark. */
+[data-theme="dark"] .partner--innovue { background-image: var(--partner-innovue); filter: none; opacity: 0.7; }
 [data-theme="dark"] .partner--innovue:hover { opacity: 1; }
 /* iPIC + NYCU are wired light-mode desktop only for now. In dark mode they fall through
    to the generic [data-theme="dark"] .partner invert rule above — dedicated dark variants
@@ -2953,7 +3027,7 @@ main { padding-top: 64px; }
 .section-head {
   display: flex; align-items: end; justify-content: space-between;
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: var(--space-head-gap);
   flex-wrap: wrap;
 }
 .cards-row {
@@ -3035,7 +3109,7 @@ main { padding-top: 64px; }
   font-size: 16px;
   line-height: 1.55;
   color: var(--text-secondary);
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   max-width: 44ch;
 }
 
@@ -3402,75 +3476,178 @@ main { padding-top: 64px; }
 }
 
 /* ───────── About ───────── */
-/* Padding-block sits on the inner .container (1440px) so spacing matches
-   #products framing; the section itself stays on the page surface. */
-.about { padding-block: 0; overflow-x: clip; }
-.about > .container {
-  padding-block: clamp(48px, 6vw, 80px);
-}
-.about-head {
-  margin-bottom: 56px;
-}
-@media (max-width: 880px) {
-  .about-head { margin-bottom: 40px; }
-}
-.about-head h2 {
-  font-size: clamp(28px, 3.4vw, 40px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin: 0;
-}
-/* Two-line stack: each clause is its own block so the break holds at the comma
-   and survives the textContent-based language switch (a raw <br> would not). */
-.about-head h2 span { display: block; }
-.about-grid {
+/* ───────── About × Innovue — two full-bleed black panels ─────────
+   Surface-local marketing band (homepage only). Two pure-black cards span the
+   full viewport width: text left, dot-gradient image bleeding off the right.
+   Images sit on pure black so the #000 panel background blends seamlessly.
+   #000 / white here is dictated by the imagery — intentionally local, not a
+   brand token (no snapshot resync). */
+.about { overflow-x: clip; }  /* padding-block inherited from .section for a uniform rhythm */
+/* Section intro above the two panels — gutters matched to .about-duo so the
+   title's left edge sits flush with the panels below. */
+.about-intro { padding-inline: 32px; margin-bottom: var(--space-head-gap); }
+@media (max-width: 768px) { .about-intro { padding-inline: 20px; } }
+.about-duo {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 1.8vw, 28px);
+  padding-inline: 32px;            /* full-viewport-width row, container-matched gutters */
 }
-@media (max-width: 880px) {
-  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+@media (max-width: 768px) { .about-duo { padding-inline: 20px; } }
+
+.about-card {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(192px, 18vw, 232px);
+  border-radius: 20px;
+  background: #000;                /* matches the pure-black field of both images */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out);
 }
-/* Innovue credit folded into About as a closing attribution — mirrors the
-   .about-head 56px / 40px rhythm so it sits a clear beat below the position grid. */
-.about-innovue { margin-top: 56px; }
-@media (max-width: 880px) {
-  .about-innovue { margin-top: 40px; }
+.about-card__body {
+  position: relative;
+  z-index: 1;                      /* text above the image layer */
+  max-width: 56%;
+  padding: clamp(24px, 2.6vw, 40px);
 }
-.about-pos .pos-num {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.20em;
-  color: var(--text-quaternary);
-  margin: 0 0 16px;
-}
-.about-pos h3 {
-  font-size: 18px;
+/* Type hierarchy mirrors the Patent Reports card (.offer-card-*) so the homepage
+   reads with one even Urbanist stack: title 21px/700, body 15px, CTA 13px/600. */
+.about-card__title {
+  font-size: clamp(19px, 1.5vw, 22px);   /* matches .offer-card-title */
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
-  margin: 0 0 12px;
+  line-height: 1.25;
+  margin: 0 0 40px;        /* generous breathing room before the sentence */
+  color: #fff;
 }
-.about-pos p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-secondary);
+/* White Innovue wordmark set inline in the title, sized to the cap-height of
+   "Partnership with" so it reads as the word it replaces. Baseline-cropped white
+   SVG; width/height in em so it tracks the responsive title size. */
+.innovue-wm {
+  display: inline-block;
+  width: 5.25em;          /* height × 7.32 (wordmark aspect) */
+  height: 0.72em;         /* ~20% under the cap-height match — reads a touch lighter in the phrase */
+  margin: 0 0.12em 0 0;
+  vertical-align: baseline;
+  position: relative;
+  top: 0;
+  background: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg') left bottom / contain no-repeat;
+}
+.about-card__lead {
+  font-size: 15px;                       /* matches .offer-card-desc */
+  font-weight: 450;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
+}
+.about-card__more { margin: 18px 0 0; }
+/* CTA matches .offer-card-more (Urbanist, sentence-case, 13px/600) — not the
+   uppercase Inconsolata arrow-link — so the card's type stays even. */
+.about-card .arrow-link {
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: -0.005em;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 8px;
+  color: #fff;
+  white-space: normal;
+}
+.about-card .arrow-link:hover { color: #fff; gap: 8px; }
+.about-card .arrow-link svg { width: 16px; height: 16px; transition: transform 200ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .about-card .arrow-link:hover svg { transform: translateX(4px); }
+}
+
+/* Image bleed — fills the right of the card, runs to its edge. */
+.about-card__media { position: absolute; inset: 0 0 0 auto; width: 58%; margin: 0; pointer-events: none; }
+.about-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+/* Left gradient keeps the text zone pure black regardless of where the dots land. */
+.about-card__media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, #000 0%, #000 18%, transparent 62%);
+}
+
+/* Hover affordance — desktop pointers only. */
+@media (hover: hover) and (pointer: fine) {
+  .about-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.16); }
+}
+
+/* Scroll reveal — paired with [data-reveal] observer in site.js (adds .is-revealed). */
+.about-card[data-reveal] { opacity: 0; transform: translateY(12px); }
+.about-card[data-reveal].is-revealed {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+}
+.about-card[data-reveal]:nth-child(2).is-revealed { transition-delay: 60ms; }  /* short stagger */
+
+/* Responsive */
+@media (max-width: 880px) {
+  .about-duo { grid-template-columns: 1fr; }
+  .about-card__body { max-width: 62%; }
+}
+@media (max-width: 560px) {
+  .about-card__body { max-width: 100%; }       /* image recedes to a backdrop behind text */
+  .about-card__media { width: 100%; opacity: 0.5; }
+  .about-card__media::after { background: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.78) 55%, rgba(0,0,0,0.55) 100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-card[data-reveal] { opacity: 1; transform: none; }
+  .about-card { transition: border-color 200ms ease; }
+}
+
+/* ───────── Reusable placeholder media frame (used by /about/) ─────────
+   Branded aspect-ratio frame standing in for real imagery. Background is a
+   documented faded-gradient token by gradient↔pillar pairing (silver = TIS
+   overall, cool = rating engine / Innovue). Swap the fill for a real <img>
+   later — the frame geometry stays. Decorative (aria-hidden). */
+.about-figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  border: 1px solid var(--border-primary);
+  background: var(--gradient-bg-silver-faded);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-figure--silver { background: var(--gradient-bg-silver-faded); }
+.about-figure--cool   { background: var(--gradient-bg-cool-faded); }
+.about-figure--tall   { aspect-ratio: 3 / 4; }
+.about-figure__label {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  opacity: 0.7;
+}
+@media (max-width: 880px) {
+  .about-figure--tall { aspect-ratio: 4 / 3; }
 }
 
 /* ───────── About — board roster ─────────
-   Five members on one line, bracketed by full-width top + bottom hairlines
-   with a centered title straddling the top rule (same treatment as the
-   Exclusive Patent Access band). Sits below the positioning grid. */
+   Interactive team showcase: staggered rounded-rect photo grid (left) + a name
+   list (right). Bracketed by full-width top + bottom hairlines with a centered
+   title straddling the top rule (same treatment as the Exclusive Patent Access
+   band). Photos default to grayscale + dimmed ("black out"); hovering / focusing
+   a photo or name row reveals that member in full colour and dims the rest, with
+   the highlight mirrored across both columns via shared data-member ids
+   (driven by the board interaction in site.js). */
 .board-roster {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  display: flex;
+  justify-content: center;
   margin-top: 72px;
-  padding-block: 48px;
+  padding-block: 56px;
 }
 /* Top + bottom hairlines break out of the container to span the full viewport
    and fade to transparent at the natural edges — same behaviour as the
@@ -3506,51 +3683,116 @@ main { padding-top: 64px; }
   letter-spacing: 0.01em;
   color: var(--text-tertiary);
 }
-.board-member { text-align: center; }
-.board-photo {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  max-width: 110px;
-  aspect-ratio: 1;
-  margin: 0 auto 14px;
+/* Two-column shell: compact photo grid + name list, centred as a unit. */
+.board-team {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+/* ── Left: staggered photo grid (fixed, compact sizes) ── */
+.board-grid {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.board-col { display: flex; flex-direction: column; gap: 12px; }
+/* Staircase: left column sits lowest, stepping up to the right (col 3 = 0). */
+.board-col--low { margin-top: 80px; }
+.board-col--mid { margin-top: 30px; }
+
+.board-card {
+  width: 168px;
+  height: 168px;
   border-radius: 50%;
-  border: 1px solid var(--border-primary);
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 80% 80% at 50% 30%, #EAF0F7 0%, #DCE5EF 70%),
-    linear-gradient(180deg, #F1F5F9, #E2E8F0);
-  color: #94A3B8;
-  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid var(--border-primary);
+  background: var(--surface-tertiary);
+  transition: opacity 0.4s ease, box-shadow 0.4s ease;
 }
-.board-photo img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: cover; }
+.board-card:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+.board-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* "black out" default — desaturated and darkened until revealed on hover. */
+  filter: grayscale(1) brightness(0.77);
+  transition: filter 0.5s ease;
+}
 /* Jackson's headshot is framed slightly wide/low — zoom in 5% and nudge up. */
-.board-photo--jackson img { transform: scale(1.05) translateY(-3%); }
+.board-card__img--jackson { transform: scale(1.05) translateY(-3%); }
+
+.board-card.is-active img { filter: grayscale(0) brightness(1); }
+.board-card.is-active { box-shadow: var(--shadow-medium); }
+.board-card.is-dimmed { opacity: 0.6; }
+
+/* ── Right: name list ── */
+.board-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 4px;
+  flex: 0 0 264px;
+}
+.board-row {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.board-row:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 4px; border-radius: 6px; }
+.board-row.is-dimmed { opacity: 0.5; }
+
+.board-dot {
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  margin-right: 11px;
+  border-radius: 5px;
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--text-primary) 25%, transparent);
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+.board-row.is-active .board-dot { width: 20px; background: var(--text-primary); }
+
 .board-name {
-  display: block;
-  margin-bottom: 2px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-.board-role {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
+  vertical-align: middle;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+.board-row.is-active .board-name { color: var(--text-primary); }
+
+.board-role {
+  display: block;
+  margin-top: 6px;
+  padding-left: 27px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   color: var(--text-tertiary);
 }
-[data-theme="dark"] .board-photo {
-  background:
-    radial-gradient(ellipse 80% 80% at 50% 30%, rgba(51,65,85,0.55) 0%, rgba(30,41,59,0.40) 70%),
-    linear-gradient(180deg, var(--surface-tertiary), var(--surface-secondary));
-  color: var(--text-tertiary);
-}
+
 @media (max-width: 900px) {
-  .board-roster { grid-template-columns: repeat(3, 1fr); gap: 36px 20px; }
+  .board-team { flex-direction: column; align-items: center; gap: 40px; }
+  .board-list { flex: 0 0 auto; width: 100%; max-width: 340px; }
 }
 @media (max-width: 560px) {
-  .board-roster { grid-template-columns: repeat(2, 1fr); }
+  .board-grid { gap: 8px; }
+  .board-col { gap: 8px; }
+  .board-card { width: 104px; height: 104px; }
+  .board-col--low { margin-top: 44px; }
+  .board-col--mid { margin-top: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .board-card,
+  .board-card img,
+  .board-row,
+  .board-dot,
+  .board-name { transition: none; }
 }
 
 /* ───────── Get in touch ───────── */
@@ -3574,10 +3816,10 @@ main { padding-top: 64px; }
   display: grid;
   grid-template-columns: 4fr 6fr;
   gap: 96px;
-  padding-block: 96px;
+  padding-block: var(--space-section);  /* gap above Contact matches every other section */
 }
 @media (max-width: 880px) {
-  .contact-grid { grid-template-columns: 1fr; gap: 56px; padding-block: 64px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 56px; }
 }
 .contact-left h2 {
   font-size: clamp(40px, 5vw, 64px);
@@ -6704,6 +6946,237 @@ main { padding-top: 64px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   REPORT CARD STACK (website-only) — Signal sample-report hero centerpiece.
+   Rest: a large tight up-right-tilted deck (scaled up), S on top. Hover /
+   tap-focus: it deals out into the S A B C D fan (left→right). The splay is
+   CSS-only (:hover/:focus-within) so it works with JS off; site.js only adds
+   the cursor-tracked sheen. Locks to light surfaces — the report artifacts are
+   white documents. The tall cards are top-cropped and bottom-masked so they
+   dissolve into the page below.
+   Namespace rcs-* — distinct from .badge-stage / .seal-pill / .r-spread-stage.
+   Reuses @keyframes badge-sheen-drift (above), --ease-card, .pillar--centered.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero--report-stack{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:40px;text-align:center;
+}
+/* Height override — both the :has() form and the direct .hero.hero--report-stack
+   form (the modifier sits on .hero itself, so this also covers no-:has() browsers). */
+.hero:has(.hero--report-stack),
+.hero.hero--report-stack{
+  height:auto;
+  min-height:clamp(600px,78vw,880px);
+  padding-block:48px 0;   /* no bottom pad — faded cards bleed into the next section */
+  overflow-x:clip;        /* contain rotated-card bleed; no horizontal scroll */
+  overflow-y:visible;     /* let the deck's upward peek + hover lift show */
+}
+
+.rcs-stage{
+  /* --rcs-w is the FANNED card width: gap = width + 8px so the spread row never
+     overlaps (footprint = 5·w + 32 ≈ 90vw, always inside 96vw, no per-breakpoint
+     math). At REST the whole deck is scaled up by --rcs-rest-scale so it reads as
+     a large centred centerpiece; hover settles back to scale(1) + fan. */
+  --rcs-w:clamp(120px, 18vw, 260px);
+  --rcs-gap:calc(var(--rcs-w) + 8px);     /* horizontal step between fanned cards */
+  --rcs-h:calc(var(--rcs-w) * 0.84);      /* cropped visible height (top ~62% of 3:4) */
+  --rcs-rest-scale:1.95;                  /* deck enlargement at rest */
+  position:relative;
+  width:min(1340px,96vw);
+  height:clamp(420px,46vw,600px);
+  margin-inline:auto;
+  pointer-events:auto;
+  isolation:isolate;      /* local stacking context for the z-ramp */
+  outline:none;
+}
+.rcs-stage:focus-visible{
+  outline:2px solid var(--border-focus,#252525);
+  outline-offset:8px;border-radius:18px;
+}
+.rcs-deck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+
+.rcs-card{
+  position:absolute;top:50%;left:50%;
+  width:var(--rcs-w);height:var(--rcs-h);
+  margin:0;border-radius:14px;overflow:hidden;
+  background:#fff;                       /* light-lock — matches the document paper */
+  transform-origin:center bottom;        /* deck pivots from its base */
+  will-change:transform;
+  transition:transform .62s var(--ease-card), box-shadow .42s var(--ease-card);
+  /* Bottom-fade: each card dissolves into the page so the next section reads through. */
+  -webkit-mask-image:linear-gradient(180deg,#000 62%, rgba(0,0,0,.55) 82%, transparent 100%);
+          mask-image:linear-gradient(180deg,#000 62%, rgba(0,0,0,.55) 82%, transparent 100%);
+  /* REST — large tight angled deck, scaled up by --rcs-rest-scale.
+     --i: 0=S (front, upright) … 4=D (back). */
+  transform:
+    translate(-50%,-50%)
+    translateX(calc(var(--i) * 22px))
+    translateY(calc(var(--i) * -15px))
+    rotate(calc(var(--i) * 2.6deg))
+    scale(calc(var(--rcs-rest-scale) - var(--i) * 0.04));
+}
+.rcs-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:50% 0%;  /* top-anchored crop keeps seal+metrics+radar */
+  display:block;
+}
+
+/* Rest shadow ramp — deepens toward the front (S). */
+.rcs-card[data-tier="d"]{box-shadow:0 6px 14px -8px rgba(0,0,0,.16)}
+.rcs-card[data-tier="c"]{box-shadow:0 8px 18px -8px rgba(0,0,0,.18)}
+.rcs-card[data-tier="b"]{box-shadow:0 11px 24px -10px rgba(0,0,0,.20)}
+.rcs-card[data-tier="a"]{box-shadow:0 14px 30px -11px rgba(0,0,0,.22)}
+.rcs-card[data-tier="s"]{box-shadow:0 18px 44px -12px rgba(0,0,0,.26), 0 6px 16px rgba(0,0,0,.10)}
+
+/* HOVER / FOCUS — fan into an evenly-spaced, upright, centered row S A B C D.
+   Offset = (i - 2) * gap → S −2g, A −g, B 0, C +g, D +2g. */
+.rcs-stage:hover .rcs-card,
+.rcs-stage:focus-within .rcs-card{
+  transform:
+    translate(-50%,-50%)
+    translateX(calc((var(--i) - 2) * var(--rcs-gap)))
+    translateY(-8px)
+    rotate(0deg)
+    scale(1);
+  box-shadow:0 16px 36px -14px rgba(0,0,0,.24), 0 6px 14px rgba(0,0,0,.10);
+}
+.rcs-stage:hover .rcs-card[data-tier="s"],
+.rcs-stage:focus-within .rcs-card[data-tier="s"]{
+  box-shadow:0 22px 48px -14px rgba(0,0,0,.30), 0 8px 18px rgba(0,0,0,.12);
+}
+/* Subtle deal-out stagger on open; synchronized close. */
+.rcs-stage:hover .rcs-card,
+.rcs-stage:focus-within .rcs-card{transition-delay:calc(var(--i) * 28ms)}
+.rcs-card{transition-delay:0ms}
+
+/* Specular sheen — reuses the badge recipe + @keyframes badge-sheen-drift. */
+.rcs-sheen{
+  position:absolute;inset:0;border-radius:inherit;
+  pointer-events:none;z-index:5;
+  --sx:50%;--sy:0%;
+  background:
+    radial-gradient(120px 120px at var(--sx) var(--sy),
+      rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.12) 45%, transparent 70%),
+    linear-gradient(105deg,
+      transparent 38%, rgba(255,255,255,0.35) 47%,
+      rgba(255,255,255,0.42) 50%, rgba(255,255,255,0.35) 53%, transparent 62%);
+  background-size:auto, 260% 100%;
+  background-position:0 0, var(--sheen-x, -40%) 0;
+  mix-blend-mode:screen;opacity:.55;
+  animation:badge-sheen-drift 14s ease-in-out infinite;
+}
+/* Per-tier phase offset so the 5 cards don't sweep in lockstep. */
+.rcs-card[data-tier="a"] .rcs-sheen{animation-delay:-2.6s}
+.rcs-card[data-tier="b"] .rcs-sheen{animation-delay:-5.2s}
+.rcs-card[data-tier="c"] .rcs-sheen{animation-delay:-7.8s}
+.rcs-card[data-tier="d"] .rcs-sheen{animation-delay:-10.4s}
+
+/* Responsive — the fluid --rcs-w/--rcs-gap above keep the fan inside the
+   viewport at every width (no overlap), so we only adjust the hero envelope. */
+@media (max-width:600px){
+  .hero:has(.hero--report-stack),
+  .hero.hero--report-stack{min-height:clamp(440px,92vw,540px);gap:28px}
+}
+
+/* Reduced motion — no drift, no splay animation; show a static open fan. */
+@media (prefers-reduced-motion: reduce){
+  .rcs-sheen{animation:none;opacity:.4}
+  .rcs-card{
+    transition:none;transition-delay:0ms !important;
+    transform:
+      translate(-50%,-50%)
+      translateX(calc((var(--i) - 2) * var(--rcs-gap)))
+      rotate(0deg) scale(1);
+  }
+  .rcs-stage:hover .rcs-card,
+  .rcs-stage:focus-within .rcs-card{transition:none}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SAMPLE REPORT — Brief vs Pro editions (website-only, sample-report.html).
+   Two plan cards + a comparison matrix (reuses .prod-ref-table), and a
+   full-screen flyout viewer that shows a static render of the real report
+   with an ungated Download-PDF action. Overlay toggles via [data-open] like
+   the search modal. Namespace smpl-*.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.smpl-plans{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
+@media (max-width:760px){.smpl-plans{grid-template-columns:1fr}}
+.smpl-plan{
+  position:relative;display:flex;flex-direction:column;
+  background:var(--surface-elevated);
+  border:1px solid var(--border-primary);
+  border-radius:16px;padding:28px;
+  box-shadow:var(--shadow-low);
+}
+.smpl-plan--pro{
+  border-color:#0EA5E9;
+  box-shadow:0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(14,165,233,.25);
+  background:linear-gradient(180deg,#F0F9FF 0%, var(--surface-elevated) 130px);
+}
+.smpl-plan-flag{
+  position:absolute;top:-11px;right:22px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:linear-gradient(135deg,#10B981,#0EA5E9 55%,#8B5CF6);
+  padding:4px 12px;border-radius:9999px;
+}
+.smpl-plan-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.smpl-plan-name{font-size:22px;font-weight:700;letter-spacing:-.01em;color:var(--text-primary)}
+.smpl-plan-tag{font-size:14px;color:var(--text-tertiary)}
+.smpl-plan-plus{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 10px}
+.smpl-plan-list{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;flex:1}
+.smpl-plan-list li{position:relative;padding-left:26px;font-size:15px;line-height:1.5;color:var(--text-secondary)}
+.smpl-plan-list li::before{
+  content:"";position:absolute;left:0;top:6px;width:15px;height:15px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2310B981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 8.5l3.5 3.5L13 4'/></svg>") center/contain no-repeat;
+}
+.smpl-plan .btn{width:100%}
+
+/* Comparison matrix — reuses .prod-ref-table; only the Brief/Pro columns differ */
+.smpl-matrix{margin-top:8px}
+.smpl-matrix .smpl-col{text-align:center;width:120px}
+.smpl-matrix td.smpl-y,.smpl-matrix td.smpl-n{text-align:center;font-weight:700}
+.smpl-matrix td.smpl-y{color:var(--ink-positive,#047857)}
+.smpl-matrix td.smpl-n{color:var(--text-quaternary,#A5A5A5)}
+
+/* Flyout viewer */
+.smpl-overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.62);
+  opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease;
+}
+.smpl-overlay[data-open="true"]{opacity:1;visibility:visible}
+.smpl-modal{
+  position:fixed;z-index:201;left:50%;top:50%;
+  width:min(980px,94vw);max-height:92vh;
+  transform:translate(-50%,-47%);
+  display:flex;flex-direction:column;overflow:hidden;
+  background:var(--surface-page);border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.30);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .22s ease, transform .22s var(--ease-card), visibility .22s ease;
+}
+.smpl-modal[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%)}
+.smpl-modal-head{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:13px 14px 13px 22px;border-bottom:1px solid var(--border-primary);background:var(--surface-page);
+}
+.smpl-modal-title{font-size:16px;font-weight:600;color:var(--text-primary);margin:0}
+.smpl-modal-actions{display:flex;align-items:center;gap:10px}
+.smpl-dl{padding:8px 14px;min-height:36px;font-size:13px}
+.smpl-modal-close{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-secondary);background:transparent;border:0;cursor:pointer;
+  transition:background-color .12s linear,color .12s linear;
+}
+.smpl-modal-close:hover{background:var(--surface-tertiary);color:var(--text-primary)}
+.smpl-modal-body{overflow:auto;-webkit-overflow-scrolling:touch;background:var(--surface-secondary)}
+.smpl-img{display:block;width:100%;height:auto}
+body.smpl-lock{overflow:hidden}
+@media (prefers-reduced-motion: reduce){
+  .smpl-overlay,.smpl-modal{transition:opacity .12s linear}
+  .smpl-modal,.smpl-modal[data-open="true"]{transform:translate(-50%,-50%)}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    COMPANY SCORECARDS — Signal methodology page (#portfolio-signal).
    Composes existing primitives: .r-metric-arc gauge (monochrome), .tier-chip--*
    (carries the SABCD color), and the .section / .container grammar. New CSS here
@@ -6760,3 +7233,96 @@ main { padding-top: 64px; }
 
 .cs-desc { font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); margin: 16px 0 0; }
 .cs-desc strong { color: var(--text-primary); font-weight: 600; }
+
+/* ============================================================
+   Loop CTA cluster — shared across Signal pages (index,
+   methodology, sample-report). Predicts the reader's next
+   question, routes there, and loops back. Tokens only.
+   ============================================================ */
+.loop-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(36px, 4vw, 52px);
+}
+.loop-ctas--single { margin-top: clamp(28px, 3vw, 40px); }
+@media (max-width: 480px) {
+  .loop-ctas { flex-direction: column; }
+  .loop-ctas .btn { width: 100%; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Offerings — the four value-release lines as a static product grid.
+   Simplified 2026-06-27: the scroll-scrubbed "rating-at-core" diagram (core
+   engine chip + connector flows + crossfade heading + scrub motion) was archived
+   to brand/archive/coremap-rating-core.html and removed. Card visuals (dark chip
+   + particle image + fixed-dark scrim + numbered eyebrow + bottom-anchored copy)
+   carry the report-tile look forward. Images live in /assets/imagery/coremap/.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.offerings-grid {
+  margin-top: var(--space-head-gap);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 1.6vw, 24px);
+}
+@media (max-width: 980px) { .offerings-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .offerings-grid { grid-template-columns: 1fr; } }
+
+.offer-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(340px, 42vw, 432px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;        /* copy anchored to the bottom */
+  padding: 28px;
+  border-radius: 18px;
+  background: #0E0E0E;              /* dark chip base behind the particle image (::before) */
+  box-shadow: var(--shadow-medium);
+  text-decoration: none;
+  transition: box-shadow 220ms var(--ease-card), transform 220ms var(--ease-card);
+}
+/* Particle-cloud image layer — sits below the scrim. */
+.offer-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background-size: cover; background-repeat: no-repeat; background-position: center;
+}
+.offer-card--reports::before   { background-image: url('/assets/imagery/coremap/reports.jpg');   transform: rotate(180deg); }
+.offer-card--licensing::before { background-image: url('/assets/imagery/coremap/licensing.jpg'); }
+.offer-card--owned::before     { background-image: url('/assets/imagery/coremap/owned.jpg'); }
+.offer-card--venture::before   { background-image: url('/assets/imagery/coremap/venture.jpg'); background-position: 60% 74%; background-size: 170% auto; }
+/* Fixed-dark legibility scrim so the white copy always reads (theme-independent). */
+.offer-card::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%);
+}
+.offer-card-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.offer-card-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+}
+.offer-card-title {
+  font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25;
+  color: #FFFFFF; margin: 0;
+}
+.offer-card-desc {
+  font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.82);
+}
+.offer-card-more {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 4px; font-size: 13px; font-weight: 600; color: #FFFFFF;
+}
+.offer-card-more svg {
+  width: 16px; height: 16px; stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 200ms var(--ease-card);
+}
+@media (hover: hover) and (pointer: fine) {
+  .offer-card:hover { box-shadow: var(--shadow-high); transform: translateY(-2px); }
+  .offer-card:hover .offer-card-more svg { transform: translateX(4px); }
+}
+.offer-card:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+

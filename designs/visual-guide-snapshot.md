@@ -241,9 +241,14 @@ Canonical implementations on a live surface: [`../website/index.html`](../websit
 
 ## Innovue Co-Branding
 
-Innovue is a visible strategic partner — not a hidden technology layer.
+Innovue is a visible strategic partner and **shareholder** — not a hidden technology layer.
 
-**Only approved credit text:** "Powered by Innovue" — no variations.
+Innovue credit comes in two registers, scoped by surface (the hybrid rule):
+
+- **Logo-lockup credit text:** "Powered by Innovue" — no variations. This is the credit that travels with the co-branded *mark* (header lockups, marketing footer, in-product chrome, OG card). Use everywhere a lockup appears.
+- **Narrative attribution (About / profile / first-touch marketing only):** in *prose* on these surfaces, Innovue may be credited as **shareholder and co-developer of the SABCD rating engine** — e.g. "the patent-strength rating engine we co-developed with our shareholder Innovue." Do **not** extend co-developer framing into product UI or in-app chrome — those stay on the "Powered by Innovue" credential only.
+
+When-to-apply logic for both registers: [`brand-voice.md`](./brand-voice.md) §7. Canonical positioning copy that uses the co-developer framing: [`positioning.md`](./positioning.md) §4.
 
 ### First Touchpoint Rule
 

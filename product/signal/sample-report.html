@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=9">
+<link rel="stylesheet" href="/assets/styles.css?v=13">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -184,25 +184,133 @@
 
   <!-- Hero — one-slide variant, cool gradient for the Signal pillar.
        Page scaffolding only — body sections to be filled in a later content pass. -->
-  <section class="hero" aria-label="Report Sample hero" data-active-pillar="signal">
+  <section class="hero hero--report-stack" aria-label="Report Sample hero" data-active-pillar="signal">
     <div class="hero-warm" aria-hidden="true"></div>
     <div class="hero-silver" aria-hidden="true"></div>
     <div class="hero-signal" aria-hidden="true"></div>
 
     <div class="container hero-inner">
-      <article class="pillar" data-pillar="signal">
-        <p class="pillar-eyebrow" data-zh="">Token-Based Valuation · SABCD</p>
-        <h1 class="pillar-title">
-          <span data-zh="報告樣本">Report Sample.</span>
-        </h1>
-        <p class="pillar-sub" data-zh="免費預覽完整 SABCD 評級專利報告。">A free preview of a full SABCD-graded patent brief.</p>
-        <p class="pillar-sub"><strong>[PAGE SCAFFOLDING | COPY NOT WORKED ON]</strong></p>
-        <div class="pillar-actions">
-          <a href="/product/signal/" class="btn btn-secondary" data-zh="回到 Signal">Back to Signal</a>
+      <!-- Report card stack — the hero centerpiece. Rest: a large centered deck,
+           S on top. Hover (or tap/focus): it deals out into the S·A·B·C·D fan.
+           Splay is CSS-only; site.js only adds the cursor-tracked sheen. -->
+      <div class="rcs-stage" data-rcs tabindex="0" role="img"
+           aria-label="A sample patent report shown across all five SABCD grades">
+        <div class="rcs-deck">
+          <figure class="rcs-card" data-tier="d" style="--i:4">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-d.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="c" style="--i:3">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-c.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="b" style="--i:2">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="a" style="--i:1">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="s" style="--i:0">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-s.png" alt="Sample SABCD-graded patent report (S tier)" width="2272" height="3024" loading="eager" decoding="async" fetchpriority="high">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
         </div>
-      </article>
+      </div>
     </div>
   </section>
+
+  <!-- ── Brief vs Pro ─────────────────────────────────────────────── -->
+  <section class="section" id="editions" aria-labelledby="editions-heading">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2 id="editions-heading" class="h-section grad-text-silver-solid" data-zh="一份報告，兩種版本">One report, two editions</h2>
+          <p class="section-dek" data-zh="每份 Signal 報告都以同一套 PSS 引擎為單一專利評分。Brief 給你結論與完整拆解；Pro 再加上投資委員會所需的「風險與行動」決策層。引擎細節見 ">Every Signal report grades one patent on the same PSS engine. <strong>Brief</strong> gives you the verdict and its full decomposition; <strong>Pro</strong> adds the Risk &amp; Action layer a deal team takes to investment committee. Engine details live in the <a href="/product/signal/methodology.html" data-zh="評分方法論 →">methodology →</a></p>
+        </div>
+      </header>
+
+      <!-- Plan cards -->
+      <div class="smpl-plans">
+        <article class="smpl-plan">
+          <div class="smpl-plan-head">
+            <span class="smpl-plan-name" data-zh="Brief 版">Brief</span>
+            <span class="smpl-plan-tag" data-zh="結論 — 評分與完整拆解">The what — the verdict, fully decomposed</span>
+          </div>
+          <ul class="smpl-plan-list">
+            <li data-zh="PSS 分數、評級印記、百分位與排名">PSS score, tier seal, percentile &amp; rank</li>
+            <li data-zh="專利事實（權利人、專利家族、請求項、剩餘年限）">Patent facts — owner, family, claims, remaining life</li>
+            <li data-zh="支柱分析 — 雷達圖 + 八大支柱分數">Pillar analysis — radar + 8-pillar scores</li>
+            <li data-zh="支柱深入剖析 — 全部 50 項指標">Pillar deep dive — all 50 indicators</li>
+            <li data-zh="評級理由">Rating rationale</li>
+          </ul>
+          <button class="btn btn-secondary smpl-view" type="button" data-sample="brief" aria-haspopup="dialog" data-zh="檢視 Brief 報告">View Brief report</button>
+        </article>
+
+        <article class="smpl-plan smpl-plan--pro">
+          <span class="smpl-plan-flag" data-zh="投委會版本" aria-hidden="true">For the IC memo</span>
+          <div class="smpl-plan-head">
+            <span class="smpl-plan-name" data-zh="Pro 版">Pro</span>
+            <span class="smpl-plan-tag" data-zh="意涵 — 加上「風險與行動」">The so-what — adds Risk &amp; Action</span>
+          </div>
+          <p class="smpl-plan-plus" data-zh="包含 Brief 全部內容，另加：">Everything in Brief, plus:</p>
+          <ul class="smpl-plan-list">
+            <li data-zh="關鍵評級驅動因子與敏感點（前十）">Key rating drivers &amp; sensitivities (top-10)</li>
+            <li data-zh="情境敏感度 — 五情境壓力測試">Scenario sensitivity — 5-scenario stress test</li>
+            <li data-zh="行動建議 — 建議行動與觀察事項">Action considerations — recommended actions + watch items</li>
+            <li data-zh="完整揭露與資料來源">Full disclosures &amp; source attribution</li>
+          </ul>
+          <button class="btn btn-primary smpl-view" type="button" data-sample="pro" aria-haspopup="dialog" data-zh="檢視 Pro 報告">View Pro report</button>
+        </article>
+      </div>
+
+      <!-- Comparison matrix -->
+      <div class="prod-ref-table-wrap smpl-matrix">
+        <table class="prod-ref-table">
+          <thead><tr>
+            <th data-zh="報告區段">Report section</th>
+            <th class="smpl-col">Brief</th>
+            <th class="smpl-col">Pro</th>
+          </tr></thead>
+          <tbody>
+            <tr><td data-zh="PSS 分數、評級印記、百分位與排名">PSS score, tier seal, percentile &amp; rank</td><td class="smpl-y">✓</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="專利事實（權利人、家族、請求項）">Patent facts (owner, family, claims)</td><td class="smpl-y">✓</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="支柱分析 — 雷達圖 + 八大支柱分數">Pillar analysis — radar + 8-pillar scores</td><td class="smpl-y">✓</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="支柱深入剖析 — 全部 50 項指標">Pillar deep dive — all 50 indicators</td><td class="smpl-y">✓</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="評級理由">Rating rationale</td><td class="smpl-y">✓</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="關鍵評級驅動因子與敏感點">Key Rating Drivers &amp; Sensitivities</td><td class="smpl-n">—</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="情境敏感度（五情境壓力測試）">Scenario Sensitivity (5-scenario stress test)</td><td class="smpl-n">—</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="行動建議（建議行動 + 觀察事項）">Action Considerations (actions + watch items)</td><td class="smpl-n">—</td><td class="smpl-y">✓</td></tr>
+            <tr><td data-zh="完整揭露與資料來源">Full disclosures &amp; source attribution</td><td class="smpl-n">—</td><td class="smpl-y">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Loop CTAs — the sample shows "what you get"; now route to "how" and "start". -->
+      <div class="loop-ctas">
+        <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看我們的評分方法 →">See the methodology →</a>
+        <a href="/product/signal/lobby.html" class="btn btn-primary" data-zh="提交專利號，立即開始 →">Submit a patent number to get started →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sample-report flyout viewer -->
+  <div class="smpl-overlay" id="smpl-overlay" data-open="false"></div>
+  <div class="smpl-modal" id="smpl-modal" data-open="false" role="dialog" aria-modal="true" aria-labelledby="smpl-title" aria-hidden="true">
+    <header class="smpl-modal-head">
+      <h2 class="smpl-modal-title" id="smpl-title">Sample report</h2>
+      <div class="smpl-modal-actions">
+        <a class="btn btn-secondary smpl-dl" id="smpl-download" href="#" download data-zh="下載 PDF">Download PDF</a>
+        <button class="smpl-modal-close" id="smpl-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="smpl-modal-body">
+      <img class="smpl-img" id="smpl-img" alt="" decoding="async">
+    </div>
+  </div>
 
   <footer class="footer" role="contentinfo">
     <div class="container">
@@ -271,7 +379,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=2" defer></script>
+<script src="/assets/site.js?v=4" defer></script>
 
 </body>
 </html>

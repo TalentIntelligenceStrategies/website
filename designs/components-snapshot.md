@@ -408,18 +408,18 @@ Pairs with §Your licenses (the trigger surface that opens this right-rail) and 
 
 Full-width bar, flush to top, translucent fill with 20px backdrop blur, 1px bottom hairline. Logo left; primary nav links centered between logo and the right-side **controls cluster**; the controls cluster carries the theme toggle, language switcher, and auth area, separated from the primary nav by a single 1×20 vertical hairline on the cluster's left edge.
 
-- **Consumes:** `surface-page-translucent`, `border-primary`, `text-primary`, `text-secondary`, `text-inverse`, `surface-tertiary` (active link pill, theme track, icon-button hover), `surface-inverse`, `surface-inverse-hover`
+- **Consumes:** `surface-page-translucent`, `border-primary`, `text-primary`, `text-secondary`, `text-inverse`, `surface-tertiary` (theme track, icon-button hover), `surface-inverse`, `surface-inverse-hover`
 - **Surfaces:** website · Patent Intelligence SaaS · Licensing Platform
 - **Auth-cluster variants** (three patterns — the cluster's right-side composition changes by surface, not its overall structure): **marketing** (search + single Request-a-demo CTA, used by the website), **product unauthenticated** (search + Log in text + Sign up pill, used by SaaS / Licensing Platform), **product authenticated** (search + account menu trigger, used by SaaS / Licensing Platform after sign-in). All three keep the theme toggle + language switcher upstream of the search trigger.
 - **Cluster density variants:** slim cluster (auth-only) vs. standard cluster (theme + language + search + auth); with / without mobile trigger
-- **States:** link default, link hover, link active (pill), auth button states inherit from §Button
+- **States:** link default, link hover, auth button states inherit from §Button
 
 Height 64px, `position: fixed; top: 0; left: 0; right: 0; z-index: 100`. Background `surface-page-translucent` with `backdrop-filter: saturate(140%) blur(20px)`. `border-bottom: 1px solid border-primary`, radius 0, no shadow. Inner row inherits the page container — `max-width: 1440`, `padding-inline: 32` (20 below `md`), `display: flex; align-items: center; gap: 32px`. Logo per surface (full picker in [`visual-guide.md`](./visual-guide.md) §Logo Usage → Top nav header): the marketing website carries the **Secondary** mark at 28px height, single-language by document `lang` (`_ch` for `zh-Hant`, `_eng` for `en`), and falls back to the **Submark** at 32×32 below `sm` 640px so the bar stays balanced against the controls cluster; Patent Intelligence SaaS and Licensing Platform stay on the Submark at 32×32 across all viewports.
 
 **Structure (left→right):** logo · `flex: 1` spacer · primary nav links · controls cluster.
 
-- **Primary nav links** — inline, `gap: 4px`, `button-14` weight 600 no tracking, color `text-secondary` → `text-primary` on hover over 100ms linear. Each link padding 6×14 radius 9999px so the active pill fits without layout shift.
-- **Active link** — `background: surface-tertiary; border-radius: 9999px; padding: 6×14` — label stays `text-primary`, no underline, no color change.
+- **Primary nav links** — inline, `gap: 4px`, `button-14` weight 600 no tracking, color `text-secondary` → `text-primary` on hover over 100ms linear. Each link padding 6×14.
+- **Active link** — carries `aria-current="page"` for assistive tech only; **no visual distinction** from inactive links (no pill, no background, no color change). The page's own H1 / hero is the wayfinding signal, not the nav.
 - **Controls cluster** — `display: inline-flex; align-items: center; padding-left: 24px; margin-left: -8px; position: relative`. A 1px × 20px `border-primary` hairline sits at `left: 0` via `::before` — this is the *only* divider in the bar, and it sits on the cluster's left edge, not between sub-groups inside the cluster. The negative `margin-left` tightens the outer flex gap from 32→24 so whitespace flanking the divider reads equal (24px from the last primary nav link to the hairline, 24px from the hairline to the first cluster item).
 
 Inside the cluster, the leading items are constant across all surfaces; only the trailing auth sub-group changes by surface. Canonical order: **theme toggle** (§Theme toggle, 32px tall) · **language switcher** (§Language switcher, 32×32 icon button) · **search trigger** (§Search bar → compact icon-trigger variant, 32×32 icon button) · *auth sub-group per the variant table below*.

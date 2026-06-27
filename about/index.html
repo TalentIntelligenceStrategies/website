@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About — TIS</title>
+<meta name="description" content="Patents are the most undervalued asset of our time. TIS turns them into assets that can be measured, traded, and invested — built on the SABCD rating engine, co-developed with Innovue." />
+<link rel="canonical" href="https://tisglobalinc.com/about/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TIS" />
+<meta property="og:url" content="https://tisglobalinc.com/about/" />
+<meta property="og:title" content="About — TIS" />
+<meta property="og:description" content="Patents are the most undervalued asset of our time. TIS turns them into assets that can be measured, traded, and invested — built on the SABCD rating engine, co-developed with Innovue." />
+<meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="TIS — Talent Intelligence Strategies" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="About — TIS" />
+<meta name="twitter:description" content="Patents are the most undervalued asset of our time. TIS turns them into assets that can be measured, traded, and invested." />
+<meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
+<meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
+
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+
+<link rel="stylesheet" href="/assets/styles.css">
+
+<script>
+  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
+  (() => {
+    const lang = localStorage.getItem('tis-lang');
+    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+  })();
+</script>
+
+<!-- Page-scoped layout for the About page (hero + locked company-profile prose).
+     Composes existing tokens + classes only; no new design primitives. -->
+<style>
+  /* About page — website-local layout. Composes shared tokens only. Warm/cool
+     accents derive from the SABCD ramp primitives (orange --score-d-vivid +
+     gold --score-s-vivid = TIS "us"; sky --score-b-vivid = Innovue). No invented hex. */
+  .about-page {
+    --us-accent:   var(--score-d-vivid);   /* orange */
+    --us-accent-2: var(--score-s-vivid);   /* gold   */
+    --inv-accent:  var(--score-b-vivid);   /* sky blue */
+  }
+
+  /* Shared mono eyebrow (hero + 01 / 02 / 03). */
+  .about-hero .pos-num,
+  .about-story__text .pos-num,
+  .about-partner .pos-num,
+  .about-seq {
+    font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--text-tertiary, var(--text-secondary));
+    margin: 0 0 20px;
+  }
+
+  /* ── Hero ── */
+  .about-hero { padding-block: clamp(72px, 11vw, 132px) 0; }
+  .about-hero h1 span { display: block; }
+  .about-hero .about-lead {
+    font-size: clamp(18px, 1.7vw, 22px); font-weight: 450; line-height: 1.5;
+    letter-spacing: -0.01em; color: var(--text-secondary);
+    max-width: 60ch; margin: 24px 0 0;
+  }
+  .about-hero__rule {
+    height: 3px; width: 64px; margin: 36px 0 0; border: 0; border-radius: 2px;
+    background: linear-gradient(90deg, var(--us-accent-2), var(--us-accent));
+  }
+
+  /* ── Section prose ── */
+  .about-profile { max-width: 760px; }
+  .about-profile p {
+    font-size: clamp(16px, 1.2vw, 18px); line-height: 1.7;
+    color: var(--text-secondary); margin: 0 0 1.3em;
+  }
+  .about-profile p:last-child { margin-bottom: 0; }
+
+  /* ── 01 · Why we exist — prose left, tall photo card right ── */
+  .about-story__grid {
+    display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 72px); align-items: start;
+  }
+  .about-story__text .about-profile { max-width: none; }
+  @media (min-width: 881px) { .about-story__media { position: sticky; top: 104px; } }
+
+  /* Photo media card — fills the former empty gradient frames. */
+  .about-figure img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .about-figure--photo::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(0deg, rgba(0,0,0,0.45) 0%, transparent 44%);
+  }
+  .about-figure--photo .about-figure__label {
+    position: absolute; left: 18px; bottom: 16px; z-index: 1;
+    color: #fff; opacity: 0.94; font-style: normal;
+    display: inline-flex; align-items: center; gap: 9px;
+  }
+  .about-figure--photo .about-figure__label::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--fig-dot, var(--us-accent));
+  }
+  .about-figure--warm { background: color-mix(in srgb, var(--us-accent) 12%, var(--surface-secondary)); --fig-dot: var(--us-accent); }
+  .about-figure--cool { background: var(--gradient-bg-cool-faded); --fig-dot: var(--inv-accent); }
+
+  /* ── Three ways we unlock value ── */
+  .about-ways { margin-top: clamp(48px, 6vw, 80px); }
+  .about-ways__intro {
+    font-size: clamp(18px, 1.5vw, 21px); font-weight: 600; letter-spacing: -0.01em;
+    line-height: 1.4; color: var(--text-primary); max-width: 42ch; margin: 0;
+  }
+  .about-ways__grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 1.6vw, 24px); margin-top: clamp(24px, 3vw, 36px);
+  }
+  .about-way {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: clamp(24px, 2.4vw, 32px);
+    border: 1px solid var(--border-primary); border-radius: 16px;
+    background: var(--surface-page);
+    transition: transform 250ms var(--ease-card), border-color 250ms var(--ease-card), box-shadow 250ms var(--ease-card);
+  }
+  @media (hover: hover) {
+    .about-way:hover { transform: translateY(-3px); border-color: var(--border-secondary); box-shadow: var(--shadow-medium); }
+  }
+  .about-way__n {
+    font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em; width: max-content;
+    background: linear-gradient(135deg, var(--us-accent-2), var(--us-accent));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .about-way__title { font-size: clamp(18px, 1.5vw, 21px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 0; color: var(--text-primary); }
+  .about-way__body { font-size: 14.5px; line-height: 1.55; color: var(--text-secondary); margin: 0; }
+
+  /* ── Cornerstone closing statement ── */
+  .about-cornerstone { margin-top: clamp(48px, 6vw, 80px); padding-top: clamp(28px, 4vw, 40px); position: relative; }
+  .about-cornerstone::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 64px; height: 3px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--us-accent-2), var(--us-accent));
+  }
+  .about-cornerstone p {
+    font-size: clamp(20px, 2.1vw, 28px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.36; color: var(--text-primary); max-width: 50ch; margin: 0;
+  }
+
+  /* ── 02 · Strategic partner — Innovue (cool / blue) ── */
+  .about-partner__intro {
+    display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 72px); align-items: center;
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+  .about-partner__title {
+    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.15; margin: 0;
+  }
+  .about-partner__body {
+    font-size: clamp(16px, 1.2vw, 18px); line-height: 1.7;
+    color: var(--text-secondary); max-width: 60ch; margin: 18px 0 0;
+  }
+  .about-partner .about-figure { aspect-ratio: 4 / 5; }
+
+  /* ── 03 · Board ── */
+  .about-seq { margin-bottom: -16px; }
+
+  /* ── Scroll reveal (about page is its own [data-reveal] scope) ── */
+  [data-reveal] { opacity: 0; transform: translateY(16px); }
+  [data-reveal].is-revealed {
+    opacity: 1; transform: none;
+    transition: opacity 560ms var(--ease-card), transform 560ms var(--ease-card);
+  }
+  [data-reveal][data-reveal-d="1"].is-revealed { transition-delay: 90ms; }
+  [data-reveal][data-reveal-d="2"].is-revealed { transition-delay: 170ms; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 880px) {
+    .about-story__grid,
+    .about-partner__intro { grid-template-columns: 1fr; gap: 32px; }
+    .about-ways__grid { grid-template-columns: 1fr; }
+    .about-seq { margin-bottom: 0; }
+    .about-story__media .about-figure--tall { aspect-ratio: 4 / 3; }
+  }
+</style>
+</head>
+
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ╔═════════════════════════════════════════════════════════════════════╗
+     ║ Top nav  —  components.md §Top nav                                  ║
+     ╚═════════════════════════════════════════════════════════════════════╝ -->
+<header class="topnav" role="banner">
+  <div class="container topnav-inner">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+      <span class="topnav-logo" aria-hidden="true"></span>
+    </a>
+
+    <span class="topnav-spacer"></span>
+
+    <nav class="topnav-links" aria-label="Primary">
+      <div class="topnav-dropdown-wrap">
+        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
+          <span data-zh="產品">Products</span>
+          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
+          <div class="products-menu-grid">
+            <a href="/product/licensing/" class="product-card" role="menuitem">
+              <span class="product-card-name" data-zh="泰然專利防護網">Licensing Platform</span>
+              <span class="product-card-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+            </a>
+            <a href="/product/signal/" class="product-card" role="menuitem">
+              <span class="product-card-name" data-zh="泰然專利強度評級系統">Signal Platform</span>
+              <span class="product-card-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="/#reports"  class="topnav-link" data-zh="報告">Reports</a>
+      <a href="/#press"    class="topnav-link" data-zh="新聞">Press</a>
+      <a href="/about/"    class="topnav-link" data-zh="關於" aria-current="page">About</a>
+    </nav>
+
+    <div class="topnav-controls">
+      <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
+      <div class="lang-wrap" id="lang-wrap">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        </div>
+      </div>
+
+      <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.34-4.34"/>
+          <circle cx="11" cy="11" r="8"/>
+        </svg>
+      </button>
+
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+
+      <!-- Mobile trigger -->
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer  -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+  <div class="mobile-header">
+    <span class="mobile-header-logo" aria-hidden="true"></span>
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-list" aria-label="Primary mobile">
+    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
+      <span data-zh="產品">Products</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-products-sublist" class="mobile-sublist">
+      <a href="/product/licensing/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="泰然專利防護網">Licensing Platform</span>
+        <span class="mobile-sub-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+      </a>
+      <a href="/product/signal/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="泰然專利強度評級系統">Signal Platform</span>
+        <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+      </a>
+    </div>
+    <a href="/#reports"  data-zh="報告">Reports</a>
+    <a href="/#press"    data-zh="新聞">Press</a>
+    <a href="/about/"    data-zh="關於" aria-current="page">About</a>
+  </nav>
+  <div class="mobile-auth">
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+  </div>
+</aside>
+
+<!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
+<div class="search-overlay" id="search-overlay"></div>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-input-row">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m21 21-4.34-4.34"/>
+      <circle cx="11" cy="11" r="8"/>
+    </svg>
+    <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <span class="search-esc" aria-hidden="true">Esc</span>
+  </div>
+  <div class="search-results">
+    <p class="search-section-label" data-zh="跳至">Jump to</p>
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
+      <span data-zh="產品">Products</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#reports" class="search-link" data-zh="報告">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      <span data-zh="報告">Reports</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#press" class="search-link" data-zh="新聞">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2"/><path d="M18 14V8M14 14V8M10 14v-4M6 14V12"/></svg>
+      <span data-zh="新聞">Press</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/about/" class="search-link" data-zh="關於">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span data-zh="關於">About</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#contact" class="search-link" data-zh="聯絡">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <span data-zh="聯絡">Contact</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+  </div>
+</div>
+
+<main id="main" class="about-page">
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ About hero  —  one-line positioning (brand/positioning.md §3)       ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section about-hero" aria-labelledby="about-page-heading" data-reveal>
+    <div class="container">
+      <p class="pos-num" data-zh="關於 TIS">About TIS</p>
+      <h1 id="about-page-heading" class="pillar-title">
+        <span data-zh="TIS 的存在，是為了讓專利被看見、被衡量、被釋放。">TIS exists to make patents seen, measured, and unlocked.</span>
+      </h1>
+      <p class="about-lead" data-zh="專利，是這個時代最被低估的資產。我們把它轉化為可被衡量、可被交易、可被投資的資產。">Patents are the most undervalued asset of our time. We turn them into assets that can be measured, traded, and invested.</p>
+      <hr class="about-hero__rule" aria-hidden="true">
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ 01 · Why we exist  —  locked profile copy, verbatim (positioning.md ║
+       ║ §4). Prose-left / media-frame-right. EN textContent + ZH via data-zh ║
+       ║ (paragraph-level). Do not reword without updating positioning.md §4. ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section about-story" aria-labelledby="about-story-eyebrow">
+    <div class="container">
+      <div class="about-story__grid">
+        <div class="about-story__text" data-reveal>
+          <p class="pos-num" id="about-story-eyebrow" data-zh="01 / 我們為何存在">01 / Why we exist</p>
+          <div class="about-profile">
+            <p data-zh="在今天的經濟裡，企業的價值有很大一部分不在廠房與設備，而在無形資產。專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、最難被流動的一項。">In today's economy, much of a company's value lies not in plant and equipment but in intangible assets. Patents are the clearest legal form of that value — yet also the hardest to understand and the least liquid item on the balance sheet.</p>
+            <p data-zh="TIS 的存在，是為了改變這件事。我們把專利從一份靜態的法律文件，轉化為可被衡量、可被交易、可被投資的資產；並立志建立一套讓專利價值被公正衡量的標準。">TIS exists to change this. We turn patents from static legal documents into assets that can be measured, traded, and invested — and we set out to build the standard by which their value is fairly judged.</p>
+            <p data-zh="這一切的起點，是把「一件專利值多少」變成一個可信的答案。我們與股東 Innovue 共同開發的專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級。我們的目標，是讓它成為市場公認的專利品質標杆。">It begins with making "what is a patent worth?" a credible question to answer. With our shareholder Innovue, we developed a patent-strength rating engine that scores every patent from S to D across fifty indicators. Our goal is for it to become the market's recognized benchmark for patent quality.</p>
+          </div>
+        </div>
+        <!-- Story media — warm (TIS "us"). Photo: visax-jSN1GcL46U0 (amber), web-optimized. -->
+        <figure class="about-story__media about-figure about-figure--photo about-figure--warm about-figure--tall" data-reveal data-reveal-d="1">
+          <img src="/assets/imagery/about-story-warm.jpg" alt="" loading="lazy" decoding="async">
+          <figcaption class="about-figure__label" data-zh="我們的故事">Our story</figcaption>
+        </figure>
+      </div>
+
+      <!-- Three ways we unlock value — para 4 restructured into a card triad.
+           Intro sentence + card-3 body are verbatim locked copy (positioning.md §4);
+           card-1 & card-2 bodies are tight derived labels — review against §4 before deploy. -->
+      <div class="about-ways" data-reveal>
+        <p class="about-ways__intro" data-zh="圍繞這個核心，我們以三種方式釋放專利的價值：">Around this core, we unlock the value of patents in three ways:</p>
+        <div class="about-ways__grid">
+          <article class="about-way">
+            <span class="about-way__n">01</span>
+            <h3 class="about-way__title" data-zh="評級與情報">Rating &amp; intelligence</h3>
+            <p class="about-way__body" data-zh="以 SABCD 評級引擎為核心，呈現每件專利的強度與情報。">Strength scoring and signal on every patent — the SABCD engine at the core.</p>
+          </article>
+          <article class="about-way">
+            <span class="about-way__n">02</span>
+            <h3 class="about-way__title" data-zh="授權媒合">Licensing marketplace</h3>
+            <p class="about-way__body" data-zh="精選專利組合的非專屬授權市場。">A non-exclusive marketplace for curated patent bundles.</p>
+          </article>
+          <article class="about-way">
+            <span class="about-way__n">03</span>
+            <h3 class="about-way__title" data-zh="自有資本與自有專利">Capital &amp; our own patents</h3>
+            <p class="about-way__body" data-zh="以自有資本與自有專利投入我們深具信心的技術，為被投企業築起隱形的智財護城河。">Backing technologies we believe in with our own capital and patents — an invisible IP moat for the companies we invest in.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Cornerstone — para 5, verbatim locked copy. -->
+      <div class="about-cornerstone" data-reveal>
+        <p data-zh="專利往往是企業最大、卻最被低估的資產。當它的價值能被一致地衡量，它就能被信任、被交易、被投資。這是 TIS 一切業務的基石。">Patents are often a company's largest yet most undervalued asset. When their value can be measured consistently, they can be trusted, traded, and invested. This is the cornerstone of everything TIS does.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ 02 · Strategic partner — Innovue.  Credit block (copy assembled from ║
+       ║ locked facts only: shareholder, co-developed engine, 50 indicators,  ║
+       ║ 180M daily-synced DB, S–D) paired with the stats frame as proof.     ║
+       ║ Count-up on scroll (.counter, site.js).                              ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section about-partner" aria-labelledby="about-partner-eyebrow">
+    <div class="container">
+      <div class="about-partner__intro">
+        <div class="about-partner__text" data-reveal>
+          <p class="pos-num" id="about-partner-eyebrow" data-zh="02 / 策略夥伴">02 / Strategic partner</p>
+          <h2 class="about-partner__title" data-zh="與 Innovue 共同打造。">Built with Innovue.</h2>
+          <p class="about-partner__body" data-zh="我們的股東與評級夥伴。我們與 Innovue 共同開發專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是全球第三大、收錄一億八千萬筆並每日與官方同步的專利資料庫。">Our shareholder and rating partner. We co-developed the patent-strength rating engine with Innovue — scoring every patent S to D across fifty indicators, against the world's third-largest patent index of 180 million records synced daily with official offices.</p>
+        </div>
+        <!-- Innovue media — cool / blue. Photo: visax-8oni9vTWj7U (blue), web-optimized. -->
+        <figure class="about-figure about-figure--photo about-figure--cool" data-reveal data-reveal-d="1">
+          <img src="/assets/imagery/about-innovue-cool.jpg" alt="" loading="lazy" decoding="async">
+          <figcaption class="about-figure__label">Innovue</figcaption>
+        </figure>
+      </div>
+      <div class="stats-frame" data-reveal>
+        <div class="stats-3up">
+          <div class="stat">
+            <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
+            <h2 class="stat-num"><span class="counter" data-target="180">0</span>M</h2>
+            <p class="stat-body" data-zh-html data-zh="Innovue 專屬資料庫所收錄的專利數 - <strong>每日</strong>與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。">patents in Innovue's proprietary database — synced <strong>daily</strong> with official patent offices. World's 3rd-largest patent index — searches that miss no trace.</p>
+          </div>
+          <div class="stat">
+            <p class="stat-eyebrow">Patent Strength Score — PSS</p>
+            <h2 class="stat-num"><span class="counter" data-target="50">0</span></h2>
+            <p class="stat-body" data-zh="項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。">indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers.</p>
+          </div>
+          <div class="stat">
+            <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
+            <h2 class="stat-num"><span class="counter" data-target="100">0</span>+</h2>
+            <p class="stat-body" data-zh="專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。">jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning.</p>
+          </div>
+        </div>
+        <div class="stats-frame-foot">
+          <span>Powered by</span>
+          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Board of Directors  —  moved here from the homepage About section.  ║
+       ║ Five members on one line, bracketed by full-width hairlines with a   ║
+       ║ centered straddling title. .board-photo gradient is the fallback.    ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section about" aria-label="Board of Directors">
+    <div class="container">
+      <p class="pos-num about-seq" data-zh="03 / 董事會成員">03 / Board of Directors</p>
+      <div class="board-roster" role="group" aria-label="Board of Directors">
+        <span class="board-roster__title" data-zh="董事會成員">Board of Directors</span>
+        <!-- Two-part interactive showcase: staggered photo grid (left) + name list
+             (right). Hovering / focusing either side highlights the matching member
+             on both sides via shared data-member ids (see board interaction in site.js). -->
+        <div class="board-team">
+          <!-- Photos: 1 / 2 / 2 staircase stepping up to the right. Chairman
+               Ming-I Peng sits in the single left slot. -->
+          <div class="board-grid">
+            <div class="board-col board-col--low">
+              <div class="board-card" data-member="ming-i-peng" tabindex="0" role="img" aria-label="Ming-I Peng"><img src="/assets/imagery/board/ming-i-peng.png" alt="" loading="lazy" decoding="async"></div>
+            </div>
+            <div class="board-col board-col--mid">
+              <div class="board-card" data-member="ray-wu" tabindex="0" role="img" aria-label="Ray Wu"><img src="/assets/imagery/board/ray-wu.png" alt="" loading="lazy" decoding="async"></div>
+              <div class="board-card" data-member="jackson-hwang" tabindex="0" role="img" aria-label="Jackson Hwang"><img class="board-card__img--jackson" src="/assets/imagery/board/jackson-hwang.png" alt="" loading="lazy" decoding="async"></div>
+            </div>
+            <div class="board-col">
+              <div class="board-card" data-member="eric-huang" tabindex="0" role="img" aria-label="Dr. Eric Huang"><img src="/assets/imagery/board/eric-huang.png" alt="" loading="lazy" decoding="async"></div>
+              <div class="board-card" data-member="ming-cheng" tabindex="0" role="img" aria-label="Ming Cheng"><img src="/assets/imagery/board/ming-cheng.png" alt="" loading="lazy" decoding="async"></div>
+            </div>
+          </div>
+          <!-- Names: all five -->
+          <div class="board-list" role="list">
+            <div class="board-row" data-member="ming-i-peng" role="listitem" tabindex="0">
+              <span class="board-dot" aria-hidden="true"></span>
+              <span class="board-name">Ming-I Peng</span>
+              <span class="board-role" data-zh="董事長 / 董事">Chairman / Board Director</span>
+            </div>
+            <div class="board-row" data-member="ray-wu" role="listitem" tabindex="0">
+              <span class="board-dot" aria-hidden="true"></span>
+              <span class="board-name">Ray Wu</span>
+              <span class="board-role" data-zh="董事">Board Director</span>
+            </div>
+            <div class="board-row" data-member="eric-huang" role="listitem" tabindex="0">
+              <span class="board-dot" aria-hidden="true"></span>
+              <span class="board-name">Dr. Eric Huang</span>
+              <span class="board-role" data-zh="董事">Board Director</span>
+            </div>
+            <div class="board-row" data-member="jackson-hwang" role="listitem" tabindex="0">
+              <span class="board-dot" aria-hidden="true"></span>
+              <span class="board-name">Jackson Hwang</span>
+              <span class="board-role" data-zh="董事">Board Director</span>
+            </div>
+            <div class="board-row" data-member="ming-cheng" role="listitem" tabindex="0">
+              <span class="board-dot" aria-hidden="true"></span>
+              <span class="board-name">Ming Cheng</span>
+              <span class="board-role" data-zh="監察人 / 董事">Supervisor / Board Director</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Get in touch  —  page-local contact form. Markup mirrors the         ║
+       ║ homepage #contact section verbatim so it inherits styles.css +       ║
+       ║ site.js (contact-form submit → contact-success; brand-select).       ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="contact" id="contact" aria-labelledby="about-contact-heading">
+    <div class="container contact-grid">
+      <aside class="contact-left" data-reveal>
+        <h2 id="about-contact-heading" class="grad-text-silver-solid" data-zh="與我們聯絡。">Get in touch.</h2>
+        <a href="mailto:contact@tisglobalinc.com" class="contact-email">contact@tisglobalinc.com</a>
+      </aside>
+
+      <div class="contact-right" data-reveal data-reveal-d="1">
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="contact-row">
+            <div class="field">
+              <label for="contact-name" data-zh="姓名">Full Name</label>
+              <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+            </div>
+            <div class="field">
+              <label for="contact-title" data-zh="職稱">Job Title</label>
+              <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="field">
+              <label for="contact-email" data-zh="電子郵件">Email Address</label>
+              <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
+            </div>
+            <div class="field">
+              <label for="contact-phone" data-zh="電話">Phone Number</label>
+              <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+886 2 1234 5678" />
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="field">
+              <label for="contact-org" data-zh="機構">Organization</label>
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+            </div>
+            <div class="field">
+              <label for="contact-topic-trigger" data-zh="諮詢類型">Inquiry Type</label>
+              <div class="brand-select brand-select--underline" id="contact-topic" data-name="topic">
+                <button id="contact-topic-trigger" class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="brand-select-label placeholder" data-zh="請選擇…">Select…</span>
+                  <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+                </button>
+                <div class="brand-select-menu" role="listbox">
+                  <div class="brand-select-item" role="option" data-value="licensing"><span data-zh="專利授權">Patent Licensing</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="rating"><span data-zh="專利評級">Patent Rating</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="evaluation-report"><span data-zh="專利評估報告">Patent Evaluation Report</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="industry-report"><span data-zh="產業報告">Industry Report</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="press"><span data-zh="媒體採訪">Media Interview</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                  <div class="brand-select-item" role="option" data-value="general"><span data-zh="其他">Other</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
+            <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+          </div>
+          <div class="contact-actions">
+            <dl class="contact-hours" aria-label="Office hours">
+              <dt data-zh="台北 (UTC+8)">Taipei (UTC+8)</dt><dd data-zh="週一至週五">Mon–Fri</dd>
+              <dt data-zh="服務時間">Office hours</dt><dd>09:00 – 18:00</dd>
+            </dl>
+            <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
+          </div>
+        </form>
+
+        <div class="contact-success" id="contact-success" role="status" aria-live="polite">
+          <span class="check-pill" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <div>
+            <h3 data-zh="訊息已送出。">Message sent.</h3>
+            <p data-zh="已收到您的諮詢。我們將於 1–2 個工作天內回覆。">Inquiry received. We'll be in touch within 1–2 business days.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Footer  —  components.md §Footer                                    ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-nl-block" id="footer-nl-block">
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <form class="footer-nl-form" id="footer-nl-form" novalidate>
+              <input type="email" placeholder="Your Email" aria-label="Email address" required />
+              <button type="submit" aria-label="Subscribe">
+                <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </form>
+          </div>
+          <div class="footer-logo-row">
+            <span class="footer-logo" aria-hidden="true"></span>
+            <span class="footer-divider" aria-hidden="true"></span>
+            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+          </div>
+          <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 data-zh="產品">Products</h4>
+            <ul>
+              <li><a href="/product/licensing/" data-zh="泰然專利防護網">Licensing Platform</a></li>
+              <li><a href="/product/signal/" data-zh="泰然專利強度評級系統">Signal Platform</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="公司">Company</h4>
+            <ul>
+              <li><a href="/about/" data-zh="關於">About</a></li>
+              <li><a href="/#reports" data-zh="報告">Reports</a></li>
+              <li><a href="/#press" data-zh="新聞">Press</a></li>
+              <li><a href="/#contact" data-zh="聯絡">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="法律">Legal</h4>
+            <ul>
+              <li><a href="#" data-zh="服務條款">Terms</a></li>
+              <li><a href="#" data-zh="隱私政策">Privacy</a></li>
+              <li><a href="#" data-zh="揭露聲明">Disclosures</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-zh="聯絡">Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></li>
+            <li><a href="#" data-zh="台北 · 台灣">Taipei, Taiwan</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</main>
+
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
+<script src="/assets/site.js" defer></script>
+
+</body>
+</html>

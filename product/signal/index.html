@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=12">
+<link rel="stylesheet" href="/assets/styles.css?v=16">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -1941,116 +1941,104 @@ a, button,
   overflow: hidden;
 }
 
-/* ── step pills ── */
-.hiw-steps ol {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 8px;
-  justify-content: center;
+/* ── flow: chips + arrows ── */
+.vb-eyebrow {
+  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-tertiary); margin: 0 0 8px;
 }
-.hiw-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 13px 6px 8px;
-  border: 0; border-radius: 9999px;
-  background: var(--surface-tertiary);
-  cursor: pointer;
-  font: inherit; font-size: 13px; font-weight: 600;
-  color: var(--text-tertiary);
-  transition: color var(--tis-hover-transition), background var(--tis-hover-transition), transform var(--tis-hover-transition);
-}
-.hiw-pill:hover { color: var(--text-secondary); }
-.hiw-pill.is-done { color: var(--text-secondary); }
-.hiw-pill.is-current {
-  color: var(--text-primary);
-  background: var(--surface-page);
-  box-shadow: var(--shadow-low, 0 1px 2px rgba(0,0,0,0.06));
-  transform: scale(1.04);
-}
-.hiw-dot {
-  position: relative;
+.vb-num {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 18px; height: 18px; border-radius: 9999px;
-  background: var(--border-secondary); color: var(--text-tertiary);
-  font-size: 11px; font-weight: 700; line-height: 1;
+  width: 22px; height: 22px; border-radius: 9999px;
+  background: var(--text-primary); color: var(--surface-page);
+  font-size: 12px; font-weight: 700; margin: 0 0 12px;
 }
-.hiw-pill.is-current .hiw-dot { background: var(--text-primary); color: var(--surface-page); }
-.hiw-pill.is-done .hiw-dot    { background: var(--text-secondary); color: var(--surface-page); }
-.hiw-dot .hiw-check { width: 11px; height: 11px; display: none; }
-.hiw-pill.is-done .hiw-num   { display: none; }
-.hiw-pill.is-done .hiw-check { display: block; }
+.vb-shot {
+  margin-top: 14px; flex: 1; min-height: 78px;
+  border: 1px solid var(--border-primary); border-radius: 10px;
+  background: var(--surface-tertiary);
+}
+.vb-foot { display: flex; justify-content: flex-end; margin-top: clamp(20px, 2.4vw, 30px); }
 
-/* ── stage + panels ── */
-.hiw-stage {
-  position: relative;
-  margin-top: clamp(20px, 2.4vw, 32px);
-  min-height: clamp(340px, 36vw, 460px);
-  cursor: pointer;
+.vb2-flow { display: flex; align-items: stretch; gap: 12px; }
+.vb2-chip {
+  flex: 0 0 auto; width: clamp(122px, 12vw, 156px);
+  border: 1px solid var(--border-primary); border-radius: 16px;
+  background: var(--surface-tertiary);
+  padding: clamp(14px, 1.5vw, 20px);
+  display: flex; flex-direction: column; justify-content: center; gap: 7px;
 }
-.hiw-panel { display: none; }
-.hiw-panel.is-active { display: block; }
-.hiw-title {
-  font-size: clamp(18px, 1.8vw, 24px);
-  font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
-  color: var(--text-primary); margin: 0;
+.vb2-chip .vb-eyebrow { margin: 0; }
+.vb2-chip .vb2-val { font-size: 15px; font-weight: 700; color: var(--text-primary); line-height: 1.3; margin: 0; }
+.vb2-chip .vb2-sub { font-size: 12px; color: var(--text-tertiary); margin: 0; }
+.vb2-box {
+  flex: 1 1 0; min-width: 0; position: relative;
+  border: 1.5px dashed var(--border-secondary); border-radius: 18px;
+  background: var(--surface-page);
+  padding: clamp(16px, 1.6vw, 20px);
 }
-.hiw-desc {
-  font-size: 14px; line-height: 1.5;
-  color: var(--text-secondary);
-  margin: 8px 0 0; max-width: 62ch;
-}
-.hiw-shotwrap {
-  position: relative;
-  margin: clamp(18px, 2vw, 26px) auto 0;
-  max-width: 760px;
-  aspect-ratio: 2 / 1;
-  border: 1px solid var(--border-primary);
-  border-radius: 16px;
-  overflow: hidden;
-  background: #FFFFFF;
-}
-
-/* base step-visual box (product-UI internals stripped to placeholders) */
-.hiw-screen {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; justify-content: center; gap: 14px;
-  padding: 26px 30px;
+.vb2-stages { display: flex; align-items: stretch; gap: 10px; }
+.vb2-stage {
+  flex: 1 1 0; min-width: 0;
+  border: 1px solid var(--border-primary); border-radius: 14px;
   background: var(--surface-secondary);
-  font-family: 'Urbanist', sans-serif;
-  color: var(--text-primary);
-  line-height: 1.4;
+  padding: clamp(14px, 1.4vw, 18px);
+  display: flex; flex-direction: column;
+}
+.vb2-stage .vb-num { background: var(--text-primary); color: var(--surface-page); }
+.vb2-stage h4 { font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
+.vb2-stage p  { font-size: 12px; color: var(--text-secondary); margin: 6px 0 0; line-height: 1.45; }
+.vb2-stage .vb-shot { margin-top: 12px; min-height: 64px; }
+.vb2-mini-arrow { flex: 0 0 auto; align-self: center; color: var(--text-tertiary); display: inline-flex; }
+.vb2-mini-arrow svg { width: 16px; height: 16px; }
+.vb2-arrow { flex: 0 0 auto; align-self: center; color: var(--text-tertiary); display: inline-flex; }
+.vb2-arrow svg { width: 18px; height: 18px; }
+@media (max-width: 920px) {
+  .vb2-flow { flex-direction: column; }
+  .vb2-chip { width: auto; }
+  .vb2-arrow { transform: rotate(90deg); align-self: center; }
+}
+@media (max-width: 620px) {
+  .vb2-stages { flex-direction: column; }
+  .vb2-mini-arrow { transform: rotate(90deg); }
 }
 
-@media (max-width: 800px) {
-  .hiw-shotwrap { aspect-ratio: auto; }
-  .hiw-screen { position: static; inset: auto; padding: 20px; }
-}
-.hiw-checks {
-  list-style: none; margin: clamp(16px, 1.8vw, 22px) 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px;
-}
-.hiw-checks li {
-  display: flex; align-items: flex-start; gap: 8px;
-  font-size: 13px; line-height: 1.4; color: var(--text-secondary);
-}
-.hiw-checks .hiw-ck { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--text-tertiary); }
+/* ── engine-output mini-visuals ── */
+.vb2-viz { padding: 8px; overflow: hidden; }
+.vb2-viz--bars { display: flex; align-items: flex-end; gap: 4px; }
+.vb2-viz--bars span { flex: 1; height: var(--h); min-height: 3px; border-radius: 2px 2px 0 0; background: var(--text-primary); }
+.vb2-viz--bars span.mut { background: var(--text-tertiary); }
+.vb2-viz--dots { position: relative; }
+.vb2-viz--dots::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 11px; height: 1px; background: var(--border-primary); }
+.vb2-viz--dots i { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--text-tertiary); opacity: .45; transform: translate(-50%, -50%); }
+.vb2-viz--dots i.is-you { width: 11px; height: 11px; background: var(--text-primary); opacity: 1; box-shadow: 0 0 0 3px var(--surface-secondary), 0 0 0 4px var(--text-primary); }
+.vb2-viz--tier { display: flex; align-items: center; gap: 12px; }
+.vb2-tier { font-size: clamp(26px, 3vw, 34px); font-weight: 800; line-height: 1; color: var(--score-a); background: var(--score-a-bg); border: 2px solid var(--score-a); border-radius: 10px; padding: 5px 12px; }
+.vb2-tier-meta { display: flex; flex-direction: column; gap: 3px; }
+.vb2-tier-meta b { font-size: 15px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.vb2-tier-meta small { font-family: 'Inconsolata', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.04em; color: var(--text-tertiary); }
 
-/* entrance animation — re-triggered on each step change */
-@keyframes hiwIn {
-  from { opacity: 0; transform: translateY(8px) scale(0.99); }
-  to   { opacity: 1; transform: none; }
+/* ── flow motion — bars grow in, your dot pulses, arrows nudge along ── */
+@media (prefers-reduced-motion: no-preference) {
+  .vb2-viz--bars span { animation: vb2bar 900ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .vb2-viz--bars span:nth-child(2) { animation-delay: 60ms; }
+  .vb2-viz--bars span:nth-child(3) { animation-delay: 120ms; }
+  .vb2-viz--bars span:nth-child(4) { animation-delay: 180ms; }
+  .vb2-viz--bars span:nth-child(5) { animation-delay: 240ms; }
+  .vb2-viz--bars span:nth-child(6) { animation-delay: 300ms; }
+  .vb2-viz--bars span:nth-child(7) { animation-delay: 360ms; }
+  .vb2-viz--bars span:nth-child(8) { animation-delay: 420ms; }
+  .vb2-viz--dots i.is-you { animation: vb2you 2.2s ease-in-out infinite; }
+  .vb2-arrow svg, .vb2-mini-arrow svg { animation: vb2flow 1.8s ease-in-out infinite; }
 }
-.hiw-panel.hiw-anim { animation: hiwIn 380ms cubic-bezier(0.23, 1, 0.32, 1); }
-
-.hiw-checks { padding-right: clamp(150px, 17vw, 210px); }
-.hiw-cta { position: absolute; right: 0; bottom: 0; white-space: nowrap; }
-
-@media (max-width: 720px) {
-  .hiw-checks { grid-template-columns: 1fr; gap: 10px; padding-right: 0; }
-  .hiw-stage { min-height: 0; }
-  .hiw-cta { position: static; width: 100%; margin-top: 16px; }
+@keyframes vb2bar { from { height: 0; } to { height: var(--h); } }
+@keyframes vb2you {
+  0%, 100% { box-shadow: 0 0 0 3px var(--surface-secondary), 0 0 0 4px var(--text-primary); }
+  50%      { box-shadow: 0 0 0 5px var(--surface-secondary), 0 0 0 6px var(--text-primary); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .hiw-panel.hiw-anim { animation: none; }
-  .hiw-pill { transition: none; }
+@keyframes vb2flow {
+  0%, 100% { transform: translateX(0); opacity: .55; }
+  50%      { transform: translateX(3px); opacity: 1; }
 }
 
 /* ===== Deliverables — licensing --feature grid (6 concise cards in a 3-col
@@ -2106,6 +2094,271 @@ a, button,
   padding-left: 0;
 }
 .deliverable-grid--feature .deliverable-card p a { color: inherit; }
+
+/* Pricing — spacing for the demoted "Subscribe monthly" sub-block */
+.prod-ref-table-title--mt { margin-top: clamp(40px, 5vw, 64px); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RXSCROLL — scroll-driven report walkthrough (Signal index hero, page-only).
+   A tall section pins a 100vh stage; a JS controller (see end of body) scrubs
+   three acts off scroll progress. Reuses .rcs-card/.rcs-img/.rcs-sheen base
+   from styles.css for the SABCD deck; the stage is [data-rxstage] (NOT
+   .rcs-stage) so the hover splay + site.js sheen tracker never bind here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rxscroll {
+  position: relative;
+  height: 440vh;                 /* scroll runway — reports travel down; methodology copy freezes mid-way */
+  background: var(--surface-page);
+}
+.rxscroll-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: clip;
+  isolation: isolate;            /* local stacking context for the z-ramp */
+}
+/* Reuse the pillar gradient backdrops; they sit behind everything in the pin. */
+.rxscroll-pin .hero-warm,
+.rxscroll-pin .hero-silver,
+.rxscroll-pin .hero-signal { z-index: 0; }
+/* Reveal the Signal blue gradient + grid behind the whole pinned walkthrough.
+   .hero-signal's gradient (background) and grid (::before) live in styles.css;
+   they default to opacity:0 and are normally activated by .hero[data-active-pillar].
+   The rxscroll hero is .rxscroll (not .hero), so re-declare the activation here. */
+.rxscroll[data-active-pillar="signal"] .hero-signal { opacity: 1; }
+/* Bottom fade so the pin dissolves into the Deliverables section below. */
+.rxscroll-pin::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 22%;
+  background: linear-gradient(180deg, transparent 0%, var(--surface-page) 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ── Copy layer — centered above the stack, three crossfading acts ───────── */
+.rxscroll-copy {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;                   /* span the pin so Act-3's `bottom`-anchored copy references the viewport floor (not a 0-height box) */
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 5;                     /* above the pin's bottom fade (z4) so Act-3's bottom-anchored copy isn't washed out */
+  text-align: center;
+  pointer-events: none;          /* re-enabled per active act */
+}
+.rxcopy .pillar-title { font-size: clamp(30px, 4.4vw, 50px); }
+.rxcopy {
+  position: absolute;
+  left: 50%;
+  top: 26vh;                     /* anchor; JS scrolls each act up/in via translateY */
+  width: min(820px, 92vw);
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;            /* JS toggles; keeps off-act copy out of a11y tree via aria-hidden too */
+  will-change: opacity, transform;
+}
+.rxcopy.is-active { visibility: visible; }
+.rxcopy > * { margin-left: auto; margin-right: auto; }
+.rxcopy .pillar-title { max-width: 16ch; }
+.rxcopy .pillar-sub { max-width: 56ch; }
+/* Restore the Signal pillar's blue gradient on the title em (these copy blocks
+   are not inside .pillar[data-pillar="signal"], so re-declare the same stops). */
+.rxcopy .pillar-title em {
+  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+[data-theme="dark"] .rxcopy .pillar-title em {
+  background: linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+.rxcopy .pillar-actions { justify-content: center; pointer-events: auto; }
+/* Act 1 — single-line headline, ~2-line sub. */
+.rxcopy[data-act="1"] { width: min(940px, 94vw); }
+.rxcopy[data-act="1"] .pillar-title { max-width: none; font-size: 48px; }
+.rxcopy[data-act="1"] .pillar-sub { max-width: 72ch; font-size: 17px; }
+/* Pinned: hold the copy in a fixed band between the nav and the low-anchored report
+   deck, and center it vertically inside that band (equidistant top/bottom). */
+.rxscroll:not(.is-static) .rxcopy[data-act="1"] {
+  top: 0;                    /* band start — pin-relative 0 IS the announcement-bar bottom at scroll-top */
+  height: 43vh;              /* band end — the report top after the 1.95 shrink (= equal top/bottom gaps) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+/* Neutralize child margins so the centered stack is exactly the visible text. */
+.rxscroll:not(.is-static) .rxcopy[data-act="1"] > * { margin-top: 0; margin-bottom: 0; }
+
+/* Act 2 (Methodology) — headline + subtext + CTA LOCKED as one top-left stack
+   (left-aligned, CTA directly beneath the copy), sitting above the centered fan. */
+.rxscroll:not(.is-static) .rxcopy[data-act="2"] {
+  top: 14vh;                     /* top-left, clear of the fixed 64px nav */
+  width: min(1340px, 96vw);
+  text-align: left;
+}
+.rxscroll:not(.is-static) .rxcopy[data-act="2"] > * { margin-left: 0; margin-right: auto; }
+.rxscroll:not(.is-static) .rxcopy[data-act="2"] .pillar-title { max-width: none; font-size: 48px; }
+.rxscroll:not(.is-static) .rxcopy[data-act="2"] .pillar-sub { max-width: 84ch; font-size: 17px; margin-top: 16px; }
+.rxscroll:not(.is-static) .rxcopy[data-act="2"] .pillar-actions { margin-top: 24px; justify-content: flex-start; }
+
+/* Act 3 (Brief vs Pro) — split: hero + subtext bottom-left, CTA bottom-right, both
+   sitting under the two side-by-side editions. */
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] {
+  top: auto;
+  bottom: 7vh;                   /* under the centered editions */
+  width: min(1340px, 96vw);
+  text-align: left;
+}
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] > * { margin-left: 0; margin-right: auto; }
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] .pillar-title { max-width: none; font-size: 48px; }
+/* Two headline halves reveal in separate beats (JS-driven) — inline-block to accept a transform. */
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] .pillar-title span,
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] .pillar-title em { display: inline-block; will-change: opacity, transform; }
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] .pillar-sub { max-width: 60ch; font-size: 17px; margin-top: 16px; }
+.rxscroll:not(.is-static) .rxcopy[data-act="3"] .pillar-actions {
+  position: absolute;
+  right: 0;
+  bottom: 0;                     /* baseline-aligned with the subtext, bottom-right */
+  margin: 0;
+  justify-content: flex-end;
+}
+
+/* Act 2b — bottom row paired with the methodology copy: "Powered by Innovue" (left) and the
+   "See the methodology" CTA (right), on one baseline below the full-height fan. */
+.rxscroll:not(.is-static) .rxcopy[data-act="2b"] {
+  top: auto;
+  bottom: 8vh;                   /* below the report wall, clear of the dense middle */
+  width: min(1340px, 96vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  text-align: left;
+}
+.rxscroll:not(.is-static) .rxcopy[data-act="2b"] .pillar-actions { margin: 0; }
+.rxcredit-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.rxcredit-logo { height: 20px; width: auto; display: inline-block; }
+/* Blue wordmark reads on the light hero; recolor to white on the dark hero background. */
+[data-theme="dark"] .rxcredit-logo { filter: brightness(0) invert(1); }
+
+/* ── Stage layer — the SABCD deck + Brief/Pro editions ───────────────────── */
+.rxstage {
+  /* fluid card metrics, mirrored from .rcs-stage in styles.css */
+  --rcs-w: clamp(120px, 18vw, 260px);
+  --rcs-gap: calc(var(--rcs-w) + 8px);
+  --rcs-h: calc(var(--rcs-w) * 0.84);
+  --rcs-rest-scale: 1.95;        /* Act-1 resting deck: sits low, bottom on the floor (JS drives the rest) */
+  --rxe-w: var(--rcs-w);                 /* match the Act-2 report card width */
+  --rxe-h: calc(var(--rxe-w) * 1.331);   /* …and its portrait aspect, so the FULL report shows */
+  position: absolute;
+  left: 50%;
+  top: 50%;                      /* JS drives vertical drift (reports travel down) */
+  width: min(1340px, 96vw);
+  height: clamp(420px, 46vw, 600px);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.rxstage .rcs-deck { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+/* JS writes inline transforms each frame; disable the inherited splay transition
+   so scrubbing is 1:1 with scroll (no lag). */
+.rxstage .rcs-card {
+  transition: none;
+  /* keep the shared `transform-origin: center bottom` so the Act-1 rest deck sits where it did
+     (height-grow stays centered via the per-frame translate(-50%,-50%), independent of origin). */
+  border-radius: 6px;              /* match the near-square source PNG (shared .rcs-card is 14px, kept for the hover deck) */
+  /* Hero bottom-fade — thinner band than the shared mask so the front S body (incl. metrics)
+     reads SOLID and the deck only dissolves at its very bottom edge. JS lifts this on scroll. */
+  -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 80%, transparent 100%);
+}
+
+/* Brief / Pro editions — single large report look, bottom-masked like .rcs-card. */
+.rxedition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--rxe-w);
+  height: var(--rxe-h);
+  margin: 0;
+  border-radius: 6px;              /* match the near-square source PNG, consistent with the deck cards */
+  overflow: hidden;
+  background: #fff;
+  transform: translate(-50%, -50%) scale(0.92);
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+  /* Match the Act-2 report card: solid body, no drop-shadow (Act 3 reports read flat). */
+}
+.rxedition img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  display: block;
+}
+
+/* ── Static fallback — reduced-motion or <900px: no pin, content stacked ─── */
+.rxscroll.is-static { height: auto; }
+.rxscroll.is-static .rxscroll-pin { position: static; height: auto; overflow: visible; padding: 56px 0 0; }
+.rxscroll.is-static .rxscroll-pin::after { display: none; }
+.rxscroll.is-static .rxscroll-copy {
+  position: static;
+  transform: none;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  align-items: center;
+}
+.rxscroll.is-static .rxcopy {
+  position: static;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+.rxscroll.is-static .rxstage {
+  position: static;
+  transform: none;
+  width: 100%;
+  height: auto;
+  margin: 40px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+}
+.rxscroll.is-static .rcs-deck { position: static; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.rxscroll.is-static .rcs-card {
+  position: static;
+  top: auto; left: auto;
+  transform: none !important;
+  width: clamp(120px, 28vw, 180px);
+  height: calc(clamp(120px, 28vw, 180px) * 0.84);
+}
+.rxscroll.is-static .rxedition {
+  position: static;
+  top: auto; left: auto;
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  width: clamp(190px, 40vw, 320px);
+  height: calc(clamp(190px, 40vw, 320px) * 1.331);   /* portrait, matches the Act-2 report */
+}
 </style>
 </head>
 
@@ -2336,34 +2589,207 @@ a, button,
     </button>
   </div>
 
-  <!-- Hero — homepage chrome (gradient backdrop + 32px grid + .pillar layout),
-       single-slide, cool gradient for the Signal pillar. -->
-  <section class="hero" aria-label="Signal hero" data-active-pillar="signal">
-    <div class="hero-warm" aria-hidden="true"></div>
-    <div class="hero-silver" aria-hidden="true"></div>
-    <div class="hero-signal" aria-hidden="true"></div>
+  <!-- Hero — scroll-driven report walkthrough (rxscroll). A pinned stage scrubs
+       three acts as you scroll: (1) tight SABCD deck + hero copy → (2) deck fans
+       into the S·A·B·C·D row + methodology copy → (3) S/A/C/D fade, the centred B report
+       stays, then Pro fans out beside it into a centred pair. The report-stack
+       visual reuses .rcs-card/.rcs-img/.rcs-sheen from styles.css, but the index
+       stage is [data-rxstage] (NOT .rcs-stage) so the sample-report hover splay and
+       the site.js sheen tracker never bind here. Motion is JS-driven per-frame
+       (see the rxscroll controller near the end of body). Reduced-motion / <900px viewports
+       fall back to .is-static (no pin, all content stacked). -->
+  <section class="rxscroll" data-rxscroll aria-label="Signal report walkthrough" data-active-pillar="signal">
+    <div class="rxscroll-pin">
+      <div class="hero-warm" aria-hidden="true"></div>
+      <div class="hero-silver" aria-hidden="true"></div>
+      <div class="hero-signal" aria-hidden="true"></div>
 
-    <div class="container hero-inner">
-      <!-- Hero copy per chinese-copy-direction.md slide 29 (Miko-provided swaps 2026-05-31).
-           ZH pivots to the law-vs-strength wedge headline + Peer-Cohort-Snapshot subhead.
-           EN preserved structurally (`Grade IP in 30 minutes` / `Submit a patent number…`) —
-           will diverge in meaning until Miko-lock; flagged inline. Eyebrow cleared in ZH only. -->
-      <article class="pillar" data-pillar="signal">
-        <p class="pillar-eyebrow" data-zh="">Token-Based Valuation · SABCD</p>
-        <h1 class="pillar-title">
-          <span data-zh="律師告訴你「合不合法」">Lawyers tell you it's legal.</span><br>
-          <em data-zh="我們告訴你專利「強不強」">Signal tells you it's strong.</em>
-        </h1>
-        <p class="pillar-sub" data-zh="提交一個專利號，Signal 回傳 SABCD 評級與同產業百分位排名——Brief 30 分鐘到手，不必耗上一週的分析師工時。">Submit a patent number. Signal returns an SABCD verdict and a peer-percentile rank against its industry — the Brief in 30 minutes, not a week of analyst time.</p>
-        <p class="pillar-sub pillar-sub--credit">
-          <span data-zh="Powered by">Powered by</span>
-          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
-        </p>
-        <div class="pillar-actions">
-          <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">See a sample report</a>
-          <a href="#contact" class="btn btn-secondary" data-zh="聯絡業務">Talk to sales</a>
+      <!-- COPY LAYER — three crossfading blocks above the stack. -->
+      <div class="rxscroll-copy container">
+
+        <!-- Act 1 — hero copy (speed-led; brand-voice §3 anti-hype: "30 minutes" anchor
+             carries speed, no vague "fast"). Single CTA. ZH on headline + sub is DRAFT,
+             pending review; eyebrow data-zh left empty as in the prior hero. -->
+        <article class="rxcopy is-active" data-act="1">
+          <h1 class="pillar-title">
+            <span data-zh="一份專利報告，">A patent report in</span> <em data-zh="30 分鐘到手。">30 minutes.</em>
+          </h1>
+          <p class="pillar-sub" data-zh="提交一個專利號，Signal 回傳對比同產業的 SABCD 評級——專利強度、周邊布局，以及投資團隊可據以行動的結論。">Submit a patent number. Signal returns an SABCD tier ranked against its industry — strength, landscape, and a verdict a deal team can act on.</p>
+          <div class="pillar-actions">
+            <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">See a sample report</a>
+          </div>
+        </article>
+
+        <!-- Act 2 — methodology. Left-aligned headline + sub (top-left); CTA pinned
+             bottom-right by the fan's D report. Revealed once the SABCD fan completes
+             (timing in the rxscroll controller). ZH is DRAFT, pending review. -->
+        <article class="rxcopy" data-act="2" aria-hidden="true">
+          <h2 class="pillar-title">
+            <span data-zh="你的專利。">Your Patent.</span> <em data-zh="一份評級報告">One Graded Report</em>
+          </h2>
+          <p class="pillar-sub" data-zh="你的專利會得到一個字母評級——即 Patent Strength Score，由橫跨 8 大加權支柱的 50 項量化指標構成，並對標同產業專利。">Your patent receives one letter grade — its Patent Strength Score, built from 50 quantitative indicators across 8 weighted pillars and ranked against industry peers.</p>
+        </article>
+
+        <!-- Act 2b — Innovue attribution micro-beat. Its own scroll step: fades in once the
+             methodology copy settles, holds through the dwell, leaves with Act 2. "Powered by
+             Innovue" is the only brand-sanctioned credit phrasing (visual-guide §Innovue
+             Co-Branding) — the wordmark logo IS the "Innovue". "Powered by" stays EN in both
+             languages (site convention). -->
+        <aside class="rxcopy rxcredit" data-act="2b" aria-hidden="true">
+          <p class="rxcredit-eyebrow">
+            <span>Powered by</span>
+            <img class="rxcredit-logo" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" width="300" height="41" loading="lazy" decoding="async">
+          </p>
+          <div class="pillar-actions">
+            <a href="/product/signal/methodology.html" class="btn btn-primary" data-zh="看我們的評分方法 →">See the methodology →</a>
+          </div>
+        </aside>
+
+        <!-- Act 3 — editions. Split layout: hero + subtext bottom-left, CTA bottom-right,
+             sitting under the Brief/Pro editions. ZH is DRAFT, pending review. -->
+        <article class="rxcopy" data-act="3" aria-hidden="true">
+          <h2 class="pillar-title">
+            <span data-zh="一個等級，">One grade,</span> <em data-zh="兩種深度">two depths</em>
+          </h2>
+          <p class="pillar-sub" data-zh="Brief 給你 SABCD 等級與 8 大支柱的完整拆解；Pro 再加上投資團隊提交投資委員會所需的「風險與行動」決策層。">Brief gives you the SABCD grade and its 8-pillar breakdown. Pro adds the Risk &amp; Action layer a deal team takes to investment committee.</p>
+          <div class="pillar-actions">
+            <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-zh="檢視報告樣本 →">See a sample report →</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- STACK LAYER — 5 SABCD cards (reuses sample-report deck markup) + the Brief/Pro pair. -->
+      <div class="rxstage" data-rxstage role="img" aria-label="A sample patent report shown across all five SABCD grades, then as Brief and Pro editions">
+        <div class="rcs-deck">
+          <figure class="rcs-card" data-tier="d" style="--i:4">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-d.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="c" style="--i:3">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-c.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="b" style="--i:2">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="a" style="--i:1">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="" width="2272" height="3024" loading="lazy" decoding="async">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
+          <figure class="rcs-card" data-tier="s" style="--i:0">
+            <img class="rcs-img" src="/assets/imagery/signal-reports/signal-pro-report-compact-s.png" alt="Sample SABCD-graded patent report (S tier)" width="2272" height="3024" loading="eager" decoding="async" fetchpriority="high">
+            <span class="rcs-sheen" aria-hidden="true"></span>
+          </figure>
         </div>
-      </article>
+
+        <!-- Pro edition — matches the centred B report (same image/look); it stays hidden behind
+             B through the hold, then fans out to the right. Brief edition is unused in Act 3
+             (the B deck card itself is the front/Brief report); kept only for the static fallback. -->
+        <figure class="rxedition" data-edition="brief">
+          <img src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Signal Brief report" width="2272" height="3024" loading="lazy" decoding="async">
+        </figure>
+        <figure class="rxedition" data-edition="pro">
+          <img src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Signal Pro report" width="2272" height="3024" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── "You do one thing. We handle the rest." — opened-blackbox pipeline ───
+       You give one patent number → PSS scoring → peer grouping → rank + letter →
+       report in your inbox. Reveals the engine; you do nothing in the middle.
+       (Replaced the old asym box + 5-step carousel, 2026-06-24.) -->
+  <section class="section" aria-label="From patent number to a graded report">
+    <div class="container">
+      <div class="howitworks">
+        <h2 class="bp-section-heading" data-zh="你只做一件事，其餘交給我們。">You do one thing. We handle the rest.</h2>
+
+        <div class="hiw-frame">
+          <div class="hiw-carousel">
+            <div class="vb2-flow">
+
+              <div class="vb2-chip">
+                <p class="vb-eyebrow" data-zh="你提供">You give</p>
+                <p class="vb2-val" data-zh="一個專利號">One patent number</p>
+              </div>
+
+              <span class="vb2-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+
+              <div class="vb2-box">
+                <div class="vb2-stages">
+
+                  <div class="vb2-stage">
+                    <span class="vb-num">1</span>
+                    <h4 data-zh="以 PSS 引擎評分">Measured across the PSS</h4>
+                    <p data-zh="拆解為 50 項指標、八大支柱。">50 indicators across 8 pillars.</p>
+                    <div class="vb-shot vb2-viz vb2-viz--bars" aria-hidden="true">
+                      <span style="--h:45%"></span>
+                      <span style="--h:70%"></span>
+                      <span class="mut" style="--h:34%"></span>
+                      <span style="--h:86%"></span>
+                      <span style="--h:58%"></span>
+                      <span class="mut" style="--h:48%"></span>
+                      <span style="--h:95%"></span>
+                      <span style="--h:40%"></span>
+                    </div>
+                  </div>
+
+                  <span class="vb2-mini-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+
+                  <div class="vb2-stage">
+                    <span class="vb-num">2</span>
+                    <h4 data-zh="與同產業同儕分組">Grouped with peers</h4>
+                    <p data-zh="只跟同領域比，而非全球所有專利。">Inside its own field, not vs every patent.</p>
+                    <div class="vb-shot vb2-viz vb2-viz--dots" aria-hidden="true">
+                      <i style="left:9%;top:66%"></i>
+                      <i style="left:17%;top:52%"></i>
+                      <i style="left:24%;top:74%"></i>
+                      <i style="left:32%;top:46%"></i>
+                      <i style="left:40%;top:60%"></i>
+                      <i style="left:48%;top:50%"></i>
+                      <i style="left:55%;top:68%"></i>
+                      <i style="left:63%;top:44%"></i>
+                      <i style="left:71%;top:56%"></i>
+                      <i class="is-you" style="left:82%;top:31%"></i>
+                      <i style="left:90%;top:62%"></i>
+                    </div>
+                  </div>
+
+                  <span class="vb2-mini-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+
+                  <div class="vb2-stage">
+                    <span class="vb-num">3</span>
+                    <h4 data-zh="定出百分位與 SABCD 等級">Ranked — percentile + letter</h4>
+                    <p data-zh="百分位、組內排名與 SABCD 評等。">Percentile, cohort rank, SABCD tier.</p>
+                    <div class="vb-shot vb2-viz vb2-viz--tier" aria-hidden="true">
+                      <span class="vb2-tier">A</span>
+                      <div class="vb2-tier-meta">
+                        <b data-zh="前 8%">Top 8%</b>
+                        <small data-zh="同儕排名 9 / 112">peer rank 9 / 112</small>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <span class="vb2-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+
+              <div class="vb2-chip">
+                <p class="vb-eyebrow" data-zh="你收到">You get</p>
+                <p class="vb2-val" data-zh="報告寄達信箱">A report in your inbox</p>
+                <p class="vb2-sub" data-zh="30 分鐘內">in 30 minutes</p>
+              </div>
+
+            </div>
+
+            <div class="vb-foot">
+              <a href="/product/signal/lobby.html" class="btn btn-primary btn-lg" data-zh="立即開始">Get started</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2473,7 +2899,7 @@ a, button,
               <li data-zh="SABCD 評級 30 分鐘到手——不用等數週。">SABCD grade in 30 minutes — not weeks.</li>
               <li data-zh="可直接附入 IC Memo、Data Room 或 LP 季報。">Drops into your IC Memo, Data Room, or LP quarterly.</li>
             </ul>
-            <a href="#pricing" class="btn btn-primary gbento-cta" data-zh="查看定價">View pricing</a>
+            <a href="/product/signal/methodology.html" class="btn btn-primary gbento-cta" data-zh="看我們如何評分你的專利 →">How we'd score your patent →</a>
           </div>
         </article>
 
@@ -2630,106 +3056,12 @@ a, button,
           </div>
         </article>
       </div>
-    </div>
-  </section>
 
-  <!-- ─── (D) How it works — stepped feature carousel (replaces the accordion) ───
-       5 steps, copy preserved 1:1 from the old accordion. Each .hiw-shotwrap holds
-       an empty placeholder box pending HTML/CSS-mock rebuild. -->
-  <section class="section" aria-label="From patent number to a graded Brief">
-    <div class="container">
-
-      <div class="howitworks">
-        <h2 class="bp-section-heading" data-zh="從專利號到評級 Brief">From patent number to a graded Brief</h2>
-
-        <div class="hiw-frame">
-          <div class="hiw-carousel" data-hiw-carousel>
-
-            <nav class="hiw-steps" aria-label="Progress">
-              <ol role="list">
-                <li><button type="button" class="hiw-pill" data-hiw-pill="0" aria-selected="true"><span class="hiw-dot"><span class="hiw-num">1</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="提交">Submit</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="1" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">2</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="同儕池">Pool match</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="2" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">3</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="選版本">Brief or Pro</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="3" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">4</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="Brief">Brief</span></button></li>
-                <li><button type="button" class="hiw-pill" data-hiw-pill="4" aria-selected="false"><span class="hiw-dot"><span class="hiw-num">5</span><svg class="hiw-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="hiw-name" data-zh="Pro">Pro</span></button></li>
-              </ol>
-            </nav>
-
-            <div class="hiw-stage" role="group" aria-label="How it works steps">
-
-              <article class="hiw-panel is-active" data-hiw-panel="0">
-                <h4 class="hiw-title" data-zh="提交一個專利號">Submit a patent number</h4>
-                <p class="hiw-desc" data-zh="Brief 30 分鐘到手——免分析師，不必等上一週。">Your Brief lands in 30 minutes — no analyst, no week-long wait.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <!-- PLACEHOLDER: submit-a-patent form screen — rebuild as HTML/CSS mock in a later step -->
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="任一主要專利局的專利皆可評級——USPTO、TWIPO、EPO、WIPO。">Grade patents from any major office</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="可一次提交多件，無須排隊。">Score a whole batch at once</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="免去分析師動輒一週的等待。">Skip the week-long analyst wait</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="1">
-                <h4 class="hiw-title" data-zh="對比同儕池">Matched against the right peer pool</h4>
-                <p class="hiw-desc" data-zh="蘋果對蘋果才公平。">Apples to apples — fair comparison, by design.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <!-- PLACEHOLDER: peer-pool match screen — rebuild as HTML/CSS mock in a later step -->
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="6 大類專利池——晶片、網通、計算機、綜合應用、多媒體、淨零碳排。">6 patent pools — chip, network, compute, integrated, multimedia, net-zero</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="評級專利對應正確專利池，不跨行，只跟同行比。">Graded inside its own pool — peers only, no cross-industry</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="專利評級內容對標 Innovue 全球第 3 大專利資料庫，只評估官方記錄。">Benchmarked against Innovue's 3rd-largest patent database — official records only</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="2">
-                <h4 class="hiw-title" data-zh="Brief (短版) / Pro (深度版) 報告，按需隨選。">Brief or Pro — pick by need</h4>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <!-- PLACEHOLDER: Brief-or-Pro delivery picker screen — rebuild as HTML/CSS mock in a later step -->
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Brief 短版報告馬上告訴你專利強不強，提供執行摘要讓你快速作決定。">Brief — fast strong/weak verdict, executive summary</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Pro 深度版報告包含全部評級指標深度分析說明，豐富你的投資或盡職報告。">Pro — full indicator deep-dive for your IC memo or DD pack</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="Brief 版不夠，加買 Pro 版，只要付 Pro 版差額即可獲得雙版。">Started with Brief? Pay the Pro delta to get both</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="3">
-                <h4 class="hiw-title" data-zh="Brief 報告呈現什麼">What the Brief report shows you</h4>
-                <p class="hiw-desc" data-zh="一分鐘掃完──無需編輯，直接轉發給投資委員會。">Scannable in a minute — forward it to your IC without editing.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <!-- PLACEHOLDER: Brief report screen — rebuild as HTML/CSS mock in a later step -->
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="一眼看懂等級判定與 PSS 分數">See the tier verdict at a glance</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="清楚它在同儕中的百分位與排名">Know exactly where it ranks among peers</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="原封不動轉發給投委會">Forward it to your IC as-is</span></li>
-                </ul>
-              </article>
-
-              <article class="hiw-panel" data-hiw-panel="4">
-                <h4 class="hiw-title" data-zh="Pro 將 PSS 拆解成 50 項指標">Pro unpacks the PSS into 50 indicators</h4>
-                <p class="hiw-desc" data-zh="可承受法務審視──看清哪些面向錨定評等、敏感度落在哪裡。">Defensible enough for legal — see which dimensions anchor the verdict and where the sensitivities sit.</p>
-                <div class="hiw-shotwrap" aria-hidden="true"><div class="hiw-screen">
-                  <!-- PLACEHOLDER: Pro report 50-indicator screen — rebuild as HTML/CSS mock in a later step -->
-                </div></div>
-                <ul class="hiw-checks">
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="看清哪些支柱錨定評等">See what anchors the grade</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="每個分數都能追溯到公式">Trace every score to its formula</span></li>
-                  <li><svg class="hiw-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-zh="快速辨識 Top 驅動因子與敏感項">Spot the top drivers and risks fast</span></li>
-                </ul>
-              </article>
-
-              <!-- Persistent commit CTA — pinned bottom-right of the stage. -->
-              <a href="/product/signal/sample-report.html" class="btn btn-primary hiw-cta" data-target="signal-signup" data-zh="免費預覽報告樣本">See a sample report</a>
-
-            </div>
-
-          </div>
-        </div>
+      <!-- Loop CTAs — predict the next questions: how is it scored, and what do I actually get. -->
+      <div class="loop-ctas">
+        <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看我們的評分方法 →">See our methodology →</a>
+        <a href="/product/signal/sample-report.html" class="btn btn-primary" data-zh="看你會收到的報告 →">See your deliverable →</a>
       </div>
-
     </div>
   </section>
 
@@ -2739,6 +3071,39 @@ a, button,
       <!-- ▼▼▼ PRICING: user will supply final pricing-card code here. Interim = current 3-tier + credit-table below. ▼▼▼ -->
       <h2 id="signal-pricing-heading" class="bp-section-heading" data-zh="定價 — 按報告付費，或月訂閱。">Pricing — Pay per report. Or subscribe.</h2>
 
+      <h4 class="prod-ref-table-title" data-zh="按報告計價 — 選擇你要的深度">Pay per report — pick your depth</h4>
+      <div class="prod-ref-credits" data-expanded="false">
+        <div class="prod-ref-table-wrap">
+          <div class="prod-ref-clip" id="credits-clip">
+            <table class="prod-ref-table">
+              <thead><tr>
+                <th data-zh="動作">Action</th>
+                <th class="right" data-zh="點數">Credits</th>
+                <th class="right" data-zh="價格">Price</th>
+                <th class="right" data-zh="折扣">Top-up discount</th>
+              </tr></thead>
+              <tbody>
+                <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+                <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
+                <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
+                <tr><td data-zh="50 點頂入包">50-credit top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
+                <tr><td data-zh="150 點頂入包">150-credit top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
+                <tr><td data-zh="500 點頂入包">500-credit top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
+              </tbody>
+            </table>
+            <div class="prod-ref-fade" aria-hidden="true"></div>
+          </div>
+          <p class="prod-ref-note" data-zh="1 點 = NT$100 · 月底未用點數歸零，報告供資訊參考，非投資建議。">1 credit = NT$100 · unused credits expire monthly · reports are informational, not investment advice.</p>
+        </div>
+        <div class="prod-ref-showmore-wrap">
+          <button type="button" class="prod-ref-showmore" id="credits-showmore" aria-expanded="false" aria-controls="credits-clip" data-zh-more="顯示全部" data-zh-less="收合">
+            <span class="prod-ref-showmore-label">Show more</span>
+            <svg class="chev" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <h4 class="prod-ref-table-title prod-ref-table-title--mt" data-zh="經常評估多筆案件？月訂閱更划算。">Running many deals? Subscribe monthly.</h4>
       <div class="prod-cmp-scroll">
         <div class="prod-cmp">
           <!-- ── Tier header row ── -->
@@ -2839,38 +3204,6 @@ a, button,
         </div>
       </div>
 
-      <h4 class="prod-ref-table-title" data-zh="按報告價目">Credits per query</h4>
-      <div class="prod-ref-credits" data-expanded="false">
-        <div class="prod-ref-table-wrap">
-          <div class="prod-ref-clip" id="credits-clip">
-            <table class="prod-ref-table">
-              <thead><tr>
-                <th data-zh="動作">Action</th>
-                <th class="right" data-zh="點數">Credits</th>
-                <th class="right" data-zh="價格">Price</th>
-                <th class="right" data-zh="折扣">Top-up discount</th>
-              </tr></thead>
-              <tbody>
-                <tr><td data-zh="Brief 評等報告">Brief grade report</td><td class="mono right">15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
-                <tr><td data-zh="Pro 深度升級（從 Brief）">Pro deep-dive upgrade (from a Brief)</td><td class="mono right">+15</td><td class="mono right">NT$1,500</td><td class="right">—</td></tr>
-                <tr><td data-zh="Pro 直接購買（累計 30 點）">Pro direct purchase (30 cumulative)</td><td class="mono right">30</td><td class="mono right">NT$3,000</td><td class="right">—</td></tr>
-                <tr><td data-zh="50 點頂入包">50-credit top-up pack</td><td class="mono right">50</td><td class="mono right">NT$4,500</td><td class="right">10%</td></tr>
-                <tr><td data-zh="150 點頂入包">150-credit top-up pack</td><td class="mono right">150</td><td class="mono right">NT$13,000</td><td class="right">13%</td></tr>
-                <tr><td data-zh="500 點頂入包">500-credit top-up pack</td><td class="mono right">500</td><td class="mono right">NT$42,000</td><td class="right">16%</td></tr>
-              </tbody>
-            </table>
-            <div class="prod-ref-fade" aria-hidden="true"></div>
-          </div>
-          <p class="prod-ref-note" data-zh="1 點 = NT$100 · 月底未用點數歸零，報告供資訊參考，非投資建議。">1 credit = NT$100 · unused credits expire monthly · reports are informational, not investment advice.</p>
-        </div>
-        <div class="prod-ref-showmore-wrap">
-          <button type="button" class="prod-ref-showmore" id="credits-showmore" aria-expanded="false" aria-controls="credits-clip" data-zh-more="顯示全部" data-zh-less="收合">
-            <span class="prod-ref-showmore-label">Show more</span>
-            <svg class="chev" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-
       <script>
         (function () {
           var wrap = document.querySelector('.prod-ref-credits');
@@ -2895,6 +3228,11 @@ a, button,
         })();
       </script>
       <!-- ▲▲▲ END PRICING HOOK ▲▲▲ -->
+
+      <!-- Loop CTA — convinced on price? go straight to the lobby. -->
+      <div class="loop-ctas loop-ctas--single">
+        <a href="/product/signal/lobby.html" class="btn btn-primary btn-lg" data-zh="取得你的第一份報告 →">Get your first report →</a>
+      </div>
 
     </div>
   </section>
@@ -3121,59 +3459,231 @@ a, button,
   <div id="lang-cube"></div>
 </div>
 <script>
-  // How it works — stepped feature carousel (ported from a React reference).
-  // Auto-advances every 7s + advance on click/pill; pauses on hover and on
-  // prefers-reduced-motion (no auto-cycle, no entrance animation for those).
-  document.addEventListener('DOMContentLoaded', () => {
-    const root = document.querySelector('[data-hiw-carousel]');
-    if (!root) return;
+/* ════════════════════════════════════════════════════════════════════════
+   RXSCROLL controller — pinned, scroll-scrubbed report walkthrough.
+   Drives per-frame transforms on the SABCD deck + Brief/Pro editions and
+   crossfades the three copy acts off scroll progress. Vanilla, rAF-throttled
+   (same shape as the site.js sheen tracker). Falls back to a static stacked
+   layout on reduced-motion or narrow viewports — no pin, no scrub.
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const section = document.querySelector('[data-rxscroll]');
+  if (!section) return;
+  const stage  = section.querySelector('[data-rxstage]');
+  const cards  = Array.from(section.querySelectorAll('.rcs-card'));
+  const brief  = section.querySelector('.rxedition[data-edition="brief"]');
+  const pro    = section.querySelector('.rxedition[data-edition="pro"]');
+  const copies = Array.from(section.querySelectorAll('.rxcopy'));
+  if (!stage || cards.length !== 5 || !brief || !pro) return;
 
-    const pills  = Array.from(root.querySelectorAll('[data-hiw-pill]'));
-    const panels = Array.from(root.querySelectorAll('[data-hiw-panel]'));
-    const stage  = root.querySelector('.hiw-stage');
-    const cta    = root.querySelector('.hiw-cta');
-    const total  = panels.length;
-    if (!total) return;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+  const lerp    = (a, b, t) => a + (b - a) * t;
+  const range   = (p, a, b) => clamp01((p - a) / (b - a));
+  const smooth  = (t) => t * t * (3 - 2 * t);
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const INTERVAL = 7000;
-    let cur = 0;
-    let timer = null;
+  // Cache each card's tier index (--i: 0=S front … 4=D back).
+  const idx = cards.map(c => parseInt(getComputedStyle(c).getPropertyValue('--i'), 10) || 0);
+  // Cache each card's image so the full-height reveal uses the image's OWN aspect — the report
+  // PNGs are not all the same height (e.g. the C report is 2272×3114, taller than the 3024 rest),
+  // so a single ratio would crop a taller report's footer.
+  const imgs = cards.map(c => c.querySelector('img'));
+  // The centred card (B, --i:2) is the report that stays through Act 3; Pro reveals beside it.
+  const bK = idx.indexOf(2);
+  const actThree = copies.find(c => c.dataset.act === '3');
+  const a3Grade  = actThree && actThree.querySelector('.pillar-title span');
+  const a3Depth  = actThree && actThree.querySelector('.pillar-title em');
+  const a3Sub    = actThree && actThree.querySelector('.pillar-sub');
+  const a3Cta    = actThree && actThree.querySelector('.pillar-actions');
 
-    const render = () => {
-      panels.forEach((p, i) => {
-        const active = i === cur;
-        p.classList.toggle('is-active', active);
-        if (active && !reduced) {
-          // re-trigger the entrance animation on each switch
-          p.classList.remove('hiw-anim');
-          void p.offsetWidth;
-          p.classList.add('hiw-anim');
-        }
-      });
-      pills.forEach((b, i) => {
-        b.classList.toggle('is-current', i === cur);
-        b.classList.toggle('is-done', i < cur);
-        b.setAttribute('aria-selected', i === cur ? 'true' : 'false');
-      });
-    };
+  let isStatic = false, raf = null, bound = false;
 
-    const go    = (i) => { cur = (i + total) % total; render(); };
-    const next  = () => go(cur + 1);
-    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
-    const start = () => { if (reduced) return; stop(); timer = setInterval(next, INTERVAL); };
+  // A copy "step" scrolls through the frame (ty couples to scroll) rather than
+  // crossfading in a fixed spot — so the hero is genuinely left behind.
+  const setStep = (el, o, ty) => {
+    el.style.opacity = o.toFixed(3);
+    el.style.transform = `translateX(-50%) translateY(${ty.toFixed(1)}px)`;
+    const on = o > 0.01;
+    el.style.visibility = on ? 'visible' : 'hidden';
+    el.setAttribute('aria-hidden', on ? 'false' : 'true');
+    el.style.pointerEvents = o > 0.5 ? 'auto' : 'none';
+  };
+  const step = (a) => copies.find(c => c.dataset.act === a);
 
-    pills.forEach((b, i) => b.addEventListener('click', (e) => { e.stopPropagation(); go(i); start(); }));
-    // the CTA lives inside the stage — don't let its click advance the carousel
-    if (cta) cta.addEventListener('click', (e) => e.stopPropagation());
-    if (stage) stage.addEventListener('click', () => { next(); start(); });
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    document.addEventListener('visibilitychange', () => { document.hidden ? stop() : start(); });
+  // Reveal an Act-3 element in place: opacity + a small upward settle.
+  const setRise = (el, t) => {
+    if (!el) return;
+    el.style.opacity = t.toFixed(3);
+    el.style.transform = `translateY(${lerp(12, 0, t).toFixed(1)}px)`;
+  };
 
-    render();
-    start();
-  });
+  const render = () => {
+    raf = null;
+    if (isStatic) return;
+
+    const rect  = section.getBoundingClientRect();
+    const total = section.offsetHeight - innerHeight;
+    const p = total > 0 ? clamp01(-rect.top / total) : 0;
+    const vh = innerHeight;
+
+    // Beat structure — a "dwell" is a held range where nothing moves so each act can be read.
+    // The methodology beat is a hard PIN: its copy freezes in place (ty clamped to 0) across a
+    // long scroll stretch, then releases — so it doesn't whip past.
+    //   0.00–0.06 hero hold · 0.06–0.28 fan+rise · 0.28–0.32 reveal · 0.32–0.42 methodology in
+    //   0.42–0.58 ◆ METHODOLOGY PIN (frozen) ◆ · 0.58–0.70 S/A/C/D fade (B stays) · 0.70–0.80 ◆ HOLD on B ◆
+    //   0.80–0.94 Pro fans out (pair centred) · 0.94–1.00 ◆ DWELL ◆
+    const a1 = smooth(range(p, 0.06, 0.28));   // tight deck → S·A·B·C·D fan, then holds
+
+    // Deck geometry (layout width = --rcs-w; gap = width + 8).
+    const wPx = cards[0].offsetWidth || 200;
+    const gap = wPx + 8;
+
+    // Balanced vertical rhythm for the methodology pin: place the headline/sub so the nav→headline
+    // gap equals the sub→reports gap, and settle the report block DOWN so the gap above it equals
+    // the gap below it (to the Powered-by/CTA row). Solved live from measured heights for equal
+    // gaps G: navB + G + copyH + G + reportH + G + powH + botM = vh. Holds at any window size.
+    const copyEl = step('2'), powEl = step('2b');
+    const navB = 64;                                   // fixed top nav height
+    const botM = vh * 0.08;                            // Powered-by row bottom margin (matches CSS bottom:8vh)
+    const copyH = copyEl ? copyEl.offsetHeight : 130;
+    const powH  = powEl ? powEl.offsetHeight : 32;
+    const reportH = wPx * 1.331;                        // full report height at the pin
+    const poweredTop = vh - botM - powH;
+    let copyTop = (poweredTop + 2 * navB - copyH - reportH) / 3;
+    if (copyTop < navB + 16) copyTop = navB + 16;       // floor so it never tucks under the nav
+    const balG = copyTop - navB;
+    const reportCenter = copyTop + copyH + balG + reportH / 2;
+    if (copyEl) copyEl.style.top = `${copyTop.toFixed(1)}px`;
+
+    // Act 1 sits LOW (cue "more below"), RISES to center as the deck fans, then SETTLES down into
+    // the balanced center for the methodology pin, and returns to center for the editions split.
+    const driftStart = vh * 0.31;
+    const drift = driftStart * (1 - a1);
+    const mAct = smooth(range(p, 0.32, 0.42)) * (1 - smooth(range(p, 0.58, 0.64)));
+    const settle = mAct * (reportCenter - vh / 2 + 8);   // +8 compensates the cards' constant translateY(-8) at the pin
+    stage.style.transform = `translate(-50%, calc(-50% + ${(drift + settle).toFixed(1)}px))`;
+
+    // Card height grows from the hero landscape crop (0.84) to the full report page, so the whole
+    // report (header → metrics → radar → footer) reveals as the deck fans. The full height uses
+    // each image's OWN aspect (cardH per card below) since the report PNGs aren't all the same
+    // height. Driven by a1 (the fan-in beat). Bottom-fade lifts to solid as the report fills in.
+    const restH = wPx * 0.84;
+    const mStop = lerp(80, 100, a1);
+    const maskCss = `linear-gradient(180deg, #000 ${mStop.toFixed(1)}%, transparent 100%)`;
+
+    // Act 3 — the centred B report STAYS while S/A/C/D fade out in place. After a hold on that
+    // single report, Pro fans out to the right and B drifts left, so the pair ends centred.
+    const fade = 1 - smooth(range(p, 0.58, 0.70));   // S/A/C/D fade out where they sit
+    const fan  = smooth(range(p, 0.80, 0.94));        // B ↤ | ↦ Pro (after a deliberate hold on the single report)
+    const halfStep = wPx / 2 + 13;                    // centres the two-report pair (26px gap)
+
+    for (let k = 0; k < cards.length; k++) {
+      const i = idx[k];
+      // rest (compact angled deck) → fan (even row) component-wise interpolation
+      const X0  = lerp(i * 18,            (i - 2) * gap, a1);
+      const Y0  = lerp(i * -12,           -8,            a1);
+      const rot = lerp(i * 2.2,           0,             a1);
+      const sc  = lerp(1.95 - i * 0.05,   1,             a1);
+      const im = imgs[k];
+      const ratio = (im && im.naturalWidth) ? im.naturalHeight / im.naturalWidth : 1.331;
+      cards[k].style.height = `${lerp(restH, wPx * ratio, a1).toFixed(1)}px`;
+      cards[k].style.webkitMaskImage = cards[k].style.maskImage = maskCss;
+
+      let X = X0, op;
+      if (i === 2) {
+        // B — the centred report. Holds, then drifts LEFT as the pair fans open.
+        X = X0 - halfStep * fan;
+        op = 1;
+        // Only lift B above the others in Act 3 (over the emerging Pro sheet). In Acts 1–2 keep the
+        // natural deck order so the S card stays on top of the rest stack, as before.
+        cards[k].style.zIndex = p > 0.70 ? '3' : '';
+        // Fade B's deck drop-shadow out with the rest (Acts 1–2 keep the B-tier shadow), so the
+        // Act-3 reports read flat — matching the (now shadowless) Pro sheet.
+        cards[k].style.boxShadow = `0 11px 24px -10px rgba(0,0,0,${(0.20 * fade).toFixed(3)})`;
+      } else {
+        // S / A / C / D — fade out in place (no movement).
+        op = fade;
+        cards[k].style.zIndex = '';
+      }
+      cards[k].style.transform =
+        `translate(-50%,-50%) translateX(${X.toFixed(2)}px) translateY(${Y0.toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+      cards[k].style.opacity = op.toFixed(3);
+      cards[k].style.visibility = op > 0.01 ? 'visible' : 'hidden';
+    }
+
+    // Pro sheet — matches the B report (same image/look, sized via CSS). Hidden directly behind B
+    // through the hold, then fans out to the RIGHT half of the centred pair.
+    pro.style.zIndex = '1';                      // behind B (z3)
+    const proOn = p > 0.70;                      // staged behind B once the others have faded, before the fan
+    pro.style.transform = `translate(-50%,-50%) translateX(${(halfStep * fan).toFixed(2)}px) translateY(-8px) scale(1)`;
+    pro.style.opacity = proOn ? '1' : '0';
+    pro.style.visibility = proOn ? 'visible' : 'hidden';
+    // Brief edition unused in the scrubbed flow — the B card itself is the front (Brief) report.
+    brief.style.opacity = '0';
+    brief.style.visibility = 'hidden';
+
+    // Copy steps scroll through (ty couples to scroll): hero rises off-screen
+    // (left behind); methodology comes in at the fan.
+    const SPAN = vh * 0.95;
+    // Methodology PIN: ty freezes at 0 while p is inside [0.36, 0.64] (copy locked on screen),
+    // drifting only at the edges — this is the "locked beat".
+    const pinTy = Math.max(0.42, Math.min(0.58, p)) - p;
+    const o1 = 1 - smooth(range(p, 0.08, 0.22));
+    const o2  = smooth(range(p, 0.32, 0.42)) * (1 - smooth(range(p, 0.58, 0.66)));  // headline/sub: in as the fan settles, frozen through the pin, out as it recedes
+    const o2b = smooth(range(p, 0.35, 0.44)) * (1 - smooth(range(p, 0.58, 0.66)));  // bottom row (Innovue + CTA): staggered slightly behind, same pin + release
+    setStep(step('1'), o1, (0.00 - p) * SPAN);
+    setStep(step('2'),  o2,  pinTy * SPAN);
+    setStep(step('2b'), o2b, pinTy * (vh * 0.55));
+
+    // Act 3 copy — anchored bottom-left / CTA bottom-right; halves reveal in staged beats:
+    // "One grade," + sub as B settles alone; "two depths" timed to the Pro fan; CTA last.
+    if (actThree) {
+      const a3on = p > 0.55;
+      actThree.style.opacity = '1';
+      actThree.style.transform = 'translateX(-50%)';
+      actThree.style.visibility = a3on ? 'visible' : 'hidden';
+      actThree.setAttribute('aria-hidden', a3on ? 'false' : 'true');
+      const rGrade = smooth(range(p, 0.64, 0.76));
+      const rDepth = smooth(range(p, 0.82, 0.94));
+      const rCta   = smooth(range(p, 0.90, 1.00));
+      setRise(a3Grade, rGrade);
+      setRise(a3Sub,   rGrade);
+      setRise(a3Depth, rDepth);
+      setRise(a3Cta,   rCta);
+      if (a3Cta) a3Cta.style.pointerEvents = rCta > 0.5 ? 'auto' : 'none';
+    }
+  };
+
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(render); };
+
+  const clearInline = () => {
+    stage.style.transform = '';
+    cards.forEach(c => { c.style.transform = c.style.opacity = c.style.visibility = c.style.height = c.style.webkitMaskImage = c.style.maskImage = c.style.zIndex = c.style.boxShadow = ''; });
+    [brief, pro].forEach(c => { c.style.transform = c.style.opacity = c.style.visibility = ''; });
+    pro.style.zIndex = '';
+    copies.forEach(c => { c.style.opacity = c.style.transform = c.style.visibility = c.style.pointerEvents = c.style.top = ''; c.removeAttribute('aria-hidden'); });
+    [a3Grade, a3Depth, a3Sub, a3Cta].forEach(el => { if (el) el.style.opacity = el.style.transform = el.style.pointerEvents = ''; });
+  };
+
+  const sync = () => {
+    const wantStatic = reduceMotion.matches || innerWidth < 900;
+    if (wantStatic === isStatic && bound === !wantStatic) { if (!wantStatic) onScroll(); return; }
+    isStatic = wantStatic;
+    section.classList.toggle('is-static', isStatic);
+    if (isStatic) {
+      if (bound) { removeEventListener('scroll', onScroll); bound = false; }
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      clearInline();
+    } else {
+      if (!bound) { addEventListener('scroll', onScroll, { passive: true }); bound = true; }
+      onScroll();
+    }
+  };
+
+  addEventListener('resize', sync, { passive: true });
+  reduceMotion.addEventListener('change', sync);
+  sync();
+})();
 </script>
 <script src="/assets/site.js?v=4" defer></script>
 
