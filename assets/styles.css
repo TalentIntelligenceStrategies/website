@@ -490,9 +490,13 @@ img, svg { display: block; }
   letter-spacing: 0;
   color: var(--text-secondary);
   padding: 6px 14px;
-  transition: color 100ms linear;
+  transition: color 120ms linear;
 }
-.topnav-link:hover { color: var(--text-primary); }
+/* Hover lands on the page's true black (light) / true white (dark) — a denser,
+   more deliberate shift than the old secondary→primary (#252525) step. The pure
+   #000/#fff endpoints match the hero + black panels already used on the page. */
+.topnav-link:hover { color: #000; }
+[data-theme="dark"] .topnav-link:hover { color: #fff; }
 /* No active-state treatment — aria-current="page" stays in markup for a11y only
    (per components.md §Top nav · Active link). The page H1/hero is the wayfinding
    signal, not a nav pill. */
@@ -586,6 +590,16 @@ img, svg { display: block; }
   font-size: 14px;
 }
 .btn-secondary:hover { background: var(--surface-quaternary); }
+/* Glass CTA — frosted translucent surface matching the top nav (same
+   translucent token + blur + hairline border). Pair with .btn-lg for sizing. */
+.btn-glass {
+  background: var(--surface-page-translucent);
+  -webkit-backdrop-filter: saturate(140%) blur(20px);
+  backdrop-filter: saturate(140%) blur(20px);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+.btn-glass:hover { background: var(--surface-secondary); }
 
 .topnav-mobile-trigger {
   display: none;
@@ -881,7 +895,9 @@ main { padding-top: 64px; }
   /* Clamped to match brand/catalog/imagery-preview.html's frame
      (clamp(460px, 56vw, 580px)) so the tile-grid backdrop crops cleanly
      at the bottom instead of trailing into empty air on tall viewports.
-     56vw keeps the hero proportional to width; 460/580 cap the extremes. */
+     56vw keeps the hero proportional to width; 460/580 cap the extremes.
+     The homepage overrides this to a full-viewport hero — see the
+     [data-page="home"] block below. */
   height: clamp(460px, 56vw, 580px);
   padding-block: 32px 0;
   overflow: hidden;
@@ -890,6 +906,27 @@ main { padding-top: 64px; }
   /* Black backdrop for the shifting-lines shader. Keeps the white hero text
      readable even if WebGL / esm.sh fail and the canvas never mounts. */
   background: #000;
+}
+
+/* ───────── Homepage: full-viewport hero ─────────
+   The landing hero owns the first screen — 100dvh minus the fixed 64px nav
+   (reserved by main's padding-top). The announce bar is lifted out of flow
+   and overlaid on the hero's top (below), so it no longer pushes the hero
+   down; it scrolls away with the page while only the nav stays pinned. The
+   hero bottom lands at the fold, keeping the scroll cue just inside it.
+   Scoped to [data-page="home"] so the product/licensing & signal heroes
+   (plain .hero) keep their clamped height. */
+[data-page="home"] .hero {
+  height: auto;
+  min-height: calc(100dvh - 64px);
+  padding-block: 0;
+}
+[data-page="home"] .announce {
+  position: absolute;
+  top: 64px;        /* sit just below the fixed nav */
+  left: 0;
+  right: 0;
+  z-index: 90;      /* above the hero (z auto / ≤5), below the nav (100) */
 }
 .hero::before {
   content: ""; position: absolute; inset: 0;
@@ -1090,6 +1127,37 @@ main { padding-top: 64px; }
   width: 100%;
 }
 
+/* Scroll cue — decorative chevron at the hero base hinting more below the
+   fold (the partner strip). White-on-black to match the hero text treatment
+   (.pillar-sub); bounces gently, static under reduce-motion. */
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 5;
+  width: 24px;
+  height: 14px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: hero-cue-bounce 2.2s ease-in-out infinite;
+}
+.hero-scroll-cue span {
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: 0 auto;
+  border-right: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.55);
+  transform: rotate(45deg);
+}
+@keyframes hero-cue-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-cue { animation: none; transform: translateX(-50%); }
+}
+
 /* Pillar — left-anchored on desktop, recenters on mobile. */
 .pillar {
   display: flex;
@@ -1188,6 +1256,32 @@ main { padding-top: 64px; }
   background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
   filter: brightness(0.92);
 }
+
+/* Hero primary CTA — pure-black fill with a hairline light border so the edge
+   reads against the black hero shader (#000 alone would merge into it). */
+.hero .btn-primary {
+  background: rgba(0,0,0,0.45);
+  -webkit-backdrop-filter: saturate(140%) blur(20px);
+  backdrop-filter: saturate(140%) blur(20px);
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  border: 1.25px solid rgba(255,255,255,0.26);
+}
+.hero .btn-primary:hover {
+  background: rgba(0,0,0,0.60);
+  border-color: rgba(255,255,255,0.42);
+}
+
+/* Hero glass CTA — true glass-on-dark: a low-opacity white tint (not the nav's
+   70% token, which reads near-solid on the black shader) so the hero colour
+   shows through, with white text + a slightly heavier light border. */
+.hero .btn-glass {
+  background: rgba(255,255,255,0.10);
+  border: 1.25px solid rgba(255,255,255,0.32);
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+}
+.hero .btn-glass:hover { background: rgba(255,255,255,0.17); }
 
 /* Hero pillar slider — fade-cross stacked grid */
 .hero-slider {
@@ -1289,6 +1383,7 @@ main { padding-top: 64px; }
 }
 @media (max-width: 640px) {
   .hero { min-height: 460px; }
+  [data-page="home"] .hero { min-height: calc(100dvh - 64px); }
 }
 /* Narrow phone — drop the pillar's 32px left offset since the container
    padding already shrinks to 20px on this range. */

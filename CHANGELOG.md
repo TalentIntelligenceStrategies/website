@@ -9,6 +9,10 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-28 06:25 +08:00** · Hero CTAs reworked to translucent glass over the shader (dark-glass primary "See the methodology" → methodology page, light-glass secondary "See how" → #offerings) and nudged the shader glow down (yOffset 0.66→0.58).
+- **2026-06-28 06:21 +08:00** · Top nav: hover now brightens to true black/white; added Capital & IP and merged Reports & Press, propagated site-wide across all 8 page navs (desktop/mobile/search) + footers.
+- **2026-06-28 05:38 +08:00** · Homepage hero (scoped to data-page="home") now fills the first screen — min-height calc(100dvh − 64px) — with the announce bar overlaid on the hero top (scrolls away) and a subtle scroll cue; partner strip drops below the fold. Product heroes unchanged.
+- **2026-06-28 05:19 +08:00** · Added dedicated /reports/ page (hero without shader + Reports & Press carousels); repointed nav/footer/search Reports/Press links to it across all pages.
 - **2026-06-28 05:06 +08:00** · Announcement banner: background changed from #252525 to #000 (light theme) to match the about/offer card black; dark theme keeps the inverted bar.
 - **2026-06-28 05:02 +08:00** · About section: capped intro + panels to the 1440px centered container so their left/right edges align with the offerings/reports sections (dropped full-bleed).
 - **2026-06-28 04:59 +08:00** · Offer-card CTA: tightened text→arrow gap from 8px to 4px so the arrow sits closer to the label.
