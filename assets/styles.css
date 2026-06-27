@@ -825,11 +825,13 @@ main { padding-top: 64px; }
   position: relative;
   display: flex; align-items: center; justify-content: center;
   min-height: 44px; padding: 10px 56px;
-  background: var(--surface-inverse);
+  background: #000;                 /* matches the always-dark about panels / offer cards */
   color: var(--text-inverse);
   overflow: hidden; max-height: 80px;
   transition: max-height 200ms var(--ease-card), opacity 200ms var(--ease-card);
 }
+/* Dark theme keeps the inverted (light) bar so it stays distinct from the dark page. */
+[data-theme="dark"] .announce { background: var(--surface-inverse); }
 .announce[hidden] { display: none; }
 .announce.is-dismissing {
   max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;

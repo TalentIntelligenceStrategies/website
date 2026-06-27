@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-28 05:06 +08:00** · Announcement banner: background changed from #252525 to #000 (light theme) to match the about/offer card black; dark theme keeps the inverted bar.
 - **2026-06-28 05:02 +08:00** · About section: capped intro + panels to the 1440px centered container so their left/right edges align with the offerings/reports sections (dropped full-bleed).
 - **2026-06-28 04:59 +08:00** · Offer-card CTA: tightened text→arrow gap from 8px to 4px so the arrow sits closer to the label.
 - **2026-06-28 04:55 +08:00** · About-card CTA underline thinned to 1px and now wipes in on hover of the whole card (not just the link).
