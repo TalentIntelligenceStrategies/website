@@ -9,6 +9,13 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-28 05:02 +08:00** · About section: capped intro + panels to the 1440px centered container so their left/right edges align with the offerings/reports sections (dropped full-bleed).
+- **2026-06-28 04:59 +08:00** · Offer-card CTA: tightened text→arrow gap from 8px to 4px so the arrow sits closer to the label.
+- **2026-06-28 04:55 +08:00** · About-card CTA underline thinned to 1px and now wipes in on hover of the whole card (not just the link).
+- **2026-06-28 04:54 +08:00** · About cards: "Read the full story" / "About the partnership" CTAs drop the arrow icon for a left-origin animated underline on hover/focus.
+- **2026-06-28 04:49 +08:00** · About cards (#about) now reveal exactly like the offer cards — image fade + zoom (1.08→1, hover 1.06) only; dropped the panel fade and inner stagger.
+- **2026-06-28 04:42 +08:00** · Motion: section headings + deks now fade-rise on scroll; about cards gained image zoom (reveal + hover) and inner title→lead→link stagger; reduced-motion guarded.
+- **2026-06-28 04:34 +08:00** · Offer cards (#offerings): added scroll-reveal image zoom (1.08 → 1.0, staggered) plus hover zoom (→ 1.06); reduced-motion guarded.
 - **2026-06-28 03:35 +08:00** · Asset cleanup: removed ~20M of unreferenced files (hdr/, bundle/, raw visax originals, verified-license-badge PNGs, coremap *-dots PNGs, signal screenshots, inlined icon SVGs, unused logos itri/tsmc/primary/iii-light, signature icon-globe); no code or live-asset changes.
 - **2026-06-28 03:15 +08:00** · Replaced the ShaderGradient hero sphere with a lightweight three.js shifting-lines shader (black backdrop + white graph grid); added a faint page-wide fixed 32px grid; much lighter on the GPU.
 - **2026-06-28 02:53 +08:00** · Unified homepage section vertical rhythm via `--space-section` / `--space-head-gap` vars — equal inter-section gaps, consistent title→content spacing.

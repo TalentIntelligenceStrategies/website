@@ -417,6 +417,26 @@ img, svg { display: block; }
   line-height: 1.15;
 }
 
+/* Section heading + dek scroll reveal — subtle fade + rise. Shares the
+   [data-reveal] IntersectionObserver in site.js (adds .is-revealed). Dek trails
+   the heading by 70ms so the pair reads top-down. Entering → ease-out curve. */
+.h-section[data-reveal],
+.section-dek[data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.h-section[data-reveal].is-revealed,
+.section-dek[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms var(--ease-card), transform 450ms var(--ease-card);
+}
+.section-dek[data-reveal].is-revealed { transition-delay: 70ms; }
+@media (prefers-reduced-motion: reduce) {
+  .h-section[data-reveal],
+  .section-dek[data-reveal] { opacity: 1; transform: none; }
+}
+
 /* ───────── Top nav ───────── */
 .topnav {
   position: fixed; top: 0; left: 0; right: 0;
@@ -3483,15 +3503,18 @@ main { padding-top: 64px; }
    #000 / white here is dictated by the imagery — intentionally local, not a
    brand token (no snapshot resync). */
 .about { overflow-x: clip; }  /* padding-block inherited from .section for a uniform rhythm */
-/* Section intro above the two panels — gutters matched to .about-duo so the
-   title's left edge sits flush with the panels below. */
-.about-intro { padding-inline: 32px; margin-bottom: var(--space-head-gap); }
+/* Section intro above the two panels — capped to the same 1440px centered
+   container as the sections above/below (.container), so all section edges line
+   up at every width. The title sits flush with the panels below. */
+.about-intro { max-width: 1440px; margin-inline: auto; padding-inline: 32px; margin-bottom: var(--space-head-gap); }
 @media (max-width: 768px) { .about-intro { padding-inline: 20px; } }
 .about-duo {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(16px, 1.8vw, 28px);
-  padding-inline: 32px;            /* full-viewport-width row, container-matched gutters */
+  max-width: 1440px;               /* matches .container — panels align with offerings/reports */
+  margin-inline: auto;
+  padding-inline: 32px;
 }
 @media (max-width: 768px) { .about-duo { padding-inline: 20px; } }
 
@@ -3548,21 +3571,39 @@ main { padding-top: 64px; }
 }
 .about-card__more { margin: 18px 0 0; }
 /* CTA matches .offer-card-more (Urbanist, sentence-case, 13px/600) — not the
-   uppercase Inconsolata arrow-link — so the card's type stays even. */
+   uppercase Inconsolata arrow-link — so the card's type stays even.
+   No arrow icon: a 1px underline wipes in from the left when the whole card is
+   hovered (or the link is focused) — transform: scaleX, GPU-friendly, origin-left
+   so it grows L→R. */
 .about-card .arrow-link {
+  position: relative;
+  display: inline-block;            /* underline spans the text, not a flex row */
   font-family: inherit;
   text-transform: none;
   letter-spacing: -0.005em;
   font-size: 13px;
   font-weight: 600;
-  gap: 8px;
+  gap: 0;
   color: #fff;
   white-space: normal;
 }
-.about-card .arrow-link:hover { color: #fff; gap: 8px; }
-.about-card .arrow-link svg { width: 16px; height: 16px; transition: transform 200ms var(--ease-out); }
+.about-card .arrow-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 280ms var(--ease-out);
+}
+.about-card .arrow-link:hover { color: #fff; }
 @media (hover: hover) and (pointer: fine) {
-  .about-card .arrow-link:hover svg { transform: translateX(4px); }
+  .about-card:hover .arrow-link::after { transform: scaleX(1); }
+}
+.about-card .arrow-link:focus-visible::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .about-card .arrow-link::after { transition: none; }
 }
 
 /* Image bleed — fills the right of the card, runs to its edge. */
@@ -3579,13 +3620,24 @@ main { padding-top: 64px; }
   .about-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.16); }
 }
 
-/* Scroll reveal — paired with [data-reveal] observer in site.js (adds .is-revealed). */
-.about-card[data-reveal] { opacity: 0; transform: translateY(12px); }
-.about-card[data-reveal].is-revealed {
-  opacity: 1; transform: translateY(0);
-  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+/* Scroll reveal — paired with [data-reveal] observer in site.js (adds .is-revealed).
+   Mirrors the offer cards: the panel + text stay put, and only the image fades +
+   zooms in (opacity 0 + scale 1.08 → opacity 1 + scale 1) on entry, then zooms to
+   1.06 on hover. The second panel's image trails by 90ms (matches the offer stagger). */
+.about-card[data-reveal] .about-card__media img {
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+  will-change: transform, opacity;
 }
-.about-card[data-reveal]:nth-child(2).is-revealed { transition-delay: 60ms; }  /* short stagger */
+.about-card[data-reveal].is-revealed .about-card__media img {
+  opacity: 1;
+  transform: scale(1);
+}
+.about-card[data-reveal]:nth-child(2).is-revealed .about-card__media img { transition-delay: 90ms; }
+@media (hover: hover) and (pointer: fine) {
+  .about-card[data-reveal].is-revealed:hover .about-card__media img { transform: scale(1.06); }
+}
 
 /* Responsive */
 @media (max-width: 880px) {
@@ -3598,7 +3650,8 @@ main { padding-top: 64px; }
   .about-card__media::after { background: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.78) 55%, rgba(0,0,0,0.55) 100%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .about-card[data-reveal] { opacity: 1; transform: none; }
+  .about-card[data-reveal] .about-card__media img,
+  .about-card[data-reveal].is-revealed:hover .about-card__media img { opacity: 1; transform: none; transition: none; }
   .about-card { transition: border-color 200ms ease; }
 }
 
@@ -7284,12 +7337,25 @@ body.smpl-lock{overflow:hidden}
   text-decoration: none;
   transition: box-shadow 220ms var(--ease-card), transform 220ms var(--ease-card);
 }
-/* Particle-cloud image layer — sits below the scrim. */
+/* Particle-cloud image layer — sits below the scrim.
+   Resting transform composes a per-card rotation (--img-rot) with a scale the
+   reveal + hover effects drive. Entry: scale(1.08) + fade → settle to scale(1)
+   when .is-in lands (scroll-reveal observer in site.js, staggered there).
+   Hover then scales up to 1.06 from rest. transform-origin:center keeps both
+   zooms centered. */
+.offer-card { --img-rot: 0deg; }
+.offer-card--reports { --img-rot: 180deg; }
 .offer-card::before {
   content: ""; position: absolute; inset: 0; z-index: -2;
   background-size: cover; background-repeat: no-repeat; background-position: center;
+  transform-origin: center;
+  opacity: 0;
+  transform: rotate(var(--img-rot)) scale(1.08);
+  transition: opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+  will-change: transform, opacity;
 }
-.offer-card--reports::before   { background-image: url('/assets/imagery/coremap/reports.jpg');   transform: rotate(180deg); }
+.offer-card.is-in::before { opacity: 1; transform: rotate(var(--img-rot)) scale(1); }
+.offer-card--reports::before   { background-image: url('/assets/imagery/coremap/reports.jpg'); }
 .offer-card--licensing::before { background-image: url('/assets/imagery/coremap/licensing.jpg'); }
 .offer-card--owned::before     { background-image: url('/assets/imagery/coremap/owned.jpg'); }
 .offer-card--venture::before   { background-image: url('/assets/imagery/coremap/venture.jpg'); background-position: 60% 74%; background-size: 170% auto; }
@@ -7312,7 +7378,7 @@ body.smpl-lock{overflow:hidden}
   font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.82);
 }
 .offer-card-more {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 4px;   /* arrow sits close to the label (the arrow svg carries its own left whitespace) */
   margin-top: 4px; font-size: 13px; font-weight: 600; color: #FFFFFF;
 }
 .offer-card-more svg {
@@ -7323,6 +7389,14 @@ body.smpl-lock{overflow:hidden}
 @media (hover: hover) and (pointer: fine) {
   .offer-card:hover { box-shadow: var(--shadow-high); transform: translateY(-2px); }
   .offer-card:hover .offer-card-more svg { transform: translateX(4px); }
+  /* Hover zoom — scales the image up from its settled rest (1 → 1.06). Gated on
+     .is-in so it never fights the entry reveal, and composed with --img-rot. */
+  .offer-card.is-in:hover::before { transform: rotate(var(--img-rot)) scale(1.06); }
 }
 .offer-card:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+/* Reduced motion — no zoom in or out; image just shows. */
+@media (prefers-reduced-motion: reduce) {
+  .offer-card::before { transition: none; }
+  .offer-card.is-in:hover::before { transform: rotate(var(--img-rot)) scale(1); }
+}
 

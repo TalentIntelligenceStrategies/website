@@ -404,6 +404,29 @@
     }
   }
 
+  // ──────────────── Offer-card reveal — image zooms 1.08 → 1.0 + fades in on entry ────────────────
+  // Adds .is-in (CSS owns the settle + later hover zoom). Staggered per card via a
+  // per-element delay so the stagger never bleeds into the hover transition.
+  // Reduced motion / no IntersectionObserver → reveal immediately, no stagger.
+  const offerCards = document.querySelectorAll('.offer-card');
+  if (offerCards.length) {
+    if (reduced || !('IntersectionObserver' in window)) {
+      offerCards.forEach(el => el.classList.add('is-in'));
+    } else {
+      const offerObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const grid = entry.target.parentElement;
+            const i = grid ? Array.prototype.indexOf.call(grid.children, entry.target) : 0;
+            setTimeout(() => entry.target.classList.add('is-in'), i * 90);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+      offerCards.forEach(el => offerObserver.observe(el));
+    }
+  }
+
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
