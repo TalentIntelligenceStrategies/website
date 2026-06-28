@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-28 09:10 +08:00** · Added media images (ITRI main plaza + NYCU, resized/optimized to 1000px JPGs under /assets/imagery/press/) to the ITRI and NYCU press cards on both the reports page and the homepage.
 - **2026-06-28 08:36 +08:00** · About panel title now renders the white TIS cube submark inline in place of the word "TIS" (EN + ZH), em-scaled and centered on the "About" cap; aria-label preserves "TIS".
 - **2026-06-28 08:19 +08:00** · Partner-band label set to "Strategic Partners" (dropped "TIS") at 15px.
 - **2026-06-28 08:05 +08:00** · Bumped the partner-band label to 16px.
