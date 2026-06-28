@@ -9,6 +9,18 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-28 08:36 +08:00** · About panel title now renders the white TIS cube submark inline in place of the word "TIS" (EN + ZH), em-scaled and centered on the "About" cap; aria-label preserves "TIS".
+- **2026-06-28 08:19 +08:00** · Partner-band label set to "Strategic Partners" (dropped "TIS") at 15px.
+- **2026-06-28 08:05 +08:00** · Bumped the partner-band label to 16px.
+- **2026-06-28 08:04 +08:00** · Set the partner-band label to title case ("TIS Strategic Partners") instead of all-caps, with tighter tracking.
+- **2026-06-28 07:57 +08:00** · Softened the partner-band label from pure white to a neutral grey (white at 0.6) matching the logos' rest dimming, so the band reads less bright.
+- **2026-06-28 07:54 +08:00** · Moved "TIS Strategic Partners" inside the band as a white left-pinned eyebrow on one row, with the logo marquee scrolling to its right.
+- **2026-06-28 07:38 +08:00** · Added bottom padding to the partner section so the band→Contact gap matches the standard inter-section rhythm (was half-spaced).
+- **2026-06-28 07:34 +08:00** · Aligned the "TIS Strategic Partners" and "Get in touch." headings + contact email to the rendered "Press releases" scale (section-head h2 / section-dek).
+- **2026-06-28 07:28 +08:00** · Fixed the Innovue mark in the partner band to use the same invert-to-light treatment as the other logos at rest (was dark-on-black).
+- **2026-06-28 07:27 +08:00** · Moved the "TIS Strategic Partners" label out of the partner band onto the light page as a centered section heading above it.
+- **2026-06-28 06:54 +08:00** · Rebuilt the homepage partner strip as a dark glow-horizon band with silver canvas sparkles and a scrolling logo marquee with blurred edges.
+- **2026-06-28 06:34 +08:00** · Moved the TIS Strategic Partners band from under the hero to between Press releases and Contact; added top hairline, dropped hero-specific spacing.
 - **2026-06-28 06:25 +08:00** · Hero CTAs reworked to translucent glass over the shader (dark-glass primary "See the methodology" → methodology page, light-glass secondary "See how" → #offerings) and nudged the shader glow down (yOffset 0.66→0.58).
 - **2026-06-28 06:21 +08:00** · Top nav: hover now brightens to true black/white; added Capital & IP and merged Reports & Press, propagated site-wide across all 8 page navs (desktop/mobile/search) + footers.
 - **2026-06-28 05:38 +08:00** · Homepage hero (scoped to data-page="home") now fills the first screen — min-height calc(100dvh − 64px) — with the announce bar overlaid on the hero top (scrolls away) and a subtle scroll cue; partner strip drops below the fold. Product heroes unchanged.

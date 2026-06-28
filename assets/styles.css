@@ -435,6 +435,18 @@ img, svg { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .h-section[data-reveal],
   .section-dek[data-reveal] { opacity: 1; transform: none; }
+  /* Partner marquee sits static + centred; the sparkle canvas stays unpainted
+     (initPartnerSparkles() bails under reduced motion). */
+  .partner-marquee__track {
+    animation: none;
+    transform: none;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 40px 48px;
+  }
+  /* The duplicate set would double the row when static — hide it. */
+  .partner-marquee__track .partner[aria-hidden="true"] { display: none; }
 }
 
 /* ───────── Top nav ───────── */
@@ -2774,88 +2786,176 @@ main { padding-top: 64px; }
   .innovue-collab-card__rule { display: none; }
 }
 
-/* ───────── Partner strip ─────────
-   components.md §Partner strip. Row of partner marks — Innovue, iPIC, III, NYCU —
-   monochrome at rest, returning to brand color on hover. Equal height (peers,
-   not a hierarchy) per visual-guide.md §Collaborator Partners. Restored under
-   the hero per team note; shares the §Innovue collaboration card container shell. */
-/* Full-bleed hairline band (was a rounded pill). The top/bottom rules ride the
-   full-width <section class="section--patent-band"> below — <main> carries no
-   inline padding, so the section spans the viewport without a 100vw breakout.
-   The strip is the centered label + logo row in the rail. */
-.partner-strip {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 28px;
-}
-/* Exclusive patent access section: hairlines top + bottom, flush under the hero;
-   margin-block-end separates the bottom rule from the stats below. */
-.section--patent-band {
-  position: relative;
-  /* Above the hero's backdrop layers (z-index ≤ 5, which sit in the root
-     stacking context since .hero creates none) so the caption — which straddles
-     up onto the top rule into the hero's bottom edge — isn't painted over. */
-  z-index: 6;
-  /* Top hairline dropped (gradient meets white cleanly). The "TIS Strategic
-     Partners" label is the inline legend on the bottom hairline below the logos. */
-  border-bottom: 1px solid var(--border-primary);
-  padding-block: 42px;
-  /* Gap from the bottom hairline (where the "TIS Strategic Partners" label sits)
-     to the offerings heading below — offerings zeroes its own top padding
-     (.section--tight + .section), so this margin owns the whole gap. */
-  margin-block-end: clamp(40px, 4vw, 56px);
-}
-/* Sentence-case caption centered on the band's top rule. Positioned out of flow
-   (relative to the section) so the logo row keeps its centered spacing; the
-   surface-page background masks the hairline behind the text. */
-.partner-strip-label {
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translate(-50%, 50%);
-  padding: 2px 16px;
-  /* Inline legend on the BOTTOM hairline — the white background masks the rule so
-     the label sits centered in it (below the logos). */
-  background: var(--surface-page);
-  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--text-primary);
-  white-space: nowrap;
-}
+/* Shared partner-row layout. The homepage uses the "glow horizon" band below;
+   this flex utility is still consumed by the licensing page's .pcard-logos
+   trust strip (product/licensing/index.html), which sets its own gap/alignment
+   but relies on this for display:flex. */
 .partner-logos {
   display: flex; align-items: center; justify-content: center;
   flex-wrap: wrap;
   gap: 48px;
 }
+
+/* ═══════════ Partner band — "glow horizon" feature presentation ═══════════
+   Homepage-only dark interlude between Press and Contact (replaces the earlier
+   light hairline-bordered .section--patent-band / .partner-strip). Single row
+   INSIDE the always-dark band: a white "TIS Strategic Partners" eyebrow pinned
+   left, the scrolling logo marquee filling the right. Always dark in both themes
+   — matches the always-dark About / Innovue / offer panels (#000 fill, see
+   .offer-card). Layers in the band, back to front:
+     1. .partner-band__sparkles  — <canvas>, silver/white drifting particles
+                                    (painted by initPartnerSparkles() in site.js)
+     2. .partner-band__glow      — silver radial glow + a curved rim arc
+     3. .partner-band__inner     — the label eyebrow + scrolling logo marquee row
+   Silver tones are the design-tokens.md §7.5 silver-luminous stops
+   (#F1F5F9 / #E2E8F0 / #94A3B8), the "dark-surface tuned" register. */
+/* Standard inter-section rhythm: white gaps above + below the dark band match
+   the ~2× --space-section gap everywhere else (Contact adds its own top padding
+   via .contact-grid). */
+.partner-section { padding-block: var(--space-section); }
+.partner-band {
+  position: relative;
+  overflow: hidden;
+  background: #000;            /* always-dark, matches .offer-card / about panels */
+  padding-block: 96px;
+  isolation: isolate;
+}
+.partner-band__sparkles {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* Fade the field out toward the edges, mirroring the source mask. */
+  -webkit-mask-image: radial-gradient(50% 50% at 50% 50%, #fff 0%, transparent 85%);
+          mask-image: radial-gradient(50% 50% at 50% 50%, #fff 0%, transparent 85%);
+}
+/* Radial glow rising from the bottom-centre + a faint curved rim — the horizon
+   "sphere edge" of the source, recoloured silver. Whole layer is radially
+   masked so it dissolves into the band. */
+.partner-band__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 100%, rgba(226,232,240,0.30) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(50% 50% at 50% 100%, #000 0%, transparent 100%);
+          mask-image: radial-gradient(50% 50% at 50% 100%, #000 0%, transparent 100%);
+}
+.partner-band__glow::after {
+  /* The curved rim: an oversized rounded element whose top arc reads as a horizon
+     line under the logos. */
+  content: "";
+  position: absolute;
+  left: -50%;
+  top: 60%;
+  width: 200%;
+  aspect-ratio: 1 / 0.7;
+  border-radius: 100%;
+  border-top: 1px solid rgba(241,245,249,0.20);
+  background: #000;
+}
+/* Single row: label pinned left, marquee filling the rest to the right
+   (spread apart). Constrained to the page container width + gutter. */
+.partner-band__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 40px;
+  max-width: 1440px;          /* matches .container */
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+/* Neutral-grey label, pinned left, doesn't shrink. */
+.partner-band__label {
+  flex: 0 0 auto;
+  margin: 0;
+  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: rgba(255,255,255,0.6); /* neutral grey — matches the logos' rest dimming (opacity 0.6) */
+  white-space: nowrap;
+}
+
+/* ── Marquee ── */
+.partner-marquee {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;            /* allow the track to overflow + scroll within the row */
+  overflow: hidden;
+}
+
+/* Stack on narrow screens: label above, marquee below. */
+@media (max-width: 640px) {
+  .partner-band__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-inline: 20px;     /* matches .container on mobile */
+  }
+  .partner-marquee { width: 100%; }
+}
+.partner-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+  animation: partner-scroll 45s linear infinite;
+}
+.partner-marquee:hover .partner-marquee__track { animation-play-state: paused; }
+@keyframes partner-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* Progressive-blur edge fades hiding the loop seam. The gradient guarantees the
+   fade; backdrop-filter adds the soft blur where supported. */
+.partner-marquee__blur {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 160px;
+  z-index: 2;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.partner-marquee__blur--left {
+  left: 0;
+  background: linear-gradient(to right, #000 10%, transparent);
+  -webkit-mask-image: linear-gradient(to right, #000 30%, transparent);
+          mask-image: linear-gradient(to right, #000 30%, transparent);
+}
+.partner-marquee__blur--right {
+  right: 0;
+  background: linear-gradient(to left, #000 10%, transparent);
+  -webkit-mask-image: linear-gradient(to left, #000 30%, transparent);
+          mask-image: linear-gradient(to left, #000 30%, transparent);
+}
+
+/* ── Marks ── */
 .partner {
   height: 40px;
   width: 200px;
+  flex: 0 0 auto;
   display: block;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  /* Light mode: full primary color at rest — no grey-out. (Dark mode keeps the
-     invert treatment below for now.) */
-  filter: none;
-  opacity: 1;
   transition: filter 250ms cubic-bezier(0.2,1,0.3,1), opacity 250ms linear;
 }
-.partner:hover { filter: none; opacity: 1; }
 .partner--ipic    { background-image: var(--partner-ipic); }
 .partner--nycu    { background-image: var(--partner-nycu); }
 .partner--iii     { background-image: var(--partner-iii); }
-.partner--innovue { background-image: var(--partner-innovue-color); }   /* full-color blue at rest */
-.partner--innovue:hover { background-image: var(--partner-innovue-color); }
-
-[data-theme="dark"] .partner { filter: grayscale(1) invert(1) brightness(1.4); opacity: 0.6; }
-[data-theme="dark"] .partner:hover { filter: none; opacity: 1; }
-/* Dark keeps the light/white Innovue wordmark (unchanged) — re-asserts the base
-   image so the light-mode colour override above doesn't leak into dark. */
-[data-theme="dark"] .partner--innovue { background-image: var(--partner-innovue); filter: none; opacity: 0.7; }
-[data-theme="dark"] .partner--innovue:hover { opacity: 1; }
-/* iPIC + NYCU are wired light-mode desktop only for now. In dark mode they fall through
-   to the generic [data-theme="dark"] .partner invert rule above — dedicated dark variants
-   (and any per-mark tuning) are deferred to the dark-mode pass. */
+.partner--innovue { background-image: var(--partner-innovue-color); }
+/* The band is always dark, so every mark — Innovue included — gets the same
+   dark-surface treatment in BOTH themes: each starts from its full-colour base
+   SVG, inverted to a light monochrome wordmark and dimmed at rest, resolving to
+   full colour on hover. */
+.partner-band .partner { filter: grayscale(1) invert(1) brightness(1.4); opacity: 0.6; }
+.partner-band .partner:hover { filter: none; opacity: 1; }
 
 /* ───────── Patent inventory teaser — bordered card holding three tier-organized
    ticker rows (S / A / B), a search input + Industry / Jurisdiction / Tier filter
@@ -3292,9 +3392,34 @@ main { padding-top: 64px; }
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%);
 }
+/* Tile photo — sits below the scrim (::after, z-index -1) so the white copy stays legible.
+   The placeholder-radial background remains as a fallback while the image loads.
+   Entry: scale(1.08) + fade → settles to scale(1) when .is-in lands (scroll-reveal
+   observer in site.js, staggered there) — mirrors the offer-card reveal. */
+.report-card-media {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+  will-change: transform, opacity;
+}
+.report-card.is-in .report-card-media { opacity: 1; transform: scale(1); }
 .report-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-medium);
+}
+@media (hover: hover) and (pointer: fine) {
+  /* Hover zoom — image scales up from its settled rest (1 → 1.06). Gated on
+     .is-in so it never fights the entry reveal. */
+  .report-card.is-in:hover .report-card-media { transform: scale(1.06); }
+}
+/* Reduced motion — no zoom in or out; image just shows. */
+@media (prefers-reduced-motion: reduce) {
+  .report-card-media { transition: none; }
+  .report-card.is-in:hover .report-card-media { transform: scale(1); }
 }
 .report-card-body {
   display: flex; flex-direction: column; gap: 12px;
@@ -3334,14 +3459,15 @@ main { padding-top: 64px; }
   font-size: 13px;
   font-weight: 600;
   color: #FFFFFF;
+  /* Hover glides the arrow outward by widening the gap (mirrors .arrow-link). */
+  transition: gap 150ms cubic-bezier(0.2,1,0.3,1), color 100ms linear;
 }
 .report-card-more svg {
   width: 16px; height: 16px;
   stroke: currentColor; fill: none;
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 200ms cubic-bezier(0.2,1,0.3,1);
 }
-.report-card:hover .report-card-more svg { transform: translateX(4px); }
+.report-card:hover .report-card-more { gap: 14px; color: rgba(255,255,255,0.82); }
 
 /* Dot indicators. */
 .report-dots {
@@ -3658,6 +3784,21 @@ main { padding-top: 64px; }
   top: 0;
   background: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg') left bottom / contain no-repeat;
 }
+/* White TIS cube submark set inline in the title in place of the word "TIS".
+   Square (1:1) viewBox, taller than the cap-height for presence; its vertical
+   center is aligned to the cap-height center of "About" (~0.36em above baseline)
+   so the two read as centered with each other. em-based so it tracks the
+   responsive title size. */
+.tis-mark {
+  display: inline-block;
+  width: 1.33em;
+  height: 1.33em;
+  margin: 0 0 0 0.1em;
+  vertical-align: baseline;
+  position: relative;
+  top: 0.31em;            /* lowers the square so its mid-height sits on the cap center */
+  background: url('/designs/assets/logos/tis/tis_cubelogo_submark_light.svg') left center / contain no-repeat;
+}
 .about-card__lead {
   font-size: 15px;                       /* matches .offer-card-desc */
   font-weight: 450;
@@ -3971,16 +4112,18 @@ main { padding-top: 64px; }
 @media (max-width: 880px) {
   .contact-grid { grid-template-columns: 1fr; gap: 56px; }
 }
+/* Matches the rendered .section-head h2 scale (e.g. "Press releases") for
+   consistent heading sizing across sections. */
 .contact-left h2 {
-  font-size: clamp(40px, 5vw, 64px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.0;
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
   margin: 0 0 32px;
 }
 .contact-email {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;            /* matches .section-dek */
   font-weight: 600;
   color: var(--text-primary);
   border-bottom: 1px solid var(--text-primary);

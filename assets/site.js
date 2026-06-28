@@ -427,6 +427,31 @@
     }
   }
 
+  // ──────────────── Report-card reveal — image zooms 1.08 → 1.0 + fades in on entry ────────────────
+  // Adds .is-in (CSS owns the settle + hover zoom); NOT staggered. Observed at the
+  // CAROUSEL level, not per card: the track scrolls horizontally, so cards parked
+  // off the right edge have zero viewport intersection and would stay hidden if
+  // observed individually — revealing all of a carousel's cards when the carousel
+  // itself enters view keeps every tile from being stuck at opacity:0.
+  // Reduced motion / no IntersectionObserver → reveal immediately.
+  const reportCarousels = document.querySelectorAll('.report-carousel');
+  if (reportCarousels.length) {
+    const revealCards = root => root.querySelectorAll('.report-card').forEach(c => c.classList.add('is-in'));
+    if (reduced || !('IntersectionObserver' in window)) {
+      reportCarousels.forEach(revealCards);
+    } else {
+      const reportObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            revealCards(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      reportCarousels.forEach(el => reportObserver.observe(el));
+    }
+  }
+
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
@@ -1217,5 +1242,107 @@ initCardCarousel('press-carousel');
   board.addEventListener('focusout', (e) => {
     if (!board.contains(e.relatedTarget)) clear();
   });
+})();
+
+/* ════════════════════════════════════════════════════════════════════════
+   Partner band sparkles — silver/white drifting + twinkling particle field
+   behind the partner marquee (homepage). Vanilla canvas port of the source
+   tsParticles effect. Honors prefers-reduced-motion (no canvas), pauses the
+   RAF when the band is off-screen, and rebuilds the field on resize.
+   ════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const canvas = document.querySelector('.partner-band__sparkles');
+  if (!canvas || !canvas.getContext) return;
+
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  let particles = [];
+  let raf = null;
+  let visible = false;
+  let w = 0, h = 0;
+
+  // Build the field — count scales with the band's area (~1 per 2200px²,
+  // matching the source's dense feel without overloading low-end devices).
+  const build = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    w = rect.width; h = rect.height;
+    if (!w || !h) return;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const count = Math.min(420, Math.round((w * h) / 2200));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: 0.4 + Math.random() * 1.1,
+      baseA: 0.15 + Math.random() * 0.6,
+      // twinkle
+      phase: Math.random() * Math.PI * 2,
+      tw: 0.6 + Math.random() * 1.8,
+      // slow drift
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: (Math.random() - 0.5) * 0.08,
+      // ~1 in 5 carries the silver tint, the rest pure white
+      silver: Math.random() < 0.2,
+    }));
+  };
+
+  const draw = (t) => {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x += w; else if (p.x > w) p.x -= w;
+      if (p.y < 0) p.y += h; else if (p.y > h) p.y -= h;
+      const a = p.baseA * (0.55 + 0.45 * Math.sin(p.phase + t * 0.001 * p.tw));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.silver
+        ? `rgba(226,232,240,${a.toFixed(3)})`   // silver-luminous mid
+        : `rgba(255,255,255,${a.toFixed(3)})`;
+      ctx.fill();
+    }
+    raf = requestAnimationFrame(draw);
+  };
+
+  const start = () => {
+    if (raf || reduceMotion.matches || !visible) return;
+    if (!particles.length) build();
+    raf = requestAnimationFrame(draw);
+  };
+  const stop = () => {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    ctx.clearRect(0, 0, w, h);
+  };
+
+  // Only animate while the band is on-screen.
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      visible ? start() : stop();
+    }, { threshold: 0 }).observe(canvas);
+  } else {
+    visible = true;
+    start();
+  }
+
+  // Rebuild on resize (debounced); keep animating if visible.
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      stop();
+      build();
+      start();
+    }, 200);
+  });
+
+  // Live reduced-motion toggle.
+  const onMotionChange = () => { reduceMotion.matches ? stop() : start(); };
+  reduceMotion.addEventListener
+    ? reduceMotion.addEventListener('change', onMotionChange)
+    : reduceMotion.addListener(onMotionChange);
 })();
 

@@ -305,27 +305,6 @@
     <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
   </section>
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Exclusive patent access  —  institutions that granted TIS exclusive  ║
-       ║ access to a handful of their patents, feeding the SABCD comparison   ║
-       ║ pool. Centered eyebrow (Urbanist) above a centered logo row          ║
-       ║ (Innovue · iPIC · III · NYCU); monochrome → brand color on hover.    ║
-       ║ Wired light-mode desktop for now.                                    ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section section--tight section--patent-band" aria-label="Exclusive patent access">
-    <div class="container">
-      <div class="partner-strip">
-        <span class="partner-strip-label" data-zh="泰然策略合作夥伴">TIS Strategic Partners</span>
-        <div class="partner-logos">
-          <a href="https://www.innovue.ltd/" class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.ipic.tw/"     class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.iii.org.tw/en" class="partner partner--iii"    aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-          <a href="https://www.nycu.edu.tw/" class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Stats counter moved to /about/ (2026-06-25) — bordered 3-up frame +
        Innovue attribution. See about/index.html. -->
 
@@ -415,7 +394,7 @@
       <!-- Panel 1 — About TIS -->
       <article class="about-card" data-reveal>
         <div class="about-card__body">
-          <h2 class="about-card__title" data-zh="關於 TIS">About TIS</h2>
+          <h2 class="about-card__title" data-zh-html data-zh='關於 <span class="tis-mark" role="img" aria-label="TIS"></span>'>About <span class="tis-mark" role="img" aria-label="TIS"></span></h2>
           <p class="about-card__lead"><span data-zh="專利往往是企業最大、卻最被低估的資產。">Patents are often a company's largest, most undervalued asset.</span> <span data-zh="當它的價值能被衡量，它就能被信任、被交易、被投資。">When their value can be measured, they can be trusted, traded, and invested.</span></p>
           <p class="about-card__more">
             <a href="/about/" class="arrow-link" data-zh="了解完整故事">Read the full story</a>
@@ -469,41 +448,45 @@
         <ul class="report-carousel-track">
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-1">
+              <img class="report-card-media" src="/assets/imagery/reports/drone.jpg" alt="" loading="lazy" decoding="async">
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q1 2026</span>
                 <h3 id="reports-card-1" class="report-card-title" data-zh="台灣無人機專利地形分析">Taiwan Drone Patent Landscape Report</h3>
                 <p class="report-card-dek" data-zh="盤點台灣無人機專利地形——飛控、動力與酬載請求項家族的持有分布，以及尚未佈局的空白地帶。">A read on Taiwan's UAV patent terrain — who holds the flight-control, propulsion, and payload claim families, and where the white space remains.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-2">
+              <img class="report-card-media" src="/assets/imagery/reports/japan.jpg" alt="" loading="lazy" decoding="async">
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q4 2025</span>
                 <h3 id="reports-card-2" class="report-card-title" data-zh="日本企業專利出清流向分析">Japanese Enterprise Patent Sell-Off Flow Report</h3>
                 <p class="report-card-dek" data-zh="追蹤日本企業出清專利的流向——買方、仲介，以及吸納這波釋出的司法管轄區。">Tracking the patents Japanese corporates are divesting and where they land — the acquirers, the brokers, and the jurisdictions absorbing the outflow.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-3">
+              <img class="report-card-media" src="/assets/imagery/reports/taiwan.jpg" alt="" loading="lazy" decoding="async">
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q3 2025</span>
                 <h3 id="reports-card-3" class="report-card-title" data-zh="台灣專利轉讓市場：買家、賣家與仲介商分析報告">Taiwan Patent Transfer Market Report</h3>
                 <p class="report-card-dek" data-zh="解構台灣專利轉讓市場的參與者——誰在買、誰在賣，以及居中促成交易的仲介商。">The players moving patents through Taiwan's assignment market — who's buying, who's selling, and the brokers sitting between them.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-4">
+              <img class="report-card-media" src="/assets/imagery/reports/thermal.jpg" alt="" loading="lazy" decoding="async">
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q2 2025</span>
                 <h3 id="reports-card-4" class="report-card-title" data-zh="能源電源管理與熱管理專利技術分析">Power & Thermal Management Patent Report</h3>
                 <p class="report-card-dek" data-zh="能源系統中電源管理與熱管理專利的技術解讀——請求項密度集中之處，以及佈局重疊的區段。">A technology read on power-management and thermal-management patents across energy systems — where claim density concentrates and where positions overlap.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
@@ -543,7 +526,7 @@
                 <span class="report-card-eyebrow">2026-03-26</span>
                 <h3 id="press-card-1" class="report-card-title" data-zh="陽明交大研究專利進入 TIS 授權管道。">NYCU research patents enter the TIS licensing pipeline.</h3>
                 <p class="report-card-dek" data-zh="一條從陽明交大實驗室直通商業授權的管道，將校方持有的研究專利開放給 TIS 客戶。">A direct channel from the university's labs to commercial licensing, opening NYCU-held research patents to TIS clients.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
@@ -554,7 +537,7 @@
                 <span class="report-card-eyebrow">2026-01-15</span>
                 <h3 id="press-card-2" class="report-card-title" data-zh="資策會與 TIS 將數位轉型研究轉化為可授權的智財。">III and TIS turn digital-transformation research into licensable IP.</h3>
                 <p class="report-card-dek" data-zh="攜手將資策會的數位轉型研究，整理為台灣產業可授權、可延伸應用的智財。">Joint work to package III's digital-transformation research into IP that Taiwan's industries can license and build on.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
@@ -565,7 +548,7 @@
                 <span class="report-card-eyebrow">2025-11-20</span>
                 <h3 id="press-card-3" class="report-card-title" data-zh="工研院 iPIC 將工業級專利導入 TIS 授權網絡。">ITRI's iPIC brings industrial-grade patents into the TIS licensing network.</h3>
                 <p class="report-card-dek" data-zh="工研院專利池為 TIS 網絡注入經產業驗證的應用型專利，擴充可供授權的組合深度。">ITRI's patent-pool arm feeds applied, industry-tested patents into the TIS network, deepening the bundles available to license.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
@@ -576,13 +559,52 @@
                 <span class="report-card-eyebrow">2025-09-04</span>
                 <h3 id="press-card-4" class="report-card-title" data-zh="TIS 與 Innovue 締結奠基合作，撐起每一項交付成果。">TIS and Innovue forge the founding partnership behind every deliverable.</h3>
                 <p class="report-card-dek" data-zh="奠基的結盟——Innovue 的 IP 情報平台與專業，撐起 TIS 每一份分析與報告。">The founding alliance: Innovue's IP intelligence platform and expertise underpin every analysis and report TIS produces.</p>
-                <span class="report-card-more" data-zh="閱讀更多">Read more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
               </div>
             </a>
           </li>
         </ul>
       </div>
       <div class="report-dots" role="tablist" aria-label="Press slides"></div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Exclusive patent access  —  institutions that granted TIS exclusive  ║
+       ║ access to a handful of their patents, feeding the SABCD comparison   ║
+       ║ pool. Full-bleed always-dark "glow horizon" feature band: a silver   ║
+       ║ radial glow + curved rim arc, a canvas sparkle field, and the four   ║
+       ║ partner marks (Innovue · iPIC · III · NYCU) in a slow-scrolling      ║
+       ║ marquee. Single row INSIDE the band: a "Strategic Partners" eyebrow  ║
+       ║ pinned left, the scrolling logo marquee filling the right (edge-     ║
+       ║ faded on the logo area only). Homepage-only presentation of the      ║
+       ║ brand §Partner strip. Sparkles painted by initPartnerSparkles() in   ║
+       ║ site.js; honors prefers-reduced-motion (static, no canvas). Marks    ║
+       ║ duplicated once (aria-hidden) for a seamless loop.                   ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="partner-section" aria-labelledby="partner-band-label">
+    <div class="partner-band">
+      <canvas class="partner-band__sparkles" aria-hidden="true"></canvas>
+      <div class="partner-band__glow" aria-hidden="true"></div>
+      <div class="partner-band__inner">
+        <h2 id="partner-band-label" class="partner-band__label" data-zh="策略合作夥伴">Strategic Partners</h2>
+        <div class="partner-marquee" data-partner-marquee>
+          <div class="partner-marquee__track">
+            <!-- SET A — the real anchors -->
+            <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+            <!-- SET B — duplicate for seamless loop; hidden from SR + keyboard -->
+            <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-hidden="true" tabindex="-1"></a>
+            <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-hidden="true" tabindex="-1"></a>
+            <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-hidden="true" tabindex="-1"></a>
+            <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-hidden="true" tabindex="-1"></a>
+          </div>
+          <div class="partner-marquee__blur partner-marquee__blur--left"  aria-hidden="true"></div>
+          <div class="partner-marquee__blur partner-marquee__blur--right" aria-hidden="true"></div>
+        </div>
+      </div>
     </div>
   </section>
 
