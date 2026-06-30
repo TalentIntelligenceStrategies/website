@@ -9,6 +9,13 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-06-30 13:02 +08:00** · Reports & Press hero flipped to a black field running an About-style plasma-lines WebGL shader (near-mono white glow, slowed, lifted, 11 lines) under a bumped faint grid; dropped the silver gradient and dark-text override.
+- **2026-06-30 12:50 +08:00** · About Innovue section rebuilt as one bordered panel (credit copy + two stats + Powered-by footer together); removed the PSS stat and scaled the remaining numbers down to kill the empty two-block whitespace.
+- **2026-06-30 12:43 +08:00** · About page: the pillars intro became a section heading "Four ways we unlock value" (matched in size to "Why we exist", top-aligned across the two columns); the "Explore Capital & IP" CTA moved to a right-aligned secondary button beneath the Venture Investment card.
+- **2026-06-30 12:34 +08:00** · About hero reworked to a black field running the shared shifting-lines WebGL shader (muted to essentially white, saturation 0.04, glow kept, wave riding up through the wordmark line) behind the centred white TIS secondary wordmark; dropped the hero headline/sub (kept an sr-only h1).
+- **2026-06-30 12:19 +08:00** · About page: hero title breaks "About" / "Talent Intelligence Strategies"; pillars intro breaks to two lines; Innovue section became two-column with the stats counter (stacked, framed) on the right of the text, ~50/50 and vertically centered.
+- **2026-06-30 12:11 +08:00** · About page "Why we exist" became two-column — narrative as four mono-labelled beats (problem/response/engine/cornerstone) on the left, the four value lines as a 2×2 compact pillar grid on the right; board headshots shrunk to a centred 96px row.
+- **2026-06-30 11:57 +08:00** · Restructured the About page: Reports-style hero ("About Talent Intelligence Strategies"), single-column "Why we exist" with the cornerstone folded in + "Explore Capital & IP" CTA, compact 4-card pillar row, full-width Innovue block with PSS-methodology CTA (counter kept), uniform 5-up board grid; removed orange dividers, decorative photos, and 01/02/03 numbering.
 - **2026-06-28 09:10 +08:00** · Added media images (ITRI main plaza + NYCU, resized/optimized to 1000px JPGs under /assets/imagery/press/) to the ITRI and NYCU press cards on both the reports page and the homepage.
 - **2026-06-28 08:36 +08:00** · About panel title now renders the white TIS cube submark inline in place of the word "TIS" (EN + ZH), em-scaled and centered on the "About" cap; aria-label preserves "TIS".
 - **2026-06-28 08:19 +08:00** · Partner-band label set to "Strategic Partners" (dropped "TIS") at 15px.

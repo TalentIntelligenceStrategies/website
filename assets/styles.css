@@ -2889,13 +2889,17 @@ main { padding-top: 64px; }
   overflow: hidden;
 }
 
+/* Match .container's padding breakpoint (768px, not 640px) so the label's left
+   edge stays aligned with the press cards' outer edge through tablet widths. */
+@media (max-width: 768px) {
+  .partner-band__inner { padding-inline: 20px; }
+}
 /* Stack on narrow screens: label above, marquee below. */
 @media (max-width: 640px) {
   .partner-band__inner {
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    padding-inline: 20px;     /* matches .container on mobile */
   }
   .partner-marquee { width: 100%; }
 }

@@ -43,11 +43,18 @@
 <!-- Reports & Press — page-scoped layout. Composes shared tokens only; no new
      primitives, no invented hex. -->
 <style>
-  /* The homepage hero forces white text because its WebGL shader paints a dark
-     canvas. This page drops the shader and keeps only the LIGHT silver gradient,
-     so the hero foreground reverts to the default dark text tokens for contrast. */
-  .hero .pillar-title { color: var(--text-primary); }
-  .hero .pillar-sub   { color: var(--text-secondary); }
+  /* Hero carries the About-style WebGL shader (black field, near-mono glow),
+     so the foreground keeps the default white hero text from styles.css.
+     No per-page color override. */
+
+  /* The shared .hero-grid is tuned (white 0.025) for the sparse About/home
+     shader; this page's plasma is denser, so the faint grid washes out. Bump
+     the ruled grid here so it reads over the shader, like the other heroes. */
+  .hero-grid {
+    background:
+      repeating-linear-gradient(0deg,  rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 32px);
+  }
 </style>
 </head>
 <body>
@@ -200,11 +207,13 @@
 <main id="main">
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  homepage hero grammar, shader removed (silver + grid only)  ║
+       ║ Hero  —  homepage hero grammar; About-style plasma shader (mono glow) ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" data-active-pillar="positioning" aria-label="Hero">
-    <!-- Silver gradient backdrop + faint 32px graph-paper grid. No WebGL shader. -->
-    <div class="hero-silver" aria-hidden="true"></div>
+  <section class="hero" aria-label="Hero">
+    <!-- Plasma-lines WebGL shader, muted to a near-mono white glow on black and
+         slowed to match the About hero. Mounted by the inline script near
+         </body>. The black .hero background shows through if WebGL fails. -->
+    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
 
     <div class="container hero-inner">
@@ -438,6 +447,156 @@
 <div id="lang-overlay" aria-hidden="true">
   <div id="lang-cube"></div>
 </div>
+
+<!-- Plasma-lines hero shader — plain WebGL (no build step, no three.js). Adapted
+     from a purple plasma-grid shader: recolored to a near-mono white glow on a
+     black field and slowed (overallSpeed 0.06) to match the About hero's color
+     and motion. On any failure the catch leaves #hero-shader empty → the black
+     .hero background shows through, keeping the white hero text readable. -->
+<script>
+  (function () {
+    var mount = document.getElementById('hero-shader');
+    if (!mount) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    try {
+      var canvas = document.createElement('canvas');
+      var gl = canvas.getContext('webgl');
+      if (!gl) return;                       // leave mount empty → black hero
+      mount.appendChild(canvas);
+
+      var vs = [
+        'attribute vec4 aVertexPosition;',
+        'void main() { gl_Position = aVertexPosition; }'
+      ].join('\n');
+
+      // Near-mono white glow on black; line motion slowed to the About hero feel.
+      var fs = [
+        'precision highp float;',
+        'uniform vec2 iResolution;',
+        'uniform float iTime;',
+        'const float overallSpeed = 0.06;',          // was 0.2 — calm, About-slow drift
+        'const float scale = 5.0;',
+        'const vec4 lineColor = vec4(0.90, 0.90, 0.92, 1.0);', // strict mono near-white
+        'const float GLOW = 0.72;',                  // overall line intensity, About ~0.88
+        'const float minLineWidth = 0.01;',
+        'const float maxLineWidth = 0.2;',
+        'const float lineSpeed = 1.0 * overallSpeed;',
+        'const float lineAmplitude = 1.0;',
+        'const float lineFrequency = 0.2;',
+        'const float warpSpeed = 0.2 * overallSpeed;',
+        'const float warpFrequency = 0.5;',
+        'const float warpAmplitude = 1.0;',
+        'const float offsetFrequency = 0.5;',
+        'const float offsetSpeed = 1.33 * overallSpeed;',
+        'const float minOffsetSpread = 0.6;',
+        'const float maxOffsetSpread = 2.0;',
+        'const int linesPerGroup = 11;',            // was 16 — thinned ~31% total, balanced
+        'const float LIFT = 0.40;',                 // upward nudge, eased back down a notch
+        'const float gridSmoothWidth = 0.015;',
+        '#define drawCircle(pos, radius, coord) smoothstep(radius + gridSmoothWidth, radius, length(coord - (pos)))',
+        '#define drawSmoothLine(pos, halfWidth, t) smoothstep(halfWidth, 0.0, abs(pos - (t)))',
+        '#define drawCrispLine(pos, halfWidth, t) smoothstep(halfWidth + gridSmoothWidth, halfWidth, abs(pos - (t)))',
+        'float random(float t) { return (cos(t) + cos(t * 1.3 + 1.3) + cos(t * 1.4 + 1.4)) / 3.0; }',
+        'float getPlasmaY(float x, float horizontalFade, float offset) {',
+        '  return random(x * lineFrequency + iTime * lineSpeed) * horizontalFade * lineAmplitude + offset + LIFT;',
+        '}',
+        'void main() {',
+        '  vec2 fragCoord = gl_FragCoord.xy;',
+        '  vec2 uv = fragCoord.xy / iResolution.xy;',
+        '  vec2 space = (fragCoord - iResolution.xy / 2.0) / iResolution.x * 2.0 * scale;',
+        '  float horizontalFade = 1.0 - (cos(uv.x * 6.28) * 0.5 + 0.5);',
+        '  float verticalFade = 1.0 - (cos(uv.y * 6.28) * 0.5 + 0.5);',
+        '  space.y += random(space.x * warpFrequency + iTime * warpSpeed) * warpAmplitude * (0.5 + horizontalFade);',
+        '  space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;',
+        '  vec4 lines = vec4(0.0);',
+        '  for (int l = 0; l < linesPerGroup; l++) {',
+        '    float normalizedLineIndex = float(l) / float(linesPerGroup);',
+        '    float offsetTime = iTime * offsetSpeed;',
+        '    float offsetPosition = float(l) + space.x * offsetFrequency;',
+        '    float rand = random(offsetPosition + offsetTime) * 0.5 + 0.5;',
+        '    float halfWidth = mix(minLineWidth, maxLineWidth, rand * horizontalFade) / 2.0;',
+        '    float offset = random(offsetPosition + offsetTime * (1.0 + normalizedLineIndex)) * mix(minOffsetSpread, maxOffsetSpread, horizontalFade);',
+        '    float linePosition = getPlasmaY(space.x, horizontalFade, offset);',
+        '    float line = drawSmoothLine(linePosition, halfWidth, space.y) / 2.0 + drawCrispLine(linePosition, halfWidth * 0.15, space.y);',
+        '    float circleX = mod(float(l) + iTime * lineSpeed, 25.0) - 12.0;',
+        '    vec2 circlePosition = vec2(circleX, getPlasmaY(circleX, horizontalFade, offset));',
+        '    float circle = drawCircle(circlePosition, 0.01, space) * 2.5;',  // dots muted
+        '    line = line + circle;',
+        '    lines += line * lineColor * rand;',
+        '  }',
+        '  vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);', // pure black field, like About
+        '  fragColor *= verticalFade;',
+        '  fragColor.a = 1.0;',
+        '  fragColor += lines * GLOW;',
+        '  gl_FragColor = fragColor;',
+        '}'
+      ].join('\n');
+
+      function compile(type, src) {
+        var s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          console.error('[reports-shader] compile:', gl.getShaderInfoLog(s));
+          return null;
+        }
+        return s;
+      }
+
+      var prog = gl.createProgram();
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error('[reports-shader] link:', gl.getProgramInfoLog(prog));
+        return;
+      }
+
+      var buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+      var aPos = gl.getAttribLocation(prog, 'aVertexPosition');
+      var uRes = gl.getUniformLocation(prog, 'iResolution');
+      var uTime = gl.getUniformLocation(prog, 'iTime');
+
+      function resize() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var w = mount.clientWidth, h = mount.clientHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      resize();
+      new ResizeObserver(resize).observe(mount);
+      mount.classList.add('is-ready');         // crossfade in over the black field
+
+      function draw(seconds) {
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.useProgram(prog);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, seconds);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
+
+      if (reduce) {
+        draw(0);                               // single static frame, no motion
+      } else {
+        var start = performance.now();
+        (function loop() {
+          draw((performance.now() - start) / 1000);
+          requestAnimationFrame(loop);
+        })();
+      }
+    } catch (err) {
+      console.error('[reports-shader] failed to init; falling back to black hero.', err);
+    }
+  })();
+</script>
 
 <script src="/assets/site.js" defer></script>
 

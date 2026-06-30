@@ -43,134 +43,114 @@
 <!-- Page-scoped layout for the About page (hero + locked company-profile prose).
      Composes existing tokens + classes only; no new design primitives. -->
 <style>
-  /* About page — website-local layout. Composes shared tokens only. Warm/cool
-     accents derive from the SABCD ramp primitives (orange --score-d-vivid +
-     gold --score-s-vivid = TIS "us"; sky --score-b-vivid = Innovue). No invented hex. */
-  .about-page {
-    --us-accent:   var(--score-d-vivid);   /* orange */
-    --us-accent-2: var(--score-s-vivid);   /* gold   */
-    --inv-accent:  var(--score-b-vivid);   /* sky blue */
+  /* About page — website-local layout. Composes shared tokens only; no invented hex. */
+
+  /* ── Hero — black field + muted shifting-lines shader, centred white logo ── */
+  .about-hero .hero-inner { display: flex; justify-content: center; }
+  /* White secondary wordmark, sized by height (mirrors the nav .topnav-logo
+     pattern) so EN + ZH share a baseline height and the width follows aspect.
+     Always the light/white logo — the hero field is black regardless of theme. */
+  .about-hero-logo {
+    display: block;
+    height: clamp(42px, 4.8vw, 60px);          /* EN width ≈ clamp(368, …, 525px) */
+    aspect-ratio: 1467.19 / 167.59;
+    background: url('/designs/assets/logos/tis/tis_secondarylogo_light_eng.svg') center / contain no-repeat;
+    /* Dark halo separates the white wordmark from the bright line glow. */
+    filter: drop-shadow(0 1px 16px rgba(0, 0, 0, 0.55));
+  }
+  [lang="zh-Hant"] .about-hero-logo {
+    aspect-ratio: 626.7 / 167.58;
+    background-image: url('/designs/assets/logos/tis/tis_secondarylogo_light_ch.svg');
   }
 
-  /* Shared mono eyebrow (hero + 01 / 02 / 03). */
-  .about-hero .pos-num,
-  .about-story__text .pos-num,
-  .about-partner .pos-num,
-  .about-seq {
-    font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.10em;
-    text-transform: uppercase; color: var(--text-tertiary, var(--text-secondary));
-    margin: 0 0 20px;
+  /* ── Why we exist — narrative beats (left) + 2×2 pillar grid (right) ── */
+  .about-story__layout {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+    gap: clamp(40px, 5vw, 80px); align-items: start;
   }
-
-  /* ── Hero ── */
-  .about-hero { padding-block: clamp(72px, 11vw, 132px) 0; }
-  .about-hero h1 span { display: block; }
-  .about-hero .about-lead {
-    font-size: clamp(18px, 1.7vw, 22px); font-weight: 450; line-height: 1.5;
-    letter-spacing: -0.01em; color: var(--text-secondary);
-    max-width: 60ch; margin: 24px 0 0;
-  }
-  .about-hero__rule {
-    height: 3px; width: 64px; margin: 36px 0 0; border: 0; border-radius: 2px;
-    background: linear-gradient(90deg, var(--us-accent-2), var(--us-accent));
-  }
-
-  /* ── Section prose ── */
-  .about-profile { max-width: 760px; }
-  .about-profile p {
-    font-size: clamp(16px, 1.2vw, 18px); line-height: 1.7;
-    color: var(--text-secondary); margin: 0 0 1.3em;
-  }
-  .about-profile p:last-child { margin-bottom: 0; }
-
-  /* ── 01 · Why we exist — prose left, tall photo card right ── */
-  .about-story__grid {
-    display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: clamp(32px, 5vw, 72px); align-items: start;
-  }
-  .about-story__text .about-profile { max-width: none; }
-  @media (min-width: 881px) { .about-story__media { position: sticky; top: 104px; } }
-
-  /* Photo media card — fills the former empty gradient frames. */
-  .about-figure img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; display: block;
-  }
-  .about-figure--photo::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(0deg, rgba(0,0,0,0.45) 0%, transparent 44%);
-  }
-  .about-figure--photo .about-figure__label {
-    position: absolute; left: 18px; bottom: 16px; z-index: 1;
-    color: #fff; opacity: 0.94; font-style: normal;
-    display: inline-flex; align-items: center; gap: 9px;
-  }
-  .about-figure--photo .about-figure__label::before {
-    content: ""; width: 8px; height: 8px; border-radius: 50%;
-    background: var(--fig-dot, var(--us-accent));
-  }
-  .about-figure--warm { background: color-mix(in srgb, var(--us-accent) 12%, var(--surface-secondary)); --fig-dot: var(--us-accent); }
-  .about-figure--cool { background: var(--gradient-bg-cool-faded); --fig-dot: var(--inv-accent); }
-
-  /* ── Three ways we unlock value ── */
-  .about-ways { margin-top: clamp(48px, 6vw, 80px); }
-  .about-ways__intro {
-    font-size: clamp(18px, 1.5vw, 21px); font-weight: 600; letter-spacing: -0.01em;
-    line-height: 1.4; color: var(--text-primary); max-width: 42ch; margin: 0;
-  }
-  .about-ways__grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(16px, 1.6vw, 24px); margin-top: clamp(24px, 3vw, 36px);
-  }
-  .about-way {
-    display: flex; flex-direction: column; gap: 14px;
-    padding: clamp(24px, 2.4vw, 32px);
-    border: 1px solid var(--border-primary); border-radius: 16px;
-    background: var(--surface-page);
-    transition: transform 250ms var(--ease-card), border-color 250ms var(--ease-card), box-shadow 250ms var(--ease-card);
-  }
-  @media (hover: hover) {
-    .about-way:hover { transform: translateY(-3px); border-color: var(--border-secondary); box-shadow: var(--shadow-medium); }
-  }
-  .about-way__n {
-    font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.06em; width: max-content;
-    background: linear-gradient(135deg, var(--us-accent-2), var(--us-accent));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .about-way__title { font-size: clamp(18px, 1.5vw, 21px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 0; color: var(--text-primary); }
-  .about-way__body { font-size: 14.5px; line-height: 1.55; color: var(--text-secondary); margin: 0; }
-
-  /* ── Cornerstone closing statement ── */
-  .about-cornerstone { margin-top: clamp(48px, 6vw, 80px); padding-top: clamp(28px, 4vw, 40px); position: relative; }
-  .about-cornerstone::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 64px; height: 3px; border-radius: 2px;
-    background: linear-gradient(90deg, var(--us-accent-2), var(--us-accent));
-  }
-  .about-cornerstone p {
-    font-size: clamp(20px, 2.1vw, 28px); font-weight: 600; letter-spacing: -0.02em;
-    line-height: 1.36; color: var(--text-primary); max-width: 50ch; margin: 0;
-  }
-
-  /* ── 02 · Strategic partner — Innovue (cool / blue) ── */
-  .about-partner__intro {
-    display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: clamp(32px, 5vw, 72px); align-items: center;
-    margin-bottom: clamp(40px, 5vw, 64px);
-  }
-  .about-partner__title {
+  /* Parallel section headings — both columns open at the same scale + baseline. */
+  .about-story__heading, .about-ways__heading {
     font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.15; margin: 0 0 clamp(24px, 3vw, 36px); color: var(--text-primary);
+  }
+  .about-profile { max-width: 60ch; }
+
+  /* Narrative beats — mono kicker + body. A real 4-step argument (problem →
+     response → engine → cornerstone): the dossier voice, not eyebrow scaffolding. */
+  .about-beat + .about-beat { margin-top: clamp(22px, 2.6vw, 32px); }
+  .about-beat__label {
+    font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-tertiary, var(--text-secondary)); margin: 0 0 8px;
+  }
+  .about-beat__body {
+    font-size: clamp(15px, 1.05vw, 17px); line-height: 1.65;
+    color: var(--text-secondary); margin: 0; text-wrap: pretty;
+  }
+  .about-beat--cornerstone .about-beat__body { color: var(--text-primary); font-weight: 500; }
+
+  /* The four ways — 2×2 compact offer-card grid in the right column. */
+  .about-ways__grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.2vw, 18px);
+  }
+  .offer-card--compact { min-height: clamp(160px, 19vw, 204px); padding: 20px; }
+  /* CTA sits under the grid, right-aligned beneath the Venture Investment card. */
+  .about-ways__cta { margin: clamp(20px, 2.4vw, 28px) 0 0; display: flex; justify-content: flex-end; }
+
+  /* ── Strategic partner — Innovue (one bordered panel: text + 2 stats) ── */
+  .about-partner__panel-body {
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(32px, 5vw, 64px); align-items: center;
+  }
+  .about-partner__intro { max-width: 48ch; }
+  .about-partner__title {
+    font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; letter-spacing: -0.02em;
     line-height: 1.15; margin: 0;
   }
   .about-partner__body {
-    font-size: clamp(16px, 1.2vw, 18px); line-height: 1.7;
-    color: var(--text-secondary); max-width: 60ch; margin: 18px 0 0;
+    font-size: clamp(15px, 1.1vw, 17px); line-height: 1.65;
+    color: var(--text-secondary); margin: 16px 0 0;
   }
-  .about-partner .about-figure { aspect-ratio: 4 / 5; }
+  .about-partner__cta { margin: clamp(22px, 2.6vw, 28px) 0 0; }
+  /* Two stats stacked in the right half; numbers scaled down from the shared size. */
+  .stats-2up { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 36px); }
+  .about-partner__panel .stat-num { font-size: clamp(34px, 3.6vw, 46px); }
 
-  /* ── 03 · Board ── */
-  .about-seq { margin-bottom: -16px; }
+  /* ── Board of Directors — centred row of small (96px) headshots ── */
+  .about-board__heading {
+    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.15; margin: 0 0 var(--space-head-gap); color: var(--text-primary); text-align: center;
+  }
+  .about-board-grid {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: clamp(24px, 4vw, 52px);
+  }
+  .board-member {
+    margin: 0; width: 132px; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .board-member__photo {
+    width: 96px; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden;
+    border: 1px solid var(--border-primary); background: var(--surface-tertiary);
+  }
+  .board-member__photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    /* Desaturated/dim until hover or focus reveals the headshot. */
+    filter: grayscale(1) brightness(0.85); transition: filter 0.45s ease;
+  }
+  .board-member__img--jackson { transform: scale(1.05) translateY(-3%); }
+  @media (hover: hover) {
+    .board-member:hover .board-member__photo img { filter: grayscale(0) brightness(1); }
+  }
+  .board-member:focus-within .board-member__photo img { filter: grayscale(0) brightness(1); }
+  .board-member__name {
+    margin: 14px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+  .board-member__role {
+    margin: 5px 0 0; font-size: 10px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--text-tertiary);
+  }
 
   /* ── Scroll reveal (about page is its own [data-reveal] scope) ── */
   [data-reveal] { opacity: 0; transform: translateY(16px); }
@@ -184,12 +164,14 @@
     [data-reveal] { opacity: 1; transform: none; }
   }
 
-  @media (max-width: 880px) {
-    .about-story__grid,
-    .about-partner__intro { grid-template-columns: 1fr; gap: 32px; }
+  @media (max-width: 900px) {
+    .about-story__layout { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 64px); }
+    .about-profile { max-width: 65ch; }
+    .about-partner__panel-body { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
+    .about-partner__intro { max-width: 65ch; }
+  }
+  @media (max-width: 520px) {
     .about-ways__grid { grid-template-columns: 1fr; }
-    .about-seq { margin-bottom: 0; }
-    .about-story__media .about-figure--tall { aspect-ratio: 4 / 3; }
   }
 </style>
 </head>
@@ -344,109 +326,143 @@
 <main id="main" class="about-page">
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ About hero  —  one-line positioning (brand/positioning.md §3)       ║
+       ║ Hero  —  Reports-style component (silver + 32px grid backdrop, no    ║
+       ║ shader). Title + sub only. Sizing inherits .hero / .pillar-title.    ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about-hero" aria-labelledby="about-page-heading" data-reveal>
-    <div class="container">
-      <p class="pos-num" data-zh="關於 TIS">About TIS</p>
-      <h1 id="about-page-heading" class="pillar-title">
-        <span data-zh="TIS 的存在，是為了讓專利被看見、被衡量、被釋放。">TIS exists to make patents seen, measured, and unlocked.</span>
-      </h1>
-      <p class="about-lead" data-zh="專利，是這個時代最被低估的資產。我們把它轉化為可被衡量、可被交易、可被投資的資產。">Patents are the most undervalued asset of our time. We turn them into assets that can be measured, traded, and invested.</p>
-      <hr class="about-hero__rule" aria-hidden="true">
+  <section class="hero about-hero" aria-label="About Talent Intelligence Strategies">
+    <!-- Shifting-lines WebGL shader (three.js), muted to a near-mono glow; mounted
+         by the ESM module near </body>. The black hero background shows through if
+         WebGL / esm.sh fail (the centred white logo stays readable either way). -->
+    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <h1 id="about-page-heading" class="sr-only" data-zh="關於泰然策略解密">About Talent Intelligence Strategies</h1>
+      <span class="about-hero-logo" role="img" aria-label="Talent Intelligence Strategies" data-reveal></span>
     </div>
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ 01 · Why we exist  —  locked profile copy, verbatim (positioning.md ║
-       ║ §4). Prose-left / media-frame-right. EN textContent + ZH via data-zh ║
-       ║ (paragraph-level). Do not reword without updating positioning.md §4. ║
+       ║ Why we exist  —  locked profile copy, verbatim (positioning.md §4).  ║
+       ║ Two-column: narrative as four labelled beats (problem → response →   ║
+       ║ engine → cornerstone) on the left; the four value-release lines as a ║
+       ║ 2×2 compact offer-card grid on the right. Do not reword without §4.  ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about-story" aria-labelledby="about-story-eyebrow">
+  <section class="section about-story" aria-labelledby="about-story-heading">
     <div class="container">
-      <div class="about-story__grid">
-        <div class="about-story__text" data-reveal>
-          <p class="pos-num" id="about-story-eyebrow" data-zh="01 / 我們為何存在">01 / Why we exist</p>
+      <div class="about-story__layout">
+
+        <!-- Left — narrative beats -->
+        <div class="about-story__col" data-reveal>
+          <h2 class="about-story__heading" id="about-story-heading" data-zh="我們為何存在">Why we exist</h2>
           <div class="about-profile">
-            <p data-zh="在今天的經濟裡，企業的價值有很大一部分不在廠房與設備，而在無形資產。專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、最難被流動的一項。">In today's economy, much of a company's value lies not in plant and equipment but in intangible assets. Patents are the clearest legal form of that value — yet also the hardest to understand and the least liquid item on the balance sheet.</p>
-            <p data-zh="TIS 的存在，是為了改變這件事。我們把專利從一份靜態的法律文件，轉化為可被衡量、可被交易、可被投資的資產；並立志建立一套讓專利價值被公正衡量的標準。">TIS exists to change this. We turn patents from static legal documents into assets that can be measured, traded, and invested — and we set out to build the standard by which their value is fairly judged.</p>
-            <p data-zh="這一切的起點，是把「一件專利值多少」變成一個可信的答案。我們與股東 Innovue 共同開發的專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級。我們的目標，是讓它成為市場公認的專利品質標杆。">It begins with making "what is a patent worth?" a credible question to answer. With our shareholder Innovue, we developed a patent-strength rating engine that scores every patent from S to D across fifty indicators. Our goal is for it to become the market's recognized benchmark for patent quality.</p>
+            <div class="about-beat">
+              <p class="about-beat__label" data-zh="問題所在">The problem</p>
+              <p class="about-beat__body" data-zh="在今天的經濟裡，企業的價值有很大一部分不在廠房與設備，而在無形資產。專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、最難被流動的一項。">In today's economy, much of a company's value lies not in plant and equipment but in intangible assets. Patents are the clearest legal form of that value — yet also the hardest to understand and the least liquid item on the balance sheet.</p>
+            </div>
+            <div class="about-beat">
+              <p class="about-beat__label" data-zh="我們的回應">Our response</p>
+              <p class="about-beat__body" data-zh="TIS 的存在，是為了改變這件事。我們把專利從一份靜態的法律文件，轉化為可被衡量、可被交易、可被投資的資產；並立志建立一套讓專利價值被公正衡量的標準。">TIS exists to change this. We turn patents from static legal documents into assets that can be measured, traded, and invested — and we set out to build the standard by which their value is fairly judged.</p>
+            </div>
+            <div class="about-beat">
+              <p class="about-beat__label" data-zh="評級引擎">The rating engine</p>
+              <p class="about-beat__body" data-zh="這一切的起點，是把「一件專利值多少」變成一個可信的答案。我們與股東 Innovue 共同開發的專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級。我們的目標，是讓它成為市場公認的專利品質標杆。">It begins with making "what is a patent worth?" a credible question to answer. With our shareholder Innovue, we developed a patent-strength rating engine that scores every patent from S to D across fifty indicators. Our goal is for it to become the market's recognized benchmark for patent quality.</p>
+            </div>
+            <div class="about-beat about-beat--cornerstone">
+              <p class="about-beat__label" data-zh="一切的基石">The cornerstone</p>
+              <p class="about-beat__body" data-zh="專利往往是企業最大、卻最被低估的資產。當它的價值能被一致地衡量，它就能被信任、被交易、被投資。這是 TIS 一切業務的基石。">Patents are often a company's largest yet most undervalued asset. When their value can be measured consistently, they can be trusted, traded, and invested. This is the cornerstone of everything TIS does.</p>
+            </div>
           </div>
         </div>
-        <!-- Story media — warm (TIS "us"). Photo: visax-jSN1GcL46U0 (amber), web-optimized. -->
-        <figure class="about-story__media about-figure about-figure--photo about-figure--warm about-figure--tall" data-reveal data-reveal-d="1">
-          <img src="/assets/imagery/about-story-warm.jpg" alt="" loading="lazy" decoding="async">
-          <figcaption class="about-figure__label" data-zh="我們的故事">Our story</figcaption>
-        </figure>
-      </div>
 
-      <!-- Three ways we unlock value — para 4 restructured into a card triad.
-           Intro sentence + card-3 body are verbatim locked copy (positioning.md §4);
-           card-1 & card-2 bodies are tight derived labels — review against §4 before deploy. -->
-      <div class="about-ways" data-reveal>
-        <p class="about-ways__intro" data-zh="圍繞這個核心，我們以三種方式釋放專利的價值：">Around this core, we unlock the value of patents in three ways:</p>
-        <div class="about-ways__grid">
-          <article class="about-way">
-            <span class="about-way__n">01</span>
-            <h3 class="about-way__title" data-zh="評級與情報">Rating &amp; intelligence</h3>
-            <p class="about-way__body" data-zh="以 SABCD 評級引擎為核心，呈現每件專利的強度與情報。">Strength scoring and signal on every patent — the SABCD engine at the core.</p>
-          </article>
-          <article class="about-way">
-            <span class="about-way__n">02</span>
-            <h3 class="about-way__title" data-zh="授權媒合">Licensing marketplace</h3>
-            <p class="about-way__body" data-zh="精選專利組合的非專屬授權市場。">A non-exclusive marketplace for curated patent bundles.</p>
-          </article>
-          <article class="about-way">
-            <span class="about-way__n">03</span>
-            <h3 class="about-way__title" data-zh="自有資本與自有專利">Capital &amp; our own patents</h3>
-            <p class="about-way__body" data-zh="以自有資本與自有專利投入我們深具信心的技術，為被投企業築起隱形的智財護城河。">Backing technologies we believe in with our own capital and patents — an invisible IP moat for the companies we invest in.</p>
-          </article>
+        <!-- Right — the four value-release lines (2×2 compact offer-cards).
+             site.js adds .is-in (image reveal) + .is-revealed (card reveal). -->
+        <div class="about-ways" data-reveal>
+          <h2 class="about-ways__heading" data-zh="釋放價值的四種方式">Four ways we unlock value</h2>
+          <div class="about-ways__grid">
+
+            <a class="offer-card offer-card--compact offer-card--reports" href="/product/signal/">
+              <span class="offer-card-body">
+                <span class="offer-card-eyebrow" aria-hidden="true">01</span>
+                <span class="offer-card-title" data-zh="專利報告">Patent Reports</span>
+                <span class="offer-card-more"><span data-zh="為專利評級">Grade a patent</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </span>
+              </span>
+            </a>
+
+            <a class="offer-card offer-card--compact offer-card--licensing" href="/product/licensing/">
+              <span class="offer-card-body">
+                <span class="offer-card-eyebrow" aria-hidden="true">02</span>
+                <span class="offer-card-title" data-zh="泰然專利防護網">Licensing Platform</span>
+                <span class="offer-card-more"><span data-zh="瀏覽專利包">Browse bundles</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </span>
+              </span>
+            </a>
+
+            <!-- TODO: point to /capital/ when the dedicated Capital & IP page is built. -->
+            <a class="offer-card offer-card--compact offer-card--owned" href="#">
+              <span class="offer-card-body">
+                <span class="offer-card-eyebrow" aria-hidden="true">03</span>
+                <span class="offer-card-title" data-zh="自有專利">Owned Patents</span>
+                <span class="offer-card-more"><span data-zh="查看自有專利">See our portfolio</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </span>
+              </span>
+            </a>
+
+            <!-- TODO: point to /capital/ when the dedicated Capital & IP page is built. -->
+            <a class="offer-card offer-card--compact offer-card--venture" href="#">
+              <span class="offer-card-body">
+                <span class="offer-card-eyebrow" aria-hidden="true">04</span>
+                <span class="offer-card-title" data-zh="創投投資">Venture Investment</span>
+                <span class="offer-card-more"><span data-zh="我們投資什麼">What we back</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </span>
+              </span>
+            </a>
+
+          </div>
+          <p class="about-ways__cta">
+            <!-- TODO: point to /capital/ when the dedicated Capital & IP page is built. -->
+            <a href="#" class="btn btn-secondary" data-zh="探索資本與智財">Explore Capital &amp; IP</a>
+          </p>
         </div>
-      </div>
 
-      <!-- Cornerstone — para 5, verbatim locked copy. -->
-      <div class="about-cornerstone" data-reveal>
-        <p data-zh="專利往往是企業最大、卻最被低估的資產。當它的價值能被一致地衡量，它就能被信任、被交易、被投資。這是 TIS 一切業務的基石。">Patents are often a company's largest yet most undervalued asset. When their value can be measured consistently, they can be trusted, traded, and invested. This is the cornerstone of everything TIS does.</p>
       </div>
     </div>
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ 02 · Strategic partner — Innovue.  Credit block (copy assembled from ║
+       ║ Strategic partner — Innovue.  Credit block (copy assembled from      ║
        ║ locked facts only: shareholder, co-developed engine, 50 indicators,  ║
        ║ 180M daily-synced DB, S–D) paired with the stats frame as proof.     ║
-       ║ Count-up on scroll (.counter, site.js).                              ║
+       ║ Count-up on scroll (.counter, site.js). CTA → PSS methodology.       ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about-partner" aria-labelledby="about-partner-eyebrow">
+  <section class="section about-partner" aria-labelledby="about-partner-heading">
     <div class="container">
-      <div class="about-partner__intro">
-        <div class="about-partner__text" data-reveal>
-          <p class="pos-num" id="about-partner-eyebrow" data-zh="02 / 策略夥伴">02 / Strategic partner</p>
-          <h2 class="about-partner__title" data-zh="與 Innovue 共同打造。">Built with Innovue.</h2>
-          <p class="about-partner__body" data-zh="我們的股東與評級夥伴。我們與 Innovue 共同開發專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是全球第三大、收錄一億八千萬筆並每日與官方同步的專利資料庫。">Our shareholder and rating partner. We co-developed the patent-strength rating engine with Innovue — scoring every patent S to D across fifty indicators, against the world's third-largest patent index of 180 million records synced daily with official offices.</p>
-        </div>
-        <!-- Innovue media — cool / blue. Photo: visax-8oni9vTWj7U (blue), web-optimized. -->
-        <figure class="about-figure about-figure--photo about-figure--cool" data-reveal data-reveal-d="1">
-          <img src="/assets/imagery/about-innovue-cool.jpg" alt="" loading="lazy" decoding="async">
-          <figcaption class="about-figure__label">Innovue</figcaption>
-        </figure>
-      </div>
-      <div class="stats-frame" data-reveal>
-        <div class="stats-3up">
-          <div class="stat">
-            <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
-            <h2 class="stat-num"><span class="counter" data-target="180">0</span>M</h2>
-            <p class="stat-body" data-zh-html data-zh="Innovue 專屬資料庫所收錄的專利數 - <strong>每日</strong>與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。">patents in Innovue's proprietary database — synced <strong>daily</strong> with official patent offices. World's 3rd-largest patent index — searches that miss no trace.</p>
+      <!-- One bordered panel binds the credit copy + the two stats as a single
+           unit; 'Powered by Innovue' spans the footer (shared .stats-frame). -->
+      <div class="stats-frame about-partner__panel" data-reveal>
+        <div class="about-partner__panel-body">
+          <div class="about-partner__intro">
+            <h2 class="about-partner__title" id="about-partner-heading" data-zh="與 Innovue 共同打造。">Built with Innovue.</h2>
+            <p class="about-partner__body" data-zh="我們的股東與評級夥伴。我們與 Innovue 共同開發專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是全球第三大、收錄一億八千萬筆並每日與官方同步的專利資料庫。">Our shareholder and rating partner. We co-developed the patent-strength rating engine with Innovue — scoring every patent S to D across fifty indicators, against the world's third-largest patent index of 180 million records synced daily with official offices.</p>
+            <p class="about-partner__cta">
+              <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看 PSS 評分方法">See the PSS methodology</a>
+            </p>
           </div>
-          <div class="stat">
-            <p class="stat-eyebrow">Patent Strength Score — PSS</p>
-            <h2 class="stat-num"><span class="counter" data-target="50">0</span></h2>
-            <p class="stat-body" data-zh="項指標構成每個 PSS 評級 — 八大加權支柱，0–100 評分，對標同業基準。">indicators behind every PSS grade — 8 weighted pillars, scored 0–100, calibrated against same-industry peers.</p>
-          </div>
-          <div class="stat">
-            <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
-            <h2 class="stat-num"><span class="counter" data-target="100">0</span>+</h2>
-            <p class="stat-body" data-zh="專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。">jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning.</p>
+          <div class="stats-2up">
+            <div class="stat">
+              <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
+              <h2 class="stat-num"><span class="counter" data-target="180">0</span>M</h2>
+              <p class="stat-body" data-zh-html data-zh="Innovue 專屬資料庫所收錄的專利數 - <strong>每日</strong>與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。">patents in Innovue's proprietary database — synced <strong>daily</strong> with official patent offices. World's 3rd-largest patent index — searches that miss no trace.</p>
+            </div>
+            <div class="stat">
+              <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
+              <h2 class="stat-num"><span class="counter" data-target="100">0</span>+</h2>
+              <p class="stat-body" data-zh="專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。">jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning.</p>
+            </div>
           </div>
         </div>
         <div class="stats-frame-foot">
@@ -458,63 +474,38 @@
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Board of Directors  —  moved here from the homepage About section.  ║
-       ║ Five members on one line, bracketed by full-width hairlines with a   ║
-       ║ centered straddling title. .board-photo gradient is the fallback.    ║
+       ║ Board of Directors  —  uniform 5-up photo grid. Photo + name + role  ║
+       ║ per member. Grayscale until hover/focus. data-reveal staggers in.    ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about" aria-label="Board of Directors">
+  <section class="section about" aria-labelledby="about-board-heading">
     <div class="container">
-      <p class="pos-num about-seq" data-zh="03 / 董事會成員">03 / Board of Directors</p>
-      <div class="board-roster" role="group" aria-label="Board of Directors">
-        <span class="board-roster__title" data-zh="董事會成員">Board of Directors</span>
-        <!-- Two-part interactive showcase: staggered photo grid (left) + name list
-             (right). Hovering / focusing either side highlights the matching member
-             on both sides via shared data-member ids (see board interaction in site.js). -->
-        <div class="board-team">
-          <!-- Photos: 1 / 2 / 2 staircase stepping up to the right. Chairman
-               Ming-I Peng sits in the single left slot. -->
-          <div class="board-grid">
-            <div class="board-col board-col--low">
-              <div class="board-card" data-member="ming-i-peng" tabindex="0" role="img" aria-label="Ming-I Peng"><img src="/assets/imagery/board/ming-i-peng.png" alt="" loading="lazy" decoding="async"></div>
-            </div>
-            <div class="board-col board-col--mid">
-              <div class="board-card" data-member="ray-wu" tabindex="0" role="img" aria-label="Ray Wu"><img src="/assets/imagery/board/ray-wu.png" alt="" loading="lazy" decoding="async"></div>
-              <div class="board-card" data-member="jackson-hwang" tabindex="0" role="img" aria-label="Jackson Hwang"><img class="board-card__img--jackson" src="/assets/imagery/board/jackson-hwang.png" alt="" loading="lazy" decoding="async"></div>
-            </div>
-            <div class="board-col">
-              <div class="board-card" data-member="eric-huang" tabindex="0" role="img" aria-label="Dr. Eric Huang"><img src="/assets/imagery/board/eric-huang.png" alt="" loading="lazy" decoding="async"></div>
-              <div class="board-card" data-member="ming-cheng" tabindex="0" role="img" aria-label="Ming Cheng"><img src="/assets/imagery/board/ming-cheng.png" alt="" loading="lazy" decoding="async"></div>
-            </div>
-          </div>
-          <!-- Names: all five -->
-          <div class="board-list" role="list">
-            <div class="board-row" data-member="ming-i-peng" role="listitem" tabindex="0">
-              <span class="board-dot" aria-hidden="true"></span>
-              <span class="board-name">Ming-I Peng</span>
-              <span class="board-role" data-zh="董事長 / 董事">Chairman / Board Director</span>
-            </div>
-            <div class="board-row" data-member="ray-wu" role="listitem" tabindex="0">
-              <span class="board-dot" aria-hidden="true"></span>
-              <span class="board-name">Ray Wu</span>
-              <span class="board-role" data-zh="董事">Board Director</span>
-            </div>
-            <div class="board-row" data-member="eric-huang" role="listitem" tabindex="0">
-              <span class="board-dot" aria-hidden="true"></span>
-              <span class="board-name">Dr. Eric Huang</span>
-              <span class="board-role" data-zh="董事">Board Director</span>
-            </div>
-            <div class="board-row" data-member="jackson-hwang" role="listitem" tabindex="0">
-              <span class="board-dot" aria-hidden="true"></span>
-              <span class="board-name">Jackson Hwang</span>
-              <span class="board-role" data-zh="董事">Board Director</span>
-            </div>
-            <div class="board-row" data-member="ming-cheng" role="listitem" tabindex="0">
-              <span class="board-dot" aria-hidden="true"></span>
-              <span class="board-name">Ming Cheng</span>
-              <span class="board-role" data-zh="監察人 / 董事">Supervisor / Board Director</span>
-            </div>
-          </div>
-        </div>
+      <h2 class="about-board__heading" id="about-board-heading" data-zh="董事會成員">Board of Directors</h2>
+      <div class="about-board-grid">
+        <figure class="board-member" data-reveal>
+          <span class="board-member__photo"><img src="/assets/imagery/board/ming-i-peng.png" alt="Ming-I Peng" loading="lazy" decoding="async"></span>
+          <figcaption class="board-member__name">Ming-I Peng</figcaption>
+          <p class="board-member__role" data-zh="董事長 / 董事">Chairman / Board Director</p>
+        </figure>
+        <figure class="board-member" data-reveal>
+          <span class="board-member__photo"><img src="/assets/imagery/board/ray-wu.png" alt="Ray Wu" loading="lazy" decoding="async"></span>
+          <figcaption class="board-member__name">Ray Wu</figcaption>
+          <p class="board-member__role" data-zh="董事">Board Director</p>
+        </figure>
+        <figure class="board-member" data-reveal>
+          <span class="board-member__photo"><img src="/assets/imagery/board/eric-huang.png" alt="Dr. Eric Huang" loading="lazy" decoding="async"></span>
+          <figcaption class="board-member__name">Dr. Eric Huang</figcaption>
+          <p class="board-member__role" data-zh="董事">Board Director</p>
+        </figure>
+        <figure class="board-member" data-reveal>
+          <span class="board-member__photo"><img class="board-member__img--jackson" src="/assets/imagery/board/jackson-hwang.png" alt="Jackson Hwang" loading="lazy" decoding="async"></span>
+          <figcaption class="board-member__name">Jackson Hwang</figcaption>
+          <p class="board-member__role" data-zh="董事">Board Director</p>
+        </figure>
+        <figure class="board-member" data-reveal>
+          <span class="board-member__photo"><img src="/assets/imagery/board/ming-cheng.png" alt="Ming Cheng" loading="lazy" decoding="async"></span>
+          <figcaption class="board-member__name">Ming Cheng</figcaption>
+          <p class="board-member__role" data-zh="監察人 / 董事">Supervisor / Board Director</p>
+        </figure>
       </div>
     </div>
   </section>
@@ -674,6 +665,120 @@
 </div>
 
 <script src="/assets/site.js" defer></script>
+
+<!-- Shifting-lines hero shader (shared with the homepage hero) — ESM module →
+     three.js from esm.sh, no build step. Muted to saturation 0.4 (near-mono glow)
+     and centred so it reads behind the logo. On any failure the catch leaves
+     #hero-shader empty → the black hero background shows through. -->
+<script type="module">
+  (async () => {
+    const mount = document.getElementById('hero-shader');
+    if (!mount) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const SPEED = 0.003;
+
+    try {
+      const THREE = await import('https://esm.sh/three@0.160.0');
+
+      const vertexShader = `
+        attribute vec3 position;
+        void main() {
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+      const fragmentShader = `
+        precision highp float;
+        uniform vec2 resolution;
+        uniform float time;
+        uniform float xScale;
+        uniform float yScale;
+        uniform float distortion;
+        uniform float yOffset;
+        uniform float saturation;   // 0 = white/grey glow, 1 = full RGB
+        uniform float brightness;   // overall line intensity
+
+        void main() {
+          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          p.y -= yOffset;
+
+          float d = length(p) * distortion;
+
+          float rx = p.x * (1.0 + d);
+          float gx = p.x;
+          float bx = p.x * (1.0 - d);
+
+          float r = 0.05 / abs(p.y + sin((rx + time) * xScale) * yScale);
+          float g = 0.05 / abs(p.y + sin((gx + time) * xScale) * yScale);
+          float b = 0.05 / abs(p.y + sin((bx + time) * xScale) * yScale);
+
+          // Mute chroma toward the brightest channel (value), preserving glow
+          // thickness while dropping hue; then scale overall intensity.
+          vec3 col = vec3(r, g, b);
+          float val = max(r, max(g, b));
+          col = mix(vec3(val), col, saturation);
+
+          gl_FragColor = vec4(col * brightness, 1.0);
+        }
+      `;
+
+      const canvas = document.createElement('canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setClearColor(new THREE.Color(0x000000));
+      mount.appendChild(canvas);
+      mount.classList.add('is-ready');
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1);
+
+      const uniforms = {
+        resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        time:       { value: 0.0 },
+        xScale:     { value: 1.0 },
+        yScale:     { value: 0.30 },
+        distortion: { value: 0.05 },
+        yOffset:    { value: -0.02 },    // nudged up further — band rides through the wordmark line
+        saturation: { value: 0.04 },     // essentially white lines, glow intact
+        brightness: { value: 0.88 },     // keep the glow strong
+      };
+
+      const position = [
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0,  1.0, 0.0,
+      ];
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position), 3));
+
+      const material = new THREE.RawShaderMaterial({
+        vertexShader, fragmentShader, uniforms, side: THREE.DoubleSide,
+      });
+      scene.add(new THREE.Mesh(geometry, material));
+
+      const resize = () => {
+        const w = mount.clientWidth, h = mount.clientHeight;
+        renderer.setSize(w, h, false);
+        uniforms.resolution.value = [w, h];
+      };
+      resize();
+      new ResizeObserver(resize).observe(mount);
+
+      const animate = () => {
+        if (!reduce) uniforms.time.value += SPEED;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      };
+      if (reduce) renderer.render(scene, camera);
+      animate();
+    } catch (err) {
+      console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
+    }
+  })();
+</script>
 
 </body>
 </html>
