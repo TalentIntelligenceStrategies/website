@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-03 04:36 +08:00** · Homepage hero shader: nudged the glowing-lines yOffset down (0.58 → 0.48) to clear the hero text.
 - **2026-07-03 04:26 +08:00** · Signal lobby restructured to match the Licensing lobby (single Create-your-account card, no Log in panel / email form / auth JS); its two tiles are inert href="#" placeholders since Signal has no external register route yet.
 - **2026-07-03 04:19 +08:00** · Licensing lobby stripped to a thin gateway: removed the Log in panel, top-nav Log in button, and email-form screen; both Google + email tiles now link straight to license.tisglobalinc.com/register.
 - **2026-07-03 04:06 +08:00** · Signal + Licensing lobby auth cards: removed the Apple SSO tile and promoted "Continue with email" into that slot as a full-width stack tile (envelope glyph); dropped the standalone email link and its orphaned CSS.
