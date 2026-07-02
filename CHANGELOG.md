@@ -9,6 +9,9 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-03 04:26 +08:00** · Signal lobby restructured to match the Licensing lobby (single Create-your-account card, no Log in panel / email form / auth JS); its two tiles are inert href="#" placeholders since Signal has no external register route yet.
+- **2026-07-03 04:19 +08:00** · Licensing lobby stripped to a thin gateway: removed the Log in panel, top-nav Log in button, and email-form screen; both Google + email tiles now link straight to license.tisglobalinc.com/register.
+- **2026-07-03 04:06 +08:00** · Signal + Licensing lobby auth cards: removed the Apple SSO tile and promoted "Continue with email" into that slot as a full-width stack tile (envelope glyph); dropped the standalone email link and its orphaned CSS.
 - **2026-06-30 13:02 +08:00** · Reports & Press hero flipped to a black field running an About-style plasma-lines WebGL shader (near-mono white glow, slowed, lifted, 11 lines) under a bumped faint grid; dropped the silver gradient and dark-text override.
 - **2026-06-30 12:50 +08:00** · About Innovue section rebuilt as one bordered panel (credit copy + two stats + Powered-by footer together); removed the PSS stat and scaled the remaining numbers down to kill the empty two-block whitespace.
 - **2026-06-30 12:43 +08:00** · About page: the pillars intro became a section heading "Four ways we unlock value" (matched in size to "Why we exist", top-aligned across the two columns); the "Explore Capital & IP" CTA moved to a right-aligned secondary button beneath the Venture Investment card.
