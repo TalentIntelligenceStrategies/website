@@ -4,14 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Capital &amp; IP — TIS</title>
-<meta name="description" content="TIS Capital backs growth-stage companies with more than money — capital plus an IP program engineered to raise your value at exit and defend it the whole way there." />
+<meta name="description" content="TIS Capital, part of Unify Investment Group, backs Taiwan and Asia-Pacific companies with financial strategy, cross-border M&amp;A, and deep-tech and biomedical incubation — plus an IP program that raises value at exit." />
 <link rel="canonical" href="https://tisglobalinc.com/capital/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/capital/" />
 <meta property="og:title" content="Capital &amp; IP — TIS" />
-<meta property="og:description" content="Traditional VC only gives money. TIS Capital gives capital plus an IP program engineered to raise your exit value — and defend it the whole way there." />
+<meta property="og:description" content="TIS Capital, part of Unify Investment Group, backs Taiwan and Asia-Pacific companies with financial strategy, cross-border M&amp;A, and deep-tech and biomedical incubation — plus an IP program that raises value at exit." />
 <meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,7 +20,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Capital &amp; IP — TIS" />
-<meta name="twitter:description" content="Traditional VC only gives money. TIS Capital gives capital plus an IP program engineered to raise your exit value — and defend it." />
+<meta name="twitter:description" content="Rooted in Taiwan and Asia-Pacific: financial strategy, cross-border M&amp;A, and deep-tech and biomedical incubation — sharpened by an IP program that raises value at exit." />
 <meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
 
@@ -44,15 +44,98 @@
      components only (hero, section-head, report-carousel, offer-card, btn).
      No new primitives, no invented hex — page-local rules use CSS vars only.
 
-     HERO: intentionally ships WITHOUT a shader. #hero-shader is left as an
-     empty mount point so a toned-down (monotone / light) shader can drop in
-     later; until then the black .hero background + faint grid show through,
+     HERO: a COBE globe (loaded as an ES module near </body>) mounts into
+     #hero-shader, centred behind the text and rising from the bottom. On
+     import/WebGL failure the black .hero background + faint grid show through,
      matching the About hero's fallback. -->
 <style>
-  /* ── Hero: left-aligned pillar, matching the Reports hero (default .pillar
-        layout). No scrim — the de-smoked shader is dark enough behind the
-        left-anchored text. ── */
-  .capital-hero .pillar-sub { max-width: 54ch; }
+  /* ── Hero: editorial split — headline top-left, sub bottom-right — over the
+        centred globe. The pillar stretches to the hero's full height and pushes
+        the two text blocks to opposite corners (justify-content: space-between). ── */
+  .hero.capital-hero { align-items: stretch; }
+  .capital-hero .hero-inner {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    padding-block: clamp(28px, 5vh, 56px);
+  }
+  /* Two-corner scrim: soft darkening at the top-left and bottom-right text zones
+     (above the z4 globe, behind the text) so both stay crisp over the dots. */
+  .capital-hero .hero-inner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 52% 56% at 14% 18%, rgba(0,0,0,0.60), rgba(0,0,0,0) 72%),
+      radial-gradient(ellipse 52% 56% at 86% 84%, rgba(0,0,0,0.60), rgba(0,0,0,0) 72%);
+    pointer-events: none;
+  }
+  .capital-hero .pillar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    gap: 24px;
+    text-align: left;
+  }
+  .capital-hero .pillar-title {
+    align-self: flex-start;
+    text-align: left;
+    max-width: none;              /* 2-line break controlled by <br> */
+    margin: 0;
+  }
+  .capital-hero .pillar-sub {
+    align-self: flex-end;
+    text-align: right;
+    max-width: 56ch;              /* widened so the sub wraps to ~4 lines, not 5 */
+    margin: 0;
+    text-wrap: balance;           /* even out characters per line — no short orphan line */
+  }
+  .capital-hero .pillar-sub em { font-style: italic; }
+
+  /* Small screens: don't fling the two blocks to far corners — stack them
+     top-left so the copy stays readable. */
+  @media (max-width: 700px) {
+    .capital-hero .pillar { justify-content: flex-start; gap: 18px; }
+    .capital-hero .pillar-sub { align-self: flex-start; text-align: left; max-width: 100%; }
+  }
+
+  /* ── Hero globe (COBE): centred and contained/medium, rising from the bottom
+        so only the top ~70% shows — the hero's overflow:hidden clips the lower
+        30% (bottom offset = -30% of the globe's size). z-index 4 keeps the
+        sphere clean above the grid (z3) but below the text layer (z5). Auto-spin
+        only → pointer-events:none. ── */
+  .capital-hero #hero-shader {
+    --globe-size: clamp(460px, 62vw, 760px);
+    inset: auto;
+    left: 50%;
+    bottom: calc(var(--globe-size) * -0.33);
+    width: var(--globe-size);
+    height: var(--globe-size);
+    transform: translateX(-50%);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  /* Small screens: shrink the globe; same centred, bottom-cropped framing. */
+  @media (max-width: 700px) {
+    .capital-hero #hero-shader { --globe-size: clamp(320px, 94vw, 460px); }
+  }
+
+  /* ── §1.5 Services — 3-up tiles (reuse .payoff-card). ── */
+  .capital-services__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(12px, 1.4vw, 20px);
+    margin-top: clamp(24px, 3vw, 40px);
+  }
+  @media (max-width: 900px) {
+    .capital-services__grid { grid-template-columns: 1fr; }
+  }
 
   /* ── Framed image drop-zone. Swap the div for an <img> (or set a
         background-image) when a real asset is ready. Tokens only. ── */
@@ -304,23 +387,54 @@
 <main id="main">
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  About-style composition (centred), NO shader.              ║
-       ║ #hero-shader kept as an empty mount for a future toned-down shader. ║
+       ║ Hero  —  centred pillar over a centred COBE globe (text on top).    ║
+       ║ Globe mounts into #hero-shader (see the module near </body>).       ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="hero capital-hero" aria-label="TIS Capital — Capital and IP">
-    <!-- Reserved shader mount. Ships empty (no script): the black .hero
-         background + faint grid show through until a monotone shader is added. -->
+    <!-- COBE globe mount. On any import/WebGL failure the module leaves this
+         empty and the black .hero background + faint grid show through. -->
     <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
 
     <div class="container hero-inner">
       <div class="pillar" data-pillar="positioning">
         <h1 class="pillar-title">
-          <span data-zh="不只是資本，而是「資本 × 智權」">Not just capital — Capital &times; IP.</span>
+          <span data-zh-html data-zh="深耕台灣的資本，<br>以智權淬鍊。">Capital rooted in Taiwan,<br>sharpened by IP.</span>
         </h1>
         <p class="pillar-sub">
-          <span data-zh="傳統創投只給錢；TIS Capital 給的是「資本＋一套會提升出場價值的智權方案」，並在成長全程守護這份價值。">Traditional VC only gives money. TIS Capital gives capital plus an IP program engineered to raise your exit value — and defend it the whole way there.</span>
+          <span data-zh-html data-zh="泰然資本（TIS Capital），<em>Unify Investment Group</em> 的一員，為台灣與亞太企業提供財務策略顧問、跨境併購諮詢，以及深科技與生醫領域的早期投資媒合與孵化——並以一套提升出場價值的智權方案為後盾。">TIS Capital, part of <em>Unify Investment Group</em>, backs Taiwan and Asia-Pacific companies with financial strategy, cross-border M&amp;A, and early-stage incubation across deep-tech and biomedical — plus an IP program that raises value at exit.</span>
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ §1.5  What TIS Capital does  —  the three service lines (advisory /  ║
+       ║ M&A / incubation). The IP-investment lane (unmanned systems) is the  ║
+       ║ deep-dive that follows from §2 onward.                               ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section capital-services" aria-labelledby="capital-does-heading">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2 id="capital-does-heading" class="h-section" data-reveal data-zh="泰然資本做什麼">What TIS Capital does</h2>
+          <p class="section-dek" data-reveal data-zh="深耕台灣與亞太，我們沿三條主線與企業同行——並以一套智權方案，讓每一分投入都更值錢、更安全。">Rooted in Taiwan and Asia-Pacific, we work alongside companies on three fronts — and back each with an IP program that makes what you build worth more, and safer.</p>
+        </div>
+      </header>
+
+      <div class="capital-services__grid">
+        <div class="payoff-card" data-reveal>
+          <h3 class="payoff-card__title" data-zh="財務策略顧問">Financial strategy advisory</h3>
+          <p class="payoff-card__body" data-zh="為台灣本地企業量身打造的財務策略顧問。">Financial-strategy advisory tailored to Taiwanese enterprises.</p>
+        </div>
+        <div class="payoff-card" data-reveal>
+          <h3 class="payoff-card__title" data-zh="跨境併購諮詢">Cross-border M&amp;A</h3>
+          <p class="payoff-card__body" data-zh="跨境併購諮詢，銜接亞太與國際市場。">Cross-border M&amp;A consulting that bridges Asia-Pacific and global markets.</p>
+        </div>
+        <div class="payoff-card" data-reveal>
+          <h3 class="payoff-card__title" data-zh="早期投資與孵化">Early-stage investment &amp; incubation</h3>
+          <p class="payoff-card__body" data-zh="深科技與生醫生態系的早期投資媒合與孵化。">Early-stage investment matching and incubation across deep-tech and biomedical ecosystems.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -616,6 +730,7 @@
             <span class="footer-innovue" role="img" aria-label="Innovue"></span>
           </div>
           <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
+          <p class="footer-copy">TIS Capital (Taiwan) · 泰然資本控股股份有限公司</p>
         </div>
 
         <div class="footer-cols">
@@ -664,128 +779,68 @@
   <div id="lang-cube"></div>
 </div>
 
-<!-- Flying-lines hero shader — plain WebGL2 (no build step, no React). Ported
-     from Matthias Hurrle's (@atzedent) shader: the cloudy/smoke background FILL
-     is removed (the noise/fbm/clouds field is kept only as a hidden seed, never
-     painted), but the noise-scatter term is retained — it breaks the flowing
-     "flying" streaks into a speckled dot field along their paths. The rainbow is
-     desaturated to a faint cool silver, and all motion is globally slowed
-     (T = time*0.3) to the calm About-hero feel. Mounts into #hero-shader; on any
-     WebGL failure the catch leaves the canvas out and the black .hero background
-     + faint grid show through, keeping the white hero text readable. -->
-<script>
-  (function () {
-    var mount = document.getElementById('hero-shader');
+<!-- Capital hero globe — COBE (https://esm.sh/cobe), loaded as an ES module at
+     runtime, the same no-build pattern the index/about heroes use for three.js.
+     A dark dotted sphere with cool-silver land and soft white glowing city
+     markers (all equal weight), centred behind the hero text and rising from the
+     bottom (see .capital-hero #hero-shader). Calm auto-spin only (no drag); a
+     single static frame under prefers-reduced-motion. Mounts into #hero-shader;
+     on any import/WebGL failure the catch leaves the canvas out and the black
+     .hero background + faint grid show through, keeping the hero text readable. -->
+<script type="module">
+  (async function () {
+    const mount = document.getElementById('hero-shader');
     if (!mount) return;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let phi = 0;
+    let width = 0;
 
     try {
-      var canvas = document.createElement('canvas');
-      var gl = canvas.getContext('webgl2');
-      if (!gl) return;                          // leave mount empty → black hero
+      const { default: createGlobe } = await import('https://esm.sh/cobe@0.6.3');
 
+      const canvas = document.createElement('canvas');
       mount.appendChild(canvas);
 
-      var vs = `#version 300 es
-precision highp float;
-in vec4 position;
-void main(){ gl_Position = position; }`;
+      const onResize = () => { width = mount.clientWidth; };
+      window.addEventListener('resize', onResize);
+      new ResizeObserver(onResize).observe(mount);
+      onResize();
 
-      var fs = `#version 300 es
-precision highp float;
-out vec4 O;
-uniform vec2 resolution;
-uniform float time;
-#define FC gl_FragCoord.xy
-#define T (time*0.3)
-#define R resolution
-#define MN min(R.x,R.y)
-float rnd(vec2 p){p=fract(p*vec2(12.9898,78.233));p+=dot(p,p+34.56);return fract(p.x*p.y);}
-float noise(in vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}
-float fbm(vec2 p){float t=.0,a=1.;mat2 m=mat2(1.,-.5,.2,1.2);for(int i=0;i<5;i++){t+=a*noise(p);p*=2.*m;a*=.5;}return t;}
-float clouds(vec2 p){float d=1.,t=.0;for(float i=.0;i<3.;i++){float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);t=mix(t,d,a);d=a;p*=2./(i+1.);}return t;}
-void main(){
-  vec2 uv=(FC-.5*R)/MN;
-  uv.y*=.5;                                 // compress Y → spreads the streaks up/down along the Y axis
-  vec2 st=uv*vec2(2,1);
-  vec3 col=vec3(0);
-  float bg=clouds(vec2(st.x+T*.5,-st.y));   // hidden noise seed only; smoke fill removed
-  uv*=1.-.3*(sin(T*.2)*.5+.5);
-  for(float i=1.;i<12.;i++){
-    uv+=.1*cos(i*vec2(.1+.01*i,.8)+i*i+T*.5+.1*uv.x);
-    vec2 p=uv;
-    float d=length(p);
-    vec3 lc=cos(sin(i)*vec3(1,2,3))+1.;        // original rainbow, 0..2
-    float lum=(lc.r+lc.g+lc.b)/3.;
-    lc=mix(vec3(lum),lc,.06)*vec3(.97,.99,1.06); // ~94% desaturated + faint cool bias
-    col+=.00125/d*lc;                          // crisp flying lines
-    float b=noise(i+p+bg*1.731);
-    col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y))); // noise scatter — the streaks break into dots
-  }
-  O=vec4(col,1.);
-}`;
+      const globe = createGlobe(canvas, {
+        devicePixelRatio: 2,
+        width: width * 2,
+        height: width * 2,
+        phi: 0,
+        theta: 0.3,
+        dark: 1,                                 // dark sphere (day/night terminator)
+        diffuse: 1.2,
+        mapSamples: 16000,
+        mapBrightness: 6,                        // land-dot brightness — tune live on real GPU
+        baseColor: [0.60, 0.65, 0.72],           // cool-silver land dots (~slate #94A3B8)
+        markerColor: [0.85, 0.88, 0.92],         // soft bright-silver — glowing highlight vs the silver land, not blown-out white
+        glowColor: [0.16, 0.18, 0.22],           // faint cool halo; keep it from blooming white
+        markers: [
+          { location: [25.0330, 121.5654], size: 0.05 }, // Taipei
+          { location: [37.7749, -122.4194], size: 0.05 }, // San Francisco
+          { location: [40.7128, -74.0060], size: 0.05 },  // New York
+          { location: [51.5074, -0.1278],  size: 0.05 },  // London
+          { location: [35.6762, 139.6503], size: 0.05 },  // Tokyo
+          { location: [59.3293, 18.0686],  size: 0.05 },  // Stockholm
+          { location: [14.5995, 120.9842], size: 0.05 },  // Manila
+        ],
+        onRender: (state) => {
+          if (!reduce) phi += 0.0015;            // calm auto-spin (slowed 50%); frozen under reduced-motion
+          state.phi = phi;
+          state.width = width * 2;
+          state.height = width * 2;
+        },
+      });
 
-      function compile(type, src) {
-        var s = gl.createShader(type);
-        gl.shaderSource(s, src);
-        gl.compileShader(s);
-        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-          console.error('[capital-shader] compile:', gl.getShaderInfoLog(s));
-          return null;
-        }
-        return s;
-      }
-
-      var prog = gl.createProgram();
-      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
-      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
-      gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-        console.error('[capital-shader] link:', gl.getProgramInfoLog(prog));
-        return;
-      }
-
-      var buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-      var aPos = gl.getAttribLocation(prog, 'position');
-      var uRes = gl.getUniformLocation(prog, 'resolution');
-      var uTime = gl.getUniformLocation(prog, 'time');
-
-      function resize() {
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        var w = mount.clientWidth, h = mount.clientHeight;
-        canvas.width = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      }
-      resize();
-      new ResizeObserver(resize).observe(mount);
-      mount.classList.add('is-ready');          // crossfade in over the black field
-
-      function draw(seconds) {
-        gl.clearColor(0, 0, 0, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.useProgram(prog);
-        gl.uniform2f(uRes, canvas.width, canvas.height);
-        gl.uniform1f(uTime, seconds);
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.enableVertexAttribArray(aPos);
-        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      }
-
-      if (reduce) {
-        draw(0);                                // single static frame, no motion
-      } else {
-        var start = performance.now();
-        (function loop() {
-          draw((performance.now() - start) / 1000);
-          requestAnimationFrame(loop);
-        })();
-      }
+      mount.classList.add('is-ready');           // crossfade in over the black field
+      window.addEventListener('beforeunload', () => globe.destroy());
     } catch (err) {
-      console.error('[capital-shader] failed to init; falling back to black hero.', err);
+      console.error('[capital-globe] failed to init; falling back to black hero.', err);
     }
   })();
 </script>
