@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-07 05:12 +08:00** · Retitled the homepage to the rating-at-core direction (tab title "The value of patents unlocked"; fuller share headline "…seen, measured, and unlocked" on OG/Twitter), reworded the drop-popup subline to "rated, not just aggregated" across all 3 pages, repointed og:image to the tisglobalinc.com domain, and gave the popup band a rotated dot-field image (mkt-hero.png).
 - **2026-07-07 02:54 +08:00** · Capital & IP: broadened the hero to the full TIS Capital picture (Taiwan/APAC-rooted, part of Unify Investment Group; advisory + cross-border M&A + deep-tech/biomedical incubation, IP as the edge), added a "What TIS Capital does" 3-up section, and put the legal entity (泰然資本控股股份有限公司) in the footer.
 - **2026-07-07 02:20 +08:00** · Capital & IP hero: replaced the WebGL flying-lines shader with a COBE globe (dark sphere, cool-silver land, equal-weight soft-white glowing markers for 7 cities), centred behind centred hero text and rising from the bottom (top ~70% shown); calm auto-spin only, static under reduced-motion, loaded from esm.sh with black-hero fallback.
 - **2026-07-07 01:21 +08:00** · Capital & IP copy aligned to the VCNPE tagline bank — hero sub, focus dek, payoff heading, CTA heading + og/twitter descriptions rewritten (EN + ZH) toward the punchier verbatim taglines.
