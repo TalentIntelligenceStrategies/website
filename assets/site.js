@@ -995,8 +995,9 @@ function initCardCarousel(carouselId) {
 
   sync();
 }
-initCardCarousel('reports-carousel');
-initCardCarousel('press-carousel');
+// Auto-init every card carousel with an id (Reports: reports-/press-carousel;
+// Capital & IP: capital-focus-/capital-why-carousel; any future page too).
+document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(c.id));
 
 /* ════════════════════════════════════════════════════════════════════════
    Verified License Badge — 3D idle-float + mouse-follow tilt + shine.

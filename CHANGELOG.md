@@ -9,7 +9,10 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
-- **2026-07-03 04:36 +08:00** · Homepage hero shader: nudged the glowing-lines yOffset down (0.58 → 0.48) to clear the hero text.
+- **2026-07-07 01:21 +08:00** · Capital & IP copy aligned to the VCNPE tagline bank — hero sub, focus dek, payoff heading, CTA heading + og/twitter descriptions rewritten (EN + ZH) toward the punchier verbatim taglines.
+- **2026-07-03 08:32 +08:00** · Capital & IP hero: added a WebGL2 flying-lines shader (smoke layer removed, rainbow desaturated to faint cool silver, motion slowed) with a legibility scrim behind the centred text; grid overlay kept.
+- **2026-07-03 08:21 +08:00** · Added an Owned Patents carousel section (#owned) to the Capital & IP page and pointed the Home + About "Owned Patents" cards at /capital/#owned.
+- **2026-07-03 08:09 +08:00** · Added the Capital & IP page (/capital/) — centred no-shader hero + Reports/About-style sections with image drop-zones; re-routed the nav, footer, search and About/Home CTAs from /about/ to /capital/.
 - **2026-07-03 04:26 +08:00** · Signal lobby restructured to match the Licensing lobby (single Create-your-account card, no Log in panel / email form / auth JS); its two tiles are inert href="#" placeholders since Signal has no external register route yet.
 - **2026-07-03 04:19 +08:00** · Licensing lobby stripped to a thin gateway: removed the Log in panel, top-nav Log in button, and email-form screen; both Google + email tiles now link straight to license.tisglobalinc.com/register.
 - **2026-07-03 04:06 +08:00** · Signal + Licensing lobby auth cards: removed the Apple SSO tile and promoted "Continue with email" into that slot as a full-width stack tile (envelope glyph); dropped the standalone email link and its orphaned CSS.
