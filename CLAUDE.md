@@ -12,7 +12,7 @@ duplicated across pages, so a chrome change means editing every page file.
 
 Hosted on **GitHub Pages from the `main` branch**, served live at
 **[tisglobalinc.com](https://tisglobalinc.com/)** (custom domain via the root
-[CNAME](CNAME) + DNS at Squarespace; HTTPS active). Flow: commit + push to `main`
+[CNAME](CNAME) + DNS in AWS Route 53; HTTPS active). Flow: commit + push to `main`
 → GitHub Pages auto-rebuilds (~30s) → live.
 
 > **Pushing to `main` deploys to production.** There is no staging branch. Treat

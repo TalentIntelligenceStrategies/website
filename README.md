@@ -54,7 +54,7 @@ No build step. Fonts are self-hosted from `designs/assets/fonts/` (Urbanist, Inc
 
 ## Deploy
 
-Hosted on **GitHub Pages from the `main` branch**, served live at **[tisglobalinc.com](https://tisglobalinc.com/)**. The custom domain is configured via the [`CNAME`](CNAME) file at the repo root + DNS records pointing at GitHub's IPs (DNS managed at Squarespace). HTTPS is active.
+Hosted on **GitHub Pages from the `main` branch**, served live at **[tisglobalinc.com](https://tisglobalinc.com/)**. The custom domain is configured via the [`CNAME`](CNAME) file at the repo root + DNS records pointing at GitHub's IPs (DNS hosted in **AWS Route 53** — the `tisglobalinc.com` hosted zone; Squarespace is the registrar but is *not* authoritative, so DNS edits must be made in Route 53). HTTPS is active.
 
 The GitHub Pages preview URL ([talentintelligencestrategies.github.io/website](https://talentintelligencestrategies.github.io/website/)) still resolves but is no longer the canonical host.
 
