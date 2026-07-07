@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-07 07:44 +08:00** · Moved the Capital & IP page to its own subdomain (capital.tisglobalinc.com, separate repo); replaced /capital/ with a hash-preserving redirect stub and repointed all internal Capital links (home, about, both product pages, reports) to the subdomain.
 - **2026-07-07 07:28 +08:00** · Enlarged the dual-language lockup on the OG card (~50% width) and shortened og:title/twitter:title to match the tab title ("The value of patents unlocked").
 - **2026-07-07 07:19 +08:00** · Rebuilt the OG card — zoomed the dot-field 40% and centered the dual-language TIS lockup on it (new white `tis_secondarylogo_light_dual.svg` variant) — and trimmed the redundant "seen, measured, and unlocked" clause from the meta/OG/Twitter description.
 - **2026-07-07 05:12 +08:00** · Retitled the homepage to the rating-at-core direction (tab title "The value of patents unlocked"; fuller share headline "…seen, measured, and unlocked" on OG/Twitter), reworded the drop-popup subline to "rated, not just aggregated" across all 3 pages, repointed og:image to the tisglobalinc.com domain, and gave the popup band a rotated dot-field image (mkt-hero.png).
