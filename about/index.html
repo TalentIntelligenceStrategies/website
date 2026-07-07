@@ -97,24 +97,56 @@
   /* CTA sits under the grid, right-aligned beneath the Venture Investment card. */
   .about-ways__cta { margin: clamp(20px, 2.4vw, 28px) 0 0; display: flex; justify-content: flex-end; }
 
-  /* ── Strategic partner — Innovue (one bordered panel: text + 2 stats) ── */
-  .about-partner__panel-body {
-    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: clamp(32px, 5vw, 64px); align-items: center;
+  /* ── Strategic partner — Innovue (soft grey card: text left, 2 stats right) ── */
+  .about-partner__panel {
+    background: var(--surface-tertiary); border: none; border-radius: 24px;
+    padding: clamp(32px, 5vw, 72px);
   }
-  .about-partner__intro { max-width: 48ch; }
+  /* One row: text block + two stats, vertically centred. */
+  .about-partner__row {
+    display: flex; align-items: center; gap: clamp(40px, 6vw, 96px);
+  }
+  .about-partner__intro { flex: 1 1 auto; min-width: 0; max-width: 46ch; }
+  /* Title matches the "Why we exist" section heading exactly. */
   .about-partner__title {
-    font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; letter-spacing: -0.02em;
-    line-height: 1.15; margin: 0;
+    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.15; margin: 0; color: var(--text-primary); text-wrap: balance;
+  }
+  /* Innovue EN wordmark set inline in the title, proportioned to "Built with"
+     and baseline-aligned. Blue on light; Light_eng + brightness on dark. */
+  .innovue-wordmark {
+    display: inline-block; height: 0.72em; width: 5.27em; /* inline crop 300:41 */
+    vertical-align: baseline; position: relative; top: 0.02em;
+    background: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg') left center/contain no-repeat;
+  }
+  [data-theme="dark"] .innovue-wordmark {
+    background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
+    filter: brightness(1.6);
   }
   .about-partner__body {
-    font-size: clamp(15px, 1.1vw, 17px); line-height: 1.65;
-    color: var(--text-secondary); margin: 16px 0 0;
+    font-size: clamp(15px, 1vw, 16px); line-height: 1.6;
+    color: var(--text-secondary); margin: clamp(14px, 1.4vw, 18px) 0 0;
+    max-width: 46ch; text-wrap: pretty;
   }
-  .about-partner__cta { margin: clamp(22px, 2.6vw, 28px) 0 0; }
-  /* Two stats stacked in the right half; numbers scaled down from the shared size. */
-  .stats-2up { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 36px); }
-  .about-partner__panel .stat-num { font-size: clamp(34px, 3.6vw, 46px); }
+  /* Two stats on the right — label above each heavy-sans number. */
+  .stats-2up {
+    display: flex; flex: 0 0 auto; gap: clamp(28px, 3.5vw, 56px);
+  }
+  .stats-2up .stat { max-width: 22ch; }
+  .about-partner__panel .stat-eyebrow {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+    text-transform: none; color: var(--text-secondary); margin: 0 0 12px;
+  }
+  .about-partner__panel .stat-num {
+    font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-weight: 800;
+    font-size: clamp(36px, 4vw, 54px); letter-spacing: -0.03em;
+    line-height: 0.95; color: var(--text-primary);
+  }
+  .about-partner__panel .stat-body { margin-top: 14px; max-width: 26ch; }
+  /* CTA sits at the bottom-right of the card. */
+  .about-partner__cta {
+    display: flex; justify-content: flex-end; margin: clamp(32px, 4vw, 48px) 0 0;
+  }
 
   /* ── Board of Directors — centred row of small (96px) headshots ── */
   .about-board__heading {
@@ -167,11 +199,14 @@
   @media (max-width: 900px) {
     .about-story__layout { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 64px); }
     .about-profile { max-width: 65ch; }
-    .about-partner__panel-body { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
-    .about-partner__intro { max-width: 65ch; }
+    /* Stack: text on top, stats below (still side by side until very narrow). */
+    .about-partner__row { flex-direction: column; align-items: stretch; gap: clamp(32px, 6vw, 44px); }
+    .about-partner__intro { max-width: 60ch; }
+    .stats-2up { gap: clamp(32px, 6vw, 48px); }
   }
   @media (max-width: 520px) {
     .about-ways__grid { grid-template-columns: 1fr; }
+    .stats-2up { flex-direction: column; }
   }
 </style>
 </head>
@@ -438,16 +473,13 @@
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="section about-partner" aria-labelledby="about-partner-heading">
     <div class="container">
-      <!-- One bordered panel binds the credit copy + the two stats as a single
-           unit; 'Powered by Innovue' spans the footer (shared .stats-frame). -->
+      <!-- One bordered panel: big title (Innovue wordmark inline) + subtext,
+           then the two counters (label above each number). -->
       <div class="stats-frame about-partner__panel" data-reveal>
-        <div class="about-partner__panel-body">
+        <div class="about-partner__row">
           <div class="about-partner__intro">
-            <h2 class="about-partner__title" id="about-partner-heading" data-zh="與 Innovue 共同打造。">Built with Innovue.</h2>
+            <h2 class="about-partner__title" id="about-partner-heading" data-zh-html data-zh='與 <span class="innovue-wordmark" role="img" aria-label="Innovue"></span> 共同打造。'>Built with <span class="innovue-wordmark" role="img" aria-label="Innovue"></span>.</h2>
             <p class="about-partner__body" data-zh="我們的股東與評級夥伴。我們與 Innovue 共同開發專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是全球第三大、收錄一億八千萬筆並每日與官方同步的專利資料庫。">Our shareholder and rating partner. We co-developed the patent-strength rating engine with Innovue — scoring every patent S to D across fifty indicators, against the world's third-largest patent index of 180 million records synced daily with official offices.</p>
-            <p class="about-partner__cta">
-              <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看 PSS 評分方法">See the PSS methodology</a>
-            </p>
           </div>
           <div class="stats-2up">
             <div class="stat">
@@ -462,10 +494,9 @@
             </div>
           </div>
         </div>
-        <div class="stats-frame-foot">
-          <span>Powered by</span>
-          <img src="/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg" alt="Innovue" class="innovue-logo" />
-        </div>
+        <p class="about-partner__cta">
+          <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看 PSS 評分方法">See the PSS methodology</a>
+        </p>
       </div>
     </div>
   </section>

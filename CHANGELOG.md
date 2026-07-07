@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-07 11:00 +08:00** · Rebuilt the About page Innovue panel as a soft-grey borderless card — single centred row of text (title sized to match "Why we exist", Innovue EN wordmark set inline and proportioned to "Built with") plus the two heavy-Urbanist counters on the right, CTA bottom-right; dropped the "Powered by Innovue" footer strip.
 - **2026-07-07 07:44 +08:00** · Moved the Capital & IP page to its own subdomain (capital.tisglobalinc.com, separate repo); replaced /capital/ with a hash-preserving redirect stub and repointed all internal Capital links (home, about, both product pages, reports) to the subdomain.
 - **2026-07-07 07:28 +08:00** · Enlarged the dual-language lockup on the OG card (~50% width) and shortened og:title/twitter:title to match the tab title ("The value of patents unlocked").
 - **2026-07-07 07:19 +08:00** · Rebuilt the OG card — zoomed the dot-field 40% and centered the dual-language TIS lockup on it (new white `tis_secondarylogo_light_dual.svg` variant) — and trimmed the redundant "seen, measured, and unlocked" clause from the meta/OG/Twitter description.
