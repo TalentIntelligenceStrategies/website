@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-08 08:10 +08:00** · Repointed the remaining three Licensing signup CTAs (bundle-grid, how-it-works, pricing Subscribe) from the in-page lobby.html to the live license.tisglobalinc.com/welcome flow.
 - **2026-07-07 13:29 +08:00** · Repointed the Licensing hero "Build your bundle" CTA to the live license.tisglobalinc.com/welcome flow, dropping the in-page signup data-target.
 - **2026-07-07 11:00 +08:00** · Rebuilt the About page Innovue panel as a soft-grey borderless card — single centred row of text (title sized to match "Why we exist", Innovue EN wordmark set inline and proportioned to "Built with") plus the two heavy-Urbanist counters on the right, CTA bottom-right; dropped the "Powered by Innovue" footer strip.
 - **2026-07-07 07:44 +08:00** · Moved the Capital & IP page to its own subdomain (capital.tisglobalinc.com, separate repo); replaced /capital/ with a hash-preserving redirect stub and repointed all internal Capital links (home, about, both product pages, reports) to the subdomain.
