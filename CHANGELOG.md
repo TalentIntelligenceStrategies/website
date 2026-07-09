@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-10 01:42 +08:00** · Replaced Dr. Eric Huang's About page headshot with a new photo and zoomed Jackson Hwang's headshot in ~15%.
 - **2026-07-09 16:04 +08:00** · Reduced the About page Board of Directors to four members, removing one figure and deleting its headshot asset.
 - **2026-07-08 08:10 +08:00** · Repointed the remaining three Licensing signup CTAs (bundle-grid, how-it-works, pricing Subscribe) from the in-page lobby.html to the live license.tisglobalinc.com/welcome flow.
 - **2026-07-07 13:29 +08:00** · Repointed the Licensing hero "Build your bundle" CTA to the live license.tisglobalinc.com/welcome flow, dropping the in-page signup data-target.
