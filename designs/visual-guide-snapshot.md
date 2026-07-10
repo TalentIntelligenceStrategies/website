@@ -133,7 +133,7 @@ Do not mix libraries. Mixing Lucide with Phosphor, Heroicons, Material, or Font 
 
 ### Approved set
 
-Curated SVGs live in two purpose-scoped subfolders, both pulled from Lucide and committed under canonical Lucide names (no aliasing), canonical 2px stroke preserved at file level. The 1.5px global override is a per-consumer CSS choice (`stroke-width: 1.5`); don't pre-modify the SVGs. Both sets share the same style discipline above — the split is a routing convention, not a stylistic divergence.
+Curated SVGs live in three purpose-scoped subfolders, all pulled from Lucide and committed under canonical Lucide names (no aliasing), canonical 2px stroke preserved at file level. The 1.5px global override is a per-consumer CSS choice (`stroke-width: 1.5`); don't pre-modify the SVGs. All sets share the same style discipline above — the split is a routing convention, not a stylistic divergence.
 
 **UI set** — [`brand/assets/icons/ui/`](./assets/icons/ui/). Interaction affordances consumed by [`components.md`](./components.md).
 
@@ -154,13 +154,24 @@ Curated SVGs live in two purpose-scoped subfolders, both pulled from Lucide and 
 | Data | `database` · `layers` · `network` · `chart-bar` · `chart-line` · `chart-pie` · `gauge` · `boxes` |
 | Commerce | `coins` · `banknote` · `wallet` · `credit-card` · `receipt` · `package` · `key-round` · `activity` |
 
+**Industry set** — [`brand/assets/icons/industry/`](./assets/icons/industry/). One glyph per Licensing-Platform patent-bundle domain — a fixed, closed set of exactly six (not a growing library). Consumed by the licensing surface wherever an industry is named (bundle picker, scope recap, cart, license detail/list, browse cards). `layers` also appears in the Presentation set's Data group; it is duplicated here so the six-industry mapping is documented as one coherent set.
+
+| Domain (ZH / EN) | Icon |
+|---|---|
+| 晶片半導體 / Chip & Semiconductor | `cpu` |
+| 網路與通訊 / Networking & Communications | `satellite-dish` |
+| 淨零碳排 / Net Zero | `leaf` |
+| 計算機系統 / Computing Systems | `circuit-board` |
+| 綜合應用 / Integrated Applications | `layers` |
+| 多媒體影音 / Multimedia | `audio-lines` |
+
 Each icon ships at Lucide's native 24×24 viewBox with `stroke="currentColor"`. Status / signal colours apply via the consuming component, not at file level.
 
 ### Adding a new icon
 
 1. Confirm Lucide has a clean match at [lucide.dev](https://lucide.dev). If it doesn't, see §Custom Icons below — don't reach for a different library.
-2. Download the SVG and commit to `brand/assets/icons/<set>/<name>.svg` (where `<set>` is `ui` for interaction affordances or `presentation` for deck concept carriers) under its exact Lucide name. No aliasing, no re-export.
-3. Update the matching Approved-set table above (UI set or Presentation set).
+2. Download the SVG and commit to `brand/assets/icons/<set>/<name>.svg` (where `<set>` is `ui` for interaction affordances, `presentation` for deck concept carriers, or `industry` for the closed six-glyph bundle-domain set) under its exact Lucide name. No aliasing, no re-export.
+3. Update the matching Approved-set table above (UI set, Presentation set, or Industry set).
 4. Log the addition in [`brand-changelog.md`](./brand-changelog.md) under the `## visual-guide.md` section.
 
 ### Custom Icons — deferred post-MVP
