@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark" data-page="patents">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,23 +43,204 @@
 <!-- Owned Patents — page-scoped layout. Composes shared tokens only; no new
      primitives, no invented hex. -->
 <style>
-  /* No hero shader on this page (unlike About/Reports). The hero is the black
-     .hero field with only the ruled grid over it, so bump the shared .hero-grid
-     from its faint 0.025 up to 0.05 to read cleanly on the bare black field. */
-  .hero-grid {
+  /* ───────── Lamp hero (page-scoped) ─────────
+     Vanilla-CSS port of the Framer-Motion "lamp" component. Two conic-gradient
+     beams converge on a bright horizontal line, with soft halos behind. Rendered
+     monochrome white → silver on the black hero field to stay on-brand (silver =
+     TIS-overall pairing; no invented hue). Same motion as the original —
+     beams/line/glow expand in width while fading opacity 0.5→1, heading rises
+     from y+100px — same timing (0.3s delay, 0.8s, ease-in-out). Animations run
+     once on load (the hero is above the fold, so whileInView === on-load here). */
+  .pat-lamp {
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    height: clamp(380px, 44vh, 480px);
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* Scaled, isolated field that holds the lamp geometry. Fills the hero and
+     sits behind the heading. scaleY(1.25) stretches the cone vertically like
+     the source's `scale-y-125`. */
+  .lamp-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+    overflow: hidden;
+    /* scaleY stretches the cone; translateY nudges the whole lamp down so the
+       bright bar + text sit centered in the compact hero (was top-weighted). */
+    transform: scaleY(1.25) translateY(2.4rem);
+  }
+
+  /* The two beams. Left points down-right from just left of centre; right
+     mirrors it. Each is a 30rem-wide conic gradient masked on two edges (via
+     ::before / ::after painting the black field back over it with a linear
+     alpha mask) so only the soft cone reads. */
+  .lamp-beam {
+    position: absolute;
+    top: auto; bottom: auto; left: auto; right: auto;
+    height: 14rem;
+    width: 30rem;
+    overflow: visible;
+    will-change: width, opacity;
+    animation: lamp-beam 0.8s cubic-bezier(0.42, 0, 0.58, 1) 0.3s both;
+  }
+  .lamp-beam::before, .lamp-beam::after {
+    content: "";
+    position: absolute;
+    background: #000;
+    bottom: 0;
+    z-index: 20;
+  }
+  .lamp-beam--left {
+    right: 50%;
+    background-image: conic-gradient(from 70deg at center top, rgba(255,255,255,0.95), transparent 50%, transparent);
+  }
+  .lamp-beam--left::before {  /* bottom fade */
+    width: 100%; height: 10rem; left: 0;
+    -webkit-mask-image: linear-gradient(to top, white, transparent);
+            mask-image: linear-gradient(to top, white, transparent);
+  }
+  .lamp-beam--left::after {   /* left fade */
+    width: 10rem; height: 100%; left: 0;
+    -webkit-mask-image: linear-gradient(to right, white, transparent);
+            mask-image: linear-gradient(to right, white, transparent);
+  }
+  .lamp-beam--right {
+    left: 50%;
+    background-image: conic-gradient(from 290deg at center top, transparent, transparent 50%, rgba(255,255,255,0.95));
+  }
+  .lamp-beam--right::before { /* right fade */
+    width: 10rem; height: 100%; right: 0;
+    -webkit-mask-image: linear-gradient(to left, white, transparent);
+            mask-image: linear-gradient(to left, white, transparent);
+  }
+  .lamp-beam--right::after {  /* bottom fade */
+    width: 100%; height: 10rem; right: 0;
+    -webkit-mask-image: linear-gradient(to top, white, transparent);
+            mask-image: linear-gradient(to top, white, transparent);
+  }
+
+  /* Blur bar that softens the join, backdrop haze, and the two halo blobs. */
+  .lamp-floor {
+    position: absolute; top: 50%; width: 100%; height: 12rem;
+    transform: translateY(3rem) scaleX(1.5);
+    background: #000; filter: blur(40px); z-index: 1;
+  }
+  .lamp-haze {
+    position: absolute; top: 50%; width: 100%; height: 12rem;
+    background: transparent; opacity: 0.1; z-index: 50;
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  }
+  .lamp-halo {  /* wide soft silver bloom */
+    position: absolute; z-index: 50;
+    height: 9rem; width: 28rem;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.5);
+    filter: blur(64px);
+  }
+  .lamp-glow {  /* tighter, brighter core — animates width like the source.
+                   opacity 0.6 = the glowing bar dimmed ~40% per request. */
+    position: absolute; z-index: 30;
+    height: 9rem; width: 16rem;
+    transform: translateY(-6rem);
+    border-radius: 9999px;
+    background: #E6E8EC;
+    opacity: 0.6;
+    filter: blur(40px);
+    will-change: width;
+    animation: lamp-glow 0.8s cubic-bezier(0.42, 0, 0.58, 1) 0.3s both;
+  }
+  .lamp-line {  /* the bright resolve line — dimmed ~40% (opacity 0.6) */
+    position: absolute; z-index: 50;
+    height: 2px; width: 30rem;
+    transform: translateY(-7rem);
+    background: #F2F3F5;
+    opacity: 0.6;
+    will-change: width;
+    animation: lamp-line 0.8s cubic-bezier(0.42, 0, 0.58, 1) 0.3s both;
+  }
+  .lamp-topmask { /* black cap that hides everything above the line */
+    position: absolute; z-index: 40;
+    height: 11rem; width: 100%;
+    transform: translateY(-12.5rem);
+    background: #000;
+  }
+
+  /* Heading sits above the geometry, centred in the hero so the lit line clears
+     it with a comfortable gap (no upward lift — the earlier -4.5rem crowded the
+     text into the bar). */
+  .pat-lamp .hero-inner { z-index: 5; }
+  .pillar--centered {
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 760px;
+    transform: translateY(0.75rem);
+    animation: lamp-title 0.8s cubic-bezier(0.42, 0, 0.58, 1) 0.3s both;
+  }
+  /* Dek tuned to wrap to two balanced, full lines under the lockup. */
+  .pillar--centered .pillar-sub {
+    margin-inline: auto;
+    max-width: 50ch;
+    text-wrap: balance;
+  }
+
+  /* Hero lockup: white TIS cube submark inline with "Patent Bank" on one line.
+     Submark sized to ~0.94em (≈30% over the section heading's 0.72em treatment)
+     and centred on the cap height. */
+  .pat-lamp-heading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+  }
+  .pat-lamp-mark {
+    height: 0.94em;
+    width: auto;
+  }
+
+  @keyframes lamp-beam { from { opacity: 0.5; width: 15rem; } to { opacity: 1; width: 30rem; } }
+  @keyframes lamp-line { from { width: 15rem; } to { width: 30rem; } }
+  @keyframes lamp-glow { from { width: 8rem; }  to { width: 16rem; } }
+  @keyframes lamp-title {
+    from { opacity: 0.5; transform: translateY(0.75rem) translateY(100px); }
+    to   { opacity: 1;   transform: translateY(0.75rem) translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lamp-beam, .lamp-line, .lamp-glow, .pillar--centered { animation: none; }
+  }
+
+  /* ───────── Page-wide black treatment ─────────
+     The page runs on the site's dark theme (set on <html>), with every surface
+     token pinned to pure #000 so the whole page reads as the hero's black field,
+     top to footer. Text / nav / borders invert via the dark-theme tokens. */
+  html[data-theme="dark"] {
+    --surface-page:      #000;
+    --surface-secondary: #000;
+  }
+  /* Footer transparent so the black + grid run unbroken to the very bottom. */
+  .footer { background: transparent; }
+
+  /* Faint 32px ruled grid behind all content, fixed to the viewport so it reads
+     as one continuous blueprint field down the page (sections are transparent;
+     the white cards and the opaque hero sit on top of it). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background:
       repeating-linear-gradient(0deg,  rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px),
       repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px);
-  }
-
-  /* Section heading: dark cube submark stands in for "TIS", sized to the
-     cap height of the wordmark so it sits level with the "P" in "Patent". */
-  .pat-bank-heading { display: inline-flex; align-items: baseline; gap: 0.26em; }
-  .pat-bank-mark { height: 0.72em; width: auto; align-self: baseline; }
-
-  /* Keep the portfolio dek on a single line (desktop); wraps normally below. */
-  @media (min-width: 768px) {
-    .pat-bank-dek { white-space: nowrap; }
   }
 
   /* ───────── Owned-patents blueprint marquee (page-scoped) ─────────
@@ -69,11 +250,12 @@
      ink: dark card ground + white linework — NOT the preview's warm cream.
      Motion mechanics mirror the site's global .v2-row/.v2-track marquee. */
   .pat-marquee {
-    /* Card ground matches the hero's pure-black field so the strip reads as an
-       extension of it rather than a lighter grey slab. */
-    --pat-ground:     #000;
-    --pat-line:       rgba(255,255,255,0.72);
-    --pat-line-fade:  rgba(255,255,255,0.34);
+    /* Inverted: soft warm-paper cards with black ink linework. Off-white (not
+       pure #fff) so the strip reads as drafting paper and doesn't glare against
+       the black page. */
+    --pat-ground:     #EAE7E0;
+    --pat-line:       rgba(0,0,0,0.82);
+    --pat-line-fade:  rgba(0,0,0,0.44);
     position: relative;
     overflow: clip;
     padding-block: 8px;
@@ -98,12 +280,20 @@
   .pat-marquee:hover .pat-track,
   .pat-marquee:focus-within .pat-track { animation-play-state: paused; }
 
+  /* Second row — opposite direction (rightward) at a slightly slower 75s. */
+  .pat-marquee--rev { margin-top: 20px; }
+  .pat-track--rev { animation: pat-scroll-rev 75s linear infinite; }
+  @keyframes pat-scroll-rev {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
   .pat-card {
     position: relative;
     flex: 0 0 clamp(220px, 24vw, 280px);
     aspect-ratio: 240 / 340;
     background: var(--pat-ground);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,0,0,0.10);
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -141,7 +331,9 @@
     position: absolute; inset: 0; z-index: 3;
     display: flex; flex-direction: column; justify-content: flex-end;
     gap: 6px; padding: 16px;
-    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.10) 100%);
+    /* Paper wash rising from the base — reads as the drawing being annotated,
+       in the same white-card / black-ink language (not the old black scrim). */
+    background: linear-gradient(to top, rgba(245,243,238,0.98) 0%, rgba(245,243,238,0.86) 45%, rgba(245,243,238,0.28) 100%);
     -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
     opacity: 0; transition: opacity 260ms ease;
     pointer-events: none;
@@ -150,15 +342,15 @@
   .pat-card:focus-within .pat-overlay { opacity: 1; }
   .pat-overlay .pat-no {
     font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--pat-line-fade);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: rgba(0,0,0,0.52);
   }
   .pat-overlay .pat-name {
-    font-size: 16px; font-weight: 600; line-height: 1.25; color: #fff;
+    font-size: 16px; font-weight: 600; line-height: 1.25; color: #17130E;
   }
   .pat-overlay .pat-sub {
     font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
     font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    color: rgba(255,255,255,0.62);
+    color: rgba(0,0,0,0.52);
   }
 
   /* Hover CTA — opens the detail modal */
@@ -168,15 +360,15 @@
     display: inline-flex; align-items: center; gap: 6px;
     font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
     font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-    color: #fff;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.24);
+    color: #17130E;
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.22);
     border-radius: 8px;
     padding: 6px 11px;
     cursor: pointer;
     transition: background 120ms ease, border-color 120ms ease;
   }
-  .pat-cta:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.42); }
+  .pat-cta:hover { background: rgba(0,0,0,0.11); border-color: rgba(0,0,0,0.42); }
   .pat-cta svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
   .pat-note {
@@ -420,18 +612,28 @@
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Hero  —  homepage hero grammar, no shader (black field + ruled grid) ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" aria-label="Hero">
-    <!-- No WebGL shader here — the black .hero field reads on its own, with the
-         ruled .hero-grid (bumped page-scoped) as the only overlay. -->
-    <div class="hero-grid" aria-hidden="true"></div>
+  <section class="hero pat-lamp" aria-label="Hero">
+    <!-- Lamp geometry (decorative) — two conic beams converging on a bright
+         line, monochrome white→silver on the black field. See the page <style>. -->
+    <div class="lamp-stage" aria-hidden="true">
+      <div class="lamp-beam lamp-beam--left"></div>
+      <div class="lamp-beam lamp-beam--right"></div>
+      <div class="lamp-floor"></div>
+      <div class="lamp-haze"></div>
+      <div class="lamp-halo"></div>
+      <div class="lamp-glow"></div>
+      <div class="lamp-line"></div>
+      <div class="lamp-topmask"></div>
+    </div>
 
     <div class="container hero-inner">
-      <div class="pillar" data-pillar="positioning">
-        <h1 class="pillar-title">
-          <span data-zh="我們自有的專利。">The patents we own.</span>
+      <div class="pillar pillar--centered" data-pillar="positioning">
+        <h1 class="pillar-title pat-lamp-heading">
+          <img class="pat-lamp-mark" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+          <span data-zh="專利庫">Patent Bank</span>
         </h1>
         <p class="pillar-sub">
-          <span data-zh-html data-zh="泰然在評級引擎判定為被低估、且真正具防禦力的領域裡，持續申請與收購專利——一份記在自有帳上、持續累積的組合，也是一道會隨時間增值的隱形護城河。">TIS files and acquires patents in the domains our rating engine flags as undervalued and genuinely defensible — a growing portfolio held on our own books, and an invisible moat that compounds over time.</span>
+          <span data-zh-html data-zh="泰然記在自有帳上持有的專利——集中於評級引擎判定為被低估、且具防禦力的領域。">Patents TIS holds on its own books — in domains our rating engine flags as undervalued and defensible.</span>
         </p>
       </div>
     </div>
@@ -442,15 +644,10 @@
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="section" id="owned" aria-labelledby="owned-heading">
     <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="owned-heading" class="h-section pat-bank-heading" data-reveal>
-            <img class="pat-bank-mark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" />
-            <span data-zh="專利庫">Patent Bank</span>
-          </h2>
-          <p class="section-dek pat-bank-dek" data-reveal data-zh="泰然記在自有帳上、持續累積的專利組合——一道會隨時間增值的隱形護城河，不綁定任何單一筆交易。">A growing portfolio of patents TIS holds on its own books — an invisible moat that compounds over time, not tied to any single deal.</p>
-        </div>
-      </header>
+      <!-- Heading + dek now live in the hero (submark + "Patent Bank" lockup and
+           the merged dek). A visually-hidden h2 preserves the section's
+           accessible name (aria-labelledby target) without repeating the text. -->
+      <h2 id="owned-heading" class="sr-only" data-zh="專利庫">Patent Bank</h2>
 
       <!-- Owned-patents blueprint marquee. Cards (blueprint SVG art + hover
            overlay carrying patent number / name / domain) are built and
@@ -458,24 +655,10 @@
       <div class="pat-marquee" aria-label="Representative owned patents">
         <div class="pat-track" id="pat-track"></div>
       </div>
+      <div class="pat-marquee pat-marquee--rev" aria-label="More representative owned patents">
+        <div class="pat-track pat-track--rev" id="pat-track-2"></div>
+      </div>
       <p class="pat-note" data-reveal data-zh="示意圖 — 代表申請中與已核准的專利組合，非個別權利主張。">Illustrative — representative of the filing portfolio, not a claim to specific granted rights.</p>
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ CTA  —  closing contact prompt                                      ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section" aria-labelledby="patents-cta-heading">
-    <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="patents-cta-heading" class="h-section" data-reveal data-zh="與我們談談智財策略。">Talk to us about IP strategy.</h2>
-          <p class="section-dek" data-reveal data-zh="了解自有專利如何與我們的評級與授權業務相輔相成。">See where owned patents fit alongside our rating and licensing work.</p>
-        </div>
-        <div>
-          <a href="/#contact" class="btn btn-primary" data-reveal data-zh="聯絡業務">Contact sales</a>
-        </div>
-      </header>
     </div>
   </section>
 
@@ -767,6 +950,27 @@
       abstract: 'Keeps a swarm in formation by sharing relative-position estimates between neighbouring aircraft.' },
   ];
 
+  // Second row — a different set of representative owned patents.
+  const PATENTS_2 = [
+    { tw: 'TWI840115B', name: 'Adaptive battery thermal-management loop', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'H01M 10/63', draw: drawControlLoop,
+      abstract: 'Regulates pack temperature in flight by modulating coolant flow against a predicted discharge-rate curve.' },
+    { tw: 'TWI835603B', name: 'Phased-array telemetry antenna', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H01Q 3/26', draw: drawAntenna,
+      abstract: 'Steers a telemetry beam electronically to hold the ground link while the airframe manoeuvres.' },
+    { tw: 'TWI829744B', name: 'Quick-release payload mounting linkage', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 1/12', draw: drawLinkage,
+      abstract: 'Latches and releases interchangeable payloads through a single-motion linkage without tools.' },
+    { tw: 'TWI823918B', name: 'Variable-pitch propeller gear drive', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 11/30', draw: drawGearTrain,
+      abstract: 'Adjusts blade pitch through a compact gear train to trade thrust for efficiency across flight phases.' },
+    { tw: 'TWI842260B', name: 'Optical-flow landing-guidance sensor', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01C 21/16', draw: drawCam,
+      abstract: 'Estimates descent velocity from ground optical flow to guide precise autonomous landings.' },
+    { tw: 'TWI838072B', name: 'Modular tail-boom structural joint', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 1/26', draw: drawTruss,
+      abstract: 'Joins interchangeable tail booms to the fuselage through a preloaded structural interface.' },
+    { tw: 'TWI831559B', name: 'Fuel-cell hybrid range extender', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'B64D 27/24', draw: drawCylinder,
+      abstract: 'Extends endurance by pairing a hydrogen fuel-cell stack with the battery bus under a shared controller.' },
+  ];
+
+  // Single index space across both rows so the modal can resolve any card.
+  const ALL = PATENTS.concat(PATENTS_2);
+
   function buildBlueprint(item, idx){
     const svg = makeSVG();
     drawFrame(svg);
@@ -777,7 +981,7 @@
     const mo = pad(((idx * 7) % 12) + 1, 2);
     const dy = pad(((idx * 11) % 28) + 1, 2);
     drawTitleBlock(svg, fig, item.domain.toUpperCase(), item.tw, inv, `${yr}/${mo}/${dy}`);
-    text(svg, 22, 24, `SHEET ${idx + 1} / ${PATENTS.length}`, 'label-fade');
+    text(svg, 22, 24, `SHEET ${idx + 1} / ${ALL.length}`, 'label-fade');
     return svg;
   }
 
@@ -809,16 +1013,23 @@
     return card;
   }
 
-  const frag = document.createDocumentFragment();
-  PATENTS.forEach((item, i) => frag.appendChild(buildCard(item, i)));
-  // Clone the set once so the CSS translateX(-50%) loop is seamless.
-  PATENTS.forEach((item, i) => {
-    const clone = buildCard(item, i);
-    clone.setAttribute('aria-hidden', 'true');
-    clone.tabIndex = -1;
-    frag.appendChild(clone);
-  });
-  track.appendChild(frag);
+  // Fill a track from [item, globalIdx] pairs, cloning the set once so the CSS
+  // translateX loop is seamless.
+  function fillTrack(el, pairs){
+    const frag = document.createDocumentFragment();
+    pairs.forEach(([item, idx]) => frag.appendChild(buildCard(item, idx)));
+    pairs.forEach(([item, idx]) => {
+      const clone = buildCard(item, idx);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.tabIndex = -1;
+      frag.appendChild(clone);
+    });
+    el.appendChild(frag);
+  }
+
+  const track2 = document.getElementById('pat-track-2');
+  fillTrack(track, PATENTS.map((item, i) => [item, i]));
+  if (track2) fillTrack(track2, PATENTS_2.map((item, i) => [item, PATENTS.length + i]));
 
   // ────────────────────────────────────────────────────────
   // Detail modal — click / Enter / Space on a card opens it.
@@ -837,7 +1048,7 @@
   function chip(txt){ const c = document.createElement('span'); c.className = 'pat-modal-chip'; c.textContent = txt; return c; }
 
   function openModal(idx){
-    const item = PATENTS[idx];
+    const item = ALL[idx];
     if (!item) return;
     lastFocus = document.activeElement;
     mFig.replaceChildren(buildBlueprint(item, idx));
@@ -858,14 +1069,17 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  track.addEventListener('click', e => {
-    const card = e.target.closest('.pat-card');
-    if (card) openModal(Number(card.dataset.idx));
-  });
-  track.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const card = e.target.closest('.pat-card');
-    if (card){ e.preventDefault(); openModal(Number(card.dataset.idx)); }
+  [track, track2].forEach(t => {
+    if (!t) return;
+    t.addEventListener('click', e => {
+      const card = e.target.closest('.pat-card');
+      if (card) openModal(Number(card.dataset.idx));
+    });
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.pat-card');
+      if (card){ e.preventDefault(); openModal(Number(card.dataset.idx)); }
+    });
   });
   closeBtn.addEventListener('click', closeModal);
   scrim.addEventListener('click', closeModal);
