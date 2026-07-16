@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-16 13:59 +08:00** · Reworked the Owned Patents "Patent Bank" section (submark-lockup heading) into a black blueprint-card marquee — hover reveals TW no./name/domain + "Open patent" CTA; click opens a centered detail modal (abstract, jurisdiction·IPC chips, assignee). Mock UAV data.
 - **2026-07-16 09:45 +08:00** · Added Owned Patents page (/patents/), repointed the Capital & IP chrome entry to it site-wide, and cut the homepage/About offerings from four tiles to three.
 - **2026-07-10 01:42 +08:00** · Replaced Dr. Eric Huang's About page headshot with a new photo and zoomed Jackson Hwang's headshot in ~15%.
 - **2026-07-09 16:04 +08:00** · Reduced the About page Board of Directors to four members, removing one figure and deleting its headshot asset.
