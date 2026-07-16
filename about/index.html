@@ -89,13 +89,11 @@
   }
   .about-beat--cornerstone .about-beat__body { color: var(--text-primary); font-weight: 500; }
 
-  /* The four ways — 2×2 compact offer-card grid in the right column. */
+  /* The three ways — compact offer-cards stacked in the right column. */
   .about-ways__grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.2vw, 18px);
+    display: grid; grid-template-columns: 1fr; gap: clamp(12px, 1.2vw, 18px);
   }
   .offer-card--compact { min-height: clamp(160px, 19vw, 204px); padding: 20px; }
-  /* CTA sits under the grid, right-aligned beneath the Venture Investment card. */
-  .about-ways__cta { margin: clamp(20px, 2.4vw, 28px) 0 0; display: flex; justify-content: flex-end; }
 
   /* ── Strategic partner — Innovue (soft grey card: text left, 2 stats right) ── */
   .about-partner__panel {
@@ -245,7 +243,7 @@
           </div>
         </div>
       </div>
-      <a href="https://capital.tisglobalinc.com/"   class="topnav-link" data-zh="資本與智財">Capital &amp; IP</a>
+      <a href="/patents/"   class="topnav-link" data-zh="自有專利">Owned Patents</a>
       <a href="/reports/"  class="topnav-link" data-zh="報告與新聞">Reports &amp; Press</a>
       <a href="/about/"    class="topnav-link" data-zh="關於" aria-current="page">About</a>
     </nav>
@@ -308,7 +306,7 @@
         <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
       </a>
     </div>
-    <a href="https://capital.tisglobalinc.com/"   data-zh="資本與智財">Capital &amp; IP</a>
+    <a href="/patents/"   data-zh="自有專利">Owned Patents</a>
     <a href="/reports/"  data-zh="報告與新聞">Reports &amp; Press</a>
     <a href="/about/"    data-zh="關於" aria-current="page">About</a>
   </nav>
@@ -335,9 +333,9 @@
       <span data-zh="產品">Products</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="https://capital.tisglobalinc.com/" class="search-link" data-zh="資本與智財">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
-      <span data-zh="資本與智財">Capital &amp; IP</span>
+    <a href="/patents/" class="search-link" data-zh="自有專利">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-zh="自有專利">Owned Patents</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/reports/" class="search-link" data-zh="報告與新聞">
@@ -412,7 +410,7 @@
         <!-- Right — the four value-release lines (2×2 compact offer-cards).
              site.js adds .is-in (image reveal) + .is-revealed (card reveal). -->
         <div class="about-ways" data-reveal>
-          <h2 class="about-ways__heading" data-zh="釋放價值的四種方式">Four ways we unlock value</h2>
+          <h2 class="about-ways__heading" data-zh="釋放價值的三種方式">Three ways we unlock value</h2>
           <div class="about-ways__grid">
 
             <a class="offer-card offer-card--compact offer-card--reports" href="/product/signal/">
@@ -435,7 +433,7 @@
               </span>
             </a>
 
-            <a class="offer-card offer-card--compact offer-card--owned" href="https://capital.tisglobalinc.com/#owned">
+            <a class="offer-card offer-card--compact offer-card--owned" href="/patents/">
               <span class="offer-card-body">
                 <span class="offer-card-eyebrow" aria-hidden="true">03</span>
                 <span class="offer-card-title" data-zh="自有專利">Owned Patents</span>
@@ -445,20 +443,7 @@
               </span>
             </a>
 
-            <a class="offer-card offer-card--compact offer-card--venture" href="https://capital.tisglobalinc.com/">
-              <span class="offer-card-body">
-                <span class="offer-card-eyebrow" aria-hidden="true">04</span>
-                <span class="offer-card-title" data-zh="創投投資">Venture Investment</span>
-                <span class="offer-card-more"><span data-zh="我們投資什麼">What we back</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                </span>
-              </span>
-            </a>
-
           </div>
-          <p class="about-ways__cta">
-            <a href="https://capital.tisglobalinc.com/" class="btn btn-secondary" data-zh="探索資本與智財">Explore Capital &amp; IP</a>
-          </p>
         </div>
 
       </div>
@@ -653,7 +638,7 @@
             <h4 data-zh="公司">Company</h4>
             <ul>
               <li><a href="/about/" data-zh="關於">About</a></li>
-              <li><a href="https://capital.tisglobalinc.com/" data-zh="資本與智財">Capital &amp; IP</a></li>
+              <li><a href="/patents/" data-zh="自有專利">Owned Patents</a></li>
               <li><a href="/reports/" data-zh="報告與新聞">Reports &amp; Press</a></li>
               <li><a href="/#contact" data-zh="聯絡">Contact</a></li>
             </ul>

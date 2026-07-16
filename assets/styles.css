@@ -7560,11 +7560,10 @@ body.smpl-lock{overflow:hidden}
 .offerings-grid {
   margin-top: var(--space-head-gap);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(16px, 1.6vw, 24px);
 }
-@media (max-width: 980px) { .offerings-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .offerings-grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .offerings-grid { grid-template-columns: 1fr; } }
 
 .offer-card {
   position: relative;
@@ -7620,6 +7619,7 @@ body.smpl-lock{overflow:hidden}
 }
 .offer-card-desc {
   font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.82);
+  min-height: 4.5em;               /* reserve 3 lines (3 × 1.5lh) so shorter tiles (Owned) align */
 }
 .offer-card-more {
   display: inline-flex; align-items: center; gap: 4px;   /* arrow sits close to the label (the arrow svg carries its own left whitespace) */

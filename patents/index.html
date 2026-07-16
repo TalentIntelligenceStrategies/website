@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Owned Patents — TIS</title>
+<meta name="description" content="The patents TIS owns outright — a growing portfolio and an invisible moat, built in the domains our rating engine flags as undervalued and genuinely defensible." />
+<link rel="canonical" href="https://tisglobalinc.com/patents/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="TIS" />
+<meta property="og:url" content="https://tisglobalinc.com/patents/" />
+<meta property="og:title" content="Owned Patents — TIS" />
+<meta property="og:description" content="The patents TIS owns outright — a growing portfolio and an invisible moat, built in the domains our rating engine flags as undervalued and genuinely defensible." />
+<meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="TIS — Talent Intelligence Strategies" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Owned Patents — TIS" />
+<meta name="twitter:description" content="The patents TIS owns outright — a growing portfolio and an invisible moat." />
+<meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
+<meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
+
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+
+<link rel="stylesheet" href="/assets/styles.css">
+
+<script>
+  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
+  (() => {
+    const lang = localStorage.getItem('tis-lang');
+    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+  })();
+</script>
+
+<!-- Owned Patents — page-scoped layout. Composes shared tokens only; no new
+     primitives, no invented hex. -->
+<style>
+  /* No hero shader on this page (unlike About/Reports). The hero is the black
+     .hero field with only the ruled grid over it, so bump the shared .hero-grid
+     from its faint 0.025 up to 0.05 to read cleanly on the bare black field. */
+  .hero-grid {
+    background:
+      repeating-linear-gradient(0deg,  rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px);
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ╔═════════════════════════════════════════════════════════════════════╗
+     ║ Top nav  —  components.md §Top nav                                  ║
+     ╚═════════════════════════════════════════════════════════════════════╝ -->
+<header class="topnav" role="banner">
+  <div class="container topnav-inner">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+      <span class="topnav-logo" aria-hidden="true"></span>
+    </a>
+
+    <span class="topnav-spacer"></span>
+
+    <nav class="topnav-links" aria-label="Primary">
+      <div class="topnav-dropdown-wrap">
+        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
+          <span data-zh="產品">Products</span>
+          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
+          <div class="products-menu-grid">
+            <a href="/product/licensing/" class="product-card" role="menuitem">
+              <span class="product-card-name" data-zh="泰然專利防護網">Licensing Platform</span>
+              <span class="product-card-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+            </a>
+            <a href="/product/signal/" class="product-card" role="menuitem">
+              <span class="product-card-name" data-zh="泰然專利強度評級系統">Signal Platform</span>
+              <span class="product-card-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="/patents/" class="topnav-link" data-zh="自有專利" aria-current="page">Owned Patents</a>
+      <a href="/reports/"  class="topnav-link" data-zh="報告與新聞">Reports &amp; Press</a>
+      <a href="/about/"    class="topnav-link" data-zh="關於">About</a>
+    </nav>
+
+    <div class="topnav-controls">
+      <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
+      <div class="lang-wrap" id="lang-wrap">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        </div>
+      </div>
+
+      <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.34-4.34"/>
+          <circle cx="11" cy="11" r="8"/>
+        </svg>
+      </button>
+
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+
+      <!-- Mobile trigger -->
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer  -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+  <div class="mobile-header">
+    <span class="mobile-header-logo" aria-hidden="true"></span>
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-list" aria-label="Primary mobile">
+    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
+      <span data-zh="產品">Products</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-products-sublist" class="mobile-sublist">
+      <a href="/product/licensing/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="泰然專利防護網">Licensing Platform</span>
+        <span class="mobile-sub-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+      </a>
+      <a href="/product/signal/" class="mobile-sub-row">
+        <span class="mobile-sub-name" data-zh="泰然專利強度評級系統">Signal Platform</span>
+        <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+      </a>
+    </div>
+    <a href="/patents/" data-zh="自有專利" aria-current="page">Owned Patents</a>
+    <a href="/reports/"  data-zh="報告與新聞">Reports &amp; Press</a>
+    <a href="/about/"    data-zh="關於">About</a>
+  </nav>
+  <div class="mobile-auth">
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+  </div>
+</aside>
+
+<!-- Search modal — placeholder; wire to section anchors when content is indexed -->
+<div class="search-overlay" id="search-overlay"></div>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-input-row">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m21 21-4.34-4.34"/>
+      <circle cx="11" cy="11" r="8"/>
+    </svg>
+    <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <span class="search-esc" aria-hidden="true">Esc</span>
+  </div>
+  <div class="search-results">
+    <p class="search-section-label" data-zh="跳至">Jump to</p>
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
+      <span data-zh="產品">Products</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/patents/" class="search-link" data-zh="自有專利">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-zh="自有專利">Owned Patents</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/reports/" class="search-link" data-zh="報告與新聞">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      <span data-zh="報告與新聞">Reports &amp; Press</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/about/" class="search-link" data-zh="關於">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span data-zh="關於">About</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/#contact" class="search-link" data-zh="聯絡">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <span data-zh="聯絡">Contact</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Hero  —  homepage hero grammar, no shader (black field + ruled grid) ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="hero" aria-label="Hero">
+    <!-- No WebGL shader here — the black .hero field reads on its own, with the
+         ruled .hero-grid (bumped page-scoped) as the only overlay. -->
+    <div class="hero-grid" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="pillar" data-pillar="positioning">
+        <h1 class="pillar-title">
+          <span data-zh="我們自有的專利。">The patents we own.</span>
+        </h1>
+        <p class="pillar-sub">
+          <span data-zh-html data-zh="泰然在評級引擎判定為被低估、且真正具防禦力的領域裡，持續申請與收購專利——一份記在自有帳上、持續累積的組合，也是一道會隨時間增值的隱形護城河。">TIS files and acquires patents in the domains our rating engine flags as undervalued and genuinely defensible — a growing portfolio held on our own books, and an invisible moat that compounds over time.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Owned patents  —  Content card row                                  ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section" id="owned" aria-labelledby="owned-heading">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2 id="owned-heading" class="h-section" data-reveal data-zh="自有專利">Owned patents</h2>
+          <p class="section-dek" data-reveal data-zh="泰然記在自有帳上、持續累積的專利組合——一道會隨時間增值的隱形護城河，不綁定任何單一筆交易。">A growing portfolio of patents TIS holds on its own books — an invisible moat that compounds over time, not tied to any single deal.</p>
+        </div>
+        <div class="report-nav">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous" aria-controls="owned-carousel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next" aria-controls="owned-carousel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Owned-patents carousel. Text-only cards (no media yet) — drop imagery
+           into a .report-card-media <img> per card when portfolio art is ready. -->
+      <div class="report-carousel" id="owned-carousel">
+        <ul class="report-carousel-track">
+          <li class="report-card-cell">
+            <a class="report-card" aria-labelledby="owned-card-1">
+              <div class="report-card-body">
+                <span class="report-card-eyebrow" data-zh="組合">Portfolio</span>
+                <h3 id="owned-card-1" class="report-card-title" data-zh="持續擴充的 TIS 自有專利基礎">A growing base of TIS-owned patents.</h3>
+                <p class="report-card-dek" data-zh="在評級引擎判定為被低估、且真正具防禦力的領域裡，持續申請與收購。">Filed and acquired across the domains our rating engine flags as undervalued and genuinely defensible.</p>
+              </div>
+            </a>
+          </li>
+          <li class="report-card-cell">
+            <a class="report-card" aria-labelledby="owned-card-2">
+              <div class="report-card-body">
+                <span class="report-card-eyebrow" data-zh="覆蓋">Coverage</span>
+                <h3 id="owned-card-2" class="report-card-title" data-zh="一道護城河，隨時間加深">One moat, deepening over time.</h3>
+                <p class="report-card-dek" data-zh="我們持有的每一件專利都在拓寬邊界——自有保護會持續累積，而不會隨單一筆交易到期。">Every patent we hold widens the perimeter — owned protection that compounds instead of expiring with a single deal.</p>
+              </div>
+            </a>
+          </li>
+          <li class="report-card-cell">
+            <a class="report-card" aria-labelledby="owned-card-3">
+              <div class="report-card-body">
+                <span class="report-card-eyebrow" data-zh="防禦">Defense</span>
+                <h3 id="owned-card-3" class="report-card-title" data-zh="共有防禦的基礎">A foundation for shared defense.</h3>
+                <p class="report-card-dek" data-zh="TIS 自有專利協助奠基交叉授權共有池——一個更廣網絡都能取用的防禦性資源。">TIS-owned patents help seed a cross-license commons — a defensive pool the wider network can draw on.</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="report-dots" role="tablist" aria-label="Owned-patent slides"></div>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ CTA  —  closing contact prompt                                      ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section" aria-labelledby="patents-cta-heading">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2 id="patents-cta-heading" class="h-section" data-reveal data-zh="與我們談談智財策略。">Talk to us about IP strategy.</h2>
+          <p class="section-dek" data-reveal data-zh="了解自有專利如何與我們的評級與授權業務相輔相成。">See where owned patents fit alongside our rating and licensing work.</p>
+        </div>
+        <div>
+          <a href="/#contact" class="btn btn-primary" data-reveal data-zh="聯絡業務">Contact sales</a>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ Footer  —  components.md §Footer                                    ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-nl-block" id="footer-nl-block">
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <form class="footer-nl-form" id="footer-nl-form" novalidate>
+              <input type="email" placeholder="Your Email" aria-label="Email address" required />
+              <button type="submit" aria-label="Subscribe">
+                <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </form>
+          </div>
+          <div class="footer-logo-row">
+            <span class="footer-logo" aria-hidden="true"></span>
+            <span class="footer-divider" aria-hidden="true"></span>
+            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+          </div>
+          <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 data-zh="產品">Products</h4>
+            <ul>
+              <li><a href="/product/licensing/" data-zh="泰然專利防護網">Licensing Platform</a></li>
+              <li><a href="/product/signal/" data-zh="泰然專利強度評級系統">Signal Platform</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="公司">Company</h4>
+            <ul>
+              <li><a href="/about/" data-zh="關於">About</a></li>
+              <li><a href="/patents/" data-zh="自有專利">Owned Patents</a></li>
+              <li><a href="/reports/" data-zh="報告與新聞">Reports &amp; Press</a></li>
+              <li><a href="/#contact" data-zh="聯絡">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="法律">Legal</h4>
+            <ul>
+              <li><a href="#" data-zh="服務條款">Terms</a></li>
+              <li><a href="#" data-zh="隱私政策">Privacy</a></li>
+              <li><a href="#" data-zh="揭露聲明">Disclosures</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 data-zh="聯絡">Contact</h4>
+          <ul>
+            <li><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></li>
+            <li><a href="#" data-zh="台北 · 台灣">Taipei, Taiwan</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</main>
+
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
+<script src="/assets/site.js" defer></script>
+
+</body>
+</html>
