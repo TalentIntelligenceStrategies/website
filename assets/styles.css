@@ -2817,68 +2817,36 @@ main { padding-top: 64px; }
   position: relative;
   overflow: hidden;
   background: #000;            /* always-dark, matches .offer-card / about panels */
-  padding-block: 96px;
-  isolation: isolate;
+  padding-block: 56px;
 }
-.partner-band__sparkles {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  /* Fade the field out toward the edges, mirroring the source mask. */
-  -webkit-mask-image: radial-gradient(50% 50% at 50% 50%, #fff 0%, transparent 85%);
-          mask-image: radial-gradient(50% 50% at 50% 50%, #fff 0%, transparent 85%);
-}
-/* Radial glow rising from the bottom-centre + a faint curved rim — the horizon
-   "sphere edge" of the source, recoloured silver. Whole layer is radially
-   masked so it dissolves into the band. */
-.partner-band__glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 50% 100%, rgba(226,232,240,0.30) 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(50% 50% at 50% 100%, #000 0%, transparent 100%);
-          mask-image: radial-gradient(50% 50% at 50% 100%, #000 0%, transparent 100%);
-}
-.partner-band__glow::after {
-  /* The curved rim: an oversized rounded element whose top arc reads as a horizon
-     line under the logos. */
-  content: "";
-  position: absolute;
-  left: -50%;
-  top: 60%;
-  width: 200%;
-  aspect-ratio: 1 / 0.7;
-  border-radius: 100%;
-  border-top: 1px solid rgba(241,245,249,0.20);
-  background: #000;
-}
-/* Single row: label pinned left, marquee filling the rest to the right
-   (spread apart). Constrained to the page container width + gutter. */
+/* Single row: label pinned left with a hairline divider, marquee filling the
+   rest to the right — the clean left-label + slider layout (mirrors capital's
+   .capital-partners strip, kept dark). Constrained to the container width. */
 .partner-band__inner {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 40px;
+  gap: 32px;
   max-width: 1440px;          /* matches .container */
   margin-inline: auto;
   padding-inline: 32px;
 }
-/* Neutral-grey label, pinned left, doesn't shrink. */
+/* Neutral-grey label, pinned left, doesn't shrink; hairline divider to its right. */
 .partner-band__label {
   flex: 0 0 auto;
+  max-width: 200px;
   margin: 0;
+  padding-right: 32px;
+  border-right: 1px solid rgba(255,255,255,0.14);
+  text-align: right;
   font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  line-height: 1.2;
-  color: rgba(255,255,255,0.6); /* neutral grey — matches the logos' rest dimming (opacity 0.6) */
-  white-space: nowrap;
+  line-height: 1.3;
+  color: rgba(255,255,255,0.6); /* neutral grey — matches the logos' rest dimming */
 }
 
 /* ── Marquee ── */
@@ -2894,12 +2862,19 @@ main { padding-top: 64px; }
 @media (max-width: 768px) {
   .partner-band__inner { padding-inline: 20px; }
 }
-/* Stack on narrow screens: label above, marquee below. */
+/* Stack on narrow screens: label above, marquee below. Drop the divider +
+   right-align so the stacked label reads left-aligned. */
 @media (max-width: 640px) {
   .partner-band__inner {
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
+  }
+  .partner-band__label {
+    max-width: none;
+    padding-right: 0;
+    border-right: none;
+    text-align: left;
   }
   .partner-marquee { width: 100%; }
 }

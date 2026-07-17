@@ -191,7 +191,6 @@
     max-width: 50ch;
     text-wrap: balance;
   }
-
   /* Hero lockup: white TIS cube submark inline with "Patent Bank" on one line.
      Submark sized to ~0.94em (≈30% over the section heading's 0.72em treatment)
      and centred on the cap height. */
@@ -250,10 +249,11 @@
      ink: dark card ground + white linework — NOT the preview's warm cream.
      Motion mechanics mirror the site's global .v2-row/.v2-track marquee. */
   .pat-marquee {
-    /* Inverted: soft warm-paper cards with black ink linework. Off-white (not
+    /* Inverted: neutral off-white cards with black ink linework. Off-white (not
        pure #fff) so the strip reads as drafting paper and doesn't glare against
-       the black page. */
-    --pat-ground:     #EAE7E0;
+       the black page — neutralised from the old warm cream to a dead-neutral
+       light so the linework is the only colour on the card. */
+    --pat-ground:     #ECECEC;
     --pat-line:       rgba(0,0,0,0.82);
     --pat-line-fade:  rgba(0,0,0,0.44);
     position: relative;
@@ -332,8 +332,9 @@
     display: flex; flex-direction: column; justify-content: flex-end;
     gap: 6px; padding: 16px;
     /* Paper wash rising from the base — reads as the drawing being annotated,
-       in the same white-card / black-ink language (not the old black scrim). */
-    background: linear-gradient(to top, rgba(245,243,238,0.98) 0%, rgba(245,243,238,0.86) 45%, rgba(245,243,238,0.28) 100%);
+       in the same white-card / black-ink language (not the old black scrim).
+       Neutral off-white to match the de-yellowed card ground. */
+    background: linear-gradient(to top, rgba(236,236,236,0.98) 0%, rgba(236,236,236,0.86) 45%, rgba(236,236,236,0.28) 100%);
     -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
     opacity: 0; transition: opacity 260ms ease;
     pointer-events: none;
@@ -633,7 +634,7 @@
           <span data-zh="專利庫">Patent Bank</span>
         </h1>
         <p class="pillar-sub">
-          <span data-zh-html data-zh="泰然記在自有帳上持有的專利——集中於評級引擎判定為被低估、且具防禦力的領域。">Patents TIS holds on its own books — in domains our rating engine flags as undervalued and defensible.</span>
+          <span data-zh-html data-zh="泰然完全自有的專利——一個持續成長、以防禦為本的組合，逐步築成一道隱形護城河。">The patents TIS owns outright — a growing, defensive portfolio that deepens into an invisible moat.</span>
         </p>
       </div>
     </div>
@@ -644,9 +645,9 @@
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <section class="section" id="owned" aria-labelledby="owned-heading">
     <div class="container">
-      <!-- Heading + dek now live in the hero (submark + "Patent Bank" lockup and
-           the merged dek). A visually-hidden h2 preserves the section's
-           accessible name (aria-labelledby target) without repeating the text. -->
+      <!-- Heading + dek live in the hero (submark + "Patent Bank" lockup and the
+           dek). A visually-hidden h2 preserves the section's accessible name
+           (aria-labelledby target) without repeating the text. -->
       <h2 id="owned-heading" class="sr-only" data-zh="專利庫">Patent Bank</h2>
 
       <!-- Owned-patents blueprint marquee. Cards (blueprint SVG art + hover

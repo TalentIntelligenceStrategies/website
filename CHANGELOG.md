@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-17 11:48 +08:00** · De-yellowed the Owned Patents blueprint cards to a neutral off-white and rewrote the hero dek to the invisible-moat line; restyled the homepage partner band to a left-label + hairline-divider strip, dropping the sparkles/glow layers.
 - **2026-07-16 19:57 +08:00** · Reworked the Owned Patents page into an all-black surface: compact ~44vh lamp hero, dark-theme tokens pinned to pure #000 top-to-footer, a full-page faint ruled grid, and the blueprint cards inverted to warm-paper with black ink (centered lamp composition; hover mask re-themed to an ink-on-paper readout).
 - **2026-07-16 19:35 +08:00** · Replaced the Owned Patents hero grid with a centered "lamp" beam effect (vanilla-CSS port of the Framer-Motion component) crowned by the white TIS submark + "Patent Bank" lockup and dek; monochrome white→silver bar dimmed ~40%, original motion and timing preserved; condensed the portfolio copy into a two-line hero dek, removed the now-duplicate "Patent Bank" section heading + dek, added a second card row scrolling the opposite way at 75s with seven more mock patents, and dropped the closing "Talk to us about IP strategy" CTA section.
 - **2026-07-16 13:59 +08:00** · Reworked the Owned Patents "Patent Bank" section (submark-lockup heading) into a black blueprint-card marquee — hover reveals TW no./name/domain + "Open patent" CTA; click opens a centered detail modal (abstract, jurisdiction·IPC chips, assignee). Mock UAV data.
