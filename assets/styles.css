@@ -204,6 +204,7 @@
     linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%);
 
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);   /* also redeclared locally on .about-card */
 }
 
 /* ───────── Tokens — dark (homepage-scope, not yet in design-tokens.md) ───────── */
@@ -4248,16 +4249,22 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-weight: 500;
   color: #FFFFFF;
 }
-/* Underline wipes in L→R on hover (mirrors .about-card .arrow-link — scaleX,
-   GPU-friendly, origin-left) instead of a resting border that brightens. */
-.contact-meta a {
+/* Contact email hover — a 1px underline wipes in L→R (mirrors
+   .about-card .arrow-link: scaleX, GPU-friendly, origin-left). No resting
+   underline. Shared by the homepage overlay (.contact-meta a, white on the
+   dark venture card) and the interior contact sections (.contact-email on
+   About / Signal / Licensing, currentColor on the page surface). */
+.contact-meta a,
+.contact-email {
   position: relative;
   display: inline-block;
-  color: #FFFFFF;
+  color: inherit;
   text-decoration: none;
   word-break: break-all;
 }
-.contact-meta a::after {
+.contact-meta a { color: #FFFFFF; }
+.contact-meta a::after,
+.contact-email::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: -3px;
@@ -4268,11 +4275,14 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   transition: transform 280ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .contact-meta a:hover::after { transform: scaleX(1); }
+  .contact-meta a:hover::after,
+  .contact-email:hover::after { transform: scaleX(1); }
 }
-.contact-meta a:focus-visible::after { transform: scaleX(1); }
+.contact-meta a:focus-visible::after,
+.contact-email:focus-visible::after { transform: scaleX(1); }
 @media (prefers-reduced-motion: reduce) {
-  .contact-meta a::after { transition: none; }
+  .contact-meta a::after,
+  .contact-email::after { transition: none; }
 }
 @media (max-width: 520px) {
   .contact-overlay-meta { grid-template-columns: 1fr; }
