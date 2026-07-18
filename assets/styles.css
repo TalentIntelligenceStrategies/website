@@ -717,24 +717,56 @@ img, svg { display: block; }
 .products-menu-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border-primary);
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 8px;
 }
 .product-card {
-  display: flex; flex-direction: column; gap: 6px;
-  padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
   background: var(--surface-page);
   text-decoration: none;
-  transition: background 100ms linear, color 100ms linear;
 }
-.product-card:hover,
-.product-card[aria-current="page"] { background: var(--surface-tertiary); }
+.product-card[aria-current="page"] { box-shadow: inset 0 0 0 1px var(--border-primary); }
+/* Media frame — holds the gradient image with the icon + title overlaid on top.
+   overflow:hidden clips the hover zoom so only the image behind the fixed title
+   moves ("push on the image, not the card/text"). */
+.product-card-media {
+  position: relative;
+  display: block; flex: none;
+  width: 100%; height: 96px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface-tertiary);
+}
+.product-card-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 300ms var(--ease-card);
+}
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-card-img { transform: scale(1.06); }
+}
+/* Icon + title overlaid on the image, bottom-aligned, white (matches the
+   image-tile text treatment on .offer-card). Subtle shadow for legibility;
+   no scrim/darkening per design. */
 .product-card-name {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.28);
+}
+.product-card-ico {
+  flex: none;
+  width: 16px; height: 16px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.product-card-name-text {
   font-size: 18px; font-weight: 600;
   line-height: 1.3;
-  color: var(--text-primary);
+  color: #FFFFFF;
 }
 .product-card-desc {
   font-size: 14px; font-weight: 400;
@@ -777,10 +809,38 @@ img, svg { display: block; }
   justify-content: center;
   align-items: flex-start;
 }
+.mobile-sub-media {
+  position: relative;
+  display: block; flex: none;
+  width: 100%; height: 88px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface-tertiary);
+}
+.mobile-sub-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
 .mobile-sub-name {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px;
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.28);
+}
+.mobile-sub-ico {
+  flex: none;
+  width: 15px; height: 15px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  color: #FFFFFF;
+}
+.mobile-sub-name-text {
   font-size: 15px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #FFFFFF;
 }
 .mobile-sub-desc {
   font-size: 13px;
@@ -3472,19 +3532,38 @@ main { padding-top: 64px; }
 /* ───────── Footer ───────── */
 .footer {
   background: var(--surface-secondary);
-  border-top: 1px solid var(--border-primary);
-  padding-block: 64px;
+  padding-block: 68px;   /* equal top/bottom → text group dead-centered vertically (same total height as the old 96/40) */
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 2fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;  /* brand slightly wider, then 3 even link tracks — .footer-cols dissolves in via display:contents */
+  gap: 48px 56px;
+  align-items: start;
 }
 @media (max-width: 980px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 40px; }
 }
-@media (max-width: 640px) {
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+/* Homepage only: inset the footer block so it lines up with the contact card's
+   panel padding directly above it (clamp matches .contact-overlay). Column gaps
+   are unchanged — only the whole block shifts inward equally on both sides. */
+body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
+@media (max-width: 980px) {
+  body[data-page="home"] .footer-grid { padding-inline: 0; }
+}
+/* Homepage: copyright is its own compact final line BELOW the footer — a separate
+   band continuing the footer surface, so the footer's own spacing stays untouched.
+   The hairline is inset to the same block width as the footer columns above. */
+.footer-baseline {
+  background: var(--surface-secondary);
+}
+.footer-baseline .footer-copy {
+  margin-inline: clamp(32px, 4vw, 56px);
+  padding-block: 20px;
+  border-top: 1px solid var(--border-primary);
+  text-align: center;
+}
+@media (max-width: 980px) {
+  .footer-baseline .footer-copy { margin-inline: 0; }
 }
 /* Footer co-branded lockup — visual-guide.md §Co-Branded Lockup */
 .footer-logo-row {
@@ -3512,53 +3591,73 @@ main { padding-top: 64px; }
   background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
   filter: brightness(1.6);
 }
+/* Copyright line beneath the co-branded lockup — inherits the old contact-line
+   typography (14px / weight 400 / secondary gray) with a leading copyright glyph. */
+.footer-identity .footer-copy {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-tertiary);   /* match the copyright glyph's tertiary stroke */
+  margin: 0;
+}
 .footer-copy {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
   color: var(--text-tertiary);
   margin: 0;
 }
-.footer-cols {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+/* Links dissolve into the parent grid (display:contents) so brand + the three
+   columns lay out as four evenly-distributed tracks across the container. */
+.footer-cols { display: contents; }
+@media (max-width: 980px) {
+  .footer-cols {                            /* re-form as its own grid under the stacked brand */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    justify-items: start;
+  }
 }
-@media (max-width: 640px) {
+@media (max-width: 560px) {
   .footer-cols { grid-template-columns: 1fr 1fr; }
 }
+.footer-col { min-width: 0; }   /* let wide items (contact email) sit inside their track, not blow it out */
 .footer-col h4 {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
   margin: 0 0 16px;
 }
 .footer-col ul {
   list-style: none; margin: 0; padding: 0;
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 11px;
 }
 .footer-col a {
+  display: inline-flex; align-items: center; gap: 8px;
   font-size: 14px;
   color: var(--text-secondary);
   transition: color 100ms linear;
 }
 .footer-col a:hover { color: var(--text-primary); }
+.footer-ico {
+  flex: none;
+  width: 15px; height: 15px;
+  stroke: var(--text-tertiary); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: stroke 100ms linear;
+}
+.footer-col a:hover .footer-ico { stroke: var(--text-primary); }
+
 
 /* Newsletter signup — sits above the lockup inside the identity column.
    In-place success state (no toast), 1.6s auto-reset. components.md §Footer. */
 .footer-nl-block { margin-bottom: 24px; }
 .footer-nl-label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
   margin-bottom: 12px;
   transition: color 100ms linear;
 }
@@ -4066,59 +4165,137 @@ main { padding-top: 64px; }
 }
 
 /* ───────── Get in touch ───────── */
-/* Reversed silver hero backdrop — same stops as .hero-silver but the radial
-   origin is flipped to the bottom (50% 100%) and the linear runs upward, so
-   the glow pours up from the bottom of the section and fades to the page
-   surface before the top edge (the About/Inquiries line). No ruled grid.
-   Full-bleed on the .contact section element (like .hero) so it runs
-   edge-to-edge and scales with the viewport; stops at the section bottom. */
-.contact {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 100%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
-    linear-gradient(0deg, #F1F5F9 0%, #FFFFFF 85%);
-}
-[data-theme="dark"] .contact {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 100%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
-    linear-gradient(0deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
-}
-.contact-grid {
+/* Section sits flat on the page surface — the self-contained contact card
+   carries all the visual weight, so no section backdrop gradient. */
+/* Contact card — one 18px-rounded card (matches .offer-card radius). Height fits
+   the form (no fixed min-height). The venture sphere is framed on the LEFT column
+   only; the card's black base (= the image's own black background) fills the rest,
+   so the area behind the floating white form reads as a seamless extension. */
+.contact-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: 4fr 6fr;
-  gap: 96px;
-  padding-block: var(--space-section);  /* gap above Contact matches every other section */
+  grid-template-columns: 5fr 6fr;
+  margin-block: var(--space-section);  /* gap above/below matches every other section */
+  border-radius: 18px;
+  background: #000;                    /* matches venture.jpg's pure-black background */
+  box-shadow: var(--shadow-medium);
 }
 @media (max-width: 880px) {
-  .contact-grid { grid-template-columns: 1fr; gap: 56px; }
+  .contact-card { grid-template-columns: 1fr; }
 }
-/* Matches the rendered .section-head h2 scale (e.g. "Press releases") for
-   consistent heading sizing across sections. */
-.contact-left h2 {
-  font-size: clamp(24px, 2.8vw, 36px);
+
+/* Left overlay — venture sphere lives here (left of the form, never behind it).
+   White heading at the top, email + office hours at the bottom. Urbanist,
+   sentence case: no uppercase tracking, no monospace. */
+.contact-overlay {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  padding: clamp(32px, 4vw, 56px);
+  color: #FFFFFF;
+}
+.contact-overlay::before {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url('/assets/imagery/coremap/venture.jpg') center / cover no-repeat, #000;
+}
+/* Gentle top/bottom scrim keeps the white heading + meta legible over the sphere. */
+.contact-overlay::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 34%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.55) 100%);
+}
+@media (max-width: 880px) {
+  .contact-overlay { min-height: 240px; }
+}
+.contact-overlay-top { max-width: 26ch; }
+.contact-overlay h2 {
+  font-size: clamp(28px, 3.2vw, 44px);
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
-  margin: 0 0 32px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: #FFFFFF;
 }
-.contact-email {
+.contact-lead {
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.55;
+  color: rgba(255,255,255,0.82);
+  margin: 0;
+}
+.contact-overlay-meta {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 20px 48px;
+  margin: 0;
+}
+.contact-meta { display: flex; flex-direction: column; gap: 6px; }
+.contact-meta dt {
+  font-family: inherit;               /* Urbanist */
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.62);
+}
+.contact-meta dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+/* Underline wipes in L→R on hover (mirrors .about-card .arrow-link — scaleX,
+   GPU-friendly, origin-left) instead of a resting border that brightens. */
+.contact-meta a {
+  position: relative;
   display: inline-block;
-  font-size: 16px;            /* matches .section-dek */
-  font-weight: 600;
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--text-primary);
-  padding-bottom: 4px;
+  color: #FFFFFF;
+  text-decoration: none;
   word-break: break-all;
-  transition: color 100ms linear, border-color 100ms linear;
 }
-.contact-email:hover {
-  color: var(--text-secondary);
-  border-bottom-color: var(--text-secondary);
+.contact-meta a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 280ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .contact-meta a:hover::after { transform: scaleX(1); }
+}
+.contact-meta a:focus-visible::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .contact-meta a::after { transition: none; }
+}
+@media (max-width: 520px) {
+  .contact-overlay-meta { grid-template-columns: 1fr; }
+}
+
+/* Right form panel — white card, 18px radius, floating within the image. */
+.contact-panel {
+  position: relative;
+  align-self: center;
+  margin: clamp(14px, 1.6vw, 24px);
+  padding: clamp(26px, 2.4vw, 40px);
+  background: var(--surface-elevated);
+  border-radius: 18px;
+  box-shadow: var(--shadow-high);
+}
+@media (max-width: 880px) {
+  .contact-panel { align-self: stretch; margin: 0; border-radius: 0 0 18px 18px; }
 }
 .contact-form {
-  display: flex; flex-direction: column; gap: 40px;
+  display: flex; flex-direction: column; gap: 18px;
 }
 .contact-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
 }
 @media (max-width: 640px) {
   .contact-row { grid-template-columns: 1fr; }
@@ -4153,30 +4330,63 @@ main { padding-top: 64px; }
 .field textarea:focus,
 .field select:focus { border-bottom-color: var(--border-focus); }
 .field textarea { resize: none; }
-.contact-actions {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding-top: 8px;
+
+/* Boxed inputs — SCOPED to the contact panel only. The global .field above
+   keeps its underline style everywhere else (product pages, mkt form). */
+.contact-panel .field { gap: 8px; }
+.contact-panel .field label { letter-spacing: 0.02em; color: var(--text-secondary); }
+.contact-panel .field input,
+.contact-panel .field textarea {
+  border: 1px solid var(--border-tertiary);
+  border-radius: 12px;
+  background: var(--surface-page);
+  padding: 12px 14px;
+  transition: border-color 150ms var(--ease-card), box-shadow 150ms var(--ease-card);
 }
-@media (max-width: 640px) {
-  .contact-actions { flex-direction: column; align-items: stretch; gap: 20px; }
-  .contact-actions .btn { width: 100%; }
+.contact-panel .field input:focus,
+.contact-panel .field textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--surface-translucent);
 }
-/* Office-hours chart — bottom-left of the form, vertically aligned with Send Inquiry. */
-.contact-hours {
-  display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 24px;
-  row-gap: 6px;
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  color: var(--text-tertiary);
-  margin: 0;
+
+/* Inquiry-type chips — native radios, no JS. */
+.contact-topics { border: 0; padding: 0; margin: 0; min-width: 0; }
+.contact-topics legend {
+  padding: 0; margin: 0 0 10px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--text-secondary);
 }
-.contact-hours dt { margin: 0; letter-spacing: 0.04em; }
-.contact-hours dd { margin: 0; color: var(--text-secondary); font-weight: 600; letter-spacing: 0; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.topic-chip {
+  position: relative;
+  display: inline-flex; align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--border-tertiary);
+  border-radius: 9999px;
+  font-size: 13px; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background 140ms ease-out, color 140ms ease-out,
+              border-color 140ms ease-out, transform 120ms ease-out;
+}
+.topic-chip input { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .topic-chip:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
+}
+.topic-chip:active { transform: scale(0.97); }
+.topic-chip:has(input:checked) {
+  background: var(--surface-inverse);
+  border-color: var(--surface-inverse);
+  color: var(--text-inverse);
+}
+.topic-chip:focus-within { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+.contact-actions { display: flex; padding-top: 4px; }
+.contact-actions .btn { width: 100%; }
+/* Send Inquiry — match the card body's pure black (not the global #252525). */
+.contact-panel .btn-primary { background: #000; }
+.contact-panel .btn-primary:hover { background: #1A1A1A; }
 
 .contact-success {
   display: none;
