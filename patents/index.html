@@ -225,8 +225,26 @@
     --surface-page:      #000;
     --surface-secondary: #000;
   }
-  /* Footer transparent so the black + grid run unbroken to the very bottom. */
-  .footer { background: transparent; }
+  /* ───────── Light chrome (contact form · footer) ─────────
+     The contact section and footer carry data-theme="light" in the markup so
+     they re-cascade the site's light tokens and match the homepage, while the
+     nav, hero, and blueprint marquee keep the page's dark theme. The <html>
+     element stays data-theme="dark", so two rules undo the [data-theme="dark"]
+     component leaks that still match inside the light regions by descent. */
+
+  /* Footer sits on an opaque light surface so body::before's grid doesn't show
+     through it (like the homepage). The contact section stays transparent: its
+     black card blends into the page's black field above rather than floating in
+     a white frame — only the form panel inside carries the light treatment. */
+  .footer[data-theme="light"],
+  .footer-baseline[data-theme="light"] { background: var(--surface-secondary); }
+
+  /* Undo the dark-theme component leaks inside the now-light chrome. */
+  [data-theme="light"] .footer-innovue {
+    background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
+    filter: none;
+  }
+  [data-theme="light"] .contact-success .check-pill { background: #F0FDF4; color: #15803D; }
 
   /* Faint 32px ruled grid behind all content, fixed to the viewport so it reads
      as one continuous blueprint field down the page (sections are transparent;
@@ -690,7 +708,7 @@
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Footer  —  components.md §Footer                                    ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="contact" id="contact" aria-labelledby="contact-heading">
+  <section class="contact" id="contact" aria-labelledby="contact-heading" data-theme="light">
     <div class="container">
       <div class="contact-card contact-card--venture">
 
@@ -776,7 +794,7 @@
     </div>
   </section>
 
-  <footer class="footer" role="contentinfo">
+  <footer class="footer" role="contentinfo" data-theme="light">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-identity">
@@ -842,7 +860,7 @@
     </div>
   </footer>
 
-  <div class="footer-baseline">
+  <div class="footer-baseline" data-theme="light">
     <div class="container">
       <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
     </div>

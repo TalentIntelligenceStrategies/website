@@ -432,6 +432,38 @@
       </article>
 
     </div>
+
+    <!-- Strategic Partners — institutions that granted TIS exclusive access to a
+         handful of their patents (feeds the SABCD comparison pool). Sits directly
+         under the About-TIS / Innovue duo, offset by the same inter-panel gap so
+         the three surfaces read as one group under "Who we are". Contained dark
+         card (20px radius + hairline, matches .about-card): a "Strategic Partners"
+         label pinned left behind a divider, the scrolling logo marquee filling the
+         right (edge-faded on the logo area). Marks duplicated once (aria-hidden)
+         for a seamless loop; honors prefers-reduced-motion (static row). -->
+    <div class="about-partners">
+      <div class="partner-band" data-reveal aria-labelledby="partner-band-label">
+        <div class="partner-band__inner">
+          <h2 id="partner-band-label" class="partner-band__label" data-zh="策略合作夥伴">Strategic Partners</h2>
+          <div class="partner-marquee" data-partner-marquee>
+            <div class="partner-marquee__track">
+              <!-- SET A — the real anchors -->
+              <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+              <!-- SET B — duplicate for seamless loop; hidden from SR + keyboard -->
+              <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-hidden="true" tabindex="-1"></a>
+              <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-hidden="true" tabindex="-1"></a>
+              <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-hidden="true" tabindex="-1"></a>
+              <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-hidden="true" tabindex="-1"></a>
+            </div>
+            <div class="partner-marquee__blur partner-marquee__blur--left"  aria-hidden="true"></div>
+            <div class="partner-marquee__blur partner-marquee__blur--right" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
@@ -582,43 +614,6 @@
         </ul>
       </div>
       <div class="report-dots" role="tablist" aria-label="Press slides"></div>
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Exclusive patent access  —  institutions that granted TIS exclusive  ║
-       ║ access to a handful of their patents, feeding the SABCD comparison   ║
-       ║ pool. Full-bleed always-dark "glow horizon" feature band: a silver   ║
-       ║ radial glow + curved rim arc, a canvas sparkle field, and the four   ║
-       ║ partner marks (Innovue · iPIC · III · NYCU) in a slow-scrolling      ║
-       ║ marquee. Single row INSIDE the band: a "Strategic Partners" eyebrow  ║
-       ║ pinned left, the scrolling logo marquee filling the right (edge-     ║
-       ║ faded on the logo area only). Homepage-only presentation of the      ║
-       ║ brand §Partner strip. Sparkles painted by initPartnerSparkles() in   ║
-       ║ site.js; honors prefers-reduced-motion (static, no canvas). Marks    ║
-       ║ duplicated once (aria-hidden) for a seamless loop.                   ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="partner-section" aria-labelledby="partner-band-label">
-    <div class="partner-band">
-      <div class="partner-band__inner">
-        <h2 id="partner-band-label" class="partner-band__label" data-zh="策略合作夥伴">Strategic Partners</h2>
-        <div class="partner-marquee" data-partner-marquee>
-          <div class="partner-marquee__track">
-            <!-- SET A — the real anchors -->
-            <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-            <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-            <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-            <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
-            <!-- SET B — duplicate for seamless loop; hidden from SR + keyboard -->
-            <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-hidden="true" tabindex="-1"></a>
-            <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-hidden="true" tabindex="-1"></a>
-            <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-hidden="true" tabindex="-1"></a>
-            <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-hidden="true" tabindex="-1"></a>
-          </div>
-          <div class="partner-marquee__blur partner-marquee__blur--left"  aria-hidden="true"></div>
-          <div class="partner-marquee__blur partner-marquee__blur--right" aria-hidden="true"></div>
-        </div>
-      </div>
     </div>
   </section>
 
