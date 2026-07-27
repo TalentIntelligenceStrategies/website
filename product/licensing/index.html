@@ -528,27 +528,6 @@
   border-color: rgba(212,160,23,0.22);
 }
 
-/* ============================================================
-   Consolidated pricing compare table — Linear-style layout.
-   One .prod-ref-table with three term columns + two row sections:
-   (1) Pricing per month, by industry — currency cells
-   (2) Every bundle includes — checkmark icon across all 3 cols
-   Section-divider rows separate them. All checks all-on (no gating).
-   ============================================================ */
-.prod-ref-table tr.section-row th {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 14px; font-weight: 700;
-  letter-spacing: -0.01em; text-transform: none;
-  color: var(--text-primary);
-  background: transparent;
-  border-bottom: 1px solid var(--border-primary);
-  padding-top: 28px; padding-bottom: 14px;
-}
-.prod-ref-table tr.section-row:first-child th { padding-top: 14px; }
-.prod-ref-table td.check {
-  text-align: right;
-  vertical-align: middle;
-}
 .prod-check {
   display: inline-block;
   vertical-align: middle;
@@ -563,219 +542,6 @@
   stroke-linejoin: round;
 }
 
-/* ============================================================
-   Bundle picker — replaces the 6-card pricing grid. Two-column
-   layout mirroring brand/previews/licensing-flow-preview.html
-   Step 1: three stacked .opt-lists on the left (jurisdiction,
-   industry, term), sticky .bp-estimate panel on the right with
-   the running total and a single Subscribe CTA.
-   ============================================================ */
-.bp-wrap {
-  /* Full container width — matches How it works' content width above. */
-  margin: 0;
-}
-.bp-grid {
-  /* 1fr / 1fr + 64px gap mirrors .howitworks-grid above so the
-     picker / estimate columns line up visually with the How it works
-     visual / accordion columns. `align-items: stretch` makes both
-     columns the same height so the Industry card grid (in the left
-     column) can fill down to the bottom of the estimate panel. */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: stretch;
-}
-@media (max-width: 980px) {
-  .bp-grid { grid-template-columns: 1fr; gap: 32px; align-items: start; }
-}
-
-.bp-cols { display: flex; flex-direction: column; gap: 28px; }
-.bp-group { display: flex; flex-direction: column; gap: 10px; }
-
-/* Flex-grow modifier on the Industry group so its card grid stretches
-   to fill the remaining left-column height (aligning its bottom edge
-   with the estimate panel's bottom edge). */
-.bp-group--grow { flex: 1; min-height: 0; }
-.bp-group--grow > .bp-list { flex: 1; min-height: 0; }
-
-/* Industry list — 3×2 card grid. Cards stretch vertically to share
-   the available height equally. Each card lays out vertically: name +
-   pool count at top, '30 / bundle' anchored bottom-right. */
-.bp-list[data-bp-list="industry"] {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-}
-.bp-list[data-bp-list="industry"] .bp-opt {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 16px;
-  height: 100%;
-}
-.bp-list[data-bp-list="industry"] .bp-opt .opt-lft {
-  width: 100%;
-  flex: 0 0 auto;
-  align-items: flex-start;
-}
-.bp-list[data-bp-list="industry"] .bp-opt .opt-stack { width: 100%; }
-.bp-list[data-bp-list="industry"] .bp-opt .opt-nm {
-  font-size: 13.5px;
-  line-height: 1.3;
-}
-.bp-list[data-bp-list="industry"] .bp-opt .opt-sb {
-  font-size: 10.5px;
-  margin-top: 4px;
-}
-.bp-list[data-bp-list="industry"] .bp-opt .opt-rgt {
-  align-self: flex-end;
-  font-size: 11.5px;
-}
-.bp-label {
-  font-family: var(--prod-font-mono, 'Inconsolata', ui-monospace, monospace);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0;
-}
-.bp-list { display: flex; flex-direction: column; gap: 8px; }
-
-.bp-opt {
-  /* Reset button defaults */
-  font: inherit; color: inherit;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px;
-  padding: 14px 18px;
-  /* One step heavier than --border-primary (#EEEEEE → #E8E8E8 light,
-     #1F1F1F → #262626 dark) so unselected rows read more clearly. */
-  border: 1px solid var(--border-secondary);
-  border-radius: 10px;
-  background: var(--surface-page);
-  transition: border-color 120ms linear, background-color 120ms linear, box-shadow 120ms linear;
-}
-.bp-opt:hover { border-color: var(--border-tertiary, #D5D5D5); }
-.bp-opt.selected {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 1px var(--text-primary);
-}
-.bp-opt .opt-lft {
-  display: flex; align-items: center; gap: 12px;
-  min-width: 0; flex: 1;
-}
-.bp-opt .opt-stack {
-  display: flex; flex-direction: column; gap: 2px;
-  min-width: 0;
-}
-.bp-opt .opt-nm {
-  font-size: 14.5px; font-weight: 500;
-  color: var(--text-primary);
-  letter-spacing: -0.005em;
-}
-.bp-opt .opt-sb {
-  font-size: 11px; font-weight: 500; letter-spacing: 0.10em;
-  text-transform: uppercase; color: var(--text-tertiary);
-}
-.bp-opt .opt-rgt {
-  font-family: var(--prod-font-mono, ui-monospace, monospace);
-  font-size: 13px; font-weight: 500;
-  color: var(--text-secondary);
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-/* Jurisdiction chip — canonical soft-pill from licensing-flow */
-.bp-juris-chip {
-  display: inline-flex; align-items: center;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 13px; font-weight: 700;
-  line-height: 1.2;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  flex-shrink: 0;
-}
-.bp-juris-chip.us { background: #EEF2FF; color: #4338CA; }
-.bp-juris-chip.tw { background: #ECFCCB; color: #3F6212; }
-
-/* Estimate panel — static (no sticky/scroll-freeze) so the grid's
-   align-items: stretch makes both columns the same height. */
-.bp-estimate {
-  background: var(--surface-tertiary);
-  border-radius: 12px;
-  padding: 28px;
-  display: flex; flex-direction: column; gap: 18px;
-}
-[data-theme="dark"] .bp-estimate {
-  background: var(--surface-tertiary);
-}
-.bp-estimate-label {
-  font-family: var(--prod-font-mono, ui-monospace, monospace);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0;
-}
-.bp-estimate-rows {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.bp-estimate-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-size: 13.5px; color: var(--text-secondary);
-}
-.bp-estimate-row .v {
-  font-family: var(--prod-font-mono, ui-monospace, monospace);
-  color: var(--text-primary);
-  font-weight: 500;
-}
-.bp-estimate-total {
-  padding-top: 16px;
-  border-top: 1px solid var(--border-primary);
-  display: flex; flex-direction: column; gap: 6px;
-}
-.bp-estimate-total .lbl {
-  font-size: 12.5px; color: var(--text-tertiary);
-}
-/* Price + unit + save chip all on one baseline row */
-.bp-estimate-total .row {
-  display: flex; align-items: baseline; flex-wrap: wrap;
-  column-gap: 10px; row-gap: 6px;
-}
-.bp-estimate-total .num {
-  font-family: var(--prod-font-mono, ui-monospace, monospace);
-  font-size: 32px; font-weight: 700;
-  letter-spacing: -0.01em; color: var(--text-primary);
-  line-height: 1;
-}
-.bp-estimate-total .unit {
-  font-size: 14px; color: var(--text-secondary);
-  font-weight: 500;
-  margin-left: -4px; /* tuck right up against the price */
-}
-.bp-estimate-save {
-  display: inline-flex; align-items: center;
-  padding: 3px 9px;
-  border-radius: 6px;
-  background: var(--success-bg);
-  color: var(--success-fg);
-  font-family: var(--prod-font-mono, ui-monospace, monospace);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
-  /* inline-flex inside a baseline row would otherwise drop below the
-     number's baseline; translate it back up to sit centered on the unit text */
-  align-self: center;
-}
-.bp-estimate-save:empty { display: none; }
-.bp-estimate-cta {
-  width: 100%;
-  justify-content: center;
-}
-.bp-estimate-fine {
-  margin: 0;
-  font-size: 11.5px; line-height: 1.5;
-  color: var(--text-tertiary);
-  text-align: center;
-}
 
 /* Horizontal term toggle above the picker — 3/6/12/24 month pill segments.
    Same visual language as the old .prod-term-toggle (segmented pill) but
@@ -2859,7 +2625,48 @@ a, button,
 }
 
 /* The stage: one fixed product frame + side text, pinned at center. */
-.lic-stage { position: sticky; top: 64px; height: calc(100dvh - 64px); }
+.lic-stage {
+  position: sticky; top: 64px; height: calc(100dvh - 64px);
+  overflow: hidden;      /* clip the scale-in / breathing bloom of the gradient backdrop */
+  isolation: isolate;    /* own stacking context so .lic-stage-bg (z-index:-1) sits behind
+                            the deck content WITHOUT touching .lic-stage-deck's position
+                            (which would move .lic-howit's absolute offset parent) */
+}
+/* Animated warm radial-gradient backdrop (vanilla port of a framer-motion component):
+   focal bloom at 50% 20%, a 2s scale-in entrance + slow breathe. Base state below IS the
+   final static gradient — reduced-motion users get that; motion is layered on under the
+   no-preference query, matching the .lic-hero-intro convention. */
+.lic-stage-bg { position: absolute; inset: 0; z-index: -1; }  /* behind the in-flow deck */
+.lic-stage-bg::before {
+  content: ""; position: absolute; inset: 0;
+  /* Bloom = a hot warm core concentrated at the focal point that fades to TRANSPARENT
+     (the falloff is what reads as a glow, not a flat wash), layered over a soft warm
+     ground. Same structure as the hero's .hero-warm recipe; hues pulled to the hero's
+     vivid orange family. */
+  background:
+    radial-gradient(72% 68% at 50% 20%,
+      #FFD98A 0%, #F9AE4E 26%, #F4842C 48%, rgba(238,106,28,0.42) 66%, transparent 82%),
+    linear-gradient(180deg, #FFF3E2 0%, #FFF9F2 62%, #FFFFFF 100%);
+  transform-origin: 50% 20%;
+}
+:root[data-theme="dark"] .lic-stage-bg::before {
+  /* ember bloom fading to transparent over ink — glow near the focal, near-white step
+     copy stays readable */
+  background:
+    radial-gradient(72% 68% at 50% 20%,
+      rgba(255,180,80,0.45) 0%, rgba(230,120,40,0.26) 34%, rgba(180,80,20,0.12) 58%, transparent 80%),
+    linear-gradient(180deg, #2B2118 0%, #252525 72%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Hidden until the section scrolls into view; JS adds .is-revealed (when the stage
+     fills the viewport) to fire the scale-in. Breathe on ::before — separate element so
+     the two transforms don't fight. */
+  .lic-stage-bg { opacity: 0; transform: scale(1.5); }
+  .lic-stage-bg.is-revealed { animation: lic-bg-in 2s cubic-bezier(.25,.1,.25,1) forwards; }
+  .lic-stage-bg::before { animation: lic-bg-breathe 14s ease-in-out infinite; will-change: transform; }
+}
+@keyframes lic-bg-in      { to { opacity: 1; transform: scale(1); } }
+@keyframes lic-bg-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
 /* Deck stacks every step panel in a single grid cell (they crossfade). */
 .lic-stage-deck {
   display: grid;
@@ -2999,10 +2806,52 @@ a, button,
 .lic-frame:not([data-fitted]) { aspect-ratio: 1180 / 800; }
 .lic-frame:not([data-fitted]) iframe { width: 100%; height: 100%; transform: none; }
 
+/* ─── One-viewport "document on a warm ground" recomposition (tall desktop only) ───
+   Stacks the step vertically: persistent "How it Works" + step headline on top, the
+   full-size product shot centered over the hot bloom, and the supporting copy as one row
+   of up-to-3 columns pinned to the bottom WHITE falloff (max legibility for the small
+   text). Gated to viewports tall/wide enough to hold all three bands WITHOUT shrinking
+   the shot; below this the base 3-col layout above stays, so the shot never gets smaller.
+   JS (layoutBand) sizes every shot to one constant band so it holds still across steps. */
+@media (min-width: 1025px) and (min-height: 1000px) {
+  .lic-showcase .lic-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "head" "shot" "detail";
+    align-content: stretch; align-items: stretch;
+    height: 100%;
+    gap: clamp(16px, 2.4vh, 32px);
+    padding-block: clamp(28px, 4vh, 60px);
+  }
+  /* Header band — step headline top-right; the lifted "How it Works" overlays top-left. */
+  .lic-showcase .lic-copy--left {
+    grid-area: head; height: auto; min-height: var(--lic-head-h, auto);
+    align-self: start; justify-self: end; max-width: 26ch;
+    display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start;
+    text-align: right;
+  }
+  .lic-showcase .lic-copy .lic-stepline { text-align: right; max-width: 24ch; }
+  .lic-showcase .lic-howit { top: clamp(28px, 4vh, 60px); text-align: left; white-space: nowrap; }
+  /* Shot band — centered hero over the hot bloom; JS sets an explicit constant w/h. */
+  .lic-showcase .lic-frame { grid-area: shot; align-self: center; justify-self: center; width: auto; }
+  /* Detail band — one row of up-to-3 columns pinned to the bottom white zone. */
+  .lic-showcase .lic-copy--right {
+    grid-area: detail; align-self: end; max-width: none; width: 100%;
+    flex-direction: row; justify-content: center; align-items: start;
+    gap: clamp(28px, 4vw, 72px); min-height: var(--lic-detail-h, auto);
+  }
+  .lic-showcase .lic-copy--right > * { flex: 1 1 0; max-width: 34ch; }
+  .lic-showcase .lic-panel[data-panel="1"] .lic-copy--right { max-width: none; }
+}
+
 /* ── Graceful fallback: mobile + reduced-motion → simple vertical stack ── */
 @media (max-width: 768px), (prefers-reduced-motion: reduce) {
   .lic-showcase { margin-top: 0; height: auto; }
   .lic-stage { position: static; height: auto; }
+  /* Section de-pins into a vertical stack here — no single viewport to sit behind, and an
+     absolute bg would escape to cover the whole section. Drop the animated backdrop for
+     both ≤768px and reduced-motion (both hit this stacked layout). */
+  .lic-stage-bg { display: none; }
   .lic-stage-deck { display: block; }
   .lic-panel {
     grid-area: auto; opacity: 1 !important;
@@ -3130,6 +2979,30 @@ a, button,
    hero only (leaves the home/signal heroes untouched). */
 @media (max-width: 600px) {
   [data-page="licensing"] .hero .pillar--lic-hero .pillar-title { font-size: clamp(28px, 8vw, 38px); }
+}
+
+/* Fork C (responsive audit) — mobile dashboard poster. On ≤1024px the bled desktop
+   iframe is dropped; show a static still of the licensee dashboard in-flow below the
+   hero copy so the surface isn't empty. Static PNG — no iframe load on mobile. */
+.hero-dash-poster { display: none; }
+@media (max-width: 1024px) {
+  [data-page="licensing"] .hero-dash-poster {
+    display: block; width: 100%; max-width: 560px;
+    margin: clamp(28px, 6vh, 52px) auto 0;
+    border-radius: 12px; border: 1px solid var(--border-primary);
+    box-shadow: 0 10px 30px -12px rgba(0,0,0,.25);
+  }
+}
+
+/* Fork B (responsive audit) — mobile funnel stills. The desktop scroll-funnel scales
+   1180px MacBook mocks to ~0.25 on phones (illegible). On ≤768px (and reduced-motion)
+   hide the iframe and show a legible full-width product still per step instead.
+   Desktop keeps the live scroll-funnel untouched. */
+.lic-still { display: none; }
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .lic-frame iframe { display: none; }
+  .lic-frame { aspect-ratio: auto !important; }
+  .lic-still { display: block; width: 100%; height: auto; border-radius: inherit; }
 }
 
 </style>
@@ -3430,6 +3303,9 @@ a, button,
           </div>
         </div>
       </article>
+      <!-- Mobile-only dashboard poster (Fork C) — shown in-flow below the copy on
+           ≤1024px, where the bled desktop iframe is dropped. -->
+      <img class="hero-dash-poster" src="/assets/product-shots/licensing/mobile/dashboard.png" alt="The TIS licensee dashboard: active licence bundles, orders in progress, and the SABCD strength of every patent held." width="1300" height="822" loading="lazy" decoding="async">
     </div>
 
     <!-- Right-side product visual — the licensee dashboard embedded live from the
@@ -3439,7 +3315,7 @@ a, button,
          script hides the standalone page's caption + language toggle. Decorative
          (aria-hidden), non-interactive, English only. -->
     <div class="hero-dash" aria-hidden="true">
-      <iframe src="/assets/product-shots/licensing/licensing-dashboard-showcase.html" title="" tabindex="-1" scrolling="no" loading="eager"></iframe>
+      <iframe data-src="/assets/product-shots/licensing/licensing-dashboard-showcase.html" title="" tabindex="-1" scrolling="no" loading="lazy"></iframe>
     </div>
 
     <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
@@ -3453,14 +3329,6 @@ a, button,
   (function () {
     var frame = document.querySelector('.hero-dash iframe');
     if (!frame) return;
-    // First-paint language: if the visitor is in Chinese, load the ZH variant
-    // directly so there's no EN→ZH flip. Live toggles are handled by the
-    // site.js postMessage broadcast (the showcase page listens for tis-lang).
-    try {
-      if (localStorage.getItem('tis-lang') === 'zh' && frame.src.indexOf('lang=') === -1) {
-        frame.src += (frame.src.indexOf('?') === -1 ? '?' : '&') + 'lang=zh';
-      }
-    } catch (e) {}
     var EMBED_CSS =
       'html,body{margin:0!important;background:transparent!important;overflow:hidden!important;}' +
       'body{padding:6px 64px 96px 48px!important;}' +
@@ -3478,7 +3346,25 @@ a, button,
       d.head.appendChild(s);
     }
     frame.addEventListener('load', inject);
-    try { if (frame.contentDocument && frame.contentDocument.readyState === 'complete') inject(); } catch (e) {}
+
+    /* Only load the heavy 1200×900 dashboard on wide viewports where .hero-dash is
+       actually shown (it's display:none ≤1024px). Phones/tablets previously
+       downloaded the full showcase page + assets for zero visual benefit. The src
+       is deferred via data-src and assigned (with first-paint ZH if needed) only
+       when the viewport is wide — and if the user later widens/rotates to desktop. */
+    var WIDE = window.matchMedia('(min-width: 1025px)');
+    function loadFrame() {
+      if (frame.src || !WIDE.matches) return;
+      var url = frame.dataset.src || '';
+      try {
+        if (localStorage.getItem('tis-lang') === 'zh' && url.indexOf('lang=') === -1) {
+          url += (url.indexOf('?') === -1 ? '?' : '&') + 'lang=zh';
+        }
+      } catch (e) {}
+      frame.src = url;
+    }
+    WIDE.addEventListener('change', loadFrame);
+    loadFrame();
   })();
   </script>
 
@@ -3537,13 +3423,14 @@ a, button,
        copy is placeholder scaffold — EN, meant to be rewritten in place. -->
   <section class="lic-showcase" aria-label="How the licensing platform works">
     <div class="lic-stage">
+      <div class="lic-stage-bg" aria-hidden="true"></div>
       <div class="lic-stage-deck">
 
         <!-- Persistent section title — one static "How it Works" anchored to the
              shot's top-left corner. Lifted OUT of the panels so it never crossfades
              as the steps move through; it reads as a single constant title. ZH is
              a placeholder — flag for Miko ZH-lock. -->
-        <p class="lic-howit" data-zh-html data-zh="如何運作">How it<br>Works</p>
+        <p class="lic-howit" data-zh-html data-zh="如何運作">How it Works</p>
 
         <!-- Step 1 — pick jurisdiction & industry -->
         <div class="lic-panel" data-panel="1" data-reveal>
@@ -3552,6 +3439,7 @@ a, button,
           </aside>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-showcase-step1.html" title="Licensing Platform — Step 1: pick your jurisdiction and industry" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." width="1300" height="820" loading="lazy" decoding="async">
           </div>
           <aside class="lic-copy lic-copy--right">
             <div class="lic-block">
@@ -3588,6 +3476,7 @@ a, button,
           </aside>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-showcase.html" title="Licensing Platform — Step 2: AI Smart-pick builds your bundle" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." width="1300" height="820" loading="lazy" decoding="async">
           </div>
           <aside class="lic-copy lic-copy--right">
             <div>
@@ -3608,6 +3497,7 @@ a, button,
           </aside>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-swap-showcase.html" title="Licensing Platform — Step 3: swap any same-tier patent" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." width="1300" height="820" loading="lazy" decoding="async">
           </div>
           <aside class="lic-copy lic-copy--right">
             <div>
@@ -4215,6 +4105,25 @@ a, button,
   const mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
   const mqMobile = matchMedia('(max-width: 768px)');
   const isStatic = () => mqReduce.matches || mqMobile.matches;
+
+  // Animated gradient backdrop: reveal its scale-in as soon as the section first peeks
+  // into view (rather than on page load, which finishes long before the user scrolls
+  // here, or waiting for it to fill the viewport). One-shot; independent of GSAP so it
+  // fires even if the scrub CDNs fail. The static fallback hides .lic-stage-bg entirely,
+  // so only arm it in the pinned/motion path.
+  const stageBg = stage.querySelector('.lic-stage-bg');
+  if (stageBg && !isStatic() && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          stageBg.classList.add('is-revealed');
+          io.disconnect();
+        }
+      }
+    }, { threshold: 0.12 });
+    io.observe(stage);
+  }
+
   const NATURAL_W = 1180;
   const SCRUB_END = 0.8;   // fraction of each step slice spent scrubbing before the crossfade
   const N = panels.length;
@@ -4260,6 +4169,68 @@ a, button,
     stage.style.setProperty('--lic-shot-h', (naturalH * scale) + 'px');
   }
 
+  // Tall-desktop "document on a warm ground" recomposition (paired with the gated CSS
+  // @media min-width:1025 + min-height:1000). Sizes EVERY shot to one common band —
+  // stage height minus the tallest header + detail row + gaps + padding — so the shot is
+  // a constant size across the crossfade and, on gated viewports, never smaller than the
+  // base width-driven layout.
+  const bandMQ = matchMedia('(min-width: 1025px) and (min-height: 1000px)');
+
+  function layoutBand(){
+    const stageH = stage.clientHeight;
+    let naturalH = 800, maxHead = 0, maxDetail = 0, availW = 0;
+    // Pass 1 — natural iframe size + measure the tallest header / detail across steps.
+    panels.forEach(p => {
+      const iframe = iframeOf(p);
+      const d = injectEmbed(iframe);
+      const mb = d && (d.querySelector('.macbook') || d.body);
+      if (mb) {
+        iframe.style.width = NATURAL_W + 'px'; iframe.style.transform = 'none';
+        naturalH = Math.round(mb.getBoundingClientRect().height) || 800;
+        iframe.style.height = naturalH + 'px';
+      }
+      const head = p.querySelector('.lic-copy--left');
+      const det  = p.querySelector('.lic-copy--right');
+      if (head) { head.style.minHeight = ''; maxHead   = Math.max(maxHead,   head.offsetHeight); }
+      if (det)  { det.style.minHeight  = ''; maxDetail = Math.max(maxDetail, det.offsetHeight); }
+      availW = Math.max(availW, p.clientWidth);
+    });
+    // Reserve the tallest header + detail in every panel so the shot band is constant.
+    stage.style.setProperty('--lic-head-h', Math.ceil(maxHead) + 'px');
+    stage.style.setProperty('--lic-detail-h', Math.ceil(maxDetail) + 'px');
+    const cs = getComputedStyle(panels[0]);
+    const gap  = parseFloat(cs.rowGap) || 24;
+    const padT = parseFloat(cs.paddingTop) || 28;
+    const padB = parseFloat(cs.paddingBottom) || 28;
+    const availH = stageH - maxHead - maxDetail - gap * 2 - padT - padB;
+    // Fit the shot to the band, keeping aspect ratio; width rarely binds on wide decks.
+    const scale = Math.min(availW / NATURAL_W, availH / naturalH);
+    panels.forEach(p => {
+      const frame = p.querySelector('.lic-frame');
+      const iframe = frame.querySelector('iframe');
+      iframe.style.transform = 'scale(' + scale + ')';
+      frame.style.width  = (NATURAL_W * scale) + 'px';
+      frame.style.height = (naturalH * scale) + 'px';
+      frame.setAttribute('data-fitted', '');
+    });
+  }
+
+  // Undo band-mode inline sizing so the base width-driven fit() takes over cleanly.
+  function clearBand(){
+    stage.style.removeProperty('--lic-head-h');
+    stage.style.removeProperty('--lic-detail-h');
+    panels.forEach(p => {
+      const frame = p.querySelector('.lic-frame');
+      const head  = p.querySelector('.lic-copy--left');
+      const det   = p.querySelector('.lic-copy--right');
+      if (frame) frame.style.width = '';
+      if (head)  head.style.minHeight = '';
+      if (det)   det.style.minHeight = '';
+    });
+  }
+
+  const applyFit = () => { if (bandMQ.matches) layoutBand(); else { clearBand(); panels.forEach(fit); } };
+
   const whenReady = (iframe) => new Promise((res) => {
     const d = docOf(iframe);
     if (d && d.readyState === 'complete' && d.querySelector('.macbook')) return res();
@@ -4269,7 +4240,7 @@ a, button,
 
   const iframeOf = (p) => p.querySelector('iframe');
   await Promise.all(panels.map(p => whenReady(iframeOf(p))));
-  panels.forEach(fit);
+  applyFit();
 
   const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
   const smooth = (t) => t * t * (3 - 2 * t);   // smoothstep for a gentle crossfade
@@ -4355,13 +4326,15 @@ a, button,
   addEventListener('resize', () => {
     clearTimeout(rt);
     rt = setTimeout(() => {
-      panels.forEach(fit);
+      applyFit();
       if (ScrollTrigger) ScrollTrigger.refresh();
     }, 150);
   });
-  const onModeChange = () => { if (isStatic()) killScrub(); else enableScrub(); };
+  const onModeChange = () => { if (isStatic()) killScrub(); else { applyFit(); enableScrub(); } };
   mqReduce.addEventListener('change', onModeChange);
   mqMobile.addEventListener('change', onModeChange);
+  // Crossing the band threshold re-fits (base ↔ one-viewport recomposition) and re-pins.
+  bandMQ.addEventListener('change', () => { if (!isStatic()) { applyFit(); if (ScrollTrigger) ScrollTrigger.refresh(); } });
 })();
 </script>
 </body>

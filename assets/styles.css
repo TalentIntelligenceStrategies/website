@@ -344,6 +344,7 @@ body {
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 img, svg { display: block; }
+img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its column on mobile */
 
 ::selection { background: var(--surface-quaternary); color: var(--text-primary); }
 
@@ -1647,7 +1648,7 @@ main { padding-top: 64px; }
 }
 .search-results {
   padding: 12px 8px;
-  max-height: min(50vh, 480px);
+  max-height: min(50dvh, 480px);
   overflow-y: auto;
 }
 .search-section-label {
@@ -3955,7 +3956,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin-inline: auto;
   padding-inline: 32px;
 }
-@media (max-width: 768px) { .about-duo { padding-inline: 20px; } }
+@media (max-width: 768px) { .about-duo { grid-template-columns: 1fr; padding-inline: 20px; } }
 
 .about-card {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -6428,7 +6429,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: 32px auto 0;
   max-width: 920px;
   border: 1px solid var(--border-primary);
-  border-radius: 14px; overflow: hidden;
+  border-radius: 14px;
+  /* Was overflow:hidden, which CLIPPED the rightmost column on mobile (the table's
+     min-content exceeds a phone-width wrapper). Scroll horizontally instead so no
+     data is lost; keep overflow-y hidden so the rounded corners still clip. */
+  overflow-x: auto; overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   background: var(--surface-page);
 }
 .prod-ref-table-head {
@@ -7774,7 +7780,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .smpl-overlay[data-open="true"]{opacity:1;visibility:visible}
 .smpl-modal{
   position:fixed;z-index:201;left:50%;top:50%;
-  width:min(980px,94vw);max-height:92vh;
+  width:min(980px,94vw);max-height:92dvh;
   transform:translate(-50%,-47%);
   display:flex;flex-direction:column;overflow:hidden;
   background:var(--surface-page);border-radius:16px;
@@ -7974,5 +7980,40 @@ body.smpl-lock{overflow:hidden}
 @media (prefers-reduced-motion: reduce) {
   .offer-card::before { transition: none; }
   .offer-card.is-in:hover::before { transform: rotate(var(--img-rot)) scale(1); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE / TOUCH ACCESSIBILITY OVERRIDES  (responsive audit 2026-07-27)
+   Placed at EOF so these win source-order ties over the base component rules.
+   Scoped to (pointer: coarse) — desktop visuals are unchanged.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (pointer: coarse) {
+  /* iOS Safari auto-zooms (and doesn't zoom back) when a focused field is <16px.
+     Bump the sub-16px inputs to 16px on touch only. */
+  .search-input, .v2-search-input, .footer-nl-form input,
+  .field input, .field textarea, .field select { font-size: 16px; }
+
+  /* Guarantee a ≥44px tap area on compact standalone controls without inflating
+     their visual size — an invisible centered ::after extends only the hit region.
+     (Not applied to the adjacent theme segments, where overlapping 44px zones
+     would cause mis-taps — those are enlarged directly below instead.) */
+  .icon-btn { position: relative; }
+  .icon-btn::after,
+  .footer-nl-form button::after {
+    content: ""; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%; min-width: 44px; min-height: 44px;
+  }
+
+  /* CTAs: full-height tap target on touch. */
+  .btn { min-height: 44px; }
+
+  /* Segmented theme toggle — enlarge segments (kept adjacent, no overlapping hit
+     zones). 34px clears the WCAG 2.5.8 AA minimum comfortably. */
+  .theme-toggle { height: 38px; }
+  .theme-seg { width: 34px; height: 34px; }
+
+  /* Mkt-popup role/industry selects stack instead of cramping 2-up below ~360px. */
+  .mkt-form .field-row { grid-template-columns: 1fr; }
 }
 

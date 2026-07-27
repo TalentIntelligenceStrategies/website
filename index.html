@@ -851,7 +851,9 @@
 
       const canvas = document.createElement('canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
-      renderer.setPixelRatio(window.devicePixelRatio);
+      // Cap DPR at 2 — a full-screen fragment shader at 3× on retina phones is a real
+      // GPU/battery/thermal cost for no visible gain (matches reports/index.html).
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setClearColor(new THREE.Color(0x000000));
       mount.appendChild(canvas);
       mount.classList.add('is-ready');   // styles.css crossfades the shader in
@@ -888,13 +890,27 @@
       // Sizing scoped to the hero box. resolution is passed in CSS px (matching
       // the original snippet) while setPixelRatio drives the device-px draw
       // buffer — this reproduces the snippet's exact line scale on retina.
-      const resize = () => {
-        const w = mount.clientWidth, h = mount.clientHeight;
+      // On touch devices the mobile URL bar collapsing on scroll changes only the
+      // viewport HEIGHT (the hero is 100dvh). That fired ResizeObserver on every
+      // scroll and rewrote setSize + resolution, snapping the wave — the visible
+      // "flash". Fix: on coarse pointers, react only to WIDTH changes (orientation)
+      // and lock the draw buffer to the tallest height the hero can reach, so a
+      // shrinking/growing toolbar never re-lays-out the shader. hero overflow:hidden
+      // clips any excess. On desktop, keep normal responsive resizing.
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+      let lastW = -1;
+      const resize = (force) => {
+        const w = mount.clientWidth;
+        if (coarse && !force && w === lastW) return;   // ignore height-only (URL bar) on touch
+        lastW = w;
+        const h = coarse
+          ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
+          : mount.clientHeight;
         renderer.setSize(w, h, false);
         uniforms.resolution.value = [w, h];
       };
-      resize();
-      new ResizeObserver(resize).observe(mount);
+      resize(true);
+      new ResizeObserver(() => resize(false)).observe(mount);
 
       const animate = () => {
         if (!reduce) uniforms.time.value += SPEED;

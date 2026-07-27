@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-27 20:30 +08:00** · Added an animated warm radial-gradient bloom behind the Licensing "How it works" pinned stage — scale-in revealed on scroll (IntersectionObserver) + slow breathe, ember-on-ink in dark.
 - **2026-07-27 19:49 +08:00** · Reworked the licensing funnel's left copy: replaced the per-step "Step 1/2/3" labels with one persistent "How it Works" title anchored to the shot's top-left corner (never crossfades), and dropped each changing step line to the shot's bottom-left corner; scrub/pin untouched, ZH + reduced-motion fallback intact.
 - **2026-07-27 19:31 +08:00** · Tidied `assets/imagery`: deleted 5 unused images (2 coremap Unsplash originals + 3 orphaned loose files) and all `.DS_Store` cruft, and foldered the loose top-level files — `home/` (about-dots, innovue-dots, mkt-hero) and `signal/` (signal-cool.jpg) — updating every reference; board/coremap/press/reports/signal-reports unchanged.
 - **2026-07-27 18:39 +08:00** · Made the licensing hero dashboard follow the EN/中文 toggle (same-origin postMessage, mirroring the Step funnel) and relocated the five licensing showcase HTML files (dashboard, three funnel steps, browse catalogue) from the web root into `assets/product-shots/licensing/`, updating the iframe srcs and root-relativising their font paths.

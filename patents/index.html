@@ -55,7 +55,7 @@
     position: relative;
     flex-direction: column;
     justify-content: center;
-    height: clamp(380px, 44vh, 480px);
+    height: clamp(380px, 44svh, 480px);   /* svh: stable under mobile toolbar collapse */
     background: #000;
     overflow: hidden;
   }
@@ -409,7 +409,7 @@
     --pat-ground: #000; --pat-line: rgba(255,255,255,0.72); --pat-line-fade: rgba(255,255,255,0.34);
     position: fixed; z-index: 901; top: 50%; left: 50%;
     width: min(760px, calc(100vw - 40px));
-    max-height: calc(100vh - 48px); overflow: auto;
+    max-height: calc(100dvh - 48px); overflow: auto;   /* dvh: don't hide close/footer behind mobile toolbars */
     background: #0A0A0A;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 16px;
@@ -430,6 +430,14 @@
   }
   .pat-modal-close:hover { background: rgba(255,255,255,0.16); color: #fff; }
   .pat-modal-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+  /* Extend the close button's tap area to 44px on touch without enlarging the
+     32px visual (it's position:absolute, so ::after anchors to it). */
+  @media (pointer: coarse) {
+    .pat-modal-close::after {
+      content: ""; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 44px; height: 44px;
+    }
+  }
 
   .pat-modal-fig {
     --pat-ground: #000; --pat-line: rgba(255,255,255,0.72); --pat-line-fade: rgba(255,255,255,0.34);
@@ -472,10 +480,18 @@
     .pat-modal-body { padding: 24px 20px; }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .pat-track { animation: none; }
-    .pat-marquee { overflow-x: auto; scrollbar-width: none; }
+  /* Static swipe rail on touch (and reduced-motion). The auto-scroll leaves moving
+     tap targets on phones — :hover/:focus-within pause never fires on touch — so on
+     coarse pointers stop the animation and let the user swipe the rail manually,
+     with scroll-snap for a settled feel. */
+  @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+    .pat-track { animation: none; will-change: auto; }
+    .pat-marquee {
+      overflow-x: auto; scrollbar-width: none;
+      scroll-snap-type: x proximity;
+    }
     .pat-marquee::-webkit-scrollbar { display: none; }
+    .pat-card { scroll-snap-align: start; }
   }
 </style>
 </head>

@@ -54,6 +54,10 @@
     display: block;
     height: clamp(42px, 4.8vw, 60px);          /* EN width ≈ clamp(368, …, 525px) */
     aspect-ratio: 1467.19 / 167.59;
+    /* At the 42px height floor the EN wordmark is ~368px wide and overflowed a
+       320-375px hero. Cap to the container; background-size:contain then shrinks
+       the SVG to fit. Breakpoint-independent — no fragile mobile media query. */
+    max-width: 100%;
     background: url('/designs/assets/logos/tis/tis_secondarylogo_light_eng.svg') center / contain no-repeat;
     /* Dark halo separates the white wordmark from the bright line glow. */
     filter: drop-shadow(0 1px 16px rgba(0, 0, 0, 0.55));

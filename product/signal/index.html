@@ -527,12 +527,16 @@ body {
    desktop layout to a 3-col mobile layout — feature names become
    full-width row labels at <1000px, so nothing scrolls or clips.
    ============================================================ */
-.prod-cmp-scroll { margin: 0; }
+/* Horizontal-scroll wrapper (responsive audit): below ~400px the three NT$ prices
+   cram in ~93px columns. Rather than shrink them further, hold the matrix at a
+   readable min-width and let it scroll horizontally. */
+.prod-cmp-scroll { margin: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .prod-cmp {
   display: grid;
   grid-template-columns: repeat(3, 1fr);   /* mobile: three tiers side by side */
   align-items: stretch;
 }
+@media (max-width: 400px) { .prod-cmp { min-width: 360px; } }
 @media (min-width: 1000px) {
   .prod-cmp { grid-template-columns: minmax(200px, 1.4fr) repeat(3, 1fr); }
 }

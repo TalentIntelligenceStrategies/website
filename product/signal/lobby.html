@@ -96,6 +96,25 @@ main#main::before {                    /* faint blueprint grid, masked to dissol
 }
 @media (max-width: 880px) {
   .lobby { grid-template-columns: 1fr; }
+  /* Release the single-viewport lock on mobile. Stacked, the marketing panel +
+     auth card exceed the viewport; with body overflow:hidden + height:100vh the
+     "Create your account" card (the primary conversion action) was silently
+     clipped off-screen with no way to scroll to it. Allow the page to scroll. */
+  html, body { height: auto; }
+  body { min-height: 100svh; overflow: visible; }
+  main#main { overflow: visible; }
+  /* Auth card first so the CTA is above the fold; marketing copy below it. */
+  .lobby-auth { order: -1; }
+  /* Long titles (esp. the ZH wordmark) overflow a 320px column when nowrap. */
+  .lobby-title { white-space: normal; }
+  /* Grid items default to min-width:auto (= content width). With the old
+     overflow:hidden lifted, that let the single column push wider than the
+     viewport (horizontal overflow). Let the track shrink to fit. */
+  .lobby-marketing, .lobby-auth { min-width: 0; }
+  .lobby-marketing-inner, .lobby-card { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .lobby-card { padding: 28px 22px; }   /* 44px padding was too tight on a phone-width card */
 }
 
 /* ── Left — marketing (transparent; backdrop comes from main).

@@ -96,7 +96,6 @@ body{
 }
 .dash-main{flex:1;min-width:0;display:flex;flex-direction:column;}
 .dash-main-content{flex:1;min-width:0;padding:8px 30px 50px;}
-.dash-appbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;height:64px;flex-shrink:0;padding:0 30px;background:var(--surface-secondary);position:sticky;top:0;z-index:40;}
 
 /* ---- Left rail ---- */
 .dash-sidebar{width:266px;flex-shrink:0;background:#F4F4F2;border-right:1px solid var(--border-primary);display:flex;flex-direction:column;position:sticky;top:0;height:710px;z-index:50;}
@@ -144,15 +143,14 @@ body{
 /* ══════ BROWSE PAGE (Container + heading + stats + filter + grid) ══════ */
 .bp{max-width:1200px;margin:0 auto;padding:16px 0 0;}
 .bp .bp-head{margin-bottom:16px;}
-.bp .bp-h1{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0 0 6px;}
+.bp .bp-head-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px;}
+.bp .bp-h1{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
 .bp .bp-sub{font-size:13px;line-height:1.6;color:var(--text-tertiary);margin:0;max-width:760px;}
-.bp .bp-search{margin-top:8px;}
-.bp .bp-search a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-primary);text-decoration:underline;text-underline-offset:4px;}
 .bp .bp-band{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-bottom:16px;margin-bottom:22px;border-bottom:1px solid var(--border-divider);}
-.bp .bp-stats{display:flex;flex-wrap:wrap;gap:8px 26px;}
-.bp .bp-stat{display:flex;align-items:baseline;gap:6px;}
-.bp .bp-stat .v{font-family:var(--font-mono);font-size:16px;font-weight:600;color:var(--text-primary);font-variant-numeric:tabular-nums;}
-.bp .bp-stat .k{font-size:13px;color:var(--text-secondary);}
+.bp .bp-stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;}
+.bp .bp-stat{display:flex;align-items:baseline;gap:5px;}
+.bp .bp-stat .v{font-family:var(--font-mono);font-size:16px;font-weight:600;color:var(--text-primary);font-variant-numeric:tabular-nums;margin:0;}
+.bp .bp-stat .k{font-size:13px;color:var(--text-secondary);margin:0;}
 .bp .bp-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .bp .bp-filter .fl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-right:2px;}
 .bp .bp-filter select{border:1px solid var(--border-primary);border-radius:6px;padding:5px 8px;font:inherit;font-size:12px;background:var(--surface-page);color:var(--text-primary);outline:none;cursor:pointer;}
@@ -270,22 +268,20 @@ body{
 
           <!-- ===== Main column ===== -->
           <div class="dash-main">
-            <header class="dash-appbar">
-              <div class="dash-tools">
-                <button class="dash-iconbtn" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ind-dot"></span></button>
-                <button class="dash-av-btn" type="button">
-                  <span class="dash-av-img" id="avInit">M</span>
-                  <span class="dash-av-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-                </button>
-              </div>
-            </header>
-
             <div class="dash-main-content">
               <div class="bp">
                 <div class="bp-head">
-                  <h1 class="bp-h1" data-t="h1">Browse patents</h1>
-                  <p class="bp-sub" data-t="sub">Build your IP position across international markets and safeguard exports to the US, EU and Japan. SABCD ratings, global family coverage, real-time licence status.</p>
-                  <div class="bp-search"><a href="#"><span data-t="search">🔍 Patent search (AI semantic match) →</span></a></div>
+                  <div class="bp-head-row">
+                    <h1 class="bp-h1" data-t="h1">Browse patents</h1>
+                    <div class="dash-tools">
+                      <button class="dash-iconbtn" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ind-dot"></span></button>
+                      <button class="dash-av-btn" type="button">
+                        <span class="dash-av-img" id="avInit">M</span>
+                        <span class="dash-av-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="bp-sub"><span data-t="sub">Build your IP position across international markets and safeguard exports to the US, EU and Japan.</span><br><span data-t="sub2">SABCD ratings, global family coverage, real-time licence status.</span></p>
                 </div>
 
                 <div class="bp-band">
@@ -324,8 +320,8 @@ var I18N = {
     nav_unfin:"Unfinished purchase", nav_lic:"My licences", nav_pat:"My patents", nav_browse:"Browse patents",
     nav_acct:"Account", nav_bill:"Account & billing", nav_settings:"Settings", nav_logout:"Log out",
     h1:"Browse patents",
-    sub:"Build your IP position across international markets and safeguard exports to the US, EU and Japan. SABCD ratings, global family coverage, real-time licence status.",
-    search:"🔍 Patent search (AI semantic match) →",
+    sub:"Build your IP position across international markets and safeguard exports to the US, EU and Japan.",
+    sub2:"SABCD ratings, global family coverage, real-time licence status.",
     filter:"Filter", f_ind:"All industries", f_tier:"All tiers", f_sup:"All suppliers",
     more:"Load more patents ↓", shown:"Showing 9 of 1,149",
     stats:[["1,149","Curated patents"],["6","Industries"],["12","Suppliers"],["$9,990","From /mo"]],
@@ -339,8 +335,8 @@ var I18N = {
     nav_unfin:"未完成的選購", nav_lic:"我的授權包", nav_pat:"我的專利", nav_browse:"瀏覽專利",
     nav_acct:"帳戶", nav_bill:"帳戶與帳單", nav_settings:"設定", nav_logout:"登出",
     h1:"瀏覽專利",
-    sub:"一站完成國際市場智財佈局，守護您出口歐美日市場的智財安全。SABCD 分級、全球家族覆蓋、即時授權狀態查詢。",
-    search:"🔍 專利搜尋（AI 語意比對）→",
+    sub:"一站完成國際市場智財佈局，守護您出口歐美日市場的智財安全。",
+    sub2:"SABCD 分級、全球家族覆蓋、即時授權狀態查詢。",
     filter:"篩選", f_ind:"全部產業", f_tier:"全部等級", f_sup:"全部供應方",
     more:"載入更多專利 ↓", shown:"已顯示 9 / 1,149 件",
     stats:[["1,149","精選授權專利"],["6","產業領域"],["12","供應方"],["$9,990","月費起"]],

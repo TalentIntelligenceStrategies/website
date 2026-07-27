@@ -3,3 +3,8 @@
 node_modules/
 .vscode/
 .idea/
+
+# Local dev tooling — not part of the deployed site
+.agents/
+.claude/skills/responsive-craft
+skills-lock.json
