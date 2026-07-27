@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Swap Mechanic (Step 2) · Showcase</title>
+
+<!--
+  TIS Licensing Platform — Bundle Builder Step 2, the SWAP MECHANIC.
+  Static, self-contained marketing still. Example data only — every patent
+  number, title and owner is a plausible-looking FAKE (not a real grant / not
+  a real company).
+
+  Captured moment: a BATCH (chain) swap of 5 Tier-S patents, mid-flow (2 / 5),
+  staged side-by-side — the 3-panel overlay [current | S-tier candidates |
+  staged candidate] sitting over a dimmed, blurred /recommendations Step 2.
+
+  Source of truth for structure + styling: operations-site
+    /recommendations → RecommendationTierSections + SwapPicker + PatentDetailContent
+    src/styles/globals.css (.sp-* / .alt-row / .pds-* / .ai-toggle / .bb / tiles)
+  Tokens + fonts verbatim from the brand system. Fake data continues the set in
+  website/licensing-showcase.html.
+
+  i18n: bilingual EN + Traditional Chinese in one file. English is the inline
+  default (renders with no JS); the EN | 中文 toggle calls render(lang), which
+  fills every [data-t] node and rebuilds the Step-2 backdrop + swap overlay.
+  ?lang=zh in the URL opens straight into Chinese.
+-->
+
+<style>
+/* ===== Brand fonts (repo-local, self-hosted — SIL OFL) ===== */
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+/* ===== Semantic tokens (verbatim from globals.css :root) ===== */
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);--surface-page-translucent:rgba(255,255,255,0.7);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);--border-divider:var(--n4);
+  --status-success-fg:#15803d;--status-warning-fg:#a16207;
+  --signal-active:#22c55e;--signal-warning:#f59e0b;--signal-lapsed:#ef4444;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --motion-fast:100ms;--motion-medium:250ms;--dur-fast:100ms;--dur-medium:250ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans); /* all-Urbanist — no mono type in this still */
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 24px 80px;
+}
+
+/* ===== Showcase caption ===== */
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:660px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;transition:background var(--motion-fast) linear,color var(--motion-fast) linear;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* ===== MacBook screen + browser ===== */
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{
+  background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);
+  border-radius:22px;padding:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.mb-screen{
+  background:var(--surface-page);border-radius:12px;overflow:hidden;
+  height:720px;display:flex;flex-direction:column;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);
+}
+/* browser bar */
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+
+/* screen body — positioning context for the backdrop + swap overlay */
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+/* scrollable backdrop viewport (the dimmed Step-2 page) */
+.viewport{position:absolute;inset:0;overflow:hidden;background:var(--surface-page);}
+
+/* ===== .bb page scope (Step 2 backdrop) ===== */
+.bb{max-width:1200px;margin:0 auto;padding:36px 30px 64px;}
+.bb .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+.bb .copy-15{font-size:15px;font-weight:400;line-height:1.6;}
+.bb .text-secondary{color:var(--text-secondary);}
+
+/* results layout */
+.bb .results-layout{display:block;}
+.bb .results-side{display:flex;flex-direction:column;gap:12px;}
+
+/* scope bar */
+.bb .scope-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:10px 14px;margin-bottom:24px;}
+.bb .scope-bar-info{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
+.bb .scope-bar-info .eyebrow{margin:0;}
+.bb .scope-ind{font-size:15px;font-weight:600;color:var(--text-primary);}
+.bb .scope-sep{color:var(--text-tertiary);}
+.bb .scope-co{font-size:13px;font-weight:600;color:var(--text-primary);}
+.bb .scope-bar-actions{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+.bb .scope-inputs-link{font:inherit;font-size:13px;font-weight:500;color:var(--text-secondary);background:transparent;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:3px;}
+
+/* tier groups */
+.bb .tier-group{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;box-shadow:0 3px 2px 0 rgba(0,0,0,.03),0 1px 1px 0 rgba(0,0,0,.05),0 0 1px 0 rgba(0,0,0,.06);overflow:hidden;margin-bottom:16px;}
+.bb .tg-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;user-select:none;}
+.bb .tg-head-left{display:flex;align-items:center;gap:12px;min-width:0;}
+.bb .tg-label{font-size:16px;font-weight:600;color:var(--text-primary);letter-spacing:.01em;}
+.bb .tg-head-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.bb .tg-count{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-secondary);font-variant-numeric:tabular-nums;}
+.bb .tg-chev{display:inline-flex;color:var(--text-tertiary);transition:transform 200ms ease;}
+.bb .tg-chev svg{width:18px;height:18px;}
+.bb .tier-group[data-open="true"] .tg-chev{transform:rotate(180deg);}
+.bb .tg-body-pad{padding:4px 20px 20px;}
+
+/* tier chip / grid / card (backdrop only — small, blurred) */
+.tier-chip{display:inline-flex;align-items:center;border-radius:9999px;padding:4px 10px;font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;}
+.tier-chip.s{background:var(--score-s-bg);color:var(--score-s);}
+.bb .results-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.patent-card{background:#e9e9ec;border:1px solid rgba(20,20,30,.05);border-radius:18px;padding:5px;text-align:left;box-shadow:0 1px 2px rgba(20,20,30,.04),0 10px 24px rgba(20,20,30,.05);}
+.scard-core{display:flex;flex-direction:column;gap:14px;padding:15px;min-height:210px;border-radius:13px;background:#fff;border:1px solid rgba(20,20,30,.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.9);}
+.patent-card .rc-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px 8px;min-height:32px;flex-wrap:wrap;}
+.patent-card .rc-controls{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-chips{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.patent-card .cbx{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-tertiary);background:var(--surface-page);flex-shrink:0;}
+.patent-card .cbx.on{background:var(--surface-inverse);border-color:var(--surface-inverse);display:inline-flex;align-items:center;justify-content:center;}
+.patent-card .cbx.on svg{width:12px;height:12px;color:#fff;}
+.patent-card .rc-pno{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--text-primary);white-space:nowrap;flex-shrink:0;}
+.patent-card .rc-title{font-size:15px;font-weight:400;line-height:1.45;letter-spacing:-.01em;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.patent-card .rc-mdiv{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums;}
+.patent-card .rc-mdiv .k{font-size:11px;font-weight:500;color:var(--text-tertiary);}
+.patent-card .rc-mdiv .v{font-size:11px;font-weight:600;color:var(--text-primary);}
+.patent-card .rc-mdiv .dot{font-size:16px;font-weight:700;line-height:1;color:var(--text-secondary);}
+.patent-card .rc-rel{display:flex;align-items:center;gap:8px;}
+.patent-card .rc-rel .l{font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:.02em;flex-shrink:0;}
+.patent-card .rc-rel .track{flex:1;height:4px;border-radius:9999px;background:var(--border-primary);overflow:hidden;min-width:0;}
+.patent-card .rc-rel .fill{display:block;height:100%;border-radius:9999px;background:var(--text-primary);}
+.patent-card .rc-rel .v{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-secondary);flex-shrink:0;}
+.patent-card .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;}
+.patent-card .owner-v{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;}
+.patent-card.is-sel{outline:2px solid var(--surface-inverse);outline-offset:1px;}
+.patent-card.is-sel .patent-card,.patent-card.is-sel{box-shadow:0 1px 2px rgba(20,20,30,.05),0 16px 34px rgba(20,20,30,.09);}
+
+/* tiles */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.tier-tile{height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.tier-tile.s{background:var(--score-s-bg);color:var(--score-s);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ================= Swap Picker — 3-panel overlay (verbatim .sp-* / .alt-row) ================= */
+.sp-overlay{position:absolute;inset:0;z-index:20;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;justify-content:flex-end;}
+.sp-panel{display:flex;height:100%;width:min(1128px,96%);background:var(--surface-page);box-shadow:var(--shadow-high);animation:sp-slide-in var(--dur-medium) var(--ease-emphasized);}
+@keyframes sp-slide-in{from{transform:translateX(3%);opacity:.6;}to{transform:translateX(0);opacity:1;}}
+.sp-col{display:flex;flex-direction:column;height:100%;min-width:0;}
+.sp-col-cur{flex:1 1 0;border-right:1px solid var(--border-primary);}
+.sp-col-rail{flex:0 0 224px;border-right:1px solid var(--border-primary);background:var(--surface-secondary);}
+.sp-col-staged{flex:1 1 0;}
+.sp-col-head{flex-shrink:0;min-height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border-primary);}
+.sp-col-mono{font-family:var(--font-mono);font-size:15px;font-weight:600;letter-spacing:.05em;color:var(--text-primary);}
+.sp-col-body{flex:1;overflow-y:auto;padding:24px;}
+.sp-col-foot{flex-shrink:0;padding:14px 20px;border-top:1px solid var(--border-primary);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.sp-foot-right{display:flex;align-items:center;gap:12px;}
+.sp-rail-head{align-items:flex-start;padding-top:14px;padding-bottom:14px;}
+.sp-rail-head > div:first-child{flex:1 1 auto;min-width:0;}
+.sp-rail-title{font-size:15px;font-weight:600;color:var(--text-primary);}
+.sp-rail-sub{font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);letter-spacing:.02em;margin-top:4px;}
+.sp-progress{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:6px;}
+.sp-seg-track{display:flex;flex-wrap:wrap;gap:3px;max-width:127px;}
+.sp-seg{flex:none;width:10px;height:4px;border-radius:9999px;background:var(--border-primary);transition:background 140ms cubic-bezier(.22,1,.36,1);}
+.sp-seg.done{background:var(--surface-inverse);}
+.sp-progress-label{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:.02em;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.sp-x{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;background:none;color:var(--text-tertiary);cursor:pointer;border-radius:8px;flex-shrink:0;}
+.sp-x svg{width:18px;height:18px;}
+.sp-rail-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.sp-staged-banner{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-sans);font-size:12px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:6px;background:var(--surface-tertiary);margin-bottom:16px;}
+
+.alt-row{text-align:left;font:inherit;color:inherit;display:flex;flex-direction:column;gap:6px;width:100%;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color var(--dur-fast) linear,background-color var(--dur-fast) linear;}
+.alt-row[aria-selected="true"]{border-color:var(--border-focus);background:var(--surface-tertiary);}
+.alt-row .ar-top{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.alt-row .ar-id{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.alt-row .ar-tier{font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:.05em;}
+.alt-row.tier-s .ar-tier{color:var(--score-s);}
+.alt-row .ar-ttl{font-size:13px;font-weight:500;line-height:1.4;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* shared buttons */
+.btn-ghost{font:inherit;font-size:14px;font-weight:600;color:var(--text-secondary);background:transparent;border:1px solid transparent;border-radius:8px;padding:9px 14px;cursor:pointer;}
+.btn-primary{font:inherit;font-size:14px;font-weight:600;color:var(--text-inverse);background:var(--surface-inverse);border:0;border-radius:8px;padding:10px 18px;cursor:pointer;}
+
+/* ===== Patent detail body — .pds-* (verbatim from globals.css) ===== */
+.pds-lede{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.pds-chiprow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.pds-title{font-size:18px;font-weight:600;letter-spacing:-.005em;line-height:1.4;color:var(--text-primary);margin:0;}
+.pds-pss{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:16px;border:1px solid var(--border-primary);border-radius:12px;background:var(--surface-secondary);margin-bottom:20px;}
+.pds-pss .stat{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.pds-pss .stat .lbl{font-size:11px;font-weight:500;letter-spacing:.04em;color:var(--text-tertiary);}
+.pds-pss .stat .val{font-family:var(--font-sans);font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--text-primary);font-feature-settings:"tnum";}
+.pds-block{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.pds-block .pds-eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-secondary);display:inline-flex;align-items:center;gap:6px;}
+.pds-block .pds-body{font-size:15px;font-weight:400;line-height:1.6;color:var(--text-secondary);margin:0;}
+.pds-pillars-list{display:grid;grid-template-columns:1fr 1fr;column-gap:18px;row-gap:12px;}
+.pds-pillar{display:grid;grid-template-columns:1fr 48px;grid-template-rows:auto auto;column-gap:8px;row-gap:5px;min-width:0;}
+.pds-pillar .lbl{font-family:var(--font-sans);font-size:12px;font-weight:500;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;grid-column:1;grid-row:1;}
+.pds-pillar .val{font-family:var(--font-mono);font-size:13px;font-weight:600;text-align:right;color:var(--text-primary);font-feature-settings:"tnum";grid-column:2;grid-row:1;}
+.pds-pillar .bar{grid-column:1 / -1;grid-row:2;height:4px;background:var(--surface-tertiary);border-radius:2px;overflow:hidden;}
+.pds-pillar .bar .fill{display:block;height:100%;background:var(--text-primary);border-radius:2px;}
+.pds-pillar.is-strong .bar .fill{background:var(--signal-active);}
+.pds-pillar.is-weak .bar .fill{background:var(--signal-warning);}
+.pds-kv{padding-top:20px;border-top:1px solid var(--border-primary);display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;}
+.pds-kv .cell{display:flex;flex-direction:column;gap:6px;}
+.pds-kv .cell.span2{grid-column:1 / -1;}
+.pds-kv .cell .lbl{font-family:var(--font-sans);font-size:12px;font-weight:500;color:var(--text-tertiary);}
+.pds-kv .cell .val{font-family:var(--font-mono);font-size:15px;font-weight:500;color:var(--text-primary);font-feature-settings:"tnum";}
+.pds-kv .cell .val .inl{display:inline-flex;align-items:center;gap:6px;}
+.pds-kv .cell .val .ind-glyph{width:18px;height:18px;color:var(--text-primary);}
+.pds-kv .cell .val .ind-glyph svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.signal-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--signal-active);margin-right:8px;vertical-align:1px;}
+.signal-dot.tone-warning{background:var(--signal-warning);}
+.signal-dot.tone-lapsed{background:var(--signal-lapsed);}
+
+.sp-col-body::-webkit-scrollbar,.sp-rail-list::-webkit-scrollbar{width:9px;}
+.sp-col-body::-webkit-scrollbar-thumb,.sp-rail-list::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-page);}
+@media (prefers-reduced-motion:reduce){.sp-panel{animation:none;}.sp-seg{transition:none;}}
+</style>
+</head>
+<body>
+
+<!-- ===== Showcase caption (outside the mockup) ===== -->
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — swapping a Tier-S patent</h1>
+  <p data-t="cap_body">Reviewing the AI-assembled bundle, a licensee replaces five Tier-S picks in one batch — comparing each candidate side-by-side against its same-tier pool before confirming. Example data only; patent numbers and owners are illustrative placeholders.</p>
+  <div class="note" data-t="cap_note">Batch swap 2 of 5 · left panel is the current pick, centre rail is the Tier-S candidate pool, right panel is the staged replacement.</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<!-- ===== MacBook screen + browser ===== -->
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+
+      <!-- browser bar -->
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          license.tisglobalinc.com/us-semiconductor
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <!-- ===== dimmed Step-2 backdrop ===== -->
+        <div class="viewport">
+          <div class="bb">
+            <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 2 of 5</div>
+            <h1 class="h-32" style="margin-bottom:8px" data-t="h1">Your recommended bundle</h1>
+            <p class="copy-15 text-secondary" style="margin-bottom:28px" data-t="lede">Select patents to swap from that tier's candidate pool, or accept the set to add it to your cart.</p>
+
+            <div class="results-layout">
+              <div class="scope-bar">
+                <div class="scope-bar-info">
+                  <span class="eyebrow" data-t="scope">Bundle scope</span>
+                  <span class="juris-tile us">US</span>
+                  <span class="ind-ic" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+                  </span>
+                  <span class="scope-ind" data-t="industry">Semiconductors</span>
+                  <span class="scope-sep">·</span>
+                  <span class="scope-co" data-t="term">12-month license</span>
+                </div>
+                <div class="scope-bar-actions">
+                  <button class="scope-inputs-link" type="button" data-t="viewinputs">View your inputs ↗</button>
+                </div>
+              </div>
+              <div id="tierMain"></div>
+            </div>
+          </div>
+        </div><!-- /viewport -->
+
+        <!-- ===== Swap Picker overlay ===== -->
+        <div class="sp-overlay" role="dialog" aria-modal="true">
+          <div class="sp-panel">
+
+            <!-- Panel 1 — current patent -->
+            <section class="sp-col sp-col-cur">
+              <header class="sp-col-head"><span class="sp-col-mono" id="curNo"></span></header>
+              <div class="sp-col-body" id="curBody"></div>
+              <footer class="sp-col-foot">
+                <span></span>
+                <button type="button" class="btn-ghost" data-t="close">Close</button>
+              </footer>
+            </section>
+
+            <!-- Panel 2 — same-tier candidate rail -->
+            <section class="sp-col sp-col-rail">
+              <header class="sp-col-head sp-rail-head">
+                <div>
+                  <div class="sp-rail-title" data-t="railtitle">Replace Tier S patents</div>
+                  <div class="sp-progress" role="status">
+                    <span class="sp-seg-track" id="segTrack" aria-hidden="true"></span>
+                    <span class="sp-progress-label" data-t="progress">Swapping · 2 / 5</span>
+                  </div>
+                  <div class="sp-rail-sub" data-t="railsub">6 same-tier S candidates</div>
+                </div>
+                <button type="button" class="sp-x" aria-label="Close">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+              </header>
+              <div class="sp-rail-list" id="railList" role="listbox"></div>
+            </section>
+
+            <!-- Panel 3 — staged candidate -->
+            <section class="sp-col sp-col-staged">
+              <div class="sp-col-body">
+                <div class="sp-staged-banner" id="stagedBanner"></div>
+                <div id="stagedBody"></div>
+              </div>
+              <footer class="sp-col-foot">
+                <span></span>
+                <div class="sp-foot-right">
+                  <button type="button" class="btn-ghost" data-t="cancel">Cancel</button>
+                  <button type="button" class="btn-primary" data-t="confirm">Confirm &amp; next →</button>
+                </div>
+              </footer>
+            </section>
+
+          </div>
+        </div>
+      </div><!-- /screen-body -->
+    </div><!-- /mb-screen -->
+  </div><!-- /mb-lid -->
+</div>
+
+<script>
+/* ===================== i18n dictionary ===================== */
+var I18N = {
+  en:{
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — swapping a Tier-S patent",
+    cap_body:"Reviewing the AI-assembled bundle, a licensee replaces five Tier-S picks in one batch — comparing each candidate side-by-side against its same-tier pool before confirming. Example data only; patent numbers and owners are illustrative placeholders.",
+    cap_note:"Batch swap 2 of 5 · left panel is the current pick, centre rail is the Tier-S candidate pool, right panel is the staged replacement.",
+    step:"Step 2 of 5", h1:"Your recommended bundle",
+    lede:"Select patents to swap from that tier's candidate pool, or accept the set to add it to your cart.",
+    scope:"Bundle scope", industry:"Semiconductors", term:"12-month license", viewinputs:"View your inputs ↗",
+    tierSlabel:"Flagship strategic patents",
+    railtitle:"Replace Tier S patents", progress:"Swapping · 2 / 5", railsub:"6 same-tier S candidates",
+    close:"Close", cancel:"Cancel", confirm:"Confirm & next →",
+    staged:"Selected · ",
+    /* detail body labels */
+    dScore:"Score", dRank:"Rank", dPct:"Percentile",
+    dTech:"Technical summary", dPillars:"SABCD 8-pillar breakdown",
+    kOwner:"Patent owner", kIndustry:"Industry", kIpc:"Main IPC", kFiling:"Filing date", kGrant:"Grant date",
+    kTerm:"Term remaining", kLic:"Licensable term", kFamily:"Patent family", kCite:"Fwd / bwd citations",
+    kClaims:"Claims", kLegal:"Legal status",
+    vActive:"Active", vSemi:"Semiconductors", unitYr:"yr", unitMo:"mo", indep:"indep.",
+    pillars:["Citation impact","Claim strength","Legal & market robustness","Family coverage","Technical quality","Network centrality","Commercial value","Implementation feasibility"]
+  },
+  zh:{
+    cap_kicker:"授權媒合平台 · 產品預覽",
+    cap_title:"組建授權包 — 替換 Tier S 專利",
+    cap_body:"檢視 AI 組建的專利包時，被授權方一次批次替換五件 Tier S 專利 — 每件都與同級候選池並列比較後再確認。示意資料，專利號與權利人皆為佔位範例。",
+    cap_note:"批次替換第 2 / 5 件 · 左欄為目前選件，中間為 Tier S 候選池，右欄為已選替換件。",
+    step:"第 2 步・共 5 步", h1:"推薦配額包",
+    lede:"勾選要替換的專利後可自該 tier 候選池批次置換，或一鍵接受加入購物車。",
+    scope:"授權包範圍", industry:"晶片半導體", term:"12 個月授權", viewinputs:"檢視輸入資料 ↗",
+    tierSlabel:"頂級戰略專利",
+    railtitle:"替換 Tier S 專利", progress:"替換中 · 2 / 5 件", railsub:"同 S 級候選 6 件",
+    close:"關閉", cancel:"取消", confirm:"確認並下一件 →",
+    staged:"已選 · ",
+    dScore:"分數", dRank:"排名", dPct:"百分位",
+    dTech:"技術摘要", dPillars:"八支柱分數明細",
+    kOwner:"專利權人", kIndustry:"產業", kIpc:"主要 IPC", kFiling:"申請日", kGrant:"公告日",
+    kTerm:"剩餘有效期", kLic:"可授權期限", kFamily:"專利家族", kCite:"前 / 後向引用",
+    kClaims:"請求項數", kLegal:"法律狀態",
+    vActive:"有效", vSemi:"晶片半導體", unitYr:"年", unitMo:"個月", indep:"獨立",
+    pillars:["引用影響力","請求項強度","法律與市場穩健性","專利家族佈局","技術品質","網絡中心性","商業價值","實施可行性"]
+  }
+};
+
+/* ===================== data (fake, continues the showcase set) ===================== */
+var CPU='<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>';
+var CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* the current Tier-S bundle (mirrors the showcase S_PATENTS) — one is being replaced */
+var BUNDLE_S=[
+  {no:"US 12051972 B2", tEn:"Three-dimensional die package structure and method of manufacture", tZh:"三維晶片封裝結構及其製造方法", ipc:"H01L 25/065", fam:3, cited:62, rel:96, oEn:"Anvia Semiconductor", oZh:"安崴半導體", sel:false},
+  {no:"US 11876214 B2", tEn:"High aspect-ratio through-silicon via etch process control", tZh:"高深寬比矽穿孔蝕刻製程控制方法", ipc:"H01L 21/311", fam:3, cited:29, rel:88, oEn:"Corveta Microelectronics", oZh:"科維特微電子", sel:true},
+  {no:"US 11984330 B2", tEn:"EUV lithography mask pellicle structure and fabrication method", tZh:"極紫外光微影光罩保護膜結構及其製作方法", ipc:"G03F 1/62", fam:3, cited:47, rel:93, oEn:"Meridian Micro Labs", oZh:"美睿微電子", sel:false},
+  {no:"US 12113507 B2", tEn:"Wafer-level fan-out package redistribution layer formation method", tZh:"晶圓級扇出型封裝重佈線層形成方法", ipc:"H01L 21/768", fam:2, cited:38, rel:92, oEn:"Silbridge Technologies", oZh:"矽橋科技", sel:true},
+  {no:"US 12004881 B1", tEn:"High-frequency multilayer PCB dielectric composition and manufacturing method", tZh:"高頻多層 PCB 介電材料組成物及其製造方法", ipc:"H05K 1/03", fam:2, cited:24, rel:90, oEn:"Nexon Fab Systems", oZh:"尼克森製程系統", sel:true}
+];
+
+/* full detail record used by the swap panels */
+function detailRec(o){ return Object.assign({
+  score:0, rank:0, pct:0, descEn:"", descZh:"", filing:"", grant:"", yrs:0, licMo:12, claims:0, indep:0, bwd:0, pillars:[]
+}, o); }
+
+/* CURRENT patent being replaced (2nd of the chain) — lower score motivates the swap */
+var CUR = detailRec({
+  no:"US 11876214 B2",
+  tEn:"High aspect-ratio through-silicon via etch process control",
+  tZh:"高深寬比矽穿孔蝕刻製程控制方法",
+  ipc:"H01L 21/311", fam:3, cited:29, oEn:"Corveta Microelectronics", oZh:"科維特微電子",
+  descEn:"A process-control method for anisotropic etching of high aspect-ratio through-silicon vias, using in-situ endpoint detection to hold sidewall verticality across the wafer.",
+  descZh:"一種高深寬比矽穿孔非等向性蝕刻之製程控制方法，透過原位終點偵測維持整片晶圓之側壁垂直度。",
+  score:81.4, rank:14, pct:87.2, filing:"2019-11-08", grant:"2024-01-16", yrs:15, licMo:12, claims:18, indep:3, bwd:41,
+  pillars:[71,69,64,88,74,52,66,79]
+});
+
+/* STAGED candidate chosen from the S pool — higher score than CUR */
+var STAGED = detailRec({
+  no:"US 12088471 B2",
+  tEn:"Backside power delivery network integration for sub-2nm logic devices",
+  tZh:"次 2 奈米邏輯元件之背面供電網路整合結構",
+  ipc:"H01L 23/528", fam:4, cited:58, oEn:"Aurelia Nanosystems", oZh:"奧瑞利亞奈米系統",
+  descEn:"A backside power-delivery network integrated beneath the device layer, decoupling signal and power routing to cut IR-drop in sub-2nm logic while preserving front-side interconnect density.",
+  descZh:"一種整合於元件層下方之背面供電網路，將訊號與供電佈線解耦，於次 2 奈米邏輯降低 IR 壓降並維持正面互連密度。",
+  score:94.6, rank:2, pct:98.1, filing:"2021-06-30", grant:"2024-09-10", yrs:17, licMo:12, claims:24, indep:4, bwd:33,
+  pillars:[92,88,79,95,90,71,93,84]
+});
+
+/* the same-tier S candidate pool (rail). STAGED is the selected one. */
+var ALTS=[
+  {no:"US 12088471 B2", tEn:"Backside power delivery network integration for sub-2nm logic devices", tZh:"次 2 奈米邏輯元件之背面供電網路整合結構", oEn:"Aurelia Nanosystems", oZh:"奧瑞利亞奈米系統", cited:58, fam:4, sel:true},
+  {no:"US 12061309 B2", tEn:"Hybrid bonding interconnect with self-aligned copper pad topology", tZh:"具自對準銅墊拓撲之混合接合互連", oEn:"Kestrel Photonics", oZh:"凱斯特光電", cited:44, fam:3, sel:false},
+  {no:"US 12099820 B2", tEn:"Gate-all-around nanosheet transistor with inner-spacer engineering", tZh:"具內側間隔工程之環繞式閘極奈米片電晶體", oEn:"Volterra Device Labs", oZh:"沃特拉元件實驗室", cited:51, fam:4, sel:false},
+  {no:"US 12042044 B1", tEn:"Chiplet interposer with embedded deep-trench decoupling capacitor", tZh:"內嵌深溝槽去耦電容之小晶片中介層", oEn:"Northbay Silicon", oZh:"北灣矽晶", cited:37, fam:2, sel:false},
+  {no:"US 12070133 B2", tEn:"Selective area atomic-layer deposition for self-aligned via patterning", tZh:"用於自對準通孔圖形化之選區原子層沉積", oEn:"Halcyon Materials", oZh:"晗西恩材料", cited:29, fam:3, sel:false},
+  {no:"US 12015887 B2", tEn:"Thermal-aware 3D IC floorplanning with microfluidic channel routing", tZh:"具微流道佈線之熱感知三維積體電路平面規劃", oEn:"Cirreta Systems", oZh:"希瑞塔系統", cited:33, fam:2, sel:false}
+];
+
+var CHAIN={index:1, total:5}; /* 2 of 5 */
+
+/* ---- render helpers ---- */
+function pillarCls(v){ return v>=75?" is-strong":(v<=25?" is-weak":""); }
+
+function detailBody(p, lang){
+  var S=I18N[lang];
+  var title=lang==="zh"?p.tZh:p.tEn;
+  var owner=lang==="zh"?p.oZh:p.oEn;
+  var desc=lang==="zh"?p.descZh:p.descEn;
+  var pillars=p.pillars.map(function(v,i){
+    return '<div class="pds-pillar'+pillarCls(v)+'">'
+      +'<div class="lbl">P'+(i+1)+' '+S.pillars[i]+'</div>'
+      +'<div class="val">'+v.toFixed(1)+'</div>'
+      +'<div class="bar"><div class="fill" style="width:'+Math.min(100,Math.max(0,v))+'%"></div></div>'
+    +'</div>';
+  }).join("");
+  var claimStr=p.claims+'（'+S.indep+' '+p.indep+'）';
+  if(lang==="en") claimStr=p.claims+' ('+S.indep+' '+p.indep+')';
+  return ''
+    +'<div class="pds-lede">'
+      +'<div class="pds-chiprow"><span class="juris-tile us">US</span><span class="tier-tile s">Tier S</span></div>'
+      +'<h2 class="pds-title">'+title+'</h2>'
+    +'</div>'
+    +'<div class="pds-pss">'
+      +'<div class="stat"><div class="lbl">'+S.dScore+'</div><div class="val">'+p.score.toFixed(1)+'</div></div>'
+      +'<div class="stat"><div class="lbl">'+S.dRank+'</div><div class="val">#'+p.rank+'</div></div>'
+      +'<div class="stat"><div class="lbl">'+S.dPct+'</div><div class="val">'+p.pct.toFixed(1)+'%</div></div>'
+    +'</div>'
+    +'<div class="pds-block"><div class="pds-eyebrow">'+S.dTech+'</div><p class="pds-body">'+desc+'</p></div>'
+    +'<div class="pds-block"><div class="pds-eyebrow">'+S.dPillars+'</div><div class="pds-pillars-list">'+pillars+'</div></div>'
+    +'<div class="pds-kv">'
+      +'<div class="cell span2"><div class="lbl">'+S.kOwner+'</div><div class="val">'+owner+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kIndustry+'</div><div class="val"><span class="inl"><span class="ind-glyph">'+CPU+'</span>'+S.vSemi+'</span></div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kIpc+'</div><div class="val">'+p.ipc+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kFiling+'</div><div class="val">'+p.filing+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kGrant+'</div><div class="val">'+p.grant+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kTerm+'</div><div class="val">'+p.yrs+' '+S.unitYr+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kLic+'</div><div class="val">'+p.licMo+' '+S.unitMo+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kFamily+'</div><div class="val">'+p.fam+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kCite+'</div><div class="val">'+p.cited+' / '+p.bwd+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kClaims+'</div><div class="val">'+claimStr+'</div></div>'
+      +'<div class="cell"><div class="lbl">'+S.kLegal+'</div><div class="val"><span class="inl"><span class="signal-dot"></span>'+S.vActive+'</span></div></div>'
+    +'</div>';
+}
+
+/* backdrop Tier-S group (blurred behind the overlay) */
+function backdropCard(p, lang){
+  var S=I18N[lang];
+  var title=lang==="zh"?p.tZh:p.tEn;
+  var owner=lang==="zh"?p.oZh:p.oEn;
+  return '<div class="patent-card'+(p.sel?' is-sel':'')+'"><div class="scard-core">'
+    +'<div class="rc-topbar"><div class="rc-controls"><span class="cbx'+(p.sel?' on':'')+'">'+(p.sel?CHECK:'')+'</span><span class="rc-pno">'+p.no+'</span></div>'
+    +'<div class="rc-chips"><span class="juris-tile us">US</span><span class="tier-tile s">Tier S</span></div></div>'
+    +'<div class="rc-title">'+title+'</div>'
+    +'<div class="rc-mdiv"><span class="k">IPC</span><span class="v">'+p.ipc+'</span><span class="dot">·</span><span class="k">'+(lang==="zh"?"家族":"Family")+'</span><span class="v">'+p.fam+'</span><span class="dot">·</span><span class="k">'+(lang==="zh"?"引用":"Cited")+'</span><span class="v">'+p.cited+'</span></div>'
+    +'<div class="rc-rel"><span class="l">'+(lang==="zh"?"相關度":"Relevance")+'</span><span class="track"><span class="fill" style="width:'+p.rel+'%"></span></span><span class="v">'+p.rel+'%</span></div>'
+    +'<div class="rc-foot"><span class="ind-ic">'+CPU+'</span><span class="owner-v">'+owner+'</span></div>'
+  +'</div></div>';
+}
+
+function render(lang){
+  var S=I18N[lang]||I18N.en;
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-t]").forEach(function(el){
+    var k=el.getAttribute("data-t"); if(S[k]!=null) el.textContent=S[k];
+  });
+
+  /* backdrop tier-S group */
+  var main=document.getElementById("tierMain");
+  main.innerHTML='<section class="tier-group" data-open="true">'
+    +'<div class="tg-head"><div class="tg-head-left"><span class="tier-tile s">Tier S</span><span class="tg-label">'+S.tierSlabel+'</span></div>'
+    +'<div class="tg-head-right"><span class="tg-count">5 / 30</span><span class="tg-chev">'+CHEV+'</span></div></div>'
+    +'<div class="tg-body-pad"><div class="results-grid">'+BUNDLE_S.map(function(p){return backdropCard(p,lang);}).join("")+'</div></div>'
+  +'</section>';
+
+  /* chain-progress segments */
+  var seg=""; for(var i=0;i<CHAIN.total;i++){ seg+='<span class="sp-seg'+(i<=CHAIN.index?' done':'')+'"></span>'; }
+  document.getElementById("segTrack").innerHTML=seg;
+
+  /* Panel 1 — current */
+  document.getElementById("curNo").textContent=CUR.no;
+  document.getElementById("curBody").innerHTML=detailBody(CUR,lang);
+
+  /* Panel 2 — rail */
+  document.getElementById("railList").innerHTML=ALTS.map(function(a){
+    var title=lang==="zh"?a.tZh:a.tEn;
+    return '<div class="alt-row tier-s" role="option" aria-selected="'+(a.sel?'true':'false')+'">'
+      +'<div class="ar-top"><span class="ar-id">'+a.no+'</span><span class="ar-tier">Tier S</span></div>'
+      +'<div class="ar-ttl">'+title+'</div>'
+    +'</div>';
+  }).join("");
+
+  /* Panel 3 — staged */
+  document.getElementById("stagedBanner").innerHTML='<span aria-hidden="true">✓</span> '+S.staged+STAGED.no;
+  document.getElementById("stagedBody").innerHTML=detailBody(STAGED,lang);
+}
+
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    document.querySelectorAll(".lang-btn").forEach(function(b){b.classList.remove("is-active");});
+    btn.classList.add("is-active");
+    render(btn.getAttribute("data-lang"));
+  });
+});
+var initial=(location.search.match(/[?&]lang=(en|zh)/)||[])[1]||"en";
+if(initial==="zh"){document.querySelectorAll(".lang-btn").forEach(function(b){b.classList.toggle("is-active",b.getAttribute("data-lang")==="zh");});}
+render(initial);
+
+/* embedded on the marketing page: follow the parent's language toggle (no reload) */
+window.addEventListener("message", function(e){
+  if(e.origin !== location.origin) return;               // same-origin guard
+  var d = e.data;
+  if(!d || d.type !== "tis-lang" || (d.lang !== "en" && d.lang !== "zh")) return;
+  document.querySelectorAll(".lang-btn").forEach(function(b){
+    b.classList.toggle("is-active", b.getAttribute("data-lang") === d.lang);
+  });
+  render(d.lang);
+});
+</script>
+</body>
+</html>

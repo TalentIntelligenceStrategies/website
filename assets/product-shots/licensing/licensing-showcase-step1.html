@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Bundle Builder (Step 1) · Showcase</title>
+
+<!--
+  TIS Licensing Platform — "Bundle Builder" Step 1 marketing showcase.
+  Static, self-contained visual. Example data only — the company name, keywords
+  and product description are illustrative placeholders (not a real company).
+
+  Pairs with licensing-showcase.html (Step 2): SAME MacBook frame + dimensions
+  (max-width 1180px, fixed 720px screen, centered-URL browser bar, no in-app nav
+  bar and no wizard spine) so the two stills sit side by side cleanly.
+
+  Source of truth for structure + styling: operations-site
+    /select-country page → BundleBuilder (jurisdiction / industry / term pickers,
+    bundle-scope recap card, company & product form)
+    src/styles/globals.css (.bb / .build-grid / .opt / .estimate / .field
+    / .mkt-pill / .ind-ic / .juris-tile). Tokens + fonts verbatim.
+
+  Stylization vs the live app: the AI-assembled path tile is dropped and the
+  Bundle-scope card is lifted to the top of the right column (where that tile
+  sat) for a more compact still.
+
+  i18n: bilingual EN + Traditional Chinese in one file. English is the inline
+  default (renders with no JS); the EN | 中文 toggle calls render(lang), which
+  fills every [data-t] node and rebuilds the picker lists / market pills / scope
+  card / form values. ?lang=zh in the URL opens straight into Chinese.
+-->
+
+<style>
+/* ===== Brand fonts (repo-local, self-hosted — SIL OFL) ===== */
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+@font-face{font-family:"Inconsolata";src:url("/designs/assets/fonts/Inconsolata/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype-variations");font-weight:200 900;font-style:normal;font-display:swap;}
+
+/* ===== Semantic tokens (verbatim from globals.css :root) ===== */
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);--surface-page-translucent:rgba(255,255,255,0.7);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);--border-divider:var(--n4);
+  --status-success-fg:#15803d;--status-danger-fg:#b91c1c;
+  --juris-us:#4338ca;--juris-tw:#3f6212;--juris-eu:#475569;--juris-jp:#a21caf;
+  --juris-us-bg:#eef2ff;--juris-tw-bg:#ecfccb;--juris-eu-bg:#f1f5f9;--juris-jp-bg:#fae8ff;
+  --motion-fast:100ms;--motion-medium:250ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:"Inconsolata",ui-monospace,"SF Mono",Menlo,monospace;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 24px 80px;
+}
+
+/* ===== Showcase caption ===== */
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:660px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;transition:background var(--motion-fast) linear,color var(--motion-fast) linear;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* ===== MacBook screen + browser (laptop 16:10 landscape screen, scrolls inside) — verbatim from Step 2 ===== */
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{
+  background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);
+  border-radius:22px;padding:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.mb-screen{
+  background:var(--surface-page);border-radius:12px;overflow:hidden;
+  height:720px;display:flex;flex-direction:column;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);
+}
+/* browser bar */
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+/* scrollable viewport (laptop screen — content scrolls within the fixed-height screen) */
+.viewport{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:var(--surface-page);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-page);}
+
+/* ===== .bb page scope (verbatim from operations-site globals.css) ===== */
+.bb{max-width:1200px;margin:0 auto;padding:40px 30px 64px;}
+.bb .eyebrow{font-size:11px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);height:auto;margin:0;}
+.bb .h-24{font-size:24px;font-weight:600;letter-spacing:-.005em;line-height:1.3;color:var(--text-primary);height:auto;margin:0;}
+.bb .copy-15{font-size:15px;font-weight:400;line-height:1.6;}
+.bb .text-secondary{color:var(--text-secondary);}
+.bb .hint{font-size:13px;color:var(--text-secondary);line-height:1.55;}
+.bb .stack-12{display:flex;flex-direction:column;gap:12px;}
+.bb .stack-16{display:flex;flex-direction:column;gap:16px;}
+.bb .stack-24{display:flex;flex-direction:column;gap:24px;}
+.bb .stack-32{display:flex;flex-direction:column;gap:32px;}
+.text-status-danger-fg{color:var(--status-danger-fg);}
+
+/* build grid */
+.bb .build-grid{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:48px;align-items:flex-start;}
+@media (max-width:1024px){.bb .build-grid{grid-template-columns:1fr;gap:32px;}}
+
+/* option lists (jurisdiction / industry / term) */
+.bb .opt-list{display:flex;flex-direction:column;gap:8px;}
+.bb .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border:1px solid var(--border-primary);border-radius:10px;cursor:pointer;background:var(--surface-page);transition:border-color var(--motion-fast) linear,background-color var(--motion-fast) linear;}
+.bb .opt:hover{border-color:var(--border-tertiary);}
+.bb .opt.selected{border-color:var(--border-focus);}
+.bb .opt .lft{display:flex;flex-direction:column;gap:2px;}
+.bb .opt .nm{font-size:14px;font-weight:500;color:var(--text-primary);}
+.bb .opt.locked{cursor:not-allowed;pointer-events:none;position:relative;overflow:hidden;}
+.bb .opt.locked .lft{filter:blur(2.5px);opacity:.5;user-select:none;}
+.bb .opt-lock-tag{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;white-space:nowrap;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--text-primary);background:var(--surface-page);border:1px solid var(--border-tertiary);padding:5px 14px;border-radius:9999px;box-shadow:var(--shadow-low);}
+
+/* bundle-scope recap card (lifted to top of right column; not sticky here) */
+.bb .estimate{background:var(--surface-tertiary);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.bb .estimate .e-lbl{font-size:11px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--text-tertiary);}
+.bb .estimate .e-scope{font-size:14px;color:var(--text-secondary);line-height:1.55;}
+.bb .estimate .e-term{display:flex;flex-direction:column;gap:10px;}
+.bb .estimate .e-term .mkt-pill.selected{background:var(--surface-inverse);border-color:var(--surface-inverse);color:var(--text-inverse);}
+
+/* form fields */
+.bb .field{display:flex;flex-direction:column;gap:8px;}
+.bb .field .lbl{font-size:13px;font-weight:500;line-height:1.3;color:var(--text-secondary);}
+.bb .field .hint{font-size:13px;color:var(--text-secondary);line-height:1.55;}
+.bb .lbl-note{font-weight:400;color:var(--text-tertiary);}
+.bb .input,.bb .textarea{width:100%;font:inherit;font-size:14px;color:var(--text-primary);background:var(--surface-page);border:1px solid var(--border-tertiary);border-radius:8px;padding:10px 14px;height:40px;transition:border-color var(--motion-fast) linear;}
+.bb .textarea{height:auto;min-height:96px;resize:vertical;padding:12px 14px;line-height:1.55;}
+.bb .input:focus,.bb .textarea:focus{outline:none;border-color:var(--border-focus);}
+.bb .input::placeholder,.bb .textarea::placeholder{color:var(--text-quaternary);}
+
+/* market pills */
+.bb .mkt-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.bb .mkt-pill{display:inline-flex;align-items:center;font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--text-secondary);background:var(--surface-page);border:1px solid var(--border-tertiary);padding:7px 14px;border-radius:9999px;cursor:pointer;transition:border-color var(--motion-fast) linear,background-color var(--motion-fast) linear,color var(--motion-fast) linear;}
+.bb .mkt-pill:hover{border-color:var(--border-focus);}
+.bb .mkt-pill.selected{background:var(--surface-tertiary);border-color:var(--border-focus);color:var(--text-primary);font-weight:600;}
+
+/* Button (shared primitive — primary / secondary sm) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:600;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:opacity var(--motion-fast) linear,border-color var(--motion-fast) linear,background-color var(--motion-fast) linear,color var(--motion-fast) linear;}
+.btn-primary{background:var(--surface-inverse);color:var(--text-inverse);font-size:14px;padding:11px 20px;}
+.btn-primary:hover{opacity:.9;}
+.btn-secondary{background:var(--surface-page);color:var(--text-secondary);border-color:var(--border-tertiary);font-size:13px;padding:7px 14px;}
+.btn-secondary:hover{border-color:var(--border-focus);color:var(--text-primary);}
+
+/* industry tile / jurisdiction tile (verbatim) */
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:background-color var(--motion-medium) var(--ease-emphasized),color var(--motion-medium) linear,border-color var(--motion-medium) linear;}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.ind-ic--dark{background:var(--surface-inverse);border-color:var(--surface-inverse);color:var(--text-inverse);}
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;letter-spacing:0;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.juris-tile.tw{background:var(--juris-tw-bg);color:var(--juris-tw);}
+.juris-tile.eu{background:var(--juris-eu-bg);color:var(--juris-eu);}
+.juris-tile.jp{background:var(--juris-jp-bg);color:var(--juris-jp);}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+
+<!-- ===== Showcase caption (outside the mockup) ===== -->
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — Step 1: define your bundle</h1>
+  <p data-t="cap_body">A look at how licensees set scope and describe their company before the engine assembles the bundle. Example data only — company details are placeholders.</p>
+  <div class="note" data-t="cap_note">Scope is set and the company form is ready to submit; the assembled bundle follows in Step 2.</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<!-- ===== MacBook screen + browser ===== -->
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+
+      <!-- browser bar -->
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          license.tisglobalinc.com/select-country
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <!-- app viewport -->
+      <div class="viewport">
+
+        <!-- ===== .bb scope ===== -->
+        <div class="bb">
+          <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 1 of 5</div>
+          <h1 class="h-32" style="margin-bottom:8px" data-t="h1">Let the engine assemble your 30-patent bundle</h1>
+          <p class="copy-15 text-secondary" style="margin-bottom:32px" data-t="lede">Pick your jurisdiction and industry on the left; the engine assembles 30 SABCD-tiered patents against your export risk — reviewed one by one in the next step.</p>
+
+          <div class="build-grid">
+            <!-- ===== LEFT ===== -->
+            <div class="stack-32">
+              <div class="stack-12">
+                <div class="eyebrow" data-t="juris_lbl">Jurisdiction</div>
+                <div class="opt-list" id="jurisList"></div>
+              </div>
+              <div class="stack-12">
+                <div class="eyebrow" data-t="industry_lbl">Industry</div>
+                <div class="opt-list" id="industryList"></div>
+              </div>
+            </div>
+
+            <!-- ===== RIGHT ===== -->
+            <div class="stack-24">
+              <!-- Bundle scope recap (lifted to top; AI-assembled tile dropped) -->
+              <div class="estimate">
+                <div class="e-lbl" data-t="scope_lbl">Bundle scope</div>
+                <div class="e-scope" id="scopeScope" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"></div>
+                <div class="e-term">
+                  <div class="e-lbl" data-t="period_lbl">License term</div>
+                  <div class="mkt-pills" id="termPills"></div>
+                </div>
+              </div>
+
+              <!-- Company / product form -->
+              <form class="stack-16" onsubmit="return false;">
+                <div>
+                  <h2 class="h-24" style="margin:0 0 8px" data-t="form_title">Your company & product</h2>
+                  <p class="copy-15 text-secondary" data-t="form_sub">These inputs define your 30-patent bundle; the more specific your product and market description, the closer the recommendation tracks your real overseas risk.</p>
+                </div>
+
+                <div class="field">
+                  <label class="lbl" for="bb-company" data-t="f_company">Company name <span class="text-status-danger-fg">*</span></label>
+                  <input id="bb-company" class="input" value="Aeon Power Devices" />
+                  <div class="hint" data-t="f_company_hint">Pre-filled from your account; editable.</div>
+                </div>
+
+                <div class="field">
+                  <label class="lbl" for="bb-keywords" data-t="f_keywords">Technology keywords <span class="text-status-danger-fg">*</span></label>
+                  <input id="bb-keywords" class="input" value="power semiconductors, SiC devices, packaging & test" />
+                </div>
+
+                <div class="field">
+                  <label class="lbl" data-t="f_markets">Export markets <span class="lbl-note" data-t="f_markets_note">(helps the engine gauge your business scope; does not change the licensed territory)</span></label>
+                  <div class="mkt-pills" id="marketPills"></div>
+                </div>
+
+                <div class="field">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+                    <label class="lbl" for="bb-desc" data-t="f_desc">Product / technology description <span class="text-status-danger-fg">*</span></label>
+                    <button type="button" class="btn btn-secondary" data-t="f_gen">Auto-generate description</button>
+                  </div>
+                  <textarea id="bb-desc" class="textarea" rows="4">We design and mass-produce third-generation (SiC / GaN) power semiconductor devices for automotive inverters, industrial power supplies and charging infrastructure. Our products ship to Europe, the US and Japan, where exposure to incumbent patent holders' infringement claims calls for a defensive licensing portfolio.</textarea>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;margin-top:8px">
+                  <button type="submit" class="btn btn-primary" data-t="submit">Run AI assembly →</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div><!-- /viewport -->
+    </div><!-- /mb-screen -->
+  </div><!-- /mb-lid -->
+</div>
+
+<script>
+/* ===================== i18n dictionary ===================== */
+var I18N = {
+  en:{
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — Step 1: define your bundle",
+    cap_body:"A look at how licensees set scope and describe their company before the engine assembles the bundle. Example data only — company details are placeholders.",
+    cap_note:"Scope is set and the company form is ready to submit; the assembled bundle follows in Step 2.",
+    step:"Step 1 of 5",
+    h1:"Let the engine assemble your 30-patent bundle",
+    lede:"Pick your jurisdiction and industry on the left; the engine assembles 30 SABCD-tiered patents against your export risk — reviewed one by one in the next step.",
+    juris_lbl:"Jurisdiction", industry_lbl:"Industry", period_lbl:"License term",
+    scope_lbl:"Bundle scope",
+    form_title:"Your company & product",
+    form_sub:"These inputs define your 30-patent bundle; the more specific your product and market description, the closer the recommendation tracks your real overseas risk.",
+    f_company:"Company name ", f_company_hint:"Pre-filled from your account; editable.",
+    f_keywords:"Technology keywords ",
+    f_markets:"Export markets ", f_markets_note:"(helps the engine gauge your business scope; does not change the licensed territory)",
+    f_desc:"Product / technology description ", f_gen:"Auto-generate description",
+    submit:"Run AI assembly →",
+    company:"Aeon Power Devices",
+    keywords:"power semiconductors, SiC devices, packaging & test",
+    description:"We design and mass-produce third-generation (SiC / GaN) power semiconductor devices for automotive inverters, industrial power supplies and charging infrastructure. Our products ship to Europe, the US and Japan, where exposure to incumbent patent holders' infringement claims calls for a defensive licensing portfolio.",
+    termLabel:function(m){return m%12===0 ? (m/12)+" yr" : m+" mo";}
+  },
+  zh:{
+    cap_kicker:"授權媒合平台 · 產品預覽",
+    cap_title:"組建授權包 — 第 1 步：界定您的專利包",
+    cap_body:"呈現被授權方選定範圍、描述公司，交由 AI 智選組建 SABCD 專利包前的畫面。示意資料，公司資訊皆為佔位範例。",
+    cap_note:"範圍已選定，公司資訊表單待送出；組建好的專利包於第 2 步呈現。",
+    step:"第 1 步・共 5 步",
+    h1:"AI 智選，為您組建 30 件專利包",
+    lede:"左側選定授權國家與產業，AI 智選即依您的出口風險，組建 30 件 SABCD 分級專利；30 件將於下一步逐件檢視。",
+    juris_lbl:"授權國家", industry_lbl:"產業", period_lbl:"授權期別",
+    scope_lbl:"授權包範圍",
+    form_title:"輸入公司與產品資訊",
+    form_sub:"這些資訊將界定您的 30 件專利包；產品與市場描述越具體，AI 推薦就越貼近您實際的海外風險。",
+    f_company:"公司名稱 ", f_company_hint:"已自動帶入帳號資料，可自行編輯。",
+    f_keywords:"技術關鍵字 ",
+    f_markets:"出口市場 ", f_markets_note:"（協助 AI 了解整體業務範圍；不影響授權地域）",
+    f_desc:"產品 / 技術描述 ", f_gen:"AI 自動生成產品描述",
+    submit:"執行 AI 智選 →",
+    company:"宏鼎功率元件",
+    keywords:"功率半導體、SiC 元件、封裝測試",
+    description:"本公司專注於第三代半導體（SiC / GaN）功率元件之設計與量產，涵蓋車用逆變器、工業電源與充電基礎設施；產品外銷歐美與日本，面臨當地既有專利權人之侵權主張風險，需建立防禦性授權組合。",
+    termLabel:function(m){return m%12===0 ? (m/12)+" 年" : m+" 個月";}
+  }
+};
+
+/* ===================== data ===================== */
+/* Selected: US · Semiconductors · 12-month · markets US/EU/JP (baked-in still). */
+var SEL = { juris:"US", industry:"SEMICONDUCTOR", period:12, markets:["US","EU","JP"] };
+
+var JURIS = [
+  { code:"US", en:"United States", zh:"美國", enabled:true },
+  { code:"TW", en:"Taiwan",        zh:"台灣", enabled:true },
+  { code:"EU", en:"European Union",zh:"歐洲", enabled:false },
+  { code:"JP", en:"Japan",         zh:"日本", enabled:false }
+];
+/* mvp first (tiered), then Phase-2 (locked) — order mirrors INDUSTRY_OPTIONS */
+var INDUSTRY_MVP = [
+  { key:"NETWORK_COMM",  icon:"satelliteDish", en:"Network & Communications", zh:"網路與通訊" },
+  { key:"SEMICONDUCTOR", icon:"cpu",           en:"Semiconductors",           zh:"晶片半導體" },
+  { key:"NET_ZERO",      icon:"leaf",          en:"Net-Zero / Carbon",        zh:"淨零碳排"   }
+];
+var INDUSTRY_P2 = [
+  { key:"MULTIMEDIA",       icon:"audioLines",   en:"Multimedia & Audio-Video", zh:"多媒體影音" },
+  { key:"COMPUTER_SYSTEMS", icon:"circuitBoard", en:"Computer Systems",         zh:"計算機系統" },
+  { key:"GENERAL",          icon:"layers",       en:"General Applications",     zh:"綜合應用"   }
+];
+var INDUSTRY_LABEL = {};
+INDUSTRY_MVP.concat(INDUSTRY_P2).forEach(function(o){ INDUSTRY_LABEL[o.key]={en:o.en,zh:o.zh,icon:o.icon}; });
+var PERIODS = [3,6,12,24];
+var MARKETS = [
+  {code:"US",en:"United States",zh:"美國"},{code:"TW",en:"Taiwan",zh:"台灣"},
+  {code:"EU",en:"Europe",zh:"歐洲"},{code:"JP",en:"Japan",zh:"日本"},
+  {code:"CN",en:"China",zh:"中國"},{code:"SEA",en:"Southeast Asia",zh:"東南亞"}
+];
+
+/* industry icon inner-SVG (verbatim from IndustryTile ICON_PATHS) */
+var ICON = {
+  cpu:'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+  satelliteDish:'<path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/>',
+  leaf:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  circuitBoard:'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4a2 2 0 0 0 2-2V3"/><circle cx="9" cy="9" r="2"/><path d="M7 21v-4a2 2 0 0 1 2-2h4"/><circle cx="15" cy="15" r="2"/>',
+  layers:'<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>',
+  audioLines:'<path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>'
+};
+
+function jurisTile(code){ return '<span class="juris-tile '+code.toLowerCase()+'">'+code+'</span>'; }
+function indTile(iconKey,dark){ return '<span class="ind-ic'+(dark?' ind-ic--dark':'')+'"><svg viewBox="0 0 24 24">'+ICON[iconKey]+'</svg></span>'; }
+
+/* ===================== master render ===================== */
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang;
+
+  /* static translatable nodes (preserve trailing markup like the required *) */
+  document.querySelectorAll("[data-t]").forEach(function(el){
+    var k = el.getAttribute("data-t");
+    if(S[k] == null || typeof S[k] === "function") return;
+    if(el.children.length){
+      el.childNodes[0].nodeValue = S[k];
+    } else {
+      el.textContent = S[k];
+    }
+  });
+
+  /* jurisdiction list */
+  var jl = document.getElementById("jurisList"); jl.innerHTML = "";
+  JURIS.forEach(function(j){
+    var name = lang==="zh"?j.zh:j.en;
+    if(j.enabled){
+      var sel = SEL.juris===j.code ? " selected" : "";
+      jl.insertAdjacentHTML("beforeend",
+        '<div class="opt'+sel+'" role="radio" aria-checked="'+(SEL.juris===j.code)+'">'
+        + '<div class="lft" style="flex-direction:row;align-items:center;gap:12px">'+jurisTile(j.code)+'<div class="nm">'+name+'</div></div></div>');
+    } else {
+      jl.insertAdjacentHTML("beforeend",
+        '<div class="opt locked" aria-disabled="true">'
+        + '<div class="lft" style="flex-direction:row;align-items:center;gap:12px">'+jurisTile(j.code)+'<div class="nm">'+name+'</div></div>'
+        + '<span class="opt-lock-tag">Phase 2</span></div>');
+    }
+  });
+
+  /* industry list — mvp selectable, phase-2 locked */
+  var il = document.getElementById("industryList"); il.innerHTML = "";
+  INDUSTRY_MVP.forEach(function(o){
+    var name = lang==="zh"?o.zh:o.en;
+    var sel = SEL.industry===o.key;
+    il.insertAdjacentHTML("beforeend",
+      '<div class="opt'+(sel?" selected":"")+'" role="radio" aria-checked="'+sel+'">'
+      + '<div class="lft" style="flex-direction:row;align-items:center;gap:12px">'+indTile(o.icon,sel)+'<div class="nm">'+name+'</div></div></div>');
+  });
+  INDUSTRY_P2.forEach(function(o){
+    var name = lang==="zh"?o.zh:o.en;
+    il.insertAdjacentHTML("beforeend",
+      '<div class="opt locked" aria-disabled="true">'
+      + '<div class="lft" style="flex-direction:row;align-items:center;gap:12px">'+indTile(o.icon,false)+'<div class="nm">'+name+'</div></div>'
+      + '<span class="opt-lock-tag">Phase 2</span></div>');
+  });
+
+  /* license-term pills (inside scope card; single-select) */
+  var tp = document.getElementById("termPills"); tp.innerHTML = "";
+  PERIODS.forEach(function(m){
+    var sel = SEL.period===m;
+    tp.insertAdjacentHTML("beforeend",
+      '<button type="button" class="mkt-pill'+(sel?" selected":"")+'" aria-pressed="'+sel+'">'+S.termLabel(m)+'</button>');
+  });
+
+  /* market pills */
+  var mp = document.getElementById("marketPills"); mp.innerHTML = "";
+  MARKETS.forEach(function(m){
+    var sel = SEL.markets.indexOf(m.code)>=0;
+    mp.insertAdjacentHTML("beforeend",
+      '<button type="button" class="mkt-pill'+(sel?" selected":"")+'" aria-pressed="'+sel+'">'+(lang==="zh"?m.zh:m.en)+'</button>');
+  });
+
+  /* scope card (populated) */
+  var indLabel = lang==="zh" ? INDUSTRY_LABEL[SEL.industry].zh : INDUSTRY_LABEL[SEL.industry].en;
+  document.getElementById("scopeScope").innerHTML =
+    jurisTile(SEL.juris)+'<span>×</span>'+indTile(INDUSTRY_LABEL[SEL.industry].icon,true)+'<span>'+indLabel+'</span>';
+
+  /* form values */
+  document.getElementById("bb-company").value = S.company;
+  document.getElementById("bb-keywords").value = S.keywords;
+  document.getElementById("bb-desc").value = S.description;
+}
+
+/* ===================== language toggle ===================== */
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.remove("is-active"); });
+    btn.classList.add("is-active");
+    render(btn.getAttribute("data-lang"));
+  });
+});
+
+/* initial paint (English default; ?lang=zh opens in Chinese) */
+var initial = (location.search.match(/[?&]lang=(en|zh)/) || [])[1] || "en";
+if(initial === "zh"){
+  document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.toggle("is-active", b.getAttribute("data-lang")==="zh"); });
+}
+render(initial);
+
+/* embedded on the marketing page: follow the parent's language toggle (no reload) */
+window.addEventListener("message", function(e){
+  if(e.origin !== location.origin) return;               // same-origin guard
+  var d = e.data;
+  if(!d || d.type !== "tis-lang" || (d.lang !== "en" && d.lang !== "zh")) return;
+  document.querySelectorAll(".lang-btn").forEach(function(b){
+    b.classList.toggle("is-active", b.getAttribute("data-lang") === d.lang);
+  });
+  render(d.lang);
+});
+</script>
+</body>
+</html>

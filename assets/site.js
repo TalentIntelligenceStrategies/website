@@ -117,6 +117,21 @@
     }, 1700);
   };
 
+  // ── Licensing "How it works" step mockups are same-origin <iframe> embeds that
+  // are themselves bilingual (each ships its own render(lang)). The text swapper
+  // below never touches iframe src, so broadcast the active language into them via
+  // postMessage — they flip in place, no reload. Re-sent on each frame's `load`
+  // too, since they're lazy-loaded and may not exist yet when applyLang first runs.
+  const showcaseFrames = document.querySelectorAll('.lic-frame iframe, .hero-dash iframe');
+  let currentLang = 'en';
+  const postLang = (frame, lang) => {
+    try { frame.contentWindow?.postMessage({ type: 'tis-lang', lang }, location.origin); }
+    catch (_) { /* contentWindow not ready/blocked — the load listener retries */ }
+  };
+  showcaseFrames.forEach(frame => {
+    frame.addEventListener('load', () => postLang(frame, currentLang));
+  });
+
   // Generation token guards against rapid back-to-back clicks: late
   // setTimeout callbacks bail if a newer swap has started.
   let langGen = 0;
@@ -139,6 +154,9 @@
     // Re-render any state-driven labels that don't use data-zh (e.g. the
     // inventory teaser's filter pills, which read their values from JS state).
     if (typeof window.__inventoryTeaserRefresh === 'function') window.__inventoryTeaserRefresh();
+    // Keep the embedded step mockups in the same language (text + iframe swap in sync).
+    currentLang = lang;
+    showcaseFrames.forEach(frame => postLang(frame, lang));
   };
 
   const applyLang = (lang, opts = {}) => {

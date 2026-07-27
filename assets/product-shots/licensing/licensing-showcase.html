@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Bundle Builder (Step 2) · Showcase</title>
+
+<!--
+  TIS Licensing Platform — "Bundle Builder" Step 2 marketing showcase.
+  Static, self-contained visual. Example data only — every patent number, title
+  and owner is a plausible-looking FAKE (not a real grant / not a real company).
+  Tier S cards show example detail; tiers A–D render as grey skeleton placeholders.
+
+  Source of truth for structure + styling: operations-site
+    /recommendations page → RecommendationTierSections + PatentCard
+    src/styles/globals.css (.bb / .results-* / .rc-* / .rs-* / tiles)
+  Tokens + fonts verbatim from the brand system (design-tokens.md / repo fonts).
+
+  i18n: bilingual EN + Traditional Chinese in one file. English is the inline
+  default (renders with no JS); the EN | 中文 toggle calls render(lang), which
+  fills every [data-t] node and rebuilds the wizard / tier grid / summary.
+  ?lang=zh in the URL opens straight into Chinese.
+-->
+
+<style>
+/* ===== Brand fonts (repo-local, self-hosted — SIL OFL) ===== */
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+@font-face{font-family:"Inconsolata";src:url("/designs/assets/fonts/Inconsolata/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype-variations");font-weight:200 900;font-style:normal;font-display:swap;}
+
+/* ===== Semantic tokens (verbatim from globals.css :root) ===== */
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);--surface-page-translucent:rgba(255,255,255,0.7);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);--border-divider:var(--n4);
+  --status-success-fg:#15803d;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --motion-fast:100ms;--motion-medium:250ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:"Inconsolata",ui-monospace,"SF Mono",Menlo,monospace;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 24px 80px;
+}
+
+/* ===== Showcase caption ===== */
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:660px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;transition:background var(--motion-fast) linear,color var(--motion-fast) linear;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* ===== MacBook screen + browser (laptop 16:10 landscape screen, scrolls inside) ===== */
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{
+  background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);
+  border-radius:22px;padding:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.mb-screen{
+  background:var(--surface-page);border-radius:12px;overflow:hidden;
+  height:720px;display:flex;flex-direction:column;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);
+}
+/* browser bar */
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+/* scrollable viewport (laptop screen — content scrolls within the fixed-height screen) */
+.viewport{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:var(--surface-page);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-page);}
+
+/* ===== Funnel nav (inside app) ===== */
+.fwn{display:flex;align-items:center;justify-content:space-between;padding:16px 30px;border-bottom:1px solid var(--border-primary);background:var(--surface-page);}
+.fwn-brand{display:flex;align-items:center;gap:11px;}
+.fwn-cube{width:30px;height:30px;flex-shrink:0;}
+.fwn-wm{line-height:1.1;}
+.fwn-wm .nm{font-size:14px;font-weight:700;letter-spacing:.01em;color:var(--text-primary);}
+.fwn-wm .sub{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-tertiary);margin-top:2px;}
+.fwn-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--n9),var(--n10));display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;letter-spacing:.02em;}
+
+/* ===== .bb page scope ===== */
+.bb{max-width:1200px;margin:0 auto;padding:40px 30px 64px;}
+.bb .eyebrow{font-size:11px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+.bb .copy-15{font-size:15px;font-weight:400;line-height:1.6;}
+.bb .text-secondary{color:var(--text-secondary);}
+.bb .back-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text-secondary);text-decoration:none;margin-bottom:16px;transition:color var(--motion-fast) linear;}
+.bb .back-link:hover{color:var(--text-primary);}
+
+/* wiz-track */
+.bb .wiz-track{display:flex;align-items:flex-start;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px 16px 16px;margin-bottom:44px;position:relative;}
+.bb .wt-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1;min-width:0;}
+.bb .wt-step:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);right:calc(-50% + 16px);top:13px;height:2px;background:var(--border-primary);z-index:-1;}
+.bb .wt-step.done:not(:last-child)::after{background:var(--surface-inverse);}
+.bb .wt-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border-tertiary);background:var(--surface-page);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-tertiary);flex-shrink:0;}
+.bb .wt-step.active .wt-circle{border-color:var(--surface-inverse);color:var(--text-primary);}
+.bb .wt-step.done .wt-circle{background:var(--surface-inverse);border-color:var(--surface-inverse);color:var(--text-inverse);}
+.bb .wt-circle svg{width:14px;height:14px;}
+.bb .wt-label{font-size:12px;color:var(--text-tertiary);font-weight:500;text-align:center;line-height:1.3;}
+.bb .wt-step.done .wt-label{color:var(--text-primary);}
+.bb .wt-step.active .wt-label{color:var(--text-primary);font-weight:600;}
+
+/* results layout — single full-width column: scope bar, Tier S (open), collapsed A–D below */
+.bb .results-layout{display:block;}
+.bb .results-side{display:flex;flex-direction:column;gap:12px;}
+.bb .results-side .tier-group{margin-bottom:0;}
+
+/* scope bar */
+.bb .scope-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:10px 14px;margin-bottom:24px;}
+.bb .scope-bar-info{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
+.bb .scope-bar-info .eyebrow{margin:0;}
+.bb .scope-ind{font-size:15px;font-weight:600;color:var(--text-primary);}
+.bb .scope-sep{color:var(--text-tertiary);}
+.bb .scope-co{font-size:13px;font-weight:600;color:var(--text-primary);}
+.bb .scope-bar-actions{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+.bb .scope-inputs-link{font:inherit;font-size:13px;font-weight:500;color:var(--text-secondary);background:transparent;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:3px;}
+.bb .scope-inputs-link:hover{color:var(--text-primary);}
+.bb .fb-view-toggle{display:inline-flex;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;}
+.bb .fb-view-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--surface-page);border:0;cursor:pointer;color:var(--text-tertiary);}
+.bb .fb-view-btn + .fb-view-btn{border-left:1px solid var(--border-primary);}
+.bb .fb-view-btn.is-active{background:var(--surface-tertiary);color:var(--text-primary);}
+.bb .fb-view-btn svg{display:block;width:16px;height:16px;}
+
+/* tier groups */
+.bb .tier-group{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;box-shadow:0 3px 2px 0 rgba(0,0,0,.03),0 1px 1px 0 rgba(0,0,0,.05),0 0 1px 0 rgba(0,0,0,.06);overflow:hidden;margin-bottom:16px;}
+.bb .tg-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;cursor:default;user-select:none;}
+.bb .tg-head-left{display:flex;align-items:center;gap:12px;min-width:0;}
+.bb .tg-label{font-size:16px;font-weight:600;color:var(--text-primary);letter-spacing:.01em;}
+.bb .tg-head-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.bb .tg-count{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-secondary);font-variant-numeric:tabular-nums;}
+.bb .tg-chev{display:inline-flex;color:var(--text-tertiary);transition:transform 200ms ease;}
+.bb .tg-chev svg{width:18px;height:18px;}
+.bb .tier-group[data-open="true"] .tg-chev{transform:rotate(180deg);}
+.bb .tg-body{overflow:hidden;transition:max-height 280ms ease;max-height:4000px;}
+.bb .tier-group[data-open="false"] .tg-body{max-height:0;}
+.bb .tg-body-pad{padding:4px 20px 20px;}
+
+/* tier chip (section header pill) */
+.tier-chip{display:inline-flex;align-items:center;border-radius:9999px;padding:4px 10px;font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;}
+.tier-chip.s{background:var(--score-s-bg);color:var(--score-s);}
+.tier-chip.a{background:var(--score-a-bg);color:var(--score-a);}
+.tier-chip.b{background:var(--score-b-bg);color:var(--score-b);}
+.tier-chip.c{background:var(--score-c-bg);color:var(--score-c);}
+.tier-chip.d{background:var(--score-d-bg);color:var(--score-d);}
+
+/* grid */
+.bb .results-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+@media (max-width:1000px){.bb .results-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:560px){.bb .results-grid{grid-template-columns:1fr;}}
+
+/* patent card — silver double-bezel tray */
+.patent-card{background:#e9e9ec;border:1px solid rgba(20,20,30,.05);border-radius:18px;padding:5px;cursor:pointer;text-align:left;box-shadow:0 1px 2px rgba(20,20,30,.04),0 10px 24px rgba(20,20,30,.05),0 24px 48px rgba(20,20,30,.045);transition:transform 700ms cubic-bezier(.32,.72,0,1),box-shadow 700ms cubic-bezier(.32,.72,0,1);}
+.patent-card:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(20,20,30,.05),0 16px 34px rgba(20,20,30,.07),0 34px 66px rgba(20,20,30,.06);}
+.scard-core{display:flex;flex-direction:column;gap:14px;padding:15px;min-height:218px;border-radius:13px;background:#fff;border:1px solid rgba(20,20,30,.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.9);}
+.patent-card .rc-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px 8px;min-height:32px;flex-wrap:wrap;}
+.patent-card .rc-controls{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-chips{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.patent-card .cbx{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-tertiary);background:var(--surface-page);flex-shrink:0;}
+.patent-card .rc-pno{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--text-primary);white-space:nowrap;flex-shrink:0;}
+.patent-card .rc-id{display:flex;flex-direction:column;gap:6px;}
+.patent-card .rc-title{font-size:15px;font-weight:400;line-height:1.45;letter-spacing:-.01em;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.patent-card .rc-mdiv{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums;}
+.patent-card .rc-mdiv .grp{display:inline-flex;align-items:baseline;gap:4px;min-width:0;}
+.patent-card .rc-mdiv .k{font-size:11px;font-weight:500;color:var(--text-tertiary);}
+.patent-card .rc-mdiv .v{font-size:11px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;}
+.patent-card .rc-mdiv .dot{font-size:16px;font-weight:700;line-height:1;color:var(--text-secondary);flex-shrink:0;}
+.patent-card .rc-rel{display:flex;align-items:center;gap:8px;}
+.patent-card .rc-rel .l{font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:.02em;flex-shrink:0;}
+.patent-card .rc-rel .track{flex:1;height:4px;border-radius:9999px;background:var(--border-primary);overflow:hidden;min-width:0;}
+.patent-card .rc-rel .fill{display:block;height:100%;border-radius:9999px;background:var(--text-primary);}
+.patent-card .rc-rel .v{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--text-secondary);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.patent-card .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;}
+.patent-card .rc-ind{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-ind .nm{font-size:13px;font-weight:600;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.patent-card .owner-v{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0;}
+
+/* skeleton placeholder bars */
+.sk{background:linear-gradient(90deg,var(--n4) 25%,var(--n3) 37%,var(--n4) 63%);background-size:400% 100%;border-radius:5px;animation:skl 1.5s ease infinite;}
+@keyframes skl{0%{background-position:100% 0;}100%{background-position:-100% 0;}}
+.sk-line{height:11px;}
+.sk-tile{width:32px;height:32px;border-radius:9px;}
+.sk-tile.w{width:52px;}
+@media (prefers-reduced-motion:reduce){.sk{animation:none;}.patent-card{transition:none;}.patent-card:hover{transform:none;}}
+
+/* tiles */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.tier-tile{height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.tier-tile.s{background:var(--score-s-bg);color:var(--score-s);}
+.tier-tile.a{background:var(--score-a-bg);color:var(--score-a);}
+.tier-tile.b{background:var(--score-b-bg);color:var(--score-b);}
+.tier-tile.c{background:var(--score-c-bg);color:var(--score-c);}
+.tier-tile.d{background:var(--score-d-bg);color:var(--score-d);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* summary rail */
+.bb .rs-card{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;box-shadow:0 3px 2px 0 rgba(0,0,0,.03),0 1px 1px 0 rgba(0,0,0,.05),0 0 1px 0 rgba(0,0,0,.06);padding:22px 20px;display:flex;flex-direction:column;gap:16px;}
+.bb .rs-card .eyebrow{margin:0;}
+.bb .rs-tiers{display:flex;flex-direction:column;gap:8px;}
+.bb .rs-tier{display:flex;align-items:baseline;gap:8px;min-width:0;}
+.bb .rs-tier .tier-chip{flex-shrink:0;}
+.bb .rs-dots{flex:1 1 auto;min-width:14px;border-bottom:2px dotted var(--border-tertiary);}
+.bb .rs-tier-count{font-family:var(--font-mono);font-size:14px;font-weight:600;color:var(--text-secondary);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.bb .rs-total{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--border-tertiary);}
+.bb .rs-total-label{font-size:14px;font-weight:700;color:var(--text-primary);}
+.bb .rs-total-count{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.bb .rs-reset{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;font:inherit;font-size:13px;font-weight:600;color:var(--text-secondary);background:var(--surface-page);border:1px solid var(--border-tertiary);border-radius:8px;padding:9px 12px;cursor:pointer;transition:border-color var(--motion-fast) linear,color var(--motion-fast) linear;}
+.bb .rs-reset:hover{border-color:var(--text-primary);color:var(--text-primary);}
+.bb .rs-reset svg{width:15px;height:15px;}
+.bb .rs-div{height:1px;background:var(--border-tertiary);}
+.bb .rs-cta{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 18px;border:0;border-radius:10px;background:var(--surface-inverse);color:var(--text-inverse);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:opacity 120ms linear;}
+.bb .rs-cta:hover{opacity:.9;}
+</style>
+</head>
+<body>
+
+<!-- ===== Showcase caption (outside the mockup) ===== -->
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — Step 2: your recommended bundle</h1>
+  <p data-t="cap_body">A look at how licensees review an AI-assembled SABCD patent bundle before checkout. Example data only — patent numbers and owners are illustrative placeholders.</p>
+  <div class="note" data-t="cap_note">Tier S is expanded to show the card detail; tiers A–D sit collapsed alongside.</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<!-- ===== MacBook screen + browser ===== -->
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+
+      <!-- browser bar -->
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          license.tisglobalinc.com/us-semiconductor
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <!-- app viewport -->
+      <div class="viewport">
+
+        <!-- ===== .bb scope ===== -->
+        <div class="bb">
+          <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 2 of 5</div>
+          <h1 class="h-32" style="margin-bottom:8px" data-t="h1">Your recommended bundle</h1>
+          <p class="copy-15 text-secondary" style="margin-bottom:32px;white-space:pre-line" data-t="lede">Based on your inputs, our engine assembled the SABCD 30-patent quota bundle below.
+Click any card to expand its detail; select patents to swap from that tier's candidate pool, or accept the set to add it to your cart.</p>
+
+          <div class="results-layout">
+              <!-- scope bar -->
+              <div class="scope-bar">
+                <div class="scope-bar-info">
+                  <span class="eyebrow" data-t="scope">Bundle scope</span>
+                  <span class="juris-tile us">US</span>
+                  <span class="ind-ic" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+                  </span>
+                  <span class="scope-ind" data-t="industry">Semiconductors</span>
+                  <span class="scope-sep">·</span>
+                  <span class="scope-co" data-t="term">12-month license</span>
+                </div>
+                <div class="scope-bar-actions">
+                  <button class="scope-inputs-link" type="button" data-t="viewinputs">View your inputs ↗</button>
+                  <div class="fb-view-toggle" role="group" aria-label="View mode">
+                    <button class="fb-view-btn is-active" type="button" aria-label="Card view">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    </button>
+                    <button class="fb-view-btn" type="button" aria-label="List view">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tier S (open) injected here -->
+              <div id="tierMain"></div>
+
+              <!-- Collapsed A–D tiers (full width, stacked below) -->
+              <div class="results-side" id="tierSide" aria-label="Other tiers"></div>
+          </div>
+        </div>
+      </div><!-- /viewport -->
+    </div><!-- /mb-screen -->
+  </div><!-- /mb-lid -->
+</div>
+
+<script>
+/* ===================== i18n dictionary ===================== */
+var I18N = {
+  en:{
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — Step 2: your recommended bundle",
+    cap_body:"A look at how licensees review an AI-assembled SABCD patent bundle before checkout. Example data only — patent numbers and owners are illustrative placeholders.",
+    cap_note:"Tier S is expanded to show the card detail; tiers A–D sit collapsed below.",
+    tab_title:"US Semiconductors · TIS Licensing",
+    nav_sub:"Licensing Platform", back:"← Back to edit build inputs", step:"Step 2 of 5",
+    h1:"Your recommended bundle",
+    lede:"Based on your inputs, our engine assembled the SABCD 30-patent quota bundle below.\nClick any card to expand its detail; select patents to swap from that tier's candidate pool, or accept the set to add it to your cart.",
+    scope:"Bundle scope", industry:"Semiconductors", term:"12-month license", viewinputs:"View your inputs ↗",
+    summary:"Bundle summary", bundle:"Patent bundle", restore:"Restore recommendation", cta:"Add to cart →",
+    steps:["Build method","Your 30 patents","Confirm plan","Payment","Sign contract"],
+    tierS:"Flagship strategic patents", tierA:"High-value core patents", tierB:"Practical technology patents", tierC:"General defensive patents", tierD:"Foundational coverage patents",
+    mIpc:"IPC", mFamily:"Family", mCited:"Cited", mTerm:"Term", mRel:"Relevance", unitCtry:"ctrs", unitMo:"mo"
+  },
+  zh:{
+    cap_kicker:"授權媒合平台 · 產品預覽",
+    cap_title:"組建授權包 — 第 2 步：推薦配額包",
+    cap_body:"呈現被授權方在結帳前檢視 AI 組建之 SABCD 專利包的畫面。示意資料，專利號與權利人皆為佔位範例。",
+    cap_note:"Tier S 已展開呈現卡片內容；A–D 以收合狀態列於下方。",
+    tab_title:"美國半導體 · 授權媒合平台",
+    nav_sub:"授權媒合平台", back:"← 返回修改選購資訊", step:"第 2 步・共 5 步",
+    h1:"推薦配額包",
+    lede:"依據你的輸入資料，AI 智慧推薦下列 SABCD 30 件配額包。\n點專利卡即就近展開詳情；勾選要替換的專利後可自該 tier candidates 池批次置換，或一鍵接受加入購物車。",
+    scope:"授權包範圍", industry:"晶片半導體", term:"12 個月授權", viewinputs:"檢視輸入資料 ↗",
+    summary:"選購摘要", bundle:"專利包", restore:"恢復系統推薦", cta:"加入購物車 →",
+    steps:["組建方式","您的 30 件","確認方案","付款","合約簽署"],
+    tierS:"頂級戰略專利", tierA:"高價值核心專利", tierB:"實用技術專利", tierC:"一般防禦專利", tierD:"基礎佈局專利",
+    mIpc:"IPC", mFamily:"專利家族", mCited:"引用", mTerm:"可授權期限", mRel:"相關度", unitCtry:"國", unitMo:"個月"
+  }
+};
+
+/* ===================== data (fake) ===================== */
+/* SABCD quota S5 A6 B9 C6 D4 = 30. All numbers / titles / owners are illustrative. */
+var S_PATENTS = [
+  { no:"US 12051972 B2", titleEn:"Three-dimensional die package structure and method of manufacture", titleZh:"三維晶片封裝結構及其製造方法", ipc:"H01L 25/065", famN:3, cited:62, term:12, rel:96, ownerEn:"Anvia Semiconductor", ownerZh:"安崴半導體" },
+  { no:"US 11984330 B2", titleEn:"EUV lithography mask pellicle structure and fabrication method", titleZh:"極紫外光微影光罩保護膜結構及其製作方法", ipc:"G03F 1/62", famN:3, cited:47, term:24, rel:93, ownerEn:"Meridian Micro Labs", ownerZh:"美睿微電子" },
+  { no:"US 12113507 B2", titleEn:"Wafer-level fan-out package redistribution layer formation method", titleZh:"晶圓級扇出型封裝重佈線層形成方法", ipc:"H01L 21/768", famN:2, cited:38, term:12, rel:92, ownerEn:"Silbridge Technologies", ownerZh:"矽橋科技" },
+  { no:"US 11876214 B2", titleEn:"High aspect-ratio through-silicon via etch process control", titleZh:"高深寬比矽穿孔蝕刻製程控制方法", ipc:"H01L 21/311", famN:3, cited:29, term:6, rel:91, ownerEn:"Corveta Microelectronics", ownerZh:"科維特微電子" },
+  { no:"US 12004881 B1", titleEn:"High-frequency multilayer PCB dielectric composition and manufacturing method", titleZh:"高頻多層 PCB 介電材料組成物及其製造方法", ipc:"H05K 1/03", famN:2, cited:24, term:12, rel:90, ownerEn:"Nexon Fab Systems", ownerZh:"尼克森製程系統" }
+];
+var TIERS = [
+  { t:"S", open:true,  populated:true },
+  { t:"A", open:false, nos:["US 11742065 B2","US 11690338 B2","US 11805127 B2","US 11558904 B2","US 11913672 B2","US 11447281 B2"] },
+  { t:"B", open:false, nos:["US 11204588 B2","US 11336910 B2","US 10998742 B2","US 11119455 B2","US 11073829 B1","US 11290164 B2","US 10946377 B2","US 11388051 B2","US 11015623 B2"] },
+  { t:"C", open:false, nos:["US 10842113 B2","US 10765490 B2","US 10911208 B2","US 10688357 B2","US 10879942 B1","US 10723061 B2"] },
+  { t:"D", open:false, nos:["US 10514779 B2","US 10602318 B2","US 10457225 B2","US 10388164 B1"] }
+];
+var TOTAL = 30;
+function tierCount(g){ return g.populated ? S_PATENTS.length : g.nos.length; }
+
+var CPU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>';
+var CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* ---- populated card (Tier S) — mirrors the real PatentCard DOM ---- */
+function cardPopulated(p, lang, t){
+  var S = I18N[lang];
+  var title = lang === "zh" ? p.titleZh : p.titleEn;
+  var owner = lang === "zh" ? p.ownerZh : p.ownerEn;
+  return '<div class="patent-card" role="button" tabindex="0" aria-label="Patent '+p.no+'">'
+    + '<div class="scard-core">'
+      + '<div class="rc-topbar">'
+        + '<div class="rc-controls"><span class="cbx"></span><span class="rc-pno">'+p.no+'</span></div>'
+        + '<div class="rc-chips"><span class="juris-tile us">US</span><span class="tier-tile '+t.toLowerCase()+'">Tier '+t+'</span></div>'
+      + '</div>'
+      + '<div class="rc-id"><div class="rc-title">'+title+'</div></div>'
+      + '<div class="rc-mdiv">'
+        + '<span class="grp"><span class="k">'+S.mIpc+'</span><span class="v">'+p.ipc+'</span></span>'
+        + '<span class="dot">·</span>'
+        + '<span class="grp"><span class="k">'+S.mFamily+'</span><span class="v">'+p.famN+'</span></span>'
+        + '<span class="dot">·</span>'
+        + '<span class="grp"><span class="k">'+S.mCited+'</span><span class="v">'+p.cited+'</span></span>'
+      + '</div>'
+      + '<div class="rc-rel"><span class="l">'+S.mRel+'</span><span class="track"><span class="fill" style="width:'+p.rel+'%"></span></span><span class="v">'+p.rel+'%</span></div>'
+      + '<div class="rc-foot"><div class="rc-ind"><span class="ind-ic">'+CPU+'</span></div><span class="owner-v">'+owner+'</span></div>'
+    + '</div></div>';
+}
+
+/* ---- skeleton card (Tiers A–D) — number visible, rest placeholder ---- */
+function cardSkeleton(no){
+  return '<div class="patent-card" role="button" tabindex="0" aria-label="Patent '+no+'">'
+    + '<div class="scard-core">'
+      + '<div class="rc-topbar">'
+        + '<div class="rc-controls"><span class="cbx"></span><span class="rc-pno">'+no+'</span></div>'
+        + '<div class="rc-chips"><span class="sk sk-tile"></span><span class="sk sk-tile w"></span></div>'
+      + '</div>'
+      + '<div class="rc-id"><span class="sk sk-line" style="width:88%"></span></div>'
+      + '<div class="rc-mdiv"><span class="sk sk-line" style="width:52px"></span><span class="sk sk-line" style="width:64px"></span><span class="sk sk-line" style="width:44px"></span></div>'
+      + '<div class="rc-rel"><span class="sk sk-line" style="width:42px;flex-shrink:0"></span><span class="track"></span><span class="sk sk-line" style="width:26px;flex-shrink:0"></span></div>'
+      + '<div class="rc-foot"><span class="sk sk-line" style="width:96px"></span><span class="sk sk-line" style="width:60px"></span></div>'
+    + '</div></div>';
+}
+
+/* ---- master render: fill [data-t], rebuild wizard / tiers / summary ---- */
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang;
+
+  /* static translatable nodes */
+  document.querySelectorAll("[data-t]").forEach(function(el){
+    var k = el.getAttribute("data-t");
+    if(S[k] != null) el.textContent = S[k];
+  });
+
+  /* tier groups — Tier S open in the main column, A–D collapsed in the side rail */
+  var main = document.getElementById("tierMain");
+  var side = document.getElementById("tierSide");
+  main.innerHTML = "";
+  side.innerHTML = "";
+  TIERS.forEach(function(g){
+    var label = S["tier"+g.t];
+    var n = tierCount(g);
+    var cards = g.populated
+      ? S_PATENTS.map(function(p){ return cardPopulated(p, lang, g.t); }).join("")
+      : g.nos.map(cardSkeleton).join("");
+    var sec = document.createElement("section");
+    sec.className = "tier-group";
+    sec.setAttribute("data-tier", g.t);
+    sec.setAttribute("data-open", g.open ? "true" : "false");
+    sec.innerHTML =
+      '<div class="tg-head">'
+      + '<div class="tg-head-left"><span class="tier-tile '+g.t.toLowerCase()+'">Tier '+g.t+'</span><span class="tg-label">'+label+'</span></div>'
+      + '<div class="tg-head-right"><span class="tg-count">'+n+' / '+TOTAL+'</span><span class="tg-chev">'+CHEV+'</span></div>'
+      + '</div>'
+      + '<div class="tg-body"><div class="tg-body-pad"><div class="results-grid">'+cards+'</div></div></div>';
+    (g.populated ? main : side).appendChild(sec);
+  });
+}
+
+/* ---- language toggle ---- */
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.remove("is-active"); });
+    btn.classList.add("is-active");
+    render(btn.getAttribute("data-lang"));
+  });
+});
+
+/* initial paint (English default; ?lang=zh opens in Chinese) */
+var initial = (location.search.match(/[?&]lang=(en|zh)/) || [])[1] || "en";
+if(initial === "zh"){
+  document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.toggle("is-active", b.getAttribute("data-lang")==="zh"); });
+}
+render(initial);
+
+/* embedded on the marketing page: follow the parent's language toggle (no reload) */
+window.addEventListener("message", function(e){
+  if(e.origin !== location.origin) return;               // same-origin guard
+  var d = e.data;
+  if(!d || d.type !== "tis-lang" || (d.lang !== "en" && d.lang !== "zh")) return;
+  document.querySelectorAll(".lang-btn").forEach(function(b){
+    b.classList.toggle("is-active", b.getAttribute("data-lang") === d.lang);
+  });
+  render(d.lang);
+});
+</script>
+</body>
+</html>

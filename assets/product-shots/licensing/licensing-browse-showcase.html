@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Browse Patents · Showcase</title>
+
+<!--
+  TIS Licensing Platform — Browse Patents (/browse) marketing showcase.
+  Static, self-contained visual. Example data only — every patent number, title
+  and owner is a plausible-looking FAKE. Fully populated (patent card grid).
+
+  Source of truth for structure + styling: operations-site
+    (licensee)/browse/page.tsx + (licensee)/layout.tsx (LicenseeShell → DashSidebar)
+    PatentBrowseList + PatentCard + FeedFilterBar ; src/styles/globals.css
+    (.dash-layout / .ds-* / .patent-card / tiles / .browse-filter) + :root tokens.
+  Tokens + fonts verbatim from the brand system.
+
+  i18n: bilingual EN + Traditional Chinese in one file. English is the inline default
+  (renders with no JS); the EN | 中文 toggle calls render(lang), which fills every
+  [data-t] node and rebuilds the sidebar / stats / filter / card grid.
+  ?lang=zh in the URL opens straight into Chinese.
+-->
+
+<style>
+/* ===== Brand fonts (repo-local, self-hosted — SIL OFL) ===== */
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+/* ===== Semantic tokens (verbatim from globals.css :root) ===== */
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);--surface-inverse-hover:#0e0e10;--surface-page-translucent:rgba(255,255,255,0.7);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);--border-divider:var(--n4);
+  --status-success-fg:#15803d;--status-warning-fg:#b45309;--status-warning-bg:#fffbeb;--status-danger-fg:#b91c1c;--status-danger-bg:#fef2f2;--status-info-fg:#0369a1;--status-info-bg:#f0f9ff;
+  --signal-active:#22c55e;--signal-warning:#f59e0b;--signal-lapsed:#ef4444;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-tw:#3f6212;--juris-eu:#475569;--juris-jp:#a21caf;--juris-kr:#0f766e;--juris-ep:#1d4ed8;--juris-cn:#be123c;
+  --juris-us-bg:#eef2ff;--juris-tw-bg:#ecfccb;--juris-eu-bg:#f1f5f9;--juris-jp-bg:#fae8ff;--juris-kr-bg:#f0fdfa;--juris-ep-bg:#eff6ff;--juris-cn-bg:#fff1f2;
+  --motion-fast:100ms;--motion-base:160ms;--motion-medium:250ms;--motion-slow:400ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 24px 80px;
+}
+
+/* ===== Showcase caption ===== */
+.cap{max-width:1240px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:680px;margin:0 auto;}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;transition:background var(--motion-fast) linear,color var(--motion-fast) linear;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* ===== MacBook screen + browser ===== */
+.macbook{width:100%;max-width:1240px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);border-radius:22px;padding:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);}
+.mb-screen{background:var(--surface-secondary);border-radius:12px;overflow:hidden;height:760px;display:flex;flex-direction:column;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);}
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+.viewport{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+/* ══════ DASHBOARD SHELL (verbatim port of operations-site globals.css) ══════ */
+.dash-layout{
+  --fs-11:11px;--fs-12:12px;--fs-13:13px;--fs-14:14px;--fs-16:16px;--fs-20:20px;--fs-24:24px;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;
+  --track-label:0.08em;
+  --warning-bg:var(--status-warning-bg);--warning-fg:var(--status-warning-fg);
+  --danger-bg:var(--status-danger-bg);--danger-fg:var(--status-danger-fg);
+  --dur-fast:var(--motion-fast);
+  display:flex;align-items:stretch;min-height:100%;background:var(--surface-secondary);
+}
+.dash-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.dash-main-content{flex:1;min-width:0;padding:8px 30px 50px;}
+.dash-appbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;height:64px;flex-shrink:0;padding:0 30px;background:var(--surface-secondary);position:sticky;top:0;z-index:40;}
+
+/* ---- Left rail ---- */
+.dash-sidebar{width:266px;flex-shrink:0;background:#F4F4F2;border-right:1px solid var(--border-primary);display:flex;flex-direction:column;position:sticky;top:0;height:710px;z-index:50;}
+.ds-brand{display:flex;align-items:center;gap:11px;height:64px;flex-shrink:0;padding:0 16px 0 24px;border-bottom:1px solid var(--border-primary);text-decoration:none;}
+.ds-brand .cube{width:26px;height:26px;flex-shrink:0;}
+.ds-brand .wm{line-height:1.05;}
+.ds-brand .wm .nm{font-size:15px;font-weight:800;letter-spacing:.02em;color:var(--text-primary);}
+.ds-brand .wm .sub{font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--text-tertiary);margin-top:2px;}
+.ds-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;padding:28px 14px 10px;}
+.ds-scroll::-webkit-scrollbar{width:0;}
+.ds-group{display:flex;flex-direction:column;gap:2px;}
+.ds-label{font-size:var(--fs-11);font-weight:600;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--text-tertiary);padding:0 10px var(--sp-2) 18px;}
+.ds-item{display:flex;align-items:center;gap:10px;width:100%;padding:var(--sp-2) 10px var(--sp-2) 18px;border-radius:8px;font-size:var(--fs-14);font-weight:500;color:var(--text-secondary);cursor:pointer;border:0;background:transparent;text-align:left;font-family:inherit;text-decoration:none;}
+.ds-item:hover{background:rgba(37,37,37,0.05);color:var(--text-primary);}
+.ds-item .di{width:18px;height:18px;color:var(--text-tertiary);flex-shrink:0;display:inline-flex;}
+.ds-item .di svg{width:18px;height:18px;}
+.ds-item .dlabel{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ds-item.active{background:var(--surface-page);color:var(--text-primary);font-weight:600;box-shadow:0 1px 2px rgba(37,37,37,0.06),0 0 0 1px var(--border-primary);}
+.ds-item.active .di{color:var(--text-primary);}
+.ds-item .dcount{font-family:var(--font-mono);font-size:var(--fs-11);font-weight:600;color:var(--text-secondary);background:var(--surface-tertiary);padding:1px 7px;border-radius:9999px;letter-spacing:0.02em;}
+.ds-sub{display:flex;flex-direction:column;gap:2px;}
+.ds-sub .ds-item{position:relative;padding-left:40px;}
+.ds-sub .ds-item::before{content:"";position:absolute;z-index:0;left:27px;top:-3px;bottom:-3px;width:1px;background:var(--border-tertiary);}
+.ds-sub .ds-item:last-child::before{bottom:auto;height:calc(50% + 3px);}
+.ds-sub .ds-item::after{content:"";position:absolute;z-index:0;left:27px;top:calc(50% - 0.5px);width:11px;height:1px;background:var(--border-tertiary);}
+.ds-divider{height:1px;background:var(--border-primary);margin:14px 6px;}
+.ds-item.cta{color:var(--text-primary);font-weight:600;}
+.ds-item.cta .di{width:20px;height:20px;border-radius:6px;background:#252525;color:#fff;display:grid;place-items:center;}
+.ds-item.cta .di svg{width:13px;height:13px;}
+.ds-foot{padding:8px 14px 12px;background:#F4F4F2;display:flex;flex-direction:column;gap:2px;}
+.ds-foot .ds-divider{margin:8px 6px;}
+.ds-item.ds-logout{color:var(--danger-fg);}
+.ds-item.ds-logout .di{color:var(--danger-fg);}
+
+/* ---- app-bar tools ---- */
+.dash-tools{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.dash-iconbtn{position:relative;width:40px;height:40px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;cursor:pointer;background:var(--surface-page);border:1px solid var(--border-primary);color:var(--text-secondary);}
+.dash-iconbtn svg{width:18px;height:18px;}
+.dash-iconbtn .ind-dot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--warning-fg);border:2px solid var(--surface-page);}
+.dash-av-btn{display:flex;align-items:center;gap:6px;padding:3px 6px 3px 3px;border-radius:9999px;background:var(--surface-page);border:1px solid var(--border-primary);cursor:pointer;font-family:inherit;}
+.dash-av-img{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5A5A5A,#252525);display:grid;place-items:center;color:#fff;font-size:var(--fs-13);font-weight:600;flex-shrink:0;letter-spacing:0.02em;}
+.dash-av-chev{display:inline-flex;color:var(--text-tertiary);}
+.dash-av-chev svg{width:16px;height:16px;}
+
+/* ══════ BROWSE PAGE (Container + heading + stats + filter + grid) ══════ */
+.bp{max-width:1200px;margin:0 auto;padding:16px 0 0;}
+.bp .bp-head{margin-bottom:16px;}
+.bp .bp-h1{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0 0 6px;}
+.bp .bp-sub{font-size:13px;line-height:1.6;color:var(--text-tertiary);margin:0;max-width:760px;}
+.bp .bp-search{margin-top:8px;}
+.bp .bp-search a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-primary);text-decoration:underline;text-underline-offset:4px;}
+.bp .bp-band{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-bottom:16px;margin-bottom:22px;border-bottom:1px solid var(--border-divider);}
+.bp .bp-stats{display:flex;flex-wrap:wrap;gap:8px 26px;}
+.bp .bp-stat{display:flex;align-items:baseline;gap:6px;}
+.bp .bp-stat .v{font-family:var(--font-mono);font-size:16px;font-weight:600;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.bp .bp-stat .k{font-size:13px;color:var(--text-secondary);}
+.bp .bp-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.bp .bp-filter .fl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-right:2px;}
+.bp .bp-filter select{border:1px solid var(--border-primary);border-radius:6px;padding:5px 8px;font:inherit;font-size:12px;background:var(--surface-page);color:var(--text-primary);outline:none;cursor:pointer;}
+.bp .bp-filter select:hover{border-color:var(--border-focus);}
+.results-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px;}
+@media (max-width:1000px){.results-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.bp .bp-more{display:block;width:100%;text-align:center;padding:20px;background:var(--surface-secondary);border:1px dashed var(--border-tertiary);border-radius:8px;text-decoration:none;}
+.bp .bp-more .t{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;}
+.bp .bp-more .c{font-size:11px;color:var(--text-tertiary);}
+
+/* ===== patent card (silver double-bezel tray) ===== */
+.patent-card{background:#e9e9ec;border:1px solid rgba(20,20,30,.05);border-radius:18px;padding:5px;cursor:pointer;text-align:left;box-shadow:0 1px 2px rgba(20,20,30,.04),0 10px 24px rgba(20,20,30,.05),0 24px 48px rgba(20,20,30,.045);transition:transform 700ms cubic-bezier(.32,.72,0,1),box-shadow 700ms cubic-bezier(.32,.72,0,1);}
+.patent-card:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(20,20,30,.05),0 16px 34px rgba(20,20,30,.07),0 34px 66px rgba(20,20,30,.06);}
+.scard-core{display:flex;flex-direction:column;gap:14px;padding:15px;min-height:210px;border-radius:13px;background:#fff;border:1px solid rgba(20,20,30,.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.9);}
+.patent-card .rc-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px 8px;min-height:32px;flex-wrap:wrap;}
+.patent-card .rc-controls{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-chips{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.patent-card .rc-pno{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--text-primary);white-space:nowrap;flex-shrink:0;}
+.patent-card .rc-id{display:flex;flex-direction:column;gap:6px;}
+.patent-card .rc-title{font-size:15px;font-weight:400;line-height:1.45;letter-spacing:-.01em;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.patent-card .rc-mdiv{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums;}
+.patent-card .rc-mdiv .grp{display:inline-flex;align-items:baseline;gap:4px;min-width:0;}
+.patent-card .rc-mdiv .k{font-size:11px;font-weight:500;color:var(--text-tertiary);}
+.patent-card .rc-mdiv .v{font-size:11px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;}
+.patent-card .rc-mdiv .dot{font-size:16px;font-weight:700;line-height:1;color:var(--text-secondary);flex-shrink:0;}
+.patent-card .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;}
+.patent-card .rc-ind{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-ind .nm{font-size:13px;font-weight:600;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.patent-card .owner-v{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0;}
+
+/* tiles */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.juris-tile.tw{background:var(--juris-tw-bg);color:var(--juris-tw);}
+.juris-tile.eu{background:var(--juris-eu-bg);color:var(--juris-eu);}
+.juris-tile.jp{background:var(--juris-jp-bg);color:var(--juris-jp);}
+.juris-tile.kr{background:var(--juris-kr-bg);color:var(--juris-kr);}
+.juris-tile.ep{background:var(--juris-ep-bg);color:var(--juris-ep);}
+.juris-tile.cn{background:var(--juris-cn-bg);color:var(--juris-cn);}
+.tier-tile{height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.tier-tile.s{background:var(--score-s-bg);color:var(--score-s);}
+.tier-tile.a{background:var(--score-a-bg);color:var(--score-a);}
+.tier-tile.b{background:var(--score-b-bg);color:var(--score-b);}
+.tier-tile.c{background:var(--score-c-bg);color:var(--score-c);}
+.tier-tile.d{background:var(--score-d-bg);color:var(--score-d);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+@media (prefers-reduced-motion:reduce){.patent-card{transition:none;}.patent-card:hover{transform:none;}}
+</style>
+</head>
+<body>
+
+<!-- ===== Showcase caption ===== -->
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Browse patents — the full licensing catalogue</h1>
+  <p data-t="cap_body">Licensees browse the SABCD-rated catalogue, filtering by industry, strength tier and supplier. Example data only — patent numbers and owners are illustrative placeholders.</p>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<!-- ===== MacBook screen + browser ===== -->
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          license.tisglobalinc.com/browse
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="viewport">
+        <div class="dash-layout">
+
+          <!-- ===== Left rail ===== -->
+          <aside class="dash-sidebar">
+            <a class="ds-brand" href="#">
+              <svg class="cube" viewBox="0 0 1000 1000" aria-hidden="true">
+                <polygon fill="#252525" points="638.46,455.19 638.64,455.19 776.68,364.9 777.05,364.67 639.63,273.74 502.39,182.97 638.69,92.59 639.05,92.36 501.84,2.62 501.68,2.53 87.46,273.37 87.09,273.63 227.16,365.22 227.32,365.34 364.81,274.18 501.7,364.72 638.36,455.14"/>
+                <polygon fill="#252525" points="74.44,292.6 74.44,444.7 212.46,530.2 212.46,674.02 74.88,588.77 74.44,588.52 74.44,726.72 488.06,997.17 488.5,997.47 488.5,843.46 352.78,759.38 352.78,617.98 488.06,701.78 488.5,702.06 488.5,563.35 74.88,292.9"/>
+                <polygon fill="#252525" points="925.42,443.57 925.56,443.48 925.56,292.6 511.64,563.26 511.5,563.35 511.5,795.06 718.53,667.3 718.53,715.98 511.64,845.21 511.5,845.3 511.5,997.47 925.42,726.81 925.56,726.72 925.56,493.26 720.83,619.62 720.83,571.38"/>
+              </svg>
+            </a>
+
+            <div class="ds-scroll">
+              <nav class="ds-group">
+                <div class="ds-label" data-t="nav_main">Dashboard</div>
+                <a class="ds-item cta" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span><span class="dlabel" data-t="nav_buy">Build a patent bundle</span></a>
+                <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span><span class="dlabel" data-t="nav_dash">Dashboard</span></a>
+                <div class="ds-sub">
+                  <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="m14.5 12.5-5 5"/><path d="m9.5 12.5 5 5"/></svg></span><span class="dlabel" data-t="nav_unfin">Unfinished purchase</span></a>
+                  <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="m9 15 2 2 4-4"/></svg></span><span class="dlabel" data-t="nav_lic">My licences</span><span class="dcount">3</span></a>
+                  <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><span class="dlabel" data-t="nav_pat">My patents</span></a>
+                </div>
+                <a class="ds-item active" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span><span class="dlabel" data-t="nav_browse">Browse patents</span></a>
+              </nav>
+            </div>
+
+            <div class="ds-foot">
+              <nav class="ds-group">
+                <div class="ds-label" data-t="nav_acct">Account</div>
+                <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg></span><span class="dlabel" data-t="nav_bill">Account &amp; billing</span></a>
+                <a class="ds-item" href="#"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="dlabel" data-t="nav_settings">Settings</span></a>
+              </nav>
+              <div class="ds-divider"></div>
+              <button type="button" class="ds-item ds-logout"><span class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><path d="M21 12H9"/></svg></span><span class="dlabel" data-t="nav_logout">Log out</span></button>
+            </div>
+          </aside>
+
+          <!-- ===== Main column ===== -->
+          <div class="dash-main">
+            <header class="dash-appbar">
+              <div class="dash-tools">
+                <button class="dash-iconbtn" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ind-dot"></span></button>
+                <button class="dash-av-btn" type="button">
+                  <span class="dash-av-img" id="avInit">M</span>
+                  <span class="dash-av-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+                </button>
+              </div>
+            </header>
+
+            <div class="dash-main-content">
+              <div class="bp">
+                <div class="bp-head">
+                  <h1 class="bp-h1" data-t="h1">Browse patents</h1>
+                  <p class="bp-sub" data-t="sub">Build your IP position across international markets and safeguard exports to the US, EU and Japan. SABCD ratings, global family coverage, real-time licence status.</p>
+                  <div class="bp-search"><a href="#"><span data-t="search">🔍 Patent search (AI semantic match) →</span></a></div>
+                </div>
+
+                <div class="bp-band">
+                  <dl class="bp-stats" id="bpStats"></dl>
+                  <div class="bp-filter">
+                    <span class="fl" data-t="filter">Filter</span>
+                    <select aria-label="industry"><option data-t="f_ind">All industries</option></select>
+                    <select aria-label="tier"><option data-t="f_tier">All tiers</option></select>
+                    <select aria-label="supplier"><option data-t="f_sup">All suppliers</option></select>
+                  </div>
+                </div>
+
+                <div class="results-grid" id="bpGrid"></div>
+
+                <a class="bp-more" href="#">
+                  <div class="t" data-t="more">Load more patents ↓</div>
+                  <div class="c" data-t="shown">Showing 9 of 1,149</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /viewport -->
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== i18n dictionary ===================== */
+var I18N = {
+  en:{
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Browse patents — the full licensing catalogue",
+    cap_body:"Licensees browse the SABCD-rated catalogue, filtering by industry, strength tier and supplier. Example data only — patent numbers and owners are illustrative placeholders.",
+    nav_sub:"Licensing Platform", nav_main:"Dashboard", nav_buy:"Build a patent bundle", nav_dash:"Dashboard",
+    nav_unfin:"Unfinished purchase", nav_lic:"My licences", nav_pat:"My patents", nav_browse:"Browse patents",
+    nav_acct:"Account", nav_bill:"Account & billing", nav_settings:"Settings", nav_logout:"Log out",
+    h1:"Browse patents",
+    sub:"Build your IP position across international markets and safeguard exports to the US, EU and Japan. SABCD ratings, global family coverage, real-time licence status.",
+    search:"🔍 Patent search (AI semantic match) →",
+    filter:"Filter", f_ind:"All industries", f_tier:"All tiers", f_sup:"All suppliers",
+    more:"Load more patents ↓", shown:"Showing 9 of 1,149",
+    stats:[["1,149","Curated patents"],["6","Industries"],["12","Suppliers"],["$9,990","From /mo"]],
+    mIpc:"IPC", mFamily:"Family", mCited:"Cited", unitCtry:"ctrs"
+  },
+  zh:{
+    cap_kicker:"授權媒合平台 · 產品預覽",
+    cap_title:"瀏覽專利 — 完整授權目錄",
+    cap_body:"被授權方瀏覽 SABCD 分級目錄，可依產業、強度等級與供應方篩選。示意資料，專利號與權利人皆為佔位範例。",
+    nav_sub:"授權媒合平台", nav_main:"儀表板", nav_buy:"組建專利包", nav_dash:"儀表板",
+    nav_unfin:"未完成的選購", nav_lic:"我的授權包", nav_pat:"我的專利", nav_browse:"瀏覽專利",
+    nav_acct:"帳戶", nav_bill:"帳戶與帳單", nav_settings:"設定", nav_logout:"登出",
+    h1:"瀏覽專利",
+    sub:"一站完成國際市場智財佈局，守護您出口歐美日市場的智財安全。SABCD 分級、全球家族覆蓋、即時授權狀態查詢。",
+    search:"🔍 專利搜尋（AI 語意比對）→",
+    filter:"篩選", f_ind:"全部產業", f_tier:"全部等級", f_sup:"全部供應方",
+    more:"載入更多專利 ↓", shown:"已顯示 9 / 1,149 件",
+    stats:[["1,149","精選授權專利"],["6","產業領域"],["12","供應方"],["$9,990","月費起"]],
+    mIpc:"IPC", mFamily:"專利家族", mCited:"引用", unitCtry:"國"
+  }
+};
+
+/* ===================== data (fake — illustrative only) ===================== */
+var PATENTS = [
+  { no:"US 12051972 B2", titleEn:"Three-dimensional die package structure and method of manufacture", titleZh:"三維晶片封裝結構及其製造方法", ipc:"H01L 25/065", famN:3, cited:62, juris:"US", tier:"S", ind:{en:"Semiconductors",zh:"晶片半導體"}, ownerEn:"Anvia Semiconductor", ownerZh:"安崴半導體" },
+  { no:"EP 3894215 B1", titleEn:"Beamforming antenna array calibration for millimeter-wave base stations", titleZh:"毫米波基地台波束成形天線陣列校正方法", ipc:"H01Q 3/26", famN:4, cited:38, juris:"EP", tier:"A", ind:{en:"Network & Comms",zh:"網路與通訊"}, ownerEn:"Meridian Micro Labs", ownerZh:"美睿微電子" },
+  { no:"JP 6982104 B2", titleEn:"Solid-oxide fuel cell stack thermal management assembly", titleZh:"固態氧化物燃料電池堆熱管理總成", ipc:"H01M 8/04", famN:2, cited:27, juris:"JP", tier:"A", ind:{en:"Net-Zero",zh:"淨零碳排"}, ownerEn:"Verdanta Energy Systems", ownerZh:"沃丹達能源系統" },
+  { no:"US 11984330 B2", titleEn:"EUV lithography mask pellicle structure and fabrication method", titleZh:"極紫外光微影光罩保護膜結構及其製作方法", ipc:"G03F 1/62", famN:3, cited:47, juris:"US", tier:"S", ind:{en:"Semiconductors",zh:"晶片半導體"}, ownerEn:"Silbridge Technologies", ownerZh:"矽橋科技" },
+  { no:"KR 102338710 B1", titleEn:"Adaptive noise-cancellation filter for immersive audio playback", titleZh:"沉浸式音訊播放之自適應消噪濾波器", ipc:"G10K 11/178", famN:2, cited:16, juris:"KR", tier:"B", ind:{en:"Multimedia",zh:"多媒體影音"}, ownerEn:"Nexon Fab Systems", ownerZh:"尼克森製程系統" },
+  { no:"TW I765432 B", titleEn:"Low-power neural inference accelerator dataflow architecture", titleZh:"低功耗神經網路推論加速器資料流架構", ipc:"G06N 3/063", famN:2, cited:21, juris:"TW", tier:"B", ind:{en:"Computer Systems",zh:"計算機系統"}, ownerEn:"Corveta Microelectronics", ownerZh:"科維特微電子" },
+  { no:"CN 114820563 B", titleEn:"Grid-tied inverter maximum-power-point tracking control method", titleZh:"併網型逆變器最大功率點追蹤控制方法", ipc:"H02M 7/48", famN:3, cited:19, juris:"CN", tier:"C", ind:{en:"Net-Zero",zh:"淨零碳排"}, ownerEn:"Helio Grid Dynamics", ownerZh:"赫利歐電網動力" },
+  { no:"US 11876214 B2", titleEn:"High aspect-ratio through-silicon via etch process control", titleZh:"高深寬比矽穿孔蝕刻製程控制方法", ipc:"H01L 21/311", famN:3, cited:29, juris:"US", tier:"A", ind:{en:"Semiconductors",zh:"晶片半導體"}, ownerEn:"Corveta Microelectronics", ownerZh:"科維特微電子" },
+  { no:"EP 3720118 B1", titleEn:"Latency-aware packet scheduling for time-sensitive networks", titleZh:"時效性網路之延遲感知封包排程方法", ipc:"H04L 47/62", famN:2, cited:14, juris:"EP", tier:"C", ind:{en:"Network & Comms",zh:"網路與通訊"}, ownerEn:"Meridian Micro Labs", ownerZh:"美睿微電子" }
+];
+
+var IND_ICON={
+  "Semiconductors":'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+  "Network & Comms":'<path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/>',
+  "Net-Zero":'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  "Computer Systems":'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4a2 2 0 0 0 2-2V3"/><circle cx="9" cy="9" r="2"/><path d="M7 21v-4a2 2 0 0 1 2-2h4"/><circle cx="15" cy="15" r="2"/>',
+  "Multimedia":'<path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>'
+};
+function indTile(indEn){ return '<span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(IND_ICON[indEn]||IND_ICON["Semiconductors"])+'</svg></span>'; }
+
+function cardPatent(p, lang, S){
+  var title = lang==="zh"?p.titleZh:p.titleEn;
+  var owner = lang==="zh"?p.ownerZh:p.ownerEn;
+  var indName = lang==="zh"?p.ind.zh:p.ind.en;
+  return '<div class="patent-card" role="button" tabindex="0" aria-label="'+p.no+'">'
+    + '<div class="scard-core">'
+      + '<div class="rc-topbar">'
+        + '<div class="rc-controls"><span class="rc-pno">'+p.no+'</span></div>'
+        + '<div class="rc-chips"><span class="juris-tile '+p.juris.toLowerCase()+'">'+p.juris+'</span><span class="tier-tile '+p.tier.toLowerCase()+'">Tier '+p.tier+'</span></div>'
+      + '</div>'
+      + '<div class="rc-id"><div class="rc-title">'+title+'</div></div>'
+      + '<div class="rc-mdiv">'
+        + '<span class="grp"><span class="k">'+S.mIpc+'</span><span class="v">'+p.ipc+'</span></span>'
+        + '<span class="dot">·</span>'
+        + '<span class="grp"><span class="k">'+S.mFamily+'</span><span class="v">'+p.famN+' '+S.unitCtry+'</span></span>'
+        + '<span class="dot">·</span>'
+        + '<span class="grp"><span class="k">'+S.mCited+'</span><span class="v">'+p.cited+'</span></span>'
+      + '</div>'
+      + '<div class="rc-foot"><div class="rc-ind">'+indTile(p.ind.en)+'<span class="nm">'+indName+'</span></div><span class="owner-v">'+owner+'</span></div>'
+    + '</div></div>';
+}
+
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(function(el){
+    var k=el.getAttribute("data-t"); if(S[k]!=null) el.textContent=S[k];
+  });
+  document.getElementById("avInit").textContent = "M";
+
+  document.getElementById("bpStats").innerHTML = S.stats.map(function(s){
+    return '<div class="bp-stat"><dt class="v">'+s[0]+'</dt><dd class="k">'+s[1]+'</dd></div>';
+  }).join("");
+
+  document.getElementById("bpGrid").innerHTML = PATENTS.map(function(p){ return cardPatent(p, lang, S); }).join("");
+}
+
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.remove("is-active"); });
+    btn.classList.add("is-active");
+    render(btn.getAttribute("data-lang"));
+  });
+});
+var initial=(location.search.match(/[?&]lang=(en|zh)/)||[])[1]||"en";
+if(initial==="zh"){document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.toggle("is-active", b.getAttribute("data-lang")==="zh"); });}
+render(initial);
+</script>
+</body>
+</html>

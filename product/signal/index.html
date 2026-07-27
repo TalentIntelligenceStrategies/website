@@ -2389,7 +2389,7 @@ a, button,
           <div class="products-menu-grid">
             <a href="/product/licensing/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/licensing-warm.jpg" alt="" loading="lazy" decoding="async" width="640" height="360" />
+                <img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -2399,7 +2399,7 @@ a, button,
             </a>
             <a href="/product/signal/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+                <img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Evaluation</span>
@@ -2466,7 +2466,7 @@ a, button,
     <div id="m-products-sublist" class="mobile-sublist">
       <a href="/product/licensing/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/licensing-warm.jpg" alt="" loading="lazy" decoding="async" width="640" height="360" />
+          <img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -2476,7 +2476,7 @@ a, button,
       </a>
       <a href="/product/signal/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+          <img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Evaluation</span>
@@ -2613,6 +2613,33 @@ a, button,
     </button>
   </div>
 
+  <!-- ─── Static hero — mirrors the licensing deep-dive hero composition, cool variant.
+       Full-bleed rotated coremap photo (dirk-lach, blue) + faint ruled grid + eyebrow /
+       title / sub / dual CTA. Page-scoped styling lives in styles.css [data-page="signal"] .hero.
+       Sits ABOVE the rxscroll walkthrough (which is pushed down, otherwise untouched). -->
+  <section class="hero" aria-label="Signal hero" data-active-pillar="signal">
+    <div class="hero-warm" aria-hidden="true"></div>
+    <div class="hero-silver" aria-hidden="true"></div>
+    <div class="hero-signal" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <article class="pillar" data-pillar="signal">
+        <p class="pillar-eyebrow">
+          <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
+          <span data-zh="泰然專利強度評級系統">Patent Evaluation</span>
+        </p>
+        <h1 class="pillar-title">
+          <span data-zh="一份專利報告，">A patent report in</span> <em data-zh="30 分鐘到手。">30 minutes.</em>
+        </h1>
+        <p class="pillar-sub" data-zh="提交一個專利號，Signal 回傳對比同產業的 SABCD 評級——專利強度、周邊布局，以及投資團隊可據以行動的結論。">Submit a patent number. Signal returns an SABCD tier ranked against its industry — strength, landscape, and a verdict a deal team can act on.</p>
+        <div class="pillar-actions">
+          <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">See a sample report</a>
+          <a href="#contact" class="btn btn-secondary" data-zh="聯絡業務">Talk to sales</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <!-- Hero — scroll-driven report walkthrough (rxscroll). A pinned stage scrubs
        three acts as you scroll: (1) tight SABCD deck + hero copy → (2) deck fans
        into the S·A·B·C·D row + methodology copy → (3) S/A/C/D fade, the centred B report
@@ -2635,10 +2662,7 @@ a, button,
              carries speed, no vague "fast"). Single CTA. ZH on headline + sub is DRAFT,
              pending review; eyebrow data-zh left empty as in the prior hero. -->
         <article class="rxcopy is-active" data-act="1">
-          <h1 class="pillar-title">
-            <span data-zh="一份專利報告，">A patent report in</span> <em data-zh="30 分鐘到手。">30 minutes.</em>
-          </h1>
-          <p class="pillar-sub" data-zh="提交一個專利號，Signal 回傳對比同產業的 SABCD 評級——專利強度、周邊布局，以及投資團隊可據以行動的結論。">Submit a patent number. Signal returns an SABCD tier ranked against its industry — strength, landscape, and a verdict a deal team can act on.</p>
+          <!-- Headline + sub moved up to the new static hero above; Act 1 keeps its CTA only. -->
           <div class="pillar-actions">
             <a href="/product/signal/sample-report.html" class="btn btn-primary btn-lg" data-target="signal-signup" data-zh="免費預覽報告樣本">See a sample report</a>
           </div>

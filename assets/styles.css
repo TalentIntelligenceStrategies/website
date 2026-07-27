@@ -1364,11 +1364,18 @@ main { padding-top: 64px; }
    both light and dark theme, so text must stay dark either way). No scrim. */
 [data-page="licensing"] .hero {
   background:
-    url('/assets/imagery/coremap/plufow-le-studio-2Z72WPgI7Ic-unsplash.jpg') center / cover no-repeat;
+    url('/assets/imagery/coremap/licensing-warm-v2-flip.png') center / cover no-repeat;
 }
-/* Drop the cream gradient wash + soft bloom so the photo reads full-strength. */
-[data-page="licensing"] .hero-warm,
+/* Drop the soft bloom so the photo reads full-strength. Keep .hero-warm as the
+   faint ruled-grid carrier over the photo (its cream gradient is cleared below,
+   its ::before grid is recolored white to read over the warm image). */
 [data-page="licensing"] .hero::before { display: none; }
+[data-page="licensing"] .hero-warm { background: none; }
+[data-page="licensing"] .hero-warm::before {
+  background:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 32px);
+}
 
 /* All hero copy → white over the warm photo (no scrim). Overrides the
    theme-flipping eyebrow token and the warm gradient on the title em; the title
@@ -1410,6 +1417,67 @@ main { padding-top: 64px; }
   filter: none;
 }
 [data-page="licensing"] .hero .btn-secondary:hover { background: #F1EDE7; }
+
+/* ───────── Signal deep-dive hero — full-bleed cool coremap image ─────────
+   Cool twin of the licensing hero above; same composition, blue instead of warm.
+   Page-scoped to [data-page="signal"] .hero. IMPORTANT: the signal page also has
+   .hero-warm/.hero-silver/.hero-signal inside the .rxscroll walkthrough below, so
+   every backdrop rule here is scoped as a descendant of .hero — never bare — or it
+   would wipe the rxscroll's own gradient/grid. Grid carrier is .hero-signal (not
+   .hero-warm): data-active-pillar="signal" activates .hero-signal via the global
+   .hero[data-active-pillar="signal"] .hero-signal rule. No scrim; copy stays white. */
+[data-page="signal"] .hero {
+  background:
+    url('/assets/imagery/coremap/dirk-lach-fSgF4pEQEY8-hero-flip.jpg') center / cover no-repeat;
+}
+[data-page="signal"] .hero::before { display: none; }
+[data-page="signal"] .hero .hero-signal { background: none; }
+[data-page="signal"] .hero .hero-signal::before {
+  background:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 32px);
+}
+
+/* All hero copy → white over the cool photo (no scrim). Overrides the blue-gradient
+   title em + the theme-flipping eyebrow so everything reads white. */
+[data-page="signal"] .hero .pillar-eyebrow,
+[data-page="signal"] .hero .pillar-title,
+[data-page="signal"] .hero .pillar-sub,
+[data-page="signal"] .hero .pillar-title em {
+  color: #fff;
+  background: none;
+  -webkit-text-fill-color: #fff;
+}
+[data-page="signal"] .hero .pillar-eyebrow { gap: 8px; }
+[data-page="signal"] .hero .pillar-eyebrow-ico {
+  flex: none;
+  width: 18px; height: 18px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* CTAs → dark-ink primary + white secondary (same as licensing; secondary hover
+   nudged to a cool tint). */
+[data-page="signal"] .hero .btn-primary {
+  background: #252525;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  color: #fff; -webkit-text-fill-color: #fff;
+  border: none;
+}
+[data-page="signal"] .hero .btn-primary:hover {
+  background: #3A3A3A;
+  border: none;
+}
+/* .pillar[data-pillar="signal"] added to beat the (0,4,0) signal-gradient secondary
+   rule above (.hero .pillar[data-pillar="signal"] .btn-secondary). */
+[data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary,
+[data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary:hover {
+  background: #FFFFFF;
+  color: #252525; -webkit-text-fill-color: #252525;
+  border: 1px solid rgba(37,37,37,0.14);
+  filter: none;
+}
+[data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary:hover { background: #EEF3F7; }
 
 /* Hero pillar slider — fade-cross stacked grid */
 .hero-slider {
@@ -4569,7 +4637,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .mkt-img {
   height: 160px; border-radius: 0;
   background-color: var(--surface-inverse);
-  background-image: url('/assets/imagery/mkt-hero.png');
+  background-image: url('/assets/imagery/home/mkt-hero.png');
   background-size: cover; background-position: center; background-repeat: no-repeat;
   position: relative; overflow: hidden;
 }
