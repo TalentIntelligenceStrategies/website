@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-07-29 11:11 +08:00** · Removed the Signal sample-report Brief/Pro viewer (4 report PNG/PDF files, modal markup, JS, CSS) — the Pillar Deep Dive exposed Innovue's individual 50 indicators; pillar-level content retained.
 - **2026-07-29 09:41 +08:00** · Removed the OpEx-economics block ("A subscription, not a capital project") from the licensing How-it-works Step 4 — it read out of place there; Step 4 is back to its two original blocks.
 - **2026-07-29 09:31 +08:00** · Folded the licensing IP-shield (card 3 → Step 6) and OpEx-economics (card 6 → Step 4) copy into the "How it Works" funnel as each step's lead block (EN bold + ZH), then deleted the now-redundant 6-card deliverables section and its dead `.deliverable-*` / `.section--flush-hero` CSS.
 - **2026-07-29 09:17 +08:00** · Tweaked the licensing "How it Works" funnel — dropped the hairline rule above the progress meter / CTA footer, moved the gradient bloom to the section's top-right with its center on the product-shot top edge, and froze the inner screen scrub on steps 3–5 so they hold on their initial state.

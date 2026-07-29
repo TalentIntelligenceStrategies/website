@@ -7772,45 +7772,6 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .smpl-matrix td.smpl-y{color:var(--ink-positive,#047857)}
 .smpl-matrix td.smpl-n{color:var(--text-quaternary,#A5A5A5)}
 
-/* Flyout viewer */
-.smpl-overlay{
-  position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.62);
-  opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease;
-}
-.smpl-overlay[data-open="true"]{opacity:1;visibility:visible}
-.smpl-modal{
-  position:fixed;z-index:201;left:50%;top:50%;
-  width:min(980px,94vw);max-height:92dvh;
-  transform:translate(-50%,-47%);
-  display:flex;flex-direction:column;overflow:hidden;
-  background:var(--surface-page);border-radius:16px;
-  box-shadow:0 24px 70px rgba(0,0,0,.30);
-  opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .22s ease, transform .22s var(--ease-card), visibility .22s ease;
-}
-.smpl-modal[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%)}
-.smpl-modal-head{
-  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:13px 14px 13px 22px;border-bottom:1px solid var(--border-primary);background:var(--surface-page);
-}
-.smpl-modal-title{font-size:16px;font-weight:600;color:var(--text-primary);margin:0}
-.smpl-modal-actions{display:flex;align-items:center;gap:10px}
-.smpl-dl{padding:8px 14px;min-height:36px;font-size:13px}
-.smpl-modal-close{
-  width:36px;height:36px;border-radius:8px;flex-shrink:0;
-  display:inline-flex;align-items:center;justify-content:center;
-  color:var(--text-secondary);background:transparent;border:0;cursor:pointer;
-  transition:background-color .12s linear,color .12s linear;
-}
-.smpl-modal-close:hover{background:var(--surface-tertiary);color:var(--text-primary)}
-.smpl-modal-body{overflow:auto;-webkit-overflow-scrolling:touch;background:var(--surface-secondary)}
-.smpl-img{display:block;width:100%;height:auto}
-body.smpl-lock{overflow:hidden}
-@media (prefers-reduced-motion: reduce){
-  .smpl-overlay,.smpl-modal{transition:opacity .12s linear}
-  .smpl-modal,.smpl-modal[data-open="true"]{transform:translate(-50%,-50%)}
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    COMPANY SCORECARDS — Signal methodology page (#portfolio-signal).
    Composes existing primitives: .r-metric-arc gauge (monochrome), .tier-chip--*

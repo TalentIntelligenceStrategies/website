@@ -1171,59 +1171,6 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
 })();
 
 /* ════════════════════════════════════════════════════════════════════════
-   Sample-report flyout — "View Brief / View Pro report" opens a full-screen
-   viewer showing a static render of the real report, with an ungated
-   Download-PDF action. Mirrors the search-modal open/close pattern
-   (dataset.open + backdrop-click + Escape). Images are set on first open so
-   the large PNGs never load on initial paint.
-   ════════════════════════════════════════════════════════════════════════ */
-(() => {
-  const overlay = document.getElementById('smpl-overlay');
-  const modal   = document.getElementById('smpl-modal');
-  if (!overlay || !modal) return;
-
-  const img      = document.getElementById('smpl-img');
-  const dl       = document.getElementById('smpl-download');
-  const titleEl  = document.getElementById('smpl-title');
-  const closeBtn = document.getElementById('smpl-close');
-  const triggers = document.querySelectorAll('.smpl-view[data-sample]');
-
-  const BASE = '/assets/imagery/signal-reports/sample-';
-  const LABEL = {
-    brief: { en: 'Brief report — sample', zh: 'Brief 報告 — 樣本' },
-    pro:   { en: 'Pro report — sample',   zh: 'Pro 報告 — 樣本' },
-  };
-  let lastTrigger = null;
-
-  const open = (kind, trigger) => {
-    const isZh = document.documentElement.getAttribute('lang') === 'zh-Hant';
-    titleEl.textContent = (LABEL[kind] || LABEL.brief)[isZh ? 'zh' : 'en'];
-    // Lazy-load: only (re)set src when the kind changes.
-    const src = BASE + kind + '.png';
-    if (img.getAttribute('src') !== src) { img.setAttribute('src', src); img.alt = titleEl.textContent; }
-    dl.setAttribute('href', BASE + kind + '.pdf');
-    dl.setAttribute('download', 'TIS-Signal-' + kind + '-sample.pdf');
-    overlay.dataset.open = modal.dataset.open = 'true';
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('smpl-lock');
-    lastTrigger = trigger || null;
-    setTimeout(() => closeBtn.focus(), 50);
-  };
-  const close = () => {
-    overlay.dataset.open = modal.dataset.open = 'false';
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('smpl-lock');
-    const body = modal.querySelector('.smpl-modal-body'); if (body) body.scrollTop = 0;
-    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
-  };
-
-  triggers.forEach(t => t.addEventListener('click', () => open(t.dataset.sample, t)));
-  overlay.addEventListener('click', close);
-  closeBtn.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.dataset.open === 'true') close(); });
-})();
-
-/* ════════════════════════════════════════════════════════════════════════
    Board of Directors showcase (/about/) — correlated hover/focus highlight.
    The photo grid and the name list each carry [data-member] ids. Pointing at
    or focusing any member adds .is-active to every element sharing that id and
