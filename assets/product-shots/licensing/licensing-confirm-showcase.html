@@ -1,0 +1,402 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Confirm Your Plan (Step 4) · Showcase</title>
+<meta name="description" content="Static marketing still of the TIS Licensing Platform confirm-plan screen (確認方案) — review term, SABCD composition and the tax-inclusive total before payment. Example data only." />
+
+<!--
+  Static marketing still — Licensing Platform "確認方案 / Confirm plan" screen
+  (real route: license.tisglobalinc.com/confirm · WizTrack step 3 of 5). It is a
+  picture, not a working tool: no auth, no backend, no live cart. All patent
+  numbers, titles, owners and pricing are illustrative placeholders.
+
+  Frame + i18n scaffold inherited from licensing-swap-showcase.html. Product CSS
+  (.bb .cart-* / .ci-* / .cs-* / .wiz-track) ported verbatim from
+  operations-site/src/styles/globals.css; :root tokens copied verbatim.
+
+  English is the no-JS default (inline on [data-t] nodes). The EN | 中文 toggle
+  calls render(lang); ?lang=zh in the URL opens straight into Chinese.
+-->
+
+<style>
+/* ===== Brand fonts (repo-local, self-hosted — SIL OFL) ===== */
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+/* mono aliased to Urbanist — no Inconsolata (batch consistency) */
+
+/* ===== Semantic tokens (verbatim from globals.css :root) ===== */
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);--surface-page-translucent:rgba(255,255,255,0.7);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --text-link:var(--n10);--text-link-hover:var(--n9);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);--border-divider:var(--n4);
+  --status-success-fg:#15803d;--status-warning-fg:#a16207;--status-warning-bg:#fef9c3;--status-danger-fg:#b91c1c;--status-danger-bg:#fee2e2;
+  --signal-active:#22c55e;--signal-warning:#f59e0b;--signal-lapsed:#ef4444;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --motion-fast:100ms;--motion-medium:250ms;--dur-fast:100ms;--dur-medium:250ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:56px 24px 80px;
+}
+
+/* ===== Showcase caption ===== */
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:680px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;transition:background var(--motion-fast) linear,color var(--motion-fast) linear;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* ===== MacBook screen + browser ===== */
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{
+  background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);
+  border-radius:22px;padding:12px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.mb-screen{
+  background:var(--surface-page);border-radius:12px;overflow:hidden;
+  height:760px;display:flex;flex-direction:column;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);
+}
+/* browser bar */
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+
+/* screen body — scrollable viewport for the confirm page */
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+.viewport{position:absolute;inset:0;overflow:auto;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+/* ===== .bb page scope (confirm page) ===== */
+.bb{max-width:1120px;margin:0 auto;padding:32px 30px 64px;}
+.bb .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+.bb .copy-15{font-size:15px;font-weight:400;line-height:1.6;}
+.bb .text-secondary{color:var(--text-secondary);}
+
+/* ── wizard track (verbatim globals.css) ── */
+.bb .wiz-track { display: flex; align-items: flex-start; background: var(--surface-page); border: 1px solid var(--border-primary); border-radius: 12px; padding: 20px 16px 16px; margin-bottom: 40px; position: relative; }
+.bb .wt-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; z-index: 1; min-width: 0; }
+.bb .wt-step:not(:last-child)::after { content: ""; position: absolute; left: calc(50% + 16px); right: calc(-50% + 16px); top: 13px; height: 2px; background: var(--border-primary); z-index: -1; }
+.bb .wt-step.done:not(:last-child)::after { background: var(--surface-inverse); }
+.bb .wt-circle { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-tertiary); background: var(--surface-page); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--text-tertiary); flex-shrink: 0; }
+.bb .wt-step.active .wt-circle { border-color: var(--surface-inverse); color: var(--text-primary); }
+.bb .wt-step.done .wt-circle { background: var(--surface-inverse); border-color: var(--surface-inverse); color: var(--text-inverse); }
+.bb .wt-circle svg { width: 14px; height: 14px; }
+.bb .wt-step.done .wt-label { color: var(--text-primary); }
+.bb .wt-label { font-size: 12px; color: var(--text-tertiary); font-weight: 500; text-align: center; line-height: 1.3; }
+.bb .wt-step.active .wt-label { color: var(--text-primary); font-weight: 600; }
+
+/* ── cart layout (verbatim globals.css) ── */
+.bb .cart-header{margin-bottom:24px;}
+.bb .cart-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.bb .cart-main { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.bb .cart-item { background: var(--surface-page); border: 1px solid var(--border-tertiary); border-radius: 14px; box-shadow: var(--shadow-medium); padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+.bb .cart-item-top { display: flex; align-items: stretch; gap: 0; }
+.bb .ci-marker { display: flex; align-items: center; justify-content: center; padding-right: 14px; border-right: 1px solid var(--border-primary); flex-shrink: 0; }
+.bb .ci-num { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: var(--text-primary); min-width: 14px; text-align: center; font-variant-numeric: tabular-nums; }
+.bb .ci-left { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding-left: 14px; }
+.bb .ci-idrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.bb .ci-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.bb .ci-metarow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bb .ci-cnt { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.bb .ci-sep { display: inline-block; width: 2px; height: 2px; border-radius: 9999px; background: var(--text-secondary); }
+.bb .ci-tchip { border: 0; background: none; padding: 0; font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: transform var(--motion-fast) var(--ease-emphasized); }
+.bb .ci-tchip-pill { display: inline-flex; align-items: center; font-family: "Urbanist", "Inter", system-ui, sans-serif; font-size: 12px; font-weight: 700; line-height: 1.2; padding: 4px 10px; border-radius: 9999px; white-space: nowrap; background: var(--surface-secondary); color: var(--text-tertiary); border: 1px solid var(--border-tertiary); }
+.bb .ci-tchip-n { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--text-tertiary); }
+.bb .ci-tchip.is-open .ci-tchip-pill { border-color: transparent; }
+.bb .ci-tchip.is-open .ci-tchip-pill.s { background: var(--score-s-bg); color: var(--score-s); }
+.bb .ci-tchip.is-open .ci-tchip-pill.a { background: var(--score-a-bg); color: var(--score-a); }
+.bb .ci-tchip.is-open .ci-tchip-pill.b { background: var(--score-b-bg); color: var(--score-b); }
+.bb .ci-tchip.is-open .ci-tchip-pill.c { background: var(--score-c-bg); color: var(--score-c); }
+.bb .ci-tchip.is-open .ci-tchip-pill.d { background: var(--score-d-bg); color: var(--score-d); }
+.bb .ci-tchip.is-open .ci-tchip-n { color: var(--text-primary); }
+/* per-bundle term pills */
+.bb .ci-terms { display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.bb .ci-term { font: inherit; font-size: 12px; font-weight: 600; color: var(--text-secondary); background: var(--surface-page); border: 1px solid var(--border-primary); border-radius: 9999px; padding: 5px 12px; cursor: pointer; }
+.bb .ci-term.is-active { background: var(--surface-inverse); border-color: var(--surface-inverse); color: var(--text-inverse); }
+/* expandable per-tier patent panels */
+.bb .ci-breakdown { display: flex; flex-direction: column; gap: 10px; padding-left: 43px; }
+.bb .ci-panel { border-top: 1px solid var(--border-primary); padding-top: 10px; }
+.bb .ci-panel-h { margin-bottom: 6px; }
+.bb .ci-pat { display: flex; align-items: baseline; gap: 10px; padding: 6px 0; border-top: 1px solid var(--border-primary); }
+.bb .ci-pat:first-of-type { border-top: 0; }
+.bb .ci-pat-t { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+.bb .ci-pat-id { margin-left: auto; flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+.bb .ci-cluster { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; padding-left: 16px; }
+.bb .ci-priceline { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; }
+.bb .ci-amt { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.bb .ci-disc { text-align: right; font-size: 12px; font-weight: 700; color: var(--status-success-fg); }
+.bb .ci-pricenote { font-size: 11px; color: var(--text-tertiary); }
+.bb .ci-remove { align-self: flex-start; margin-left: 8px; flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; border: 0; background: transparent; color: var(--text-tertiary); cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; }
+.bb .cart-cross { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; background: var(--surface-page); border: 1px solid var(--border-tertiary); border-radius: 16px; box-shadow: var(--shadow-medium); padding: 22px 26px; }
+.bb .cart-cross .cc-text { min-width: 0; }
+.bb .cart-cross .cc-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.bb .cart-cross .cc-sub { font-size: 13px; color: var(--text-tertiary); line-height: 1.6; }
+.bb .cart-cross .cc-cta { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; font: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-primary); background: var(--surface-secondary); border: 1px solid var(--border-primary); border-radius: 12px; padding: 13px 22px; cursor: pointer; white-space: nowrap; }
+.bb .cart-summary { position: sticky; top: 0; display: flex; flex-direction: column; gap: 12px; }
+.bb .cart-sum { background: var(--surface-page); border: 1px solid var(--border-tertiary); border-radius: 14px; box-shadow: var(--shadow-medium); padding: 20px; }
+.bb .cart-sum .eyebrow { margin: 0 0 14px; display:block; }
+.bb .cart-sum dl { margin: 0; }
+.bb .cs-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 10px; }
+.bb .cs-row dt { color: var(--text-secondary); }
+.bb .cs-row dd { font-family: var(--font-mono); color: var(--text-primary); font-variant-numeric: tabular-nums; margin:0; }
+.bb .cs-total { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-top: 12px; margin-top: 2px; border-top: 1px solid var(--border-tertiary); font-size: 15px; font-weight: 700; }
+.bb .cs-total dt { color: var(--text-primary); }
+.bb .cs-total dd { font-family: var(--font-mono); color: var(--text-primary); font-variant-numeric: tabular-nums; margin:0; }
+.bb .cs-avg { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); text-align: right; margin-top: 6px; }
+.bb .cart-vip { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: var(--score-s-bg); border: 1px solid rgba(139, 105, 20, 0.22); }
+.bb .cart-vip .vt { font-size: 13px; font-weight: 700; color: var(--score-s); }
+.bb .cart-vip .vd { font-size: 12px; line-height: 1.6; color: var(--score-s); }
+.bb .cart-cta { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 16px; padding: 12px 18px; border: 0; border-radius: 10px; background: var(--surface-inverse); color: var(--text-inverse); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.bb .cart-cta-note { font-size: 11px; color: var(--text-tertiary); text-align: center; margin-top: 8px; line-height: 1.6; }
+.bb .cart-bump { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 10px; background: var(--status-warning-bg); border: 1px solid rgba(161, 98, 7, 0.22); }
+.bb .cart-bump .bt { font-size: 12px; font-weight: 600; color: var(--status-warning-fg); }
+.bb .cart-bump .bd { font-size: 11px; color: var(--status-warning-fg); opacity: 0.85; }
+
+/* ── juris / industry tiles (verbatim globals.css) ── */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}}
+</style>
+
+<!-- ===== Showcase caption (outside the mockup) ===== -->
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — confirm your plan</h1>
+  <p data-t="cap_body">With the 30-patent bundle assembled and swaps locked, the licensee reviews the plan before payment: term, SABCD composition, the tax-inclusive total and the monthly-average cost. Example data only — patent numbers, titles and pricing are illustrative placeholders.</p>
+  <div class="note" data-t="cap_note">US × Semiconductors · 12-month term · step 3 of 5 in the build funnel (確認方案).</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<!-- ===== MacBook mockup ===== -->
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <!-- browser bar -->
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>license.tisglobalinc.com/confirm</span>
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <div class="viewport">
+          <div class="bb">
+
+            <!-- header -->
+            <div class="cart-header">
+              <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 3 of 5</div>
+              <h1 class="h-32" style="margin-bottom:8px" data-t="h1">Confirm your plan</h1>
+              <p class="copy-15 text-secondary" data-t="lede">Review your bundle, term and total. Prices are tax-inclusive; buy more bundles to unlock volume discounts.</p>
+            </div>
+
+            <div class="cart-layout">
+              <!-- ── left: cart item + cross-sell ── -->
+              <div class="cart-main">
+
+                <div class="cart-item">
+                  <div class="cart-item-top">
+                    <div class="ci-marker"><span class="ci-num">1</span></div>
+                    <div class="ci-left">
+                      <div class="ci-idrow">
+                        <span class="juris-tile us">US</span>
+                        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></span>
+                        <span class="ci-name" data-t="pkg_name">Semiconductors bundle</span>
+                      </div>
+                      <div class="ci-metarow">
+                        <span class="ci-cnt" data-t="pkg_cnt1">1 bundle</span>
+                        <span class="ci-sep" aria-hidden="true"></span>
+                        <span class="ci-cnt" data-t="pkg_cnt2">30 patents</span>
+                        <span class="ci-tchip is-open"><span class="ci-tchip-pill s">S</span><span class="ci-tchip-n">5</span></span>
+                        <span class="ci-tchip is-open"><span class="ci-tchip-pill a">A</span><span class="ci-tchip-n">6</span></span>
+                        <span class="ci-tchip is-open"><span class="ci-tchip-pill b">B</span><span class="ci-tchip-n">9</span></span>
+                        <span class="ci-tchip is-open"><span class="ci-tchip-pill c">C</span><span class="ci-tchip-n">6</span></span>
+                        <span class="ci-tchip is-open"><span class="ci-tchip-pill d">D</span><span class="ci-tchip-n">4</span></span>
+                      </div>
+                    </div>
+                    <div class="ci-cluster">
+                      <div class="ci-priceline">
+                        <span class="ci-disc" data-t="pkg_disc">12-mo · 8% off</span>
+                        <span class="ci-amt">NT$ 119,880</span>
+                      </div>
+                      <div class="ci-terms"><span class="ci-term is-active" data-t="pkg_term">1 year</span></div>
+                      <span class="ci-pricenote" data-t="pkg_note">tax incl.</span>
+                    </div>
+                    <button class="ci-remove" type="button" aria-label="Remove">✕</button>
+                  </div>
+
+                  <!-- S-tier patent breakdown, expanded -->
+                  <div class="ci-breakdown">
+                    <div class="ci-panel">
+                      <div class="ci-panel-h"><span class="ci-tchip is-open"><span class="ci-tchip-pill s">S</span><span class="ci-tchip-n">5</span></span></div>
+                      <div class="ci-pat"><span class="ci-pat-t" data-t="s1">Backside power-delivery network for sub-3 nm logic</span><span class="ci-pat-id">US 12,051,972 B2</span></div>
+                      <div class="ci-pat"><span class="ci-pat-t" data-t="s2">Gate-all-around channel with adaptive strain tuning</span><span class="ci-pat-id">US 12,118,304 B2</span></div>
+                      <div class="ci-pat"><span class="ci-pat-t" data-t="s3">Hybrid-bonding interconnect with self-aligned vias</span><span class="ci-pat-id">US 11,984,417 B2</span></div>
+                      <div class="ci-pat"><span class="ci-pat-t" data-t="s4">On-die thermal-aware voltage-droop mitigation</span><span class="ci-pat-id">US 12,205,901 B2</span></div>
+                      <div class="ci-pat"><span class="ci-pat-t" data-t="s5">Monolithic 3D SRAM with vertical access transistors</span><span class="ci-pat-id">US 12,067,433 B2</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cart-cross">
+                  <div class="cc-text">
+                    <div class="cc-title" data-t="cc_title">Add another jurisdiction or industry bundle?</div>
+                    <div class="cc-sub" data-t="cc_sub">Stack bundles for volume discounts — 2 bundles 5% off · 3–4 bundles 10% off · 5+ bundles 15% off.</div>
+                  </div>
+                  <button class="cc-cta" type="button" data-t="cc_cta">Add a bundle →</button>
+                </div>
+              </div>
+
+              <!-- ── right: order estimate ── -->
+              <aside class="cart-summary">
+                <div class="cart-sum">
+                  <span class="eyebrow" data-t="sum_eyebrow">Order estimate</span>
+                  <dl>
+                    <div class="cs-row"><dt data-t="row_cnt">Bundles</dt><dd>1</dd></div>
+                    <div class="cs-row"><dt data-t="row_sub">Subtotal (term discount incl.)</dt><dd>NT$ 119,880</dd></div>
+                    <div class="cs-row"><dt data-t="row_tax">Sales tax included (5%)</dt><dd>NT$ 5,709</dd></div>
+                  </dl>
+                  <div class="cs-total"><dt data-t="row_total">Total due (tax incl.)</dt><dd>NT$ 119,880</dd></div>
+                  <div class="cs-avg" data-t="row_avg">avg NT$ 9,990 / month</div>
+
+                  <div class="cart-bump">
+                    <div class="bt" data-t="bump_t">Add 1 more bundle to reach the 2-bundle 5% tier</div>
+                    <div class="bd" data-t="bump_d">Est. save another NT$ 5,994</div>
+                  </div>
+
+                  <button class="cart-cta" type="button" data-t="cta">Confirm &amp; continue to payment →</button>
+                  <div class="cart-cta-note" data-t="cta_note">No charge yet — payment and contract signing come next.</div>
+
+                  <div class="cart-vip">
+                    <div class="vt" data-t="vip_t">VIP pricing</div>
+                    <div class="vd" data-t="vip_d">Two or more annual bundles, or enterprise volume, qualify for dedicated VIP pricing and a named support contact.</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var I18N = {
+  en: {
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — confirm your plan",
+    cap_body:"With the 30-patent bundle assembled and swaps locked, the licensee reviews the plan before payment: term, SABCD composition, the tax-inclusive total and the monthly-average cost. Example data only — patent numbers, titles and pricing are illustrative placeholders.",
+    cap_note:"US × Semiconductors · 12-month term · step 3 of 5 in the build funnel (確認方案).",
+    wiz1:"Build method", wiz2:"Your 30 patents", wiz3:"Confirm plan", wiz4:"Payment", wiz5:"Sign contract",
+    step:"Step 3 of 5",
+    h1:"Confirm your plan",
+    lede:"Review your bundle, term and total. Prices are tax-inclusive; buy more bundles to unlock volume discounts.",
+    pkg_name:"Semiconductors bundle",
+    pkg_cnt1:"1 bundle", pkg_cnt2:"30 patents",
+    pkg_disc:"12-mo · 8% off", pkg_term:"1 year", pkg_note:"tax incl.",
+    s1:"Backside power-delivery network for sub-3 nm logic",
+    s2:"Gate-all-around channel with adaptive strain tuning",
+    s3:"Hybrid-bonding interconnect with self-aligned vias",
+    s4:"On-die thermal-aware voltage-droop mitigation",
+    s5:"Monolithic 3D SRAM with vertical access transistors",
+    cc_title:"Add another jurisdiction or industry bundle?",
+    cc_sub:"Stack bundles for volume discounts — 2 bundles 5% off · 3–4 bundles 10% off · 5+ bundles 15% off.",
+    cc_cta:"Add a bundle →",
+    sum_eyebrow:"Order estimate",
+    row_cnt:"Bundles", row_sub:"Subtotal (term discount incl.)", row_tax:"Sales tax included (5%)",
+    row_total:"Total due (tax incl.)", row_avg:"avg NT$ 9,990 / month",
+    bump_t:"Add 1 more bundle to reach the 2-bundle 5% tier", bump_d:"Est. save another NT$ 5,994",
+    cta:"Confirm & continue to payment →",
+    cta_note:"No charge yet — payment and contract signing come next.",
+    vip_t:"VIP pricing",
+    vip_d:"Two or more annual bundles, or enterprise volume, qualify for dedicated VIP pricing and a named support contact."
+  },
+  zh: {
+    cap_kicker:"授權平台 · 產品預覽",
+    cap_title:"組建流程 — 確認方案",
+    cap_body:"30 件專利包組建完成、替換鎖定後，付款前的最後檢視：授權期間、SABCD 組成、含稅應繳總額與月均成本。僅為示意資料 — 專利號、名稱與定價皆為佔位範例。",
+    cap_note:"美國 × 半導體 · 12 個月期別 · 組建流程第 3 / 5 步（確認方案）。",
+    wiz1:"組建方式", wiz2:"您的 30 件", wiz3:"確認方案", wiz4:"付款", wiz5:"合約簽署",
+    step:"第 3 步・共 5 步",
+    h1:"確認方案",
+    lede:"檢視您的專利包、授權期間與總額。價格皆為含稅；加購多包即可解鎖量購折扣。",
+    pkg_name:"半導體 授權包",
+    pkg_cnt1:"1 包", pkg_cnt2:"30 專利",
+    pkg_disc:"12 個月 92 折", pkg_term:"1 年", pkg_note:"含稅",
+    s1:"次 3 奈米邏輯之背面供電網路",
+    s2:"具適應性應變調控之環繞式閘極通道",
+    s3:"具自對準導孔之混合鍵合互連結構",
+    s4:"晶片內熱感知電壓驟降抑制",
+    s5:"具垂直存取電晶體之單體 3D SRAM",
+    cc_title:"想加購其他國家 / 產業授權包？",
+    cc_sub:"加購多包享量購折扣 — 2 包 95 折 · 3–4 包 9 折 · ≥5 包 85 折。",
+    cc_cta:"加購授權包 →",
+    sum_eyebrow:"訂單試算",
+    row_cnt:"包數", row_sub:"小計（含期間折扣）", row_tax:"內含營業稅（5%）",
+    row_total:"應繳總額（含稅）", row_avg:"月均 NT$ 9,990",
+    bump_t:"再加購 1 包即可升至 2 包 95 折", bump_d:"預估再省 NT$ 5,994",
+    cta:"確認方案，前往付款 →",
+    cta_note:"目前尚未扣款 — 下一步為付款與合約簽署。",
+    vip_t:"VIP 客戶",
+    vip_d:"年繳兩包以上或大型企業採購，享專屬 VIP 折扣與專責客服窗口。"
+  }
+};
+
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.querySelectorAll("[data-t]").forEach(function(node){
+    var key = node.getAttribute("data-t");
+    if (S[key] != null) node.textContent = S[key];
+  });
+  document.documentElement.lang = (lang === "zh") ? "zh-Hant" : "en";
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
+  });
+}
+
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ render(btn.getAttribute("data-lang")); });
+});
+
+var initial = new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en";
+render(initial);
+</script>

@@ -1,0 +1,424 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Checkout (Step 5) · Showcase</title>
+<meta name="description" content="Static marketing still of the TIS Licensing Platform checkout screen (付款 · 結帳) — company details, fee breakdown, invoice, contract form and payment method. Example data only." />
+
+<!--
+  Static marketing still — Licensing Platform "付款 / Checkout" screen
+  (real route: license.tisglobalinc.com/checkout · WizTrack step 4 of 5). Picture,
+  not a working tool: no auth, no backend. All company details, patent numbers and
+  pricing are illustrative placeholders.
+
+  Frame + i18n scaffold inherited from licensing-confirm-showcase.html. Product CSS
+  (.bb .co-grid / .receipt / .ln / .cart-item recap) ported from
+  operations-site/src/styles/globals.css; :root tokens copied verbatim.
+  Mono type = Urbanist (this batch matches the swap/browse/dashboard stills).
+-->
+
+<style>
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);
+  --surface-inverse:var(--n10);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);
+  --text-link:var(--n10);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);
+  --status-success-fg:#15803d;--status-success-bg:#f0fdf4;--status-warning-fg:#a16207;--status-warning-bg:#fef9c3;--status-danger-fg:#b91c1c;--status-danger-bg:#fee2e2;--status-info-fg:#1e40af;--status-info-bg:#eff6ff;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --motion-fast:100ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  color:var(--text-primary);min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),
+    linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;padding:56px 24px 80px;
+}
+
+/* caption */
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:680px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+/* MacBook + browser */
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);border-radius:22px;padding:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);}
+.mb-screen{background:var(--surface-page);border-radius:12px;overflow:hidden;height:780px;display:flex;flex-direction:column;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);}
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+.viewport{position:absolute;inset:0;overflow:auto;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+/* .bb page */
+.bb{max-width:1120px;margin:0 auto;padding:32px 30px 64px;}
+.bb .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+.bb .copy-15{font-size:15px;font-weight:400;line-height:1.6;}
+.bb .text-secondary{color:var(--text-secondary);}
+
+/* wizard track */
+.bb .wiz-track{display:flex;align-items:flex-start;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px 16px 16px;margin-bottom:40px;position:relative;}
+.bb .wt-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1;min-width:0;}
+.bb .wt-step:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);right:calc(-50% + 16px);top:13px;height:2px;background:var(--border-primary);z-index:-1;}
+.bb .wt-step.done:not(:last-child)::after{background:var(--surface-inverse);}
+.bb .wt-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border-tertiary);background:var(--surface-page);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-tertiary);flex-shrink:0;}
+.bb .wt-step.active .wt-circle{border-color:var(--surface-inverse);color:var(--text-primary);}
+.bb .wt-step.done .wt-circle{background:var(--surface-inverse);border-color:var(--surface-inverse);color:var(--text-inverse);}
+.bb .wt-circle svg{width:14px;height:14px;}
+.bb .wt-label{font-size:12px;color:var(--text-tertiary);font-weight:500;text-align:center;line-height:1.3;}
+.bb .wt-step.done .wt-label{color:var(--text-primary);}
+.bb .wt-step.active .wt-label{color:var(--text-primary);font-weight:600;}
+
+/* checkout grid */
+.bb .cart-header{margin-bottom:24px;}
+.bb .co-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:start;}
+
+/* order-summary recap (reused cart-item) */
+.bb .co-recap-cards{display:flex;flex-direction:column;gap:12px;}
+.bb .cart-item{background:var(--surface-page);border:1px solid var(--border-tertiary);border-radius:14px;box-shadow:var(--shadow-medium);padding:18px 20px;display:flex;flex-direction:column;gap:14px;}
+.bb .cart-item-top{display:flex;align-items:stretch;gap:0;}
+.bb .ci-marker{display:flex;align-items:center;justify-content:center;padding-right:14px;border-right:1px solid var(--border-primary);flex-shrink:0;}
+.bb .ci-num{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--text-primary);min-width:14px;text-align:center;font-variant-numeric:tabular-nums;}
+.bb .ci-left{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding-left:14px;}
+.bb .ci-idrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.bb .ci-name{font-size:15px;font-weight:600;color:var(--text-primary);}
+.bb .ci-namemeta{display:inline-flex;align-items:center;gap:6px;}
+.bb .ci-cnt{font-size:12px;font-weight:600;color:var(--text-secondary);}
+.bb .ci-sep{display:inline-block;width:2px;height:2px;border-radius:9999px;background:var(--text-secondary);}
+.bb .ci-cluster--row{display:flex;flex-direction:row;align-items:center;gap:10px;flex-shrink:0;padding-left:16px;}
+.bb .ci-disc{text-align:right;font-size:12px;font-weight:700;color:var(--status-success-fg);}
+.bb .ci-amt{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.bb .ci-term{font:inherit;font-size:12px;font-weight:600;border-radius:9999px;padding:5px 12px;background:var(--surface-inverse);border:1px solid var(--surface-inverse);color:var(--text-inverse);}
+.bb .co-recap-edit{display:inline-block;margin-top:14px;font-size:13px;color:var(--text-secondary);text-decoration:none;}
+.bb .eyebrow.blocklabel{display:block;margin-bottom:16px;}
+
+/* company form card */
+.bb .co-formcard{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;padding:20px;box-shadow:var(--shadow-medium);margin-top:8px;}
+.bb .co-formhead{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:4px;}
+.bb .co-formsub{font-size:11px;color:var(--text-tertiary);line-height:1.6;margin-bottom:16px;}
+.bb .co-terr{display:flex;gap:8px;margin-bottom:16px;}
+.bb .co-terrbtn{flex:1;padding:9px 12px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border-primary);background:var(--surface-page);color:var(--text-secondary);text-align:center;}
+.bb .co-terrbtn.sel{border-color:var(--border-focus);background:var(--surface-tertiary);color:var(--text-primary);}
+.bb .co-fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.bb .co-field.col2{grid-column:1/-1;}
+.bb .co-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:6px;}
+.bb .co-label .req{color:var(--status-danger-fg);}
+.bb .co-input{width:100%;padding:9px 12px;font-size:14px;border:1px solid var(--border-tertiary);border-radius:8px;background:var(--surface-page);color:var(--text-primary);min-height:38px;display:flex;align-items:center;}
+.bb .co-input.mono{font-family:var(--font-mono);letter-spacing:.06em;font-variant-numeric:tabular-nums;}
+.bb .co-input.ro{background:var(--surface-secondary);color:var(--text-secondary);}
+.bb .co-verified{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11px;font-weight:600;color:var(--status-success-fg);background:var(--status-success-bg);padding:2px 8px;border-radius:9999px;}
+.bb .co-fieldnote{font-size:11px;color:var(--text-tertiary);margin-top:5px;}
+
+/* receipt */
+.bb .receipt{position:sticky;top:0;background:var(--surface-secondary);border:1px solid var(--border-primary);border-radius:16px;padding:28px;}
+.bb .receipt .rc-title{font-size:11px;font-weight:500;letter-spacing:.20em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 20px;}
+.bb .ln{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;font-size:14px;color:var(--text-primary);}
+.bb .ln .k{color:var(--text-secondary);}
+.bb .ln .v{font-family:var(--font-mono);font-weight:500;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.bb .ln.disc .v{color:var(--status-success-fg);}
+.bb .ln.tot{padding-top:16px;border-top:1px solid var(--border-primary);margin-top:16px;}
+.bb .ln.tot .k{font-size:16px;font-weight:600;color:var(--text-primary);}
+.bb .ln.tot .v{font-size:24px;font-weight:600;color:var(--text-primary);}
+.bb .co-hr{padding-top:20px;margin-top:20px;border-top:1px solid var(--border-primary);}
+.bb .co-sec-title{font-size:13px;font-weight:600;color:var(--text-primary);margin:0 0 12px;display:flex;align-items:center;gap:8px;}
+.bb .seg{display:flex;gap:8px;margin-bottom:10px;}
+.bb .seg .sgb{flex:1;text-align:center;padding:8px 10px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--border-primary);background:var(--surface-page);color:var(--text-secondary);}
+.bb .seg .sgb.sel{border-color:var(--border-focus);background:var(--surface-tertiary);color:var(--text-primary);}
+.bb .optrow{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--border-primary);border-radius:10px;background:var(--surface-page);margin-bottom:8px;}
+.bb .optrow.sel{border-color:var(--border-focus);box-shadow:inset 0 0 0 1px var(--border-focus);}
+.bb .radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-tertiary);flex-shrink:0;position:relative;}
+.bb .optrow.sel .radio{border-color:var(--border-focus);}
+.bb .optrow.sel .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--surface-inverse);}
+.bb .optrow .ot{font-size:13px;font-weight:500;color:var(--text-primary);}
+.bb .optrow .obadge{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--text-inverse);background:var(--surface-inverse);border-radius:9999px;padding:2px 8px;}
+.bb .optrow .osub{font-size:11px;color:var(--text-tertiary);}
+.bb .alert-warn{display:flex;gap:10px;margin-top:20px;padding:14px 16px;border-radius:10px;background:var(--status-warning-bg);border:1px solid rgba(161,98,7,.22);}
+.bb .alert-warn .aic{flex-shrink:0;color:var(--status-warning-fg);}
+.bb .alert-warn .aic svg{width:18px;height:18px;}
+.bb .alert-warn .at{font-size:13px;font-weight:700;color:var(--status-warning-fg);margin-bottom:4px;}
+.bb .alert-warn .ab{font-size:12px;line-height:1.6;color:var(--status-warning-fg);opacity:.9;}
+.bb .co-submit{display:flex;align-items:center;justify-content:center;width:100%;margin-top:18px;padding:13px 18px;border:0;border-radius:10px;background:var(--surface-inverse);color:var(--text-inverse);font:inherit;font-size:14px;font-weight:600;cursor:pointer;}
+.bb .co-submitnote{font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:8px;line-height:1.6;}
+
+/* tiles */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}}
+</style>
+
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — checkout</h1>
+  <p data-t="cap_body">Plan confirmed, the licensee enters company details and chooses invoice type, contract form and payment method. The fee breakdown is tax-inclusive; the total matches the confirmed plan. Example data only — company details, patent numbers and pricing are illustrative placeholders.</p>
+  <div class="note" data-t="cap_note">US × Semiconductors · 12-month term · step 4 of 5 in the build funnel (付款).</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>license.tisglobalinc.com/checkout</span>
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <div class="viewport">
+          <div class="bb">
+
+            <div class="cart-header">
+              <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 4 of 5</div>
+              <h1 class="h-32" data-t="h1">Checkout</h1>
+            </div>
+
+            <div class="co-grid">
+              <!-- left: order recap + company form -->
+              <div>
+                <section>
+                  <span class="eyebrow blocklabel" data-t="recap_eyebrow">Order summary</span>
+                  <div class="co-recap-cards">
+                    <div class="cart-item">
+                      <div class="cart-item-top">
+                        <div class="ci-marker"><span class="ci-num">1</span></div>
+                        <div class="ci-left">
+                          <div class="ci-idrow">
+                            <span class="juris-tile us">US</span>
+                            <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></span>
+                            <span class="ci-name" data-t="pkg_name">Semiconductors bundle</span>
+                            <span class="ci-namemeta">
+                              <span class="ci-sep" aria-hidden="true"></span><span class="ci-cnt" data-t="pkg_cnt1">1 bundle</span>
+                              <span class="ci-sep" aria-hidden="true"></span><span class="ci-cnt" data-t="pkg_cnt2">30 patents</span>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="ci-cluster--row">
+                          <span class="ci-disc" data-t="pkg_disc">12-mo · 8% off</span>
+                          <span class="ci-amt">NT$ 119,880</span>
+                          <span class="ci-term" data-t="pkg_term">1 year</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <a class="co-recap-edit" data-t="recap_edit">← Back to cart to adjust term / bundle</a>
+                </section>
+
+                <div class="co-formcard">
+                  <div class="co-formhead" data-t="form_head">Company details (8 required)</div>
+                  <div class="co-formsub" data-t="form_sub">Collected at checkout; written to your customer record when you confirm the order.</div>
+                  <div class="co-terr">
+                    <div class="co-terrbtn sel" data-t="terr_tw">Taiwan (unified business no.)</div>
+                    <div class="co-terrbtn" data-t="terr_os">Overseas (company / tax reg. no.)</div>
+                  </div>
+                  <div class="co-fgrid">
+                    <div class="co-field col2">
+                      <span class="co-label" data-t="f_name">Company full name <span class="req">*</span></span>
+                      <div class="co-input" data-t="v_name">Hongsheng Semiconductor Co., Ltd. (sample)</div>
+                    </div>
+                    <div class="co-field col2">
+                      <span class="co-label" data-t="f_tax">Unified business no. <span class="req">*</span></span>
+                      <div class="co-input mono">24681357</div>
+                      <span class="co-verified" data-t="verified">✓ Verified</span>
+                    </div>
+                    <div class="co-field col2">
+                      <span class="co-label" data-t="f_rep">Company representative <span class="req">*</span></span>
+                      <div class="co-input" data-t="v_rep">Lin Chih-yuan (sample)</div>
+                    </div>
+                    <div class="co-field">
+                      <span class="co-label" data-t="f_ind">Primary industry <span class="req">*</span></span>
+                      <div class="co-input" data-t="v_ind">Semiconductors</div>
+                    </div>
+                    <div class="co-field">
+                      <span class="co-label" data-t="f_size">Company size (optional)</span>
+                      <div class="co-input" data-t="v_size">100–499</div>
+                    </div>
+                    <div class="co-field col2">
+                      <span class="co-label" data-t="f_addr">Mailing address <span class="req">*</span></span>
+                      <div class="co-input" data-t="v_addr">7F, Sample Rd. 300, Hsinchu Science Park (sample)</div>
+                    </div>
+                    <div class="co-field">
+                      <span class="co-label" data-t="f_cname">Contact name <span class="req">*</span></span>
+                      <div class="co-input" data-t="v_cname">Chen Yi-ting (sample)</div>
+                    </div>
+                    <div class="co-field">
+                      <span class="co-label" data-t="f_cmail">Contact email <span class="req">*</span></span>
+                      <div class="co-input mono">ip@hongsheng-sample.com</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- right: receipt -->
+              <div class="receipt">
+                <h2 class="rc-title" data-t="rc_title">Fee breakdown</h2>
+                <div class="ln"><span class="k" data-t="ln_list">Semiconductors bundle × 1 year</span><span class="v">NT$ 130,304</span></div>
+                <div class="ln disc"><span class="k" data-t="ln_disc">Term discount (12-mo · 8% off)</span><span class="v">− NT$ 10,424</span></div>
+                <div class="ln"><span class="k" data-t="ln_tax">Sales tax included (5%)</span><span class="v">NT$ 5,709</span></div>
+                <div class="ln tot"><span class="k" data-t="ln_total">Contract total (tax incl.)</span><span class="v">NT$ 119,880</span></div>
+
+                <div class="co-hr">
+                  <p class="co-sec-title" data-t="sec_invoice">Invoice</p>
+                  <div class="seg">
+                    <div class="sgb" data-t="inv2">Duplicate (individual)</div>
+                    <div class="sgb sel" data-t="inv3">Triplicate (company)</div>
+                  </div>
+                </div>
+
+                <div class="co-hr">
+                  <p class="co-sec-title" data-t="sec_form">Contract form</p>
+                  <div class="optrow"><span class="radio"></span><span class="ot" data-t="formA">Form A — paper + physical seal</span></div>
+                  <div class="optrow sel"><span class="radio"></span><span class="ot" data-t="formB">Form B — paper + PAdES digital seal</span><span class="obadge" data-t="reco">Recommended</span></div>
+                  <div class="optrow"><span class="radio"></span><span class="ot" data-t="formC">Form C — e-PDF + PAdES digital seal</span></div>
+                </div>
+
+                <div class="co-hr">
+                  <p class="co-sec-title" data-t="sec_pay">Payment method</p>
+                  <div class="optrow"><span class="radio"></span><span class="ot" data-t="payCard">Credit card</span></div>
+                  <div class="optrow sel"><span class="radio"></span><span class="ot" data-t="payAtm">ATM transfer</span></div>
+                  <div class="optrow"><span class="radio"></span><span class="ot" data-t="payInv">Company remittance</span></div>
+                </div>
+
+                <div class="alert-warn">
+                  <span class="aic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span>
+                  <div>
+                    <div class="at" data-t="warn_t">Paying does not activate the license immediately</div>
+                    <div class="ab" data-t="warn_b">The contract becomes digitally valid after online e-signing in the next step; the license takes effect the day after TIS confirms receipt of payment (conditional activation).</div>
+                  </div>
+                </div>
+
+                <button class="co-submit" type="button" data-t="submit">Confirm order & generate contract →</button>
+                <div class="co-submitnote" data-t="submit_note">Generates the contract in your chosen form — no charge is taken yet.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var I18N = {
+  en: {
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — checkout",
+    cap_body:"Plan confirmed, the licensee enters company details and chooses invoice type, contract form and payment method. The fee breakdown is tax-inclusive; the total matches the confirmed plan. Example data only — company details, patent numbers and pricing are illustrative placeholders.",
+    cap_note:"US × Semiconductors · 12-month term · step 4 of 5 in the build funnel (付款).",
+    wiz1:"Build method", wiz2:"Your 30 patents", wiz3:"Confirm plan", wiz4:"Payment", wiz5:"Sign contract",
+    step:"Step 4 of 5", h1:"Checkout",
+    recap_eyebrow:"Order summary",
+    pkg_name:"Semiconductors bundle", pkg_cnt1:"1 bundle", pkg_cnt2:"30 patents",
+    pkg_disc:"12-mo · 8% off", pkg_term:"1 year",
+    recap_edit:"← Back to cart to adjust term / bundle",
+    form_head:"Company details (8 required)",
+    form_sub:"Collected at checkout; written to your customer record when you confirm the order.",
+    terr_tw:"Taiwan (unified business no.)", terr_os:"Overseas (company / tax reg. no.)",
+    f_name:"Company full name", v_name:"Hongsheng Semiconductor Co., Ltd. (sample)",
+    f_tax:"Unified business no.", verified:"✓ Verified",
+    f_rep:"Company representative", v_rep:"Lin Chih-yuan (sample)",
+    f_ind:"Primary industry", v_ind:"Semiconductors",
+    f_size:"Company size (optional)", v_size:"100–499",
+    f_addr:"Mailing address", v_addr:"7F, Sample Rd. 300, Hsinchu Science Park (sample)",
+    f_cname:"Contact name", v_cname:"Chen Yi-ting (sample)",
+    f_cmail:"Contact email",
+    rc_title:"Fee breakdown",
+    ln_list:"Semiconductors bundle × 1 year", ln_disc:"Term discount (12-mo · 8% off)",
+    ln_tax:"Sales tax included (5%)", ln_total:"Contract total (tax incl.)",
+    sec_invoice:"Invoice", inv2:"Duplicate (individual)", inv3:"Triplicate (company)",
+    sec_form:"Contract form",
+    formA:"Form A — paper + physical seal", formB:"Form B — paper + PAdES digital seal",
+    formC:"Form C — e-PDF + PAdES digital seal", reco:"Recommended",
+    sec_pay:"Payment method", payCard:"Credit card", payAtm:"ATM transfer", payInv:"Company remittance",
+    warn_t:"Paying does not activate the license immediately",
+    warn_b:"The contract becomes digitally valid after online e-signing in the next step; the license takes effect the day after TIS confirms receipt of payment (conditional activation).",
+    submit:"Confirm order & generate contract →",
+    submit_note:"Generates the contract in your chosen form — no charge is taken yet."
+  },
+  zh: {
+    cap_kicker:"授權平台 · 產品預覽",
+    cap_title:"組建流程 — 付款結帳",
+    cap_body:"確認方案後，被授權人填寫公司資料並選擇發票類型、合約形式與付款方式。費用明細皆為含稅，總額與已確認方案一致。僅為示意資料 — 公司資料、專利號與定價皆為佔位範例。",
+    cap_note:"美國 × 半導體 · 12 個月期別 · 組建流程第 4 / 5 步（付款）。",
+    wiz1:"組建方式", wiz2:"您的 30 件", wiz3:"確認方案", wiz4:"付款", wiz5:"合約簽署",
+    step:"第 4 步・共 5 步", h1:"結帳",
+    recap_eyebrow:"訂單摘要",
+    pkg_name:"半導體 授權包", pkg_cnt1:"1 包", pkg_cnt2:"30 專利",
+    pkg_disc:"12 個月 92 折", pkg_term:"1 年",
+    recap_edit:"← 返回購物車調整期間 / 授權包",
+    form_head:"公司資料（8 必填）",
+    form_sub:"v0.7 於結帳確認頁收集公司資料；點「確認訂單」時寫入客戶資料。",
+    terr_tw:"台灣（統一編號）", terr_os:"海外（公司註冊號 / 稅籍號）",
+    f_name:"公司全名", v_name:"鴻晟半導體股份有限公司（範例）",
+    f_tax:"統一編號", verified:"✓ 已驗證",
+    f_rep:"公司負責人（代表人）", v_rep:"林致遠（範例）",
+    f_ind:"主要產業", v_ind:"半導體",
+    f_size:"公司規模（選填）", v_size:"100–499 人",
+    f_addr:"通訊地址", v_addr:"新竹科學園區範例路 300 號 7 樓（範例）",
+    f_cname:"聯絡人姓名", v_cname:"陳怡廷（範例）",
+    f_cmail:"聯絡人 Email",
+    rc_title:"費用明細",
+    ln_list:"半導體授權包 × 1 年", ln_disc:"期間折扣（12 個月 92 折）",
+    ln_tax:"內含營業稅（5%）", ln_total:"合約總金額（含稅）",
+    sec_invoice:"發票資訊", inv2:"二聯式（個人）", inv3:"三聯式（公司）",
+    sec_form:"合約形式",
+    formA:"形式 A — 紙本 + 實體印章", formB:"形式 B — 紙本 + PAdES 數位印鑑",
+    formC:"形式 C — 電子 PDF + PAdES 數位印鑑", reco:"推薦",
+    sec_pay:"付款方式", payCard:"信用卡", payAtm:"ATM 轉帳", payInv:"公司請款",
+    warn_t:"付款完成不等於授權立即生效",
+    warn_b:"合約將於下一步完成線上電子簽署後數位成立；授權於 TIS 確認收款之次日正式生效（條件生效）。",
+    submit:"確認訂單並生成合約 →",
+    submit_note:"點擊後將依選擇的合約形式生成對應文件 — 此步驟尚未扣款。"
+  }
+};
+
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.querySelectorAll("[data-t]").forEach(function(node){
+    var key = node.getAttribute("data-t");
+    if (S[key] != null) node.textContent = S[key];
+  });
+  document.documentElement.lang = (lang === "zh") ? "zh-Hant" : "en";
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
+  });
+}
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ render(btn.getAttribute("data-lang")); });
+});
+render(new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en");
+</script>

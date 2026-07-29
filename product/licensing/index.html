@@ -596,40 +596,35 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 28px;
-  padding: clamp(28px, 3vw, 44px);
+  gap: 32px;
+  padding: clamp(32px, 3.4vw, 52px);
 }
 @media (min-width: 920px) { .pcard-left { width: 40%; flex: none; } }
 
+/* Plan name — deliberately recessive (20px/600) so the price reads as the
+   single focal point via scale contrast rather than two competing bolds. */
 .pcard-title {
-  font-size: clamp(26px, 3vw, 32px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
   color: var(--text-primary);
-  margin: 0;
+  margin: 0 0 22px;
+  text-wrap: balance;
 }
-.pcard-desc {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  margin: 10px 0 0;
-  max-width: 38ch;
-}
-/* term toggle, left-aligned inside the card (override centered auto margin) */
-.pcard .bp-toggle { margin: 24px 0 0; }
+.pcard-desc { display: none; } /* subhead removed from the trimmed card */
 
 .pcard-price {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  column-gap: 10px;
-  row-gap: 6px;
-  margin-top: 22px;
+  column-gap: 8px;
+  row-gap: 4px;
+  margin: 0;
 }
 .pcard-amt {
   font-family: var(--prod-font-mono, ui-monospace, monospace);
-  font-size: clamp(40px, 5vw, 52px);
+  font-size: clamp(46px, 5.4vw, 58px);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -638,13 +633,14 @@
 .pcard-unit {
   font-size: 15px;
   font-weight: 500;
-  color: var(--text-secondary);
-  margin-left: -4px;
+  color: var(--text-tertiary);
+  margin-left: 0;
 }
+/* Savings chip — green success pill. */
 .pcard-save {
   display: inline-flex;
   align-items: center;
-  align-self: center;
+  margin-left: 10px;
   padding: 3px 9px;
   border-radius: 6px;
   background: var(--success-bg);
@@ -655,16 +651,15 @@
   letter-spacing: 0.04em;
 }
 .pcard-save:empty { display: none; }
-/* Term line now carries the savings pill inline beside it (moved off the
-   price row). Flex keeps label + pill on one baseline with a gap. */
+/* Term line — carries the label + savings chip on one baseline. Secondary
+   ink (not tertiary) so the term detail stays comfortably readable. */
 .pcard-term {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 8px 0 0;
-  font-size: 13px;
-  color: var(--text-tertiary);
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  color: var(--text-secondary);
 }
 .pcard-cta { width: 100%; justify-content: center; }
 
@@ -706,10 +701,11 @@
   gap: 12px 24px;
 }
 @media (max-width: 560px) { .pcard-list { grid-template-columns: 1fr; } }
-/* keep the 4-segment term toggle inside the card on narrow widths */
+/* Keep the 4-segment term toggle from overflowing on narrow widths — it now
+   lives in the pricing header (pulled out of the card), so scope to both. */
 @media (max-width: 600px) {
-  .pcard .bp-toggle { width: 100%; }
-  .pcard .bp-toggle-seg {
+  .pricing-head .bp-toggle { width: 100%; }
+  .pricing-head .bp-toggle-seg {
     flex: 1 1 0;
     min-width: 0;
     padding: 8px 4px;
@@ -761,6 +757,59 @@
 @media (max-width: 560px) {
   .pcard-logos { gap: 24px; }
   .pcard-logos .partner { width: 112px; height: 24px; }
+}
+
+/* ── Pricing header — heading + term toggle, centered above the card. The
+   toggle is promoted out of the card to read as a page-level control. ── */
+.pricing-head { text-align: center; margin: 0 0 44px; }
+.pricing-head .bp-section-heading { text-align: center; margin: 0 0 26px; }
+.pricing-head .bp-toggle { margin: 0 auto; }
+
+/* ── Industry grid — 2 rows × 3, icon tile + name to its right; replaces the
+   old industry checklist. Tiles lift off the muted right panel by using the
+   page surface (the shared .lic-tile uses --surface-tertiary, the panel
+   colour). ── */
+.pcard-indgrid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 22px 16px;
+}
+.pcard-ind { display: flex; flex-direction: row; align-items: center; gap: 12px; }
+.pcard-ind-name { font-size: 13px; line-height: 1.35; color: var(--text-secondary); }
+.pcard-right .lic-tile--ind {
+  background: var(--surface-page);
+  border-color: var(--border-primary);
+}
+/* Subtle tile lift on hover — gated to real pointers so touch taps don't
+   trigger a stuck hover state. */
+@media (hover: hover) and (pointer: fine) {
+  .pcard-ind .lic-tile--ind {
+    transition: transform 160ms cubic-bezier(0.23,1,0.32,1), border-color 160ms ease, color 160ms ease;
+  }
+  .pcard-ind:hover .lic-tile--ind {
+    transform: translateY(-2px);
+    border-color: var(--text-tertiary);
+    color: var(--text-primary);
+  }
+}
+@media (max-width: 560px) { .pcard-indgrid { grid-template-columns: 1fr 1fr; } }
+
+/* ── Reveal — the pricing header + card fade-up once on scroll-in, driven by
+   the shared [data-reveal] → .is-revealed observer in site.js (which also
+   handles reduced-motion / no-IntersectionObserver by showing immediately).
+   Mirrors the .h-section[data-reveal] pattern used elsewhere on the page. ── */
+.pricing-head[data-reveal],
+.pcard[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 620ms cubic-bezier(0.23,1,0.32,1), transform 620ms cubic-bezier(0.23,1,0.32,1);
+}
+.pcard[data-reveal] { transition-delay: 80ms; }
+.pricing-head[data-reveal].is-revealed,
+.pcard[data-reveal].is-revealed { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pricing-head[data-reveal],
+  .pcard[data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
 /* Section heading — matches .howitworks h3 sizing + 64px bottom margin
@@ -1466,15 +1515,17 @@ a, button,
   color: var(--text-primary);
 }
 
-/* Pricing section heading — match the sibling .walkaway-head:
-   clamp(28px, 3.6vw, 42px) / 700 / -0.02em / 1.16. Scoped to
-   .bp-section-heading only — CTA heads stay at the larger
+/* Pricing section heading — matched to the gap-section title scale
+   (clamp(36,3.3vw,48) / 600 / -0.03em / 1.1) so Pricing / Walkaway / FAQ
+   heads all share the "Three ways to cover the gap" hierarchy. Pricing's
+   only second element is the term toggle, so it takes the primary-line
+   scale only. Scoped to .bp-section-heading; CTA heads stay at the larger
    clamp(28,3.5vw,44) h2 scale defined above. */
 .bp-section-heading {
-  font-size: clamp(28px, 3.6vw, 42px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.16;
+  font-size: clamp(36px, 3.3vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 /* FAQ accordion — adopt the deliverable / How it works card
@@ -1531,15 +1582,27 @@ a, button,
   max-width: none;
 }
 
+/* FAQ column split — narrow the accordion to 60% of the container so its question
+   cards line up edge-for-edge with the pricing grey panel (.pcard-right, 60%)
+   stacked above. With the shared 64px gap, calc(40% - 64px) + 64px + 1fr resolves
+   the right column to exactly 60% and puts its left edge at 40%. Desktop-only guard
+   so the shared ≤768px .faq-layout { 1fr } stack still wins on mobile. Page-scoped,
+   so the homepage/signal FAQ layouts are unaffected. */
+@media (min-width: 769px) {
+  .faq-layout { grid-template-columns: calc(40% - 64px) minmax(0, 1fr); }
+}
+
 /* FAQ left column — "Can't find…" subtext + contact link. */
 .faq-head {
   padding-top: 18px; /* realign H3 top with new .acc-trigger padding */
 }
+/* Muted second line paired with the FAQ head — tertiary ink mirrors the gap
+   section's .gap-title-b so head + sub read as one primary+muted unit. */
 .faq-sub {
   margin: 16px 0 0;
   font-size: 15px;
   line-height: 1.55;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   max-width: 34ch;
 }
 .faq-sub a {
@@ -1556,9 +1619,21 @@ a, button,
   }
 }
 
-/* h3 — subsection heads (How it works, FAQ). */
+/* FAQ heading — matched to the gap-section title scale (Pricing / Walkaway / FAQ
+   all share the "Three ways to cover the gap" hierarchy: big primary head over a
+   muted .faq-sub second line). Pulled out of the How-it-works/pillar h3 group below
+   so the larger scale doesn't leak to those heads. Keeps text-align/margin from the
+   shared styles.css .faq-heading rule. */
+.faq-heading {
+  font-size: clamp(36px, 3.3vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+/* h3 — subsection heads (How it works). */
 .howitworks .howit-head h3,
-.faq-heading,
 .pillar-hero-copy h3 {
   font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 600;
@@ -1684,134 +1759,6 @@ a, button,
 }
 
 /* ============================================================
-   Deliverable cards — Stripe-flat treatment (paired with signal).
-   Icon 40px / margin-bottom 8px, title 15px semibold with 2×16
-   vertical accent line ::before (per-pillar color), body 15px / 300 /
-   --text-secondary. All card chrome stripped.
-   ============================================================ */
-.deliverable-card {
-  background: none;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  gap: 12px;
-}
-.deliverable-card:hover { box-shadow: none; transform: none; }
-
-.deliverable-card .icon {
-  width: 40px;
-  height: 40px;
-  margin: 0 0 8px;
-}
-.deliverable-card .icon svg {
-  width: 28px; height: 28px;
-}
-
-.deliverable-card h4 {
-  position: relative;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.005em;
-  color: var(--text-primary);
-  padding-left: 12px;
-  margin: 0;
-}
-.deliverable-card h4::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2px;
-  height: 16px;
-  background: var(--text-tertiary);
-}
-[data-pillar="signal"] .deliverable-card h4::before { background: #0EA5E9; }
-[data-pillar="licensing"] .deliverable-card h4::before { background: #F97316; }
-
-.deliverable-card p {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  padding-left: 12px;
-  margin: 0;
-}
-
-/* ============================================================
-   Licensing deliverables — light cards (6-up, 3×2).
-   Mirrors the homepage .offer-card / .about-card DNA (18px radius,
-   soft shadow, translateY hover lift, 220ms --ease-card) in a light
-   surface treatment: solid card + full hairline border + soft shadow,
-   larger 21px/700 title (matches .offer-card-title). Symbols removed.
-   Scoped to --feature so the shared .deliverable-grid (signal page,
-   assets/styles.css) is untouched.
-   ============================================================ */
-/* Breathing room below the fixed-height photo hero — the grid no longer
-   sits flush; give it a clear gap (a touch more than a standard section top). */
-.section--flush-hero { padding-block-start: clamp(44px, 5vw, 76px); }
-
-.deliverable-grid--feature {
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(16px, 1.5vw, 22px);
-  /* No bottom margin: the deliverables→gapcover gap is then governed solely by
-     this section's padding-bottom + gapcover's padding-top, which sum to the same
-     clamp(44,5vw,76) as the hero→deliverables gap (deliverables' padding-top). */
-  margin: 0;
-  border: 0;
-}
-@media (max-width: 900px) {
-  .deliverable-grid--feature { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-  .deliverable-grid--feature { grid-template-columns: 1fr; }
-}
-
-/* Apple-style panel: subtle gray fill on the white page (no border), generous
-   padding, flat at rest, a gentle lift on hover. Strictly neutral. */
-.deliverable-grid--feature .deliverable-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: clamp(26px, 2.4vw, 34px);
-  background: var(--surface-tertiary);
-  border: 0;
-  border-radius: 20px;
-  box-shadow: none;
-  transition: transform 260ms var(--ease-card), box-shadow 260ms var(--ease-card);
-}
-@media (hover: hover) and (pointer: fine) {
-  .deliverable-grid--feature .deliverable-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-medium);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .deliverable-grid--feature .deliverable-card { transition: none; }
-  .deliverable-grid--feature .deliverable-card:hover { transform: none; }
-}
-.deliverable-grid--feature .deliverable-card h4 {
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  padding-left: 0;
-  margin: 0;
-}
-.deliverable-grid--feature .deliverable-card h4::before { display: none; }
-.deliverable-grid--feature .deliverable-card p {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  padding-left: 0;
-  margin: 0;
-}
-.deliverable-grid--feature .deliverable-card p a { color: inherit; }
-
-/* ============================================================
    Cover-the-gap — "three ways" as an open metrics-style band.
    Reference: a "key metrics" layout — two-tone heading (left) + the exposure
    as a right-aligned lead, then three OPEN columns (no card frames): icon +
@@ -1823,8 +1770,7 @@ a, button,
    adds a margin-top, so the two don't stack on mismatched vw/vh axes). Top is that
    same separation MINUS the hero's own trailing pad (`.pillar--lic-hero`
    padding-bottom) so the *visible* hero→heading gap reads even with the
-   heading→funnel gap — same "absorb the adjacent hero's trailing space" idea the
-   `.section--flush-hero` rule above uses. */
+   heading→funnel gap — same "absorb the adjacent hero's trailing space" idea. */
 .gapcover { padding-block: clamp(44px, 5vw, 72px) clamp(72px, 9vw, 120px); }
 
 /* Top area — heading left, exposure lead right (top-aligned). */
@@ -1868,7 +1814,7 @@ a, button,
 }
 .gapcover .gap-metric-sub {
   margin: clamp(14px, 1.4vw, 18px) 0 0; max-width: 34ch;
-  font-size: 15px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty;
+  font-size: clamp(16px, 1.3vw, 18px); line-height: 1.55; color: var(--text-secondary); text-wrap: pretty;
 }
 
 /* Staggered fade-up on first view — enhancement only; visible by default under reduced motion. */
@@ -1896,18 +1842,20 @@ a, button,
    Day/Week labels. Tokens only; theme-aware; neutral (no warm accent).
    ============================================================ */
 .walkaway .walkaway-head {
-  font-size: clamp(28px, 3.6vw, 42px);
-  font-weight: 700;
-  line-height: 1.16;
-  letter-spacing: -0.02em;
+  font-size: clamp(36px, 3.3vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   margin: 0;
   text-wrap: balance;
 }
+/* Muted second line paired with the head — mirrors the gap section's
+   .gap-title-b treatment (tertiary ink), so head + sub read as one unit. */
 .walkaway .walkaway-sub {
   font-size: 18px;
   line-height: 1.5;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   margin: 8px 0 clamp(40px, 5vw, 60px);
 }
 
@@ -2592,8 +2540,8 @@ a, button,
    Knobs: --hero-overlap (peek), --copy-lift, --step-scroll, --step-count.
    ═══════════════════════════════════════════════════════════════════════ */
 #main {
-  --step-count: 3;
-  --step-scroll: 165vh;    /* scrub length per step (screen scroll + crossfade) */
+  --step-count: 6;
+  --step-scroll: 110vh;    /* scrub length per step (screen scroll + crossfade) */
 }
 
 /* Full-viewport hero — fills the fold below the 64px fixed nav, mirroring the
@@ -2643,17 +2591,19 @@ a, button,
      (the falloff is what reads as a glow, not a flat wash), layered over a soft warm
      ground. Same structure as the hero's .hero-warm recipe; hues pulled to the hero's
      vivid orange family. */
+  /* Focal at the top-right, dropped so the bloom's center sits on the top edge of the
+     product shot (~10% down the stage), bloom ~20% smaller than the prior top-center version. */
   background:
-    radial-gradient(72% 68% at 50% 20%,
+    radial-gradient(58% 54% at 88% 10%,
       #FFD98A 0%, #F9AE4E 26%, #F4842C 48%, rgba(238,106,28,0.42) 66%, transparent 82%),
     linear-gradient(180deg, #FFF3E2 0%, #FFF9F2 62%, #FFFFFF 100%);
-  transform-origin: 50% 20%;
+  transform-origin: 88% 10%;
 }
 :root[data-theme="dark"] .lic-stage-bg::before {
   /* ember bloom fading to transparent over ink — glow near the focal, near-white step
      copy stays readable */
   background:
-    radial-gradient(72% 68% at 50% 20%,
+    radial-gradient(58% 54% at 88% 10%,
       rgba(255,180,80,0.45) 0%, rgba(230,120,40,0.26) 34%, rgba(180,80,20,0.12) 58%, transparent 80%),
     linear-gradient(180deg, #2B2118 0%, #252525 72%);
 }
@@ -2667,8 +2617,11 @@ a, button,
 }
 @keyframes lic-bg-in      { to { opacity: 1; transform: scale(1); } }
 @keyframes lic-bg-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
-/* Deck stacks every step panel in a single grid cell (they crossfade). */
+/* Deck stacks every step panel in a single grid cell (they crossfade).
+   position:relative so the persistent progress bar anchors to the deck's
+   (centered, padded) content box, not the full-width stage. */
 .lic-stage-deck {
+  position: relative;
   display: grid;
   height: 100%;
   width: 100%; max-width: 1480px;
@@ -2676,60 +2629,69 @@ a, button,
   padding-inline: clamp(20px, 4vw, 56px);
 }
 
-/* A step panel: identical 3-col layout [text | product | text], all stacked
-   so the frame stays in one place while opacity crossfades between steps. */
+/* A step panel: a two-column composition (screenshot layout) — a left copy
+   column and a right frame holding the full product shot. All panels share
+   grid-area 1/1 so they stack in one cell and opacity-crossfade in place; the
+   frame never moves. JS (layoutBand) fits every shot to one common scale inside
+   the right column so the frame holds still across the crossfade. */
 .lic-panel {
   grid-area: 1 / 1;
   display: grid;
-  grid-template-columns: 1fr minmax(0, 760px) 1fr;
-  align-content: center;      /* center the product row within the viewport */
-  align-items: start;         /* top-align the side copy with the product's top */
-  gap: clamp(18px, 3vw, 44px);
+  grid-template-columns: minmax(0, 32%) minmax(0, 1fr);
+  grid-template-areas: "copy frame";
+  align-items: start;              /* both columns top-anchored */
+  column-gap: clamp(36px, 4vw, 72px);
+  height: 100%;
+  padding-block: clamp(24px, 4vh, 56px);
+  /* Shared top offset — the copy column and the shot both start here, so the
+     bezel's top-left aligns to the top of the "How it works" headline. */
+  --lic-copy-top: clamp(4px, 5vh, 64px);
   opacity: 0;                 /* JS scrubs this; Step 1 starts visible below */
   will-change: opacity;
 }
 .lic-panel[data-panel="1"] { opacity: 1; }
 
-/* Side copy — both columns left-aligned, top-aligned to the product. */
-.lic-copy { max-width: 33ch; }
-.lic-copy--right { display: flex; flex-direction: column; gap: 22px; text-align: left; }
-/* ── Left rail — "How it Works" pinned to the shot's TOP-LEFT corner, and the
-   per-step line pinned to its BOTTOM-LEFT corner. Both share the shot's height
-   (var(--lic-shot-h), set by the fit() JS) so they hug the shot's top and bottom
-   edges as it scales. "How it Works" is ONE element lifted OUT of the crossfading
-   panels — it never fades or moves as steps 1→2→3 crossfade, so it reads as a
-   single constant title. The per-step line lives inside each panel and crossfades
-   with it. Both share the same lead scale (clamp 36–48); the title is ink and the
-   changing step line is grey, keeping it subordinate to the constant title. */
-.lic-howit {
-  position: absolute; z-index: 5; pointer-events: none;
-  left: 50%; transform: translateX(-50%);
-  top: calc((100dvh - 64px - var(--lic-shot-h, 460px)) / 2);
-  width: 100%; max-width: 1480px; padding-inline: clamp(20px, 4vw, 56px);
+/* Left copy column — top-anchored so the headline (and the first detail block)
+   sit at the same Y on every step; only the number of blocks varies down-column.
+   Vertical position set by padding-top for composition. */
+.lic-copy-col {
+  grid-area: copy;
+  align-self: start;
+  padding-top: var(--lic-copy-top);
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: clamp(22px, 3.4vh, 40px);
+  max-width: clamp(360px, 34vw, 480px);
+  text-align: left;
+}
+.lic-copy-col .lic-copy { max-width: none; width: 100%; }
+
+/* Two-tone headline — line 1 "How it works" (ink, CONSTANT across steps) over
+   line 2 the step title (grey, changes). Both at the same large scale, a tight
+   unit. min-height (JS --lic-head-h = tallest headline across steps) reserves a
+   constant heading height so block 1 starts at the same Y every step. */
+.lic-headline {
+  min-height: var(--lic-head-h, auto);
+  display: flex; flex-direction: column; gap: clamp(1px, 0.3vh, 4px);
+}
+.lic-headline .lic-howit,
+.lic-headline .lic-stepline {
   margin: 0;
-  font-size: clamp(36px, 3.3vw, 48px);
-  font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
-  color: var(--text-primary);
+  font-family: 'Urbanist', sans-serif;
+  font-size: clamp(30px, 3.3vw, 46px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.06;
+  text-wrap: balance; text-align: left;
 }
-/* Left column = shot height, vertically centered like the shot, step line pushed
-   to the bottom so it sits on the shot's bottom edge (independent of the taller
-   right column). */
-.lic-copy--left {
-  align-self: center;
-  height: var(--lic-shot-h, 460px);
-  display: flex; flex-direction: column; justify-content: flex-end;
+.lic-headline .lic-howit { color: var(--text-primary); }      /* line 1 — ink, constant */
+.lic-headline .lic-stepline { color: var(--text-tertiary); }  /* line 2 — grey, changing */
+
+/* Detail blocks — supporting h3 + p, stacked under the headline. */
+.lic-copy--right {
+  width: 100%; max-width: none;
+  display: flex; flex-direction: column;
+  gap: clamp(16px, 2.4vh, 28px);
+  text-align: left;
 }
-/* `.lic-copy .lic-stepline` (0-0-2-0) must out-specify the generic `.lic-copy p`
-   (0-0-1-1) body rule below — otherwise the step line silently collapses to 15.5px
-   grey (the same trap the old `.lic-lead` documented). */
-.lic-copy .lic-stepline {
-  margin: 0; max-width: 33ch;
-  font-size: clamp(36px, 3.3vw, 48px);
-  font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;
-  /* Same lead size as "How it Works" but the original grey — the changing line
-     stays subordinate to the constant ink title. */
-  color: var(--text-tertiary); text-wrap: balance;
-}
+.lic-showcase .lic-copy--right > * { max-width: 34ch; }
 .lic-copy h3 {
   font-size: clamp(20px, 1.7vw, 26px);
   font-weight: 600; line-height: 1.18; letter-spacing: -0.02em;
@@ -2747,7 +2709,7 @@ a, button,
    all clearly subordinate to the big left Step headline. Applies to every
    showcase step (1–3); `.lic-showcase .lic-copy--right` out-specifies the
    global `.lic-copy h3`/`.lic-copy p` (0-0-1-1) rules. */
-.lic-showcase .lic-copy--right { gap: 26px; }
+.lic-showcase .lic-copy--right { gap: clamp(20px, 3vh, 34px) clamp(28px, 4vw, 72px); }
 .lic-showcase .lic-copy--right h3 {
   font-size: clamp(16px, 1.1vw, 18px); font-weight: 600; line-height: 1.35;
   letter-spacing: -0.01em; margin: 0 0 8px; text-wrap: pretty;
@@ -2760,7 +2722,10 @@ a, button,
    product's IndustryTile/JurisTile look from existing theme tokens. Scoped to
    panel 1 so steps 2–3 keep the plain h3+p right column above. Tiles are
    decorative (aria-hidden) — the headings and copy carry the meaning. */
-.lic-showcase .lic-panel[data-panel="1"] .lic-copy--right { max-width: 34ch; gap: 22px; }
+/* Panel 1 has three detail blocks; like every step it fills the detail band as a
+   wrap-row (individual blocks cap at 34ch via `.lic-copy--right > *`). Without this
+   the generic `.lic-copy` 33ch cap would squeeze the whole band into one column. */
+.lic-showcase .lic-panel[data-panel="1"] .lic-copy--right { max-width: none; }
 .lic-panel[data-panel="1"] .lic-block { display: flex; flex-direction: column; }
 .lic-panel[data-panel="1"] .lic-block .lic-tilerow,
 .lic-panel[data-panel="1"] .lic-block .lic-tilegrid { margin-top: 14px; }
@@ -2789,60 +2754,54 @@ a, button,
 .lic-tile--juris.us { background: var(--juris-us-bg); color: var(--juris-us); }
 .lic-tile--juris.tw { background: var(--juris-tw-bg); color: var(--juris-tw); }
 
-/* Product frame — the iframe is scaled to fit (script sets height + scale). */
+/* Product frame — the right column of the panel; holds the full shot page
+   (caption + gray field + MacBook). The iframe is scaled to fit (JS layoutBand
+   sets explicit width + height + scale). The neutral background fills any area a
+   shorter shot leaves inside the constant-height frame so the box reads clean.
+   The width:100%/max-width fallback only governs the brief pre-fit flash. */
 .lic-frame {
   position: relative;
-  align-self: center;   /* center the shot in the viewport regardless of the right column's height, so its top/bottom edges (the corner anchors) sit at a constant position across steps */
-  width: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: var(--tis-shadow-lg, 0 24px 60px -18px rgba(0,0,0,.28), 0 8px 20px rgba(0,0,0,.10));
+  grid-area: frame;
+  align-self: start; justify-self: center;
+  margin-top: var(--lic-copy-top);   /* top-left aligns to the "How it works" headline top */
+  width: 100%; max-width: 100%;
+  overflow: visible;          /* no gray box, no shadow — the bare bezel floats on
+                                 the warm gradient */
 }
 .lic-frame iframe {
-  position: absolute; top: 0; left: 0;
-  transform-origin: top left;
+  position: absolute; top: 0; left: 50%;
+  transform-origin: top center;
   border: 0; display: block; background: transparent;
 }
-.lic-frame:not([data-fitted]) { aspect-ratio: 1180 / 800; }
-.lic-frame:not([data-fitted]) iframe { width: 100%; height: 100%; transform: none; }
+.lic-frame:not([data-fitted]) { aspect-ratio: 1240 / 840; }
+.lic-frame:not([data-fitted]) iframe { left: 0; width: 100%; height: 100%; transform: none; }
 
-/* ─── One-viewport "document on a warm ground" recomposition (tall desktop only) ───
-   Stacks the step vertically: persistent "How it Works" + step headline on top, the
-   full-size product shot centered over the hot bloom, and the supporting copy as one row
-   of up-to-3 columns pinned to the bottom WHITE falloff (max legibility for the small
-   text). Gated to viewports tall/wide enough to hold all three bands WITHOUT shrinking
-   the shot; below this the base 3-col layout above stays, so the shot never gets smaller.
-   JS (layoutBand) sizes every shot to one constant band so it holds still across steps. */
-@media (min-width: 1025px) and (min-height: 1000px) {
-  .lic-showcase .lic-panel {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    grid-template-areas: "head" "shot" "detail";
-    align-content: stretch; align-items: stretch;
-    height: 100%;
-    gap: clamp(16px, 2.4vh, 32px);
-    padding-block: clamp(28px, 4vh, 60px);
-  }
-  /* Header band — step headline top-right; the lifted "How it Works" overlays top-left. */
-  .lic-showcase .lic-copy--left {
-    grid-area: head; height: auto; min-height: var(--lic-head-h, auto);
-    align-self: start; justify-self: end; max-width: 26ch;
-    display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start;
-    text-align: right;
-  }
-  .lic-showcase .lic-copy .lic-stepline { text-align: right; max-width: 24ch; }
-  .lic-showcase .lic-howit { top: clamp(28px, 4vh, 60px); text-align: left; white-space: nowrap; }
-  /* Shot band — centered hero over the hot bloom; JS sets an explicit constant w/h. */
-  .lic-showcase .lic-frame { grid-area: shot; align-self: center; justify-self: center; width: auto; }
-  /* Detail band — one row of up-to-3 columns pinned to the bottom white zone. */
-  .lic-showcase .lic-copy--right {
-    grid-area: detail; align-self: end; max-width: none; width: 100%;
-    flex-direction: row; justify-content: center; align-items: start;
-    gap: clamp(28px, 4vw, 72px); min-height: var(--lic-detail-h, auto);
-  }
-  .lic-showcase .lic-copy--right > * { flex: 1 1 0; max-width: 34ch; }
-  .lic-showcase .lic-panel[data-panel="1"] .lic-copy--right { max-width: none; }
+/* Persistent bottom footer across all steps — a bold ink fill rail that runs
+   left→right INTO the "Build a bundle" CTA. No ground band, no top rule; it floats
+   over the composition. JS render() sets --lic-prog (0–1). */
+.lic-footer {
+  position: absolute; z-index: 6;
+  left: clamp(20px, 4vw, 56px); right: clamp(20px, 4vw, 56px);
+  bottom: clamp(20px, 4vh, 44px);
+  display: flex; align-items: center; gap: clamp(20px, 3vw, 44px);
+  padding-top: clamp(16px, 2.4vh, 28px);
 }
+.lic-progress-track {
+  position: relative; flex: 1; height: 6px;
+  background: var(--border-primary); border-radius: 999px; overflow: hidden;
+}
+.lic-progress-fill {
+  position: absolute; inset: 0 auto 0 0; height: 100%;
+  width: calc(var(--lic-prog, 0) * 100%);
+  background: var(--text-primary); border-radius: 999px;
+  transition: width 90ms linear;
+}
+.lic-cta { flex-shrink: 0; white-space: nowrap; }
+
+/* The stacked "document on a warm ground" composition above is now the single
+   pinned layout at every width the ≤768px / reduced-motion fallback doesn't claim;
+   JS (layoutBand) sizes every shot to one constant band (shrinking it to fit on short
+   viewports) so it holds still across the crossfade. */
 
 /* ── Graceful fallback: mobile + reduced-motion → simple vertical stack ── */
 @media (max-width: 768px), (prefers-reduced-motion: reduce) {
@@ -2856,16 +2815,31 @@ a, button,
   .lic-panel {
     grid-area: auto; opacity: 1 !important;
     grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas: none;   /* drop the two-column layout — copy-col then frame stack */
+    height: auto;
     gap: clamp(18px, 5vw, 28px);
     justify-items: center;
     padding-block: clamp(40px, 9vw, 72px);
   }
+  /* Reset the two-column named placement so copy-col + frame auto-stack in the
+     single mobile column (stale "copy"/"frame" area names would spawn phantom
+     tracks and overlap otherwise). */
+  .lic-copy-col, .lic-frame { grid-area: auto; }
+  /* Copy column recenters into a single centered stack; drop the top-anchor offset
+     and the reserved heading height. */
+  .lic-copy-col { max-width: 52ch; align-self: auto; align-items: center; text-align: center; padding-top: 0; }
+  .lic-headline { min-height: 0; align-items: center; }
   .lic-copy, .lic-copy--right { max-width: 46ch; text-align: center; margin: 0; }
-  .lic-frame { max-width: 640px; align-self: auto; }
-  /* Stacked mode: "How it Works" becomes a single centered heading at the top of
-     the section; the left column returns to normal flow (no shot-height pin). */
-  .lic-howit { position: static; transform: none; left: auto; top: auto; width: auto; max-width: 46ch; padding-inline: 0; margin: 0 auto clamp(24px, 6vw, 40px); text-align: center; }
-  .lic-copy--left { height: auto; align-self: auto; justify-content: normal; }
+  .lic-copy--right { flex-direction: column; align-items: center; }
+  .lic-copy--right > * { min-width: 0; max-width: 46ch; }
+  .lic-frame { max-width: 640px; align-self: auto; margin-top: 0; }
+  /* Stacked mobile: the step headline centers. */
+  .lic-headline .lic-stepline { text-align: center; }
+  /* Footer de-pins: drop the fill rail (a pinned-scroll affordance), keep the
+     "Build a bundle" CTA reachable, centered at the end of the stack. */
+  .lic-footer { position: static; border-top: 0; padding-top: 0; justify-content: center; margin-top: clamp(12px, 5vw, 28px); }
+  .lic-footer .lic-progress-track { display: none; }
   /* Centered stack: center the Step 1 tile groups under their centered copy. */
   .lic-panel[data-panel="1"] .lic-block { align-items: center; }
   .lic-panel[data-panel="1"] .lic-tilerow { justify-content: center; }
@@ -2927,16 +2901,19 @@ a, button,
 
 /* Partner-institutions trust strip — pinned to the bottom of the hero, the
    larger logo row breathing beneath its label. */
-.lic-hero-trust { margin-top: auto; pointer-events: auto; }
+/* Group (label + logos) centered vertically in the free space between the CTA
+   and the hero's bottom padding — margin-block:auto splits the leftover flex
+   space above and below equally. */
+.lic-hero-trust { margin-block: auto; pointer-events: auto; }
 .lic-hero-trust__label {
-  font-size: 13px; font-weight: 600; letter-spacing: 0.01em;
-  color: var(--text-primary); margin: 0 0 clamp(20px, 3vh, 34px);
+  font-size: 18px; font-weight: 600; letter-spacing: 0.01em;
+  color: #fff; margin: 0 0 clamp(20px, 3vh, 34px);
 }
 .lic-hero-trust__logos { display: flex; align-items: center; flex-wrap: wrap; gap: 36px; }
 .lic-hero-trust__logos .partner {
   height: 42px; width: 152px;
-  /* Institution marks in their own primary colours; no hover change. */
-  filter: none; opacity: 1;
+  /* Institution marks flattened to solid white in both themes. */
+  filter: brightness(0) invert(1); opacity: 1;
 }
 
 /* Right dashboard — absolutely placed, bleeds off the right (and, being tall,
@@ -3426,85 +3403,173 @@ a, button,
       <div class="lic-stage-bg" aria-hidden="true"></div>
       <div class="lic-stage-deck">
 
-        <!-- Persistent section title — one static "How it Works" anchored to the
-             shot's top-left corner. Lifted OUT of the panels so it never crossfades
-             as the steps move through; it reads as a single constant title. ZH is
-             a placeholder — flag for Miko ZH-lock. -->
-        <p class="lic-howit" data-zh-html data-zh="如何運作">How it Works</p>
+        <!-- Two-column steps: a left copy column (a two-tone headline — constant
+             "How it works" over the changing grey step title — then that step's
+             detail blocks) and a right frame holding the MacBook shot floating on
+             the gradient. All panels share grid-area 1/1 and crossfade in place; the
+             frame never moves. The headline reserves a constant height (JS
+             --lic-head-h) so the first detail block starts at the same Y on every
+             step. Progress is a single continuous fill bar pinned bottom-left of the
+             deck. ZH copy on steps 4–6 is draft — flag for Miko ZH-lock. -->
 
         <!-- Step 1 — pick jurisdiction & industry -->
         <div class="lic-panel" data-panel="1" data-reveal>
-          <aside class="lic-copy lic-copy--left">
-            <p class="lic-stepline" data-zh="選定出口國 × 產業別">Pick your jurisdiction and industry</p>
-          </aside>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="選定出口國 × 產業別">Pick your jurisdiction and industry</p>
+            </div>
+            <aside class="lic-copy lic-copy--right">
+              <div class="lic-block">
+                <h3 data-zh="鎖定單一出口國">Scoped to a single jurisdiction</h3>
+                <p data-zh="只為你真正需要的市場付費。">Pay only for the market you actually need.</p>
+              </div>
+              <div class="lic-block">
+                <h3 data-zh="鎖定單一產業">Scoped to a single industry</h3>
+                <p data-zh="對準你產品真正競爭的領域。">Matched to where your product actually competes.</p>
+              </div>
+              <div class="lic-block">
+                <h3 data-zh="這些輸入界定您的專利包">Your inputs define the bundle</h3>
+                <p data-zh="產品與市場描述越具體，AI 專利推薦就越貼近您實際的海外風險。">The more specific your product and market description, the closer the patent recommendation tracks your real overseas risk.</p>
+              </div>
+            </aside>
+          </div>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-showcase-step1.html" title="Licensing Platform — Step 1: pick your jurisdiction and industry" loading="lazy" scrolling="no" tabindex="-1"></iframe>
             <img class="lic-still" src="/assets/product-shots/licensing/mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." width="1300" height="820" loading="lazy" decoding="async">
           </div>
-          <aside class="lic-copy lic-copy--right">
-            <div class="lic-block">
-              <h3 data-zh="鎖定單一出口國">Scoped to a single jurisdiction</h3>
-              <p data-zh="只為你真正需要的市場付費。">Pay only for the market you actually need.</p>
-              <div class="lic-tilerow" aria-hidden="true">
-                <span class="lic-tile lic-tile--juris us">US</span>
-                <span class="lic-tile lic-tile--juris tw">TW</span>
-              </div>
-            </div>
-            <div class="lic-block">
-              <h3 data-zh="鎖定單一產業">Scoped to a single industry</h3>
-              <p data-zh="對準你產品真正競爭的領域。">Matched to where your product actually competes.</p>
-              <div class="lic-tilegrid" aria-hidden="true">
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></span>
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg></span>
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4a2 2 0 0 0 2-2V3"/><circle cx="9" cy="9" r="2"/><path d="M7 21v-4a2 2 0 0 1 2-2h4"/><circle cx="15" cy="15" r="2"/></svg></span>
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg></span>
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
-                <span class="lic-tile lic-tile--ind"><svg viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
-              </div>
-            </div>
-            <div class="lic-block">
-              <h3 data-zh="這些輸入界定您的專利包">Your inputs define the bundle</h3>
-              <p data-zh="產品與市場描述越具體，AI 專利推薦就越貼近您實際的海外風險。">The more specific your product and market description, the closer the patent recommendation tracks your real overseas risk.</p>
-            </div>
-          </aside>
         </div>
 
         <!-- Step 2 — AI Smart-pick builds your bundle -->
         <div class="lic-panel" data-panel="2" data-reveal>
-          <aside class="lic-copy lic-copy--left">
-            <p class="lic-stepline" data-zh="AI 智選組建你的專利包">AI Smart-pick builds your bundle</p>
-          </aside>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="AI 智選組建你的專利包">AI Smart-pick builds your bundle</p>
+            </div>
+            <aside class="lic-copy lic-copy--right">
+              <div>
+                <h3 data-zh="為什麼是 30 件，不是 1 件">Why thirty, not one</h3>
+                <p data-zh-html data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent isn't a <strong style="font-weight:600">position</strong> — it's a <strong style="font-weight:600">target</strong>: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing.</p>
+              </div>
+              <div>
+                <h3 data-zh="專利包內容：SABCD">Inside the bundle: SABCD</h3>
+                <p data-zh-html data-zh="30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。">30 patents across all 5 tiers. S and A are the strategic top tier that go on <strong style="font-weight:600">offense</strong>; B, C and D blanket the field around them — <strong style="font-weight:600">quality</strong> and <strong style="font-weight:600">quantity</strong> in one bundle.</p>
+              </div>
+            </aside>
+          </div>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-showcase.html" title="Licensing Platform — Step 2: AI Smart-pick builds your bundle" loading="lazy" scrolling="no" tabindex="-1"></iframe>
             <img class="lic-still" src="/assets/product-shots/licensing/mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." width="1300" height="820" loading="lazy" decoding="async">
           </div>
-          <aside class="lic-copy lic-copy--right">
-            <div>
-              <h3 data-zh="為什麼是 30 件，不是 1 件">Why thirty, not one</h3>
-              <p data-zh-html data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent isn't a <strong style="font-weight:600">position</strong> — it's a <strong style="font-weight:600">target</strong>: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing.</p>
-            </div>
-            <div>
-              <h3 data-zh="專利包內容：SABCD">Inside the bundle: SABCD</h3>
-              <p data-zh-html data-zh="30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。">30 patents across all 5 tiers. S and A are the strategic top tier that go on <strong style="font-weight:600">offense</strong>; B, C and D blanket the field around them — <strong style="font-weight:600">quality</strong> and <strong style="font-weight:600">quantity</strong> in one bundle.</p>
-            </div>
-          </aside>
         </div>
 
         <!-- Step 3 — swap any same-tier patent -->
         <div class="lic-panel" data-panel="3" data-reveal>
-          <aside class="lic-copy lic-copy--left">
-            <p class="lic-stepline" data-zh="替換任一同級專利">Swap any same-tier patent</p>
-          </aside>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="替換任一同級專利">Swap any same-tier patent</p>
+            </div>
+            <aside class="lic-copy lic-copy--right">
+              <div>
+                <h3 data-zh="AI 推薦，你做主">AI proposes; you decide</h3>
+                <p data-zh-html data-zh="同級專利自選替換，不加價、無等審。">Swap any pick for a <strong style="font-weight:600">same-tier</strong> alternate — <strong style="font-weight:600">no extra cost</strong>, no review wait.</p>
+              </div>
+            </aside>
+          </div>
           <div class="lic-frame">
             <iframe src="/assets/product-shots/licensing/licensing-swap-showcase.html" title="Licensing Platform — Step 3: swap any same-tier patent" loading="lazy" scrolling="no" tabindex="-1"></iframe>
             <img class="lic-still" src="/assets/product-shots/licensing/mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." width="1300" height="820" loading="lazy" decoding="async">
           </div>
-          <aside class="lic-copy lic-copy--right">
-            <div>
-              <h3 data-zh="AI 推薦，你做主">AI proposes; you decide</h3>
-              <p data-zh-html data-zh="同級專利自選替換，不加價、無等審。">Swap any pick for a <strong style="font-weight:600">same-tier</strong> alternate — <strong style="font-weight:600">no extra cost</strong>, no review wait.</p>
+        </div>
+
+        <!-- Step 4 — confirm the plan & price (draft ZH — Miko ZH-lock) -->
+        <div class="lic-panel" data-panel="4" data-reveal>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="確認方案與價格">Confirm the plan and the price</p>
             </div>
-          </aside>
+            <aside class="lic-copy lic-copy--right">
+              <div>
+                <h3 data-zh="是訂閱，不是資本支出">A subscription, not a capital project</h3>
+                <p data-zh-html data-zh="自行申請每件需 NT$50,000+ 與 18 個月，專職 IP 工程師年成本破百萬。專利包把這些變成月均不到 1 萬——3 / 6 / 12 / 24 個月彈性期別，2 年方案最高省 12%。">Filing runs <strong style="font-weight:600">NT$50,000+</strong> and <strong style="font-weight:600">18 months</strong> per patent; a dedicated IP hire is <strong style="font-weight:600">NT$1M+ a year</strong>. A bundle turns that into <strong style="font-weight:600">under NT$10K/month</strong> — 3 / 6 / 12 / 24-month terms, up to 12% off on two years.</p>
+              </div>
+              <div>
+                <h3 data-zh="單一價格，全包">One price, all-in</h3>
+                <p data-zh="專利包、期限、涵蓋範圍一頁看清，簽約時沒有隱藏費用。">Bundle, term and coverage on one page — no line-item surprises at signing.</p>
+              </div>
+              <div>
+                <h3 data-zh="你確認前不會鎖定">Nothing locks until you say so</h3>
+                <p data-zh="在任何承諾生效前，完整檢視 30 件專利清單與總價。">Review the full 30-patent list and the total before anything is committed.</p>
+              </div>
+            </aside>
+          </div>
+          <div class="lic-frame">
+            <iframe src="/assets/product-shots/licensing/licensing-confirm-showcase.html" title="Licensing Platform — Step 4: confirm the plan and the price" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step4.png" alt="Licensing Platform, Step 4 — confirm your plan and see the price." width="1300" height="863" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+        <!-- Step 5 — sign a real contract (draft ZH — Miko ZH-lock) -->
+        <div class="lic-panel" data-panel="5" data-reveal>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="簽署真實、機構背書的合約">Sign a real, institution-backed contract</p>
+            </div>
+            <aside class="lic-copy lic-copy--right">
+              <div>
+                <h3 data-zh="具約束力的授權，而非口頭承諾">A binding licence, not a promise</h3>
+                <p data-zh="在瀏覽器完成真實非專屬授權合約的電子簽署。">e-Sign a genuine non-exclusive licence agreement right in the browser.</p>
+              </div>
+              <div>
+                <h3 data-zh="由專利權人背書">Backed by the patent owner</h3>
+                <p data-zh="合約相對方即為持有專利的機構，授權在爭議中站得住腳。">The counterparty is the institution that holds the patents — the licence stands up in a dispute.</p>
+              </div>
+            </aside>
+          </div>
+          <div class="lic-frame">
+            <iframe src="/assets/product-shots/licensing/licensing-contract-showcase.html" title="Licensing Platform — Step 5: sign a real, institution-backed contract" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step5.png" alt="Licensing Platform, Step 5 — e-sign a real, institution-backed licence contract." width="1300" height="1234" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+        <!-- Step 6 — your licence, live (draft ZH — Miko ZH-lock) -->
+        <div class="lic-panel" data-panel="6" data-reveal>
+          <div class="lic-copy-col">
+            <div class="lic-headline">
+              <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
+              <p class="lic-stepline" data-zh="你的授權，即時生效">Your licence, live</p>
+            </div>
+            <aside class="lic-copy lic-copy--right">
+              <div>
+                <h3 data-zh="你不再是好下手的目標">You stop being the easy target</h3>
+                <p data-zh-html data-zh="專利蟑螂只挑好下手的對象。30 件以你公司名義生效的專利拉高攻擊成本——從被動防禦轉為主動佈局。">Patent trolls pick <strong style="font-weight:600">soft targets</strong>. Thirty patents held <strong style="font-weight:600">in your name</strong> raise the cost of coming after you — <strong style="font-weight:600">passive defense</strong> becomes <strong style="font-weight:600">active position</strong>.</p>
+              </div>
+              <div>
+                <h3 data-zh="營運自由度，即刻啟動">Freedom to Operate, activated</h3>
+                <p data-zh="合約簽署當下涵蓋即生效，以小時計，而非數月。">Coverage is live the moment the contract is signed — hours, not months.</p>
+              </div>
+              <div>
+                <h3 data-zh="可出示的憑證">A credential you can show</h3>
+                <p data-zh="可驗證的數位授權憑證，向合作夥伴與客戶證明你的涵蓋範圍。">A verifiable Digital Licence Credential proves your coverage to partners and customers.</p>
+              </div>
+            </aside>
+          </div>
+          <div class="lic-frame">
+            <iframe src="/assets/product-shots/licensing/licensing-dlc-showcase.html" title="Licensing Platform — Step 6: your licence, live — Digital Licence Credential" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step6.png" alt="Licensing Platform, Step 6 — your live Digital Licence Credential." width="1300" height="930" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+        <!-- Persistent footer across all steps: a bold ink fill rail that runs into
+             the "Build a bundle" CTA. render() sets --lic-prog (0–1) so the fill
+             advances left→right toward the button as you scroll the 6 steps. -->
+        <div class="lic-footer">
+          <span class="lic-progress-track" aria-hidden="true"><span class="lic-progress-fill"></span></span>
+          <a href="https://license.tisglobalinc.com/welcome" class="btn btn-primary btn-lg lic-cta" data-zh="試跑專利包">Build a bundle</a>
         </div>
 
       </div>
@@ -3580,77 +3645,37 @@ a, button,
     </div>
   </section>
 
-  <!-- ─── 2. Deliverables (4 cards, directly below hero) ─── -->
-  <section class="section section--flush-hero" aria-label="Licensing deliverables">
-    <div class="container">
-
-      <div class="deliverable-grid deliverable-grid--feature">
-        <article class="deliverable-card">
-          <h4 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart-Pick</h4>
-          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <h4 data-zh="權威法人聯合授權">Co-licensed in your name</h4>
-          <p data-zh-html data-zh="創智、資策會、陽明交大以貴公司名義開立 30 件合法非獨家專利。在國際買家與投資人面前，是機構級 IP 後盾，撕掉「代工小廠」的標籤。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> issue <strong style="font-weight:600">legal</strong>, <strong style="font-weight:600">non-exclusive</strong> patents in your company's name — institution-grade and reputable, recognized by buyers and investors.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <h4 data-zh="主動式防護盾">An active IP shield</h4>
-          <p data-zh-html data-zh="專利流氓（NPE）只挑好下手的目標。三家機構的合法 IP 防線拉高攻擊成本，他們自然跳過你。從被動防禦轉為主動佈局。">Patent trolls (NPEs) pick easy targets. Institutions' legal IP line raises the cost of attack — <strong style="font-weight:600">passive defense</strong> becomes <strong style="font-weight:600">active position</strong>.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <h4 data-zh="付款隔日立即生效">Live the day after payment</h4>
-          <p data-zh-html data-zh="金流確認隔日防護網生效。交付含公證電子簽章的數位授權憑證（DLC），以及「TIS × 權威機構」聯名授權認證標章。">You receive a <strong style="font-weight:600">Digital License Credential (DLC)</strong> carrying a notarized e-signature, plus a co-branded "TIS × authoritative institution" <strong style="font-weight:600">Verified License Badge</strong>.</p>
-        </article>
-
-        <article class="deliverable-card">
-          <h4 data-zh="2 秒驗證，自由展示">Verify in 2 seconds, display anywhere</h4>
-          <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
-        </article>
-
-        <article class="deliverable-card">
-          <h4 data-zh="專利轉化為 OpEx 租賃保險">Patents turned into OpEx</h4>
-          <p data-zh-html data-zh="自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle keeps you under NT$10K/month, with <strong style="font-weight:600">flexible</strong> terms.</p>
-        </article>
-      </div>
-
-    </div>
-  </section>
-
   <!-- ─── 3. Pricing (process-then-price: placed after the signup walkthrough,
        directly above the FAQ so price objections are handled next) ───
        The institution marks (iPIC · III · NYCU) that used to sit in a
        standalone "Exclusive Patent Access" band now live nested in the
        card under Proof & delivery (.pcard-trust), closing the trust loop. -->
-  <section class="section section--alt" id="pricing" aria-labelledby="lic-pricing-heading">
+  <section class="section section--alt" id="pricing" aria-labelledby="lic-pricing-heading" data-bundle-picker>
     <div class="container">
-      <h2 id="lic-pricing-heading" class="bp-section-heading" data-zh="依期間定價。">Price by term.</h2>
 
-      <!-- Pricing card — single split card. The term toggle (3/6/12/24) is the
-           one interactive control and drives the per-month price + savings;
-           jurisdiction & industry are folded into the feature list (real
-           selection happens at lobby.html). Reimagined from the old
-           jurisdiction×industry picker + estimate panel. Price by term:
-           3mo NT$9,990 · 6mo 9,490 · 12mo 8,990 (default) · 24mo 8,490.
-           ZH on new feature lines is condensed — flag for a Miko ZH-lock. -->
-      <div class="pcard" data-bundle-picker>
+      <!-- Pricing header — heading + the term toggle, pulled out of the card so
+           the toggle reads as a page-level control. The toggle (3/6/12/24) is the
+           one interactive control and drives the per-month price + savings.
+           Price by term: 3mo NT$9,990 · 6mo 9,490 · 12mo 8,990 (default) · 24mo 8,490. -->
+      <div class="pricing-head" data-reveal>
+        <h2 id="lic-pricing-heading" class="bp-section-heading" data-zh="依期間定價。">Price by term.</h2>
+        <div class="bp-toggle" role="tablist" aria-label="Subscription term">
+          <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
+          <button type="button" class="bp-toggle-seg" data-bp-term="6" role="tab" aria-selected="false" data-zh="6 個月">6 months</button>
+          <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" role="tab" aria-selected="true" data-zh="12 個月">12 months</button>
+          <button type="button" class="bp-toggle-seg" data-bp-term="24" role="tab" aria-selected="false" data-zh="24 個月">24 months</button>
+        </div>
+      </div>
+
+      <!-- Pricing card — single split card. Left = title + price + CTA; right
+           (muted) = the Features checklist then a 2×3 industry icon grid. -->
+      <div class="pcard" data-reveal>
 
         <div class="pcard-body">
 
           <div class="pcard-left">
             <div>
               <h3 class="pcard-title" data-zh="打造你的專利包">Build your bundle</h3>
-              <!-- ZH provisional (jurisdiction folded into subhead) — flag for a Miko ZH-lock. -->
-              <p class="pcard-desc" data-zh="一次訂閱，30 件 SABCD 評等專利，適用美國或台灣。">One subscription, 30 SABCD-graded patents in the US or Taiwan.</p>
-
-              <div class="bp-toggle" role="tablist" aria-label="Subscription term">
-                <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
-                <button type="button" class="bp-toggle-seg" data-bp-term="6" role="tab" aria-selected="false" data-zh="6 個月">6 months</button>
-                <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" role="tab" aria-selected="true" data-zh="12 個月">12 months</button>
-                <button type="button" class="bp-toggle-seg" data-bp-term="24" role="tab" aria-selected="false" data-zh="24 個月">24 months</button>
-              </div>
 
               <div class="pcard-price">
                 <span class="pcard-amt" data-bp-summary="price">NT$8,990</span>
@@ -3660,30 +3685,16 @@ a, button,
             </div>
 
             <div class="pcard-left-foot">
-              <hr class="pcard-rule">
               <a href="https://license.tisglobalinc.com/welcome" class="btn btn-primary btn-lg pcard-cta" data-target="licensing-signup" data-zh="訂閱">Subscribe</a>
             </div>
           </div>
 
           <div class="pcard-right">
-            <!-- Industries — the six MVP sectors, expanded from the old single
-                 "6 sectors" line per the canonical INDUSTRIES list in
-                 brand/previews/licensing-flow-preview.html. ZH provisional —
+            <!-- Features — the proof & delivery guarantees, folded into a single
+                 checklist above the industry grid. ZH heading provisional —
                  flag for a Miko ZH-lock. -->
             <div class="pcard-feat">
-              <h4 class="pcard-feat-title" data-zh="適用產業（6 大領域）">Industries (6 sectors)</h4>
-              <ul class="pcard-list">
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="半導體設計與製造">Semiconductor design &amp; manufacturing</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="網通與通訊">Networking &amp; communications</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="運算系統">Computing systems</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="整合應用（AI · 自駕 · 電動車）">Integrated applications (AI · AV · EV)</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="多媒體與影像處理">Multimedia &amp; image processing</span></li>
-                <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="淨零與碳管理">Net-Zero &amp; carbon management</span></li>
-              </ul>
-            </div>
-
-            <div class="pcard-feat">
-              <h4 class="pcard-feat-title" data-zh="憑證與交付">Proof &amp; delivery</h4>
+              <h4 class="pcard-feat-title" data-zh="方案內容">Features</h4>
               <ul class="pcard-list">
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="授權認證標章 + QR 驗證">Verified License Badge + QR verifier</span></li>
                 <li><svg class="prod-check" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.2"/></svg><span data-zh="DLC 數位授權憑證（PAdES · eIDAS）">DLC digital license credential (PAdES · eIDAS)</span></li>
@@ -3692,16 +3703,38 @@ a, button,
               </ul>
             </div>
 
-            <!-- Trust strip — institution marks, nested under Proof & delivery
-                 (relocated from the deleted Exclusive-Patent-Access band).
-                 Full primary-color logos at rest. -->
-            <div class="pcard-trust">
-              <h4 class="pcard-feat-title" data-zh="專利授權自權威機構">Licensed from established institutions</h4>
-              <div class="partner-logos pcard-logos">
-                <a href="https://www.ipic.tw/"      class="partner partner--ipic" aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-                <a href="https://www.iii.org.tw/en"  class="partner partner--iii"  aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-                <a href="https://www.nycu.edu.tw/"   class="partner partner--nycu" aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
-              </div>
+            <!-- Industries — the six MVP sectors as an icon grid (2 rows × 3),
+                 icons = the canonical Lucide industry glyphs from
+                 brand/assets/icons/industry/. Names verbatim from the prior
+                 checklist. ZH provisional — flag for a Miko ZH-lock. -->
+            <div class="pcard-feat">
+              <h4 class="pcard-feat-title" data-zh="適用產業（6 大領域）">Industries (6 sectors)</h4>
+              <ul class="pcard-indgrid">
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="半導體設計與製造">Semiconductor design &amp; manufacturing</span>
+                </li>
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="網通與通訊">Networking &amp; communications</span>
+                </li>
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4a2 2 0 0 0 2-2V3"/><circle cx="9" cy="9" r="2"/><path d="M7 21v-4a2 2 0 0 1 2-2h4"/><circle cx="15" cy="15" r="2"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="運算系統">Computing systems</span>
+                </li>
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="整合應用（AI · 自駕 · 電動車）">Integrated applications (AI · AV · EV)</span>
+                </li>
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="多媒體與影像處理">Multimedia &amp; image processing</span>
+                </li>
+                <li class="pcard-ind">
+                  <span class="lic-tile lic-tile--ind" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
+                  <span class="pcard-ind-name" data-zh="淨零與碳管理">Net-Zero &amp; carbon management</span>
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -3718,7 +3751,7 @@ a, button,
       <div class="faq-layout">
         <header class="faq-head">
           <h3 id="lic-faq-heading" class="faq-heading" data-zh="常見問題">FAQ</h3>
-          <p class="faq-sub" data-zh-html data-zh='找不到需要的資訊嗎？<a href="#contact">聯絡我們的支援團隊 →</a>'>Can't find what you're looking for? <a href="#contact">Contact our support team →</a></p>
+          <p class="faq-sub" data-zh-html data-zh='找不到需要的資訊嗎？<br><a href="#contact">聯絡我們的支援團隊 →</a>'>Can't find what you're looking for? <br><a href="#contact">Contact our support team →</a></p>
         </header>
 
         <div class="acc-list faq-list">
@@ -4127,14 +4160,20 @@ a, button,
   const NATURAL_W = 1180;
   const SCRUB_END = 0.8;   // fraction of each step slice spent scrubbing before the crossfade
   const N = panels.length;
+  const FROZEN = new Set([2, 3, 4]); // panels 3,4,5 hold on their initial screen (no inner scrub)
 
-  // Same-origin embed hygiene: hide the standalone page's marketing caption +
-  // language toggle, drop its background, and stop its internal scroller from
-  // taking user wheel input (page scroll drives scrollTop instead).
+  // Same-origin embed hygiene. The MacBook floats seamlessly on the section's warm
+  // gradient: hide the shot page's caption + language toggle, make the page
+  // transparent (no gray box), and normalize every laptop screen to one 16:10
+  // height so all six steps are the same size and the crossfade is seamless. The
+  // padding leaves room for the MacBook's own drop-shadow (0 30px 60px) to render
+  // inside the iframe. Freeze .viewport so page scroll drives its scrollTop (scrub).
   const EMBED_CSS = `
-    html,body{margin:0!important;padding:0!important;background:transparent!important;overflow:hidden!important;}
+    html,body{margin:0!important;background:transparent!important;overflow:hidden!important;}
+    body{padding:6px!important;}
     .cap,.lang-toggle{display:none!important;}
-    .macbook{margin:0 auto!important;}
+    .macbook,.mb-lid{filter:none!important;box-shadow:none!important;}
+    .mb-screen{height:720px!important;}
     .viewport{overflow:hidden!important;}
   `;
   const docOf = (iframe) => { try { return iframe.contentDocument; } catch (e) { return null; } };
@@ -4169,67 +4208,93 @@ a, button,
     stage.style.setProperty('--lic-shot-h', (naturalH * scale) + 'px');
   }
 
-  // Tall-desktop "document on a warm ground" recomposition (paired with the gated CSS
-  // @media min-width:1025 + min-height:1000). Sizes EVERY shot to one common band —
-  // stage height minus the tallest header + detail row + gaps + padding — so the shot is
-  // a constant size across the crossfade and, on gated viewports, never smaller than the
-  // base width-driven layout.
-  const bandMQ = matchMedia('(min-width: 1025px) and (min-height: 1000px)');
+  // Two-column column-fit: render every shot at one DESIGN_W, scale them all by ONE
+  // common factor into the right column so the frame holds still across the crossfade.
+  // With the caption hidden and screens normalized to 16:10, all shots share the same
+  // natural height → identical laptop size, seamless transition. DESIGN_W ≈ the
+  // MacBook width + the shadow-padding so the laptop fills the frame large.
+  // Also reserves the tallest two-tone headline (--lic-head-h) so the first detail
+  // block sits at the same Y on every step.
+  const DESIGN_W = 1200;
+  const bandMQ = matchMedia('(min-width: 769px)');
 
   function layoutBand(){
     const stageH = stage.clientHeight;
-    let naturalH = 800, maxHead = 0, maxDetail = 0, availW = 0;
-    // Pass 1 — natural iframe size + measure the tallest header / detail across steps.
-    panels.forEach(p => {
-      const iframe = iframeOf(p);
-      const d = injectEmbed(iframe);
-      const mb = d && (d.querySelector('.macbook') || d.body);
-      if (mb) {
-        iframe.style.width = NATURAL_W + 'px'; iframe.style.transform = 'none';
-        naturalH = Math.round(mb.getBoundingClientRect().height) || 800;
-        iframe.style.height = naturalH + 'px';
-      }
-      const head = p.querySelector('.lic-copy--left');
-      const det  = p.querySelector('.lic-copy--right');
-      if (head) { head.style.minHeight = ''; maxHead   = Math.max(maxHead,   head.offsetHeight); }
-      if (det)  { det.style.minHeight  = ''; maxDetail = Math.max(maxDetail, det.offsetHeight); }
-      availW = Math.max(availW, p.clientWidth);
-    });
-    // Reserve the tallest header + detail in every panel so the shot band is constant.
+    const stageTop = stage.getBoundingClientRect().top;
+    const cs0 = getComputedStyle(panels[0]);
+    const padT = parseFloat(cs0.paddingTop) || 0;
+    // Shot top = panel padding-top + the shared copy/frame offset (headline top).
+    const frame0 = panels[0].querySelector('.lic-frame');
+    const copyTop = frame0 ? (parseFloat(getComputedStyle(frame0).marginTop) || 0) : 0;
+    const shotTop = padT + copyTop;
+    // Footer top within the stage — the enlarged shot must fit ABOVE it.
+    const footer = stage.querySelector('.lic-footer');
+    const footerTop = footer ? (footer.getBoundingClientRect().top - stageTop) : stageH;
+    const availH = Math.max(160, footerTop - shotTop - 28);
+    // Reserve the tallest headline so block 1 starts at a constant Y. Measure with
+    // the reservation lifted, then set the var and restore.
+    let maxHead = 0;
+    panels.forEach(p => { const h = p.querySelector('.lic-headline'); if (h) { h.style.minHeight = '0'; maxHead = Math.max(maxHead, h.offsetHeight); } });
     stage.style.setProperty('--lic-head-h', Math.ceil(maxHead) + 'px');
-    stage.style.setProperty('--lic-detail-h', Math.ceil(maxDetail) + 'px');
-    const cs = getComputedStyle(panels[0]);
-    const gap  = parseFloat(cs.rowGap) || 24;
-    const padT = parseFloat(cs.paddingTop) || 28;
-    const padB = parseFloat(cs.paddingBottom) || 28;
-    const availH = stageH - maxHead - maxDetail - gap * 2 - padT - padB;
-    // Fit the shot to the band, keeping aspect ratio; width rarely binds on wide decks.
-    const scale = Math.min(availW / NATURAL_W, availH / naturalH);
+    panels.forEach(p => { const h = p.querySelector('.lic-headline'); if (h) h.style.minHeight = ''; });
+    // Pass 1 — render each shot at DESIGN_W, measure its natural page height + the
+    // column width (frame is grid-sized to the right column; measure before sizing).
+    let colW = 0, maxH = 0;
     panels.forEach(p => {
       const frame = p.querySelector('.lic-frame');
       const iframe = frame.querySelector('iframe');
-      iframe.style.transform = 'scale(' + scale + ')';
-      frame.style.width  = (NATURAL_W * scale) + 'px';
-      frame.style.height = (naturalH * scale) + 'px';
+      const d = injectEmbed(iframe);
+      colW = Math.max(colW, frame.clientWidth);
+      if (d && d.body) {
+        iframe.style.width = DESIGN_W + 'px';
+        iframe.style.transform = 'none';
+        iframe.style.height = 'auto';
+        const h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight) || 900;
+        maxH = Math.max(maxH, h);
+      }
+    });
+    if (!maxH) maxH = 900;
+    if (!colW) colW = 600;
+    // One common scale — width-fit, clamped so the tallest shot fits the height.
+    const scale = Math.min(colW / DESIGN_W, availH / maxH);
+    const frameH = Math.round(maxH * scale);
+    panels.forEach(p => {
+      const frame = p.querySelector('.lic-frame');
+      const iframe = frame.querySelector('iframe');
+      iframe.style.width = DESIGN_W + 'px';
+      iframe.style.height = maxH + 'px';
+      iframe.style.transform = 'translateX(-50%) scale(' + scale + ')';
+      frame.style.height = frameH + 'px';     // constant across panels → frame holds still
       frame.setAttribute('data-fitted', '');
     });
+    stage.style.setProperty('--lic-shot-h', frameH + 'px');
   }
 
-  // Undo band-mode inline sizing so the base width-driven fit() takes over cleanly.
+  // Undo the pinned inline sizing so the ≤768px / reduced-motion static PNG stack
+  // governs its own layout (no stale forced frame height, no band reservations).
   function clearBand(){
     stage.style.removeProperty('--lic-head-h');
     stage.style.removeProperty('--lic-detail-h');
+    stage.style.removeProperty('--lic-howit-h');
     panels.forEach(p => {
-      const frame = p.querySelector('.lic-frame');
-      const head  = p.querySelector('.lic-copy--left');
-      const det   = p.querySelector('.lic-copy--right');
-      if (frame) frame.style.width = '';
-      if (head)  head.style.minHeight = '';
-      if (det)   det.style.minHeight = '';
+      const frame  = p.querySelector('.lic-frame');
+      const iframe = frame && frame.querySelector('iframe');
+      const head   = p.querySelector('.lic-copy--left');
+      const det    = p.querySelector('.lic-copy--right');
+      if (frame)  { frame.style.width = ''; frame.style.height = ''; frame.removeAttribute('data-fitted'); }
+      if (iframe) iframe.style.transform = '';
+      if (head)   head.style.minHeight = '';
+      if (det)    det.style.minHeight = '';
     });
   }
 
-  const applyFit = () => { if (bandMQ.matches) layoutBand(); else { clearBand(); panels.forEach(fit); } };
+  // On the static (mobile / reduced-motion) path the iframe is hidden and a PNG shown,
+  // so skip fitting entirely — just strip inline sizing. Otherwise the stacked band fitter
+  // is the sole path (non-static always implies ≥769px, so bandMQ matches).
+  const applyFit = () => {
+    if (isStatic()) { clearBand(); return; }
+    if (bandMQ.matches) layoutBand(); else { clearBand(); panels.forEach(fit); }
+  };
 
   const whenReady = (iframe) => new Promise((res) => {
     const d = docOf(iframe);
@@ -4253,11 +4318,12 @@ a, button,
 
   // Map section scroll progress (0..1) → active step, internal scrub, crossfade.
   function render(progress){
-    const x = clamp01(progress) * N;            // 0..N
+    const prog = clamp01(progress);
+    const x = prog * N;                          // 0..N
     const cur = Math.min(Math.floor(x), N - 1);
     const local = Math.min(x - cur, 1);          // 0..1 within the current step
-    // internal screen scrub for the current step
-    setScroll(panels[cur], local / SCRUB_END);
+    // internal screen scrub for the current step (frozen steps hold at their initial screen)
+    setScroll(panels[cur], FROZEN.has(cur) ? 0 : local / SCRUB_END);
     // opacities: current visible, everything else hidden…
     panels.forEach((p, i) => setOpacity(p, i === cur ? 1 : 0));
     // …except during the tail crossfade into the next step
@@ -4267,6 +4333,8 @@ a, button,
       setOpacity(panels[cur + 1], f);
       setScroll(panels[cur + 1], 0);            // next step enters at its top
     }
+    // continuous fill across all 6 steps — the rail runs into the CTA
+    stage.style.setProperty('--lic-prog', prog.toFixed(4));
   }
 
   let gsap = null, ScrollTrigger = null, trigger = null;

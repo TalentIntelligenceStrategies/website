@@ -1,0 +1,246 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Payment Confirmed (Step 7) · Showcase</title>
+<meta name="description" content="Static marketing still of the TIS Licensing Platform payment-confirmed screen (款項已入帳) — receipt summary, next-day activation notice, DLC issuing. Example data only." />
+
+<!--
+  Static marketing still — Licensing Platform "款項已入帳 / Payment confirmed" screen
+  (real route: license.tisglobalinc.com/checkout/payment-confirmed · flow epilogue,
+  all wizard steps done). Picture, not a working tool. Source is raw Tailwind, so the
+  product CSS here is authored as a scoped .pc-* block using the brand tokens.
+  All order numbers, company and dates are illustrative placeholders. Mono = Urbanist.
+-->
+
+<style>
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-inverse:var(--n10);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);
+  --status-success-fg:#15803d;--status-success-bg:#f0fdf4;--status-info-fg:#1e40af;--status-info-bg:#eff6ff;
+  --score-a:#047857;--score-a-bg:#ecfdf5;
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:var(--text-primary);min-height:100vh;
+  background:radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;padding:56px 24px 80px;}
+
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:680px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);border-radius:22px;padding:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);}
+.mb-screen{background:var(--surface-page);border-radius:12px;overflow:hidden;height:760px;display:flex;flex-direction:column;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);}
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+.viewport{position:absolute;inset:0;overflow:auto;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+.bb{max-width:1120px;margin:0 auto;padding:28px 30px 56px;}
+
+/* wizard all-done */
+.bb .wiz-track{display:flex;align-items:flex-start;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px 16px 16px;margin-bottom:36px;position:relative;}
+.bb .wt-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1;min-width:0;}
+.bb .wt-step:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);right:calc(-50% + 16px);top:13px;height:2px;background:var(--surface-inverse);z-index:-1;}
+.bb .wt-circle{width:28px;height:28px;border-radius:50%;background:var(--surface-inverse);border:2px solid var(--surface-inverse);display:inline-flex;align-items:center;justify-content:center;color:var(--text-inverse);flex-shrink:0;}
+.bb .wt-circle svg{width:14px;height:14px;}
+.bb .wt-label{font-size:12px;color:var(--text-primary);font-weight:500;text-align:center;line-height:1.3;}
+
+/* payment-confirmed scoped block */
+.bb .pc-wrap{max-width:680px;margin:0 auto;}
+.bb .pc-hero{text-align:center;margin-bottom:26px;}
+.bb .pc-check{width:64px;height:64px;border-radius:50%;background:var(--status-success-bg);display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.bb .pc-check svg{width:32px;height:32px;color:var(--status-success-fg);}
+.bb .pc-eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text-tertiary);}
+.bb .pc-h1{font-size:30px;font-weight:600;letter-spacing:-.01em;color:var(--text-primary);margin:8px 0 0;}
+.bb .pc-sub{font-size:14px;color:var(--text-secondary);line-height:1.6;margin:12px auto 0;max-width:520px;}
+.bb .pc-card{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:16px;padding:22px 26px;box-shadow:var(--shadow-medium);margin-bottom:16px;}
+.bb .pc-card-lbl{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:14px;}
+.bb .pc-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--border-primary);font-size:14px;}
+.bb .pc-row.first{border-top:0;}
+.bb .pc-k{color:var(--text-secondary);}
+.bb .pc-v{font-family:var(--font-mono);color:var(--text-primary);font-variant-numeric:tabular-nums;text-align:right;}
+.bb .pc-v.plain{font-family:var(--font-sans);}
+.bb .pc-v.big{font-size:16px;font-weight:700;}
+.bb .pc-foot{font-size:11px;color:var(--text-tertiary);margin-top:12px;}
+.bb .pc-alert{display:flex;gap:12px;padding:16px 18px;border-radius:12px;background:var(--status-info-bg);border:1px solid rgba(30,64,175,.15);margin-bottom:16px;}
+.bb .pc-alert .aic{flex-shrink:0;color:var(--status-info-fg);}
+.bb .pc-alert .aic svg{width:20px;height:20px;}
+.bb .pc-alert .at{font-size:13px;font-weight:700;color:var(--status-info-fg);margin-bottom:4px;}
+.bb .pc-alert .ab{font-size:12px;line-height:1.6;color:var(--status-info-fg);opacity:.92;}
+.bb .pc-dls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.bb .pc-dl{flex:1;min-width:220px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid var(--border-primary);border-radius:10px;background:var(--surface-page);font-size:13px;font-weight:600;color:var(--text-secondary);}
+.bb .pc-nexthd{font-size:13px;font-weight:600;color:var(--text-primary);margin:0 0 12px;}
+.bb .pc-next{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.bb .pc-nextcard{border:1px solid var(--border-primary);border-radius:12px;padding:18px 14px;background:var(--surface-page);text-align:center;}
+.bb .pc-nextcard.primary{background:var(--surface-inverse);border-color:var(--surface-inverse);}
+.bb .pc-nextcard .ni{width:36px;height:36px;border-radius:9px;background:var(--surface-tertiary);display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;color:var(--text-primary);}
+.bb .pc-nextcard.primary .ni{background:rgba(255,255,255,.14);color:#fff;}
+.bb .pc-nextcard .ni svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.bb .pc-nextcard .nt{font-size:13px;font-weight:600;color:var(--text-primary);}
+.bb .pc-nextcard.primary .nt{color:var(--text-inverse);}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}}
+</style>
+
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — payment confirmed</h1>
+  <p data-t="cap_body">Remittance confirmed, the flow closes on a receipt: order summary, the amount received, and the day the licence goes live. Per conditional activation, the licence turns on at 00:00 the day after receipt — and the DLC and Verified Badge issue with it. Example data only — order numbers, company and dates are illustrative placeholders.</p>
+  <div class="note" data-t="cap_note">US × Semiconductors · 12-month term · flow complete (款項已入帳).</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>license.tisglobalinc.com/checkout/payment-confirmed</span>
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <div class="viewport">
+          <div class="bb">
+
+            <div class="pc-wrap">
+              <div class="pc-hero">
+                <div class="pc-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+                <div class="pc-eyebrow" data-t="eyebrow">Payment confirmed</div>
+                <h1 class="pc-h1" data-t="h1">Payment received</h1>
+                <p class="pc-sub" data-t="sub">Your remittance has been confirmed. Your licence takes effect from 28 Jun 2026.</p>
+              </div>
+
+              <div class="pc-card">
+                <div class="pc-card-lbl" data-t="sum_lbl">Receipt summary</div>
+                <div class="pc-row first"><span class="pc-k" data-t="r_order">Order number</span><span class="pc-v">ORD-2026-0042</span></div>
+                <div class="pc-row"><span class="pc-k" data-t="r_lic">Licensee</span><span class="pc-v plain" data-t="r_lic_v">Hongsheng Semiconductor Co., Ltd. (sample)</span></div>
+                <div class="pc-row"><span class="pc-k" data-t="r_amt">Amount received</span><span class="pc-v big">NT$ 119,880</span></div>
+                <div class="pc-row"><span class="pc-k" data-t="r_time">Receipt confirmed</span><span class="pc-v">2026-06-27 15:42</span></div>
+                <div class="pc-row"><span class="pc-k" data-t="r_eff">Licence effective (= confirm +1)</span><span class="pc-v" data-t="r_eff_v">2026-06-28 00:00</span></div>
+                <div class="pc-row"><span class="pc-k" data-t="r_exp">Licence expiry</span><span class="pc-v">2027-06-28</span></div>
+                <div class="pc-foot" data-t="r_foot">Sample summary · illustrative data.</div>
+              </div>
+
+              <div class="pc-alert">
+                <span class="aic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
+                <div>
+                  <div class="at" data-t="al_t">Your licence activates at 00:00 the next day</div>
+                  <div class="ab" data-t="al_b">Under conditional activation, the licence turns on at 00:00 the day after receipt is confirmed (leaving TIS accounting the confirmation day to post the payment and issue the invoice). At activation the system issues your DLC (tri-party signed PDF) and Verified Licence Badge.</div>
+                </div>
+              </div>
+
+              <div class="pc-dls">
+                <span class="pc-dl" data-t="dl1">⬇ Download receipt confirmation</span>
+                <span class="pc-dl" data-t="dl2">⬇ 30 patents · gazette PDFs (bundle)</span>
+              </div>
+
+              <p class="pc-nexthd" data-t="next_hd">What's next</p>
+              <div class="pc-next">
+                <div class="pc-nextcard primary">
+                  <span class="ni" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></span>
+                  <div class="nt" data-t="n1">Go to My licences</div>
+                </div>
+                <div class="pc-nextcard">
+                  <span class="ni" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></span>
+                  <div class="nt" data-t="n2">Notification centre</div>
+                </div>
+                <div class="pc-nextcard">
+                  <span class="ni" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+                  <div class="nt" data-t="n3">Back to home</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var I18N = {
+  en: {
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — payment confirmed",
+    cap_body:"Remittance confirmed, the flow closes on a receipt: order summary, the amount received, and the day the licence goes live. Per conditional activation, the licence turns on at 00:00 the day after receipt — and the DLC and Verified Badge issue with it. Example data only — order numbers, company and dates are illustrative placeholders.",
+    cap_note:"US × Semiconductors · 12-month term · flow complete (款項已入帳).",
+    wiz1:"Build method", wiz2:"Your 30 patents", wiz3:"Confirm plan", wiz4:"Payment", wiz5:"Sign contract",
+    eyebrow:"Payment confirmed", h1:"Payment received",
+    sub:"Your remittance has been confirmed. Your licence takes effect from 28 Jun 2026.",
+    sum_lbl:"Receipt summary",
+    r_order:"Order number", r_lic:"Licensee", r_lic_v:"Hongsheng Semiconductor Co., Ltd. (sample)",
+    r_amt:"Amount received", r_time:"Receipt confirmed",
+    r_eff:"Licence effective (= confirm +1)", r_eff_v:"2026-06-28 00:00", r_exp:"Licence expiry",
+    r_foot:"Sample summary · illustrative data.",
+    al_t:"Your licence activates at 00:00 the next day",
+    al_b:"Under conditional activation, the licence turns on at 00:00 the day after receipt is confirmed (leaving TIS accounting the confirmation day to post the payment and issue the invoice). At activation the system issues your DLC (tri-party signed PDF) and Verified Licence Badge.",
+    dl1:"⬇ Download receipt confirmation", dl2:"⬇ 30 patents · gazette PDFs (bundle)",
+    next_hd:"What's next",
+    n1:"Go to My licences", n2:"Notification centre", n3:"Back to home"
+  },
+  zh: {
+    cap_kicker:"授權平台 · 產品預覽",
+    cap_title:"組建流程 — 款項已入帳",
+    cap_body:"匯款確認後，流程以收據作結：訂單摘要、到帳金額，以及授權生效日。依條件生效原則，授權於收款確認日次日 00:00 啟用，DLC 與授權標章同步核發。僅為示意資料 — 訂單編號、公司與日期皆為佔位範例。",
+    cap_note:"美國 × 半導體 · 12 個月期別 · 流程完成（款項已入帳）。",
+    wiz1:"組建方式", wiz2:"您的 30 件", wiz3:"確認方案", wiz4:"付款", wiz5:"合約簽署",
+    eyebrow:"款項已入帳", h1:"款項已入帳",
+    sub:"您的匯款已確認入帳，授權將於 2026-06-28 起正式生效。",
+    sum_lbl:"入帳摘要",
+    r_order:"訂單編號", r_lic:"Licensee", r_lic_v:"鴻晟半導體股份有限公司（範例）",
+    r_amt:"到帳金額", r_time:"收款確認時間",
+    r_eff:"授權生效日（= 收款確認日 +1）", r_eff_v:"2026-06-28 00:00（次日生效）", r_exp:"授權到期日",
+    r_foot:"範例摘要 · 示意資料。",
+    al_t:"授權將於次日 00:00 起生效",
+    al_b:"依條件生效原則，授權於收款確認日次日 00:00 起正式啟用（留 TIS 會計於確認當日完成入帳、開立發票）；生效時系統將核發 DLC（三方簽章 PDF）與授權標章。",
+    dl1:"⬇ 下載收款確認單", dl2:"⬇ 30 件公告本 PDF 打包下載",
+    next_hd:"後續行動",
+    n1:"前往我的授權包", n2:"查看通知中心", n3:"返回平台首頁"
+  }
+};
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.querySelectorAll("[data-t]").forEach(function(node){
+    var key = node.getAttribute("data-t");
+    if (S[key] != null) node.textContent = S[key];
+  });
+  document.documentElement.lang = (lang === "zh") ? "zh-Hant" : "en";
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
+  });
+}
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ render(btn.getAttribute("data-lang")); });
+});
+render(new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en");
+</script>

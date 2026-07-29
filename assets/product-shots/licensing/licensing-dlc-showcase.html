@@ -1,0 +1,390 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Active Licence · DLC (Step 8) · Showcase</title>
+<meta name="description" content="Static marketing still of the TIS Licensing Platform active-licence / DLC screen (授權生效) — letterhead masthead, licence summary, Digital Licence Credential, document centre and Verified Licence Badge. Example data only." />
+
+<!--
+  Static marketing still — Licensing Platform "授權生效 · DLC / Active licence" screen
+  (real route: license.tisglobalinc.com/license/[id]/dlc). Picture, not a working tool.
+  Source is Tailwind-token based; product CSS here is authored as a scoped .dlc-* block
+  using the brand tokens. All licence/DLC numbers, company names, the tri-party signature
+  block and the QR are illustrative placeholders — NOT a genuine credential. The QR does
+  not encode anything and the co-issuers are shown generically. Mono = Urbanist.
+-->
+
+<style>
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-inverse:var(--n10);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-inverse:var(--n1);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);
+  --status-success-fg:#15803d;--status-success-bg:#f0fdf4;--status-info-fg:#1e40af;--status-info-bg:#eff6ff;
+  --signal-active:#22c55e;
+  --score-s:#8b6914;--score-a:#047857;--score-b:#0369a1;--score-c:#6d28d9;--score-d:#c2410c;
+  --score-s-bg:#faf3dc;--score-a-bg:#ecfdf5;--score-b-bg:#f0f9ff;--score-c-bg:#f5f3ff;--score-d-bg:#fff7ed;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:var(--text-primary);min-height:100vh;
+  background:radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;padding:56px 24px 80px;}
+
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:700px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);border-radius:22px;padding:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);}
+.mb-screen{background:var(--surface-page);border-radius:12px;overflow:hidden;height:820px;display:flex;flex-direction:column;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);}
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:560px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+.viewport{position:absolute;inset:0;overflow:auto;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+.bb{max-width:1120px;margin:0 auto;padding:28px 30px 56px;}
+
+/* masthead */
+/* page header (replaces the old black masthead) */
+.dlc-head{margin-bottom:22px;}
+.dlc-head .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-tertiary);margin-bottom:8px;}
+.dlc-head h1{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+/* bundle recap row folded into the licence-summary card (checkout order-row style) */
+.dlc-recap{display:flex;align-items:center;gap:0;padding-bottom:18px;border-bottom:1px solid var(--border-primary);margin-bottom:18px;}
+.dlc-recap .ci-left{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;}
+.dlc-recap .ci-idrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dlc-recap .ci-name{font-size:15px;font-weight:600;color:var(--text-primary);}
+.dlc-recap .ci-namemeta{display:inline-flex;align-items:center;gap:6px;}
+.dlc-recap .ci-cnt{font-size:12px;font-weight:600;color:var(--text-secondary);}
+.dlc-recap .ci-sep{display:inline-block;width:2px;height:2px;border-radius:9999px;background:var(--text-secondary);}
+.dlc-recap .ci-cluster{display:flex;align-items:center;gap:10px;flex-shrink:0;padding-left:16px;}
+.dlc-recap .ci-amt{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.dlc-recap .ci-term{font:inherit;font-size:12px;font-weight:600;border-radius:9999px;padding:5px 12px;background:var(--surface-inverse);border:1px solid var(--surface-inverse);color:var(--text-inverse);}
+
+.dlc-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start;}
+.dlc-card{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-low);margin-bottom:16px;}
+.dlc-lbl{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.dlc-lbl .chip{font-family:var(--font-sans);letter-spacing:.02em;text-transform:none;font-size:11px;font-weight:700;color:var(--status-info-fg);background:var(--status-info-bg);border-radius:9999px;padding:3px 10px;}
+
+/* 授權包摘要 grid */
+.ldl{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;}
+.ldl .cell{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.ldl .cell.span2{grid-column:1/-1;}
+.ldl dt{font-size:11px;font-weight:500;color:var(--text-tertiary);letter-spacing:.02em;}
+.ldl dd{margin:0;font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.4;}
+.ldl dd.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:.03em;}
+.ldl .tiers{display:inline-flex;gap:5px;margin-left:8px;vertical-align:middle;}
+.tchip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;border-radius:9999px;padding:2px 8px;}
+.tchip.s{background:var(--score-s-bg);color:var(--score-s);}.tchip.a{background:var(--score-a-bg);color:var(--score-a);}.tchip.b{background:var(--score-b-bg);color:var(--score-b);}.tchip.c{background:var(--score-c-bg);color:var(--score-c);}.tchip.d{background:var(--score-d-bg);color:var(--score-d);}
+.dlc-prog{margin-top:20px;padding-top:18px;border-top:1px solid var(--border-primary);}
+.dlc-prog .pl{display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:8px;}
+.dlc-prog .pl .pv{font-family:var(--font-mono);color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.dlc-prog .track{height:6px;border-radius:9999px;background:var(--surface-tertiary);overflow:hidden;}
+.dlc-prog .fill{height:100%;border-radius:9999px;background:var(--surface-inverse);}
+
+/* DLC card */
+.dlc-code{font-family:var(--font-mono);font-size:18px;font-weight:700;letter-spacing:.06em;color:var(--text-primary);margin-bottom:12px;}
+.dlc-verify{font-size:12px;color:var(--text-secondary);margin-bottom:16px;}
+.dlc-verify .u{font-family:var(--font-mono);color:var(--text-primary);}
+.dlc-sig-lbl{font-size:12px;font-weight:600;color:var(--text-primary);margin:14px 0 10px;}
+.dlc-sig{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-primary);}
+.dlc-sig .ok{width:20px;height:20px;border-radius:50%;background:var(--status-success-bg);color:var(--status-success-fg);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dlc-sig .ok svg{width:12px;height:12px;}
+.dlc-sig .sr{font-size:11px;color:var(--text-tertiary);}
+.dlc-sig .sn{font-size:13px;font-weight:600;color:var(--text-primary);margin-top:1px;}
+.dlc-note{font-size:11px;color:var(--text-tertiary);margin-top:14px;line-height:1.6;}
+
+/* 文件中心 */
+.dc-sub{font-size:12px;color:var(--text-tertiary);line-height:1.6;margin:-8px 0 14px;}
+.dc-sec{margin-bottom:14px;}
+.dc-sec-h{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--text-secondary);margin-bottom:8px;}
+.dc-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border-primary);border-radius:9px;margin-bottom:7px;background:var(--surface-page);}
+.dc-item .cbx{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--surface-inverse);background:var(--surface-inverse);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dc-item .cbx.off{background:var(--surface-page);border-color:var(--border-tertiary);}
+.dc-item .cbx svg{width:11px;height:11px;color:#fff;}
+.dc-item .dn{font-size:13px;color:var(--text-primary);}
+.dc-item .dtag{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;}
+.dc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-primary);}
+.dc-all{font-size:12px;font-weight:600;color:var(--text-secondary);display:inline-flex;align-items:center;gap:6px;}
+.dc-dl{font:inherit;font-size:13px;font-weight:600;color:var(--text-inverse);background:var(--surface-inverse);border:0;border-radius:9px;padding:10px 18px;cursor:pointer;}
+
+/* sidebar badge */
+.dlc-aside{position:sticky;top:0;display:flex;flex-direction:column;gap:12px;}
+.badge-card{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:14px;padding:20px;box-shadow:var(--shadow-medium);}
+.badge-card .bl{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:6px;}
+.badge-card .bc{font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);margin-bottom:16px;letter-spacing:.04em;}
+.badge-seal{border:1px solid var(--border-primary);border-radius:14px;padding:20px;text-align:center;background:linear-gradient(180deg,var(--surface-secondary),var(--surface-page));}
+.badge-seal .bt{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--text-primary);text-transform:uppercase;}
+.badge-seal .bsub{font-size:12px;font-weight:600;color:var(--text-secondary);margin-top:6px;}
+.badge-seal .bval{font-size:11px;color:var(--text-tertiary);margin-top:2px;font-variant-numeric:tabular-nums;}
+.fauxqr{width:120px;height:120px;margin:16px auto 12px;border-radius:8px;background:#fff;padding:8px;border:1px solid var(--border-tertiary);}
+.fauxqr svg{display:block;width:100%;height:100%;}
+.badge-seal .bcap{font-size:10px;color:var(--text-tertiary);line-height:1.5;}
+.badge-addon{font:inherit;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-page);border:1px solid var(--border-primary);border-radius:10px;padding:11px 14px;text-align:center;}
+
+/* tiles */
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.dlc-mast .juris-tile.us{background:rgba(255,255,255,.14);color:#c7d2fe;border-color:rgba(199,210,254,.3);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.dlc-mast .ind-ic{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);color:#fff;}
+.ind-ic svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}.dlc-status .dot{animation:none;}}
+</style>
+
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Your licence, live — the Digital Licence Credential</h1>
+  <p data-t="cap_body">The day after payment, the licence goes live: a co-branded letterhead, the full licence summary, a PAdES Digital Licence Credential with public QR verification, a document centre, and the Verified Licence Badge to display. Example data only — licence numbers, company, the tri-party signature block and the QR are illustrative placeholders; the QR encodes nothing.</p>
+  <div class="note" data-t="cap_note">US × Semiconductors · 12-month term · active licence (授權生效 · DLC).</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>license.tisglobalinc.com/license/lic-9f3a2c71/dlc</span>
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <div class="viewport">
+          <div class="bb">
+
+            <div class="dlc-head">
+              <div class="eyebrow" data-t="ph_eyebrow">Active licence · DLC</div>
+              <h1 data-t="ph_h1">Your licence is live</h1>
+            </div>
+
+            <div class="dlc-grid">
+              <div>
+                <div class="dlc-card">
+                  <div class="dlc-lbl" data-t="sum_lbl">Licence summary</div>
+                  <div class="dlc-recap">
+                    <div class="ci-left">
+                      <div class="ci-idrow">
+                        <span class="juris-tile us">US</span>
+                        <span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg></span>
+                        <span class="ci-name" data-t="m_name">Semiconductors bundle</span>
+                        <span class="ci-namemeta">
+                          <span class="ci-sep" aria-hidden="true"></span><span class="ci-cnt" data-t="r_b1">1 bundle</span>
+                          <span class="ci-sep" aria-hidden="true"></span><span class="ci-cnt" data-t="r_b2">30 patents</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="ci-cluster">
+                      <span class="ci-amt">NT$ 119,880</span>
+                      <span class="ci-term" data-t="m_term">12 months</span>
+                    </div>
+                  </div>
+                  <dl class="ldl">
+                    <div class="cell"><dt data-t="s_no">Contract no.</dt><dd class="mono">LIC-9F3A2C71</dd></div>
+                    <div class="cell"><dt data-t="s_eff">Effective date</dt><dd class="mono">2026-06-28</dd></div>
+                    <div class="cell span2"><dt data-t="s_term">Licence term</dt><dd class="mono">2026-06-28 – 2027-06-28</dd></div>
+                    <div class="cell span2"><dt data-t="s_pat">Licensed patents</dt><dd>30<span class="tiers"><span class="tchip s">S 5</span><span class="tchip a">A 6</span><span class="tchip b">B 9</span><span class="tchip c">C 6</span><span class="tchip d">D 4</span></span></dd></div>
+                    <div class="cell"><dt data-t="s_val">Contract value (tax incl.)</dt><dd class="mono">NT$ 119,880</dd></div>
+                    <div class="cell"><dt data-t="s_days">Days remaining</dt><dd class="mono">341</dd></div>
+                    <div class="cell"><dt data-t="s_lic">Licensee</dt><dd data-t="s_lic_v">Hongsheng Semiconductor (sample)</dd></div>
+                    <div class="cell"><dt data-t="s_lor">Licensor</dt><dd data-t="s_lor_v">泰然策略解密股份有限公司</dd></div>
+                    <div class="cell"><dt data-t="s_terr">Territory</dt><dd data-t="s_terr_v">United States</dd></div>
+                    <div class="cell"><dt data-t="s_type">Licence type</dt><dd data-t="s_type_v">Non-exclusive</dd></div>
+                  </dl>
+                  <div class="dlc-prog">
+                    <div class="pl"><span data-t="p_lbl">Licence progress</span><span class="pv" data-t="p_val">24 / 365 days used</span></div>
+                    <div class="track"><span class="fill" style="width:6.6%"></span></div>
+                  </div>
+                </div>
+
+                <div class="dlc-card">
+                  <div class="dlc-lbl"><span data-t="dlc_lbl">DLC number</span><span class="chip" data-t="dlc_chip">PAdES · public QR verify</span></div>
+                  <div class="dlc-code">DLC-2026-US-SEMI-0042</div>
+                  <div class="dlc-verify"><span data-t="v_lbl">Public verification link:</span> <span class="u">license.tisglobalinc.com/verify/DLC-2026-US-SEMI-0042</span></div>
+                  <div class="dlc-sig-lbl" data-t="sig_lbl">Tri-party signature status</div>
+                  <div class="dlc-sig"><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><div class="sr" data-t="sig1_r">Supplier</div><div class="sn" data-t="sig1_n">Co-issuing institutions</div></div></div>
+                  <div class="dlc-sig"><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><div class="sr" data-t="sig2_r">Licensee</div><div class="sn" data-t="sig2_n">Hongsheng Semiconductor (sample)</div></div></div>
+                  <div class="dlc-sig"><span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><div class="sr">TIS</div><div class="sn" data-t="sig3_n">泰然策略解密股份有限公司</div></div></div>
+                  <div class="dlc-note" data-t="sig_note">Sample signatures — the actual signature block appears once the official digital-signature (MOICA) integration is live.</div>
+                </div>
+
+                <div class="dlc-card">
+                  <div class="dlc-lbl" data-t="dc_lbl">Document centre</div>
+                  <div class="dc-sub" data-t="dc_sub">Tick items to download together — the whole bundle or item by item.</div>
+                  <div class="dc-sec">
+                    <div class="dc-sec-h" data-t="dc_s1">Legal documents</div>
+                    <div class="dc-item"><span class="cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="dn" data-t="dc_i1">Licence agreement</span><span class="dtag">PDF</span></div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i2">Invoice request</span><span class="dtag">PDF</span></div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i3">Receipt confirmation</span><span class="dtag">PDF</span></div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i4">e-Invoice</span><span class="dtag">PDF</span></div>
+                  </div>
+                  <div class="dc-sec">
+                    <div class="dc-sec-h" data-t="dc_s2">Licence badge assets</div>
+                    <div class="dc-item"><span class="cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="dn" data-t="dc_i5">Licence badge</span><span class="dtag">PNG · SVG</span></div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i6">DLC credential</span><span class="dtag">PDF</span></div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i7">Public verify QR code</span><span class="dtag">PNG</span></div>
+                  </div>
+                  <div class="dc-sec">
+                    <div class="dc-sec-h" data-t="dc_s3">Patent gazettes</div>
+                    <div class="dc-item"><span class="cbx off"></span><span class="dn" data-t="dc_i8">Gazette PDFs · full bundle (30)</span><span class="dtag">ZIP</span></div>
+                  </div>
+                  <div class="dc-foot">
+                    <span class="dc-all"><span class="cbx off" style="width:16px;height:16px;border:1.5px solid var(--border-tertiary);border-radius:4px;display:inline-block"></span><span data-t="dc_all">Select all</span></span>
+                    <button class="dc-dl" type="button" data-t="dc_dl">⬇ Download selected (2)</button>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="dlc-aside">
+                <div class="badge-card">
+                  <div class="bl" data-t="b_lbl">Verified Licence Badge</div>
+                  <div class="bc">DLC-2026-US-SEMI-0042</div>
+                  <div class="badge-seal">
+                    <div class="bt">TIS Verified License</div>
+                    <div class="bsub" data-t="b_sub">Semiconductors bundle · US</div>
+                    <div class="bval" data-t="b_val">Valid 2026-06-28 – 2027-06-28</div>
+                    <div class="fauxqr"><svg id="qr" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"></svg></div>
+                    <div class="bcap" data-t="b_cap">TIS official verification badge · embedded public-QR verify</div>
+                  </div>
+                </div>
+                <button class="badge-addon" type="button" data-t="addon1">Add print kit (NT$5,000)</button>
+                <button class="badge-addon" type="button" data-t="addon2">Add combined-licence badge (NT$3,000)</button>
+              </aside>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* deterministic faux QR — encodes nothing; finder patterns + seeded modules */
+(function(){
+  var N=25, svg=document.getElementById("qr"), seed=1337, cells="";
+  function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+  function finder(x,y){ // 7x7 finder pattern
+    var s="";
+    for(var i=0;i<7;i++)for(var j=0;j<7;j++){
+      var on=(i===0||i===6||j===0||j===6)||(i>=2&&i<=4&&j>=2&&j<=4);
+      if(on) s+='<rect x="'+(x+j)+'" y="'+(y+i)+'" width="1" height="1" fill="#252525"/>';
+    }
+    return s;
+  }
+  function inFinder(x,y){
+    return (x<8&&y<8)||(x>N-9&&y<8)||(x<8&&y>N-9);
+  }
+  for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+    if(inFinder(x,y)) continue;
+    if(rnd()>0.55) cells+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="#252525"/>';
+  }
+  svg.innerHTML = cells + finder(0,0) + finder(N-7,0) + finder(0,N-7);
+})();
+
+var I18N = {
+  en: {
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Your licence, live — the Digital Licence Credential",
+    cap_body:"The day after payment, the licence goes live: a co-branded letterhead, the full licence summary, a PAdES Digital Licence Credential with public QR verification, a document centre, and the Verified Licence Badge to display. Example data only — licence numbers, company, the tri-party signature block and the QR are illustrative placeholders; the QR encodes nothing.",
+    cap_note:"US × Semiconductors · 12-month term · active licence (授權生效 · DLC).",
+    ph_eyebrow:"Active licence · DLC", ph_h1:"Your licence is live",
+    m_name:"Semiconductors bundle", m_term:"12 months", m_status:"Active", r_b1:"1 bundle", r_b2:"30 patents",
+    sum_lbl:"Licence summary",
+    s_no:"Contract no.", s_eff:"Effective date", s_term:"Licence term", s_pat:"Licensed patents",
+    s_val:"Contract value (tax incl.)", s_days:"Days remaining",
+    s_lic:"Licensee", s_lic_v:"Hongsheng Semiconductor (sample)",
+    s_lor:"Licensor", s_lor_v:"泰然策略解密股份有限公司",
+    s_terr:"Territory", s_terr_v:"United States", s_type:"Licence type", s_type_v:"Non-exclusive",
+    p_lbl:"Licence progress", p_val:"24 / 365 days used",
+    dlc_lbl:"DLC number", dlc_chip:"PAdES · public QR verify",
+    v_lbl:"Public verification link:",
+    sig_lbl:"Tri-party signature status",
+    sig1_r:"Supplier", sig1_n:"Co-issuing institutions",
+    sig2_r:"Licensee", sig2_n:"Hongsheng Semiconductor (sample)",
+    sig3_n:"泰然策略解密股份有限公司",
+    sig_note:"Sample signatures — the actual signature block appears once the official digital-signature (MOICA) integration is live.",
+    dc_lbl:"Document centre",
+    dc_sub:"Tick items to download together — the whole bundle or item by item.",
+    dc_s1:"Legal documents", dc_i1:"Licence agreement", dc_i2:"Invoice request", dc_i3:"Receipt confirmation", dc_i4:"e-Invoice",
+    dc_s2:"Licence badge assets", dc_i5:"Licence badge", dc_i6:"DLC credential", dc_i7:"Public verify QR code",
+    dc_s3:"Patent gazettes", dc_i8:"Gazette PDFs · full bundle (30)",
+    dc_all:"Select all", dc_dl:"⬇ Download selected (2)",
+    b_lbl:"Verified Licence Badge", b_sub:"Semiconductors bundle · US", b_val:"Valid 2026-06-28 – 2027-06-28",
+    b_cap:"TIS official verification badge · embedded public-QR verify",
+    addon1:"Add print kit (NT$5,000)", addon2:"Add combined-licence badge (NT$3,000)"
+  },
+  zh: {
+    cap_kicker:"授權平台 · 產品預覽",
+    cap_title:"授權生效 — 數位授權憑證（DLC）",
+    cap_body:"付款次日授權生效：聯名信箋抬頭、完整授權摘要、具公開 QR 驗證的 PAdES 數位授權憑證、文件中心，以及可對外展示的授權認證標章。僅為示意資料 — 授權編號、公司、三方簽章與 QR 皆為佔位範例；QR 不編碼任何資訊。",
+    cap_note:"美國 × 半導體 · 12 個月期別 · 授權生效（授權生效 · DLC）。",
+    ph_eyebrow:"授權生效 · 數位授權憑證", ph_h1:"您的授權已生效",
+    m_name:"半導體 授權包", m_term:"12 個月", m_status:"使用中", r_b1:"1 包", r_b2:"30 專利",
+    sum_lbl:"授權包摘要",
+    s_no:"合約編號", s_eff:"合約生效日", s_term:"授權期間", s_pat:"授權專利數",
+    s_val:"合約金額（含稅）", s_days:"剩餘天數",
+    s_lic:"被授權人", s_lic_v:"鴻晟半導體（範例）",
+    s_lor:"授權方", s_lor_v:"泰然策略解密股份有限公司",
+    s_terr:"授權地域", s_terr_v:"美國", s_type:"授權類型", s_type_v:"非獨家",
+    p_lbl:"授權進度", p_val:"已使用 24 天 / 共 365 天",
+    dlc_lbl:"DLC 編號", dlc_chip:"PAdES · QR 公開驗證",
+    v_lbl:"公開驗證連結：",
+    sig_lbl:"三方簽章狀態",
+    sig1_r:"供應方", sig1_n:"聯合開立機構",
+    sig2_r:"被授權人", sig2_n:"鴻晟半導體（範例）",
+    sig3_n:"泰然策略解密股份有限公司",
+    sig_note:"示意簽章 — 正式數位簽章（MOICA）串接後顯示實際簽章資訊。",
+    dc_lbl:"文件中心",
+    dc_sub:"勾選項目後一次下載 — 可整包下載或逐件挑選。",
+    dc_s1:"法律文件", dc_i1:"授權合約", dc_i2:"請款單", dc_i3:"收款確認單", dc_i4:"電子發票",
+    dc_s2:"授權認證標章", dc_i5:"授權標章", dc_i6:"DLC 憑證", dc_i7:"公開驗證 QR Code",
+    dc_s3:"發明書公告本", dc_i8:"發明書公告本 PDF · 整包 30 件",
+    dc_all:"全選", dc_dl:"⬇ 下載所選（2）",
+    b_lbl:"授權認證標章", b_sub:"半導體授權包 · 美國", b_val:"有效期 2026-06-28 – 2027-06-28",
+    b_cap:"TIS 官方驗證標章 · 內嵌 QR 公開驗證",
+    addon1:"加購印刷套件（NT$5,000）", addon2:"加購綜合授權標章（NT$3,000）"
+  }
+};
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.querySelectorAll("[data-t]").forEach(function(node){
+    var key = node.getAttribute("data-t");
+    if (S[key] != null) node.textContent = S[key];
+  });
+  document.documentElement.lang = (lang === "zh") ? "zh-Hant" : "en";
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
+  });
+}
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ render(btn.getAttribute("data-lang")); });
+});
+render(new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en");
+</script>

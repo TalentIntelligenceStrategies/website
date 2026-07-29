@@ -1,0 +1,388 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIS Licensing — Sign Contract (Step 6) · Showcase</title>
+<meta name="description" content="Static marketing still of the TIS Licensing Platform contract e-signing screen (合約簽署) — letterhead contract, digital-accept track, SHA-256 check, sidebar contract info. Example data only." />
+
+<!--
+  Static marketing still — Licensing Platform "合約簽署 / Sign contract" screen
+  (real route: license.tisglobalinc.com/checkout/contract · WizTrack step 5 of 5).
+  Picture, not a working tool. The rendered contract text is an illustrative
+  placeholder — NOT a real agreement; parties, numbers and dates are examples.
+
+  Frame + i18n scaffold inherited from licensing-confirm-showcase.html. Product CSS
+  (.bb .ct-* + .wiz-track.seal-track) ported from operations-site globals.css.
+  Mono type = Urbanist (matches the swap/browse/dashboard stills).
+-->
+
+<style>
+@font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap;}
+
+:root{
+  --n1:#ffffff;--n2:#fafafa;--n3:#f3f3f3;--n4:#eeeeee;--n5:#e8e8e8;--n6:#d5d5d5;--n7:#a5a5a5;--n8:#8a8f98;--n9:#474747;--n10:#252525;
+  --surface-page:var(--n1);--surface-secondary:var(--n2);--surface-tertiary:var(--n3);--surface-quaternary:var(--n4);--surface-inverse:var(--n10);
+  --text-primary:var(--n10);--text-secondary:var(--n9);--text-tertiary:var(--n8);--text-quaternary:var(--n7);--text-inverse:var(--n1);--text-link:var(--n10);
+  --border-primary:var(--n4);--border-secondary:var(--n5);--border-tertiary:var(--n6);--border-focus:var(--n10);
+  --status-success-fg:#15803d;--status-success-bg:#f0fdf4;--status-info-fg:#1e40af;--status-info-bg:#eff6ff;
+  --score-a:#047857;--score-a-bg:#ecfdf5;
+  --juris-us:#4338ca;--juris-us-bg:#eef2ff;
+  --motion-fast:100ms;--ease-emphasized:cubic-bezier(0.2,1,0.3,1);
+  --shadow-low:0 2px 4px rgba(0,0,0,0.06);--shadow-medium:0 4px 24px rgba(0,0,0,0.08);--shadow-high:0 7px 32px rgba(0,0,0,0.12);
+  --font-sans:"Urbanist","Noto Sans TC","Inter",system-ui,sans-serif;
+  --font-mono:var(--font-sans);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;color:var(--text-primary);min-height:100vh;
+  background:radial-gradient(1200px 700px at 50% -10%, #ffffff 0%, rgba(255,255,255,0) 60%),radial-gradient(900px 600px at 85% 110%, #ececed 0%, rgba(236,236,237,0) 55%),linear-gradient(180deg,#f4f4f5 0%,#e7e7e9 100%);
+  display:flex;flex-direction:column;align-items:center;padding:56px 24px 80px;}
+
+.cap{max-width:1180px;width:100%;margin:0 auto 34px;text-align:center;}
+.cap .kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text-tertiary);}
+.cap h1{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:10px 0 8px;color:var(--text-primary);}
+.cap p{font-size:14px;line-height:1.6;color:var(--text-secondary);max-width:680px;margin:0 auto;}
+.cap .note{margin-top:12px;font-size:12px;color:var(--text-tertiary);}
+.lang-toggle{display:inline-flex;margin-top:18px;border:1px solid var(--border-tertiary);border-radius:9999px;overflow:hidden;background:var(--surface-page);}
+.lang-btn{font:inherit;font-size:12px;font-weight:600;color:var(--text-tertiary);background:transparent;border:0;padding:7px 18px;cursor:pointer;}
+.lang-btn + .lang-btn{border-left:1px solid var(--border-tertiary);}
+.lang-btn.is-active{background:var(--surface-inverse);color:var(--text-inverse);}
+
+.macbook{width:100%;max-width:1180px;margin:0 auto;filter:drop-shadow(0 30px 60px rgba(20,20,30,.22));}
+.mb-lid{background:linear-gradient(180deg,#2b2b2e 0%,#1c1c1f 100%);border-radius:22px;padding:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.12);}
+.mb-screen{background:var(--surface-page);border-radius:12px;overflow:hidden;height:1096px;display:flex;flex-direction:column;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);}
+.bw-bar{flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:11px 16px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bw-lights{display:flex;gap:8px;}
+.bw-lights i{width:12px;height:12px;border-radius:50%;display:block;}
+.bw-lights .r{background:#ff5f57;}.bw-lights .y{background:#febc2e;}.bw-lights .g{background:#28c840;}
+.bw-url{flex:1;display:flex;align-items:center;gap:8px;max-width:520px;margin:0 auto;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:8px;padding:6px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.bw-url svg{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);}
+.bw-spacer{width:54px;flex-shrink:0;}
+.screen-body{flex:1;min-height:0;position:relative;overflow:hidden;}
+.viewport{position:absolute;inset:0;overflow:auto;background:var(--surface-secondary);}
+.viewport::-webkit-scrollbar{width:10px;}
+.viewport::-webkit-scrollbar-thumb{background:var(--border-tertiary);border-radius:8px;border:3px solid var(--surface-secondary);}
+
+.bb{max-width:1120px;margin:0 auto;padding:32px 30px 64px;}
+.bb .eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-tertiary);}
+.bb .h-32{font-size:32px;font-weight:600;letter-spacing:-.01em;line-height:1.2;color:var(--text-primary);margin:0;}
+
+/* wizard track */
+.bb .wiz-track{display:flex;align-items:flex-start;background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px 16px 16px;margin-bottom:32px;position:relative;}
+.bb .wt-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1;min-width:0;}
+.bb .wt-step:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 16px);right:calc(-50% + 16px);top:13px;height:2px;background:var(--border-primary);z-index:-1;}
+.bb .wt-step.done:not(:last-child)::after{background:var(--surface-inverse);}
+.bb .wt-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--border-tertiary);background:var(--surface-page);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-tertiary);flex-shrink:0;}
+.bb .wt-step.active .wt-circle{border-color:var(--surface-inverse);color:var(--text-primary);}
+.bb .wt-step.done .wt-circle{background:var(--surface-inverse);border-color:var(--surface-inverse);color:var(--text-inverse);}
+.bb .wt-circle svg{width:14px;height:14px;}
+.bb .wt-label{font-size:12px;color:var(--text-tertiary);font-weight:500;text-align:center;line-height:1.3;}
+.bb .wt-step.done .wt-label{color:var(--text-primary);}
+.bb .wt-step.active .wt-label{color:var(--text-primary);font-weight:600;}
+
+/* header */
+.bb .ct-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.bb .ct-sub{font-size:13px;color:var(--text-secondary);line-height:1.65;max-width:640px;margin-top:6px;}
+.bb .ct-dl-btn{font-size:12px;padding:8px 14px;background:var(--surface-page);color:var(--text-secondary);border:1px solid var(--border-primary);border-radius:8px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+
+/* seal card + digital-accept track */
+.bb .ct-seal{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:var(--shadow-medium);}
+.bb .ct-seal-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:16px;}
+.bb .ct-seal-pill{font-size:11px;padding:2px 10px;background:var(--surface-tertiary);color:var(--text-secondary);border-radius:9999px;font-weight:600;}
+.bb .ct-seal-prog{margin-left:auto;font-size:11px;font-weight:400;color:var(--text-tertiary);font-family:var(--font-mono);}
+.bb .ct-seal .wiz-track{margin-bottom:0;box-shadow:none;}
+.bb .seal-track .wt-step.done .wt-circle{background:var(--score-a-bg);border-color:var(--score-a);color:var(--score-a);}
+.bb .seal-track .wt-step.done:not(:last-child)::after{background:var(--score-a);}
+.bb .wt-step.is-working:not(:last-child)::after{background-image:linear-gradient(90deg,var(--border-primary) 0 38%,var(--surface-inverse) 50%,var(--border-primary) 62% 100%);background-size:260% 100%;animation:sealPulse 2.6s linear infinite;}
+@keyframes sealPulse{from{background-position:140% 0;}to{background-position:-40% 0;}}
+
+/* contract grid */
+.bb .ct-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;}
+.bb .ct-card{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-medium);}
+.bb .ct-card-hd{padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--surface-inverse);color:var(--text-inverse);}
+.bb .ct-lh-brand{display:flex;align-items:center;gap:14px;min-width:0;}
+.bb .ct-lh-mark{width:40px;height:40px;flex-shrink:0;display:block;}
+.bb .ct-lh-name{font-size:14px;font-weight:700;letter-spacing:.01em;line-height:1.3;}
+.bb .ct-lh-platform{font-size:11px;opacity:.6;letter-spacing:.08em;margin-top:3px;}
+.bb .ct-lh-doc{text-align:right;min-width:0;}
+.bb .ct-lh-title{font-size:16px;font-weight:700;letter-spacing:.02em;line-height:1.3;margin-bottom:9px;}
+.bb .ct-no{display:flex;gap:8px;justify-content:flex-end;align-items:baseline;}
+.bb .ct-no-lbl{font-size:10px;opacity:.55;letter-spacing:.1em;}
+.bb .ct-no-val{font-size:13px;font-family:var(--font-mono);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.04em;}
+.bb .ct-no-date{font-size:10px;opacity:.55;font-variant-numeric:tabular-nums;margin-top:4px;text-align:right;}
+.bb .ct-body{padding:24px;font-size:12px;color:var(--text-primary);line-height:1.65;}
+/* embedded PDF viewer (mirrors the real /checkout/contract PDF embed) */
+.bb .pdfview{border:1px solid var(--border-tertiary);border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow-low);}
+.bb .pdf-filebar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface-secondary);border-bottom:1px solid var(--border-primary);}
+.bb .pdf-fn{font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.bb .pdf-open{margin-left:auto;flex-shrink:0;font-size:11px;font-weight:600;color:var(--text-secondary);display:inline-flex;align-items:center;gap:4px;}
+.bb .pdf-toolbar{display:flex;align-items:center;gap:14px;padding:8px 14px;background:#3a3a3c;color:#e6e6e6;}
+.bb .pdf-toolbar .ic{color:#c9c9cc;flex-shrink:0;display:inline-flex;}
+.bb .pdf-toolbar .ic svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.bb .pdf-tname{font-size:12px;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px;}
+.bb .pdf-pg{display:flex;align-items:center;gap:8px;font-size:12px;color:#c9c9cc;}
+.bb .pdf-pgbox{background:#1f1f21;color:#fff;border-radius:3px;padding:2px 9px;font-family:var(--font-mono);font-size:12px;}
+.bb .pdf-zoom{display:flex;align-items:center;gap:10px;font-size:13px;color:#c9c9cc;}
+.bb .pdf-zoom .zb{width:14px;text-align:center;color:#c9c9cc;}
+.bb .pdf-zval{background:#1f1f21;color:#fff;border-radius:3px;padding:2px 8px;font-family:var(--font-mono);font-size:12px;min-width:54px;text-align:center;}
+.bb .pdf-tsp{flex:1;}
+.bb .pdf-scroll{position:relative;background:#e9e9ec;padding:22px 22px 0;max-height:474px;overflow:hidden;}
+.bb .pdf-page{background:#fff;border:1px solid #dcdce0;box-shadow:0 1px 5px rgba(0,0,0,.10);padding:34px 46px 40px;font-family:"Times New Roman","Songti TC","Noto Serif CJK TC",Georgia,serif;color:#111;}
+.bb .pdf-runhead{text-align:right;font-size:11.5px;color:#555;border-bottom:1px solid #e6e6e6;padding-bottom:8px;margin-bottom:18px;}
+.bb .pdf-doctitle{text-align:center;margin-bottom:18px;}
+.bb .pdf-doctitle .zh{font-size:24px;font-weight:700;letter-spacing:.14em;color:#111;}
+.bb .pdf-doctitle .en{font-size:14px;font-style:italic;color:#333;margin-top:10px;}
+.bb .pdf-doctitle .co{font-size:14.5px;color:#111;margin-top:14px;}
+.bb .pdf-doctitle .coen{font-size:12px;font-style:italic;color:#444;margin-top:3px;}
+.bb .pdf-meta{border:1px solid #333;border-collapse:collapse;width:100%;margin-top:6px;font-size:13px;}
+.bb .pdf-meta td{border:1px solid #333;padding:7px 14px;vertical-align:top;line-height:1.45;}
+.bb .pdf-meta td.k{width:150px;background:#f2f2f2;color:#222;white-space:nowrap;}
+.bb .pdf-meta td.v{color:#111;}
+.bb .pdf-recital{margin-top:24px;font-size:13px;line-height:1.95;color:#222;}
+.bb .pdf-recital .rh{font-weight:700;margin:18px 0 4px;letter-spacing:.04em;}
+.bb .pdf-fade{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,rgba(233,233,236,0),#e9e9ec 66%);pointer-events:none;}
+.bb .sha{margin-top:14px;font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);letter-spacing:.02em;}
+.bb .ct-alert-info{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:12px;line-height:1.6;color:var(--status-info-fg);background:var(--status-info-bg);border-radius:8px;padding:12px 16px;}
+.bb .ct-alert-info-ic{display:inline-flex;flex-shrink:0;}
+.bb .ct-alert-info-ic svg{width:16px;height:16px;}
+/* sign row */
+.bb .ct-sign{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 24px;border-top:1px solid var(--border-primary);}
+.bb .ct-check{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--text-primary);}
+.bb .ct-cbx{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--surface-inverse);background:var(--surface-inverse);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bb .ct-cbx svg{width:12px;height:12px;color:#fff;}
+.bb .ct-signbtn{font:inherit;font-size:14px;font-weight:600;color:var(--text-inverse);background:var(--surface-inverse);border:0;border-radius:8px;padding:11px 20px;cursor:pointer;}
+
+/* sidebar */
+.bb .ct-aside{position:sticky;top:0;display:flex;flex-direction:column;gap:12px;}
+.bb .ct-info{background:var(--surface-page);border:1px solid var(--border-primary);border-radius:12px;padding:20px;box-shadow:var(--shadow-low);}
+.bb .ct-info-lbl{font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;}
+.bb .ct-info dl{display:flex;flex-direction:column;gap:14px;margin:0;}
+.bb .ct-info dt{font-size:11px;color:var(--text-tertiary);margin-bottom:3px;}
+.bb .ct-info dd{font-size:13px;color:var(--text-primary);margin:0;line-height:1.5;}
+.bb .ct-info dd.mono{font-family:var(--font-mono);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.04em;}
+
+/* tiles */
+.juris-tile{width:28px;height:28px;flex-shrink:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}.wt-step.is-working:not(:last-child)::after{animation:none;}}
+</style>
+
+<div class="cap">
+  <div class="kicker" data-t="cap_kicker">Licensing Platform · Product Preview</div>
+  <h1 data-t="cap_title">Bundle Builder — sign your contract</h1>
+  <p data-t="cap_body">The non-exclusive licence agreement is generated on a co-branded letterhead; the licensee reviews the full text and completes an online e-signature with the same legal weight as a wet signature. The rendered contract text is an illustrative placeholder — not a real agreement.</p>
+  <div class="note" data-t="cap_note">US × Semiconductors · 12-month term · step 5 of 5 in the build funnel (合約簽署).</div>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<div class="macbook">
+  <div class="mb-lid">
+    <div class="mb-screen">
+      <div class="bw-bar">
+        <div class="bw-lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="bw-url">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>license.tisglobalinc.com/checkout/contract</span>
+        </div>
+        <div class="bw-spacer"></div>
+      </div>
+
+      <div class="screen-body">
+        <div class="viewport">
+          <div class="bb">
+
+            <div class="ct-head">
+              <div>
+                <div class="eyebrow" style="margin-bottom:8px" data-t="step">Step 5 of 5</div>
+                <h1 class="h-32" data-t="h1">Licence agreement · e-signature</h1>
+                <p class="ct-sub" data-t="sub">Review the full agreement below and complete the online e-signature (Electronic Signatures Act §4 & §9 — equal legal force to a wet signature). On signing, the contract is digitally formed and billing is triggered.</p>
+              </div>
+              <a class="ct-dl-btn" data-t="dl">⬇ Download contract PDF (v1.1.11)</a>
+            </div>
+
+            <div class="ct-grid">
+              <div class="ct-card">
+                <div class="ct-card-hd">
+                  <div class="ct-lh-brand">
+                    <svg class="ct-lh-mark" viewBox="0 0 1000 1000" aria-hidden="true">
+                      <polygon fill="#ffffff" points="638.46,455.19 638.64,455.19 776.68,364.9 777.05,364.67 639.63,273.74 502.39,182.97 638.69,92.59 639.05,92.36 501.84,2.62 501.68,2.53 87.46,273.37 87.09,273.63 227.16,365.22 227.32,365.34 364.81,274.18 501.7,364.72 638.36,455.14"/>
+                      <polygon fill="#ffffff" points="74.44,292.6 74.44,444.7 212.46,530.2 212.46,674.02 74.88,588.77 74.44,588.52 74.44,726.72 488.06,997.17 488.5,997.47 488.5,843.46 352.78,759.38 352.78,617.98 488.06,701.78 488.5,702.06 488.5,563.35 74.88,292.9"/>
+                      <polygon fill="#ffffff" points="925.42,443.57 925.56,443.48 925.56,292.6 511.64,563.26 511.5,563.35 511.5,795.06 718.53,667.3 718.53,715.98 511.64,845.21 511.5,845.3 511.5,997.47 925.42,726.81 925.56,726.72 925.56,493.26 720.83,619.62 720.83,571.38"/>
+                    </svg>
+                    <div>
+                      <div class="ct-lh-name" data-t="lh_name">泰然策略解密股份有限公司</div>
+                      <div class="ct-lh-platform" data-t="lh_platform">TIS LICENSING PLATFORM</div>
+                    </div>
+                  </div>
+                  <div class="ct-lh-doc">
+                    <div class="ct-lh-title" data-t="lh_title">Non-Exclusive Patent Licence Agreement</div>
+                    <div class="ct-no"><span class="ct-no-lbl" data-t="lh_nolbl">CONTRACT NO.</span><span class="ct-no-val">LIC-9F3A2C71</span></div>
+                    <div class="ct-no-date" data-t="lh_date">Draft dated 27 Jun 2026</div>
+                  </div>
+                </div>
+
+                <div class="ct-body">
+                  <div class="pdfview">
+                    <div class="pdf-filebar">
+                      <span class="pdf-fn">TIS_License_Agreement_v1.1.11.pdf</span>
+                      <span class="pdf-open" data-t="pdf_open">Open in new tab ↗</span>
+                    </div>
+                    <div class="pdf-toolbar">
+                      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span>
+                      <span class="pdf-tname">TIS_License_Agreement_v1_1_11</span>
+                      <span class="pdf-pg"><span class="pdf-pgbox">1</span> / 22</span>
+                      <span class="pdf-zoom"><span class="zb">−</span><span class="pdf-zval">127%</span><span class="zb">+</span></span>
+                      <span class="pdf-tsp"></span>
+                      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></span>
+                      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg></span>
+                      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></span>
+                    </div>
+                    <div class="pdf-scroll">
+                      <div class="pdf-page">
+                        <div class="pdf-runhead">TIS 非獨家專利授權合約 v1.1.11　|　Confidential</div>
+                        <div class="pdf-doctitle">
+                          <div class="zh">非獨家專利授權合約</div>
+                          <div class="en">Non-Exclusive Patent License Agreement</div>
+                          <div class="co">泰然策略解密股份有限公司</div>
+                          <div class="coen">Talent Intelligence Strategies Global Inc. (TIS)</div>
+                        </div>
+                        <table class="pdf-meta"><tbody>
+                          <tr><td class="k" data-t="m_no">合約編號</td><td class="v">TIS-LIC-NBRE0F6K</td></tr>
+                          <tr><td class="k" data-t="m_ver">合約版本</td><td class="v" data-t="m_ver_v">ver. 1.1.11（2026 年 06 月）</td></tr>
+                          <tr><td class="k" data-t="m_a">甲方（被授權人）</td><td class="v" data-t="m_a_v">鴻晟半導體股份有限公司（範例）</td></tr>
+                          <tr><td class="k" data-t="m_b">乙方（授權方）</td><td class="v">泰然策略解密股份有限公司</td></tr>
+                          <tr><td class="k" data-t="m_obj">授權標的</td><td class="v" data-t="m_obj_v">美國 × 半導體 30 件專利（SABCD 5/6/9/6/4）</td></tr>
+                          <tr><td class="k" data-t="m_term">授權期間</td><td class="v" data-t="m_term_v">12 個月</td></tr>
+                          <tr><td class="k" data-t="m_fee">授權金額</td><td class="v" data-t="m_fee_v">NT$ 119,880（含稅）</td></tr>
+                        </tbody></table>
+                        <div class="pdf-recital">
+                          <div class="rh" data-t="rec_h">立契約書人</div>
+                          <p data-t="rec_p">本非獨家專利授權合約（下稱「本合約」）由上列甲方（被授權人）與乙方（授權方，泰然策略解密股份有限公司）於中華民國締結，雙方就下列專利之非獨家授權事宜，同意訂立條款如下：</p>
+                          <div class="rh" data-t="a1h">第一條　授權標的</div>
+                          <p data-t="a1p">乙方就附表 A 所列 30 件專利（美國．半導體．SABCD 5/6/9/6/4）授予甲方非獨家、不可轉授權之實施授權，用途與地域以本合約所載為限。</p>
+                        </div>
+                      </div>
+                      <div class="pdf-fade" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                  <div class="ct-alert-info">
+                    <span class="ct-alert-info-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
+                    <span data-t="info">TIS's recognised evidence of formation is the platform e-signature event plus full payment; the licence activates the day after receipt is confirmed (conditional activation).</span>
+                  </div>
+                </div>
+
+                <div class="ct-sign">
+                  <label class="ct-check"><span class="ct-cbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span data-t="check">I have read the full agreement</span></label>
+                  <button class="ct-signbtn" type="button" data-t="signbtn">Agree &amp; sign →</button>
+                </div>
+              </div>
+
+              <aside class="ct-aside">
+                <div class="ct-info">
+                  <div class="ct-info-lbl" data-t="info_lbl">Contract info</div>
+                  <dl>
+                    <div><dt data-t="i_no">Contract no.</dt><dd class="mono">LIC-9F3A2C71</dd></div>
+                    <div><dt data-t="i_form">Contract form</dt><dd data-t="i_form_v">Form B — paper + PAdES digital seal</dd></div>
+                    <div><dt data-t="i_ind">Industry</dt><dd data-t="i_ind_v">Semiconductors</dd></div>
+                    <div><dt data-t="i_cfg">Licence configuration</dt><dd data-t="i_cfg_v">US × Semiconductors × 12 months · 30 patents</dd></div>
+                    <div><dt data-t="i_tot">Contract total (tax incl.)</dt><dd class="mono">NT$ 119,880</dd></div>
+                  </dl>
+                </div>
+              </aside>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var I18N = {
+  en: {
+    cap_kicker:"Licensing Platform · Product Preview",
+    cap_title:"Bundle Builder — sign your contract",
+    cap_body:"The non-exclusive licence agreement is generated on a co-branded letterhead; the licensee reviews the full text and completes an online e-signature with the same legal weight as a wet signature. The rendered contract text is an illustrative placeholder — not a real agreement.",
+    cap_note:"US × Semiconductors · 12-month term · step 5 of 5 in the build funnel (合約簽署).",
+    wiz1:"Build method", wiz2:"Your 30 patents", wiz3:"Confirm plan", wiz4:"Payment", wiz5:"Sign contract",
+    step:"Step 5 of 5", h1:"Licence agreement · e-signature",
+    sub:"Review the full agreement below and complete the online e-signature (Electronic Signatures Act §4 & §9 — equal legal force to a wet signature). On signing, the contract is digitally formed and billing is triggered.",
+    dl:"⬇ Download contract PDF (v1.1.11)",
+    seal_hd:"E-signature flow", seal_pill:"PAdES · eIDAS", seal_prog:"step 2 / 3",
+    s1:"System generates the contract", s2:"Review & e-sign", s3:"Contract digitally formed",
+    lh_name:"泰然策略解密股份有限公司", lh_platform:"TIS LICENSING PLATFORM",
+    lh_title:"Non-Exclusive Patent Licence Agreement", lh_nolbl:"CONTRACT NO.", lh_date:"Draft dated 27 Jun 2026",
+    pdf_open:"Open in new tab ↗",
+    m_no:"Contract no.", m_ver:"Contract version", m_ver_v:"ver. 1.1.11 (Jun 2026)",
+    m_a:"Party A (Licensee)", m_a_v:"Hongsheng Semiconductor Co., Ltd. (sample)",
+    m_b:"Party B (Licensor)",
+    m_obj:"Licensed subject", m_obj_v:"US × Semiconductors, 30 patents (SABCD 5/6/9/6/4)",
+    m_term:"Licence term", m_term_v:"12 months",
+    m_fee:"Consideration", m_fee_v:"NT$ 119,880 (tax incl.)",
+    rec_h:"Recitals",
+    rec_p:"This Non-Exclusive Patent License Agreement (the \"Agreement\") is entered into in the Republic of China (Taiwan) between Party A (the Licensee) above and Party B (the Licensor, Talent Intelligence Strategies Global Inc.), who agree as follows in respect of the non-exclusive licence of the patents below:",
+    a1h:"Article 1 · Licensed subject matter",
+    a1p:"The Licensor grants the Licensee a non-exclusive, non-sublicensable licence to practise the 30 patents listed in Schedule A (US · Semiconductors · SABCD 5/6/9/6/4), limited to the purposes and territory set out herein.",
+    sha:"Contract PDF SHA-256 (first 16): 9f3a2c71b4e8d012…",
+    info:"TIS's recognised evidence of formation is the platform e-signature event plus full payment; the licence activates the day after receipt is confirmed (conditional activation).",
+    check:"I have read the full agreement", signbtn:"Agree & sign →",
+    info_lbl:"Contract info",
+    i_no:"Contract no.", i_form:"Contract form", i_form_v:"Form B — paper + PAdES digital seal",
+    i_ind:"Industry", i_ind_v:"Semiconductors",
+    i_cfg:"Licence configuration", i_cfg_v:"US × Semiconductors × 12 months · 30 patents",
+    i_tot:"Contract total (tax incl.)"
+  },
+  zh: {
+    cap_kicker:"授權平台 · 產品預覽",
+    cap_title:"組建流程 — 合約簽署",
+    cap_body:"非獨家專利授權合約以聯名信箋抬頭生成；被授權人詳閱全文後完成線上電子簽署，與紙本簽章具同等法律效力。文中合約條文為示意佔位 — 非真實合約。",
+    cap_note:"美國 × 半導體 · 12 個月期別 · 組建流程第 5 / 5 步（合約簽署）。",
+    wiz1:"組建方式", wiz2:"您的 30 件", wiz3:"確認方案", wiz4:"付款", wiz5:"合約簽署",
+    step:"第 5 步・共 5 步", h1:"授權合約 · 電子簽署",
+    sub:"請詳閱以下合約全文後完成線上電子簽署（電子簽章法第 4 條及第 9 條，與紙本簽章具同等法律效力）；合約經簽署即數位成立並觸發請款。",
+    dl:"⬇ 下載合約 PDF（v1.1.11）",
+    seal_hd:"電子簽署流程", seal_pill:"PAdES · eIDAS", seal_prog:"第 2 / 3 步",
+    s1:"系統產生合約", s2:"檢視並電子簽署", s3:"合約數位成立",
+    lh_name:"泰然策略解密股份有限公司", lh_platform:"TIS 授權媒合平台",
+    lh_title:"非獨家專利授權合約", lh_nolbl:"合約編號", lh_date:"草稿日期：2026 年 6 月 27 日",
+    pdf_open:"在新分頁開啟 ↗",
+    m_no:"合約編號", m_ver:"合約版本", m_ver_v:"ver. 1.1.11（2026 年 06 月）",
+    m_a:"甲方（被授權人）", m_a_v:"鴻晟半導體股份有限公司（範例）",
+    m_b:"乙方（授權方）",
+    m_obj:"授權標的", m_obj_v:"美國 × 半導體 30 件專利（SABCD 5/6/9/6/4）",
+    m_term:"授權期間", m_term_v:"12 個月",
+    m_fee:"授權金額", m_fee_v:"NT$ 119,880（含稅）",
+    rec_h:"立契約書人",
+    rec_p:"本非獨家專利授權合約（下稱「本合約」）由上列甲方（被授權人）與乙方（授權方，泰然策略解密股份有限公司）於中華民國締結，雙方就下列專利之非獨家授權事宜，同意訂立條款如下：",
+    a1h:"第一條　授權標的",
+    a1p:"乙方就附表 A 所列 30 件專利（美國．半導體．SABCD 5/6/9/6/4）授予甲方非獨家、不可轉授權之實施授權，用途與地域以本合約所載為限。",
+    sha:"合約 PDF SHA-256（前 16 碼）：9f3a2c71b4e8d012…",
+    info:"TIS 認可之合約成立證據為平台電子簽署事件 + 完成全額付款兩項；授權於收款確認次日正式生效（條件生效）。",
+    check:"本人已詳閱合約全文", signbtn:"同意並簽署 →",
+    info_lbl:"合約資訊",
+    i_no:"合約編號", i_form:"合約形式", i_form_v:"形式 B — 紙本 + PAdES 數位印鑑",
+    i_ind:"產業", i_ind_v:"半導體",
+    i_cfg:"授權配置", i_cfg_v:"美國 × 半導體 × 12 個月 · 30 件",
+    i_tot:"合約總金額（含稅）"
+  }
+};
+function render(lang){
+  var S = I18N[lang] || I18N.en;
+  document.querySelectorAll("[data-t]").forEach(function(node){
+    var key = node.getAttribute("data-t");
+    if (S[key] != null) node.textContent = S[key];
+  });
+  document.documentElement.lang = (lang === "zh") ? "zh-Hant" : "en";
+  document.querySelectorAll(".lang-btn").forEach(function(btn){
+    btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
+  });
+}
+document.querySelectorAll(".lang-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){ render(btn.getAttribute("data-lang")); });
+});
+render(new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en");
+</script>
