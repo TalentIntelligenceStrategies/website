@@ -1759,6 +1759,74 @@ a, button,
 }
 
 /* ============================================================
+   Deliverables — the six things a bundle gives you, restored as a
+   quiet 3×2 grid of monochrome panels directly under the hero.
+   B&W only (no accent color); craft comes from type hierarchy, a
+   soft resting panel, a restrained shadow-only hover, and a short
+   staggered fade-up. Reuses the shared [data-reveal] observer
+   (site.js toggles .is-revealed; reduced-motion shows immediately).
+   ============================================================ */
+.deliverables { padding-block: clamp(48px, 6vw, 84px); }
+.deliverables .deliv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.4vw, 20px);
+}
+@media (max-width: 900px) { .deliverables .deliv-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .deliverables .deliv-grid { grid-template-columns: 1fr; } }
+
+.deliv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(24px, 2.3vw, 32px);
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  /* Per-property timing: opacity + transform carry the staggered reveal;
+     box-shadow stays instant so the hover never inherits the stagger delay
+     (which would make the raise feel laggy). GPU-friendly props only. */
+  transition:
+    opacity 520ms var(--ease-out),
+    transform 520ms var(--ease-out),
+    box-shadow 220ms var(--ease-out);
+}
+.deliv-card h3 {
+  margin: 0;
+  font-size: clamp(17px, 1.4vw, 19px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+.deliv-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.deliv-card a { color: inherit; }
+@media (hover: hover) and (pointer: fine) {
+  .deliv-card:hover { box-shadow: var(--shadow-medium); }
+}
+
+/* Staggered fade-up via the shared observer. transition-delay lists match the
+   transition-property order (opacity, transform, box-shadow) so only the reveal
+   is staggered and the hover shadow fires with no delay. */
+.deliverables [data-reveal] { opacity: 0; transform: translateY(12px); }
+.deliverables [data-reveal].is-revealed { opacity: 1; transform: none; }
+.deliv-card:nth-child(1) { transition-delay: 0ms, 0ms, 0ms; }
+.deliv-card:nth-child(2) { transition-delay: 60ms, 60ms, 0ms; }
+.deliv-card:nth-child(3) { transition-delay: 120ms, 120ms, 0ms; }
+.deliv-card:nth-child(4) { transition-delay: 180ms, 180ms, 0ms; }
+.deliv-card:nth-child(5) { transition-delay: 240ms, 240ms, 0ms; }
+.deliv-card:nth-child(6) { transition-delay: 300ms, 300ms, 0ms; }
+@media (prefers-reduced-motion: reduce) {
+  .deliverables [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================================
    Cover-the-gap — "three ways" as an open metrics-style band.
    Reference: a "key metrics" layout — two-tone heading (left) + the exposure
    as a right-aligned lead, then three OPEN columns (no card frames): icon +
@@ -2916,29 +2984,100 @@ a, button,
   filter: brightness(0) invert(1); opacity: 1;
 }
 
-/* Right dashboard — absolutely placed, bleeds off the right (and, being tall,
-   the bottom) edge; the section's overflow:hidden clips it. Sits behind the
-   copy (z 2 < .hero-inner z 5) and is non-interactive. */
-[data-page="licensing"] .hero-dash {
-  position: absolute;
-  z-index: 2;
-  top: clamp(104px, 12vh, 152px);
-  left: clamp(560px, 49vw, 880px);
-  width: 1200px;
-  pointer-events: none;
+/* ── Patent-card marquee (replaces the old dashboard iframe) ─────────────────
+   Card styles verbatim from assets/product-shots/licensing/
+   licensing-browse-showcase.html; the tokens they consume (--score-*,
+   --juris-*, --font-*, --surface-tertiary, --border-secondary, --text-*)
+   already live in styles.css :root. */
+.patent-card{background:#e9e9ec;border:1px solid rgba(20,20,30,.05);border-radius:18px;padding:5px;cursor:pointer;text-align:left;box-shadow:0 1px 2px rgba(20,20,30,.04),0 10px 24px rgba(20,20,30,.05),0 24px 48px rgba(20,20,30,.045);transition:transform 700ms cubic-bezier(.32,.72,0,1),box-shadow 700ms cubic-bezier(.32,.72,0,1);}
+.patent-card:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(20,20,30,.05),0 16px 34px rgba(20,20,30,.07),0 34px 66px rgba(20,20,30,.06);}
+.scard-core{display:flex;flex-direction:column;gap:14px;padding:15px;min-height:210px;border-radius:13px;background:#fff;border:1px solid rgba(20,20,30,.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.9);}
+.patent-card .rc-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px 8px;min-height:32px;flex-wrap:wrap;}
+.patent-card .rc-controls{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-chips{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.patent-card .rc-pno{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--text-primary);white-space:nowrap;flex-shrink:0;}
+.patent-card .rc-id{display:flex;flex-direction:column;gap:6px;}
+.patent-card .rc-title{font-size:15px;font-weight:400;line-height:1.45;letter-spacing:-.01em;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.patent-card .rc-mdiv{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums;}
+.patent-card .rc-mdiv .grp{display:inline-flex;align-items:baseline;gap:4px;min-width:0;}
+.patent-card .rc-mdiv .k{font-size:11px;font-weight:500;color:var(--text-tertiary);}
+.patent-card .rc-mdiv .v{font-size:11px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;}
+.patent-card .rc-mdiv .dot{font-size:16px;font-weight:700;line-height:1;color:var(--text-secondary);flex-shrink:0;}
+.patent-card .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;}
+.patent-card .rc-ind{display:flex;align-items:center;gap:8px;min-width:0;}
+.patent-card .rc-ind .nm{font-size:13px;font-weight:600;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.patent-card .owner-v{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;flex-shrink:0;}
+.juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
+.juris-tile.tw{background:var(--juris-tw-bg);color:var(--juris-tw);}
+.juris-tile.eu{background:var(--juris-eu-bg);color:var(--juris-eu);}
+.juris-tile.jp{background:var(--juris-jp-bg);color:var(--juris-jp);}
+.juris-tile.kr{background:var(--juris-kr-bg);color:var(--juris-kr);}
+.juris-tile.ep{background:var(--juris-ep-bg);color:var(--juris-ep);}
+.juris-tile.cn{background:var(--juris-cn-bg);color:var(--juris-cn);}
+.tier-tile{height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
+.tier-tile.s{background:var(--score-s-bg);color:var(--score-s);}
+.tier-tile.a{background:var(--score-a-bg);color:var(--score-a);}
+.tier-tile.b{background:var(--score-b-bg);color:var(--score-b);}
+.tier-tile.c{background:var(--score-c-bg);color:var(--score-c);}
+.tier-tile.d{background:var(--score-d-bg);color:var(--score-d);}
+.ind-ic{width:32px;height:32px;flex-shrink:0;border-radius:9px;border:1px solid var(--border-secondary);background:var(--surface-tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.ind-ic svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* 3D marquee — three vertical columns (alternating up/down), tilted in a shared
+   3D plane, each pausing on hover. Absolutely placed, bled off the right edge
+   (the section's overflow:hidden clips it). Sits behind the copy (z 2 <
+   .hero-inner z 5). Duplicated card set + translateY(-50%) loop + top/bottom
+   mask fade into the coremap photo. */
+[data-page="licensing"] .lic-hero-marquee{
+  position: absolute; z-index: 2;
+  top: 0; bottom: 0; right: 0;
+  left: clamp(590px, 43vw, 760px);   /* comfortable gap past the wrapped ~540px copy column */
+  overflow: hidden;
+  pointer-events: auto;              /* hover-to-pause needs pointer events */
+  perspective: 1400px;
+  perspective-origin: 72% 50%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 85%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 85%, transparent 100%);
 }
-[data-page="licensing"] .hero-dash iframe {
-  width: 1200px;
-  height: 900px;
-  border: 0;
-  display: block;
-  background: transparent;
+.lic-hero-marquee__stage{
+  position: absolute; left: 0; right: 0; top: -9%; bottom: -9%;
+  display: flex; gap: 22px; justify-content: flex-start; align-items: stretch;
+  transform-style: preserve-3d;
+  transform: translateX(2%) rotateX(6deg) rotateY(-20deg) rotateZ(6deg) scale(1.02);
+}
+.lic-hero-marquee__col{ position: relative; flex: 0 0 280px; width: 280px; overflow: hidden; }
+.lic-hero-marquee__track{ display: block; will-change: transform; animation: lic-marquee-up var(--duration, 46s) linear infinite; }
+.lic-hero-marquee__col:nth-child(1) .lic-hero-marquee__track{ --duration: 108s; }
+.lic-hero-marquee__col:nth-child(2) .lic-hero-marquee__track{ --duration: 132s; animation-direction: reverse; }
+.lic-hero-marquee__col:nth-child(3) .lic-hero-marquee__track{ --duration: 99s; }
+.lic-hero-marquee__col:hover .lic-hero-marquee__track{ animation-play-state: paused; }
+/* Cards own their trailing gap via margin so translateY(-50%) loops seamlessly. */
+.lic-hero-marquee .patent-card{ width: 280px; margin-bottom: 22px; cursor: default; }
+@keyframes lic-marquee-up{ from{ transform: translateY(0); } to{ transform: translateY(-50%); } }
+
+/* Mobile static card stack — set up here, shown ≤1024px (see media block below). */
+.lic-hero-cards-m{ display: none; }
+
+/* Reduced motion — freeze the marquee into a static, legible tableau: no scroll,
+   drop the duplicate set, soften the tilt, no card hover transitions. */
+@media (prefers-reduced-motion: reduce){
+  [data-page="licensing"] .lic-hero-marquee__track{ animation: none; }
+  [data-page="licensing"] .lic-hero-marquee .patent-card.is-dup{ display: none; }
+  [data-page="licensing"] .lic-hero-marquee__stage{ top: 0; bottom: 0; transform: rotateX(3deg) rotateY(-14deg); }
+  .patent-card{ transition: none; }
+  .patent-card:hover{ transform: none; }
 }
 
 @media (max-width: 1024px) {
   [data-page="licensing"] .hero { align-items: center; }
   [data-page="licensing"] .hero-inner { display: block; }
-  [data-page="licensing"] .hero-dash { display: none; }
+  [data-page="licensing"] .lic-hero-marquee { display: none; }
+  [data-page="licensing"] .lic-hero-cards-m {
+    display: flex; flex-direction: column; gap: 16px;
+    width: 100%; max-width: 420px; margin: clamp(28px, 6vh, 52px) auto 0;
+  }
+  .lic-hero-cards-m .patent-card { width: 100%; }
   .hero.hero--showcase .pillar--lic-hero {
     max-width: min(680px, 92vw);
     margin: 0 auto;
@@ -2956,19 +3095,6 @@ a, button,
    hero only (leaves the home/signal heroes untouched). */
 @media (max-width: 600px) {
   [data-page="licensing"] .hero .pillar--lic-hero .pillar-title { font-size: clamp(28px, 8vw, 38px); }
-}
-
-/* Fork C (responsive audit) — mobile dashboard poster. On ≤1024px the bled desktop
-   iframe is dropped; show a static still of the licensee dashboard in-flow below the
-   hero copy so the surface isn't empty. Static PNG — no iframe load on mobile. */
-.hero-dash-poster { display: none; }
-@media (max-width: 1024px) {
-  [data-page="licensing"] .hero-dash-poster {
-    display: block; width: 100%; max-width: 560px;
-    margin: clamp(28px, 6vh, 52px) auto 0;
-    border-radius: 12px; border: 1px solid var(--border-primary);
-    box-shadow: 0 10px 30px -12px rgba(0,0,0,.25);
-  }
 }
 
 /* Fork B (responsive audit) — mobile funnel stills. The desktop scroll-funnel scales
@@ -3280,70 +3406,147 @@ a, button,
           </div>
         </div>
       </article>
-      <!-- Mobile-only dashboard poster (Fork C) — shown in-flow below the copy on
-           ≤1024px, where the bled desktop iframe is dropped. -->
-      <img class="hero-dash-poster" src="/assets/product-shots/licensing/mobile/dashboard.png" alt="The TIS licensee dashboard: active licence bundles, orders in progress, and the SABCD strength of every patent held." width="1300" height="822" loading="lazy" decoding="async">
+      <!-- Mobile-only static card stack — shown in-flow below the copy on
+           ≤1024px, where the desktop marquee is dropped. Filled by the script. -->
+      <div class="lic-hero-cards-m" aria-hidden="true"></div>
     </div>
 
-    <!-- Right-side product visual — the licensee dashboard embedded live from the
-         standalone showcase page, framed in its MacBook bezel and bled off the
-         right edge (~60% visible; the hero's overflow:hidden clips it). Same
-         same-origin iframe technique as the §showcase section below; the inline
-         script hides the standalone page's caption + language toggle. Decorative
-         (aria-hidden), non-interactive, English only. -->
-    <div class="hero-dash" aria-hidden="true">
-      <iframe data-src="/assets/product-shots/licensing/licensing-dashboard-showcase.html" title="" tabindex="-1" scrolling="no" loading="lazy"></iframe>
+    <!-- Right-side product visual — a 3D patent-card marquee: three vertical
+         columns (alternating up/down) tilted in a shared plane, each pausing on
+         hover, bled off the right edge (the hero's overflow:hidden clips it).
+         Decorative (aria-hidden), non-interactive, English only. Cards rendered
+         by the inline script below. -->
+    <div class="lic-hero-marquee" aria-hidden="true">
+      <div class="lic-hero-marquee__stage">
+        <div class="lic-hero-marquee__col"><div class="lic-hero-marquee__track" data-col="0"></div></div>
+        <div class="lic-hero-marquee__col"><div class="lic-hero-marquee__track" data-col="1"></div></div>
+        <div class="lic-hero-marquee__col"><div class="lic-hero-marquee__track" data-col="2"></div></div>
+      </div>
     </div>
 
     <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
   </section>
 
   <script>
-  /* Hero dashboard embed — inject the same-origin hygiene CSS the §showcase
-     section uses, so the standalone page renders as a bare framed dashboard
-     (no caption, no language toggle, transparent ground). Best-effort; the
-     iframe stays visible as-is if same-origin access is blocked. */
+  /* Hero patent-card marquee — three vertical columns of TIS patent cards on
+     desktop, plus a short static card stack for ≤1024px. Card markup + data
+     reused from assets/product-shots/licensing/licensing-browse-showcase.html.
+     Decorative (the marquee is aria-hidden); English only, like the dashboard
+     it replaces. Data is fake / illustrative — every patent number, title and
+     owner is a plausible-looking placeholder. */
   (function () {
-    var frame = document.querySelector('.hero-dash iframe');
-    if (!frame) return;
-    var EMBED_CSS =
-      'html,body{margin:0!important;background:transparent!important;overflow:hidden!important;}' +
-      'body{padding:6px 64px 96px 48px!important;}' +
-      '.cap,.lang-toggle{display:none!important;}' +
-      /* Drop the standalone shot\'s soft drop-shadow — over the orange it reads
-         as a muddy grey halo around the frame. The black bezel defines itself. */
-      '.macbook{margin:0!important;max-width:none!important;filter:none!important;}' +
-      '.viewport{overflow:hidden!important;}';
-    function inject() {
-      var d; try { d = frame.contentDocument; } catch (e) { return; }
-      if (!d || !d.head || d.getElementById('__hero_dash_embed')) return;
-      var s = d.createElement('style');
-      s.id = '__hero_dash_embed';
-      s.textContent = EMBED_CSS;
-      d.head.appendChild(s);
-    }
-    frame.addEventListener('load', inject);
+    var IND_ICON = {
+      "Semiconductors":'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
+      "Network & Comms":'<path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/>',
+      "Net-Zero":'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+      "Computer Systems":'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M11 9h4a2 2 0 0 0 2-2V3"/><circle cx="9" cy="9" r="2"/><path d="M7 21v-4a2 2 0 0 1 2-2h4"/><circle cx="15" cy="15" r="2"/>',
+      "Multimedia":'<path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>'
+    };
+    function indTile(en){ return '<span class="ind-ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(IND_ICON[en]||IND_ICON["Semiconductors"])+'</svg></span>'; }
 
-    /* Only load the heavy 1200×900 dashboard on wide viewports where .hero-dash is
-       actually shown (it's display:none ≤1024px). Phones/tablets previously
-       downloaded the full showcase page + assets for zero visual benefit. The src
-       is deferred via data-src and assigned (with first-paint ZH if needed) only
-       when the viewport is wide — and if the user later widens/rotates to desktop. */
-    var WIDE = window.matchMedia('(min-width: 1025px)');
-    function loadFrame() {
-      if (frame.src || !WIDE.matches) return;
-      var url = frame.dataset.src || '';
-      try {
-        if (localStorage.getItem('tis-lang') === 'zh' && url.indexOf('lang=') === -1) {
-          url += (url.indexOf('?') === -1 ? '?' : '&') + 'lang=zh';
-        }
-      } catch (e) {}
-      frame.src = url;
+    function card(p, dup){
+      return '<div class="patent-card'+(dup?' is-dup':'')+'">'
+        + '<div class="scard-core">'
+          + '<div class="rc-topbar">'
+            + '<div class="rc-controls"><span class="rc-pno">'+p.no+'</span></div>'
+            + '<div class="rc-chips"><span class="juris-tile '+p.juris.toLowerCase()+'">'+p.juris+'</span><span class="tier-tile '+p.tier.toLowerCase()+'">Tier '+p.tier+'</span></div>'
+          + '</div>'
+          + '<div class="rc-id"><div class="rc-title">'+p.titleEn+'</div></div>'
+          + '<div class="rc-mdiv">'
+            + '<span class="grp"><span class="k">IPC</span><span class="v">'+p.ipc+'</span></span>'
+            + '<span class="dot">·</span>'
+            + '<span class="grp"><span class="k">Family</span><span class="v">'+p.famN+' ctrs</span></span>'
+            + '<span class="dot">·</span>'
+            + '<span class="grp"><span class="k">Cited</span><span class="v">'+p.cited+'</span></span>'
+          + '</div>'
+          + '<div class="rc-foot"><div class="rc-ind">'+indTile(p.ind)+'<span class="nm">'+p.ind+'</span></div><span class="owner-v">'+p.owner+'</span></div>'
+        + '</div></div>';
     }
-    WIDE.addEventListener('change', loadFrame);
-    loadFrame();
+
+    /* Three columns of 6 fake patents each (18 unique, disjoint per column). */
+    var COLS = [
+      [
+        { no:"US 12051972 B2", titleEn:"Three-dimensional die package structure and method of manufacture", ipc:"H01L 25/065", famN:3, cited:62, juris:"US", tier:"S", ind:"Semiconductors", owner:"Anvia Semiconductor" },
+        { no:"JP 6982104 B2", titleEn:"Solid-oxide fuel cell stack thermal management assembly", ipc:"H01M 8/04", famN:2, cited:27, juris:"JP", tier:"A", ind:"Net-Zero", owner:"Verdanta Energy Systems" },
+        { no:"KR 102338710 B1", titleEn:"Adaptive noise-cancellation filter for immersive audio playback", ipc:"G10K 11/178", famN:2, cited:16, juris:"KR", tier:"B", ind:"Multimedia", owner:"Nexon Fab Systems" },
+        { no:"EP 4012551 B1", titleEn:"Open-RAN fronthaul latency equalization method", ipc:"H04W 28/02", famN:4, cited:33, juris:"EP", tier:"A", ind:"Network & Comms", owner:"Meridian Micro Labs" },
+        { no:"TW I801244 B", titleEn:"Chiplet interconnect fault-tolerant routing architecture", ipc:"G06F 15/78", famN:2, cited:24, juris:"TW", tier:"B", ind:"Computer Systems", owner:"Corveta Microelectronics" },
+        { no:"CN 116504872 B", titleEn:"Wide-bandgap SiC gate-driver protection circuit", ipc:"H02M 1/08", famN:3, cited:18, juris:"CN", tier:"C", ind:"Net-Zero", owner:"Helio Grid Dynamics" }
+      ],
+      [
+        { no:"US 11984330 B2", titleEn:"EUV lithography mask pellicle structure and fabrication method", ipc:"G03F 1/62", famN:3, cited:47, juris:"US", tier:"S", ind:"Semiconductors", owner:"Silbridge Technologies" },
+        { no:"EP 3894215 B1", titleEn:"Beamforming antenna array calibration for millimeter-wave base stations", ipc:"H01Q 3/26", famN:4, cited:38, juris:"EP", tier:"A", ind:"Network & Comms", owner:"Meridian Micro Labs" },
+        { no:"KR 102771044 B1", titleEn:"Sub-band spatial audio upmixing for augmented-reality headsets", ipc:"H04S 7/00", famN:2, cited:15, juris:"KR", tier:"B", ind:"Multimedia", owner:"Nexon Fab Systems" },
+        { no:"TW I765432 B", titleEn:"Low-power neural inference accelerator dataflow architecture", ipc:"G06N 3/063", famN:2, cited:21, juris:"TW", tier:"B", ind:"Computer Systems", owner:"Corveta Microelectronics" },
+        { no:"JP 7150233 B2", titleEn:"Redox-flow battery electrolyte regeneration system", ipc:"H01M 8/18", famN:3, cited:22, juris:"JP", tier:"A", ind:"Net-Zero", owner:"Verdanta Energy Systems" },
+        { no:"US 12118447 B2", titleEn:"Adaptive HDR tone-mapping pipeline for mobile image signal processors", ipc:"G06T 5/92", famN:2, cited:19, juris:"US", tier:"B", ind:"Multimedia", owner:"Nexon Fab Systems" }
+      ],
+      [
+        { no:"US 12233981 B2", titleEn:"Backside power delivery network for sub-3nm logic devices", ipc:"H01L 23/528", famN:4, cited:41, juris:"US", tier:"S", ind:"Semiconductors", owner:"Silbridge Technologies" },
+        { no:"EP 3720118 B1", titleEn:"Latency-aware packet scheduling for time-sensitive networks", ipc:"H04L 47/62", famN:2, cited:14, juris:"EP", tier:"C", ind:"Network & Comms", owner:"Meridian Micro Labs" },
+        { no:"CN 114820563 B", titleEn:"Grid-tied inverter maximum-power-point tracking control method", ipc:"H02M 7/48", famN:3, cited:19, juris:"CN", tier:"C", ind:"Net-Zero", owner:"Helio Grid Dynamics" },
+        { no:"US 11876214 B2", titleEn:"High aspect-ratio through-silicon via etch process control", ipc:"H01L 21/311", famN:3, cited:29, juris:"US", tier:"A", ind:"Semiconductors", owner:"Corveta Microelectronics" },
+        { no:"KR 102889301 B1", titleEn:"On-device transformer token-pruning accelerator", ipc:"G06N 3/0495", famN:2, cited:26, juris:"KR", tier:"A", ind:"Computer Systems", owner:"Corveta Microelectronics" },
+        { no:"US 12090115 B2", titleEn:"Hybrid-bonding wafer alignment metrology apparatus", ipc:"H01L 21/67", famN:3, cited:31, juris:"US", tier:"A", ind:"Semiconductors", owner:"Anvia Semiconductor" }
+      ]
+    ];
+
+    // Desktop marquee — Set A (real) + Set B (duplicate) → seamless translateY(-50%) loop.
+    document.querySelectorAll('.lic-hero-marquee__track').forEach(function (track, c) {
+      var deck = COLS[c];
+      track.innerHTML = deck.map(function (p) { return card(p, false); }).join('')
+                      + deck.map(function (p) { return card(p, true); }).join('');
+    });
+
+    // Mobile static stack — three representative cards (S / A / B, three industries).
+    var mob = document.querySelector('.lic-hero-cards-m');
+    if (mob) {
+      mob.innerHTML = [COLS[1][0], COLS[0][1], COLS[0][2]].map(function (p) { return card(p, false); }).join('');
+    }
   })();
   </script>
+
+  <!-- ─── 1.75 Deliverables — the six things a bundle gives you, restored as a quiet
+       monochrome 3×2 grid directly under the hero. Copy (EN+ZH) preserved verbatim from
+       the original cards. Card 3 also appears in How-it-works Step 6, and card 6's OpEx
+       framing in Pricing — kept here as the top-of-page "what you get" overview. -->
+  <section class="section deliverables" aria-label="What a licensing bundle delivers">
+    <div class="container">
+      <div class="deliv-grid">
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart-Pick</h3>
+          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
+        </article>
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="權威法人聯合授權">Co-licensed in your name</h3>
+          <p data-zh-html data-zh="創智、資策會、陽明交大以貴公司名義開立 30 件合法非獨家專利。在國際買家與投資人面前，是機構級 IP 後盾，撕掉「代工小廠」的標籤。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> issue <strong style="font-weight:600">legal</strong>, <strong style="font-weight:600">non-exclusive</strong> patents in your company's name — institution-grade and reputable, recognized by buyers and investors.</p>
+        </article>
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="主動式防護盾">An active IP shield</h3>
+          <p data-zh-html data-zh="專利流氓（NPE）只挑好下手的目標。三家機構的合法 IP 防線拉高攻擊成本，他們自然跳過你。從被動防禦轉為主動佈局。">Patent trolls (NPEs) pick easy targets. Institutions' legal IP line raises the cost of attack — <strong style="font-weight:600">passive defense</strong> becomes <strong style="font-weight:600">active position</strong>.</p>
+        </article>
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="付款隔日立即生效">Live the day after payment</h3>
+          <p data-zh-html data-zh="金流確認隔日防護網生效。交付含公證電子簽章的數位授權憑證（DLC），以及「TIS × 權威機構」聯名授權認證標章。">You receive a <strong style="font-weight:600">Digital License Credential (DLC)</strong> carrying a notarized e-signature, plus a co-branded "TIS × authoritative institution" <strong style="font-weight:600">Verified License Badge</strong>.</p>
+        </article>
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="2 秒驗證，自由展示">Verify in 2 seconds, display anywhere</h3>
+          <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
+        </article>
+
+        <article class="deliv-card" data-reveal>
+          <h3 data-zh="專利轉化為 OpEx 租賃保險">Patents turned into OpEx</h3>
+          <p data-zh-html data-zh="自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle keeps you under NT$10K/month, with <strong style="font-weight:600">flexible</strong> terms.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
 
   <!-- ─── 2.25 Cover-the-gap (condensed PRD §3 + §4) — three-across comparison ───
        Static intro headline, then three cards side by side: two quieter cost/exposure
