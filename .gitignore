@@ -8,3 +8,9 @@ node_modules/
 .agents/
 .claude/skills/responsive-craft
 skills-lock.json
+
+# Build layer (DESIGN.md §15)
+.vite/
+
+# assets/build/ is intentionally NOT ignored. GitHub Pages serves this repo root in
+# `legacy` mode, so the built artifacts must be committed for the site to work.

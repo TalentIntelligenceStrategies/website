@@ -292,7 +292,7 @@ then TIS voice takes over."*
 
 Two things to settle:
 
-- **Licensing credits Innovue nowhere in its body**, yet `DESIGN.md` §15.1 states "Credit
+- **Licensing credits Innovue nowhere in its body**, yet `DESIGN.md` §16.1 states "Credit
   Innovue once near the top." Either the page is wrong or the per-page note is.
 - At `product/signal:1931` the attribution is **split across elements** — a `<span>` reading
   `Powered by` with no `data-zh`, adjacent to the mark. It reads correctly in EN and silently

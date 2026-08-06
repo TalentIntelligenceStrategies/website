@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-07 02:00 +08:00** · Added a build layer: Tailwind config generated from the brand tokens, React island mount, three.js + GSAP bundled locally. Deploy unchanged.
 - **2026-08-07 01:45 +08:00** · Added documents/voice-state-audit.md — 11 findings across 1,271 copy units; no copy rewritten. Flags a live scaffolding marker on badge.html.
 - **2026-08-07 01:25 +08:00** · Tokenized the last two page-inline hexes, froze the remaining nine as documented one-off decoration, and fixed the .eyebrow AA miss.
 - **2026-08-07 00:58 +08:00** · Collapsed page-system.md, DESIGN.md and PRODUCT.md into one authoritative DESIGN.md; resolved 11 contradictions and every dangling reference.

@@ -3,10 +3,18 @@
 ## What this is
 
 The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密),
-a Taiwan-rooted IP intelligence consultancy. **Static multi-page site — plain
-HTML/CSS/JS, no build step, no router, no database.** Each page is self-contained
-HTML; shared chrome (top nav, footer, theme toggle, language switcher) is
-duplicated across pages, so a chrome change means editing every page file.
+a Taiwan-rooted IP intelligence consultancy. **Static multi-page site — hand-authored
+HTML/CSS/JS, no router, no database.** Each page is self-contained HTML; shared chrome
+(top nav, footer, theme toggle, language switcher) is duplicated across pages, so a
+chrome change means editing every page file.
+
+There **is** a build step now, but it does not build the site. `npm run build` produces
+four files into `assets/build/` — a local three.js, a local gsap, and the React-island
+runtime plus its token-generated Tailwind layer. The 11 pages stay hand-authored and load
+those with ordinary tags. See [DESIGN.md](DESIGN.md) §15.
+
+> The real constraint, replacing "no build step": **output must be static files servable
+> from the root of `main` by GitHub Pages.**
 
 ## Deploy
 
@@ -69,14 +77,27 @@ The snapshots are `design-tokens-snapshot.md`, `primitives-snapshot.md`,
 - `documents/` is copy and script material. It has never been a design
   authority; don't treat a doc in there as one.
 
-## Local preview
+## Local preview & build
 
 ```
-python3 -m http.server 8000
+python3 -m http.server 8000     # preview — root-relative paths need a server
+npm run build                   # regenerate tailwind.config.js + assets/build/
+npm run verify                   # fail if committed assets/build/ has drifted from src/
 ```
 
-Then open <http://localhost:8000/>. A plain file-open won't work — root-relative
-paths need a server.
+Then open <http://localhost:8000/>. A plain file-open won't work.
+
+`assets/build/` is **committed** — Pages serves the repo root, so the artifacts have to
+be in the tree. That means they can go stale silently; run `npm run verify` before
+committing anything under `src/`. `tailwind.config.js` is generated — edit
+`scripts/gen-tailwind-config.mjs`, never the config.
+
+**Deploy is unchanged:** Pages `build_type` is still `legacy`, still serving the root of
+`main`. A broken build therefore still ships, because the committed artifact is what gets
+served. [.github/workflows/pages.yml](.github/workflows/pages.yml) would change that —
+under Actions a broken build blocks the deploy instead — but it is `workflow_dispatch`
+only and not wired up. Switching is a deliberate, reversible step documented in that file;
+do it from a branch and confirm the custom domain, CNAME and certificate survive first.
 
 ## Changelog
 

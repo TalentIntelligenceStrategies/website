@@ -805,7 +805,14 @@
     const SPEED = 0.003;
 
     try {
-      const THREE = await import('https://esm.sh/three@0.160.0');
+      // Local bundle first (assets/build/three.js, pinned 0.160.0 — see vite.config.js);
+      // esm.sh stays as a fallback so a missing build artifact can't blank the hero.
+      let THREE;
+      try {
+        THREE = await import('/assets/build/three.js');
+      } catch {
+        THREE = await import('https://esm.sh/three@0.160.0');
+      }
 
       const vertexShader = `
         attribute vec3 position;

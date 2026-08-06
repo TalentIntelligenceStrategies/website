@@ -332,9 +332,15 @@ never overlap.
 > looking at the affected band, not matching a table.
 >
 > Custom properties **cannot** be used in a media condition —
-> `@media (max-width: var(--bp-md))` does not work. This scale therefore stays a
-> convention, not a token set. There is no build step today (see
-> [CLAUDE.md](CLAUDE.md) § Deploy); a real compiled scale needs one.
+> `@media (max-width: var(--bp-md))` does not work, so this scale stays a convention in
+> `styles.css`, not a token set.
+>
+> The build layer (§15) does **not** change that. It compiles the islands' Tailwind, where
+> the same seven values are real named breakpoints (`xs`…`3xl` in `tailwind.config.js`) —
+> but `styles.css` is still hand-authored and served as-is, so its media queries stay
+> literal. Compiling the stylesheet too would mean putting the site's only CSS behind the
+> build, which is a much larger change than the island boundary and is not planned.
+> **Keep the two in sync by hand if you touch either.**
 
 ---
 
@@ -722,12 +728,96 @@ The one real finding was `.eyebrow` at 3.25:1 — see §2.
 
 ---
 
-## 15. Per-page notes
+## 15. The build layer and the React island boundary
+
+**The site is still hand-authored static HTML served from the repo root.** That has not
+changed and is not planned to. What exists now is a build layer beside it, not under it.
+
+### 15.1 What the build produces
+
+`npm run build` writes four files into `assets/build/`, which the pages load with ordinary
+`<script>` / `<link>` tags:
+
+| Artifact | What it is |
+|---|---|
+| `three.js` | the hero shader's three.js, pinned 0.160.0 |
+| `gsap.js` | gsap + ScrollTrigger, pre-registered, pinned 3.12.5 |
+| `islands.js` | the React mount runtime — the 21st.dev landing zone |
+| `islands.css` | the Tailwind layer, generated from the brand tokens |
+
+**The output is committed.** Pages serves this repo root in `legacy` mode, so a committed
+artifact keeps the deploy byte-for-byte as it is. The cost is that `assets/build/` can drift
+from `src/` silently — `npm run verify` rebuilds and diffs to catch that, and the (inactive)
+Actions workflow runs it.
+
+### 15.2 Tailwind is generated from the tokens, and the default palette is replaced
+
+`tailwind.config.js` is **generated** by `scripts/gen-tailwind-config.mjs` from
+`designs/design-tokens-snapshot.md` §7.4 plus the `:root` block of `styles.css`. Never edit
+it by hand — run `npm run tokens`.
+
+The default Tailwind palette is **replaced, not extended**. Scale names a pasted component
+is likely to use are aliased onto TIS tokens — `bg-blue-500` resolves to
+`--surface-accent-signal`, `bg-slate-900` to `--text-primary`, `text-gray-500` to
+`--text-tertiary`. A name that is not mapped, `bg-fuchsia-400` say, **does not exist**, and
+the component renders visibly unstyled rather than quietly off-brand. That is the intended
+failure: this is the mechanism that let 119 invented hexes in the first time.
+
+Two guards worth knowing:
+
+- A §7.4 token with no matching `--var` in `styles.css` is emitted as `var(--x, #hex)` with
+  the §7.4 literal as fallback, and the generator **prints every one**. Without the fallback
+  an unresolved `var()` invalidates the whole declaration and the value silently falls back
+  to inherited (§0.2's trap, and it has cost a session before). **13 tokens are currently in
+  this state** — `danger-*`, `warning-*`, `info-*`, `juris-ch*`, `signal-lapsed`,
+  `text-link*`, `text-disabled`, `border-divider`. The stylesheet is the lagging side.
+- `backgroundImage` is switched **off** as a core plugin. Gradients were retired 2026-08-06
+  and Tailwind's gradient utilities are exactly where they would creep back in.
+
+The red line still holds: **`styles.css` custom properties are authoritative; the Tailwind
+config is a consumption layer.** On conflict, the stylesheet wins.
+
+### 15.3 The island boundary
+
+A page opts in with one element and one script tag:
+
+```html
+<div data-island="my-widget" data-props='{"tier":"S"}'></div>
+<script type="module" src="/assets/build/islands.js"></script>
+```
+
+Components are registered in `src/islands/index.jsx`. Nothing mounts unless its element is
+present, so loading the bundle on a page that uses no island costs nothing.
+
+Rules that keep the two idioms from bleeding:
+
+1. **Islands are leaves, never chrome.** Nav, footer, hero and section shells stay
+   hand-authored. An island renders *inside* a section, never wraps one.
+2. **No island owns page layout.** `.container`, `.section` and the spacing scale (§3) stay
+   in `styles.css`. An island sizes itself to the box it is given.
+3. **The Tailwind reset is scoped and must stay scoped.** It cannot be allowed to reach
+   hand-authored markup — a global preflight would silently restyle all 11 pages.
+4. **An island that fails to load leaves an empty box, never a hole.** `islands.js` catches
+   the import and logs; the surrounding page is untouched.
+5. **If a pattern gets reused, it graduates.** Two pages needing the same island means it
+   belongs in `styles.css` as a real component, not copied. Same rule as §0.3.
+
+### 15.4 What has *not* changed
+
+- No router, no SSR, no framework owning the page.
+- Asset references stay root-relative (`/assets/…`).
+- Deploy is still `git push origin main` → Pages. `build_type` is still `legacy`.
+- The real constraint, replacing "no build step": **output must be static files servable
+  from the root of `main` by GitHub Pages.**
+
+---
+
+## 16. Per-page notes
 
 Everything above is site-wide. This section holds what is genuinely scoped to one page.
 Keep additions here as subsections — do not split them into separate files.
 
-### 15.1 Licensing Platform landing page — `product/licensing/index.html`
+### 16.1 Licensing Platform landing page — `product/licensing/index.html`
 
 **Aesthetic direction — "the coverage dossier."** A chaptered, instrument-grade document
 a composed advisor walks the reader through, replacing vague legal dread with the calm of
@@ -781,7 +871,7 @@ keep the 3-CDN fallback chain and a reduced-motion branch. One deliberate hero e
 `visual-guide-snapshot.md` approves. No em dashes in *new* copy; existing verbatim copy is
 preserved as-is.
 
-### 15.2 Signal — `product/signal/index.html`
+### 16.2 Signal — `product/signal/index.html`
 
 Signal accent = `--surface-accent-signal` (dark surfaces only) /
 `--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.

@@ -1,0 +1,7 @@
+/* Tailwind layer for React islands ONLY.
+   The 11 hand-authored pages are styled by assets/styles.css and must not depend
+   on this file. Scoped under [data-island] so a Tailwind reset can never reach
+   the hand-authored markup — see DESIGN.md §16. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

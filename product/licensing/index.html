@@ -3132,6 +3132,8 @@ a, button, .howit-card, .acc-trigger, .btn {
 
   // Try multiple CDNs so one host being flaky doesn't drop the motion.
   const GSAP_SOURCES = [
+    // Local bundle first (assets/build/gsap.js — gsap + ScrollTrigger, pre-registered).
+    ['/assets/build/gsap.js', '/assets/build/gsap.js'],
     ['https://esm.sh/gsap@3.12.5', 'https://esm.sh/gsap@3.12.5/ScrollTrigger'],
     ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js/+esm'],
     ['https://unpkg.com/gsap@3.12.5/index.js?module', 'https://unpkg.com/gsap@3.12.5/ScrollTrigger.js?module'],
