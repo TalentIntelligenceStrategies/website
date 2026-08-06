@@ -1845,22 +1845,22 @@ main { padding-top: 64px; }
    Licensing = warm S→D; Signal = cool A→B→C. Scoped to the migrated showcase only —
    doesn't bleed into the top-of-page hero CTA on the same product page. */
 [data-pillar="licensing"] .section--migrated-pillar .btn-primary {
-  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
+  background: var(--surface-inverse);
   color: #FFFFFF;
   border: 0;
-  box-shadow: 0 1px 2px rgba(180,83,9,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+  box-shadow: var(--shadow-low);
 }
 [data-pillar="licensing"] .section--migrated-pillar .btn-primary:hover {
-  background: linear-gradient(135deg, #B45309 0%, #C2410C 100%);
+  background: var(--surface-inverse-hover);
 }
 [data-pillar="signal"] .section--migrated-pillar .btn-primary {
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  background: var(--surface-inverse);
   color: #FFFFFF;
   border: 0;
-  box-shadow: 0 1px 2px rgba(3,105,161,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+  box-shadow: var(--shadow-low);
 }
 [data-pillar="signal"] .section--migrated-pillar .btn-primary:hover {
-  background: linear-gradient(135deg, #047857 0%, #0369A1 50%, #6D28D9 100%);
+  background: var(--surface-inverse-hover);
 }
 [data-theme="dark"] [data-pillar="licensing"] .section--migrated-pillar .btn-primary,
 [data-theme="dark"] [data-pillar="signal"] .section--migrated-pillar .btn-primary {
@@ -1870,29 +1870,27 @@ main { padding-top: 64px; }
    Applies to both .pillar-hero-visual (top of panel) and .howitworks-visual (lower in panel). */
 [data-pillar="licensing"] .pillar-hero-visual,
 [data-pillar="licensing"] .howitworks-visual {
-  background: linear-gradient(90deg,
-    #FFFFFF 0%, #FDF6E0 35%, #FAF3DC 65%, #FFF7ED 100%);
+  background: var(--surface-secondary);
   color: var(--warm-body);
   border-color: rgba(122, 74, 15, 0.15);
 }
 [data-pillar="signal"] .pillar-hero-visual,
 [data-pillar="signal"] .howitworks-visual {
-  background: linear-gradient(90deg,
-    #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%);
+  background: var(--surface-secondary);
   color: var(--cool-body);
   border-color: rgba(30, 58, 95, 0.15);
 }
 [data-theme="dark"] [data-pillar="licensing"] .pillar-hero-visual,
 [data-theme="dark"] [data-pillar="licensing"] .howitworks-visual {
-  background: linear-gradient(90deg,
-    #161616 0%, rgba(212,160,23,0.10) 50%, rgba(249,115,22,0.12) 100%);
-  color: #F5E4A8; border-color: rgba(245, 228, 168, 0.15);
+  background: var(--surface-secondary);
+  color: #F5E4A8;
+  border-color: rgba(245, 228, 168, 0.15);
 }
 [data-theme="dark"] [data-pillar="signal"] .pillar-hero-visual,
 [data-theme="dark"] [data-pillar="signal"] .howitworks-visual {
-  background: linear-gradient(90deg,
-    #161616 0%, rgba(16,185,129,0.10) 35%, rgba(14,165,233,0.10) 70%, rgba(139,92,246,0.10) 100%);
-  color: #A7F3D0; border-color: rgba(167, 243, 208, 0.15);
+  background: var(--surface-secondary);
+  color: #A7F3D0;
+  border-color: rgba(167, 243, 208, 0.15);
 }
 
 /* ───────── Product shot · Licensing flat catalog ─────────────────────────
@@ -2327,12 +2325,12 @@ main { padding-top: 64px; }
 
 /* Active toggle tab — gradient fill (overrides the default solid-black active state). */
 #products[data-pillar="licensing"] .pillar-tab[aria-selected="true"] {
-  background: linear-gradient(90deg, #FDF6E0 0%, #FAF3DC 50%, #FFF7ED 100%);
+  background: var(--surface-secondary);
   color: #B45309;
   font-weight: 700;
 }
 #products[data-pillar="signal"] .pillar-tab[aria-selected="true"] {
-  background: linear-gradient(90deg, #ECFDF5 0%, #F0F9FF 50%, #F5F3FF 100%);
+  background: var(--surface-secondary);
   color: var(--cool-body);
 }
 [data-theme="dark"] #products[data-pillar="licensing"] .pillar-tab[aria-selected="true"] {
@@ -4427,9 +4425,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-style: normal;
 }
 [data-pillar="licensing"] .page-hero-title em {
-  background-image: linear-gradient(90deg,
-    var(--score-s-vivid) 0%,
-    var(--score-d-vivid) 100%);
+  color: var(--surface-accent-licensing);
+  -webkit-text-fill-color: var(--surface-accent-licensing);
 }
 .page-hero-sub {
   font-size: clamp(17px, 1.6vw, 20px);
@@ -4845,14 +4842,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   pointer-events: none;
 }
 [data-pillar="signal"] .section--page-hero::before {
-  background:
-    radial-gradient(900px circle at 25% 10%, rgba(14, 165, 233, 0.10), transparent 50%),
-    radial-gradient(900px circle at 75% 30%, rgba(139, 92, 246, 0.08), transparent 50%);
 }
 [data-pillar="licensing"] .section--page-hero::before {
-  background:
-    radial-gradient(900px circle at 25% 10%, rgba(212, 160, 23, 0.13), transparent 50%),
-    radial-gradient(900px circle at 75% 30%, rgba(249, 115, 22, 0.09), transparent 50%);
 }
 .section--page-hero > * { position: relative; z-index: 1; }
 
@@ -4885,9 +4876,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-style: normal;
 }
 [data-pillar="licensing"] .page-hero-title em {
-  background-image: linear-gradient(90deg,
-    var(--score-s-vivid) 0%,
-    var(--score-d-vivid) 100%);
+  color: var(--surface-accent-licensing);
+  -webkit-text-fill-color: var(--surface-accent-licensing);
 }
 .page-hero-sub {
   font-size: clamp(17px, 1.8vw, 22px);
@@ -4963,16 +4953,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   z-index: 0;
 }
 [data-pillar="signal"] .placeholder-body::before {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.10), transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.08), transparent 60%),
-    var(--surface-tertiary);
 }
 [data-pillar="licensing"] .placeholder-body::before {
-  background:
-    radial-gradient(circle at 30% 30%, rgba(212, 160, 23, 0.12), transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(249, 115, 22, 0.08), transparent 60%),
-    var(--surface-tertiary);
 }
 .placeholder-body > * { position: relative; z-index: 1; }
 .placeholder-glyph {
@@ -5118,14 +5100,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   pointer-events: none;
 }
 [data-pillar="signal"] .cta-banner--themed::before {
-  background:
-    radial-gradient(900px circle at 25% 50%, rgba(14, 165, 233, 0.13), transparent 60%),
-    radial-gradient(900px circle at 75% 50%, rgba(139, 92, 246, 0.10), transparent 60%);
 }
 [data-pillar="licensing"] .cta-banner--themed::before {
-  background:
-    radial-gradient(900px circle at 25% 50%, rgba(212, 160, 23, 0.15), transparent 60%),
-    radial-gradient(900px circle at 75% 50%, rgba(249, 115, 22, 0.11), transparent 60%);
 }
 .cta-banner--themed > * { position: relative; z-index: 1; }
 .cta-banner--themed .section-head h2 {
@@ -5151,10 +5127,10 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   pointer-events: none;
 }
 [data-pillar="signal"] .price-card--featured::after {
-  background: linear-gradient(135deg, var(--score-a-vivid), var(--score-b-vivid), var(--score-c-vivid));
+  background: var(--surface-accent-signal);
 }
 [data-pillar="licensing"] .price-card--featured::after {
-  background: linear-gradient(135deg, var(--score-s-vivid), var(--score-d-vivid));
+  background: var(--surface-accent-licensing);
 }
 
 /* ───────── Generous alt section padding ───────── */
@@ -5905,7 +5881,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   pointer-events: none;
 }
 [data-pillar="licensing"] .prod-price-tier.is-featured::before {
-  background: linear-gradient(135deg, var(--score-s-vivid), var(--score-d-vivid));
+  background: var(--surface-accent-licensing);
 }
 [data-theme="dark"] .prod-price-tier.is-featured {
   box-shadow:
@@ -5919,22 +5895,22 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 
 /* Featured tier Subscribe button: warm/cool gradient fill instead of dark neutral */
 [data-pillar="licensing"] .prod-price-tier.is-featured .prod-price-cta {
-  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
+  background: var(--surface-inverse);
   color: #FFFFFF;
   border: 0;
-  box-shadow: 0 1px 2px rgba(180,83,9,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+  box-shadow: var(--shadow-low);
 }
 [data-pillar="licensing"] .prod-price-tier.is-featured .prod-price-cta:hover {
-  background: linear-gradient(135deg, #B45309 0%, #C2410C 100%);
+  background: var(--surface-inverse-hover);
 }
 [data-pillar="signal"] .prod-price-tier.is-featured .prod-price-cta {
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
+  background: var(--surface-inverse);
   color: #FFFFFF;
   border: 0;
-  box-shadow: 0 1px 2px rgba(3,105,161,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+  box-shadow: var(--shadow-low);
 }
 [data-pillar="signal"] .prod-price-tier.is-featured .prod-price-cta:hover {
-  background: linear-gradient(135deg, #047857 0%, #0369A1 50%, #6D28D9 100%);
+  background: var(--surface-inverse-hover);
 }
 .prod-price-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
@@ -6683,7 +6659,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 [data-pillar="licensing"] .usecase-split-side--after .usecase-split-stat-value {
-  background-image: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 
 /* Mini timeline inside each split side. Dots + connector line +
