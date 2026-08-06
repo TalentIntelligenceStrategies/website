@@ -113,6 +113,13 @@
   --surface-accent-licensing-text: #D93B00;   /* 4.59:1 on white — body copy */
   --surface-accent-signal:         #0EA5E9;   /* 2.77:1 on white — DARK SURFACES ONLY */
   --surface-accent-signal-text:    #0A72B0;   /* 5.19:1 on white — body copy */
+  --surface-accent-licensing-wash: #F1EDE7;   /* pale warm tint — hover/rest fills on licensing surfaces */
+  --surface-accent-signal-wash:    #EEF3F7;   /* pale cool tint — hover/rest fills on signal surfaces */
+
+  /* A perceptible hover for inverse buttons sitting on dark / image-backed
+     surfaces, where --surface-inverse-hover (#292524) is imperceptible
+     against the #252525 rest state. See DESIGN.md — two hovers, one reason. */
+  --surface-inverse-hover-lift:    #3A3A3A;
   --surface-accent-tis:            #252525;   /* neutral ink */
 
   /* Inverse-surface interaction overlay — design-tokens.md §7.4
@@ -168,6 +175,12 @@
   --logo-submark:           url('/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg');
   --logo-secondary:         url('/designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
+
+  /* Partner / institution brand colors — externally owned, not the TIS palette.
+     Only ever on that partner's own seal or lockup; never as a TIS accent. */
+  --partner-brand-ipic: #00AAEA;   /* iPIC */
+  --partner-brand-iii:  #14156D;   /* III — Institute for Information Industry */
+  --partner-brand-nycu: #0033A0;   /* NYCU — National Yang Ming Chiao Tung University */
   --partner-ipic:           url('/designs/assets/logos/partners/ipic/ipic_logo.svg');
   --partner-nycu:           url('/designs/assets/logos/partners/nycu/nycu_logo_dark_en.svg');
   --partner-iii:            url('/designs/assets/logos/partners/iii/logo_iii_dark_en.svg');
@@ -228,6 +241,9 @@
   --surface-accent-licensing-text: #FB923C;   /* 8.53:1 on #0E0E0E */
   --surface-accent-signal:         #38BDF8;   /* 9.01:1 on #0E0E0E */
   --surface-accent-signal-text:    #38BDF8;   /* 9.01:1 on #0E0E0E */
+  --surface-accent-licensing-wash: #241713;   /* pale-equivalent warm tint on dark */
+  --surface-accent-signal-wash:    #121D24;   /* pale-equivalent cool tint on dark */
+  --surface-inverse-hover-lift:    #E4E4E4;
   --surface-accent-tis:            #F5F5F5;   /* neutral — inverts with the theme */
 
   /* SABCD tier ramp — dark variants (vivid text + translucent bg) */
@@ -1283,23 +1299,23 @@ main { padding-top: 64px; }
 /* CTAs → dark-ink primary + white secondary (the default translucent-black and
    gold-gradient CTAs both wash out over the orange photo). */
 [data-page="licensing"] .hero .btn-primary {
-  background: #252525;
+  background: var(--surface-inverse);
   -webkit-backdrop-filter: none; backdrop-filter: none;
   color: #fff; -webkit-text-fill-color: #fff;
   border: none;
 }
 [data-page="licensing"] .hero .btn-primary:hover {
-  background: #3A3A3A;
+  background: var(--surface-inverse-hover-lift);
   border: none;
 }
 [data-page="licensing"] .hero .btn-secondary,
 [data-page="licensing"] .hero .btn-secondary:hover {
   background: #FFFFFF;
-  color: #252525; -webkit-text-fill-color: #252525;
+  color: var(--text-primary); -webkit-text-fill-color: var(--text-primary);
   border: 1px solid rgba(37,37,37,0.14);
   filter: none;
 }
-[data-page="licensing"] .hero .btn-secondary:hover { background: #F1EDE7; }
+[data-page="licensing"] .hero .btn-secondary:hover { background: var(--surface-accent-licensing-wash); }
 
 /* ───────── Signal deep-dive hero — full-bleed cool coremap image ─────────
    Cool twin of the licensing hero above; same composition, blue instead of warm.
@@ -1342,13 +1358,13 @@ main { padding-top: 64px; }
 /* CTAs → dark-ink primary + white secondary (same as licensing; secondary hover
    nudged to a cool tint). */
 [data-page="signal"] .hero .btn-primary {
-  background: #252525;
+  background: var(--surface-inverse);
   -webkit-backdrop-filter: none; backdrop-filter: none;
   color: #fff; -webkit-text-fill-color: #fff;
   border: none;
 }
 [data-page="signal"] .hero .btn-primary:hover {
-  background: #3A3A3A;
+  background: var(--surface-inverse-hover-lift);
   border: none;
 }
 /* .pillar[data-pillar="signal"] added to beat the (0,4,0) signal-gradient secondary
@@ -1356,11 +1372,11 @@ main { padding-top: 64px; }
 [data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary,
 [data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary:hover {
   background: #FFFFFF;
-  color: #252525; -webkit-text-fill-color: #252525;
+  color: var(--text-primary); -webkit-text-fill-color: var(--text-primary);
   border: 1px solid rgba(37,37,37,0.14);
   filter: none;
 }
-[data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary:hover { background: #EEF3F7; }
+[data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary:hover { background: var(--surface-accent-signal-wash); }
 
 /* Hero pillar slider — fade-cross stacked grid */
 .hero-slider {
@@ -3069,10 +3085,10 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   width: 64px; height: 64px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  background: #F0FDF4;
-  color: #15803D;
+  background: var(--success-bg);
+  color: var(--success-fg);
 }
-[data-theme="dark"] .contact-success .check-pill { background: rgba(34,197,94,0.15); color: #4ADE80; }
+[data-theme="dark"] .contact-success .check-pill { background: rgba(34,197,94,0.15); color: var(--success-fg); }
 .contact-success .check-pill svg {
   width: 32px; height: 32px;
   stroke: currentColor; fill: none;
@@ -3790,12 +3806,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .vlb-seal.is-standalone .seal-text{font-size:13px}
 
 /* Partner variants — brand color as disc fill, white inner disc, white text */
-.vlb-seal.is-ipic .seal-disc{fill:#00AAEA}
-.vlb-seal.is-ipic .seal-thin-ring{stroke:#00AAEA}
-.vlb-seal.is-iii  .seal-disc{fill:#14156D}
-.vlb-seal.is-iii  .seal-thin-ring{stroke:#14156D}
-.vlb-seal.is-nycu .seal-disc{fill:#0033A0}
-.vlb-seal.is-nycu .seal-thin-ring{stroke:#0033A0}
+.vlb-seal.is-ipic .seal-disc{fill:var(--partner-brand-ipic)}
+.vlb-seal.is-ipic .seal-thin-ring{stroke:var(--partner-brand-ipic)}
+.vlb-seal.is-iii  .seal-disc{fill:var(--partner-brand-iii)}
+.vlb-seal.is-iii  .seal-thin-ring{stroke:var(--partner-brand-iii)}
+.vlb-seal.is-nycu .seal-disc{fill:var(--partner-brand-nycu)}
+.vlb-seal.is-nycu .seal-thin-ring{stroke:var(--partner-brand-nycu)}
 .vlb-seal.is-ipic .seal-inner-disc,
 .vlb-seal.is-iii  .seal-inner-disc,
 .vlb-seal.is-nycu .seal-inner-disc{fill:#FFFFFF}
@@ -3993,7 +4009,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   outline:none;
 }
 .rcs-stage:focus-visible{
-  outline:2px solid var(--border-focus,#252525);
+  outline:2px solid var(--border-focus);
   outline-offset:8px;border-radius:18px;
 }
 .rcs-deck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
@@ -4112,7 +4128,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   box-shadow:var(--shadow-low);
 }
 .smpl-plan--pro{
-  border-color:#0EA5E9;
+  border-color:var(--surface-accent-signal);
   box-shadow:0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(14,165,233,.25);
   background: var(--surface-elevated);
 }
@@ -4138,8 +4154,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .smpl-matrix{margin-top:8px}
 .smpl-matrix .smpl-col{text-align:center;width:120px}
 .smpl-matrix td.smpl-y,.smpl-matrix td.smpl-n{text-align:center;font-weight:700}
-.smpl-matrix td.smpl-y{color:var(--ink-positive,#047857)}
-.smpl-matrix td.smpl-n{color:var(--text-quaternary,#A5A5A5)}
+.smpl-matrix td.smpl-y{color:var(--score-a)}
+.smpl-matrix td.smpl-n{color:var(--text-quaternary)}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    COMPANY SCORECARDS — Signal methodology page (#portfolio-signal).

@@ -244,7 +244,7 @@
     background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
     filter: none;
   }
-  [data-theme="light"] .contact-success .check-pill { background: #F0FDF4; color: #15803D; }
+  [data-theme="light"] .contact-success .check-pill { background: var(--success-bg); color: var(--success-fg); }
 
   /* Faint 32px ruled grid behind all content, fixed to the viewport so it reads
      as one continuous blueprint field down the page (sections are transparent;
@@ -316,7 +316,7 @@
     overflow: hidden;
     cursor: pointer;
   }
-  .pat-card:focus-visible { outline: 2px solid var(--border-focus, #8A8F98); outline-offset: 2px; }
+  .pat-card:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
 
   /* Blueprint SVG — ink treatment (white ink on dark ground). Colour rules
      shared by the marquee cards and the modal figure via :is(). */

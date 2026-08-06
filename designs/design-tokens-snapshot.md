@@ -393,6 +393,7 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | surface-elevated | `#FFFFFF` (raised surface that must read as lifted above `surface-tertiary` tracks — segmented controls, popovers, command-palette inner cards. Same hex as `surface-page` in light. Note for dark-mode consumers: dark `surface-page` is the *darkest* surface and would recess against the track, so `surface-elevated` must alias to a *lighter* dark surface; full dark-mode mapping deferred per §6.) |
 | surface-inverse | `#252525` |
 | surface-inverse-hover | `#292524` |
+| surface-inverse-hover-lift | `#3A3A3A` (hover for an inverse button on a **dark or image-backed** surface, where `surface-inverse-hover` is imperceptible against the `#252525` rest state. Not a second style — a legibility fix for one context. Never on a light page.) |
 | surface-translucent | `rgba(0,0,0,0.05)` |
 | surface-page-translucent | `rgba(255,255,255,0.70)` (for backdrop-blur chrome — top nav, sticky bars) |
 | surface-inverse-translucent | `rgba(255,255,255,0.10)` (interaction overlay on inverse surfaces — e.g. close-button hover on the §Announcement banner where `surface-tertiary` would vanish against the dark fill; dark-theme equivalent of `surface-translucent`) |
@@ -461,6 +462,11 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | surface-accent-signal | `#0EA5E9` (Patent Intelligence SaaS accent — vivid; **dark surfaces only**, 5.53:1 on `#252525` but only 2.77:1 on white) |
 | surface-accent-signal-text | `#0A72B0` (Signal accent, text-safe on white — 5.19:1) |
 | surface-accent-tis | `#252525` (TIS-overall — neutral ink; TIS speaks in ink, not in a colour of its own) |
+| surface-accent-licensing-wash | `#F1EDE7` (pale warm tint — fills only: secondary-button hover, soft panels on licensing surfaces. Never type.) |
+| surface-accent-signal-wash | `#EEF3F7` (pale cool tint — fills only: secondary-button hover, soft panels on Signal surfaces. Never type.) |
+| partner-brand-ipic | `#00AAEA` (iPIC brand blue — **externally owned**) |
+| partner-brand-iii | `#14156D` (III / Institute for Information Industry brand navy — **externally owned**) |
+| partner-brand-nycu | `#0033A0` (NYCU brand blue — **externally owned**) |
 
 Dark-theme shadow alphas escalate to compensate for the dark surface — `0.4` / `0.5` / `0.6` for low / medium / high respectively (see preview-scope tokens in `brand/previews/color-system.html` and `patent-card-preview.html`).
 
@@ -479,6 +485,8 @@ Nothing was lost silently: the retired compositions remain in this file's histor
 | TIS overall | `--surface-accent-tis` `#252525` | same | Neutral ink. TIS speaks across surfaces, so it carries no colour of its own. |
 
 **Contrast — read this before using an accent.** `#0EA5E9` measures **2.77:1 on white**, which fails the §5 AA floor even for large text and UI. It is a *dark-surface* accent (5.53:1 on `#252525`) and that is how the shipped Signal hero uses it. On any light surface, use `--surface-accent-signal-text` instead. Licensing's `#EC4200` is more forgiving — 3.93:1 on white and 3.90:1 on ink — so it clears AA for large text and UI on both, but body copy on white still needs the `-text` sibling.
+
+**Partner brand colours are not TIS colours.** `--partner-brand-*` exist so a partner's own seal or lockup can render in that institution's blue — iPIC, III, NYCU. They are externally owned, sit outside every TIS ramp, and are never an accent, a status, or a fill on TIS-owned UI. Note the naming trap: `--partner-<name>` and `--partner-<name>-color` are **logo asset URLs**, not colours; the colour tokens carry the `-brand-` infix.
 
 **Held off the SABCD ramp, with one adjacency to respect.** Accents are surface identity; `--score-*` is patent quality. They must never read as the same family. The two live closest together are `--surface-accent-licensing-text` `#D93B00` and `--score-d` `#C2410C` — separable because the accent is a hotter, redder orange while tier D is a browner burnt orange. On marketing surfaces they never co-occur (tier chips don't appear there). On the Licensing Platform they can, so prefer the vivid accent for chrome and let the tier chip own the burnt register.
 
