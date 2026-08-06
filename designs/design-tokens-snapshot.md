@@ -58,10 +58,10 @@ Monochrome is a product decision, not a style preference. TIS is the platform th
 Two families + one Chinese stack:
 
 - **Urbanist** (sans) — headlines, body, UI, buttons.
-- **Inconsolata** (mono) — numbers only (prices, counts, dates, percentages, IDs that are pure digits) and number-prefixed identifiers (e.g., `LIC-12345`, patent IDs). Never general text labels, eyebrows, copy, or alphabetic codes.
+- **Inconsolata** (mono) — **never used on text.** Reserved for sectional numbering (`01` / `02` / `03`), numerals (prices, counts, dates, percentages), and number-prefixed identifiers (`LIC-12345`, patent IDs). If a string reads as a word, it is Urbanist — eyebrows, labels, metadata, chips, tags, link text, status strings, column heads, and alphabetic codes (`S`, `A`, `US`, `TW`) included.
 - **Noto Sans TC** — Traditional Chinese. Size and weight match the Urbanist counterpart 1:1.
 
-Headlines are heavy (700) and tight (line-height 1.0, tracking −0.03em at the top of the scale). As size drops, line-height loosens and tracking opens. Body copy is 16px / 1.6 line-height / +0.01em tracking; feature copy available at 18px / 1.55. Labels run 10–14px with wide tracking (wider at smaller sizes); Inconsolata covers numeric labels and number-prefixed IDs only — text eyebrows, KV label keys, and column headers stay Urbanist. Button text is Urbanist, heavily tracked, 12px default (14px medium, 16px hero). Case decided per button / per label.
+Headlines are heavy (700) and tight (line-height 1.0, tracking −0.03em at the top of the scale). As size drops, line-height loosens and tracking opens. Body copy is 16px / 1.6 line-height / +0.01em tracking; feature copy available at 18px / 1.55. Labels run 10–14px with wide tracking (wider at smaller sizes) and are **always Urbanist** — eyebrows, KV label keys, and column headers included. Inconsolata appears only through the four `*-mono-*` roles (`copy-mono-13`, `label-mono-16`, `label-mono-12`, `num-mono-*`), every one of them scoped to numerals or number-prefixed IDs. Button text is Urbanist, heavily tracked, 12px default (14px medium, 16px hero). Case decided per button / per label.
 
 Full role table in §7.2.
 
@@ -283,15 +283,13 @@ Self-hosted at [`brand/assets/fonts/`](./assets/fonts/) (SIL OFL) in the Google 
 | copy-15 | 15 | 400 |  0      | 1.6  | sentence (accordion body) |
 | copy-14 | 14 | 400 |  0      | 1.55 | sentence |
 | copy-13 | 13 | 400 |  0      | 1.55 | sentence (captions, hints, toast / tooltip body) |
-| copy-mono-14 | 14 | 400 | +0.20em | 1.4 | as content |
-| copy-mono-13 | 13 | 400 | +0.20em | 1.4 | as content |
+| copy-mono-13 | 13 | 400 | +0.20em | 1.4 | numerals and IDs only — patent numbers, hashes, timestamps (never prose) |
 | num-mono-40 | 40 | 600 | −0.01em | 1.1 | as content (Inconsolata; deck metric-strip hero numerals) |
 | num-mono-32 | 32 | 600 | −0.01em | 1.2 | as content (Inconsolata; deck metric-strip hero numerals, denser strips) |
 | label-13 | 13 | 500 | +0.05em | 1.2 | sentence |
 | label-12 | 12 | 600 | +0.15em | 1.2 | UPPERCASE |
-| label-mono-16 | 16 | 500 | +0.10em | 1.2 | UPPERCASE (deck eyebrow / footer chrome — projection-distance) |
-| label-mono-14 | 14 | 500 | +0.10em | 1.2 | UPPERCASE (deck eyebrow / footer chrome — projection-distance) |
-| label-mono-12 | 12 | 500 | +0.10em | 1.2 | UPPERCASE (number-prefixed IDs only, e.g., `LIC-12345` inline labels) |
+| label-mono-16 | 16 | 500 | +0.10em | 1.2 | deck numerals only — page numbers, dates, metric figures (never eyebrows) |
+| label-mono-12 | 12 | 500 | +0.10em | 1.2 | UPPERCASE (sectional numerals and number-prefixed IDs only, e.g., `01` / `LIC-12345`) |
 | button-16 | 16 | 700 | +0.10em | 1.0 | per button |
 | button-14 | 14 | 700 | +0.10em | 1.0 | per button |
 | button-12 | 12 | 700 | +0.10em | 1.0 | per button |

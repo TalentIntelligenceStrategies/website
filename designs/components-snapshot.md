@@ -690,7 +690,7 @@ Input-box with a leading search icon; nav-trigger variant opens a command palett
 
 **Compact icon trigger** — 32×32 icon button (matches the §Language switcher trigger geometry), radius 6, transparent background, `search` `icon-sm` glyph in `text-secondary`. Hover: background `surface-tertiary`, glyph → `text-primary`. Click opens the same command palette as the bordered variant — the trigger is the only thing that changes. Use on the marketing topnav cluster where the bordered ⌘K input would crowd the row alongside the theme toggle, language switcher, and the auth sub-group; the icon-only form keeps the cluster rhythmic and reduces visual weight ahead of the auth CTA.
 
-**Command palette** — overlay `rgba(0,0,0,0.4)` + `backdrop-filter: blur(4px)`, z-index 500. Card: centered top (margin-top 15vh), max-width 560, `surface-page`, radius 12, shadow `high`, z-index 650 (command-menu layer). Card inner: input at top, no borders, height 48, padding 16, `copy-16 / text-primary`, left-anchored `search` `icon-md / text-tertiary`; 1px bottom `border-primary` divider. Results listbox: padding 4 0, max-height 320, internal scroll. Results grouped by section — group header `label-12 / text-tertiary`, padding 8 12; item padding 8 12, `copy-14 / text-primary`, optional leading icon (`icon-sm / text-tertiary`), trailing metadata (`copy-mono-13 / text-tertiary`). Hover / keyboard focus: background `surface-tertiary`.
+**Command palette** — overlay `rgba(0,0,0,0.4)` + `backdrop-filter: blur(4px)`, z-index 500. Card: centered top (margin-top 15vh), max-width 560, `surface-page`, radius 12, shadow `high`, z-index 650 (command-menu layer). Card inner: input at top, no borders, height 48, padding 16, `copy-16 / text-primary`, left-anchored `search` `icon-md / text-tertiary`; 1px bottom `border-primary` divider. Results listbox: padding 4 0, max-height 320, internal scroll. Results grouped by section — group header `label-12 / text-tertiary`, padding 8 12; item padding 8 12, `copy-14 / text-primary`, optional leading icon (`icon-sm / text-tertiary`), trailing metadata (`copy-13 / text-tertiary`). Hover / keyboard focus: background `surface-tertiary`.
 
 Keyboard (palette): typing filters results; ↑/↓ move selection; Enter activates; Esc closes and restores focus.
 
@@ -741,7 +741,7 @@ Row: `display: flex`, `align-items: center`, gap 4.
 
 **Numbered** — `Previous` ghost button (`chevron-left` `icon-sm` + "Previous" in `button-12 / text-primary`; padding 8×12; radius 8; hover `surface-tertiary`). Number buttons: 36×36 min, radius 6, `copy-mono-13 / text-secondary`, hover `surface-tertiary`. Current: background `surface-inverse`, fg `text-inverse`. Gap markers: `…` in `text-tertiary`, width 36, non-interactive. `Next` ghost button mirrors Previous.
 
-**Compact** — `Previous` ghost + `Page 3 of 42` in `copy-mono-13 / text-secondary` (padding 0 12) + `Next` ghost.
+**Compact** — `Previous` ghost + `Page 3 of 42` in `copy-13 / text-secondary` (padding 0 12) + `Next` ghost.
 
 Disabled (at first / last page): opacity 0.4, cursor `not-allowed`.
 
