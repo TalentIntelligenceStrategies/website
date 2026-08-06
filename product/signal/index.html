@@ -46,265 +46,56 @@
    pattern. Cool palette per the Patent Intel SaaS = cool rule.
    Six cards: Submit · Pool match · Brief · Pro · PDF · History.
    ============================================================ */
-.howitworks .howit-head {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 32px; margin: 0 0 40px;
-}
-.howitworks .howit-head h3 {
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
-  margin: 0;
-}
 
 /* "Signal" pillar-hero h3 — matches How it works h3 sizing so the
    section heading rhythm is consistent down the page. Mirrors the
    licensing-product-page-preview.html .pillar-hero-copy h3 override.
    line-height 1.2 (not 1.1) so the bold "g" descender doesn't clip. */
-.pillar-hero-copy h3 {
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0 0 32px;
-}
 
-.howit-rail-nav { display: flex; gap: 8px; flex-shrink: 0; }
-.howit-arrow {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1.5px solid var(--border-primary);
-  background: var(--surface-page);
-  color: var(--text-tertiary);
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: color 120ms linear, border-color 120ms linear;
-}
 /* Active (non-disabled) — outlined treatment: white interior, 1.5px sky
    ring + sky icon (#0EA5E9 — signal's dominant accent, paired with the
    cool dot-pastel sky in design-tokens.md §7.4). Disabled inherits the
    neutral 1.5px gray ring + tertiary-gray icon. */
-.howit-arrow:not(:disabled) {
-  border-color: #0EA5E9;
-  color: #0EA5E9;
-}
-.howit-arrow:disabled { cursor: not-allowed; }
-.howit-arrow svg { width: 14px; height: 14px; }
 
 /* Override the inherited 2-column .howitworks-grid (shared styles.css)
    — replaced wholesale by the horizontal rail. */
-.howitworks .howit-rail {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(440px, 460px);
-  gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  padding: 4px 4px 16px;
-  margin: 0 -4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.howitworks .howit-rail::-webkit-scrollbar { display: none; }
-
-.howit-card {
-  scroll-snap-align: start;
-  display: flex; flex-direction: column;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-primary);
-  background: var(--surface-page);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
-}
-.howit-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
-}
 
 /* Visual — cool-faded gradient backdrop + product-UI crop on top.
    Aspect-ratio 1/1 (square) gives the absolutely-positioned minis
    enough vertical room to not collide at the narrow card width. */
-.howit-card-visual {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  isolation: isolate;
-}
-.howit-card-grad {
-  position: absolute; inset: 0; z-index: 0;
-  opacity: 0;
-  background: rgba(14, 165, 233, 0.07);
-  transition: opacity 320ms ease;
-}
-.howit-card:hover .howit-card-grad { opacity: 1; }
-
-[data-theme="dark"] .howit-card[data-grad="1"] .howit-card-grad,
-[data-theme="dark"] .howit-card[data-grad="2"] .howit-card-grad,
-[data-theme="dark"] .howit-card[data-grad="3"] .howit-card-grad,
-[data-theme="dark"] .howit-card[data-grad="4"] .howit-card-grad,
-[data-theme="dark"] .howit-card[data-grad="5"] .howit-card-grad,
-[data-theme="dark"] .howit-card-stage {
-  position: absolute; inset: 0; z-index: 1;
-  overflow: hidden;
-}
 
 /* Screenshot-based stage visuals — floating product UI shots positioned to
    sit in the card frame with a soft drop-shadow. */
-.howit-shot {
-  position: absolute;
-  height: auto;
-  border-radius: 10px;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.04),
-    0 8px 24px -8px rgba(0,0,0,0.12),
-    0 24px 56px -20px rgba(0,0,0,0.18);
-  pointer-events: none;
-  user-select: none;
-}
 
 /* Body — h4 + paragraph + 3 check bullets */
-.howit-card-body {
-  padding: 24px 26px 28px;
-  display: flex; flex-direction: column; gap: 12px;
-  border-top: 1px solid var(--border-primary);
-  background: var(--surface-page);
-}
-.howit-card-body h4 {
-  font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
-  line-height: 1.25; margin: 0; color: var(--text-primary);
-}
-.howit-card-body p {
-  font-size: 15px; line-height: 1.55; margin: 0;
-  color: var(--text-secondary);
-}
-.howit-checks {
-  list-style: none; padding: 0; margin: 4px 0 0;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.howit-checks li {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-size: 14px; line-height: 1.5; color: var(--text-secondary);
-}
-.howit-checks li::before {
-  content: "";
-  flex-shrink: 0;
-  width: 16px; height: 16px;
-  margin-top: 2px;
-  background: #0EA5E9;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-}
 
 /* ============================================================
    Mini-components — opaque cards positioned over the gradient
    ============================================================ */
-.howit-mini {
-  position: absolute;
-  background: var(--surface-page);
-  border: 1px solid var(--border-primary);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.10), 0 18px 40px -16px rgba(0,0,0,0.14);
-  color: var(--text-primary);
-  padding: 16px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.howit-mini .hm-head { display: flex; align-items: center; gap: 8px; }
-.howit-mini .hm-step {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px; border-radius: 50%;
-  background: var(--text-primary); color: var(--surface-page);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; font-weight: 700;
-}
-.howit-mini .hm-label {
-  font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-.howit-mini .hm-opt {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 9px 11px;
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  font-size: 13px;
-  background: var(--surface-page);
-}
-.howit-mini .hm-opt.is-selected {
-  border-color: #0EA5E9;
-  box-shadow: inset 0 0 0 1px #0EA5E9;
-}
-.howit-mini .hm-input-nm {
-  font-weight: 600; color: var(--text-primary);
-}
-.howit-mini .hm-input-val {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; letter-spacing: 0.04em;
-  color: var(--text-secondary);
-}
-.howit-mini .hm-input-aside {
-  font-size: 10.5px; letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-}
-.howit-mini .hm-input-foot {
-  font-size: 11px; letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  margin: 2px 0 0;
-}
 
 /* Card 1 · Submit — "What patent are we grading?" form screenshot (1412×1346,
    near-square). Same pattern as licensing Card 1 — width-fit at 92%, top
    anchored, slight bottom fade from the page-bleed cushion at the source's
    bottom edge. */
-.howit-stage-submit .howit-shot-form {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Card 2 · Pool — "Confirm the industry pool" screenshot (1436×1448, square).
    Same width-fit pattern as Card 1. */
-.howit-stage-pool .howit-shot-pool {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Card 3 · Pick delivery — "Pick your delivery" screenshot (1304×1352, slightly
    portrait). Same width-fit pattern as Cards 1 + 2. Replaces the prior 'Brief
    delivered' + 'Pro upgrade' cards now that delivery choice is the step-3 moment. */
-.howit-stage-delivery .howit-shot-delivery {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Card 4 · Brief report content — full Brief Report screenshot (1696×1426,
    landscape, aspect 1.19). Single-row dashboard: A-tier + 4 metric panels
    + radar in one row, with PILLAR ANALYSIS table below. Same width-fit
    pattern as Card 5. */
-.howit-stage-brief .howit-shot-report {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Card 5 · Pro report — full Pro report screenshot (1810×1498, landscape,
    aspect 1.21). Single-row dashboard layout: S-tier + 4 metric panels +
    radar all in one row. Width 92%, same pattern as the rest of the rail.
    Image fills upper portion of card with whitespace below. */
-.howit-stage-pro .howit-shot-pro-report {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Narrow viewports — hide arrow controls; full-width snap */
-@media (max-width: 720px) {
-  .howit-rail-nav { display: none; }
-  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-  .howitworks .howit-head { margin-bottom: 24px; }
-}
 
 /* ============================================================
    Pricing section header — single left-aligned h2 per the
@@ -330,63 +121,17 @@
    ============================================================ */
 
 /* Hide the dot before the eyebrow text */
-.prod-price-eyebrow::before { display: none !important; }
 
 /* Hide the eyebrow text on non-featured cards (no longer needed for
    vertical alignment since featured eyebrow is absolutely positioned) */
-.prod-price-tier:not(.is-featured) .prod-price-eyebrow { display: none; }
 
 /* Featured card (Pro) — neutral ink ring + soft elevation. The shared
    ::before gradient outline is overridden to a solid neutral ring so the
    card reads on the B&W base with no blue / trio gradient. */
-.prod-price-tier.is-featured {
-  position: relative; overflow: visible;
-  box-shadow:
-    0 12px 32px -8px rgba(37,37,37,0.14),
-    0 4px 12px -4px rgba(37,37,37,0.08),
-    0 1px 2px rgba(0,0,0,0.04);
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1),
-              box-shadow 240ms ease;
-}
-.prod-price-tier.is-featured::before {
-  background: var(--border-tertiary);
-}
-[data-theme="dark"] .prod-price-tier.is-featured {
-  box-shadow:
-    0 12px 32px -8px rgba(0,0,0,0.55),
-    0 4px 12px -4px rgba(0,0,0,0.35),
-    0 1px 2px rgba(0,0,0,0.30);
-}
 
 /* Hover — non-featured cards (Standard, Max): lift + neutral ink border. */
-.prod-price-tier:not(.is-featured) {
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1),
-              border-color 200ms ease,
-              box-shadow 240ms ease;
-}
-.prod-price-tier:not(.is-featured):hover {
-  transform: translateY(-4px);
-  border-color: var(--border-tertiary);
-  box-shadow:
-    0 14px 32px -10px rgba(37,37,37,0.14),
-    0 4px 12px -4px rgba(37,37,37,0.08),
-    0 1px 2px rgba(0,0,0,0.04);
-}
 
 /* Hover — Pro (featured): deeper lift, same neutral elevation. */
-.prod-price-tier.is-featured:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 20px 48px -12px rgba(37,37,37,0.18),
-    0 6px 16px -6px rgba(37,37,37,0.10),
-    0 1px 2px rgba(0,0,0,0.04);
-}
-[data-theme="dark"] .prod-price-tier.is-featured:hover {
-  box-shadow:
-    0 20px 48px -12px rgba(0,0,0,0.60),
-    0 6px 16px -6px rgba(0,0,0,0.40),
-    0 1px 2px rgba(0,0,0,0.30);
-}
 
 /* Body — position relative for absolute side rails; clip horizontal
    overflow so the peeking 4th card doesn't trigger a scrollbar. */
@@ -405,9 +150,7 @@ body {
 /* Stripe typography hierarchy on Urbanist — weight 600 (not 700),
    slightly tighter tracking, larger size scale. The 56px ceiling
    on section heads matches Stripe's /pricing H2 visually. */
-.bp-section-heading,
-.howitworks .howit-head h3,
-.pillar-hero-copy h3 {
+.bp-section-heading {
   font-size: clamp(40px, 5vw, 56px);
   font-weight: 600;
   letter-spacing: -0.022em;
@@ -420,21 +163,9 @@ body {
    floor 36 / ceiling 56 keeps the scale within Stripe's range across
    375 → 1440+ viewports. Color stays on TIS --text-primary, not Stripe's
    #0A2540, per brand rule. */
-.section--page-hero h1,
-.section--page-hero h2,
-.section--page-hero--centered h1,
-.section--page-hero--centered h2 {
-  font-size: clamp(36px, 5.35vw, 56px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.17;
-}
 
 /* Body text bumped from ~15 → 17px (Stripe body ratio) */
-.section p,
-.howit-card-body p,
-.faq-list .acc-content p,
-.pillar-hero-copy p {
+.section p, .faq-list .acc-content p {
   font-size: 17px;
   line-height: 1.55;
 }
@@ -446,26 +177,6 @@ body {
    leaves ≈18px slack inside content. To peek the 4th, we extend
    the rail's right boundary past the container's right edge by the
    distance from the right rail to the viewport right edge. */
-.howitworks .howit-rail {
-  grid-auto-columns: 320px;
-  gap: 24px;
-  /* push rail right boundary past the right rail toward viewport edge.
-     -16px offsets the container's right padding (now 16px, was 32px). */
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 16px;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(300px, 320px);
-    margin-right: 0;
-    padding-right: 4px;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(86vw, 86vw);
-  }
-}
 
 /* ============================================================
    Pricing comparison matrix — tier × feature grid (Standard /
@@ -613,41 +324,10 @@ body {
 .cmp-dash { width: 18px; height: 18px; color: var(--text-tertiary); }
 
 /* Feature bullets — replace shared CSS's "–" with a neutral ink check icon */
-.prod-price-features li::before {
-  content: "" !important;
-  flex-shrink: 0;
-  width: 16px; height: 16px;
-  margin-top: 1px;
-  background: var(--text-primary);
-  color: transparent !important;
-  font-family: inherit !important;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-}
 
 /* "Everything in X, plus:" — first feature item on Pro + Max.
    Inline with the rest of the list (no dark box), but uses "+" instead
    of the check icon and sits visually as a soft prefix. */
-.prod-price-features li.prod-price-feat-inherit {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.prod-price-features li.prod-price-feat-inherit::before {
-  content: "+" !important;
-  background: transparent !important;
-  color: var(--text-primary) !important;
-  -webkit-mask: none !important;
-          mask: none !important;
-  font-family: var(--prod-font-mono) !important;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1;
-  width: 16px; height: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0;
-}
 
 /* ============================================================
    Pricing tier — adopt the How it works card hierarchy:
@@ -661,51 +341,9 @@ body {
 /* Specificity bumped (.prod-price-tier .prod-price-name = 0,2,0)
    so this beats the .section p bundle (0,1,1) that was silently
    forcing .prod-price-name back to 17px / 400. */
-.prod-price-tier .prod-price-name {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  color: var(--text-primary);
-  margin: 0;
-}
-.prod-price-features {
-  list-style: none;
-  padding: 0;
-  margin: 4px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-.prod-price-features li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.prod-price-features li::before {
-  content: '' !important;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  margin-top: 3px;
-  border-radius: 50%;
-  background-color: var(--text-primary);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M4.2 8.4l2.6 2.6L11.8 6' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 11px;
-  -webkit-mask: none !important;
-          mask: none !important;
-  color: transparent !important;
-}
+
 /* Dark mode: the ink circle is near-white, so swap the check glyph to a
    dark stroke so it stays legible inside the circle. */
-[data-theme="dark"] .prod-price-features li::before {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M4.2 8.4l2.6 2.6L11.8 6' stroke='%230E0E0E' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
 
 /* ============================================================
    "Credits per query" reference table — stretch full width of
@@ -861,26 +499,14 @@ body {
 /* Stripe body weight — 300 (light) instead of 400 (regular). Applied
    in Urbanist. This is the single biggest "feels lighter / Stripe-like"
    change — the page reads more airy and editorial. */
-body,
-.section p,
-.howit-card-body p,
-.faq-list .acc-content p,
-.pillar-hero-copy p {
+body, .section p, .faq-list .acc-content p {
   font-weight: 400;
 }
 
 /* Heading weights — Stripe semibold 425, we approximate with Urbanist
    500. Display headings stay at 600 (Stripe's "bold" mapped to Urbanist
    600 for visual heft). */
-.bp-section-heading,
-.howitworks .howit-head h3,
-.pillar-hero-copy h3 {
-  font-weight: 600;
-}
-.section--page-hero h1,
-.section--page-hero h2,
-.section--page-hero--centered h1,
-.section--page-hero--centered h2 {
+.bp-section-heading {
   font-weight: 600;
 }
 
@@ -892,18 +518,13 @@ body,
 /* Copy max-width — Stripe constrains paragraph body text to 810px
    (75% of 1080 layout). Applied to hero p + section paragraphs so
    long text never spans the full container width edge-to-edge. */
-.pillar-hero-copy p,
-.section-head p,
 .section > .container > p {
   max-width: var(--tis-copy-max-width);
 }
 
 /* Button / CTA font — Stripe ctaFont = 425 / 15px / 1.6. We use
    Urbanist 500 (closest available weight). Universal hover easing. */
-.btn,
-.btn-primary,
-.btn-secondary,
-.prod-price-cta {
+.btn, .btn-primary, .btn-secondary {
   font-weight: 500;
   font-size: 15px;
   line-height: 1.6;
@@ -921,11 +542,7 @@ body,
 
 /* Universal hover easing — apply Stripe's hover curve to anything
    that already declares its own transition properties on hover. */
-a, button,
-.howit-card,
-.prod-price-tier,
-.acc-trigger,
-.btn {
+a, button, .acc-trigger, .btn {
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -940,23 +557,9 @@ a, button,
 
 /* h1 — hero display heading. clamp(36, 5.35vw, 56) verified against
    Stripe at viewport 898 → 48px and viewport 1286 → 56px (clamped). */
-.section--page-hero h1,
-.section--page-hero h2,
-.section--page-hero--centered h1,
-.section--page-hero--centered h2,
-.pillar-hero-copy h1,
-.pillar-hero-copy h2 {
-  font-size: clamp(36px, 5.35vw, 56px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: var(--text-primary);
-}
 
 /* h2 — section heads (Pricing, CTA). */
-.bp-section-heading,
-.cta-banner--themed .section-head h2,
-.cta-banner--themed h2 {
+.bp-section-heading {
   font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -994,9 +597,7 @@ a, button,
 }
 
 /* h3 — subsection heads (How it works, FAQ). */
-.howitworks .howit-head h3,
-.faq-heading,
-.pillar-hero-copy h3 {
+.faq-heading {
   font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -1007,17 +608,6 @@ a, button,
 /* Hero left column vertical rhythm — Stripe row-gap scale: 24px
    between h1 and body p, 32px between body p and CTAs. Matches the
    RowLayout gap pattern inspected on Stripe. */
-.section--page-hero .pillar-hero-copy h1,
-.section--page-hero .pillar-hero-copy h2 {
-  margin: 0 0 24px;
-}
-.section--page-hero .pillar-hero-copy p {
-  margin: 0 0 32px;
-  max-width: var(--tis-copy-max-width, 810px);
-}
-.section--page-hero .pillar-hero-copy .pillar-hero-cta {
-  margin: 0;
-}
 
 /* ============================================================
    Hero shot — fluid scale, left-aligned to middle guideline.
@@ -1035,38 +625,11 @@ a, button,
    - Lightened box-shadow vs styles.css default reads softer at
      the larger shot size.
    ============================================================ */
-.section--page-hero { overflow: visible; }
-.section--page-hero > .container { z-index: 2; }
-.section--page-hero .pillar-hero { position: relative; }
-.section--page-hero .pillar-hero-copy { min-height: 420px; }
-.section--page-hero .pillar-hero-shot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  /* Width spans from the center guideline (50vw) to the right outer rail
-     (50vw + 540, where body::after sits) = 540px on any viewport ≥ 1080px.
-     On narrower viewports it shrinks with 50vw so the right edge tracks the
-     clamped rail at the viewport edge. Width-based (not `right`-based) so
-     positioning context doesn't matter — .pillar-hero stays the positioning
-     parent for vertical top:0 alignment. Aspect ratio dropped — height
-     follows the inner .frame-canvas (16:10) so the shot proportions track
-     the visible image. */
-  width: min(540px, 50vw);
-  z-index: 2;
-}
-.section--page-hero .pillar-hero-shot .frame-wrap { max-width: none; }
-.section--page-hero .pillar-hero-shot .browser-frame {
-  box-shadow:
-    0 1px 1px rgba(0,0,0,0.02),
-    0 12px 32px -8px rgba(0,0,0,0.06),
-    0 32px 64px -16px rgba(0,0,0,0.08);
-}
+
 /* Hero frame +30% taller — canvas aspect-ratio 16/10 → 16/13 and
    .shot-inner height 860 → 1118 (both ×1.3). Width unchanged, top edge
    unchanged. More inner content becomes visible at the bottom because the
    inner layout naturally extends downward into the added vertical space. */
-.section--page-hero .pillar-hero-shot .frame-canvas { aspect-ratio: 16 / 13; }
-.section--page-hero .pillar-hero-shot .shot-inner { height: 1118px; }
 
 /* Hero signal backdrop — re-center + zoom inside the .shot-inner box.
    styles.css tuned `.hero-signal .strip` (perspective-origin 50% 30%,
@@ -1076,23 +639,6 @@ a, button,
    virtual canvas we drop the X-translate so the 3×4 metric grid centers,
    bump scale to 1.0, and tighten the mask so the visible area fills
    the card. */
-.section--page-hero .pillar-hero-shot .hero-signal .stage-3d {
-  perspective-origin: 50% 50%;
-}
-.section--page-hero .pillar-hero-shot .hero-signal .strip {
-  transform: scale(1.3);
-  -webkit-mask-image: none;
-          mask-image: none;
-}
-
-@media (max-width: 980px) {
-  .section--page-hero .pillar-hero-shot {
-    position: static;
-    width: auto;
-    height: auto;
-  }
-  .section--page-hero .pillar-hero-shot .frame-wrap { max-width: 688px; }
-}
 
 /* ============================================================
    Section background audit — strip backgrounds that cover the
@@ -1184,94 +730,16 @@ a, button,
    Per-pillar accent: signal sky / licensing warm orange.
    ============================================================ */
 
-.howitworks .howit-rail {
-  grid-auto-columns: 504px;
-  gap: 36px;
-  /* Extension math: -16px offsets container padding, max() extends
-     rail to viewport right edge on screens wider than 1080. With
-     504px cards × 2 = 1008 + 36 gap = 1044, the 3rd card naturally
-     starts past the container content area and peeks the right rail. */
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 16px;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(440px, 504px);
-    margin-right: 0;
-    padding-right: 4px;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-}
-
 /* Visual area — landscape 3:2 (Stripe inspected: 496×330 ≈ 1.504). */
-.howit-card-visual {
-  aspect-ratio: 3 / 2;
-}
 
 /* Card title + body — match .deliverable-card typography
    (15px h4 / 600 / -0.005em / 1.4; 15px p / 400 / 1.55). */
-.howit-card-body {
-  padding: 28px 30px 32px;
-  gap: 14px;
-}
-.howit-card-body h4 {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  color: var(--text-primary);
-  margin: 0;
-}
-.howit-card-body p {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  margin: 0;
-}
 
 /* Check list items — 16px label color --text-secondary; 20×20 outlined
    circle (1.5px colored ring + white interior + colored check icon
    inside). Matches the howit-arrow outlined treatment so the rail nav
    buttons and check bullets share a visual language. Per-pillar accent
    color (signal sky / licensing warm). */
-.howit-checks {
-  margin-top: 6px;
-  gap: 12px;
-}
-.howit-checks li {
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  align-items: flex-start;
-  gap: 12px;
-}
-.howit-checks li::before {
-  content: '' !important;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: 3px;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  border: 1.5px solid #0EA5E9;  /* signal default */
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%230EA5E9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px;
-  -webkit-mask: none !important;
-          mask: none !important;
-}
-[data-pillar="signal"] .howit-checks li::before {
-  border-color: #0EA5E9;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%230EA5E9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
-[data-pillar="licensing"] .howit-checks li::before {
-  border-color: #F97316;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%23F97316' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
 
 /* ============================================================
    HOW IT WORKS — Stripe grid-edge alignment.
@@ -1283,64 +751,12 @@ a, button,
    dotted column lines (270 / 540 / 810).
    ============================================================ */
 
-.howitworks .howit-rail {
-  grid-auto-columns: 540px;
-  gap: 0;
-  /* Negative left margin bleeds past container's 16px padding so
-     card 1's left edge lands AT the outer rail (50vw - 540), not
-     16px in from it. Right side still extends past right rail. */
-  margin-left: -16px;
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 0;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(440px, 540px);
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-}
-
 /* Card wrapper — transparent, 540px slot with 36px internal
    right-padding that creates the visible gap between cards. */
-.howit-card {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  padding-right: 36px;
-  transition: none;
-}
-.howit-card:hover {
-  transform: none;
-  box-shadow: none;
-}
 
 /* Visual area now carries the card chrome (border, bg, shadow, radius). */
-.howit-card-visual {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-primary);
-  background: var(--surface-page);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
-}
-.howit-card:hover .howit-card-visual {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
-}
 
 /* Body is flat text below the visual — no border-top, no chrome */
-.howit-card-body {
-  padding: 24px 0 0;
-  border-top: 0;
-  background: transparent;
-  gap: 14px;
-}
 
 /* ============================================================
    HOW IT WORKS — Stripe-exact nested card structure.
@@ -1352,57 +768,12 @@ a, button,
    card area with 32px padding.
    ============================================================ */
 
-.howit-card {
-  position: relative;
-  scroll-snap-align: start;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  padding-right: 36px;
-  display: flex; flex-direction: column;
-  transition: none;
-}
-.howit-card:hover { transform: none; }
-
 /* Card chrome — white bg + shadow + radius. Fills content area only
    (inset 0 36px 0 0) so the right 36px padding stays transparent
    (creating the visible gap between cards). */
-.howit-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 36px 0 0;
-  background: var(--surface-page);
-  border: 0;
-  border-radius: 16px;
-  /* Bottom-heavy asymmetric shadow — negative spreads keep horizontal
-     extension minimal so the shadow doesn't clip at the rail's left
-     overflow boundary. Always visible. */
-  box-shadow:
-    0 2px 4px -1px rgba(0,0,0,0.05),
-    0 8px 16px -4px rgba(0,0,0,0.08),
-    0 20px 40px -12px rgba(0,0,0,0.12);
-  transition: box-shadow 240ms cubic-bezier(0.215, 0.61, 0.355, 1),
-              transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  pointer-events: none;
-  z-index: 0;
-}
 
 /* Hover lift — the WHOLE card translates up 4px (matches the previous
    pop-out behavior). Shadow deepens to reinforce the lift. */
-.howit-card {
-  transition: transform 240ms cubic-bezier(0.215, 0.61, 0.355, 1) !important;
-}
-.howit-card:hover {
-  transform: translateY(-4px) !important;
-}
-.howit-card:hover::before {
-  box-shadow:
-    0 4px 8px -2px rgba(0,0,0,0.06),
-    0 16px 32px -8px rgba(0,0,0,0.10),
-    0 32px 56px -16px rgba(0,0,0,0.16);
-}
 
 /* Rail padding/margin — back to keeping card 1's left edge exactly
    at the outer rail (margin-left: -16 cancels container's 16px padding).
@@ -1412,59 +783,14 @@ a, button,
    outer rail at z-index:1) so cards peeking past the right rail
    render in front of the rail, not behind it. Scoped to this rail
    only — header row and other sections keep the rail above content. */
-.howitworks .howit-rail {
-  position: relative;
-  z-index: 2;
-  margin: 0 calc(-32px - max(0px, 50vw - 720px)) 0 -32px;
-  padding: 8px 0 40px 0;
-}
-@media (max-width: 1440px) {
-  .howitworks .howit-rail {
-    margin: 0;
-    padding: 8px 0 40px 0;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail {
-    margin: 0;
-    padding: 8px 8px 40px 8px;
-  }
-}
 
 /* Card content layers above ::before chrome */
-.howit-card-visual,
-.howit-card-body {
-  position: relative;
-  z-index: 1;
-}
 
 /* Visual = nested LIGHT GRAY box with 24px margin from card edges */
-.howit-card-visual {
-  border-radius: 12px;
-  overflow: hidden;
-  border: 0;
-  background: rgb(246, 247, 249);  /* Stripe cool light gray */
-  box-shadow: none;
-  margin: 24px 24px 0;
-  /* aspect-ratio is inherited from earlier rule (3/2) */
-}
 
 /* Gradient overlay — hidden by default, fades in on hover */
-.howit-card-grad {
-  opacity: 0;
-  transition: opacity 320ms cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-.howit-card:hover .howit-card-grad {
-  opacity: 1;
-}
 
 /* Body = text area inside white card, below visual */
-.howit-card-body {
-  padding: 24px 32px 32px;
-  border-top: 0;
-  background: transparent;
-  gap: 14px;
-}
 
 /* ===== Ported from licensing template (gap-cover bento · bundle grid · walk-away · how-it-works carousel) — visuals are placeholder boxes pending HTML/CSS-mock rebuild. Cool palette (#0EA5E9). ===== */
 
@@ -1596,19 +922,6 @@ a, button,
 }
 
 /* Go it alone — two named paths */
-.gapcover .gbento-diy + .gbento-diy { margin-top: 16px; }
-.gapcover .gbento-diy-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 4px;
-}
-.gapcover .gbento-diy-detail {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  margin: 0;
-}
 
 /* TIS list — neutral check marks, two columns on the wide card */
 .gapcover .gbento-list--tis {
@@ -1832,22 +1145,12 @@ a, button,
   color: var(--text-secondary);
   margin: 12px 0 0;
 }
-.walkaway .wa-link {
-  align-self: flex-start;
-  margin-top: 18px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color var(--tis-hover-transition);
-}
-.walkaway .wa-col:hover .wa-eyebrow,
-.walkaway .wa-col:hover .wa-link,
-.walkaway .wa-link:hover { color: var(--text-secondary); }
+
+.walkaway .wa-col:hover .wa-eyebrow { color: var(--text-secondary); }
 
 @media (min-width: 561px) {
   .walkaway .wa-col-body { margin-top: clamp(72px, 10vw, 132px); }
-  .walkaway .wa-link { margin-top: auto; }
+  
 }
 
 @media (max-width: 980px) {
@@ -1860,8 +1163,7 @@ a, button,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .walkaway .wa-eyebrow,
-  .walkaway .wa-link { transition: none; }
+  .walkaway .wa-eyebrow { transition: none; }
 }
 
 /* ============================================================

@@ -57,50 +57,11 @@
    UI crop sits opaque on top, off-centered and zoomed. Hover
    intensifies the gradient without moving the UI.
    ============================================================ */
-.howit-head {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 32px; margin: 0 0 40px;
-}
-.howit-head h3 {
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
-  margin: 0;
-}
-.howit-rail-nav { display: flex; gap: 8px; flex-shrink: 0; }
-.howit-arrow {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1.5px solid var(--border-primary);
-  background: var(--surface-page);
-  color: var(--text-tertiary);
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: color 120ms linear, border-color 120ms linear;
-}
+
 /* Active (non-disabled) — outlined treatment: white interior, 1.5px
    orange ring + orange icon (#F97316 — licensing's dominant warm accent,
    paired with the warm dot-pastel peach in design-tokens.md §7.4).
    Disabled inherits the neutral 1.5px gray ring + tertiary-gray icon. */
-.howit-arrow:not(:disabled) {
-  border-color: #F97316;
-  color: #F97316;
-}
-.howit-arrow:disabled { cursor: not-allowed; }
-.howit-arrow svg { width: 14px; height: 14px; }
-
-.howit-rail {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(440px, 460px);
-  gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  padding: 4px 4px 16px;
-  margin: 0 -4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.howit-rail::-webkit-scrollbar { display: none; }
 
 .howit-card {
   scroll-snap-align: start;
@@ -118,170 +79,37 @@
 }
 
 /* Visual — gradient backdrop + zoomed UI crop */
-.howit-card-visual {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  isolation: isolate;
-}
-.howit-card-grad {
-  position: absolute; inset: 0; z-index: 0;
-  opacity: 0;
-  background: rgba(236, 66, 0, 0.07);
-  transition: opacity 320ms ease;
-}
-.howit-card:hover .howit-card-grad { opacity: 1; }
-
-.howit-card-stage {
-  position: absolute; inset: 0; z-index: 1;
-  overflow: hidden;
-}
 
 /* Screenshot-based stage visuals — floating product UI shots
    positioned to peek into the card frame, with overflow:hidden
    on the stage cropping the bottom (term/extras peek off-edge). */
-.howit-shot {
-  position: absolute;
-  height: auto;
-  border-radius: 10px;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.04),
-    0 8px 24px -8px rgba(0,0,0,0.12),
-    0 24px 56px -20px rgba(0,0,0,0.18);
-  pointer-events: none;
-  user-select: none;
-}
 
 /* Body — title + paragraph + 2-3 check bullets */
-.howit-card-body {
-  padding: 24px 26px 28px;
-  display: flex; flex-direction: column; gap: 12px;
-  border-top: 1px solid var(--border-primary);
-  background: var(--surface-page);
-}
-.howit-card-body h4 {
-  font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
-  line-height: 1.25; margin: 0; color: var(--text-primary);
-}
-.howit-card-body p {
-  font-size: 15px; line-height: 1.55; margin: 0;
-  color: var(--text-secondary);
-}
-.howit-checks {
-  list-style: none; padding: 0; margin: 4px 0 0;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.howit-checks li {
-  display: flex; align-items: flex-start; gap: 10px;
-  font-size: 14px; line-height: 1.5; color: var(--text-secondary);
-}
-.howit-checks li::before {
-  content: "";
-  flex-shrink: 0;
-  width: 16px; height: 16px;
-  margin-top: 2px;
-  background: var(--bronze-mid, #B4843B);
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 5'/></svg>") center/contain no-repeat;
-}
 
 /* ============================================================
    Mini-components — opaque white cards living on top of the
    gradient backdrop. Off-centered + zoomed, intentionally
    peeking off card edges to signal "snapshot into the journey."
    ============================================================ */
-.howit-mini {
-  position: absolute;
-  background: var(--surface-page);
-  border: 1px solid var(--border-primary);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.10), 0 18px 40px -16px rgba(0,0,0,0.14);
-  color: var(--text-primary);
-  padding: 16px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.howit-mini .hm-head { display: flex; align-items: center; gap: 8px; }
-.howit-mini .hm-step {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px; border-radius: 50%;
-  background: var(--text-primary); color: var(--surface-page);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; font-weight: 700;
-}
-.howit-mini .hm-label {
-  font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-.howit-mini .hm-opt {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 11px;
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  font-size: 13px;
-  background: var(--surface-page);
-}
-.howit-mini .hm-opt.is-selected {
-  border-color: var(--text-primary);
-  box-shadow: inset 0 0 0 1px var(--text-primary);
-}
-.howit-mini .hm-chip {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 30px; height: 22px; padding: 0 7px;
-  border-radius: 999px;
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
-}
-.howit-mini .hm-chip.us { background: #DBEAFE; color: #1E3A8A; }
-.howit-mini .hm-chip.tw { background: #FEE2E2; color: #991B1B; }
-.howit-mini .hm-chip.ep { background: #DCFCE7; color: #166534; }
-.howit-mini .hm-chip.jp { background: #FCE7F3; color: #9F1239; }
 
 /* Card 1 · Pick — whole-page picker shot (jurisdiction + industry + estimate;
    term peeks off the bottom edge thanks to stage overflow:hidden). */
-.howit-stage-pick .howit-shot-picker {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Card 2 · Two ways — side-by-side path comparison shot, vertically centered. */
-.howit-stage-ways .howit-shot-paths {
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 92%;
-}
 
 /* Card 3 · Activate — bundle-page screenshot cropped to ~1.18 aspect so the
    natural width-fit at 92% gives a bottom fade-off matching Card 1. Crop is
    left-anchored to preserve the title and STEP indicator. */
-.howit-stage-activate .howit-shot-bundle {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
+
 /* Card 4 · Swap — bulk-action bar on the bundle grid. Source is pre-cropped
    to ~aspect 1.96 (3 rows visible + floating action bar). Centered both axes
    with width pushed past 100% so the patent cards read large enough — the
    slight horizontal bleed is clipped by the stage's overflow:hidden. */
-.howit-stage-swap .howit-shot-actions {
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 115%;
-}
 
 /* Card 5 · Badge — license-active page screenshot (badge + headline + doc
    center grid); same width-fit pattern as Cards 1, 3, 4. */
-.howit-stage-badge .howit-shot-license {
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-}
 
 /* Hide arrow controls on narrow viewports — swipe/scroll is enough */
-@media (max-width: 720px) {
-  .howit-rail-nav { display: none; }
-  .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-}
 
 /* ============================================================
    Three-up picker layout — Jurisdiction · Industry · Term shown
@@ -289,62 +117,12 @@
    selection (TW / Chip & semi / 12 months) with the selected row
    outlined. Numbered arrows (1 → 2 → 3) make the progression read.
    ============================================================ */
-.howit-shot-three-cols {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  flex: 1; min-height: 0;
-}
-.howit-shot-col { display: flex; flex-direction: column; gap: 12px; }
-.howit-shot-col-head {
-  display: flex; align-items: center; gap: 10px;
-  margin: 0 0 2px;
-}
-.howit-shot-col-head .step-num {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 26px; height: 26px; border-radius: 50%;
-  background: var(--text-primary); color: var(--surface-page);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 13px; font-weight: 700;
-  flex-shrink: 0;
-}
-.howit-shot-col-head .step-label {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
-  color: var(--text-primary);
-}
-.howit-shot-col-list { display: flex; flex-direction: column; gap: 8px; }
+
 /* Tighter option rows for the 3-up layout — smaller padding + font than
    the single-column picker so 4 rows fit comfortably in the column. */
-.howit-shot-three-cols .howit-shot-opt {
-  padding: 11px 14px;
-  gap: 10px;
-  font-size: 14px;
-  border-radius: 9px;
-}
-.howit-shot-three-cols .howit-shot-opt .nm { font-size: 14px; }
-.howit-shot-three-cols .howit-shot-opt .sb { font-size: 11px; }
-.howit-shot-three-cols .howit-shot-opt .rgt { font-size: 11px; }
-.howit-shot-three-cols .howit-shot-juris-chip {
-  font-size: 11px;
-  padding: 2px 9px;
-}
+
 /* Arrows between columns — sit in the gap, vertically centered on the
    row of column heads. Tasteful, low-key. */
-.howit-shot-col-arrow {
-  position: absolute;
-  top: 0;
-  width: 24px; height: 24px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-tertiary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 18px;
-  pointer-events: none;
-}
-.howit-shot-col { position: relative; }
-.howit-shot-col + .howit-shot-col .howit-shot-col-arrow {
-  left: -30px; top: 3px;
-}
 
 /* ============================================================
    Staggered 3-card layout — System Rec, FTO-Guided, Tell us what
@@ -354,146 +132,18 @@
    themselves carry the canonical .path-card / .card-shadow look
    from licensing-flow-preview.html.
    ============================================================ */
-.howit-shot-stagger-page {
-  position: absolute; inset: 0;
-  /* Tightened for the 1100×688 zoomed baseline — header + bottom both
-     get less air so the staggered cards have more room without clipping. */
-  padding: 96px 56px 32px;
-}
-.howit-stagger-stage {
-  position: relative;
-  width: 100%; height: 100%;
-}
-.howit-stagger-card {
-  position: absolute;
-  width: 60%;
-  background: var(--surface-page);
-  border: 1px solid rgba(232,217,180,0.55);
-  border-radius: 12px;
-  padding: 22px 26px;
-  box-shadow:
-    0 12px 36px rgba(122,74,15,0.12),
-    0 2px 8px rgba(122,74,15,0.05);
-  font-family: 'Urbanist', sans-serif;
-  color: var(--text-primary);
-}
-[data-theme="dark"] .howit-stagger-card {
-  background: rgba(28,20,12,0.92);
-  border-color: rgba(212,160,23,0.22);
-  box-shadow:
-    0 12px 36px rgba(0,0,0,0.50),
-    0 2px 8px rgba(212,160,23,0.10);
-}
-.howit-stagger-card.back   { top: 0;     left: 0;     z-index: 1; }
-.howit-stagger-card.middle { top: 18%;   left: 20%;   z-index: 2; }
-.howit-stagger-card.front  { top: 36%;   left: 40%;   z-index: 3; }
+
 /* Subtle de-emphasis on the cards behind so attention lands on the front */
-.howit-stagger-card.back   { opacity: 0.92; }
-.howit-stagger-card.middle { opacity: 0.97; }
 
 /* Card content — eyebrow + headline + description + meta strip + CTA.
    All sizes tightened for the 1100×688 zoomed baseline. */
-.howit-stagger-card .ptag {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 10px;
-}
-.howit-stagger-card .pnm {
-  font-size: 20px; font-weight: 600;
-  letter-spacing: -0.01em; color: var(--text-primary);
-  margin: 0 0 10px;
-}
-.howit-stagger-card .pds {
-  font-size: 13.5px; line-height: 1.45;
-  color: var(--text-secondary); margin: 0;
-}
-.howit-stagger-card .pmeta {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 24px; margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(232,217,180,0.5);
-}
-[data-theme="dark"] .howit-stagger-card .pmeta { border-top-color: rgba(212,160,23,0.22); }
-.howit-stagger-card .pmeta .pk {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 10.5px; font-weight: 500; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 4px;
-}
-.howit-stagger-card .pmeta .pv {
-  font-size: 15px; font-weight: 500; color: var(--text-primary);
-}
-.howit-stagger-card .pcta {
-  display: block;
-  margin-top: 16px;
-  padding: 11px 16px;
-  border-radius: 9px;
-  background: var(--text-primary); color: var(--surface-page);
-  font-size: 13.5px; font-weight: 600;
-  text-align: center;
-}
-.howit-stagger-card .pcta.outline {
-  background: transparent; color: var(--text-primary);
-  border: 1px solid var(--text-primary);
-}
 
 /* "RECOMMENDED" tag — sits in the upper-left of the recommended card */
-.howit-stagger-card.is-recommended { border-color: var(--text-primary); }
-.howit-stagger-card.is-recommended::after {
-  content: "RECOMMENDED";
-  position: absolute;
-  top: -12px; left: 24px;
-  background: var(--text-primary); color: var(--surface-page);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-  padding: 5px 12px; border-radius: 6px;
-}
 
 /* "Step X of 7" eyebrow + heading at the top of the staggered image */
-.howit-stagger-header {
-  position: absolute;
-  top: 28px; left: 56px; right: 56px;
-  z-index: 4;
-}
-.howit-stagger-header .eb {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 5px;
-}
-.howit-stagger-header h2 {
-  font-size: 28px; font-weight: 700;
-  letter-spacing: -0.02em; color: var(--text-primary);
-  margin: 0;
-}
 
 /* Front-card "Tell us what you ship" mini form — replaces .pmeta/.pcta
    with 4 labelled rows. Uses the same .pcta button at the bottom. */
-.howit-stagger-form {
-  display: flex; flex-direction: column;
-  gap: 10px;
-  margin-top: 14px;
-}
-.howit-stagger-form .field {
-  display: flex; flex-direction: column; gap: 4px;
-}
-.howit-stagger-form .field .lbl {
-  font-family: var(--font-sans);
-  font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--text-tertiary);
-}
-.howit-stagger-form .field .val {
-  padding: 8px 12px;
-  border: 1px solid rgba(232,217,180,0.55);
-  border-radius: 7px;
-  background: rgba(255,255,255,0.7);
-  font-size: 13px; color: var(--text-primary);
-}
-[data-theme="dark"] .howit-stagger-form .field .val {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(212,160,23,0.22);
-}
 
 .prod-check {
   display: inline-block;
@@ -508,7 +158,6 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-
 
 /* Horizontal term toggle above the picker — 3/6/12/24 month pill segments.
    Same visual language as the old .prod-term-toggle (segmented pill) but
@@ -579,7 +228,7 @@
   margin: 0 0 22px;
   text-wrap: balance;
 }
-.pcard-desc { display: none; } /* subhead removed from the trimmed card */
+ /* subhead removed from the trimmed card */
 
 .pcard-price {
   display: flex;
@@ -633,11 +282,6 @@
 /* Bottom group of the left column — dashed rule + CTA, pinned under the
    price block (parent uses justify-content: space-between). */
 .pcard-left-foot { display: flex; flex-direction: column; gap: 20px; }
-.pcard-rule {
-  border: 0;
-  border-top: 1px dashed var(--border-primary);
-  margin: 0;
-}
 
 .pcard-right {
   background: var(--surface-tertiary);
@@ -705,26 +349,9 @@
   padding-top: 24px;
   border-top: 1px dashed var(--border-primary);
 }
-.pcard-logos {
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 36px;
-}
-.pcard-logos .partner {
-  height: 28px;
-  width: 130px;
-  filter: none;
-  opacity: 1;
-}
-.pcard-logos .partner:hover { filter: none; opacity: 1; }
+
 /* Keep the marks in primary color in dark mode too (override the global
    invert/dim applied to .partner). */
-[data-theme="dark"] .pcard-logos .partner { filter: none; opacity: 1; }
-@media (max-width: 560px) {
-  .pcard-logos { gap: 24px; }
-  .pcard-logos .partner { width: 112px; height: 24px; }
-}
 
 /* ── Pricing header — heading + term toggle, centered above the card. The
    toggle is promoted out of the card to read as a page-level control. ── */
@@ -795,44 +422,10 @@
    clamp(24px,2.5vw,32px)/600 to match .howitworks h3 sizing exactly so
    the section heading rhythm is consistent down the page.
    line-height 1.2 (not 1.1) so the bold "g" descender doesn't clip. */
-.pillar-hero-copy h3 {
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0 0 32px;
-}
 
 /* Compact "Every bundle includes" checklist — lives inside the estimate
    panel, below the Subscribe CTA. Single column of check + feature name.
    Quantity/Note detail stays out of this view to keep the panel short. */
-.bp-includes {
-  margin-top: 4px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border-primary);
-  display: flex; flex-direction: column; gap: 10px;
-}
-.bp-includes-label {
-  font-family: var(--font-sans);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.20em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0;
-}
-.bp-includes-list {
-  list-style: none;
-  display: flex; flex-direction: column; gap: 7px;
-  margin: 0; padding: 0;
-}
-.bp-includes-list li {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 12.5px;
-  color: var(--text-primary);
-  line-height: 1.35;
-}
-.bp-includes-list .prod-check {
-  width: 14px; height: 14px;
-  flex-shrink: 0;
-}
 
 /* ============================================================
    Pricing picker labels — match the .deliverable-card h4 title
@@ -843,17 +436,6 @@
    - .bp-includes-label ("Every bundle includes") — handled
      by the next block to also restyle its list children.
    ============================================================ */
-.bp-label,
-.bp-estimate-label {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  text-transform: none;
-  color: var(--text-primary);
-  margin: 0;
-}
 
 /* ============================================================
    "Every bundle includes" — adopt the How it works card
@@ -866,38 +448,6 @@
      .howit-checks li styling. The existing inline <svg> is
      bumped to 16×16 and recolored to the licensing warm fill.
    ============================================================ */
-.bp-includes-label {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  text-transform: none;
-  color: var(--text-primary);
-  margin: 0;
-}
-.bp-includes-list {
-  gap: 8px;
-}
-.bp-includes-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-}
-.bp-includes-list .prod-check {
-  width: 16px;
-  height: 16px;
-  margin-top: 3px;
-}
-.bp-includes-list .prod-check circle {
-  fill: #F97316;
-}
-.bp-includes-list .prod-check path {
-  stroke: #FFFFFF;
-}
 
 /* ============================================================
    Swap UX mock — 30-tile patent grid (dimmed) with the right-edge
@@ -905,211 +455,16 @@
    flow-preview.html §.swap-picker, scoped under .howit- so it
    doesn't fight the canonical class names.
    ============================================================ */
-.howit-shot-swap-page {
-  position: absolute; inset: 0;
-}
+
 /* Dim the grid behind the picker so the panel reads as the foreground.
    Targets the .stage-3d inside the swap mock specifically. */
-.howit-figure-mock[data-step="swap"] .stage-3d { opacity: 0.55; }
-.howit-figure-mock[data-step="swap"] .stage-3d::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(270deg, rgba(255,251,241,0.5) 0%, rgba(255,251,241,0) 45%);
-  pointer-events: none;
-}
-[data-theme="dark"] .howit-figure-mock[data-step="swap"] .stage-3d::after {
-  background: linear-gradient(270deg, rgba(26,15,8,0.6) 0%, rgba(26,15,8,0) 45%);
-}
 
 /* Swap panel — slide-out from the right edge */
-.howit-swap-panel {
-  position: absolute;
-  /* Tightened gutters + width for the 1100×688 zoomed baseline so the
-     panel doesn't dominate the canvas at the new scale. */
-  top: 32px; right: 32px; bottom: 32px;
-  width: 520px;
-  background: var(--surface-page);
-  border: 1px solid rgba(232,217,180,0.55);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px rgba(122,74,15,0.18), 0 4px 12px rgba(122,74,15,0.06);
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  font-family: 'Urbanist', sans-serif;
-  z-index: 5;
-}
-[data-theme="dark"] .howit-swap-panel {
-  background: rgba(26,16,9,0.96);
-  border-color: rgba(212,160,23,0.22);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 4px 12px rgba(0,0,0,0.40);
-}
-.howit-swap-head {
-  flex-shrink: 0;
-  padding: 22px 28px;
-  border-bottom: 1px solid rgba(232,217,180,0.5);
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
-}
-[data-theme="dark"] .howit-swap-head { border-bottom-color: rgba(212,160,23,0.22); }
-.howit-swap-head .ttl {
-  font-size: 22px; font-weight: 600;
-  letter-spacing: -0.01em; color: var(--text-primary);
-  margin: 0 0 4px;
-}
-.howit-swap-head .sub {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 13px; letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-}
-.howit-swap-head .close {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: transparent; color: var(--text-tertiary);
-  font-size: 18px;
-}
-
-.howit-swap-body {
-  flex: 1; display: flex; min-height: 0;
-}
-.howit-swap-rail {
-  width: 224px; flex-shrink: 0;
-  border-right: 1px solid rgba(232,217,180,0.5);
-  background: rgba(255,251,241,0.45);
-  overflow: hidden;
-  padding: 14px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-[data-theme="dark"] .howit-swap-rail {
-  background: rgba(255,255,255,0.03);
-  border-right-color: rgba(212,160,23,0.22);
-}
-.howit-alt-row {
-  display: flex; flex-direction: column; gap: 6px;
-  background: var(--surface-page);
-  border: 1px solid rgba(232,217,180,0.55);
-  border-radius: 10px;
-  padding: 11px 13px;
-  text-align: left;
-}
-[data-theme="dark"] .howit-alt-row {
-  background: rgba(28,20,12,0.92);
-  border-color: rgba(212,160,23,0.22);
-}
-.howit-alt-row.is-staged {
-  border-color: var(--text-primary);
-  background: rgba(255,251,241,0.85);
-}
-[data-theme="dark"] .howit-alt-row.is-staged {
-  background: rgba(255,255,255,0.06);
-}
-.howit-alt-row .ar-top {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-}
-.howit-alt-row .ar-id {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px; font-weight: 600;
-  letter-spacing: 0.04em; color: var(--text-primary);
-}
-.howit-alt-row .ar-tier {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
-}
-.howit-alt-row.tier-s .ar-tier { color: #8B6914; }
-.howit-alt-row.tier-a .ar-tier { color: #047857; }
-.howit-alt-row.tier-b .ar-tier { color: #0369A1; }
-.howit-alt-row .ar-ttl {
-  font-size: 13px; line-height: 1.4; color: var(--text-primary);
-  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
-  -webkit-box-orient: vertical; overflow: hidden;
-}
-.howit-alt-row .ar-meta {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 11px; color: var(--text-secondary); letter-spacing: 0.02em;
-}
 
 /* Staged detail pane — the right side of the swap panel */
-.howit-swap-detail {
-  flex: 1; min-width: 0;
-  padding: 22px 26px;
-  overflow: hidden;
-  display: flex; flex-direction: column; gap: 16px;
-}
-.howit-swap-banner {
-  display: inline-flex; align-items: center; gap: 6px;
-  align-self: flex-start;
-  font-size: 12px; font-weight: 700;
-  color: var(--text-secondary);
-  padding: 4px 10px; border-radius: 6px;
-  background: rgba(255,251,241,0.85);
-  border: 1px solid rgba(232,217,180,0.6);
-}
-[data-theme="dark"] .howit-swap-banner {
-  background: rgba(212,160,23,0.10);
-  border-color: rgba(212,160,23,0.22);
-}
-.howit-swap-banner .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-primary); }
-.howit-swap-detail .det-ttl {
-  font-size: 18px; font-weight: 600;
-  letter-spacing: -0.005em; line-height: 1.35;
-  color: var(--text-primary); margin: 0;
-}
-.howit-swap-detail .det-meta {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 12px;
-}
-.howit-swap-detail .det-meta .pill {
-  padding: 3px 8px; border-radius: 6px;
-  background: rgba(255,251,241,0.65);
-  border: 1px solid rgba(232,217,180,0.5);
-  color: var(--text-secondary);
-}
-.howit-swap-detail .det-body {
-  font-size: 13.5px; line-height: 1.55;
-  color: var(--text-secondary); margin: 0;
-}
-
-.howit-swap-foot {
-  flex-shrink: 0;
-  padding: 16px 24px;
-  border-top: 1px solid rgba(232,217,180,0.5);
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
-}
-[data-theme="dark"] .howit-swap-foot { border-top-color: rgba(212,160,23,0.22); }
-.howit-swap-foot .btn {
-  padding: 10px 18px; border-radius: 8px;
-  font-size: 14px; font-weight: 600;
-  font-family: 'Urbanist', sans-serif;
-}
-.howit-swap-foot .btn.outline {
-  background: transparent;
-  border: 1px solid rgba(232,217,180,0.7);
-  color: var(--text-secondary);
-}
-.howit-swap-foot .btn.primary {
-  background: var(--text-primary);
-  color: var(--surface-page);
-  border: 1px solid var(--text-primary);
-}
 
 /* Swap microbadge — sits on the original-grid tile that's about to be
    replaced, to anchor the picker's context. */
-.howit-figure-mock[data-step="swap"] .btile.is-being-swapped {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 1.5px var(--text-primary), 0 4px 16px rgba(122,74,15,0.10);
-  opacity: 1; /* override the grid dim */
-  position: relative;
-}
-.howit-figure-mock[data-step="swap"] .btile.is-being-swapped::after {
-  content: "Swapping…";
-  position: absolute;
-  top: -10px; left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-primary);
-  color: var(--surface-page);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 9px; font-weight: 600; letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 3px 8px; border-radius: 4px;
-  white-space: nowrap;
-}
 
 /* ============================================================
    In-shot wizard page — used by steps 1/2/3 (pickers) and step 5
@@ -1117,152 +472,15 @@
    sizes are absolute (not responsive) — the parent .shot-inner scale
    handles the fit. Reuses the warm-light gradient as the canvas.
    ============================================================ */
-.howit-shot-page {
-  position: absolute; inset: 0;
-  /* Tightened padding + gap for the 1100×688 zoomed baseline. */
-  padding: 56px 64px;
-  display: flex; flex-direction: column;
-  gap: 24px;
-  font-family: 'Urbanist', system-ui, sans-serif;
-  color: var(--text-primary);
-}
-.howit-shot-head { max-width: 760px; }
-.howit-shot-head .eb {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 14px; font-weight: 500; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 10px;
-}
-.howit-shot-head h2 {
-  font-size: 38px; font-weight: 700; line-height: 1.1;
-  letter-spacing: -0.02em; color: var(--text-primary);
-  margin: 0 0 10px;
-}
-.howit-shot-head .sub {
-  font-size: 16px; line-height: 1.45;
-  color: var(--text-secondary); margin: 0;
-}
 
 /* Two-column wizard layout — picker list (left) + estimate (right) */
-.howit-shot-cols {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 40px;
-  align-items: start;
-  flex: 1; min-height: 0;
-}
-.howit-shot-col-label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 14px; font-weight: 500; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 16px;
-}
-.howit-shot-opt-list { display: flex; flex-direction: column; gap: 12px; }
-.howit-shot-opt {
-  display: flex; align-items: center; gap: 20px;
-  padding: 22px 26px;
-  border-radius: 12px;
-  border: 1px solid rgba(232,217,180,0.55);
-  background: rgba(255,255,255,0.96);
-  box-shadow: 0 4px 16px rgba(122,74,15,0.06), 0 1px 2px rgba(122,74,15,0.04);
-  font-size: 20px;
-}
-[data-theme="dark"] .howit-shot-opt {
-  background: rgba(28,20,12,0.92);
-  border-color: rgba(212,160,23,0.22);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.45), 0 1px 2px rgba(212,160,23,0.10);
-}
-.howit-shot-opt.selected {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 1.5px var(--text-primary), 0 4px 16px rgba(122,74,15,0.08);
-}
-.howit-shot-opt .lft-stack { display: flex; flex-direction: column; flex: 1; gap: 4px; min-width: 0; }
-.howit-shot-opt .nm { color: var(--text-primary); font-weight: 600; font-size: 20px; }
-.howit-shot-opt .sb { color: var(--text-tertiary); font-size: 15px; }
-.howit-shot-opt .rgt {
-  color: var(--text-secondary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 16px; font-weight: 500;
-}
+
 /* Canonical jurisdiction chip — copies brand/previews/licensing-flow-preview.html
    §.juris-chip. Soft tinted pill with saturated text, not a dark fill block. */
-.howit-shot-juris-chip {
-  display: inline-flex; align-items: center;
-  font-family: 'Urbanist', sans-serif;
-  font-size: 14px; font-weight: 700;
-  letter-spacing: 0; line-height: 1.2;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.howit-shot-juris-chip.us { background: #EEF2FF; color: #4338CA; }
-.howit-shot-juris-chip.tw { background: #ECFCCB; color: #3F6212; }
 
 /* Right-rail estimate panel — at 1376 baseline */
-.howit-shot-estimate {
-  background: rgba(255,255,255,0.96);
-  border: 1px solid rgba(232,217,180,0.55);
-  border-radius: 14px;
-  padding: 24px 26px;
-  box-shadow: 0 4px 16px rgba(122,74,15,0.06), 0 1px 2px rgba(122,74,15,0.04);
-}
-[data-theme="dark"] .howit-shot-estimate {
-  background: rgba(28,20,12,0.92);
-  border-color: rgba(212,160,23,0.22);
-}
-.howit-shot-estimate .lbl {
-  font-family: var(--font-sans);
-  font-size: 13px; font-weight: 500; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--text-tertiary);
-  margin: 0 0 14px;
-}
-.howit-shot-estimate .e-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 8px 0; font-size: 17px; color: var(--text-secondary);
-}
-.howit-shot-estimate .e-row .v {
-  color: var(--text-primary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-}
-.howit-shot-estimate .e-total {
-  margin-top: 14px; padding-top: 14px;
-  border-top: 1px dashed rgba(232,217,180,0.7);
-  display: flex; justify-content: space-between; align-items: baseline;
-}
-[data-theme="dark"] .howit-shot-estimate .e-total { border-top-color: rgba(212,160,23,0.22); }
-.howit-shot-estimate .e-total .lbl { margin: 0; font-size: 15px; color: var(--text-secondary); text-transform: none; letter-spacing: 0; font-family: 'Urbanist', sans-serif; }
-.howit-shot-estimate .e-total .v {
-  font-size: 28px; font-weight: 700; color: var(--text-primary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-}
-.howit-shot-estimate .e-cta {
-  display: block; text-align: center;
-  margin-top: 18px; padding: 16px 20px;
-  border-radius: 10px;
-  background: var(--text-primary); color: var(--surface-page);
-  font-size: 16px; font-weight: 600;
-}
 
 /* Badge step inside the shot — centered seal-pill on warm canvas */
-.howit-shot-badge-stage {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  /* Tightened for the 1100×688 zoomed baseline. */
-  gap: 28px; padding: 56px 80px;
-}
-.howit-shot-badge-stage .ttl {
-  font-size: 44px; font-weight: 700; letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: var(--surface-accent-licensing-text);
-  -webkit-text-fill-color: var(--surface-accent-licensing-text);
-  text-align: center; margin: 0;
-}
-.howit-shot-badge-stage .sub {
-  font-size: 16px; line-height: 1.45;
-  color: var(--text-secondary); margin: 0;
-  text-align: center; max-width: 600px;
-}
 
 /* ============================================================
    Verified License Badge — issuer + partner seals + QR pill.
@@ -1270,85 +488,6 @@
    scoped under .howit- so it doesn't fight the existing pill.
    Light-locked: never inverts in dark mode (credential, not UI).
    ============================================================ */
-.howit-vlb-seal {
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  --surface-inverse: #252525;
-  --surface-page: #FFFFFF;
-  --text-inverse: #FFFFFF;
-  --logo-submark: url("/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg");
-}
-.howit-vlb-seal .seal-rings { position: absolute; inset: 0; width: 100%; height: 100%; }
-.howit-vlb-seal .seal-thin-ring {
-  fill: none; stroke: var(--surface-inverse);
-  stroke-width: 1.25; vector-effect: non-scaling-stroke;
-}
-.howit-vlb-seal .seal-disc { fill: var(--surface-inverse); }
-.howit-vlb-seal .seal-inner-disc { fill: var(--surface-page); }
-.howit-vlb-seal .seal-text {
-  font-family: 'Urbanist', sans-serif; font-weight: 600;
-  fill: var(--text-inverse); letter-spacing: 0.04em;
-}
-.howit-vlb-seal .seal-mark {
-  position: relative; z-index: 1;
-  background: var(--logo-submark) center/contain no-repeat;
-}
-.howit-vlb-seal.is-standalone { width: 200px; height: 200px; }
-.howit-vlb-seal.is-standalone .seal-mark { width: 58px; height: 58px; }
-.howit-vlb-seal.is-standalone .seal-text { font-size: 16px; }
-.howit-vlb-seal.is-ipic .seal-disc { fill: #00AAEA; }
-.howit-vlb-seal.is-ipic .seal-thin-ring { stroke: #00AAEA; }
-.howit-vlb-seal.is-iii  .seal-disc { fill: #14156D; }
-.howit-vlb-seal.is-iii  .seal-thin-ring { stroke: #14156D; }
-.howit-vlb-seal.is-ipic .seal-inner-disc,
-.howit-vlb-seal.is-iii  .seal-inner-disc { fill: #FFFFFF; }
-.howit-vlb-seal.is-ipic .seal-text,
-.howit-vlb-seal.is-iii  .seal-text { fill: #FFFFFF; }
-.howit-vlb-seal.is-ipic .seal-mark {
-  background: url("/designs/assets/logos/partners/ipic/ipic_submark.svg") center/contain no-repeat;
-}
-.howit-vlb-seal.is-iii .seal-mark {
-  background: url("/designs/assets/logos/partners/iii/logo_iii_submark.svg") center/contain no-repeat;
-}
-
-.howit-seal-pill {
-  --surface-page: #FFFFFF;
-  --surface-tertiary: #F3F3F3;
-  --border-primary: #EEEEEE;
-  --border-tertiary: #D5D5D5;
-  --text-primary: #252525;
-  --text-secondary: #474747;
-  display: flex; align-items: center; flex-wrap: nowrap;
-  width: max-content; max-width: 100%;
-  border-radius: 999px;
-  background: var(--surface-tertiary);
-  border: 1px solid var(--border-primary);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.14), 0 4px 8px rgba(0,0,0,0.06);
-  padding: 28px 36px; gap: 24px;
-  color: var(--text-primary);
-}
-.howit-seal-pill .howit-vlb-seal.is-standalone { width: 180px; height: 180px; }
-.howit-seal-pill .howit-vlb-seal.is-standalone .seal-mark { width: 52px; height: 52px; }
-.howit-seal-pill .howit-vlb-seal.is-ipic.is-standalone .seal-mark { width: 40px; height: 40px; }
-.howit-seal-pill .howit-vlb-seal.is-standalone .seal-text { font-size: 13.5px; }
-.howit-seal-pill-divider {
-  width: 1px; height: 130px;
-  background: var(--border-tertiary);
-  opacity: 0.7; flex-shrink: 0;
-}
-.howit-seal-pill-credential { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
-.howit-seal-pill-credential .qr {
-  width: 110px; height: 110px;
-  border: 1px solid var(--border-primary); border-radius: 10px;
-  background: repeating-conic-gradient(var(--text-primary) 0 25%, transparent 0 50%) 0 0/12px 12px;
-}
-.howit-seal-pill-credential .lic-no {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
-  font-size: 14px; font-weight: 500;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--text-secondary); white-space: nowrap; line-height: 1;
-}
 
 /* Body — position relative for absolute side rails, clip horizontal
    overflow so the peeking How it works 4th card doesn't add scrollbar. */
@@ -1401,11 +540,7 @@ body {
 }
 
 /* Body weight 400 → 300 (Urbanist Light) — Stripe's body uses 300. */
-body,
-.section p,
-.howit-card-body p,
-.faq-list .acc-content p,
-.pillar-hero-copy p {
+body, .section p, .faq-list .acc-content p {
   font-weight: 400;
 }
 
@@ -1415,17 +550,12 @@ body,
 .section--alt { padding-block: clamp(48px, 6vw, 80px); }
 
 /* Copy max-width — 810px (75% of 1080) for body paragraphs. */
-.pillar-hero-copy p,
-.section-head p,
 .section > .container > p {
   max-width: var(--tis-copy-max-width);
 }
 
 /* Button typography — Stripe ctaFont = 425/15px/1.6, applied in Urbanist 500. */
-.btn,
-.btn-primary,
-.btn-secondary,
-.prod-price-cta {
+.btn, .btn-primary, .btn-secondary {
   font-weight: 500;
   font-size: 15px;
   line-height: 1.6;
@@ -1442,11 +572,7 @@ body,
 }
 
 /* Universal hover easing — Stripe cubic-bezier curve. */
-a, button,
-.howit-card,
-.prod-price-tier,
-.acc-trigger,
-.btn {
+a, button, .howit-card, .acc-trigger, .btn {
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -1457,23 +583,9 @@ a, button,
    ============================================================ */
 
 /* h1 — hero display heading (verified against Stripe 48 @ 898 / 56 @ 1286). */
-.section--page-hero h1,
-.section--page-hero h2,
-.section--page-hero--centered h1,
-.section--page-hero--centered h2,
-.pillar-hero-copy h1,
-.pillar-hero-copy h2 {
-  font-size: clamp(36px, 5.35vw, 56px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: var(--text-primary);
-}
 
 /* h2 — section heads (Pricing, CTA, Artifacts). */
-.bp-section-heading,
-.cta-banner--themed .section-head h2,
-.cta-banner--themed h2 {
+.bp-section-heading {
   font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -1599,37 +711,15 @@ a, button,
 }
 
 /* h3 — subsection heads (How it works). */
-.howitworks .howit-head h3,
-.pillar-hero-copy h3 {
-  font-size: clamp(22px, 2.5vw, 32px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-  color: var(--text-primary);
-}
 
 /* Body bumped to 17px. */
-.section p,
-.howit-card-body p,
-.faq-list .acc-content p,
-.pillar-hero-copy p {
+.section p, .faq-list .acc-content p {
   font-size: 17px;
   line-height: 1.55;
 }
 
 /* Hero left column rhythm — 24px between h1 → body p, 32px between
    body p → CTAs. Mirrors Stripe RowLayout gap pattern. */
-.section--page-hero .pillar-hero-copy h1,
-.section--page-hero .pillar-hero-copy h2 {
-  margin: 0 0 24px;
-}
-.section--page-hero .pillar-hero-copy p {
-  margin: 0 0 32px;
-  max-width: var(--tis-copy-max-width, 810px);
-}
-.section--page-hero .pillar-hero-copy .pillar-hero-cta {
-  margin: 0;
-}
 
 /* ============================================================
    Hero shot — fluid scale, left-aligned to middle guideline.
@@ -1647,62 +737,18 @@ a, button,
    - Lightened box-shadow vs styles.css default reads softer at
      the larger shot size.
    ============================================================ */
-.section--page-hero { overflow: visible; }
-.section--page-hero > .container { z-index: 2; }
-.section--page-hero .pillar-hero { position: relative; }
-.section--page-hero .pillar-hero-copy { min-height: 420px; }
-.section--page-hero .pillar-hero-shot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  /* Width spans from the center guideline (50vw) to the right outer rail
-     (50vw + 540, where body::after sits) = 540px on any viewport ≥ 1080px.
-     On narrower viewports it shrinks with 50vw so the right edge tracks the
-     clamped rail at the viewport edge. Width-based (not `right`-based) so
-     positioning context doesn't matter — .pillar-hero stays the positioning
-     parent for vertical top:0 alignment. Aspect ratio dropped — height
-     follows the inner .frame-canvas (16:10) so the shot proportions track
-     the visible image. */
-  width: min(540px, 50vw);
-  z-index: 2;
-}
-.section--page-hero .pillar-hero-shot .frame-wrap { max-width: none; }
-.section--page-hero .pillar-hero-shot .browser-frame {
-  box-shadow:
-    0 1px 1px rgba(0,0,0,0.02),
-    0 12px 32px -8px rgba(0,0,0,0.06),
-    0 32px 64px -16px rgba(0,0,0,0.08);
-}
+
 /* Hero frame +30% taller — canvas aspect-ratio 16/10 → 16/13 and
    .shot-inner height 860 → 1118 (both ×1.3). Width unchanged, top edge
    unchanged. More patent-grid rows become visible at the bottom because
    the inner grid uses grid-auto-rows and naturally extends downward into
    the added vertical space. */
-.section--page-hero .pillar-hero-shot .frame-canvas { aspect-ratio: 16 / 13; }
-.section--page-hero .pillar-hero-shot .shot-inner { height: 1118px; }
 
 /* Hero blueprint backdrop — re-center + zoom inside the .shot-inner box.
    styles.css tuned `.hero-blueprint .grid-3d` (perspective-origin 50% 30%,
    transform scale(0.75), mask 78% 72% with steep fade) to the full-width
    carousel hero. Inside the preview's confined 1376×1118 virtual canvas
    we want the grid centered and the visible area to fill the card. */
-.section--page-hero .pillar-hero-shot .hero-blueprint .stage-3d {
-  perspective-origin: 50% 50%;
-}
-.section--page-hero .pillar-hero-shot .hero-blueprint .grid-3d {
-  transform: scale(1.3);
-  -webkit-mask-image: none;
-          mask-image: none;
-}
-
-@media (max-width: 980px) {
-  .section--page-hero .pillar-hero-shot {
-    position: static;
-    width: auto;
-    height: auto;
-  }
-  .section--page-hero .pillar-hero-shot .frame-wrap { max-width: 688px; }
-}
 
 /* (Removed) Exclusive Patent Access band — the institution marks (iPIC ·
    III · NYCU) now live in the Pricing card footer (.pcard-footer). See the
@@ -1849,7 +895,6 @@ a, button,
   .gapcover .gap-metric-name { margin-top: clamp(18px, 4vw, 28px); }
 }
 
-
 /* ============================================================
    Walk-away — condensed PRD §5 + §10 as a horizontal 4-beat row.
    Numbered mono eyebrow (top) → big 2-line headline → supporting line
@@ -1981,24 +1026,6 @@ a, button,
 /* How it works rail — 3 cards in 1080 container, 4th peeks past right rail.
    Mirrors the signal page's rail extension math (-16px offsets container
    padding, max() extends to viewport on wide screens). */
-.howitworks .howit-rail {
-  grid-auto-columns: 320px;
-  gap: 24px;
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 16px;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(300px, 320px);
-    margin-right: 0;
-    padding-right: 4px;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(86vw, 86vw);
-  }
-}
 
 /* ============================================================
    HOW IT WORKS — Stripe-exact rebuild (paired with signal).
@@ -2007,82 +1034,8 @@ a, button,
    accent: signal sky / licensing warm orange.
    ============================================================ */
 
-.howitworks .howit-rail {
-  grid-auto-columns: 504px;
-  gap: 36px;
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 16px;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(440px, 504px);
-    margin-right: 0;
-    padding-right: 4px;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-}
-
-.howit-card-visual { aspect-ratio: 3 / 2; }
-
-.howit-card-body {
-  padding: 28px 30px 32px;
-  gap: 14px;
-}
-.howit-card-body h4 {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-  color: var(--text-primary);
-  margin: 0;
-}
-.howit-card-body p {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
 /* Check list items — outlined treatment matching howit-arrow: white
    interior, 1.5px colored ring, colored check icon. Per-pillar accent. */
-.howit-checks {
-  margin-top: 6px;
-  gap: 12px;
-}
-.howit-checks li {
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text-secondary);
-  align-items: flex-start;
-  gap: 12px;
-}
-.howit-checks li::before {
-  content: '' !important;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: 3px;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  border: 1.5px solid #F97316;  /* licensing default */
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%23F97316' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px;
-  -webkit-mask: none !important;
-          mask: none !important;
-}
-[data-pillar="signal"] .howit-checks li::before {
-  border-color: #0EA5E9;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%230EA5E9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
-[data-pillar="licensing"] .howit-checks li::before {
-  border-color: #F97316;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5.5 10.5l3 3 6-6' stroke='%23F97316' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-}
 
 /* ============================================================
    HOW IT WORKS — Stripe grid-edge alignment (paired with signal).
@@ -2090,24 +1043,6 @@ a, button,
    right-padding inside each card. Chrome moves to .howit-card-visual.
    Body becomes flat text. Result: card edges align flush to grid.
    ============================================================ */
-
-.howitworks .howit-rail {
-  grid-auto-columns: 540px;
-  gap: 0;
-  margin-left: -16px;
-  margin-right: calc(-16px - max(0px, 50vw - 540px));
-  padding-right: 0;
-}
-@media (max-width: 1140px) {
-  .howitworks .howit-rail {
-    grid-auto-columns: minmax(440px, 540px);
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail { grid-auto-columns: minmax(86vw, 86vw); }
-}
 
 .howit-card {
   background: transparent !important;
@@ -2121,26 +1056,6 @@ a, button,
 .howit-card:hover {
   transform: none;
   box-shadow: none;
-}
-
-.howit-card-visual {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-primary);
-  background: var(--surface-page);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
-  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
-}
-.howit-card:hover .howit-card-visual {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
-}
-
-.howit-card-body {
-  padding: 24px 0 0;
-  border-top: 0;
-  background: transparent;
-  gap: 14px;
 }
 
 /* ============================================================
@@ -2197,54 +1112,6 @@ a, button,
    outer rail at z-index:1) so cards peeking past the right rail
    render in front of the rail, not behind it. Scoped to this rail
    only — header row and other sections keep the rail above content. */
-.howitworks .howit-rail {
-  position: relative;
-  z-index: 2;
-  margin: 0 calc(-32px - max(0px, 50vw - 720px)) 0 -32px;
-  padding: 8px 0 40px 0;
-}
-@media (max-width: 1440px) {
-  .howitworks .howit-rail {
-    margin: 0;
-    padding: 8px 0 40px 0;
-  }
-}
-@media (max-width: 720px) {
-  .howitworks .howit-rail {
-    margin: 0;
-    padding: 8px 8px 40px 8px;
-  }
-}
-
-.howit-card-visual,
-.howit-card-body {
-  position: relative;
-  z-index: 1;
-}
-
-.howit-card-visual {
-  border-radius: 12px;
-  overflow: hidden;
-  border: 0;
-  background: rgb(246, 247, 249);
-  box-shadow: none;
-  margin: 24px 24px 0;
-}
-
-.howit-card-grad {
-  opacity: 0;
-  transition: opacity 320ms cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-.howit-card:hover .howit-card-grad {
-  opacity: 1;
-}
-
-.howit-card-body {
-  padding: 24px 32px 32px;
-  border-top: 0;
-  background: transparent;
-  gap: 14px;
-}
 
 /* ============================================================
    How it works — stepped feature carousel (ported from a React
@@ -2253,57 +1120,8 @@ a, button,
    reduced-motion); click the stage or a pill to navigate. Layout: step
    pills → title + description → screenshot → 3 checks (3-across).
    ============================================================ */
-.hiw-frame {
-  background: var(--surface-tertiary);
-  border: 1px solid var(--border-primary);
-  border-radius: 28px;
-  padding: 8px;
-}
-.hiw-carousel {
-  position: relative;
-  background: var(--surface-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: 22px;
-  padding: clamp(24px, 3vw, 40px);
-  overflow: hidden;
-}
 
 /* ── step pills ── */
-.hiw-steps ol {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 8px;
-  justify-content: center;
-}
-.hiw-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 13px 6px 8px;
-  border: 0; border-radius: 9999px;
-  background: var(--surface-tertiary);
-  cursor: pointer;
-  font: inherit; font-size: 13px; font-weight: 600;
-  color: var(--text-tertiary);
-  transition: color var(--tis-hover-transition), background var(--tis-hover-transition), transform var(--tis-hover-transition);
-}
-.hiw-pill:hover { color: var(--text-secondary); }
-.hiw-pill.is-done { color: var(--text-secondary); }
-.hiw-pill.is-current {
-  color: var(--text-primary);
-  background: var(--surface-page);
-  box-shadow: var(--shadow-low, 0 1px 2px rgba(0,0,0,0.06));
-  transform: scale(1.04);
-}
-.hiw-dot {
-  position: relative;
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 18px; height: 18px; border-radius: 9999px;
-  background: var(--border-secondary); color: var(--text-tertiary);
-  font-size: 11px; font-weight: 700; line-height: 1;
-}
-.hiw-pill.is-current .hiw-dot { background: var(--text-primary); color: var(--surface-page); }
-.hiw-pill.is-done .hiw-dot    { background: var(--text-secondary); color: var(--surface-page); }
-.hiw-dot .hiw-check { width: 11px; height: 11px; display: none; }
-.hiw-pill.is-done .hiw-num   { display: none; }
-.hiw-pill.is-done .hiw-check { display: block; }
 
 /* ── stage + panels ── */
 .hiw-stage {
@@ -2311,28 +1129,6 @@ a, button,
   margin-top: clamp(20px, 2.4vw, 32px);
   min-height: clamp(340px, 36vw, 460px);
   cursor: pointer;
-}
-.hiw-panel { display: none; }
-.hiw-panel.is-active { display: block; }
-.hiw-title {
-  font-size: clamp(18px, 1.8vw, 24px);
-  font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
-  color: var(--text-primary); margin: 0;
-}
-.hiw-desc {
-  font-size: 14px; line-height: 1.5;
-  color: var(--text-secondary);
-  margin: 8px 0 0; max-width: 62ch;
-}
-.hiw-shotwrap {
-  position: relative;
-  margin: clamp(18px, 2vw, 26px) auto 0;
-  max-width: 760px;
-  aspect-ratio: 2 / 1;            /* locked 2:1 window (the "Two ways" size) */
-  border: 1px solid var(--border-primary);
-  border-radius: 16px;
-  overflow: hidden;
-  background: #FFFFFF;
 }
 
 /* ============================================================
@@ -2344,202 +1140,61 @@ a, button,
    All classes are hs- namespaced + scoped to avoid colliding
    with page-level .card/.btn/.chip/.opt/.signal styles.
    ============================================================ */
-.hiw-screen {
-  --hs-page:#FFFFFF; --hs-sec:#FAFAFA; --hs-ter:#F3F3F3; --hs-quat:#EEEEEE; --hs-inv:#252525;
-  --hs-tp:#252525; --hs-ts:#474747; --hs-tt:#8A8F98; --hs-tq:#A5A5A5; --hs-ti:#FFFFFF;
-  --hs-bp:#EEEEEE; --hs-bs:#E8E8E8; --hs-bt:#D5D5D5;
-  --hs-suc-bg:#F0FDF4; --hs-suc-fg:#15803D; --hs-sig:#22C55E;
-  --hs-s:#8B6914; --hs-a:#047857; --hs-b:#0369A1; --hs-c:#6D28D9; --hs-d:#C2410C;
-  --hs-s-bg:#FAF3DC; --hs-a-bg:#ECFDF5; --hs-b-bg:#F0F9FF; --hs-c-bg:#F5F3FF; --hs-d-bg:#FFF7ED;
-  --hs-us:#4338CA; --hs-tw:#3F6212; --hs-eu:#475569;
-  --hs-us-bg:#EEF2FF; --hs-tw-bg:#ECFCCB; --hs-eu-bg:#F1F5F9;
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; justify-content: center; gap: 14px;
-  padding: 26px 30px;
-  background: var(--hs-sec);
-  font-family: 'Urbanist', sans-serif;
-  color: var(--hs-tp);
-  line-height: 1.4;
-}
-.hiw-screen .hs-mono { font-family: 'Inconsolata', ui-monospace, monospace; font-feature-settings: "tnum"; }
-.hiw-screen svg { display: block; }
 
 /* eyebrow / section label — preview weight 500, +0.20em, tertiary */
-.hiw-screen .hs-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
 
 /* layout helpers */
-.hiw-screen .hs-cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-.hiw-screen .hs-coleyebrow { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); margin-bottom: 10px; }
-.hiw-screen .hs-headrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 
 /* chips — tier/juris, weight 700 per components.md weight asymmetry */
-.hiw-screen .hs-jchip, .hiw-screen .hs-tchip { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; line-height: 1.2; padding: 4px 10px; border-radius: 9999px; white-space: nowrap; }
-.hiw-screen .hs-jchip.us { background: var(--hs-us-bg); color: var(--hs-us); }
-.hiw-screen .hs-jchip.tw { background: var(--hs-tw-bg); color: var(--hs-tw); }
-.hiw-screen .hs-jchip.eu { background: var(--hs-eu-bg); color: var(--hs-eu); }
-.hiw-screen .hs-tchip.s { background: var(--hs-s-bg); color: var(--hs-s); }
-.hiw-screen .hs-tchip.a { background: var(--hs-a-bg); color: var(--hs-a); }
-.hiw-screen .hs-tchip.b { background: var(--hs-b-bg); color: var(--hs-b); }
-.hiw-screen .hs-tchip.c { background: var(--hs-c-bg); color: var(--hs-c); }
-.hiw-screen .hs-tchip.d { background: var(--hs-d-bg); color: var(--hs-d); }
-.hiw-screen .hs-tierdist { display: flex; align-items: center; gap: 6px; }
 
 /* option rows — preview .opt: roomy padding, name w500, selected = dark border only */
-.hiw-screen .hs-optlist { display: flex; flex-direction: column; gap: 8px; }
-.hiw-screen .hs-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 12px 16px; }
-.hiw-screen .hs-opt .hs-lft { display: flex; align-items: center; gap: 10px; }
-.hiw-screen .hs-opt .hs-nm { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
-.hiw-screen .hs-opt .hs-sb { font-size: 11px; font-weight: 500; letter-spacing: .10em; text-transform: uppercase; color: var(--hs-tt); }
-.hiw-screen .hs-opt .hs-rgt { font-size: 13px; font-weight: 500; color: var(--hs-ts); }
-.hiw-screen .hs-opt.sel { border-color: var(--hs-inv); }
-.hiw-screen .hs-opt.muted { opacity: .5; }
+
 /* 2-col mini-grid variant — used for the 6-industry list (step 1) so it
    stays compact inside the locked 2:1 frame and balances the 2-item
    jurisdiction column beside it. */
-.hiw-screen .hs-optlist.hs-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 /* scope / summary bar — quiet inset strip (surface-tertiary, borderless) */
-.hiw-screen .hs-scope { display: flex; align-items: center; gap: 10px; background: var(--hs-ter); border-radius: 10px; padding: 12px 16px; }
-.hiw-screen .hs-scope .lab { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
-.hiw-screen .hs-scope .val { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
-.hiw-screen .hs-scope .n { margin-left: auto; font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 500; color: var(--hs-ts); }
 
 /* path cards (step 2) — preview .path-card: radio + eyebrow + title; selected = dark border + ring + filled radio */
-.hiw-screen .hs-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.hiw-screen .hs-path { position: relative; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
-.hiw-screen .hs-path.sel { border-color: var(--hs-inv); box-shadow: inset 0 0 0 1px var(--hs-inv); }
-.hiw-screen .hs-phead { display: flex; align-items: center; gap: 10px; }
-.hiw-screen .hs-pradio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--hs-bt); flex: 0 0 auto; position: relative; }
-.hiw-screen .hs-path.sel .hs-pradio { border-color: var(--hs-inv); }
-.hiw-screen .hs-path.sel .hs-pradio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--hs-inv); }
-.hiw-screen .hs-ptag { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
-.hiw-screen .hs-pt { font-size: 16px; font-weight: 600; color: var(--hs-tp); }
-.hiw-screen .hs-pd { font-size: 13px; line-height: 1.55; color: var(--hs-ts); }
-.hiw-screen .hs-drop { margin-top: 2px; border: 1.5px dashed var(--hs-bt); border-radius: 10px; padding: 14px; text-align: center; font-size: 12px; font-weight: 500; color: var(--hs-tt); }
 
 /* patent rows (step 3) — preview patent-card vocabulary: mono ID w600, title w500, dark checkbox */
-.hiw-screen .hs-prow { display: grid; grid-template-columns: 108px 1fr auto auto; align-items: center; column-gap: 14px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
-.hiw-screen .hs-prow + .hs-prow { margin-top: 7px; }
-.hiw-screen .hs-cbx { width: 18px; height: 18px; border-radius: 5px; background: var(--hs-inv); border: 1.5px solid var(--hs-inv); display: flex; align-items: center; justify-content: center; color: #fff; }
-.hiw-screen .hs-cbx svg { width: 11px; height: 11px; stroke-width: 3; }
-.hiw-screen .hs-pid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; color: var(--hs-tp); letter-spacing: .05em; }
-.hiw-screen .hs-ptitle { font-size: 13px; font-weight: 500; color: var(--hs-tp); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* patent list (step 3) — scrollable with a fixed bottom fade cue so it reads
    as a longer, ongoing list. The fade is an overlay pinned to the wrap (not the
    scroll content) so it stays put while the list scrolls underneath it. */
-.hiw-screen .hs-plistwrap { position: relative; }
-.hiw-screen .hs-plist { max-height: 236px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--hs-bt) transparent; }
-.hiw-screen .hs-plist::-webkit-scrollbar { width: 6px; }
-.hiw-screen .hs-plist::-webkit-scrollbar-thumb { background: var(--hs-bt); border-radius: 999px; }
-.hiw-screen .hs-plist::-webkit-scrollbar-track { background: transparent; }
-.hiw-screen .hs-plistfade { position: absolute; left: 0; right: 8px; bottom: 0; height: 40px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--hs-sec)); }
 
 /* swap (step 4) */
-.hiw-screen .hs-swap { display: grid; grid-template-columns: 1fr 30px 1fr; align-items: center; gap: 12px; }
-.hiw-screen .hs-arrow { display: flex; align-items: center; justify-content: center; color: var(--hs-tt); }
-.hiw-screen .hs-arrow svg { width: 22px; height: 22px; }
-.hiw-screen .hs-pcard { background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-low, 0 2px 4px rgba(0,0,0,0.06)); }
-.hiw-screen .hs-pcard.out { opacity: .55; box-shadow: none; }
-.hiw-screen .hs-pctop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-.hiw-screen .hs-pcleft { display: flex; align-items: center; gap: 8px; }
-.hiw-screen .hs-pcid { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 600; letter-spacing: .05em; }
-.hiw-screen .hs-pcttl { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--hs-tp); }
-.hiw-screen .hs-poollab { font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); margin-bottom: 8px; }
-.hiw-screen .hs-poolrow { display: flex; align-items: center; gap: 10px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 9px; padding: 9px 12px; }
-.hiw-screen .hs-poolrow + .hs-poolrow { margin-top: 6px; }
-.hiw-screen .hs-poolrow.pick { border-color: var(--hs-inv); }
-.hiw-screen .hs-poolrow .hs-pid { font-size: 13px; }
-.hiw-screen .hs-rep { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--hs-tp); }
+
 /* tier pill anchored to the right edge of each pool row (canonical placement) */
-.hiw-screen .hs-poolrow .hs-tchip { margin-left: auto; }
+
 /* decorative "Swap" action pill in the scope strip (visual only) */
-.hiw-screen .hs-swapbtn { margin-left: auto; display: inline-flex; align-items: center; background: var(--hs-inv); color: var(--hs-ti); font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 9999px; letter-spacing: .01em; }
 
 /* term & payment (step 5) — preview .pay: selected = dark border; flag = dark pill on top edge */
-.hiw-screen .hs-pay { position: relative; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 12px; padding: 14px 16px; }
-.hiw-screen .hs-pay.sel { border-color: var(--hs-inv); }
-.hiw-screen .hs-pnm { font-size: 15px; font-weight: 600; color: var(--hs-tp); }
-.hiw-screen .hs-pds { font-size: 12px; line-height: 1.5; color: var(--hs-ts); margin-top: 4px; }
-.hiw-screen .hs-payflag { position: absolute; top: -9px; right: 14px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; background: var(--hs-inv); color: #fff; }
-.hiw-screen .hs-total { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; background: var(--hs-ter); border-radius: 10px; padding: 14px 16px; }
-.hiw-screen .hs-total .k { font-size: 13px; color: var(--hs-ts); }
-.hiw-screen .hs-total .v { font-family: 'Inconsolata', monospace; font-size: 22px; font-weight: 600; color: var(--hs-tp); }
-.hiw-screen .hs-total .v small { font-size: 12px; color: var(--hs-tt); }
-.hiw-screen .hs-disc { font-size: 13px; font-weight: 600; color: var(--hs-suc-fg); }
 
 /* active license (step 6) */
-.hiw-screen .hs-licgrid { display: grid; grid-template-columns: 230px 1fr; gap: 16px; }
-.hiw-screen .hs-badge { background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 9px; }
-.hiw-screen .hs-seal { width: 64px; height: 64px; border-radius: 50%; background: var(--hs-inv); display: flex; align-items: center; justify-content: center; }
-.hiw-screen .hs-seal img { width: 30px; height: 30px; }
-.hiw-screen .hs-btop { font-size: 10px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-tt); }
-.hiw-screen .hs-qr { width: 46px; height: 46px; border: 1px solid var(--hs-bp); border-radius: 6px; }
-.hiw-screen .hs-blic { font-family: 'Inconsolata', monospace; font-size: 13px; font-weight: 500; color: var(--hs-ts); letter-spacing: .12em; }
-.hiw-screen .hs-docs { display: flex; flex-direction: column; gap: 8px; }
-.hiw-screen .hs-doc { display: flex; align-items: center; gap: 12px; background: var(--hs-page); border: 1px solid var(--hs-bp); border-radius: 10px; padding: 11px 14px; }
-.hiw-screen .hs-dic { width: 30px; height: 30px; border-radius: 8px; background: var(--hs-ter); display: flex; align-items: center; justify-content: center; color: var(--hs-ts); flex: 0 0 auto; }
-.hiw-screen .hs-dic svg { width: 15px; height: 15px; }
-.hiw-screen .hs-dt { font-size: 14px; font-weight: 500; color: var(--hs-tp); }
-.hiw-screen .hs-ds { font-size: 11px; color: var(--hs-tt); margin-top: 2px; }
-.hiw-screen .hs-da { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--hs-tp); display: flex; align-items: center; gap: 3px; }
-.hiw-screen .hs-da svg { width: 12px; height: 12px; }
-.hiw-screen .hs-signal { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; letter-spacing: .20em; text-transform: uppercase; color: var(--hs-suc-fg); }
-.hiw-screen .hs-signal .d { width: 8px; height: 8px; border-radius: 50%; background: var(--hs-sig); }
+
 /* canonical Verified License Badge (seal-pill) — same component as the bento,
    scaled to the step-6 frame and centered. */
-.hiw-screen .hs-badgewrap { display: flex; justify-content: center; }
-.hiw-screen .hs-badgewrap .seal-pill { align-self: center; padding: 10px 14px; gap: 7px; box-shadow: 0 8px 22px -10px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.06); }
-.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-standalone { width: 52px; height: 52px; }
-.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-standalone .seal-mark { width: 15px; height: 15px; }
-.hiw-screen .hs-badgewrap .seal-pill .vlb-seal.is-ipic.is-standalone .seal-mark { width: 12px; height: 12px; }
-.hiw-screen .hs-badgewrap .seal-pill-divider { height: 38px; }
-.hiw-screen .hs-badgewrap .seal-pill-credential { gap: 6px; }
-.hiw-screen .hs-badgewrap .seal-pill-credential .qr { width: 38px; height: 38px; border-radius: 6px; }
-.hiw-screen .hs-badgewrap .seal-pill-credential .lic-no { font-size: 8px; }
 
 /* Mobile: release the 2:1 lock and let the visual reflow to its content. */
-@media (max-width: 800px) {
-  .hiw-shotwrap { aspect-ratio: auto; }
-  .hiw-screen { position: static; inset: auto; padding: 20px; }
-  .hiw-screen .hs-cols2,
-  .hiw-screen .hs-paths,
-  .hiw-screen .hs-licgrid,
-  .hiw-screen .hs-swap { grid-template-columns: 1fr; }
-  .hiw-screen .hs-arrow { transform: rotate(90deg); }
-}
-.hiw-checks {
-  list-style: none; margin: clamp(16px, 1.8vw, 22px) 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 24px;
-}
-.hiw-checks li {
-  display: flex; align-items: flex-start; gap: 8px;
-  font-size: 13px; line-height: 1.4; color: var(--text-secondary);
-}
-.hiw-checks .hiw-ck { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; color: var(--text-tertiary); }
 
 /* entrance animation — re-triggered on each step change */
 @keyframes hiwIn {
   from { opacity: 0; transform: translateY(8px) scale(0.99); }
   to   { opacity: 1; transform: none; }
 }
-.hiw-panel.hiw-anim { animation: hiwIn 380ms cubic-bezier(0.23, 1, 0.32, 1); }
 
 /* ── inline commit CTA — pinned to the bottom-right of the stage, riding the
    active step's checks row (the panels run taller than the stage min-height, so
    the checks already sit at the bottom). The checks reserve a right gutter so
    they never run under it. ── */
-.hiw-checks { padding-right: clamp(150px, 17vw, 210px); }
+
 .hiw-cta { position: absolute; right: 0; bottom: 0; white-space: nowrap; }
 
 @media (max-width: 720px) {
-  .hiw-checks { grid-template-columns: 1fr; gap: 10px; padding-right: 0; }
+  
   .hiw-stage { min-height: 0; }
   .hiw-cta { position: static; width: 100%; margin-top: 16px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hiw-panel.hiw-anim { animation: none; }
-  .hiw-pill { transition: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2736,12 +1391,9 @@ a, button,
    the generic `.lic-copy` 33ch cap would squeeze the whole band into one column. */
 .lic-showcase .lic-panel[data-panel="1"] .lic-copy--right { max-width: none; }
 .lic-panel[data-panel="1"] .lic-block { display: flex; flex-direction: column; }
-.lic-panel[data-panel="1"] .lic-block .lic-tilerow,
-.lic-panel[data-panel="1"] .lic-block .lic-tilegrid { margin-top: 14px; }
 
 /* Both groups share the same tight 10px spacing; industry wraps to 2 rows of 3. */
-.lic-tilerow { display: flex; gap: 10px; }
-.lic-tilegrid { display: grid; grid-template-columns: repeat(3, 40px); gap: 10px; }
+
 .lic-tile {
   width: 40px; height: 40px; border-radius: 10px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -2755,13 +1407,6 @@ a, button,
   stroke: currentColor; stroke-width: 2; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.lic-tile--juris {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 13px; font-weight: 700; line-height: 1; letter-spacing: 0;
-  border-color: color-mix(in srgb, currentColor 22%, transparent);
-}
-.lic-tile--juris.us { background: var(--juris-us-bg); color: var(--juris-us); }
-.lic-tile--juris.tw { background: var(--juris-tw-bg); color: var(--juris-tw); }
 
 /* Product frame — the right column of the panel; holds the full shot page
    (caption + gray field + MacBook). The iframe is scaled to fit (JS layoutBand
@@ -2851,7 +1496,7 @@ a, button,
   .lic-footer .lic-progress-track { display: none; }
   /* Centered stack: center the Step 1 tile groups under their centered copy. */
   .lic-panel[data-panel="1"] .lic-block { align-items: center; }
-  .lic-panel[data-panel="1"] .lic-tilerow { justify-content: center; }
+  
 }
 /* Simple fade-in for the stacked fallback (enhances already-visible content). */
 @media (prefers-reduced-motion: no-preference) {
@@ -2951,7 +1596,7 @@ a, button,
 .juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
 .juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
 .juris-tile.tw{background:var(--juris-tw-bg);color:var(--juris-tw);}
-.juris-tile.eu{background:var(--juris-eu-bg);color:var(--juris-eu);}
+
 .juris-tile.jp{background:var(--juris-jp-bg);color:var(--juris-jp);}
 .juris-tile.kr{background:var(--juris-kr-bg);color:var(--juris-kr);}
 .juris-tile.ep{background:var(--juris-ep-bg);color:var(--juris-ep);}
