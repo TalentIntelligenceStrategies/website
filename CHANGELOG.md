@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-06 23:24 +08:00** · Swept 345 unreferenced classes from styles.css — 827 dead rules, 4 orphan keyframes, 45 empty media blocks: 272 KB → 164 KB, verified pixel-identical across 10 pages.
 - **2026-08-06 22:41 +08:00** · Removed the dead Services (Ascent + Brokerage) and bronze-gradient CSS and flattened the silver text-gradient utility — 338 lines cut, verified pixel-identical across 10 pages.
 - **2026-08-06 22:09 +08:00** · Resynced all four designs/*-snapshot.md byte-exact from brand/ (KR→CH jurisdiction, EU slate→teal) and removed five unreferenced signal-gradient images.
 - **2026-08-03 12:34 +08:00** · Added product/signal/index.v08-concept.html (noindex) — Signal page rebuilt purely from the page-system + shared styles.css, keeping only v07's blue MeshGradient hero and bilingual copy; validates documents/page-system.md.
