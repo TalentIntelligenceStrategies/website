@@ -1,0 +1,1667 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Signal — TIS (v0.8 concept)</title>
+<meta name="description" content="Know what a patent is really worth before you invest. An objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — human + AI." />
+
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+
+<link rel="stylesheet" href="/assets/styles.css">
+
+<script>
+  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
+  (() => {
+    const lang = localStorage.getItem('tis-lang');
+    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+  })();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v0.8 concept — page-scoped styles ONLY. Everything else is the shared
+     homepage system in /assets/styles.css (per website/documents/page-system.md).
+     Four things are page-scoped because the homepage system has no equivalent:
+     (1) the radial signal-pulse hero shader (three.js — concentric monochrome
+         signal-blue rings emanating outward on black, reading as a radar pulse),
+     (2) signal-gradient imagery behind the report + contact cards,
+     (3) the proof duo — a full-height gradient beside a black PSS ledger card and
+         a scrim-captioned image card,
+     (4) the how-it-works vertical timeline — 7 beats on one spine, 3 phases, with
+         the two payment milestones accented.
+     Tokens only; signal blue = --score-b-vivid. No invented hex beyond the
+     hero shader's literal blue (#0EA5E9) + black fallback.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{
+    --sig-blue: var(--score-b-vivid);   /* #0EA5E9 */
+    --sig-blue-deep: #0369A1;           /* --score-b light text token */
+  }
+
+  /* ── Hero — homepage .hero foreground over the radial signal-pulse shader ──
+     Reuses the homepage full-viewport override + .hero-shader crossfade layer;
+     the fallback is pure black so a failed shader degrades to the shader's own
+     black base, not navy. */
+  [data-page="signal"] .hero{
+    height:auto;
+    min-height:calc(100dvh - 64px);
+    padding-block:0;
+    background:#000;                    /* black fallback if WebGL/esm.sh fail — matches shader base */
+  }
+
+  /* ── Hero legibility scrim — the full-frame shader would otherwise wash over the
+     headline. Tuned for the corner-anchored pulse (origin near the top-right, see
+     the shader module): the diagonal runs the other way from the old 105deg one so
+     it darkens the lower-left copy zone and reaches full transparency well before
+     the top-right, leaving the pulse origin completely unscrimmed. Sits above the
+     shader (z-index 2) and below the foreground content (z-index 4). ── */
+  [data-page="signal"] .hero-scrim{
+    position:absolute;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    background:
+      /* Diagonal toward the top-right — dark at the lower-left, fully clear by 68%
+         so the pulse origin and its tightest rings stay untouched. */
+      linear-gradient(55deg,
+        rgba(0,0,0,0.80) 0%,
+        rgba(0,0,0,0.64) 28%,
+        rgba(0,0,0,0.32) 48%,
+        rgba(0,0,0,0.00) 68%),
+      /* Horizontal guard — holds contrast on the left copy column at any viewport
+         height, independent of where the diagonal happens to fall. */
+      linear-gradient(to right,
+        rgba(0,0,0,0.34) 0%,
+        rgba(0,0,0,0.16) 38%,
+        rgba(0,0,0,0.00) 58%),
+      /* Base lift under the scroll cue. */
+      linear-gradient(to top,
+        rgba(0,0,0,0.36) 0%,
+        rgba(0,0,0,0.00) 34%);
+  }
+  [data-page="signal"] .hero-inner{ position:relative; z-index:4; }
+
+  /* ── Report value-cards — signal-gradient image behind the shared offer-card
+     scrim (same recipe as the homepage offer cards; only the image changes). ── */
+  /* The cards are <button>s (FLIP triggers); keep their copy left-aligned like the
+     homepage offer-card anchors (buttons default to text-align:center). */
+  .offer-card[data-report]{ text-align:left; }
+  /* Report-render images anchor to the top so the document header (title + score)
+     shows above the bottom-up scrim, rather than the middle of the page. */
+  .offer-card[data-report]::before{ background-position:center top; }
+  .offer-card--sigA::before{ background-image:url('/assets/imagery/signal/report_short.jpg'); }
+  .offer-card--sigB::before{ background-image:url('/assets/imagery/signal/report_long.jpg'); }
+  .offer-card--sigC::before{ background-image:url('/assets/imagery/signal/report_advance2.jpg'); }
+
+  /* ── Proof — 2-col header, then a media + two-card duo ───────────────────
+     Reference grammar → vanilla: (1) heading left + prose right; (2) a flex row
+     with one full-height image left and two stacked cards right; (3) card 1 =
+     black padded body; (4) card 2 = image with a bottom-gradient caption. Card
+     radius / fill / hairline match the shared .about-card register so this reads
+     as the same family as the homepage dark cards. ── */
+  .sig-proof{
+    /* framer spring(stiffness:250, damping:20) → ζ≈0.63, ~400ms settle with a
+       small overshoot. A back-out bezier is the closest CSS gets. */
+    --sig-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Header — 2 columns, TOP-aligned. Bottom-aligning (the earlier align-items:end)
+     only reads as a decision when the two blocks are close in height; here the h2
+     is ~2 display lines against a 4-line dek + a 42px numeral + a button, so it
+     opened a ~300px void above the heading that no content justified. Sharing a
+     top edge is a legible grid; the smaller residue below the h2 is the honest
+     cost. Ratio favours the heading because it carries display type. */
+  .sig-proof__head{
+    display:grid;
+    grid-template-columns:minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap:clamp(24px, 3vw, 48px);
+    align-items:start;
+  }
+  .sig-proof__head .h-section{ margin:0; text-wrap:balance; }
+  .sig-proof__aside{
+    display:flex; flex-direction:column; align-items:flex-start;
+    gap:24px;
+  }
+  /* .section-dek ships margin-top:16px + max-width:44ch — neither applies when
+     it's the top of its own column. */
+  .sig-proof__aside .section-dek{ margin:0; max-width:52ch; text-wrap:pretty; }
+
+  /* Pool — the denominator the whole score is relative to, not a pipeline stage,
+     so it lives with the argument on the page surface. Theme tokens only: neither
+     --sig-blue (2.77:1 on white) nor --sig-blue-deep (3.29:1 on the dark-theme
+     page) clears AA for a numeral, so it takes --text-primary. */
+  .sig-pool{ display:flex; align-items:baseline; gap:14px; margin:0; }
+  .sig-pool__num{
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:clamp(30px, 3.4vw, 42px);
+    font-weight:700;
+    line-height:1;
+    letter-spacing:-0.02em;
+    color:var(--text-primary);
+    font-variant-numeric:tabular-nums;
+  }
+  .sig-pool__label{ font-size:14px; line-height:1.45; color:var(--text-secondary); max-width:22ch; }
+
+  /* Duo — the process timeline left, the PSS card stack right. The left column
+     used to hold a decorative gradient; it now carries the 7-beat timeline, which
+     is why this section absorbed the old how-it-works section entirely. Both
+     columns are dark, so the duo reads as one deliberate dark band under a light
+     header rather than two unrelated cards. */
+  .sig-proof__duo{
+    margin-top:var(--space-head-gap);
+    display:flex;
+    align-items:stretch;
+    gap:clamp(16px, 1.6vw, 24px);
+  }
+  .sig-proof__stack{
+    flex:1 1 0; min-width:0;
+    display:flex; flex-direction:column;
+    gap:clamp(16px, 1.6vw, 24px);
+  }
+
+  /* ── Left panel · the process timeline on black. Same fill, radius and hairline
+     as .sig-ledger opposite it, so the two read as a matched pair. Black also buys
+     the payment nodes their contrast: --sig-blue is 7.58:1 on #000 against only
+     2.77:1 on white, which is why the accent finally works as an accent here. ── */
+  .sig-flow-panel{
+    flex:1 1 0; min-width:0;
+    display:flex; flex-direction:column;
+    background:#000;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
+    color:#fff;
+  }
+  [data-theme="dark"] .sig-flow-panel{ border-color:rgba(255,255,255,0.16); }
+  /* Panel title. It must NOT match the phase labels below it — at 12px/0.12em/50%
+     white they were within 1px and one tracking step of each other, so the panel's
+     name and its group labels read as one flat level. Separated on brightness and
+     size: 75% white here against 50% there, 12px against 11px. */
+  .sig-flow-panel__kicker{
+    margin:0 0 26px;
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.12em;               /* all-caps tracking, 5–12% band */
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.75);        /* 11.6:1 on #000 */
+  }
+  /* Timeline absorbs any free space so the CTA sits at the panel's foot when the
+     opposite column is the taller one. */
+  .sig-flow-panel .sig-flow{ flex:1 1 auto; }
+  /* CTA closes the sequence: the reader finishes beat 07 and the action is there.
+     .btn-primary is dark-on-dark inside this card, so it is pinned to the inverse
+     pair — same fix as the hero's btn-secondary at styles.css:1474. */
+  .sig-flow-panel .btn{ margin-top:32px; align-self:flex-start; }
+  .sig-flow-panel .btn-primary,
+  .sig-flow-panel .btn-primary:hover{ background:#FFFFFF; color:#252525; -webkit-text-fill-color:#252525; }
+  .sig-flow-panel .btn-primary:hover{ background:#EEF3F7; }
+
+  /* ── Card 1 · the PSS ledger — four numbered facts on black. Deliberately NO
+     connective line and NO node dots: the how-it-works timeline below owns the
+     vertical line-and-nodes language and we don't repeat it. Facts are separated
+     by horizontal hairlines instead. Mono tabular numerals are legitimate — the
+     content literally is scoring metadata, not decoration. ── */
+  .sig-ledger{
+    flex:0 0 auto;
+    background:#000;                           /* matches .about-card / .partner-band */
+    border:1px solid rgba(255,255,255,0.08);   /* same hairline as .about-card */
+    border-radius:20px;
+    padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
+    color:#fff;
+  }
+  /* In dark theme the page surface is #0E0E0E, so a #000 card is defined only by
+     its hairline. .about-card gets away with it because its image defines the
+     edges; this card is all type, so lift the edge. */
+  [data-theme="dark"] .sig-ledger{ border-color:rgba(255,255,255,0.16); }
+
+  .sig-ledger__kicker{
+    margin:0 0 20px;
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.46);
+  }
+
+  /* The numeral column is sized ONCE on the list, not per row — otherwise each
+     <li> resolves its own max-content and the labels/notes go ragged ("0–100" is
+     wider than "8", so its label would sit further right than the others).
+     subgrid makes every row inherit the one shared column pair. */
+  .sig-facts{
+    list-style:none; margin:0; padding:0;
+    display:grid;
+    grid-template-columns:max-content minmax(0, 1fr);
+    column-gap:18px;
+  }
+  .sig-fact{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:subgrid;
+    row-gap:6px;
+    align-items:baseline;
+    padding:14px 0;
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .sig-fact:first-child{ border-top:0; padding-top:0; }
+  .sig-fact:last-child{ padding-bottom:0; }
+  .sig-fact__num{
+    grid-column:1; grid-row:1; justify-self:end;
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:clamp(26px, 2.6vw, 36px);
+    font-weight:700;
+    line-height:1;
+    letter-spacing:-0.02em;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  /* Terminal fact = the grade, the output. --sig-blue is 7.58:1 on #000; it must
+     never migrate off this black card (2.77:1 on white). */
+  .sig-fact--out .sig-fact__num{ color:var(--sig-blue); }
+  .sig-fact__label{
+    grid-column:2; grid-row:1;
+    font-size:14px; line-height:1.35;
+    color:rgba(255,255,255,0.72);
+  }
+  .sig-fact__note{
+    grid-column:2; grid-row:2;
+    margin:0;
+    font-size:13px; line-height:1.5;
+    color:rgba(255,255,255,0.52);          /* 5.7:1 on #000 */
+    max-width:38ch;
+  }
+
+  /* ── Card 2 · the human + AI trade-off — caption over a bottom-up scrim.
+     REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep navy →
+     mid blue across its bottom band, ~7.9:1 for white at the top of the caption);
+     every pale gradient in that folder (-1, -2, -6, -7) drops it to 2.6–3.0:1.
+     Do not swap the image without re-measuring. Scrim ramp is the audited
+     .offer-card one, not a flat black/70. ── */
+  .sig-trade{
+    flex:1 1 auto;
+    min-height:clamp(220px, 20vw, 280px);
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    border-radius:20px;
+    background:#000;
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .sig-trade img{
+    position:absolute; inset:0; z-index:-2;
+    width:100%; height:100%;
+    object-fit:cover; object-position:center;
+    display:block;
+    transform-origin:center;
+  }
+  .sig-trade::after{
+    content:""; position:absolute; inset:0; z-index:-1;
+    background:linear-gradient(to top,
+      rgba(0,0,0,0.88) 0%,
+      rgba(0,0,0,0.45) 45%,
+      rgba(0,0,0,0.06) 80%);
+  }
+  .sig-trade__caption{
+    position:relative;
+    padding:clamp(22px, 2.4vw, 30px);
+    display:flex; flex-direction:column; gap:8px;
+  }
+  /* No kicker here. It was invented copy, and it would have been the fifth tracked
+     uppercase mono label across these two sections — the point where a named
+     dossier system tips into scaffolding-by-reflex. The caption carries itself. */
+  .sig-trade__body{
+    margin:0;
+    font-size:15px; line-height:1.5;
+    color:rgba(255,255,255,0.90);
+    max-width:46ch;
+  }
+  .sig-trade__body strong{ color:#fff; font-weight:700; }
+
+  /* ── Motion — only the trade card's IMAGE moves. The cards are non-interactive
+     divs, and a hover-scale on a non-clickable card promises a click that isn't
+     there; it would also resample the mono numerals mid-transition. Entry mirrors
+     .about-card / .offer-card: fade + settle 1.08 → 1 on .is-revealed, then zoom
+     to 1.05 on hover, gated on .is-revealed so the two never fight. ── */
+  /* The hidden base state is gated on `scripting: enabled`. PRODUCT.md is explicit
+     that content must never be gated invisible on JS failure — an unguarded
+     opacity:0 waiting on a JS-added class ships a blank section to anyone whose
+     script never runs. With no scripting the image is simply visible. */
+  @media (scripting: enabled){
+    .sig-trade[data-reveal] img{
+      opacity:0;
+      transform:scale(1.08);
+    }
+  }
+  .sig-trade[data-reveal] img{
+    transition:opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+    will-change:transform, opacity;
+  }
+  .sig-trade[data-reveal].is-revealed img{ opacity:1; transform:scale(1); }
+
+  @media (hover: hover) and (pointer: fine){
+    .sig-trade[data-reveal].is-revealed:hover img{
+      transform:scale(1.05);
+      transition:transform 400ms var(--sig-spring);
+    }
+  }
+
+  /* ── Responsive — one column below 960px. Order: heading → argument/pool/CTA →
+     ledger → trade card → timeline panel. The PSS stack leads on a phone because
+     the section's claim is the score's traceability; the process timeline is the
+     longer read and follows. ── */
+  @media (max-width: 959.98px){
+    .sig-proof__head{ grid-template-columns:1fr; gap:24px; align-items:start; }
+    .sig-proof__duo{ flex-direction:column; }
+    .sig-proof__stack{ order:1; }
+    .sig-flow-panel{
+      order:2;
+      /* MUST drop the desktop `flex:1 1 0`. Once the container is a column,
+         flex-basis governs HEIGHT — a 0 basis with nothing to grow into (the
+         column has no definite height) collapses the panel to nothing. */
+      flex:0 0 auto;
+      padding:28px 22px;
+    }
+    .sig-ledger{ padding:26px 22px; }
+    /* The caption runs ~8 lines in one column, so its top reaches well into the
+       weakly-scrimmed band and over the image's bright cyan corner. Steepen the
+       ramp: the image still reads at the top edge, the copy stays ≥4.5:1. */
+    .sig-trade::after{
+      background:linear-gradient(to top,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.82) 55%,
+        rgba(0,0,0,0.58) 100%);
+    }
+  }
+  @media (max-width: 560px){
+    .sig-fact{ column-gap:14px; }
+    .sig-fact__note{ max-width:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sig-trade[data-reveal] img,
+    .sig-trade[data-reveal].is-revealed:hover img{
+      opacity:1; transform:none; transition:none;
+    }
+  }
+
+  /* ── The process timeline, inside the dark left panel ───────────────────────
+     Seven ordered beats hanging off ONE continuous spine, grouped into three
+     phases, with 02 + 07 accented as the two payment milestones. The page's only
+     line-and-nodes treatment (the PSS ledger opposite deliberately avoids it).
+
+     Layout: each <li> is a 2-column grid — a fixed rail column (spine + node) and
+     a fluid content column. The spine is a per-item ::before spanning that item's
+     FULL height, so contiguous items (padding only, never margin) form one
+     unbroken line, and continuity across a phase boundary is structural: the
+     phase <h3> lives inside its <li>, so that segment covers the label too. Only
+     the first and last segments are trimmed, to start at node 01 and stop at 07.
+
+     TYPE HIERARCHY — three steps, ≥1.25 apart so the ramp can't go muddy, each
+     separated on three dimensions at once (size + weight + colour), not size
+     alone:
+       phase   11px mono 600, uppercase 0.12em, 50% white   — the group label
+       title   17px 600, 100% white                          — the beat itself
+       note    13.5px 400, 60% white                         — the annotation
+     17 / 13.5 = 1.26. The index moved INLINE with the title rather than owning a
+     row above it: in a ~570px panel column that reclaimed ~160px of height and
+     stopped the number reading as a heading in its own right.
+
+     Light-on-dark compensation is applied on all three axes the reference calls
+     for, because perceived weight drops across all of them, not just colour:
+     line-height +0.05, letter-spacing +0.01em, and the note's alpha lifted to
+     0.60 rather than stepping to a heavier cut of Urbanist.
+
+     Vertical geometry derives from custom properties so the node and the two
+     spine trims can't drift apart when type sizes change:
+       --sig-flow-meta-h   height of the title/chip line box (node centres on it)
+       --sig-flow-phase-h  phase-label block height (line box + its margin) ── */
+  .sig-flow{
+    --sig-flow-rail:22px;                /* node column width */
+    --sig-flow-gap:clamp(14px, 1.6vw, 20px);
+    --sig-flow-node:11px;
+    --sig-flow-pad:16px;
+    --sig-flow-phase-gap:22px;           /* extra air before a new phase */
+    --sig-flow-meta-h:23px;              /* 17px title × 1.32 — chip is pinned to match */
+    --sig-flow-phase-h:28px;             /* 16px line box + 12px margin-bottom */
+  }
+
+  .sig-flow__list{ list-style:none; margin:0; padding:0; }
+
+  .sig-flow__item{
+    position:relative;
+    display:grid;
+    grid-template-columns:var(--sig-flow-rail) minmax(0, 1fr);
+    column-gap:var(--sig-flow-gap);
+    padding-block:var(--sig-flow-pad);
+  }
+  .sig-flow__node{ grid-column:1; grid-row:1; }
+  .sig-flow__content{ grid-column:2; grid-row:1; }
+  .sig-flow__phase{ grid-column:2; grid-row:1; }
+  /* Phase-leading items push node + content down one row so the node still
+     centres on the index line, not on the phase label. */
+  .sig-flow__item--phase{ padding-top:calc(var(--sig-flow-pad) + var(--sig-flow-phase-gap)); }
+  .sig-flow__item--phase .sig-flow__node,
+  .sig-flow__item--phase .sig-flow__content{ grid-row:2; }
+
+  /* The spine. One segment per item, full height → continuous by construction. */
+  .sig-flow__item::before{
+    content:"";
+    position:absolute;
+    top:0; bottom:0;
+    left:calc(var(--sig-flow-rail) / 2);
+    margin-left:-0.5px;
+    width:1px;
+    background:rgba(255,255,255,0.14);   /* on black now, not --border-tertiary */
+    pointer-events:none;
+  }
+  /* Trim the two ends to the first and last node centres. */
+  .sig-flow__item:first-child{ padding-top:0; }
+  .sig-flow__item:first-child::before{
+    top:calc(var(--sig-flow-phase-h) + var(--sig-flow-meta-h) / 2);
+  }
+  .sig-flow__item:last-child{ padding-bottom:0; }
+  .sig-flow__item:last-child::before{
+    bottom:auto;
+    height:calc(var(--sig-flow-pad) + var(--sig-flow-meta-h) / 2);
+  }
+
+  /* Node — hollow ring on black. 38% white is 4.0:1 against #000, clearing the 3:1
+     non-text floor with margin. #000 fill so the spine can't show through. */
+  .sig-flow__node{
+    justify-self:center;
+    align-self:start;
+    margin-top:calc((var(--sig-flow-meta-h) - var(--sig-flow-node)) / 2);
+    width:var(--sig-flow-node);
+    height:var(--sig-flow-node);
+    border-radius:50%;
+    background:#000;
+    border:1.5px solid rgba(255,255,255,0.38);
+    /* MUST stay positioned. The spine is an absolutely-positioned ::before on the
+       <li>; positioned elements paint above static content whatever the DOM order,
+       so without this the spine draws straight THROUGH every node and the opaque
+       fill can't mask it. */
+    position:relative;
+    z-index:1;
+  }
+  /* Payment milestones. On black --sig-blue is 7.58:1, so the accent finally works
+     at full vividness — the reason this panel went dark. */
+  .sig-flow__item--pay .sig-flow__node{
+    background:var(--sig-blue);
+    border-color:var(--sig-blue);
+    box-shadow:0 0 0 4px rgba(14,165,233,0.20);
+  }
+
+  /* Phase label — the group step of the ramp. Same register as the panel kicker
+     but dimmer, so it groups without competing with the beat titles. nowrap is a
+     guard: a wrapped label would desync --sig-flow-phase-h. */
+  .sig-flow__phase{
+    margin:0 0 12px;
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:11px;
+    font-weight:600;
+    line-height:16px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    color:rgba(255,255,255,0.50);        /* 5.4:1 on #000 */
+  }
+
+  /* Title row — index, title and chip on ONE line. The index used to own a row
+     above the title, which cost ~23px per beat and gave a decorative number the
+     same vertical status as the beat itself. Inline, it reads as what it is: an
+     ordinal prefix. Fixed height = --sig-flow-meta-h, which the node keys off. */
+  .sig-flow__meta{
+    margin:0 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    min-height:var(--sig-flow-meta-h);
+  }
+  .sig-flow__index{
+    flex:none;
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    color:rgba(255,255,255,0.55);        /* 6.0:1 on #000 */
+    font-variant-numeric:tabular-nums;
+  }
+  .sig-flow__item--pay .sig-flow__index{ color:var(--sig-blue); }
+
+  /* PAYMENT chip — the non-colour signal for the two payment beats (WCAG 1.4.1
+     forbids carrying that on hue alone). --score-b-bg is a near-white #F0F9FF in
+     light theme, which would read as a white pill on this black panel, so the chip
+     takes an explicit translucent-blue ground instead: --sig-blue on ~#02202F
+     composites to ≈6.3:1, and it stays correct in dark theme because both values
+     are theme-independent. */
+  .sig-flow__chip{
+    flex:none;
+    padding:1px 7px;
+    border-radius:9999px;
+    background:rgba(14,165,233,0.16);
+    color:var(--sig-blue);
+    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:11px;
+    font-weight:600;
+    line-height:16px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  /* Beat title — the ramp's top step. Full white against the note's 60%. */
+  .sig-flow__title{
+    margin:0;
+    font-size:17px;
+    font-weight:600;
+    line-height:1.32;
+    letter-spacing:-0.005em;             /* eased off -0.01em: light-on-dark needs air */
+    color:#fff;
+    overflow-wrap:break-word;            /* guard: mixed-script ZH title at 390px */
+  }
+  /* Note — the annotation step. 13.5px against the title's 17px is a 1.26 ratio,
+     clear of the 1.25 floor. Light-on-dark compensation: line-height 1.6 (up from
+     1.55) and +0.01em tracking, with alpha at 0.60 (6.4:1) doing the work a
+     heavier Urbanist cut would otherwise be needed for. */
+  .sig-flow__desc{
+    margin:0;
+    max-width:52ch;
+    font-size:13.5px;
+    line-height:1.6;
+    letter-spacing:0.01em;
+    color:rgba(255,255,255,0.60);
+    text-wrap:pretty;
+    overflow-wrap:break-word;
+  }
+
+  /* Scroll reveal — shares the [data-reveal] observer in site.js. The transform
+     is applied to the item's CHILDREN (> *), never the <li> itself: the spine is
+     a ::before on the <li>, and translating the <li> would drag the spine segment
+     out of line mid-animation. Pseudo-elements aren't matched by > *, so the
+     spine stays pinned and reads as a fixed track the beats land on. No
+     nth-child delays — the observer fires per element as each crosses the
+     threshold, so scroll cadence IS the stagger. */
+  /* Hidden base gated on scripting, same reasoning as §3's images: never ship a
+     blank list to a reader whose JS didn't run. */
+  @media (scripting: enabled){
+    .sig-flow__item[data-reveal] > *{
+      opacity:0;
+      transform:translateY(8px);
+    }
+  }
+  .sig-flow__item[data-reveal].is-revealed > *{
+    opacity:1;
+    transform:none;
+    transition:opacity 380ms var(--ease-card), transform 380ms var(--ease-card);
+  }
+
+  /* Responsive — no layout change; a vertical timeline is narrow-native. Only the
+     rail gutter and type tighten. At 390px: 390 − 40 (container) − 18 (rail) − 13
+     (gap) = 319px of content column. */
+  @media (max-width: 560px){
+    .sig-flow{
+      --sig-flow-rail:18px;
+      --sig-flow-gap:13px;
+      --sig-flow-node:9px;
+      --sig-flow-pad:14px;
+      --sig-flow-phase-gap:16px;
+      --sig-flow-meta-h:22px;            /* tracks the 16px title below */
+    }
+    .sig-flow__title{ font-size:16px; }
+    .sig-flow__desc{ font-size:13px; max-width:none; }
+    .sig-flow__meta{ gap:10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sig-flow__item[data-reveal] > *,
+    .sig-flow__item[data-reveal].is-revealed > *{
+      opacity:1;
+      transform:none;
+      transition:none;
+    }
+  }
+
+  /* ── Contact cards — swap the overlay image for signal-toned imagery; the
+     retrieve card flips so the form sits left. Everything else is the shared
+     .contact-card component. ── */
+  /* Single image stretched across the WHOLE card (behind both the heading side
+     AND the white form panel) — put it on the card, and kill the overlay's own
+     image + scrim so there's no column seam. The heading stays legible with a
+     text-shadow, not a scrim; the form stays legible because .contact-panel is
+     already a solid white elevated card floating over the image. */
+  .contact-card--sig-intake{
+    background:var(--surface-inverse) url('/assets/imagery/coremap/dirk-lach-fSgF4pEQEY8-hero-flip.jpg') center/cover no-repeat;
+  }
+  .contact-card--sig-retrieve{
+    background:var(--surface-inverse) url('/assets/imagery/signal/signal-graident-5.jpg') center/cover no-repeat;
+  }
+  .contact-card--sig-intake .contact-overlay::before,
+  .contact-card--sig-intake .contact-overlay::after,
+  .contact-card--sig-retrieve .contact-overlay::before,
+  .contact-card--sig-retrieve .contact-overlay::after{ display:none; }
+  .contact-card--sig-intake .contact-overlay,
+  .contact-card--sig-retrieve .contact-overlay{ text-shadow:0 1px 16px rgba(6,12,32,.45); }
+
+  /* Retrieve — desktop flip: form left, image/heading right. Below 881px the base
+     .contact-card collapse (≤880px → 1fr) takes over and heading stacks over form. */
+  @media (min-width:881px){
+    .contact-card--sig-retrieve{ grid-template-columns:6fr 5fr; }
+    .contact-card--sig-retrieve .contact-panel{ grid-column:1; grid-row:1; }
+    .contact-card--sig-retrieve .contact-overlay{ grid-column:2; grid-row:1; }
+  }
+  @media (max-width: 880px){
+    .contact-card--sig-retrieve .contact-overlay{ order:-1; }
+  }
+
+  /* ── Expandable report sample cards — v07 FLIP morph, re-skinned to the system ── */
+  .sig-xoverlay{ position:fixed; inset:0; z-index:1000; display:none; padding:16px; }
+  .sig-xoverlay[data-open="true"]{ display:grid; place-items:center; }
+  .sig-xbackdrop{ position:fixed; inset:0; z-index:0; background:rgba(6,12,32,.55);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); opacity:0; }
+  .sig-xpanel{ position:relative; z-index:1; width:min(850px, 100%); max-height:min(92svh, 940px);
+    display:flex; flex-direction:column; overflow:hidden; background:var(--surface-page);
+    border-radius:18px; box-shadow:var(--shadow-high); transform-origin:top left; }
+  .sig-xpanel[hidden]{ display:none; }
+  .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
+  .sig-xpanel__media{ height:200px; overflow:hidden; }
+  .sig-xpanel__media img{ width:100%; height:100%; object-fit:cover; object-position:center top; }
+  .sig-xpanel__head{ padding:clamp(24px,3vw,36px) clamp(24px,3vw,36px) 0; display:flex; flex-direction:column; gap:8px; }
+  .sig-xpanel__head .sig-xcard__kind{ font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:12px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase; color:var(--sig-blue-deep); }
+  .sig-xpanel__head h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:0; color:var(--text-primary); }
+  .sig-xpanel__lede{ font-size:16px; line-height:1.55; color:var(--text-secondary); margin:0; max-width:56ch; }
+  .sig-xpanel__body{ padding:clamp(20px,2.4vw,28px) clamp(24px,3vw,36px) clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:16px; }
+  .sig-xpanel__body p{ font-size:14px; line-height:1.55; color:var(--text-secondary); margin:0; }
+  .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
+    color:var(--text-tertiary); font-family:'Inconsolata', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+  .sig-xreport{ width:100%; height:auto; border-radius:12px; border:1px solid var(--border-primary); }
+  .sig-xsimlist{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .sig-xsimlist li{ display:flex; justify-content:space-between; gap:16px; padding:11px 0;
+    border-top:1px solid var(--border-primary); font-size:14px; color:var(--text-primary); }
+  .sig-xsimlist li:first-child{ border-top:0; }
+  .sig-xsimlist .score{ font-family:'Inconsolata', monospace; font-weight:600; color:var(--sig-blue-deep); }
+  .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
+    display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
+    color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
+  .sig-xclose:hover{ background:var(--surface-tertiary); }
+  .sig-xclose svg{ width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; transform:rotate(45deg); }
+  .offer-card[data-report]:focus-visible{ outline:2px solid var(--sig-blue); outline-offset:3px; }
+  body.sig-xlock{ overflow:hidden; }
+  @media (max-width:760px){ .sig-xpanel__media{ height:150px; } }
+  @media (prefers-reduced-motion: reduce){
+    .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
+  }
+
+  /* Retrieve status block — small, token-only. */
+  .sig-status{ display:flex; align-items:center; gap:10px; margin-top:4px;
+    font-size:14px; color:var(--text-secondary); }
+  .sig-status-pill{ display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:9999px;
+    background:var(--success-bg); color:var(--success-fg);
+    font-size:12px; font-weight:600; }
+  .sig-callout{ margin:4px 0 0; font-size:13px; line-height:1.55; color:var(--text-tertiary); }
+</style>
+</head>
+
+<body data-page="signal">
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ── Top nav — mirrors index.html chrome ── -->
+<header class="topnav" role="banner">
+  <div class="container topnav-inner">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+      <span class="topnav-logo" aria-hidden="true"></span>
+    </a>
+
+    <span class="topnav-spacer"></span>
+
+    <nav class="topnav-links" aria-label="Primary">
+      <div class="topnav-dropdown-wrap">
+        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
+          <span data-zh="產品">Products</span>
+          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
+          <div class="products-menu-grid">
+            <a href="/product/licensing/" class="product-card" role="menuitem">
+              <span class="product-card-media">
+                <img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+                <span class="product-card-name">
+                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
+                  <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
+                </span>
+              </span>
+              <span class="product-card-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+            </a>
+            <a href="/product/signal/" class="product-card" role="menuitem">
+              <span class="product-card-media">
+                <img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+                <span class="product-card-name">
+                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
+                  <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Evaluation</span>
+                </span>
+              </span>
+              <span class="product-card-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="/patents/"   class="topnav-link" data-zh="自有專利">Owned Patents</a>
+      <a href="/reports/"  class="topnav-link" data-zh="報告與新聞">Reports &amp; Press</a>
+      <a href="/about/"    class="topnav-link" data-zh="關於">About</a>
+    </nav>
+
+    <div class="topnav-controls">
+      <div class="lang-wrap" id="lang-wrap">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="menu">
+          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        </div>
+      </div>
+
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m21 21-4.34-4.34"/>
+          <circle cx="11" cy="11" r="8"/>
+        </svg>
+      </button>
+
+      <a href="#intake" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="mobile-overlay" id="mobile-overlay"></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+  <div class="mobile-header">
+    <span class="mobile-header-logo" aria-hidden="true"></span>
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-list" aria-label="Primary mobile">
+    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
+      <span data-zh="產品">Products</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-products-sublist" class="mobile-sublist">
+      <a href="/product/licensing/" class="mobile-sub-row">
+        <span class="mobile-sub-media">
+          <img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+          <span class="mobile-sub-name">
+            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
+            <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
+          </span>
+        </span>
+        <span class="mobile-sub-desc" data-zh="精選適配專利防護組合，為出口貨物保專利險，快速生效，省時省力省預算。">Patent insurance for exporters. Curated 30 patent bundles, fast to activate.</span>
+      </a>
+      <a href="/product/signal/" class="mobile-sub-row">
+        <span class="mobile-sub-media">
+          <img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+          <span class="mobile-sub-name">
+            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
+            <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Evaluation</span>
+          </span>
+        </span>
+        <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Patent grading for investors. 50 evidence-based indicators, peer-ranked against its industry.</span>
+      </a>
+    </div>
+    <a href="/patents/"   data-zh="自有專利">Owned Patents</a>
+    <a href="/reports/"  data-zh="報告與新聞">Reports &amp; Press</a>
+    <a href="/about/"    data-zh="關於">About</a>
+  </nav>
+  <div class="mobile-auth">
+    <a href="#intake" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+  </div>
+</aside>
+
+<!-- Search modal -->
+<div class="search-overlay" id="search-overlay"></div>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-input-row">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m21 21-4.34-4.34"/>
+      <circle cx="11" cy="11" r="8"/>
+    </svg>
+    <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <span class="search-esc" aria-hidden="true">Esc</span>
+  </div>
+  <div class="search-results">
+    <p class="search-section-label" data-zh="跳至">Jump to</p>
+    <a href="/product/licensing/" class="search-link" data-zh="產品">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
+      <span data-zh="產品">Products</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/patents/" class="search-link" data-zh="自有專利">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-zh="自有專利">Owned Patents</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/reports/" class="search-link" data-zh="報告與新聞">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      <span data-zh="報告與新聞">Reports &amp; Press</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/about/" class="search-link" data-zh="關於">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span data-zh="關於">About</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="#intake" class="search-link" data-zh="聯絡">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <span data-zh="聯絡">Contact</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ── 1 · Hero — homepage .hero foreground + radial signal-pulse shader ── -->
+  <section class="hero" data-active-pillar="signal" aria-label="Hero">
+    <!-- Radial signal-pulse shader (three.js) — mounted by the ESM module near
+         </body> into #hero-shader; uses the shared .hero-shader crossfade layer.
+         Degrades to the #000 black .hero background if WebGL / esm.sh fail. -->
+    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
+    <!-- Faint 32px graph-paper grid over the shader. -->
+    <div class="hero-grid" aria-hidden="true"></div>
+    <!-- Legibility scrim: darkens the lower-left behind the headline so the
+         full-frame shader stays readable. Above the shader, below the text. -->
+    <div class="hero-scrim" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="pillar" data-pillar="signal">
+        <p class="pillar-eyebrow">
+          <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
+          <span data-zh="泰然專利強度評級系統">Patent Evaluation</span>
+        </p>
+        <h1 class="pillar-title">
+          <span data-zh-html data-zh="在投資之前，看清一件專利<em>真正的價值</em>。">Know what a patent is <em>really worth</em> — before you invest.</span>
+        </h1>
+        <p class="pillar-sub" data-zh="帶著已核准專利、申請中草稿，或僅是一個想法。TIS 交付客觀的全池 PSS 排名、深度分析報告，或市場上最相關的十件專利——由人工 + AI 產出。我們的差異化在準度與深度，而非速度。">Bring a granted patent, a pending draft, or just an idea. TIS returns an objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — produced by human + AI. Our edge is precision and depth, not speed.</p>
+        <div class="pillar-actions">
+          <a href="#intake" class="btn btn-primary btn-lg" data-zh="開始評估">Start an evaluation</a>
+          <a href="#reports" class="btn btn-glass btn-lg" data-zh="看報告樣張">See a sample report</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ── 2 · Reports — three value-cards (offerings pattern) ── -->
+  <section class="section offerings" id="reports" aria-labelledby="reports-heading">
+    <div class="container">
+      <h2 id="reports-heading" class="h-section" data-reveal data-zh="三種深度的報告。">Three depths of report.</h2>
+      <p class="section-dek" data-reveal data-zh="從快速初篩到盡職調查等級的解讀——依你的決策需求選擇。">From a fast screen to a due-diligence read — pick what your decision needs.</p>
+      <div class="offerings-grid">
+
+        <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" data-zh="定量">Quantitative</span>
+            <span class="offer-card-title" data-zh="報告 A · 短版">Report A · Short</span>
+            <span class="offer-card-desc" data-zh="分數、SABCD 等級與全池排名——快速客觀的初篩。">A score, an SABCD grade, and full-pool rank — fast, objective screening.</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" data-zh="定性 · 深度">Qualitative · in-depth</span>
+            <span class="offer-card-title" data-zh="報告 B · 長版">Report B · Long</span>
+            <span class="offer-card-desc" data-zh="七章深度報告——盡職調查等級的完整解讀。">The full seven-chapter report — a due-diligence-grade read.</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </button>
+
+        <button type="button" class="offer-card offer-card--sigC" data-report="c" aria-expanded="false" aria-controls="sig-panel-c">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow" data-zh="定性 · 進階">Qualitative · advanced</span>
+            <span class="offer-card-title" data-zh="報告 B · 進階版">Report B · Advanced</span>
+            <span class="offer-card-desc" data-zh="市場上最相關的十件專利，附比對解讀。">The ten most relevant patents on the market, with comparison.</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · Proof + process — 2-col header, then a two-panel duo ──────────────
+       Header: claim left / argument, pool counter and methodology exit right.
+       Duo: the 7-beat process timeline on black (left) against the PSS ledger and
+       the human+AI caption card (right). Both panels are dark, so the duo reads as
+       one deliberate dark band under a light header.
+
+       This section absorbed the former "How it works" section wholesale — the
+       timeline used to be its own section below, and the left panel used to be a
+       decorative gradient. Consequence to keep in mind when editing: the retired
+       heading ("Submit a form, pay in two stages, retrieve with a code") and its
+       dek are GONE, so the two-stage payment structure is now carried only by the
+       accented 02 / 07 nodes and their PAYMENT chips. Don't quietly drop those.
+
+       Counters (1,433 / 50 / 8) drive from site.js; 0–100 and S–D are static. ── -->
+  <section class="section" aria-labelledby="proof-heading">
+    <div class="container">
+      <div class="sig-proof">
+
+        <!-- Header — the claim left; the argument, the pool it's measured against,
+             and the methodology exit right. -->
+        <div class="sig-proof__head">
+          <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
+
+          <div class="sig-proof__aside">
+            <p class="section-dek" data-reveal data-zh="VC Signal 為創投提供專利盡職調查。核心是新穎數位的 PSS 評分引擎——把每一件專利放進 TIS 的參考專利池，做客觀、可追溯的排名；每一個評等，都能回溯到背後的每一項指標。">VC Signal is IP due diligence for venture investors. At its core is Innovue's PSS scoring engine, which places any patent into TIS's full reference pool for an objective, traceable ranking — every grade walks back to the indicators behind it.</p>
+
+            <!-- The pool is the denominator the whole score is relative to, not a
+                 stage of the pipeline — it belongs with the argument, on the page
+                 surface, where its numeral can use --text-primary in both themes. -->
+            <p class="sig-pool">
+              <span class="sig-pool__num"><span class="counter" data-target="1433">1,433</span></span>
+              <span class="sig-pool__label" data-zh="件專利的參考池，作為排名基準">patents in the pool it's ranked against</span>
+            </p>
+
+            <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看評分方法">See the methodology</a>
+          </div>
+        </div>
+
+        <div class="sig-proof__duo">
+
+          <!-- ── Left panel · the process timeline ──────────────────────────────
+               Seven ordered beats on ONE continuous spine, grouped into three
+               phases, with 02 and 07 accented as the two payment milestones so the
+               two-stage structure is visible without reading a word.
+
+               Semantics: flat <ol role="list"> of exactly 7 <li> — one honest step
+               count. role="list" is required because list-style:none makes WebKit
+               strip list semantics, which is the only channel carrying ordinality
+               (the visible 01–07 indices are aria-hidden decorative duplicates).
+               Phase labels are <h3> inside the phase-leading <li>: 3 useful rotor
+               entries rather than 7. Beat titles are therefore <p>, not <h3>.
+
+               ⚠ NEW COPY — needs review: the panel label (How it works / 如何進行)
+               and the payment chip (Payment / 付款). Phase labels reuse vocabulary
+               already on this page — 送件 and 取件 from the retired section heading,
+               產出 from beat 04. -->
+          <div class="sig-flow-panel">
+            <p class="sig-flow-panel__kicker" id="sig-flow-label" data-zh="如何進行">How it works</p>
+
+            <div class="sig-flow">
+              <ol class="sig-flow__list" role="list" aria-labelledby="sig-flow-label">
+
+                <!-- ── Phase 1 · Submit ── -->
+                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <h3 class="sig-flow__phase" data-zh="送件">Submit</h3>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">01</span>
+                      <span class="sig-flow__title" data-zh="選報告，上傳資料">Pick a report, add your input</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="專利號、申請中草稿，或一段想法的描述。">A patent number, a pending draft, or a description of the idea.</p>
+                  </div>
+                </li>
+
+                <li class="sig-flow__item sig-flow__item--pay" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">02</span>
+                      <span class="sig-flow__title" data-zh="線上刷卡付 10% 訂金">Pay a 10% deposit by card</span>
+                      <span class="sig-flow__chip" data-zh="付款">Payment</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="訂金啟動作業；格式錯誤或查無資料會提前擋下，不收費。">The deposit starts the work; bad input is caught earlier, at no charge.</p>
+                  </div>
+                </li>
+
+                <li class="sig-flow__item" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">03</span>
+                      <span class="sig-flow__title" data-zh="收到 confirmation letter + code">Confirmation letter with a code</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="一組不透明的英數字碼，搭配你的信箱作為日後取件憑證。">An opaque alphanumeric code, paired with your email to retrieve the report.</p>
+                  </div>
+                </li>
+
+                <!-- ── Phase 2 · Produce ── -->
+                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <h3 class="sig-flow__phase" data-zh="產出">Produce</h3>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">04</span>
+                      <span class="sig-flow__title" data-zh="TIS 人工 + AI 產出報告">TIS produces your report</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="串接新穎資料、跑 PSS 或向量比對，再由 AI 協作撰寫；以小時 / 日計。">We pull Innovue data, run the match, and write it up with AI. Hours to days.</p>
+                  </div>
+                </li>
+
+                <li class="sig-flow__item" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">05</span>
+                      <span class="sig-flow__title" data-zh="完成後 email 通知你">We email you when it's ready</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="通知只是通知；報告留在頁面上，憑憑證取件。">The email is only a notification; the report stays on the site, retrieved by credential.</p>
+                  </div>
+                </li>
+
+                <!-- ── Phase 3 · Retrieve ── -->
+                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <h3 class="sig-flow__phase" data-zh="取件">Retrieve</h3>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">06</span>
+                      <span class="sig-flow__title" data-zh="驗證後免費預覽大綱">Verify, preview the outline free</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="免費預覽各章節將涵蓋的內容全貌（非摘錄），先確認價值。">See the full outline of what each chapter covers (not excerpts), and confirm the value.</p>
+                  </div>
+                </li>
+
+                <li class="sig-flow__item sig-flow__item--pay" data-reveal>
+                  <span class="sig-flow__node" aria-hidden="true"></span>
+                  <div class="sig-flow__content">
+                    <p class="sig-flow__meta">
+                      <span class="sig-flow__index" aria-hidden="true">07</span>
+                      <span class="sig-flow__title" data-zh="付 90% 尾款，下載完整報告">Pay the balance, download the report</span>
+                      <span class="sig-flow__chip" data-zh="付款">Payment</span>
+                    </p>
+                    <p class="sig-flow__desc" data-zh="含浮水印 PDF，憑信箱 + code 永久取回。">Watermarked PDF, retrievable forever with your email + code.</p>
+                  </div>
+                </li>
+
+              </ol>
+            </div>
+
+            <!-- Copy is byte-identical to the hero's primary CTA — no new strings. -->
+            <a href="#intake" class="btn btn-primary" data-zh="開始評估">Start an evaluation</a>
+          </div>
+
+          <div class="sig-proof__stack">
+
+            <!-- Card 1 — the PSS pipeline as four numbered facts. Deliberately NO
+                 connective line and NO node dots: the how-it-works timeline below
+                 owns that language now. Separation is horizontal hairlines. -->
+            <div class="sig-ledger">
+              <p class="sig-ledger__kicker" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</p>
+              <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
+
+                <li class="sig-fact">
+                  <span class="sig-fact__num"><span class="counter" data-target="50">50</span></span>
+                  <span class="sig-fact__label" data-zh="項可追溯指標">traceable indicators</span>
+                  <p class="sig-fact__note" data-zh="每個支柱拆解為 4–8 項指標：原值、百分位、權重——可追溯到計算公式。">Every pillar unpacks into 4–8 indicators: raw value, percentile, weight — traceable to the formula.</p>
+                </li>
+
+                <li class="sig-fact">
+                  <span class="sig-fact__num"><span class="counter" data-target="8">8</span></span>
+                  <span class="sig-fact__label" data-zh="大強度支柱">strength pillars</span>
+                  <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八大支柱，各自獨立加權。">Citation, legal, technical, market and four more — eight pillars, independently weighted.</p>
+                </li>
+
+                <li class="sig-fact">
+                  <span class="sig-fact__num">0–100</span>
+                  <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
+                  <p class="sig-fact__note" data-zh="原始值先對同產業同儕池正規化，聚合為 0–100 的 PSS。">Raw values are normalised against the same-industry pool, then aggregated into a 0–100 PSS.</p>
+                </li>
+
+                <li class="sig-fact sig-fact--out">
+                  <span class="sig-fact__num">S–D</span>
+                  <span class="sig-fact__label" data-zh="級 SABCD 評等">SABCD grade</span>
+                  <p class="sig-fact__note" data-zh="評級是同儕百分位的分級。S 為同儕池前 15%。">A tier is a discretisation of cohort percentile. S is the top 15% of the pool.</p>
+                </li>
+
+              </ol>
+            </div>
+
+            <!-- Card 2 — the human + AI trade-off, captioned over a bottom-up scrim
+                 on signal-gradient imagery. -->
+            <div class="sig-trade" data-reveal>
+              <img src="/assets/imagery/signal/signal-graident-3.png" alt="" loading="lazy" decoding="async" width="1920" height="1080" />
+              <div class="sig-trade__caption">
+                <p class="sig-trade__body" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：我們用合理的作業時間，換來遠高於黑箱工具的準度與深度——但仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That's a deliberate trade: we spend real working time to return precision and depth a black-box tool can't — while still moving far faster than the 1–4 weeks of a traditional consultant.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4 · Intake — standard contact-card, signal-toned image ── -->
+  <section class="contact" id="intake" aria-labelledby="intake-heading">
+    <div class="container">
+      <div class="contact-card contact-card--sig-intake">
+
+        <aside class="contact-overlay">
+          <div class="contact-overlay-top">
+            <h2 id="intake-heading" data-zh-html data-zh="選報告類型，<br>上傳資料。">Choose a report,<br>upload your input.</h2>
+            <p class="contact-lead" data-zh-html data-zh="表單式送件，非即時對話。<br>送出前付 10% 訂金啟動作業。">A form, not a live conversation.<br>A 10% deposit on submit starts the work.</p>
+          </div>
+          <p class="contact-lead" data-zh-html data-zh="送出前付 <strong>10% 訂金</strong>，收到含 <strong>registration code</strong> 的 confirmation letter，憑信箱 + code 回頁免費預覽，再付 <strong>90% 尾款</strong> 下載完整報告。">Pay a <strong>10% deposit</strong> on submit, get a confirmation letter with your <strong>registration code</strong>, return to preview free, then pay the <strong>90% balance</strong> to download.</p>
+        </aside>
+
+        <div class="contact-panel">
+          <form class="contact-form" id="intake-form" novalidate>
+            <fieldset class="contact-topics">
+              <legend data-zh="① 你的輸入類型">① Your input type</legend>
+              <div class="topic-chips">
+                <label class="topic-chip"><input type="radio" name="input-type" value="granted" /><span data-zh="已核准 / 已公開專利">Granted / published patent</span></label>
+                <label class="topic-chip"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中未公開（草稿）">Pending / unpublished (draft)</span></label>
+                <label class="topic-chip"><input type="radio" name="input-type" value="idea" /><span data-zh="純點子 / 想法">Just an idea</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="contact-topics">
+              <legend data-zh="② 報告類型">② Report</legend>
+              <div class="topic-chips">
+                <label class="topic-chip"><input type="radio" name="report" value="a-short" /><span data-zh="報告 A 短版">Report A · Short</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" /><span data-zh="報告 B 長版">Report B · Long</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="報告 B 進階版">Report B · Advanced</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label for="intake-input" data-zh="③ 提供資料">③ Provide your input</label>
+              <input id="intake-input" name="input" type="text" data-zh-placeholder="專利號（如 US10148981）" placeholder="Patent number (e.g. US10148981)" />
+            </div>
+            <div class="field">
+              <label for="intake-file" data-zh="上傳草稿 / 說明書 / pitch 文件（PDF）">Upload a draft / specification / pitch document (PDF)</label>
+              <input id="intake-file" name="file" type="file" accept="application/pdf" />
+            </div>
+            <div class="field">
+              <label for="intake-desc" data-zh="或描述你的技術想法">Or describe your technical idea</label>
+              <textarea id="intake-desc" name="desc" rows="3" data-zh-placeholder="描述你的技術想法…" placeholder="Describe your technical idea…"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="intake-email" data-zh="④ 聯絡 / 通知信箱">④ Contact / notification email</label>
+              <input id="intake-email" name="email" type="email" placeholder="you@vcfund.com" />
+              <p class="sig-callout" data-zh-html data-zh="用於寄送 confirmation letter 與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation letter and completion notice. <strong>The report is not emailed here.</strong></p>
+            </div>
+
+            <div class="contact-actions">
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="付 10% 訂金並送出">Pay 10% deposit &amp; submit</button>
+            </div>
+          </form>
+
+          <div class="contact-success" id="intake-success" role="status" aria-live="polite">
+            <span class="check-pill" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+            </span>
+            <div>
+              <h3 data-zh="已送出。">Submitted.</h3>
+              <p data-zh="你會收到含 registration code 的 confirmation letter。">You'll receive a confirmation letter with your registration code.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 · Retrieve — standard contact-card, flipped (form left) ── -->
+  <section class="contact" id="retrieve" aria-labelledby="retrieve-heading">
+    <div class="container">
+      <div class="contact-card contact-card--sig-retrieve">
+
+        <div class="contact-panel">
+          <form class="contact-form" id="retrieve-form" novalidate>
+            <div class="field">
+              <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
+              <input id="retrieve-email" name="email" type="email" placeholder="you@vcfund.com" />
+            </div>
+            <div class="field">
+              <label for="retrieve-code" data-zh="registration code（如 E240710TWN31346058015）">registration code (e.g. E240710TWN31346058015)</label>
+              <input id="retrieve-code" name="code" type="text" placeholder="E240710TWN31346058015" />
+            </div>
+            <div class="contact-actions">
+              <button type="submit" class="btn btn-secondary" data-zh="查詢">Look up</button>
+            </div>
+
+            <div class="sig-status">
+              <span class="sig-status-pill" data-zh="✓ 報告完成">✓ Report ready</span>
+              <span data-zh="報告 B 進階版 · 訂金已付 10%">Report B · Advanced · 10% deposit paid</span>
+            </div>
+            <p class="sig-callout" data-zh-html data-zh="可先免費預覽<strong>報告大綱</strong>（各章節將涵蓋內容之全貌，非摘錄）；付 <strong>90% 尾款</strong>後下載完整報告（含浮水印 PDF）。">Preview the <strong>report outline free</strong> (the full scope of each chapter, not excerpts); pay the <strong>90% balance</strong> to download the full watermarked PDF.</p>
+
+            <div class="contact-actions" style="gap:12px;">
+              <a href="#" class="btn btn-glass" data-zh="預覽報告大綱（免費）">Preview outline (free)</a>
+              <button type="button" class="btn btn-primary" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
+            </div>
+          </form>
+        </div>
+
+        <aside class="contact-overlay">
+          <div class="contact-overlay-top">
+            <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>registration code 取件。">Retrieve with your email<br>+ registration code.</h2>
+            <p class="contact-lead" data-zh="點 confirmation letter（或完成通知）中的連結回到這裡，驗證身分後查進度、預覽或下載。報告不會直接寄出。">Follow the link in your confirmation letter (or completion email) back here to verify, check status, preview, or download. The report is never sent directly.</p>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Report sample overlay — FLIP-morph panels opened by the report cards ── -->
+  <div class="sig-xoverlay" id="sig-xoverlay" data-open="false">
+    <div class="sig-xbackdrop" id="sig-xbackdrop" aria-hidden="true"></div>
+
+    <!-- Panel A · Short -->
+    <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
+      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <div class="sig-xpanel__scroll">
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_short.jpg" alt="" /></div>
+        <div class="sig-xpanel__head">
+          <span class="sig-xcard__kind" data-zh="定量">Quantitative</span>
+          <h2 id="sig-panel-a-title" data-zh="報告 A · 短版">Report A · Short</h2>
+          <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
+        </div>
+        <div class="sig-xpanel__body">
+          <p data-zh-html data-zh="以下是報告 A 的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Report A looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="Sample Report A — score, SABCD grade, percentile, rank, and 8-pillar radar" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel B · Long -->
+    <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
+      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <div class="sig-xpanel__scroll">
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_long.jpg" alt="" /></div>
+        <div class="sig-xpanel__head">
+          <span class="sig-xcard__kind" data-zh="定性 · 深度">Qualitative · in-depth</span>
+          <h2 id="sig-panel-b-title" data-zh="報告 B · 長版">Report B · Long</h2>
+          <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
+        </div>
+        <div class="sig-xpanel__body">
+          <p data-zh-html data-zh="以下是報告 B 長版的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Report B · Long looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Report B — full report with facts grid, metric cards, and 8-pillar radar" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel C · Advanced -->
+    <div class="sig-xpanel" id="sig-panel-c" role="dialog" aria-modal="true" aria-labelledby="sig-panel-c-title" hidden>
+      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <div class="sig-xpanel__scroll">
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_advance2.jpg" alt="" /></div>
+        <div class="sig-xpanel__head">
+          <span class="sig-xcard__kind" data-zh="定性 · 進階">Qualitative · advanced</span>
+          <h2 id="sig-panel-c-title" data-zh="報告 B · 進階版">Report B · Advanced</h2>
+          <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得。此報告不評級你自己的專利。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search. Your own patent is not graded here.</p>
+        </div>
+        <div class="sig-xpanel__body">
+          <p data-zh-html data-zh="以下為 top-10 相似清單的樣張。<span class='sig-mockflag'>示意</span> 完整版面待新穎向量比對 API 串接。">A sample of the top-10 similarity list. <span class="sig-mockflag">mock</span> Full layout pending Innovue's vector-comparison API.</p>
+          <ul class="sig-xsimlist">
+            <li><span data-zh="US9876543 — 無人機降落控制">US9876543 — UAV landing control</span><span class="score">0.94</span></li>
+            <li><span data-zh="US9123456 — 定域到懸浮過渡">US9123456 — hover-to-perch transition</span><span class="score">0.91</span></li>
+            <li><span data-zh="EP3211222 — 重新試飛機制">EP3211222 — re-attempt flight logic</span><span class="score">0.88</span></li>
+            <li><span data-zh="US8765432 — 多模態感測一致性">US8765432 — multimodal sensing coherence</span><span class="score">0.85</span></li>
+            <li><span data-zh="US8123901 — 自主返航路徑規劃">US8123901 — autonomous return-path planning</span><span class="score">0.82</span></li>
+            <li><span data-zh="WO2019123456 — 風擾下姿態穩定">WO2019123456 — attitude hold under gust</span><span class="score">0.80</span></li>
+            <li style="color:var(--text-tertiary)"><span data-zh="…其餘 4 件，各附相似原因">…4 more, each with its reason for matching</span><span class="score">—</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer — mirrors index.html chrome ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-identity">
+          <div class="footer-nl-block" id="footer-nl-block">
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <form class="footer-nl-form" id="footer-nl-form" novalidate>
+              <input type="email" placeholder="Your Email" aria-label="Email address" required />
+              <button type="submit" aria-label="Subscribe">
+                <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </form>
+          </div>
+          <div class="footer-logo-row">
+            <span class="footer-logo" aria-hidden="true"></span>
+            <span class="footer-divider" aria-hidden="true"></span>
+            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+          </div>
+        </div>
+
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 data-zh="產品">Products</h4>
+            <ul>
+              <li><a href="/product/licensing/">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
+                <span data-zh="泰然專利防護網">Licensing Platform</span></a></li>
+              <li><a href="/product/signal/">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
+                <span data-zh="泰然專利強度評級系統">Patent Evaluation</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="公司">Company</h4>
+            <ul>
+              <li><a href="/patents/">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2v5a1 1 0 001 1h5"/><path d="M14.692 22H18a2 2 0 002-2V8a2.4 2.4 0 00-.706-1.706l-3.588-3.588A2.4 2.4 0 0014 2H6a2 2 0 00-2 2v3.804"/><path d="M2.264 13.752 7 16.5l4.737-2.748"/><path d="M2.995 13.014A2 2 0 002 14.744v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0012 18.26v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z"/><path d="M7 16.5V22"/></svg>
+                <span data-zh="自有專利">Owned Patents</span></a></li>
+              <li><a href="/reports/">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg>
+                <span data-zh="報告與新聞">Reports &amp; Press</span></a></li>
+              <li><a href="/about/">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                <span data-zh="關於">About</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 data-zh="法律">Legal</h4>
+            <ul>
+              <li><a href="#">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+                <span data-zh="服務條款">Terms</span></a></li>
+              <li><a href="#">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
+                <span data-zh="隱私政策">Privacy</span></a></li>
+              <li><a href="#">
+                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+                <span data-zh="揭露聲明">Disclosures</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="footer-baseline">
+    <div class="container">
+      <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
+<script src="/assets/site.js" defer></script>
+
+<!-- Expandable report sample cards — vanilla FLIP morph (Web Animations API),
+     ported from v0.7. The report cards (.offer-card[data-report]) are the triggers;
+     each opens its #sig-panel-* dialog with a measure→invert→play FLIP. -->
+<script>
+  (() => {
+    const overlay = document.getElementById('sig-xoverlay');
+    if (!overlay) return;
+    const backdrop = document.getElementById('sig-xbackdrop');
+    const cards = [...document.querySelectorAll('.offer-card[data-report]')];
+    const EASE = 'cubic-bezier(0.16,1,0.3,1)';
+    let activeCard = null, activePanel = null, lastFocus = null, animating = false;
+    const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const focusables = el => [...el.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])')]
+      .filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
+
+    function open(card){
+      if (animating || activePanel) return;
+      const panel = document.getElementById(card.getAttribute('aria-controls'));
+      if (!panel) return;
+      activeCard = card; activePanel = panel; lastFocus = card;
+      card.setAttribute('aria-expanded', 'true');
+
+      const sb = window.innerWidth - document.documentElement.clientWidth;
+      if (sb > 0) document.body.style.paddingRight = sb + 'px';
+      document.body.classList.add('sig-xlock');
+
+      overlay.dataset.open = 'true';
+      panel.hidden = false;
+      backdrop.animate([{opacity:0},{opacity:1}], {duration: reduce()?120:260, easing:'ease-out', fill:'forwards'});
+
+      if (reduce()){
+        panel.animate([{opacity:0},{opacity:1}], {duration:120, fill:'forwards'}).onfinish = finishOpen;
+        return;
+      }
+      animating = true;
+      const first = card.getBoundingClientRect();
+      const last = panel.getBoundingClientRect();
+      const sx = first.width / last.width, sy = first.height / last.height;
+      const tx = first.left - last.left, ty = first.top - last.top;
+      const a = panel.animate(
+        [{ transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`, opacity:.55 },
+         { transform:'translate(0,0) scale(1)', opacity:1 }],
+        { duration:440, easing:EASE, fill:'both' });
+      const body = panel.querySelector('.sig-xpanel__body');
+      if (body) body.animate([{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],
+        { duration:320, delay:130, easing:'ease-out', fill:'both' });
+      a.onfinish = () => { a.cancel(); animating = false; finishOpen(); };
+    }
+    function finishOpen(){
+      if (!activePanel) return;
+      const btn = activePanel.querySelector('.sig-xclose');
+      (btn || activePanel).focus({ preventScroll:true });
+    }
+    function close(){
+      if (!activePanel || animating) return;
+      const panel = activePanel, card = activeCard;
+      const done = () => {
+        panel.hidden = true;
+        overlay.dataset.open = 'false';
+        document.body.classList.remove('sig-xlock');
+        document.body.style.paddingRight = '';
+        if (card) card.setAttribute('aria-expanded', 'false');
+        panel.getAnimations().forEach(a => a.cancel());
+        activeCard = activePanel = null;
+        (lastFocus || card)?.focus({ preventScroll:true });
+        lastFocus = null;
+      };
+      backdrop.animate([{opacity:1},{opacity:0}], {duration: reduce()?100:220, easing:'ease-in', fill:'forwards'});
+      if (reduce()){ panel.animate([{opacity:1},{opacity:0}], {duration:100, fill:'forwards'}).onfinish = done; return; }
+      animating = true;
+      const first = panel.getBoundingClientRect();
+      const target = card.getBoundingClientRect();
+      const sx = target.width / first.width, sy = target.height / first.height;
+      const tx = target.left - first.left, ty = target.top - first.top;
+      const body = panel.querySelector('.sig-xpanel__body');
+      if (body) body.getAnimations().forEach(a => a.cancel());
+      const a = panel.animate(
+        [{ transform:'translate(0,0) scale(1)', opacity:1 },
+         { transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`, opacity:.4 }],
+        { duration:360, easing:EASE, fill:'forwards' });
+      a.onfinish = () => { animating = false; done(); };
+    }
+
+    cards.forEach(c => c.addEventListener('click', () => open(c)));
+    backdrop.addEventListener('click', close);
+    overlay.querySelectorAll('.sig-xclose').forEach(b => b.addEventListener('click', close));
+    document.addEventListener('keydown', e => {
+      if (!activePanel) return;
+      if (e.key === 'Escape'){ e.preventDefault(); close(); return; }
+      if (e.key === 'Tab'){
+        const f = focusables(activePanel);
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      }
+    });
+    const relabel = () => overlay.querySelectorAll('.sig-xclose').forEach(b =>
+      b.setAttribute('aria-label', document.documentElement.getAttribute('lang') === 'zh-Hant' ? '關閉' : 'Close'));
+    relabel();
+    new MutationObserver(relabel).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+  })();
+</script>
+
+<!-- Radial signal-pulse hero shader. ESM module → three.js core from esm.sh (no
+     build step, no React), same idiom as the homepage hero. Renders a single
+     full-screen quad whose fragment shader accumulates concentric rings from a
+     length(uv) field — reading as a radar/signal pulse emanating outward. The
+     original RGB channel split is collapsed to a single monochrome signal-blue
+     (#0EA5E9 = --score-b-vivid) on black. Mounts into #hero-shader (the shared
+     .hero-shader crossfade layer). On any failure the catch leaves it empty →
+     the black .hero background shows through. -->
+<script type="module">
+  (async () => {
+    const mount = document.getElementById('hero-shader');
+    if (!mount) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Animation speed — the source shader's rate (time += 0.05/frame) slowed 40%.
+    // Scaled again by *0.05 inside the shader (t = time*0.05).
+    const SPEED = 0.03;
+
+    try {
+      const THREE = await import('https://esm.sh/three@0.160.0');
+
+      const vertexShader = `
+        attribute vec3 position;
+        void main() {
+          gl_Position = vec4(position, 1.0);
+        }
+      `;
+      // The source shader's field, unchanged — same t = time*0.05, same nested loops,
+      // same fract(...)*5.0 - length(uv) + mod() expression, same lineWidth. Two
+      // deliberate departures from the original:
+      //   1. Colour — the original wrote three separate RGB channels (color[0/1/2])
+      //      for a chromatic split; we accumulate one scalar intensity and tint it
+      //      monochrome signal-blue instead.
+      //   2. Placement — the pulse origin is corner-anchored to the upper right (see
+      //      PULSE_ANCHOR below) rather than centred. This is a translation of the
+      //      whole uv field, not just the radius term, so the rendered pattern and
+      //      its motion are identical to the centred version — only repositioned.
+      const fragmentShader = `
+        #define TWO_PI 6.2831853072
+        #define PI 3.14159265359
+
+        precision highp float;
+        uniform vec2 resolution;
+        uniform float time;
+
+        // Pulse origin as a fraction of each half-axis, measured from frame centre:
+        // 0.60 of the half-width right, 0.45 of the half-height up. Expressed per
+        // axis (not in raw uv units) so the anchor holds its relative position at
+        // any aspect ratio — portrait phones land it high-right, wide desktops
+        // land it near the top-right corner.
+        #define PULSE_ANCHOR vec2(0.60, 0.45)
+
+        void main(void) {
+          float m = min(resolution.x, resolution.y);
+          vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / m;
+          // Translate the entire field so uv == 0 (the pulse origin) sits at the
+          // anchor. resolution/m is the half-extent of each axis in uv units.
+          uv -= PULSE_ANCHOR * (resolution.xy / m);
+          float t = time*0.05;
+          float lineWidth = 0.002;
+
+          float v = 0.0;
+          for(int j = 0; j < 3; j++){
+            for(int i=0; i < 5; i++){
+              v += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
+            }
+          }
+
+          // #0EA5E9 = --score-b-vivid (sanctioned shader-hex; GLSL can't read CSS tokens)
+          gl_FragColor = vec4(v * vec3(0.055, 0.647, 0.914), 1.0);
+        }
+      `;
+
+      const canvas = document.createElement('canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+      // Cap DPR at 2 — a full-screen fragment shader at 3× on retina phones is a
+      // real GPU/battery cost for no visible gain (matches the homepage hero).
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setClearColor(new THREE.Color(0x000000));
+      mount.appendChild(canvas);
+      mount.classList.add('is-ready');   // styles.css crossfades the shader in
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1);
+
+      const uniforms = {
+        resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        time:       { value: 0.0 },
+      };
+
+      const position = [
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0, -1.0, 0.0,
+        -1.0,  1.0, 0.0,
+         1.0,  1.0, 0.0,
+      ];
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position), 3));
+
+      const material = new THREE.RawShaderMaterial({
+        vertexShader, fragmentShader, uniforms, side: THREE.DoubleSide,
+      });
+      scene.add(new THREE.Mesh(geometry, material));
+
+      // On touch devices the mobile URL bar collapsing on scroll changes only the
+      // viewport HEIGHT (the hero is 100dvh), which would fire ResizeObserver on
+      // every scroll and snap the rings — a visible "flash". Fix: on coarse
+      // pointers react only to WIDTH changes (orientation) and lock the draw
+      // buffer to the tallest height the hero can reach. hero overflow:hidden
+      // clips any excess. On desktop, keep normal responsive resizing.
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+      let lastW = -1;
+      const resize = (force) => {
+        const w = mount.clientWidth;
+        if (coarse && !force && w === lastW) return;   // ignore height-only (URL bar) on touch
+        lastW = w;
+        const h = coarse
+          ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
+          : mount.clientHeight;
+        renderer.setSize(w, h, false);
+        uniforms.resolution.value = [w, h];
+      };
+      resize(true);
+      new ResizeObserver(() => resize(false)).observe(mount);
+
+      const animate = () => {
+        if (!reduce) uniforms.time.value += SPEED;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      };
+      if (reduce) renderer.render(scene, camera);   // render one static frame
+      animate();
+    } catch (err) {
+      console.error('[hero-shader] radial signal-pulse shader failed to load; falling back to black hero.', err);
+      // #hero-shader stays empty → the black hero background shows through.
+    }
+  })();
+</script>
+
+</body>
+</html>

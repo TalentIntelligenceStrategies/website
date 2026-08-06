@@ -1778,21 +1778,29 @@ a, button,
 .deliv-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   padding: clamp(24px, 2.3vw, 32px);
   background: var(--surface-tertiary);
   border: 1px solid var(--border-primary);
   border-radius: 20px;
-  /* Per-property timing: opacity + transform carry the staggered reveal;
-     box-shadow stays instant so the hover never inherits the stagger delay
-     (which would make the raise feel laggy). GPU-friendly props only. */
-  transition:
-    opacity 520ms var(--ease-out),
-    transform 520ms var(--ease-out),
-    box-shadow 220ms var(--ease-out);
 }
+/* Icon tile — monochrome Lucide glyph on a subtle neutral wash. Static, no
+   hover/reveal motion (icon → title → description hierarchy per the ref card). */
+.deliv-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-secondary);
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+.deliv-icon svg { width: 22px; height: 22px; }
 .deliv-card h3 {
-  margin: 0;
+  margin: 0 0 6px;
   font-size: clamp(17px, 1.4vw, 19px);
   font-weight: 600;
   line-height: 1.3;
@@ -1807,24 +1815,6 @@ a, button,
   text-wrap: pretty;
 }
 .deliv-card a { color: inherit; }
-@media (hover: hover) and (pointer: fine) {
-  .deliv-card:hover { box-shadow: var(--shadow-medium); }
-}
-
-/* Staggered fade-up via the shared observer. transition-delay lists match the
-   transition-property order (opacity, transform, box-shadow) so only the reveal
-   is staggered and the hover shadow fires with no delay. */
-.deliverables [data-reveal] { opacity: 0; transform: translateY(12px); }
-.deliverables [data-reveal].is-revealed { opacity: 1; transform: none; }
-.deliv-card:nth-child(1) { transition-delay: 0ms, 0ms, 0ms; }
-.deliv-card:nth-child(2) { transition-delay: 60ms, 60ms, 0ms; }
-.deliv-card:nth-child(3) { transition-delay: 120ms, 120ms, 0ms; }
-.deliv-card:nth-child(4) { transition-delay: 180ms, 180ms, 0ms; }
-.deliv-card:nth-child(5) { transition-delay: 240ms, 240ms, 0ms; }
-.deliv-card:nth-child(6) { transition-delay: 300ms, 300ms, 0ms; }
-@media (prefers-reduced-motion: reduce) {
-  .deliverables [data-reveal] { opacity: 1; transform: none; transition: none; }
-}
 
 /* ============================================================
    Cover-the-gap — "three ways" as an open metrics-style band.
@@ -3514,32 +3504,38 @@ a, button,
     <div class="container">
       <div class="deliv-grid">
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></span>
           <h3 data-zh="AI 智慧雷達導航">Patent Bundle by AI Smart-Pick</h3>
           <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
         </article>
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
           <h3 data-zh="權威法人聯合授權">Co-licensed in your name</h3>
           <p data-zh-html data-zh="創智、資策會、陽明交大以貴公司名義開立 30 件合法非獨家專利。在國際買家與投資人面前，是機構級 IP 後盾，撕掉「代工小廠」的標籤。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> issue <strong style="font-weight:600">legal</strong>, <strong style="font-weight:600">non-exclusive</strong> patents in your company's name — institution-grade and reputable, recognized by buyers and investors.</p>
         </article>
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3 data-zh="主動式防護盾">An active IP shield</h3>
           <p data-zh-html data-zh="專利流氓（NPE）只挑好下手的目標。三家機構的合法 IP 防線拉高攻擊成本，他們自然跳過你。從被動防禦轉為主動佈局。">Patent trolls (NPEs) pick easy targets. Institutions' legal IP line raises the cost of attack — <strong style="font-weight:600">passive defense</strong> becomes <strong style="font-weight:600">active position</strong>.</p>
         </article>
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
           <h3 data-zh="付款隔日立即生效">Live the day after payment</h3>
           <p data-zh-html data-zh="金流確認隔日防護網生效。交付含公證電子簽章的數位授權憑證（DLC），以及「TIS × 權威機構」聯名授權認證標章。">You receive a <strong style="font-weight:600">Digital License Credential (DLC)</strong> carrying a notarized e-signature, plus a co-branded "TIS × authoritative institution" <strong style="font-weight:600">Verified License Badge</strong>.</p>
         </article>
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg></span>
           <h3 data-zh="2 秒驗證，自由展示">Verify in 2 seconds, display anywhere</h3>
           <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
         </article>
 
-        <article class="deliv-card" data-reveal>
+        <article class="deliv-card">
+          <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V6"/></svg></span>
           <h3 data-zh="專利轉化為 OpEx 租賃保險">Patents turned into OpEx</h3>
           <p data-zh-html data-zh="自行申請 1 件專利需 NT$50,000+ 與 18 個月；專職 IP 工程師年成本破百萬。訂閱讓月均不到 1 萬，3 / 6 / 12 / 24 個月彈性期別，2 年方案最高 88 折。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle keeps you under NT$10K/month, with <strong style="font-weight:600">flexible</strong> terms.</p>
         </article>

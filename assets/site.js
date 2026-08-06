@@ -376,12 +376,13 @@
   const counters = document.querySelectorAll('.counter');
   const COUNT_MS = 1200;
 
+  const fmt = (n) => n.toLocaleString('en-US');   // thousands separators (e.g. 1,433)
   const animate = (el, end) => {
-    if (reduced) { el.textContent = end; return; }
+    if (reduced) { el.textContent = fmt(end); return; }
     const startT = performance.now();
     const tick = (now) => {
       const t = Math.min((now - startT) / COUNT_MS, 1);
-      el.textContent = Math.floor(t * end).toString();
+      el.textContent = fmt(Math.floor(t * end));
       if (t < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -399,7 +400,7 @@
     }, { threshold: 0.3 });
     counters.forEach(el => counterObserver.observe(el));
   } else {
-    counters.forEach(el => el.textContent = el.dataset.target);
+    counters.forEach(el => el.textContent = fmt(parseInt(el.dataset.target, 10)));
   }
 
   // ──────────────── Scroll-reveal — [data-reveal] fades/rises into view once ────────────────

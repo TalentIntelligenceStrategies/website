@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-03 12:34 +08:00** · Added product/signal/index.v08-concept.html (noindex) — Signal page rebuilt purely from the page-system + shared styles.css, keeping only v07's blue MeshGradient hero and bilingual copy; validates documents/page-system.md.
+- **2026-08-03 12:01 +08:00** · Added documents/page-system.md — a full extracted spec of the homepage's tokens, type scale, hero, nav, CTAs, cards, imagery, motion, and page-rhythm rules for building consistent new pages.
 - **2026-07-31 19:38 +08:00** · Replaced the licensing hero's live dashboard iframe with a 3D patent-card marquee (three tilted columns, alternating scroll, hover-pause, reduced-motion static fallback) and a static card stack on mobile.
 - **2026-07-29 11:11 +08:00** · Removed the Signal sample-report Brief/Pro viewer (4 report PNG/PDF files, modal markup, JS, CSS) — the Pillar Deep Dive exposed Innovue's individual 50 indicators; pillar-level content retained.
 - **2026-07-29 09:41 +08:00** · Removed the OpEx-economics block ("A subscription, not a capital project") from the licensing How-it-works Step 4 — it read out of place there; Step 4 is back to its two original blocks.
