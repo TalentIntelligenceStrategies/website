@@ -336,7 +336,7 @@
   /* Persistent domain eyebrow (visible at rest) */
   .pat-domain {
     position: absolute; left: 14px; bottom: 12px; z-index: 2;
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-sans);
     font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--pat-line-fade);
     transition: opacity 220ms ease;
@@ -360,14 +360,14 @@
   .pat-card:hover .pat-overlay,
   .pat-card:focus-within .pat-overlay { opacity: 1; }
   .pat-overlay .pat-no {
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: rgba(0,0,0,0.52);
   }
   .pat-overlay .pat-name {
     font-size: 16px; font-weight: 600; line-height: 1.25; color: #17130E;
   }
   .pat-overlay .pat-sub {
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-sans);
     font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
     color: rgba(0,0,0,0.52);
   }
@@ -377,7 +377,7 @@
     align-self: flex-start;
     margin-top: 6px;
     display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-sans);
     font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
     color: #17130E;
     background: rgba(0,0,0,0.05);
@@ -448,18 +448,18 @@
 
   .pat-modal-body { padding: 40px 28px 28px; display: flex; flex-direction: column; gap: 12px; }
   .pat-modal-no {
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: rgba(255,255,255,0.5);
   }
   .pat-modal-name { margin: 0; font-size: 22px; font-weight: 600; line-height: 1.22; color: #fff; }
   .pat-modal-domain {
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-sans);
     font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55);
   }
   .pat-modal-abstract { margin: 4px 0 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.82); }
   .pat-modal-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .pat-modal-chip {
-    font-family: 'Inconsolata', ui-monospace, Menlo, monospace;
+    font-family: var(--font-sans);
     font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
     color: rgba(255,255,255,0.78);
     background: rgba(255,255,255,0.07);

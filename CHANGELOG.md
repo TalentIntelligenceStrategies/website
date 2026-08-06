@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-06 23:42 +08:00** · Enforced "mono is never used on text" — 30 selectors moved to Urbanist, added --font-sans/--font-mono tokens, and fixed the undefined var(--font-mono) that silently un-monospaced patent numbers.
 - **2026-08-06 23:24 +08:00** · Swept 345 unreferenced classes from styles.css — 827 dead rules, 4 orphan keyframes, 45 empty media blocks: 272 KB → 164 KB, verified pixel-identical across 10 pages.
 - **2026-08-06 22:41 +08:00** · Removed the dead Services (Ascent + Brokerage) and bronze-gradient CSS and flattened the silver text-gradient utility — 338 lines cut, verified pixel-identical across 10 pages.
 - **2026-08-06 22:09 +08:00** · Resynced all four designs/*-snapshot.md byte-exact from brand/ (KR→CH jurisdiction, EU slate→teal) and removed five unreferenced signal-gradient images.

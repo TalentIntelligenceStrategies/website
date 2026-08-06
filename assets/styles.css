@@ -309,7 +309,7 @@ body {
   /* Urbanist always carries Latin glyphs (consistent metrics across lang toggle);
      Noto Sans TC / PingFang TC sit in the fallback chain for CJK code points only,
      so toggling lang does not re-render Latin runs in a CJK font. */
-  font-family: 'Urbanist', 'Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
   letter-spacing: 0.01em;
@@ -348,6 +348,12 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 :root {
   --space-section:  clamp(28px, 3vw, 44px);
   --space-head-gap: clamp(32px, 3.5vw, 48px);
+
+  /* The two faces. Mono is never used on text — rule in documents/page-system.md §2.
+     Inconsolata is reserved for sectional numbering, numerals, and
+     number-prefixed IDs; everything that reads as a word is --font-sans. */
+  --font-sans: 'Urbanist', 'Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-mono: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .section {
   padding-block: var(--space-section);
@@ -359,7 +365,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
    while pill-bottom and stats-top stack ~136px — an asymmetry the eye picks up. */
 
 .eyebrow {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.10em;
@@ -1449,7 +1455,7 @@ main { padding-top: 64px; }
 }
 .search-input::placeholder { color: var(--text-tertiary); }
 .search-esc {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 500;
   color: var(--text-tertiary);
   padding: 4px 8px;
@@ -1463,7 +1469,7 @@ main { padding-top: 64px; }
   overflow-y: auto;
 }
 .search-section-label {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 500;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -1487,7 +1493,7 @@ main { padding-top: 64px; }
 }
 .search-link-meta {
   margin-left: auto;
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1622,7 +1628,7 @@ main { padding-top: 64px; }
   padding: 10px 14px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
   min-width: 180px; max-width: 240px;
-  font-family: 'Urbanist', system-ui, sans-serif;
+  font-family: var(--font-sans);
 }
 [data-theme="dark"] .callout {
   background: rgba(28,20,12,0.94);
@@ -1679,7 +1685,7 @@ main { padding-top: 64px; }
 .r-metric-arc-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .r-metric-arc-svg .arc-track { fill: none; stroke: var(--border-tertiary); stroke-width: 6; stroke-linecap: round; }
 .r-metric-arc-svg .arc-fill { fill: none; stroke: var(--text-primary); stroke-width: 6; stroke-linecap: round; }
-.r-metric-arc-val { font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-feature-settings: "tnum"; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--text-primary); position: relative; z-index: 1; }
+.r-metric-arc-val { font-family: var(--font-sans); font-feature-settings: "tnum"; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--text-primary); position: relative; z-index: 1; }
 .r-metric-arc-val small { font-size: 0.4em; font-weight: 500; color: var(--text-tertiary); margin-left: 2px; letter-spacing: 0; }
 
 /* 2×2 layout shared by the cascade cards (seal + 3 metric cells). */
@@ -1782,7 +1788,7 @@ main { padding-top: 64px; }
 
 /* ─── Tier chip — SABCD ramp ─── */
 .tier-chip {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.10em;
@@ -1826,7 +1832,7 @@ main { padding-top: 64px; }
 /* Right-aligned "more" link with chevron — used in section headers + products foot */
 .arrow-link {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.10em;
@@ -1923,7 +1929,7 @@ main { padding-top: 64px; }
   padding-right: 32px;
   border-right: 1px solid rgba(255,255,255,0.28);
   text-align: right;
-  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -2048,7 +2054,7 @@ main { padding-top: 64px; }
   gap: 6px;
 }
 .ts-pid {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
   color: var(--text-primary);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
@@ -2077,7 +2083,7 @@ main { padding-top: 64px; }
   -webkit-box-orient: vertical; overflow: hidden;
 }
 .ts-meta {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; line-height: 1.4;
   color: var(--text-secondary);
   margin-top: auto;
@@ -2105,7 +2111,7 @@ main { padding-top: 64px; }
 }
 .v2-search-clear:hover { color: var(--text-primary); background: var(--surface-tertiary); }
 .v2-search-status {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; color: var(--text-tertiary);
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -2300,7 +2306,7 @@ main { padding-top: 64px; }
 }
 /* Eyebrow above the title — Reports tiles show the quarter (Q1 2026), Press tiles show the date. */
 .report-card-eyebrow {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.10em;
@@ -2436,7 +2442,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: 0;
 }
 .footer-copy {
-  font-family: 'Urbanist', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-tertiary);
@@ -2458,7 +2464,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 }
 .footer-col { min-width: 0; }   /* let wide items (contact email) sit inside their track, not blow it out */
 .footer-col h4 {
-  font-family: 'Urbanist', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
@@ -2488,7 +2494,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    In-place success state (no toast), 1.6s auto-reset. components.md §Footer. */
 .footer-nl-block { margin-bottom: 24px; }
 .footer-nl-label {
-  font-family: 'Urbanist', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
@@ -2506,7 +2512,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
   border-radius: 10px;
-  font-family: 'Urbanist', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   color: var(--text-primary);
   transition: border-color 100ms linear;
@@ -2555,7 +2561,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 /* Vertical 1px divider, equidistant in the 48px grid gap. */
 
 .stat-eyebrow {
-  font-family: 'Urbanist', 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -2563,7 +2569,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: 0 0 12px;
 }
 .stat-num {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: clamp(40px, 4.5vw, 56px);
   font-weight: 700;
   line-height: 1.0;
@@ -2684,7 +2690,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 }
 .about-card__more { margin: 18px 0 0; }
 /* CTA matches .offer-card-more (Urbanist, sentence-case, 13px/600) — not the
-   uppercase Inconsolata arrow-link — so the card's type stays even.
+   uppercase tracked .arrow-link — so the card's type stays even.
    No arrow icon: a 1px underline wipes in from the left when the whole card is
    hovered (or the link is focused) — transform: scaleX, GPU-friendly, origin-left
    so it grows L→R. */
@@ -3178,7 +3184,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .mkt-form .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mkt-form .field { display: flex; flex-direction: column; gap: 8px; }
 .mkt-form .lbl {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 600; letter-spacing: 0.15em; line-height: 1.2;
   text-transform: uppercase; color: var(--text-tertiary);
 }
@@ -3205,7 +3211,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 }
 .mkt-cta:hover { background: var(--surface-inverse-hover); }
 .mkt-fine {
-  font-family: 'Inconsolata', ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; color: var(--text-tertiary);
   line-height: 1.5; letter-spacing: 0.02em; margin: 0;
 }
@@ -3432,7 +3438,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .placeholder-meta {
   font-size: 11px;
   color: var(--text-tertiary);
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   letter-spacing: 0.15em;
   margin: 0;
   text-transform: uppercase;
@@ -3457,7 +3463,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 }
 .feature-row__copy { display: flex; flex-direction: column; }
 .feature-row__num {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.20em;
@@ -3521,7 +3527,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    ========================================================================= */
 
 :root {
-  --prod-font-mono: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --prod-font-mono: var(--font-mono);   /* legacy alias — use --font-mono */
 }
 
 /* ───── Shared section grammar ───── */
@@ -3581,7 +3587,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px;
 }
 .prod-ref-table-head h4 {
-  font-family: var(--prod-font-mono);
+  font-family: var(--font-sans);
   font-size: 12px; font-weight: 700;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--text-primary); margin: 0;
@@ -3598,7 +3604,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   border-bottom: 1px solid var(--border-primary);
 }
 .prod-ref-table th {
-  font-family: var(--prod-font-mono);
+  font-family: var(--font-sans);
   font-size: 10px; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--text-tertiary);
@@ -3771,7 +3777,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .vlb-seal .seal-disc{fill:var(--surface-inverse)}
 .vlb-seal .seal-inner-disc{fill:var(--surface-page)}
 .vlb-seal .seal-text{
-  font-family:'Urbanist','Inter',system-ui,sans-serif;font-weight:600;
+  font-family:var(--font-sans);font-weight:600;
   fill:var(--text-inverse);letter-spacing:0.04em;
 }
 .vlb-seal .seal-mark{
@@ -4165,7 +4171,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .cs-name { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 0; color: var(--text-primary); }
 .cs-meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 .cs-juris {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
   padding: 3px 8px; border-radius: 6px;
   background: var(--surface-tertiary); color: var(--text-secondary);
@@ -4176,7 +4182,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 
 .cs-strength {
   text-align: center;
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-sans);
   font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--text-tertiary); margin: 2px 0 18px;
 }
@@ -4184,10 +4190,10 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .cs-dist { display: flex; align-items: stretch; border: 1px solid var(--border-primary); border-radius: 10px; overflow: hidden; }
 .cs-dist .cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px; border-right: 1px solid var(--border-primary); }
 .cs-dist .cell:last-child { border-right: 0; }
-.cs-dist .tl { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 700; line-height: 1; }
+.cs-dist .tl { font-family: var(--font-mono); font-size: 11px; font-weight: 700; line-height: 1; }
 .cs-dist .tl-s { color: var(--score-s); } .cs-dist .tl-a { color: var(--score-a); } .cs-dist .tl-b { color: var(--score-b); }
 .cs-dist .tl-c { color: var(--score-c); } .cs-dist .tl-d { color: var(--score-d); }
-.cs-dist .ct { font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1; }
+.cs-dist .ct { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1; }
 .cs-dist .ct.zero { color: var(--text-tertiary); opacity: 0.5; }
 
 .cs-desc { font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); margin: 16px 0 0; }
@@ -4270,8 +4276,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%);
 }
 .offer-card-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+/* Words in an eyebrow are Urbanist; only the 01/02/03 sectional numerals are mono. */
+.offer-card-eyebrow--text {
+  font-family: var(--font-sans);
+  letter-spacing: 0.14em;
+}
 .offer-card-eyebrow {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
   color: rgba(255,255,255,0.72);
 }

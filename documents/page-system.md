@@ -8,9 +8,13 @@ without eyeballing.
 
 ## 0. How to use this doc
 
-**Source-of-truth chain.** The implemented visual truth is **`assets/styles.css`**
-(~7,980 lines) — `index.html` carries *zero* hex and *zero* CSS variables; it only
-links the stylesheet and applies classes. Every value below is quoted from
+**Source-of-truth chain.** The implemented visual truth is **`assets/styles.css`** —
+`index.html` carries *zero* hex, *zero* CSS variables, and *zero* inline `<style>`; it
+only links the stylesheet and applies classes. That is not incidental: the three pages
+with no inline `<style>` are also the three with no token violations.
+
+> Line numbers below are navigation aids, not contracts. They drift on every edit —
+> grep for the selector, don't trust the number. Every value below is quoted from
 `styles.css` / `site.js`, not re-derived.
 
 - `assets/styles.css` + `assets/site.js` → **implemented truth** (what actually ships).
@@ -39,7 +43,8 @@ code points only, so toggling `lang` never re-renders Latin glyphs in a CJK face
 > with teal EU; `styles.css` still ships US/TW/EU/JP/**KR** with slate EU, `--juris-*`
 > at `styles.css:122`). The homepage uses no jurisdiction chips, so it is unaffected —
 > but if a new page needs that ramp, source the values from `styles.css`, not the brand
-> doc, until the snapshot is resynced.
+> doc. The snapshots were resynced 2026-08-06; `styles.css` itself has **not** been
+> migrated, so the CSS is the lagging side.
 
 ---
 
@@ -47,9 +52,9 @@ code points only, so toggling `lang` never re-renders Latin glyphs in a CJK face
 
 Tokens live in three `:root`-level blocks in `styles.css`:
 
-- **`:root, [data-theme="light"]`** — `styles.css:81–208` (the full light token set; `[data-theme="light"]` is hard-set on `<html>`).
-- **`[data-theme="dark"]`** — `styles.css:211–285` (fully defined, not active by default).
-- **spacing scale `:root`** — `styles.css:371–374`.
+- **`:root, [data-theme="light"]`** — `styles.css:81–198` (the full light token set; `[data-theme="light"]` is hard-set on `<html>`).
+- **`[data-theme="dark"]`** — `styles.css:201–267` (fully defined, not active by default).
+- **spacing scale + the two font tokens `:root`** — `styles.css:348`.
 - language-scoped asset-url overrides — `styles.css:288–301`.
 
 ### 1.1 Color tokens (light)
@@ -114,11 +119,34 @@ These are the **only** sanctioned raw-hex literals outside the token table.
 **Families** (all self-hosted `@font-face`, `font-display: swap`, from `/designs/assets/fonts/`):
 
 - **Urbanist** — primary UI/display sans; 400/500/600/700.
-- **Inconsolata** — monospace for eyebrows/labels/IDs/figures; 400/500/600.
+- **Inconsolata** — mono; 400/500/600. **Numerals only** — see the rule below.
 - **Noto Sans TC** — CJK; 400/500/600/700.
 
-Body stack: `'Urbanist','Inter','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif`.
-Mono stack: `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace`.
+Use the tokens, never a literal stack — both are defined on `:root` in `styles.css`:
+
+| Token | Value |
+|---|---|
+| `--font-sans` | `'Urbanist','Inter','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif` |
+| `--font-mono` | `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace` |
+
+> ### Mono is never used on text.
+>
+> **Inconsolata is reserved for sectional numbering** — the `01` / `02` / `03` that
+> index a section — plus numerals (prices, counts, percentages, scores, dates) and
+> number-prefixed identifiers (`US 12051972 B2`, `LIC-12345`).
+>
+> **If a string reads as a word, it is `--font-sans`.** That includes eyebrows,
+> labels, metadata, chips, tags, link text, status strings, column headers, form
+> labels, and alphabetic codes — `S` / `A` / `B` / `C` / `D` tier letters and `US` /
+> `TW` / `EP` jurisdiction letters included.
+>
+> Mixed content splits: `Save 10%` leads with a word, so it is sans. `NT$8,990` is
+> sans-free — mono. When an eyebrow carries words rather than numerals, use
+> `.offer-card-eyebrow--text`.
+>
+> This rule is upstream in [`brand/design-tokens.md`](../designs/design-tokens-snapshot.md) §3.
+> It was violated for a long time because that file's own §7.2 defined `copy-mono-*`
+> and `label-mono-*` roles that contradicted it. Those roles are now scoped to numerals.
 
 **There are no numeric `--font-size-*` tokens** — every size is set per class. The full scale:
 
@@ -129,16 +157,16 @@ Mono stack: `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace`.
 | Section (reduced) | `.offerings .h-section`, `.about-intro .h-section` | `clamp(24px,2.8vw,36px)` | 600 | 1.15 | −0.015em | `:414` — offerings/about adopt the smaller "Latest reports" hierarchy, not the full display scale |
 | Hero title | `.pillar-title` | `clamp(40px,5vw,60px)` | 600 | 1.05 | −0.02em | white in hero; `em` = clipped gradient; `:1263` |
 | Hero sub | `.pillar-sub` | `clamp(17px,1.5vw,20px)` | 450 | 1.4 | −0.01em | `max-width:52ch`; white 82% in hero; `:1282` |
-| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, Inconsolata, tertiary, `margin 0 0 16px`; `:388` |
+| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, tertiary, `margin 0 0 16px`; `:367` |
 | Card title | `.offer-card-title` | 21px | 700 | 1.25 | −0.01em | white; about-card title = `clamp(19px,1.5vw,22px)` to match |
 | Card desc | `.offer-card-desc` | 15px | 450 | 1.5 | — | white 82%; `min-height:4.5em` (reserves 3 lines) |
-| Card eyebrow | `.offer-card-eyebrow` | 12px | 700 | — | 0.10em | uppercase Inconsolata, white 72% |
+| Card eyebrow | `.offer-card-eyebrow` | 12px | 700 | — | 0.10em | uppercase **mono** — this is the sectional `01`/`02`/`03`, the one sanctioned mono use; white 72%. Words use `.offer-card-eyebrow--text` (Urbanist) |
 | Card CTA | `.offer-card-more` | 13px | 600 | — | — | white |
 | Nav link | `.topnav-link` | 14px | 600 | — | — | secondary; hover → `#000` |
 | Button (default) | `.btn` | 12px | 700 | 1 | 0.10em | — |
 | Button large | `.btn-lg` | 14px | 700 | 1 | 0.10em | — |
 
-Head pattern within a section: **eyebrow (Inconsolata 12px, 0.10em, uppercase, tertiary)
+Head pattern within a section: **eyebrow (Urbanist 12px, 0.10em, uppercase, tertiary)
 → heading (`.h-section`) → dek (`.section-dek`, ~44ch)**. Chinese drops the negative
 tracking per the existing TC handling.
 
@@ -327,8 +355,19 @@ with 15px Lucide icons. A `.footer-baseline` band carries the centered
 
 ## 10. Motion & reveal
 
-**Vanilla JS + CSS only — no GSAP, no animation library.** `three.js` is used *solely*
-for the hero shader. All scroll motion is `IntersectionObserver` in `site.js`.
+**Three motion techniques ship, not one.** All of them are sanctioned; the constraint
+is *where* each is allowed and that each has a fallback.
+
+| Technique | Where | Fallback |
+|---|---|---|
+| `IntersectionObserver` + CSS transitions (`site.js`) | every page — the default | `prefers-reduced-motion` shows the resolved state |
+| GLSL / WebGL via `three.js@0.160.0` (esm.sh) | hero backdrops only (`index.html`, `about/`) | DPR capped at 2; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
+| GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
+
+Prefer the observer. Reach for GSAP only when a timeline genuinely needs
+scrub-linked sequencing, and never introduce a fourth library.
+
+The scroll-reveal system below is the default and covers most needs.
 
 - **`[data-reveal]`** (headings, deks, about cards, partner band): fade + 10px rise →
   `.is-revealed` transitions `opacity/transform` over **450ms `--ease-card`**; the dek
@@ -393,12 +432,16 @@ Run this when composing a new page so it stays consistent with the homepage:
    soft sections) → dek (`.section-dek`, ≤44ch).
 4. **Color from tokens only** (§1). No inline hex except the sanctioned `#000`/`#fff` on
    image-backed dark cards.
-5. **Cards**: reuse the base + image + scrim recipe (§7); don't invent a new card shell.
-6. **Wire reveals**: add `[data-reveal]` to headings/deks and `.is-in` targets to image
+5. **Type from tokens only**: `var(--font-sans)` / `var(--font-mono)`, never a literal
+   font stack. Then read every mono string back — **if it reads as a word, it is sans**
+   (§2). Eyebrows, labels, chips, tags, column heads, and tier / jurisdiction letters
+   are all sans; mono is sectional numbering, numerals, and number-prefixed IDs.
+6. **Cards**: reuse the base + image + scrim recipe (§7); don't invent a new card shell.
+7. **Wire reveals**: add `[data-reveal]` to headings/deks and `.is-in` targets to image
    cards — `site.js` observers pick them up automatically.
-7. **Reduced-motion parity**: any new transition needs a `prefers-reduced-motion` branch
+8. **Reduced-motion parity**: any new transition needs a `prefers-reduced-motion` branch
    that shows the resolved state.
-8. **Bilingual**: author EN in the DOM, ZH in `data-zh` / `data-zh-html`; use
+9. **Bilingual**: author EN in the DOM, ZH in `data-zh` / `data-zh-html`; use
    `.lang-en-only` / `.lang-zh-only` only where line breaks must differ.
-9. **Verify locally**: `python3 -m http.server 8000` (root-relative paths need a server),
+10. **Verify locally**: `python3 -m http.server 8000` (root-relative paths need a server),
    check at 360 / 768 / 1280, light + dark, EN + ZH.

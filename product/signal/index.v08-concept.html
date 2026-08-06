@@ -137,7 +137,7 @@
      page) clears AA for a numeral, so it takes --text-primary. */
   .sig-pool{ display:flex; align-items:baseline; gap:14px; margin:0; }
   .sig-pool__num{
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-mono);
     font-size:clamp(30px, 3.4vw, 42px);
     font-weight:700;
     line-height:1;
@@ -184,7 +184,7 @@
      size: 75% white here against 50% there, 12px against 11px. */
   .sig-flow-panel__kicker{
     margin:0 0 26px;
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-sans);
     font-size:12px;
     font-weight:600;
     letter-spacing:0.12em;               /* all-caps tracking, 5–12% band */
@@ -222,7 +222,7 @@
 
   .sig-ledger__kicker{
     margin:0 0 20px;
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-sans);
     font-size:12px;
     font-weight:600;
     letter-spacing:0.14em;
@@ -253,7 +253,7 @@
   .sig-fact:last-child{ padding-bottom:0; }
   .sig-fact__num{
     grid-column:1; grid-row:1; justify-self:end;
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-mono);
     font-size:clamp(26px, 2.6vw, 36px);
     font-weight:700;
     line-height:1;
@@ -502,7 +502,7 @@
      guard: a wrapped label would desync --sig-flow-phase-h. */
   .sig-flow__phase{
     margin:0 0 12px;
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-sans);
     font-size:11px;
     font-weight:600;
     line-height:16px;
@@ -525,7 +525,7 @@
   }
   .sig-flow__index{
     flex:none;
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-mono);
     font-size:13px;
     font-weight:600;
     letter-spacing:0.08em;
@@ -546,7 +546,7 @@
     border-radius:9999px;
     background:rgba(14,165,233,0.16);
     color:var(--sig-blue);
-    font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:var(--font-sans);
     font-size:11px;
     font-weight:600;
     line-height:16px;
@@ -672,7 +672,7 @@
   .sig-xpanel__media{ height:200px; overflow:hidden; }
   .sig-xpanel__media img{ width:100%; height:100%; object-fit:cover; object-position:center top; }
   .sig-xpanel__head{ padding:clamp(24px,3vw,36px) clamp(24px,3vw,36px) 0; display:flex; flex-direction:column; gap:8px; }
-  .sig-xpanel__head .sig-xcard__kind{ font-family:'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
+  .sig-xpanel__head .sig-xcard__kind{ font-family:var(--font-sans);
     font-size:12px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase; color:var(--sig-blue-deep); }
   .sig-xpanel__head h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:0; color:var(--text-primary); }
   .sig-xpanel__lede{ font-size:16px; line-height:1.55; color:var(--text-secondary); margin:0; max-width:56ch; }
@@ -685,7 +685,7 @@
   .sig-xsimlist li{ display:flex; justify-content:space-between; gap:16px; padding:11px 0;
     border-top:1px solid var(--border-primary); font-size:14px; color:var(--text-primary); }
   .sig-xsimlist li:first-child{ border-top:0; }
-  .sig-xsimlist .score{ font-family:'Inconsolata', monospace; font-weight:600; color:var(--sig-blue-deep); }
+  .sig-xsimlist .score{ font-family:var(--font-mono); font-weight:600; color:var(--sig-blue-deep); }
   .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
     display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
     color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
@@ -917,7 +917,7 @@
 
         <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow" data-zh="定量">Quantitative</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定量">Quantitative</span>
             <span class="offer-card-title" data-zh="報告 A · 短版">Report A · Short</span>
             <span class="offer-card-desc" data-zh="分數、SABCD 等級與全池排名——快速客觀的初篩。">A score, an SABCD grade, and full-pool rank — fast, objective screening.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
@@ -928,7 +928,7 @@
 
         <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow" data-zh="定性 · 深度">Qualitative · in-depth</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定性 · 深度">Qualitative · in-depth</span>
             <span class="offer-card-title" data-zh="報告 B · 長版">Report B · Long</span>
             <span class="offer-card-desc" data-zh="七章深度報告——盡職調查等級的完整解讀。">The full seven-chapter report — a due-diligence-grade read.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
@@ -939,7 +939,7 @@
 
         <button type="button" class="offer-card offer-card--sigC" data-report="c" aria-expanded="false" aria-controls="sig-panel-c">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow" data-zh="定性 · 進階">Qualitative · advanced</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定性 · 進階">Qualitative · advanced</span>
             <span class="offer-card-title" data-zh="報告 B · 進階版">Report B · Advanced</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，附比對解讀。">The ten most relevant patents on the market, with comparison.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
