@@ -177,31 +177,14 @@
   --slate-700: #334155;
   --slate-900: #0F172A;
 
-  /* ── Hero backdrop tokens (light) ──────────────────────────────────
-     Three swappable backdrops per slide: warm-blueprint (Licensing),
-     cool-signal (Signal), silver (Positioning). All three
-     sit on a shared warm pour + bloom + 32px ruled-paper grid base. */
-  --hero-bp-bg: linear-gradient(180deg, #FFFFFF 0%, #FFFCF6 50%, #FFF6EA 100%);
+  /* ── Hero backdrop token (light) ──────────────────────────────────
+     Bloom + 32px ruled-paper grid behind the hero shader. The three
+     per-pillar gradient washes were retired 2026-08-06 (§7.5). */
   --hero-bp-bloom:
     radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.10) 0%, transparent 65%),
     radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.08) 0%, transparent 70%),
     repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
-  --hero-spotlight: radial-gradient(ellipse 55% 55% at 22% 50%,
-    rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.40) 35%,
-    rgba(255,255,255,0.10) 65%, transparent 85%);
-
-  /* Silver faded wash — design-tokens.md §7.4 gradient-bg-silver-faded.
-     Single source for the .hero-silver backdrop AND the §Announcement banner
-     (TIS-overall / website pillar). Cool + warm washes land here when the
-     product pages adopt the banner. */
-  --gradient-bg-silver-faded:
-    radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%),
-    linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%);
-  /* Cool faded wash — design-tokens.md §7.4 gradient-bg-cool-faded
-     (rating engine / Innovue pillar). Used by .about-figure--cool. */
-  --gradient-bg-cool-faded:
-    linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%);
 
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);   /* also redeclared locally on .about-card */
@@ -229,13 +212,6 @@
   --border-secondary: #262626;
   --border-tertiary:  #303030;
   --border-focus:     #FAFAFA;
-
-  --gradient-bg-silver-faded:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(51,65,85,0.50) 0%, rgba(30,41,59,0.30) 35%, transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
-  --gradient-bg-cool-faded:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(16,80,80,0.30) 0%, rgba(20,40,60,0.20) 35%, transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 
   --success-bg: #052E16; --success-fg: #86EFAC;
 
@@ -268,20 +244,12 @@
   --partner-innovue:        url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg');
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
 
-  /* ── Hero backdrop tokens (dark) — paired with light tokens above ── */
-  --hero-bp-bg:
-    radial-gradient(120% 80% at 50% 0%,
-      rgba(212,160,23,0.10) 0%,
-      rgba(249,115,22,0.06) 35%,
-      var(--surface-page) 100%);
+  /* ── Hero backdrop token (dark) ── */
   --hero-bp-bloom:
     radial-gradient(60% 50% at 50% 25%, rgba(212,160,23,0.06) 0%, transparent 65%),
     radial-gradient(40% 40% at 85% 80%, rgba(249,115,22,0.05) 0%, transparent 70%),
     repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
-  --hero-spotlight: radial-gradient(ellipse 55% 55% at 22% 50%,
-    rgba(14,14,14,0.78) 0%, rgba(14,14,14,0.50) 35%,
-    rgba(14,14,14,0.20) 65%, transparent 85%);
 }
 
 /* ───────── Tokens — language overrides (CH variants for both themes) ───────── */
@@ -1021,20 +989,16 @@ main { padding-top: 64px; }
   pointer-events: none;
   opacity: 0;
   transition: opacity 480ms var(--ease-card);
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, #FFEAD0 0%, #FFF4E6 35%, transparent 70%),
-    linear-gradient(180deg, #FFF7EE 0%, #FFFFFF 85%);
+  /* No background — the pillar gradient washes were retired 2026-08-06
+     (design-tokens.md §7.5). This layer survives purely as the positioned
+     carrier for the 32px grid ::before and, on product pages, the full-bleed
+     static hero image. */
 }
 .hero-warm::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
     repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
-}
-[data-theme="dark"] .hero-warm {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(120,74,15,0.42) 0%, rgba(80,50,10,0.26) 35%, transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 [data-theme="dark"] .hero-warm::before {
   background:
@@ -1051,20 +1015,13 @@ main { padding-top: 64px; }
   pointer-events: none;
   opacity: 0;
   transition: opacity 480ms var(--ease-card);
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, #CFE9FB 0%, #E6F4FF 35%, transparent 70%),
-    linear-gradient(180deg, #F2F9FF 0%, #FFFFFF 85%);
+  /* No background — see .hero-warm. Grid carrier + image carrier only. */
 }
 .hero-signal::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
     repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
-}
-[data-theme="dark"] .hero-signal {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 0%, rgba(14,165,233,0.34) 0%, rgba(14,116,180,0.20) 35%, transparent 70%),
-    linear-gradient(180deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
 }
 [data-theme="dark"] .hero-signal::before {
   background:
@@ -1088,16 +1045,13 @@ main { padding-top: 64px; }
   pointer-events: none;
   opacity: 0;
   transition: opacity 480ms var(--ease-card);
-  background: var(--gradient-bg-silver-faded);
+  /* No background — see .hero-warm. Grid carrier only. */
 }
 .hero-silver::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
     repeating-linear-gradient(0deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px),
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
-}
-[data-theme="dark"] .hero-silver {
-  background: var(--gradient-bg-silver-faded);
 }
 [data-theme="dark"] .hero-silver::before {
   background:
@@ -1568,10 +1522,6 @@ main { padding-top: 64px; }
     align-self: flex-end;
     margin-top: 12px;
   }
-  :root { --hero-spotlight: radial-gradient(ellipse 70% 42% at 22% 50%,
-    rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.50) 32%, transparent 75%); }
-  [data-theme="dark"] { --hero-spotlight: radial-gradient(ellipse 70% 42% at 22% 50%,
-    rgba(14,14,14,0.82) 0%, rgba(14,14,14,0.55) 32%, transparent 75%); }
 }
 @media (max-width: 640px) {
   .hero { min-height: 460px; }
@@ -3772,33 +3722,6 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    documented faded-gradient token by gradient↔pillar pairing (silver = TIS
    overall, cool = rating engine / Innovue). Swap the fill for a real <img>
    later — the frame geometry stays. Decorative (aria-hidden). */
-.about-figure {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: 14px;
-  border: 1px solid var(--border-primary);
-  background: var(--gradient-bg-silver-faded);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.about-figure--silver { background: var(--gradient-bg-silver-faded); }
-.about-figure--cool   { background: var(--gradient-bg-cool-faded); }
-.about-figure--tall   { aspect-ratio: 3 / 4; }
-.about-figure__label {
-  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  opacity: 0.7;
-}
-@media (max-width: 880px) {
-  .about-figure--tall { aspect-ratio: 4 / 3; }
-}
-
 /* ───────── About — board roster ─────────
    Interactive team showcase: staggered rounded-rect photo grid (left) + a name
    list (right). Bracketed by full-width top + bottom hairlines with a centered
