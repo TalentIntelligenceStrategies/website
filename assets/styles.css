@@ -104,6 +104,17 @@
   --signal-active:  #22C55E;
   --signal-warning: #F59E0B;
 
+  /* Per-surface accents — design-tokens.md §7.4 / §7.5. One flat accent per
+     surface; replaced the retired gradient system. Sampled from the shipped
+     nav-dropdown imagery. `-text` variants clear the AA body-copy floor on
+     white; the vivid values are for large text and UI chrome only. Held off
+     the SABCD ramp so a surface accent never reads as a tier chip. */
+  --surface-accent-licensing:      #EC4200;   /* 3.93:1 on white — large text / UI */
+  --surface-accent-licensing-text: #D93B00;   /* 4.59:1 on white — body copy */
+  --surface-accent-signal:         #0EA5E9;   /* 2.77:1 on white — DARK SURFACES ONLY */
+  --surface-accent-signal-text:    #0A72B0;   /* 5.19:1 on white — body copy */
+  --surface-accent-tis:            #252525;   /* neutral ink */
+
   /* Inverse-surface interaction overlay — design-tokens.md §7.4
      surface-inverse-translucent. Used by .announce-close hover on the dark bar. */
   --surface-inverse-translucent: rgba(255,255,255,0.10);
@@ -214,6 +225,14 @@
   --border-focus:     #FAFAFA;
 
   --success-bg: #052E16; --success-fg: #86EFAC;
+
+  /* Per-surface accents — dark variants. The light-mode `-text` values are too
+     dark to read on #0E0E0E, so both accents step up a tint. */
+  --surface-accent-licensing:      #FB7C4A;   /* 7.43:1 on #0E0E0E */
+  --surface-accent-licensing-text: #FB923C;   /* 8.53:1 on #0E0E0E */
+  --surface-accent-signal:         #38BDF8;   /* 9.01:1 on #0E0E0E */
+  --surface-accent-signal-text:    #38BDF8;   /* 9.01:1 on #0E0E0E */
+  --surface-accent-tis:            #F5F5F5;   /* neutral — inverts with the theme */
 
   /* SABCD tier ramp — dark variants (vivid text + translucent bg) */
   --score-s: #D4A017; --score-s-bg: rgba(212,160,23,0.14);
@@ -1203,10 +1222,9 @@ main { padding-top: 64px; }
 .hero .pillar-title { color: #fff; }
 .hero .pillar-sub { color: rgba(255, 255, 255, 0.82); }
 .pillar-title em {
+  color: var(--surface-accent-signal);
+  -webkit-text-fill-color: var(--surface-accent-signal);
   font-style: normal;
-  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
 }
 
 .pillar-sub {
@@ -1815,16 +1833,12 @@ main { padding-top: 64px; }
 /* Migrated pillar h2 — gradient text */
 [data-pillar="licensing"] .pillar-hero-copy-h2,
 [data-pillar="licensing"] .howitworks > h3 {
-  background-image: linear-gradient(90deg,
-    var(--score-s-vivid) 0%, var(--score-d-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 [data-pillar="signal"] .pillar-hero-copy-h2 {
-  background-image: linear-gradient(90deg,
-    var(--score-a-vivid) 0%, var(--score-b-vivid) 50%, var(--score-c-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 
 /* Migrated pillar primary CTA — gradient fill (dashboard-preview.html §.btn-shell.primary).
@@ -2010,12 +2024,20 @@ main { padding-top: 64px; }
 .callout .accent.warm { background: #F97316; }
 .callout .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .callout .val { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
-.callout .val em { font-style: normal; background: linear-gradient(135deg, #D4A017 0%, #F97316 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.callout .val em {
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
+  font-style: normal;
+}
 .callout .sub { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 2px; }
 
 .callout.bundle-callout { min-width: 0; max-width: 300px; padding: 12px 14px; }
 .bundle-callout h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); line-height: 1.25; margin: 0; }
-.bundle-callout h3 em { font-style: normal; background: linear-gradient(135deg, #D4A017 0%, #F97316 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bundle-callout h3 em {
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
+  font-style: normal;
+}
 .bundle-callout .sub { font-size: 11px; color: var(--text-secondary); line-height: 1.45; margin: 4px 0 0; }
 .bundle-callout .legend { display: flex; align-items: center; flex-wrap: nowrap; gap: 4px; margin-top: 8px; }
 .bundle-callout .legend .tier-chip { font-size: 9px; padding: 2px 5px; letter-spacing: 0.06em; }
@@ -2066,10 +2088,9 @@ main { padding-top: 64px; }
 .callout .accent.cool { background: #0EA5E9; }
 .callout.cool .val em,
 .bundle-callout.cool h3 em {
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
   font-style: normal;
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  -webkit-text-fill-color: transparent;
 }
 
 /* — Pro-Report card primitives (shell, letterhead, tier seal, metric cells) — */
@@ -4401,13 +4422,9 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--text-primary);
 }
 .page-hero-title em {
+  color: var(--surface-accent-signal);
+  -webkit-text-fill-color: var(--surface-accent-signal);
   font-style: normal;
-  background-image: linear-gradient(90deg,
-    var(--score-a-vivid) 0%,
-    var(--score-b-vivid) 50%,
-    var(--score-c-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
 }
 [data-pillar="licensing"] .page-hero-title em {
   background-image: linear-gradient(90deg,
@@ -4863,13 +4880,9 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--text-primary);
 }
 .page-hero-title em {
+  color: var(--surface-accent-signal);
+  -webkit-text-fill-color: var(--surface-accent-signal);
   font-style: normal;
-  background-image: linear-gradient(90deg,
-    var(--score-a-vivid) 0%,
-    var(--score-b-vivid) 50%,
-    var(--score-c-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
 }
 [data-pillar="licensing"] .page-hero-title em {
   background-image: linear-gradient(90deg,
@@ -5019,14 +5032,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: 0 0 20px;
 }
 [data-pillar="signal"] .feature-row__num {
-  background-image: linear-gradient(90deg, var(--score-a-vivid), var(--score-b-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 [data-pillar="licensing"] .feature-row__num {
-  background-image: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 .feature-row__title {
   font-size: clamp(24px, 3vw, 36px);
@@ -5252,13 +5263,14 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .prod-narrative p + p { margin-top: 14px; }
 .prod-narrative strong { color: var(--text-primary); font-weight: 600; }
 .prod-narrative em {
-  font-style: normal; font-weight: 600;
-  background: linear-gradient(90deg, var(--score-a-vivid), var(--score-b-vivid));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
+  font-style: normal;
+  font-weight: 600;
 }
 [data-pillar="licensing"] .prod-narrative em {
-  background: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 
 .prod-moat {
@@ -6477,14 +6489,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   text-align: center;
 }
 [data-pillar="licensing"] .usecase-heading {
-  background-image: linear-gradient(90deg, var(--score-s-vivid) 0%, var(--score-d-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 [data-pillar="signal"] .usecase-heading {
-  background-image: linear-gradient(90deg, var(--score-a-vivid) 0%, var(--score-b-vivid) 50%, var(--score-c-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 
 /* FAQ — two-column: title left, accordion right, tops aligned. */
@@ -6543,15 +6553,14 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin-inline: auto;
 }
 .usecase-block-title em {
-  font-style: normal; font-weight: 700;
-  background: linear-gradient(90deg, var(--score-a-vivid), var(--score-b-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
+  font-style: normal;
+  font-weight: 700;
 }
 [data-pillar="licensing"] .usecase-block-title em {
-  background: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 @media (max-width: 720px) {
   .usecase { gap: 56px; }
@@ -6607,15 +6616,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   max-width: 28ch;
 }
 .usecase-split-headline em {
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
   font-style: normal;
-  background: linear-gradient(90deg, var(--score-a-vivid), var(--score-b-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
 }
 [data-pillar="licensing"] .usecase-split-headline em {
-  background: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 .usecase-split-points {
   list-style: none; padding: 0; margin: 4px 0 0;
@@ -6672,9 +6679,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--text-primary);
 }
 .usecase-split-side--after .usecase-split-stat-value {
-  background-image: linear-gradient(90deg, var(--score-a-vivid), var(--score-b-vivid));
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 [data-pillar="licensing"] .usecase-split-side--after .usecase-split-stat-value {
   background-image: linear-gradient(90deg, var(--score-s-vivid), var(--score-d-vivid));
@@ -6933,14 +6939,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    also fires on /product/licensing/ and /product/signal/ where the
    pillar block is cloned outside the homepage's #products container. */
 [data-pillar="licensing"] .pillar-hero-copy h3 {
-  background-image: linear-gradient(90deg, var(--score-s-vivid) 0%, var(--score-d-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-licensing-text);
+  -webkit-text-fill-color: var(--surface-accent-licensing-text);
 }
 [data-pillar="signal"] .pillar-hero-copy h3 {
-  background-image: linear-gradient(90deg, var(--score-a-vivid) 0%, var(--score-b-vivid) 50%, var(--score-c-vivid) 100%);
-  background-clip: text; -webkit-background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
 }
 
 /* ════════════════════════════════════════════════════════════════════════
