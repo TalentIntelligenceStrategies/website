@@ -100,8 +100,8 @@ Non-negotiable:
 - **Dark mode** — not built. Tokens support it structurally via `[data-theme=dark]` overrides. Revisit when a dark surface ships.
 - **Font swap** — if Urbanist / Inconsolata are replaced, only two token values change; everything else cascades.
 - **Verified License Badge — expired-state visual treatment** — the active-state spec is finalized: stadium pill wrapping issuer + licensee §Seal · Standalone marks + QR, light-locked, identity in [`visual-guide.md`](./visual-guide.md) §Verified License Badge, implementation in [`components.md`](./components.md) §Verified License Badge. Open sub-question: how an expired badge reads — greyscale? overlay label? replacement stamp? Ship-blocker for the Licensing Platform because licenses will lapse. Tracked in the trailing TODO of [`components.md`](./components.md) §Verified License Badge.
-- **Chart / data-visualization palette** — deliberately monochrome by default. The two pillar-score components (Radar chart, Threshold bar in [`components.md`](./components.md)) carry tier as a typographic chip (`STRONG` · `MID` · `WEAK`) over neutral fills — no colour is load-bearing on the radar / threshold panel. `signal-active` / `signal-warning` / `signal-lapsed` in §7.4 remain for status-dot use (live / degraded / lapsed indicators), not for score encoding. **Deck-scope categorical palette resolved in §7.4** (`--chart-deck-1` … `--chart-deck-5`) — chart-semantic; deck data-viz consumer spec deferred (presentations.md trimmed to layout + chrome). **SABCD tier ramp resolved in §7.4** (`--score-s` / `-a` / `-b` / `-c` / `-d`) as a five-hue quality ladder — gold (S) → emerald (A) → sky (B) → violet (C) → orange (D). Each hue is held off the status / signal palette so a Tier chip and a Status chip on the same row never read as the same family — gold sits clearly off the warning amber `#A16207`, emerald is cyan-shifted off the success forest-green, sky is lighter than the info royal-blue, and orange reads softer than the danger red. Violet, formerly tier S's primitive, moves down to tier C as a mid-rank caution tone. The ramp maps onto patent-quality intuition (premium / strong / solid / caution / weak) and recovers instant tier-readability on dense surfaces (Licensing Platform recommendation grid, license detail tables, Patent Intelligence SaaS scorecards). Threshold-bar's monochrome rule still applies inside the radar/threshold panel — colour-coded SABCD chips and the monochrome P1–P8 readout coexist without conflict. **Jurisdiction accent ramp resolved in §7.4** (`--juris-us` / `-tw` / `-eu` / `-jp` / `-kr`) as a five-hue regional palette — indigo (US) → olive (TW) → slate (EU) → fuchsia (JP) → cherry (KR). The dominant pairing (`US × Tier S` — indigo against gold) sits firmly off-axis. KR sits in the cherry-red region — only adjacency is the danger status chip `#B91C1C`, but danger reads as a brighter / more saturated pure red while KR reads as a deeper / pinker rose. TW sits in the olive (yellow-green) region with two adjacencies: Tier S gold (both warm yellow-tones) and Tier A emerald (yellow-green vs cyan-green) — separable by saturation and value at chip scale. JP fuchsia ↔ Tier C violet separates the same way. Jurisdiction-semantic, never status. Used for jurisdiction chips on the Licensing Platform (catalog, recommendation grid, license inventory, license detail). **SaaS-scope multi-series palette remains deferred** (Patent Intelligence SaaS data-viz; Licensing Platform). Paired visual spec in [`visual-guide.md`](./visual-guide.md) §Iconography → Data Visualization.
-- **Imagery — full spec** — photography, AI / generated, illustrations, product screenshots, patterns / textures / backgrounds, jurisdiction maps, and non-data diagrams are all unspec'd. Working flag in [`visual-guide.md`](./visual-guide.md) §Imagery. (Gradients have promoted out — token spec lives in §7.2 + §7.5 below; pillar mapping + when-to-use rules in [`visual-guide.md`](./visual-guide.md) §Imagery → Gradient architecture.)
+- **Chart / data-visualization palette** — deliberately monochrome by default. The two pillar-score components (Radar chart, Threshold bar in [`components.md`](./components.md)) carry tier as a typographic chip (`STRONG` · `MID` · `WEAK`) over neutral fills — no colour is load-bearing on the radar / threshold panel. `signal-active` / `signal-warning` / `signal-lapsed` in §7.4 remain for status-dot use (live / degraded / lapsed indicators), not for score encoding. **Deck-scope categorical palette resolved in §7.4** (`--chart-deck-1` … `--chart-deck-5`) — chart-semantic; deck data-viz consumer spec deferred (presentations.md trimmed to layout + chrome). **SABCD tier ramp resolved in §7.4** (`--score-s` / `-a` / `-b` / `-c` / `-d`) as a five-hue quality ladder — gold (S) → emerald (A) → sky (B) → violet (C) → orange (D). Each hue is held off the status / signal palette so a Tier chip and a Status chip on the same row never read as the same family — gold sits clearly off the warning amber `#A16207`, emerald is cyan-shifted off the success forest-green, sky is lighter than the info royal-blue, and orange reads softer than the danger red. Violet, formerly tier S's primitive, moves down to tier C as a mid-rank caution tone. The ramp maps onto patent-quality intuition (premium / strong / solid / caution / weak) and recovers instant tier-readability on dense surfaces (Licensing Platform recommendation grid, license detail tables, Patent Intelligence SaaS scorecards). Threshold-bar's monochrome rule still applies inside the radar/threshold panel — colour-coded SABCD chips and the monochrome P1–P8 readout coexist without conflict. **Jurisdiction accent ramp resolved in §7.4** (`--juris-us` / `-tw` / `-eu` / `-jp` / `-ch`) as a five-hue regional palette — indigo (US) → olive (TW) → teal (EU) → fuchsia (JP) → cherry (CH). The dominant pairing (`US × Tier S` — indigo against gold) sits firmly off-axis. CH sits in the cherry-red region — only adjacency is the danger status chip `#B91C1C`, but danger reads as a brighter / more saturated pure red while CH reads as a deeper / pinker rose. TW sits in the olive (yellow-green) region with two adjacencies: Tier S gold (both warm yellow-tones) and Tier A emerald (yellow-green vs cyan-green) — separable by saturation and value at chip scale. EU moved off slate to teal so it no longer reads against the silver brand ramp (`--slate-*`). JP fuchsia ↔ Tier C violet separates the same way. Jurisdiction-semantic, never status. (KR / Korea dropped for now.) Used for jurisdiction chips on the Licensing Platform (catalog, recommendation grid, license inventory, license detail). **SaaS-scope multi-series palette remains deferred** (Patent Intelligence SaaS data-viz; Licensing Platform). Paired visual spec in [`visual-guide.md`](./visual-guide.md) §Iconography → Data Visualization.
+- **Imagery — full spec** — photography, AI / generated, illustrations, product screenshots, patterns / textures / backgrounds, jurisdiction maps, and non-data diagrams are all unspec'd. Working flag in [`visual-guide.md`](./visual-guide.md) §Imagery. (Gradients are **retired** — §7.5 below now specs static imagery + one flat accent per surface; surface mapping in [`visual-guide.md`](./visual-guide.md) §Imagery → Surface identity. Static imagery carrying surface identity makes the photography / pattern spec *more* urgent, not less.)
 
 ---
 
@@ -171,9 +171,9 @@ Five distinct hues for the SABCD quality ladder, each lifted off the status / si
 
 Tier-semantic, never status. The ramp is deliberately decoupled from status / signal hex — a Tier chip and a Status chip on the same row read as two separate palettes. The full semantic mapping lives in §7.4.
 
-**Tier vivid (500-level — gradient-only):**
+**Tier vivid (500-level — accent source):**
 
-A saturated companion ramp to the SABCD deep colors above. Used exclusively as gradient stops in §7.5 *Gradients* below; never a solid fill on a Tier chip — solid Tier chips always use the deep §7.2 ramp.
+A saturated companion ramp to the SABCD deep colors above. Never a solid fill on a Tier chip — solid Tier chips always use the deep §7.2 ramp. Formerly gradient stops; with gradients retired (§7.5) the ramp survives because `score-b-vivid` `#0EA5E9` is the source value for `--surface-accent-signal`. Treat the rest as available-but-unused: don't reach for them without a stated role.
 
 | Tier | Hex | Tone |
 |---|---|---|
@@ -183,9 +183,9 @@ A saturated companion ramp to the SABCD deep colors above. Used exclusively as g
 | C | `#8B5CF6` | violet-500 |
 | D | `#F97316` | orange-500 |
 
-**Slate ramp (silver theme — gradient-only):**
+**Slate ramp (silver register — flat use):**
 
-Tailwind-style slate ramp, off the SABCD ladder. Used by `gradient-text-silver-*` utilities in §7.5. The silver theme is the only gradient family with three style tiers — `solid` (gunmetal), `faded` (brushed chrome), and `luminous` (high-key, dark-surface tuned).
+Tailwind-style slate ramp, off the SABCD ladder. The "silver" register for TIS-overall surfaces. With gradients retired (§7.5) these are used as **flat** colors — `slate-700` `#334155` for silver-register body copy on light surfaces, `slate-200` `#E2E8F0` on dark. The former three-tier gradient treatment (gunmetal / brushed chrome / luminous) is gone.
 
 | Stop | Hex | Use |
 |---|---|---|
@@ -194,13 +194,13 @@ Tailwind-style slate ramp, off the SABCD ladder. Used by `gradient-text-silver-*
 | slate-300 | `#CBD5E1` | faded text shimmer entry |
 | slate-400 | `#94A3B8` | faded text mid · luminous text resolve |
 | slate-500 | `#64748B` | solid text entry |
-| slate-600 | `#475569` | faded text resolve (= canonical `--juris-eu`) |
+| slate-600 | `#475569` | faded text resolve |
 | slate-700 | `#334155` | solid text mid · silver pair-panel body color |
 | slate-900 | `#0F172A` | solid text resolve |
 
-**Bronze ramp (bronze theme — gradient-only):**
+**Bronze ramp (retired):**
 
-Custom four-stop ramp tuned to harmonize with the warm S-tier gold. Used by `gradient-text-bronze-*` utilities in §7.5.
+Custom four-stop ramp tuned to harmonize with the warm S-tier gold. **Retired 2026-08-06** alongside the gradient system (§7.5). Its only consumer was the Services · Ascent / Brokerage surfaces, which the rating-at-core positioning in [`positioning.md`](./positioning.md) superseded. Values kept for recovery; do not build on them.
 
 | Stop | Hex | Use |
 |---|---|---|
@@ -209,9 +209,9 @@ Custom four-stop ramp tuned to harmonize with the warm S-tier gold. Used by `gra
 | bronze-deep | `#8B6914` | faded text resolve · solid text mid (= canonical `--score-s` deep) |
 | bronze-darker | `#5C4509` | solid text resolve · bronze pair-panel body color |
 
-**Dot pastels (per-pillar dot-gradient fields — gradient-only):**
+**Dot pastels (retired):**
 
-Soft pastel hexes used by `gradient-dots-warm-*` and `gradient-dots-cool-*` utilities in §7.5. Light mode renders these at `0.35` alpha over the page surface; dark mode swaps to vivid SABCD at `0.20` alpha with `background-blend-mode: screen`.
+**Retired 2026-08-06** with the dot-gradient fields they fed (§7.5). Static imagery now carries that atmospheric weight. Values kept for recovery; do not build on them.
 
 | Pillar | Pastel | Hex | Dark-mode swap (vivid) |
 |---|---|---|---|
@@ -222,19 +222,19 @@ Soft pastel hexes used by `gradient-dots-warm-*` and `gradient-dots-cool-*` util
 | Cool | sky | `#BFDBFE` | `#0EA5E9` B-sky |
 | Cool | mint | `#D1FAE5` | `#10B981` A-emerald |
 
-**Jurisdiction accent (Licensing Platform — US / TW / EP / JP / KR):**
+**Jurisdiction accent (Licensing Platform — US / TW / EU / JP / CH):**
 
-Five distinct hues for the five jurisdictions TIS sells bundles in. The dominant pairing (`US × Tier S` — indigo against gold) sits firmly off-axis so the most-used chip pair never collides. KR sits in the cherry-red region (drawn from the taegeuki flag) — its only adjacency is to the danger status chip `#B91C1C`, but danger reads as a brighter / more saturated pure red while KR reads as a deeper / pinker rose, so the two stay distinct on a license-row even when co-occurring. TW sits in the olive (yellow-green) region — its closest adjacencies are Tier S gold (both warm yellow-tones) and Tier A emerald (both green-family but olive is yellow-green vs emerald's cyan-green) — separable by saturation and value at chip scale. The remaining tier ↔ jurisdiction adjacency (JP fuchsia ↔ Tier C violet) separates cleanly the same way. AA-passing on white; soft backgrounds for chip use.
+Five distinct hues for the jurisdictions TIS sells bundles in. The dominant pairing (`US × Tier S` — indigo against gold) sits firmly off-axis so the most-used chip pair never collides. CH sits in the cherry-red region — its only adjacency is to the danger status chip `#B91C1C`, but danger reads as a brighter / more saturated pure red while CH reads as a deeper / pinker rose, so the two stay distinct on a license-row even when co-occurring. TW sits in the olive (yellow-green) region — its closest adjacencies are Tier S gold (both warm yellow-tones) and Tier A emerald (both green-family but olive is yellow-green vs emerald's cyan-green) — separable by saturation and value at chip scale. EU moved off slate to **teal** so it no longer collides with the silver brand ramp (`--slate-*`). The remaining tier ↔ jurisdiction adjacency (JP fuchsia ↔ Tier C violet) separates cleanly the same way. AA-passing on white; soft backgrounds for chip use.
 
 | Code | Hex | Soft bg | Use |
 |---|---|---|---|
 | US | `#4338CA` | `#EEF2FF` | indigo — United States |
 | TW | `#3F6212` | `#ECFCCB` | olive — Taiwan |
-| EU | `#475569` | `#F1F5F9` | slate — European Union |
+| EU | `#0F766E` | `#F0FDFA` | teal — European Union |
 | JP | `#A21CAF` | `#FAE8FF` | fuchsia — Japan |
-| KR | `#BE123C` | `#FFF1F2` | cherry — Korea (drawn from the taegeuki flag's red) |
+| CH | `#BE123C` | `#FFF1F2` | cherry-red — China |
 
-These are jurisdiction-semantic, never status. The full semantic mapping lives in §7.4.
+These are jurisdiction-semantic, never status. The full semantic mapping lives in §7.4. (KR / Korea dropped for now — see brand-changelog.)
 
 **UI-only values:**
 
@@ -439,101 +439,54 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | score-b-bg | `#F0F9FF` (paired soft background for tier B chip; not the same as `info-bg` `#EFF6FF`) |
 | score-c-bg | `#F5F3FF` (paired soft background for tier C chip — violet-50) |
 | score-d-bg | `#FFF7ED` (paired soft background for tier D chip — orange-50; not the same as `danger-bg` `#FEE2E2`) |
-| score-s-vivid | `#D4A017` (gradient-only — saturated gold; never a solid fill on a tier chip) |
-| score-a-vivid | `#10B981` (gradient-only — vivid emerald) |
-| score-b-vivid | `#0EA5E9` (gradient-only — vivid sky) |
-| score-c-vivid | `#8B5CF6` (gradient-only — vivid violet) |
-| score-d-vivid | `#F97316` (gradient-only — vivid orange) |
+| score-s-vivid | `#D4A017` (vivid companion — never a solid fill on a tier chip) |
+| score-a-vivid | `#10B981` (vivid companion — emerald) |
+| score-b-vivid | `#0EA5E9` (vivid companion — sky) |
+| score-c-vivid | `#8B5CF6` (vivid companion — violet) |
+| score-d-vivid | `#F97316` (vivid companion — orange) |
 | juris-us | `#4338CA` (jurisdiction accent — United States; indigo) |
 | juris-tw | `#3F6212` (jurisdiction accent — Taiwan; olive) |
-| juris-eu | `#475569` (jurisdiction accent — European Union; slate) |
+| juris-eu | `#0F766E` (jurisdiction accent — European Union; teal, moved off slate to clear the silver brand ramp) |
 | juris-jp | `#A21CAF` (jurisdiction accent — Japan; fuchsia) |
-| juris-kr | `#BE123C` (jurisdiction accent — Korea; cherry, drawn from the taegeuki flag) |
+| juris-ch | `#BE123C` (jurisdiction accent — China; cherry-red) |
 | juris-us-bg | `#EEF2FF` (paired soft background for US chip) |
 | juris-tw-bg | `#ECFCCB` (paired soft background for TW chip) |
-| juris-eu-bg | `#F1F5F9` (paired soft background for EU chip) |
+| juris-eu-bg | `#F0FDFA` (paired soft background for EU chip) |
 | juris-jp-bg | `#FAE8FF` (paired soft background for JP chip) |
-| juris-kr-bg | `#FFF1F2` (paired soft background for KR chip) |
+| juris-ch-bg | `#FFF1F2` (paired soft background for CH chip) |
 | shadow-low | `0 2px 4px rgba(0,0,0,0.06)` (buttons, tooltips, light hover lifts) |
 | shadow-medium | `0 4px 24px rgba(0,0,0,0.08)` (cards at rest on the gapped recommendation grid, dropdowns, sheet shell) |
 | shadow-high | `0 7px 32px rgba(0,0,0,0.12)` (cards on hover, modals, popovers) |
 | shadow-stacked-low | five-layer composite (see §7.2 *Shadows*) — content cards on the marketing site |
-| gradient-text-warm-solid | `linear-gradient(90deg, #8B6914 0%, #C2410C 100%)` (warm duotone — gold meets orange) |
-| gradient-text-warm-faded | `linear-gradient(90deg, #F5E4A8 0%, #ECD27A 15%, #8B6914 30%, #C2410C 100%)` (warm with pale-gold shimmer entry) |
-| gradient-text-cool-solid | `linear-gradient(90deg, #047857 0%, #0369A1 50%, #6D28D9 100%)` (cool tritone) |
-| gradient-text-cool-faded | `linear-gradient(90deg, #A7F3D0 0%, #6EE7B7 15%, #047857 30%, #0369A1 65%, #6D28D9 100%)` (cool with pale-emerald shimmer entry) |
-| gradient-text-silver-solid | `linear-gradient(90deg, #64748B 0%, #334155 50%, #0F172A 100%)` (gunmetal) |
-| gradient-text-silver-faded | `linear-gradient(90deg, #CBD5E1 0%, #94A3B8 50%, #475569 100%)` (brushed chrome) |
-| gradient-text-silver-luminous | `linear-gradient(90deg, #F1F5F9 0%, #E2E8F0 50%, #94A3B8 100%)` (high-key silver, dark-surface tuned) |
-| gradient-text-bronze-solid | `linear-gradient(90deg, #B8965A 0%, #8B6914 50%, #5C4509 100%)` (lacquered bronze) |
-| gradient-text-bronze-faded | `linear-gradient(90deg, #E8D8A8 0%, #B8965A 50%, #8B6914 100%)` (polished bronze) |
-| gradient-bg-warm-faded | `linear-gradient(90deg, #FFFFFF 0%, #FDF6E0 35%, #FAF3DC 65%, #FFF7ED 100%)` (white-anchored, warm bloom right) |
-| gradient-bg-cool-faded | `linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%)` (white-anchored, cool resolve right) |
-| gradient-bg-silver-faded | composite — `radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%), linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%)` (Apple-M4 reference) |
-| gradient-bg-bronze-faded | composite — `radial-gradient(ellipse 90% 100% at 50% 0%, #EFE2BC 0%, #F5EBC8 35%, transparent 70%), linear-gradient(180deg, #FAF3DC 0%, #FFFFFF 85%)` (warm metallic counterpart) |
-| gradient-dots-warm-* | four variants (`-diagonal` / `-horizon` / `-triad` / `-spread`) — see §7.5 for compositions |
-| gradient-dots-cool-* | four variants (`-diagonal` / `-horizon` / `-triad` / `-spread`) — see §7.5 for compositions |
+| surface-accent-licensing | `#EC4200` (Licensing Platform accent — vivid; UI chrome, eyebrows, large text. Sampled from the shipped nav-dropdown imagery) |
+| surface-accent-licensing-text | `#D93B00` (Licensing accent, text-safe on white — 4.59:1) |
+| surface-accent-signal | `#0EA5E9` (Patent Intelligence SaaS accent — vivid; **dark surfaces only**, 5.53:1 on `#252525` but only 2.77:1 on white) |
+| surface-accent-signal-text | `#0A72B0` (Signal accent, text-safe on white — 5.19:1) |
+| surface-accent-tis | `#252525` (TIS-overall — neutral ink; TIS speaks in ink, not in a colour of its own) |
 
 Dark-theme shadow alphas escalate to compensate for the dark surface — `0.4` / `0.5` / `0.6` for low / medium / high respectively (see preview-scope tokens in `brand/previews/color-system.html` and `patent-card-preview.html`).
 
-### 7.5 Gradients
+### 7.5 Surface accents & static imagery
 
-Nine text-gradient utilities, four atmospheric background washes, eight per-pillar dot-gradient fields, and four faded-bg × solid-text pairings. Promoted out of "exploration" status — token spec lives here, pillar mapping + style-tier when-to-use rules in [`visual-guide.md`](./visual-guide.md) §Imagery → Gradient architecture.
+**Gradients are retired.** The `theme × style` gradient system (nine text utilities, four background washes, eight dot fields, four faded-bg × solid-text pairings) was removed 2026-08-06. Surface identity is now carried by **static imagery plus one flat accent per surface** — the imagery evokes the colour, the accent states it. Pillar mapping and when-to-use rules live in [`visual-guide.md`](./visual-guide.md) §Imagery.
 
-**Naming.** `.grad-text-{theme}-{style}` and `.grad-bg-{theme}-{style}`, where `theme ∈ {warm, cool, silver, bronze}` and `style ∈ {solid, faded, luminous}`. `solid` = vivid throughout; `faded` = pale shimmer entry → vivid resolve; `luminous` = silver-only, high-key tuned for dark surfaces.
+Nothing was lost silently: the retired compositions remain in this file's history and in `brand-changelog.md`.
 
-**Application — text gradients.** `background: var(--gradient-text-{name}); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent;`. All sweeps `90deg` (horizontal). The `*-faded` variants front-load pale stops in the first 30% to give a soft shimmer entry; the `*-solid` variants stay in the deep register throughout.
+**The accents** (semantic tokens in §7.4):
 
-| Utility | Composition (theme stops) | Reads as |
-|---|---|---|
-| `.grad-text-warm-solid` | S → D · 0/100 | Warm duotone — gold meets orange. Quietest of the SABCD-anchored set. |
-| `.grad-text-warm-faded` | `#F5E4A8` → `#ECD27A` → S → D · 0/15/30/100 | Warm with pale-gold shimmer entry. |
-| `.grad-text-cool-solid` | A → B → C · 0/50/100 | Cool tritone — emerald → sky → violet. |
-| `.grad-text-cool-faded` | `#A7F3D0` → `#6EE7B7` → A → B → C · 0/15/30/65/100 | Cool with pale-emerald shimmer entry. |
-| `.grad-text-silver-solid` | slate-500 → slate-700 → slate-900 · 0/50/100 | Gunmetal — confident and dark, no pale entry. |
-| `.grad-text-silver-faded` | slate-300 → slate-400 → slate-600 · 0/50/100 | Brushed chrome — pale shimmer to slate. |
-| `.grad-text-silver-luminous` | slate-100 → slate-200 → slate-400 · 0/50/100 | Luminous chrome — high-key, dark-surface tuned. |
-| `.grad-text-bronze-solid` | bronze-mid → bronze-deep → bronze-darker · 0/50/100 | Lacquered bronze — saturated, deep, no pale entry. |
-| `.grad-text-bronze-faded` | bronze-light → bronze-mid → bronze-deep · 0/50/100 | Polished bronze — pale honey to canonical S-tier gold. |
-
-**Background washes.** Atmospheric, soft-tier-bg-register backgrounds for hero panels — saturation pulled way back, gradient *implied* not declared. `*-faded` bgs anchor to white edges; the metallic radials hold their register top-down then fade to white near the floor.
-
-| Utility | Composition |
-|---|---|
-| `.grad-bg-warm-faded` | `linear-gradient(90deg, #FFFFFF 0%, #FDF6E0 35%, #FAF3DC 65%, #FFF7ED 100%)` |
-| `.grad-bg-cool-faded` | `linear-gradient(90deg, #FFFFFF 0%, #ECFDF5 30%, #F0F9FF 65%, #F5F3FF 100%)` |
-| `.grad-bg-silver-faded` | `radial-gradient(ellipse 90% 100% at 50% 0%, #DCE5EF 0%, #EAF0F7 35%, transparent 70%), linear-gradient(180deg, #F1F5F9 0%, #FFFFFF 85%)` |
-| `.grad-bg-bronze-faded` | `radial-gradient(ellipse 90% 100% at 50% 0%, #EFE2BC 0%, #F5EBC8 35%, transparent 70%), linear-gradient(180deg, #FAF3DC 0%, #FFFFFF 85%)` |
-
-**Dot gradients.** Atmospheric multi-bloom fields composed of 2–3 fixed-radius radial gradients anchored at interior coordinates inside the content frame (apply on a `max-width`-bound container, not a full-bleed section, so the circles don't leak into side margins on wide viewports). Per-pillar identity for marketing surfaces — `*-warm-*` pairs with **Licensing Platform**, `*-cool-*` with **Patent Intelligence SaaS**.
-
-Naming: `.grad-dots-{theme}-{variant}` — `theme ∈ {warm, cool}`; `variant ∈ {diagonal, horizon, triad, spread}`. Each warm utility takes a structurally identical cool sibling (same dot count, sizes, anchors) — only the palette differs.
-
-| Utility | Light-mode composition | Reads as |
-|---|---|---|
-| `.grad-dots-warm-diagonal` | 600px peach @ 35% 30% + 480px cream @ 60% 65% | Two-dot asymmetric flow, top-left to lower-right. |
-| `.grad-dots-warm-horizon` | 540px peach @ 25% 50% + 540px gold @ 75% 50% | Two-dot horizontal — left + right at center vertical. |
-| `.grad-dots-warm-triad` | 480px peach @ 50% 25% + 440px cream @ 25% 75% + 440px gold @ 75% 75% | Triangular composition — top-center anchor with bottom corners. |
-| `.grad-dots-warm-spread` | 580px peach @ 20% 25% + 480px gold @ 75% 45% + 460px cream @ 35% 80% | Organic three-dot scatter, irregular flow. |
-| `.grad-dots-cool-diagonal` | 600px lavender @ 35% 30% + 480px sky @ 60% 65% | Cool counterpart to warm-diagonal. |
-| `.grad-dots-cool-horizon` | 540px lavender @ 25% 50% + 540px mint @ 75% 50% | Cool counterpart to warm-horizon. |
-| `.grad-dots-cool-triad` | 480px lavender @ 50% 25% + 440px sky @ 25% 75% + 440px mint @ 75% 75% | Cool counterpart to warm-triad. |
-| `.grad-dots-cool-spread` | 580px lavender @ 20% 25% + 480px mint @ 75% 45% + 460px sky @ 35% 80% | Cool counterpart to warm-spread. |
-
-Each dot-stop fades to `transparent 90%`. The long fade is what lets dots overlap softly and blend into a continuous atmospheric field; don't shorten it past ~80% or the boundaries harden. **Dark-mode pattern.** Each utility carries a `[data-theme="dark"]` companion that swaps the pastel hex for vivid SABCD at `0.20` alpha (warm: orange/gold; cool: violet/sky/mint) and adds `background-blend-mode: screen` so overlapping blooms brighten where they intersect.
-
-**Pairing — faded background × solid text.** Four canonical pairings compose a faded background with the matching theme's solid text gradient. Background recedes; the headline carries color weight. Body copy stays off the gradient (panel-specific solid color) for legibility.
-
-| Theme | Background | Headline | Body color |
+| Surface | Vivid | Text-safe on white | Reads as |
 |---|---|---|---|
-| Warm | `.grad-bg-warm-faded` | `.grad-text-warm-solid` | `#7A4A0F` |
-| Bronze | `.grad-bg-bronze-faded` | `.grad-text-bronze-solid` | `#5C4509` (bronze-darker) |
-| Cool | `.grad-bg-cool-faded` | `.grad-text-cool-solid` | `#1E3A5F` |
-| Silver | `.grad-bg-silver-faded` | `.grad-text-silver-solid` | `#334155` (slate-700) |
+| Licensing Platform | `--surface-accent-licensing` `#EC4200` | `--surface-accent-licensing-text` `#D93B00` | Red-leaning orange. Sampled from the shipped nav-dropdown imagery. |
+| Patent Intelligence SaaS | `--surface-accent-signal` `#0EA5E9` | `--surface-accent-signal-text` `#0A72B0` | True azure. Vivid value is **dark-surface only** — see the contrast note below. |
+| TIS overall | `--surface-accent-tis` `#252525` | same | Neutral ink. TIS speaks across surfaces, so it carries no colour of its own. |
 
-Panel chrome: `border-radius: 24px`, padding `96px 64px`, min-height `420px`. Mono-font tag in top-left (`rgba(255,255,255,0.7)` translucent pill, 6px backdrop blur, hairline border). Label-mono-11 meta in bottom-left. Headline at 88px / 700 / -.03em / 1.0 line-height. Body at 22px / 600 / -.005em / 1.4 line-height / 32ch max-width.
+**Contrast — read this before using an accent.** `#0EA5E9` measures **2.77:1 on white**, which fails the §5 AA floor even for large text and UI. It is a *dark-surface* accent (5.53:1 on `#252525`) and that is how the shipped Signal hero uses it. On any light surface, use `--surface-accent-signal-text` instead. Licensing's `#EC4200` is more forgiving — 3.93:1 on white and 3.90:1 on ink — so it clears AA for large text and UI on both, but body copy on white still needs the `-text` sibling.
 
-Visual reference: [`brand/previews/gradients-preview.html`](./previews/gradients-preview.html) — every utility rendered.
+**Held off the SABCD ramp, with one adjacency to respect.** Accents are surface identity; `--score-*` is patent quality. They must never read as the same family. The two live closest together are `--surface-accent-licensing-text` `#D93B00` and `--score-d` `#C2410C` — separable because the accent is a hotter, redder orange while tier D is a browner burnt orange. On marketing surfaces they never co-occur (tier chips don't appear there). On the Licensing Platform they can, so prefer the vivid accent for chrome and let the tier chip own the burnt register.
+
+**Application.** Flat `color` / `background-color` / `border-color` only — no `background-clip: text`, no multi-stop sweeps. An accent is rationed: a single emphasized run, an eyebrow, a chart series, one CTA. Never a wash behind body copy.
+
+**Static imagery** carries the atmospheric weight the background washes used to. Per-surface image assignment, framing, and scrim rules are owned by [`visual-guide.md`](./visual-guide.md) §Imagery.
 
 ### 7.6 Components
 

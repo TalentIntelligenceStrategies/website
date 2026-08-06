@@ -271,10 +271,10 @@ Each chip family draws from a distinct semantic palette in [`design-tokens.md`](
 |---|---|---|
 | Status chip | Status pairings | `success-bg`/`-fg` · `warning-bg`/`-fg` · `danger-bg`/`-fg` · `info-bg`/`-fg` |
 | Tier chip | SABCD ramp | `score-s` … `score-d` foregrounds + paired `score-*-bg` |
-| Jurisdiction chip | Jurisdiction ramp | `juris-us` … `juris-kr` foregrounds + paired `juris-*-bg` |
+| Jurisdiction chip | Jurisdiction ramp | `juris-us` / `-tw` / `-eu` / `-jp` / `-ch` foregrounds + paired `juris-*-bg` |
 | Signal dot | Signal palette | `signal-active` · `signal-warning` · `signal-lapsed` |
 
-The dominant cross-family pairing on a license row is `US × Tier S` (indigo against gold) — held off-axis by design. Remaining adjacencies (KR cherry ↔ danger status; TW olive ↔ Tier S gold and Tier A emerald; JP fuchsia ↔ Tier C violet) separate by saturation and value at chip scale rather than hue alone.
+The dominant cross-family pairing on a license row is `US × Tier S` (indigo against gold) — held off-axis by design. Remaining adjacencies (CH cherry ↔ danger status; TW olive ↔ Tier S gold and Tier A emerald; JP fuchsia ↔ Tier C violet) separate by saturation and value at chip scale rather than hue alone — danger reads as a brighter, purer red than CH's deeper rose.
 
 ### Stacking order
 
@@ -301,16 +301,16 @@ Geometry per §Chip family above. **Font-weight 600** (the canonical chip weight
 
 ### Jurisdiction chip
 
-Inline-flex pill rendering a jurisdiction code — `US` (indigo) / `TW` (olive) / `EU` (slate) / `JP` (fuchsia) / `KR` (cherry).
+Inline-flex pill rendering a jurisdiction code — `US` (indigo) / `TW` (olive) / `EU` (teal) / `JP` (fuchsia) / `CH` (cherry-red).
 
-- **Consumes:** `juris-us` / `juris-tw` / `juris-eu` / `juris-jp` / `juris-kr` foregrounds; `juris-us-bg` / `juris-tw-bg` / `juris-eu-bg` / `juris-jp-bg` / `juris-kr-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
+- **Consumes:** `juris-us` / `juris-tw` / `juris-eu` / `juris-jp` / `juris-ch` foregrounds; `juris-us-bg` / `juris-tw-bg` / `juris-eu-bg` / `juris-jp-bg` / `juris-ch-bg` soft backgrounds — both from [`design-tokens.md`](./design-tokens.md) §7.4
 - **Surfaces:** Licensing Platform (catalog rows, recommendation grid header, cart, license inventory and detail, bundle summary, dashboard license rows — anywhere a jurisdiction needs to be recognised at a glance)
-- **Variants:** `us` / `tw` / `eu` / `jp` / `kr`
+- **Variants:** `us` / `tw` / `eu` / `jp` / `ch`
 - **States:** default
 
-Geometry per §Chip family above. **Font-weight 700**, matching Tier chip.
+Geometry per §Chip family above. **Font-weight 700**, matching Tier chip. `CH` sits in the cherry-red region; its only cross-family adjacency is the danger status chip `#B91C1C`, but danger reads as a brighter, purer red while CH reads as a deeper, pinker rose — the two stay distinct even when co-occurring on a license row.
 
-**Content convention.** Always render the two-letter code (`US`, `TW`, `EU`, `JP`, `KR`) as the chip content — full region names sit alongside the chip in the surrounding row, never inside it. The two-letter form is naturally uppercase, so the chip reads correctly without a CSS `text-transform` rule. The chip is the at-a-glance signal; the full name is the human-readable label.
+**Content convention.** Always render the two-letter code (`US`, `TW`, `EU`, `JP`, `CH`) as the chip content — full region names sit alongside the chip in the surrounding row, never inside it. The two-letter form is naturally uppercase, so the chip reads correctly without a CSS `text-transform` rule. The chip is the at-a-glance signal; the full name is the human-readable label.
 
 **Pairing order.** Within a row, Jurisdiction precedes Tier (jurisdiction = outer container, tier = inner grade). Within the broader chip stack, the canonical order is Status → Jurisdiction → Tier — see §Chip family / stacking order.
 

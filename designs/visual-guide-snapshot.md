@@ -1,3 +1,5 @@
+<!-- Snapshot of TIS/brand/visual-guide.md — do NOT edit here. Edit upstream in brand/ and resync. -->
+
 # TIS Visual Guide
 
 Brand-identity reference for TIS — logo meaning, logo usage, Innovue co-branding, and name usage. Scope: marketing website + Patent Intelligence SaaS MVP + Licensing Platform MVP.
@@ -215,38 +217,32 @@ Icons carry no state of their own. States live on the consuming component (butto
 > - **Generated / AI imagery** — policy (allowed or banned), house-style if allowed, content bans (faces, text-in-image), labelling.
 > - **Illustrations** — positive marketing rule. Current rule is only the negative — see [`components.md`](./components.md) §Empty state.
 > - **Product screenshots** — how Patent Intelligence SaaS / Licensing Platform UI is rendered in marketing and decks (frame chrome, annotation, mockup vs real device).
-> - **Gradients** — promoted out of pending. Pillar architecture (which theme belongs to which surface) resolved below in §Gradient architecture; style-tier when-to-use rules (solid / faded / luminous) below in same section; token spec + utility catalog in [`design-tokens.md`](./design-tokens.md) §7.2 + §7.5; visual reference in [`brand/previews/gradients-preview.html`](./previews/gradients-preview.html).
+> - **Gradients** — **retired 2026-08-06.** Replaced by static imagery + one flat accent per surface; see §Surface identity below and [`design-tokens.md`](./design-tokens.md) §7.5. Not a pending category any more.
 > - **Patterns / textures / backgrounds** — geometric patterns, dotted grids, ink washes; generalize the deck-cover hero-cube precedent ([`presentations.md`](./presentations.md) §Cover) and define report / client-PDF cover treatments.
 > - **Maps (jurisdiction)** — geographic visuals for Licensing Platform jurisdiction × industry bundles; currently zero spec.
 > - **Non-data diagrams** — flowcharts, architecture, process diagrams. Distinct from the SaaS data-viz blocker tracked in §Iconography → Data Visualization above.
 >
 > OG / social-share image spec is flagged separately under §Logo Usage. SABCD grade visual system and patent-network maps remain in §Iconography → Data Visualization above.
 
-### Gradient architecture
+### Surface identity — static imagery + one flat accent
 
-Each gradient theme is the visual signature of a TIS surface or pillar — the colour family signals which part of the business is speaking. Use the theme assigned to the pillar; don't cross-cast.
+**Gradients were retired 2026-08-06.** Surface identity is now carried by a **static image** plus **one flat accent**: the image evokes the colour, the accent states it. This replaced the `theme × style` gradient system (silver / warm / cool / bronze × solid / faded / luminous). Token spec: [`design-tokens.md`](./design-tokens.md) §7.5.
 
-| Surface | Theme | Notes |
+Why: gradients had become a second, parallel colour system — 181 declarations in the marketing stylesheet — that drifted from what actually shipped and taught every new session to reach for a sweep instead of a considered flat colour. Imagery does the atmospheric work better and survives a screenshot, a print, and a dark-mode flip without re-tuning.
+
+| Surface | Accent | Imagery |
 |---|---|---|
-| TIS overall — marketing, hero, global chrome | Silver | Off-pillar metallic neutral. Lets all four product lines and Services breathe under one roof; default for hero and global chrome where no single pillar is speaking. |
-| Patent Intelligence SaaS | Cool | Emerald → sky → violet (A → B → C of the SABCD vivid palette). The analytical, diligence-grade pillar. |
-| Licensing Platform | Warm | Gold → orange (S → D). Gold anchors the premium S-tier signal that licensing bundles trade on. |
-| Services · Ascent program | Bronze | Lacquered bronze — solid text on bronze-faded bg. Assertive, headline-forward register for the 24-month consulting program. |
-| Services · Brokerage | Bronze | Polished bronze — faded text on bronze-faded-up bg. Softer, supporting register for the rights-holder ↔ acquirer matchmaking surface. |
+| **TIS overall** — marketing, hero, global chrome | Neutral ink `--surface-accent-tis`. Silver register available as flat `--slate-700` / `--slate-200`. | The WebGL shifting-lines shader on the homepage hero; black image-backed cards elsewhere. TIS speaks in ink, not in a colour of its own. |
+| **Patent Intelligence SaaS** | `--surface-accent-signal` `#0EA5E9` on dark; `--surface-accent-signal-text` `#0A72B0` on light | Blue-register stills — `assets/imagery/signal/signal-cool.jpg` is the reference. |
+| **Licensing Platform** | `--surface-accent-licensing` `#EC4200`; `--surface-accent-licensing-text` `#D93B00` on light | Orange-register stills — `assets/imagery/coremap/licensing-warm-v2.png` is the reference. |
 
-**Style tiers — when to use which.** Each theme renders in one of three style tiers; pick by surface register, not by aesthetic preference.
+**Services · Ascent / Brokerage removed.** The bronze theme existed only for those surfaces, which the rating-at-core model in [`positioning.md`](./positioning.md) superseded. The bronze ramp is retired in `design-tokens.md` §7.2.
 
-| Style | When to use | Surfaces |
-|---|---|---|
-| `solid` | Primary brand surfaces where the gradient itself is the headline. Vivid throughout, no pale entry — confident, deep, readable at hero scale. Default for hero text on light bg, faded-bg × solid-text pairings, and any surface where the gradient is being *read* as content. | Hero h1s, pillar landing headlines, faded-pair panel headlines |
-| `faded` | Decorative gradient text where the type is large enough that a pale shimmer entry adds register without losing legibility. Pale entry → vivid resolve, left-to-right warm-up. Use when the surface is otherwise quiet (off-white bg, generous whitespace) and the headline can carry a soft entry. | Pillar section eyebrows + display heads, marketing aside heads, content-card overlays |
-| `luminous` | **Silver only.** High-key slate ramp tuned for dark surfaces. Near-white shimmer entry resolving to soft slate — keeps silver text legible against `#0E0E0E` without lifting alpha. Don't use `luminous` on warm / cool / bronze; those themes don't have a luminous companion in §7.5 and would need a separate spec. | Dark-hero silver headlines, dark-mode display copy on the marketing site |
+**Don't cross-cast.** A surface's accent is its identity — Signal surfaces don't carry orange, Licensing surfaces don't carry blue. Neutral ink is the only register that speaks across surfaces, and it's reserved for TIS-overall.
 
-**Don't cross-cast.** A pillar's theme is its identity — Patent Intelligence SaaS surfaces don't carry warm gradients, Licensing Platform surfaces don't carry cool gradients. Silver is the only theme that can speak across pillars (because it represents *no single pillar*) and is reserved for TIS-overall surfaces.
+**Ration the accent.** Flat `color` / `background-color` / `border-color` only. One emphasized run, an eyebrow, a chart series, one CTA — never a wash behind body copy, and never a multi-stop sweep. Check the contrast note in §7.5 before placing `#0EA5E9` on a light surface: it fails AA there.
 
-The full token spec — CSS class names, exact stops, dot-field compositions, dark-mode counterparts — lives in [`design-tokens.md`](./design-tokens.md) §7.5. Visual reference: [`brand/previews/gradients-preview.html`](./previews/gradients-preview.html).
-
-Canonical implementations on a live surface: [`../website/index.html`](../website/index.html) — silver on the hero, warm on `#products[data-pillar="licensing"]`, cool on `#products[data-pillar="intelligence"]`, bronze on the `#services` Ascent + Brokerage banners.
+Canonical implementation: [`../website/index.html`](../website/index.html) — shader hero, ink chrome, black image-backed cards. Per-surface accent usage on the product pages under `../website/product/`.
 
 ---
 
