@@ -133,70 +133,17 @@
 .howit-card-grad {
   position: absolute; inset: 0; z-index: 0;
   opacity: 0;
+  background: rgba(14, 165, 233, 0.07);
   transition: opacity 320ms ease;
 }
 .howit-card:hover .howit-card-grad { opacity: 1; }
-
-/* Per-card gradient washes — signal cool trio (mint #A7F3D0 ·
-   sky #BFDBFE · violet #E9D5FF) per brand/previews/signal-flow-preview.html.
-   Each card varies position + emphasis so they feel distinct. */
-.howit-card[data-grad="1"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 640px 380px at 22% 28%, rgba(167,243,208,0.46), transparent 65%),
-    radial-gradient(ellipse 520px 320px at 80% 82%, rgba(191,219,254,0.40), transparent 65%),
-    radial-gradient(ellipse 360px 260px at 56% 106%, rgba(233,213,255,0.28), transparent 60%),
-    linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 35%, #F0F9FF 75%, #F5F3FF 100%);
-}
-.howit-card[data-grad="2"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 580px 340px at 72% 22%, rgba(191,219,254,0.48), transparent 65%),
-    radial-gradient(ellipse 500px 320px at 18% 86%, rgba(167,243,208,0.40), transparent 65%),
-    radial-gradient(ellipse 400px 260px at 56% 50%, rgba(233,213,255,0.24), transparent 65%),
-    linear-gradient(160deg, #F0F9FF 0%, #ECFDF5 50%, #F5F3FF 100%);
-}
-.howit-card[data-grad="3"] .howit-card-grad {
-  background:
-    radial-gradient(circle 520px at 50% 50%, rgba(191,219,254,0.50), transparent 60%),
-    radial-gradient(ellipse 480px 300px at 22% 105%, rgba(167,243,208,0.34), transparent 60%),
-    radial-gradient(ellipse 460px 280px at 82% 8%, rgba(233,213,255,0.30), transparent 60%),
-    linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 60%, #F5F3FF 100%);
-}
-.howit-card[data-grad="4"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 600px 380px at 28% 72%, rgba(233,213,255,0.40), transparent 65%),
-    radial-gradient(ellipse 480px 320px at 82% 22%, rgba(191,219,254,0.42), transparent 65%),
-    radial-gradient(ellipse 380px 240px at 50% 110%, rgba(167,243,208,0.26), transparent 60%),
-    linear-gradient(135deg, #F5F3FF 0%, #FFFFFF 50%, #F0F9FF 100%);
-}
-.howit-card[data-grad="5"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 560px 360px at 50% 52%, rgba(191,219,254,0.42), transparent 60%),
-    radial-gradient(ellipse 420px 260px at 14% 16%, rgba(167,243,208,0.32), transparent 60%),
-    radial-gradient(ellipse 420px 260px at 86% 92%, rgba(233,213,255,0.28), transparent 60%),
-    linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
-}
-.howit-card[data-grad="6"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 600px 360px at 18% 28%, rgba(167,243,208,0.44), transparent 65%),
-    radial-gradient(ellipse 480px 300px at 84% 84%, rgba(233,213,255,0.36), transparent 65%),
-    radial-gradient(ellipse 380px 240px at 52% 50%, rgba(191,219,254,0.30), transparent 65%),
-    linear-gradient(160deg, #FFFFFF 0%, #ECFDF5 50%, #F5F3FF 100%);
-}
 
 [data-theme="dark"] .howit-card[data-grad="1"] .howit-card-grad,
 [data-theme="dark"] .howit-card[data-grad="2"] .howit-card-grad,
 [data-theme="dark"] .howit-card[data-grad="3"] .howit-card-grad,
 [data-theme="dark"] .howit-card[data-grad="4"] .howit-card-grad,
 [data-theme="dark"] .howit-card[data-grad="5"] .howit-card-grad,
-[data-theme="dark"] .howit-card[data-grad="6"] .howit-card-grad {
-  background:
-    radial-gradient(ellipse 600px 360px at 30% 30%, rgba(4,120,87,0.22), transparent 65%),
-    radial-gradient(ellipse 500px 320px at 78% 78%, rgba(3,105,161,0.24), transparent 65%),
-    radial-gradient(ellipse 400px 260px at 50% 110%, rgba(109,40,217,0.18), transparent 65%),
-    linear-gradient(150deg, #0E1820 0%, #0A1218 100%);
-}
-
-.howit-card-stage {
+[data-theme="dark"] .howit-card-stage {
   position: absolute; inset: 0; z-index: 1;
   overflow: hidden;
 }
@@ -1160,16 +1107,7 @@ a, button,
    50% 100% + linear 0deg, bloom pours up from the section bottom) but with
    .hero-signal's exact stops in place of the silver wash. Bookends the page
    with the same gradient family as the hero. */
-.contact {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 100%, #CFE9FB 0%, #E6F4FF 35%, transparent 70%),
-    linear-gradient(0deg, #F2F9FF 0%, #FFFFFF 85%);
-}
-[data-theme="dark"] .contact {
-  background:
-    radial-gradient(ellipse 90% 100% at 50% 100%, rgba(14,165,233,0.34) 0%, rgba(14,116,180,0.20) 35%, transparent 70%),
-    linear-gradient(0deg, var(--surface-secondary) 0%, var(--surface-page) 85%);
-}
+.contact { background: var(--surface-secondary); }
 
 /* ============================================================
    Deliverable cards — Stripe-flat treatment.
@@ -2170,14 +2108,13 @@ a, button,
 .rxcopy .pillar-sub { max-width: 56ch; }
 /* Restore the Signal pillar's blue gradient on the title em (these copy blocks
    are not inside .pillar[data-pillar="signal"], so re-declare the same stops). */
+/* These copy blocks sit on the white page surface, not the dark hero, so they
+   take the AA-safe -text accent (5.19:1) rather than the vivid value (2.77:1,
+   which fails even the large-text floor on white). */
 .rxcopy .pillar-title em {
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
-}
-[data-theme="dark"] .rxcopy .pillar-title em {
-  background: linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%);
-  -webkit-background-clip: text; background-clip: text;
+  color: var(--surface-accent-signal-text);
+  -webkit-text-fill-color: var(--surface-accent-signal-text);
+  font-style: normal;
 }
 .rxcopy .pillar-actions { justify-content: center; pointer-events: auto; }
 /* Act 1 — single-line headline, ~2-line sub. */
