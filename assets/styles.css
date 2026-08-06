@@ -1088,62 +1088,38 @@ main { padding-top: 64px; }
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 32px);
 }
 
-/* Per-pillar pillar styling — Signal slide overrides warm pillar accents
-   with cool gradients. Scoped via [data-pillar="signal"]. */
+/* Per-pillar hero emphasis — one flat accent per surface, no sweeps.
+   Gradient text was retired 2026-08-06 (design-tokens.md §7.5). The hero field
+   is black (shader or its fallback), so each accent is used at its vivid value,
+   which is tuned for dark surfaces. */
 .pillar[data-pillar="signal"] .pillar-title em {
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-signal);
+  -webkit-text-fill-color: var(--surface-accent-signal);
+  font-style: normal;
 }
-[data-theme="dark"] .pillar[data-pillar="signal"] .pillar-title em {
-  background: linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%);
-  -webkit-background-clip: text; background-clip: text;
-}
-.hero .pillar[data-pillar="signal"] .btn-secondary,
-.hero .pillar[data-pillar="signal"] .btn-secondary:hover {
-  background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%);
-}
-
-/* Licensing slide — warm text gradient on the title em, mirrors positioning treatment. */
 .pillar[data-pillar="licensing"] .pillar-title em {
-  background: linear-gradient(90deg, #D4A017 0%, #E08C2F 50%, #F97316 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--surface-accent-licensing);
+  -webkit-text-fill-color: var(--surface-accent-licensing);
+  font-style: normal;
   white-space: nowrap;
 }
-[data-theme="dark"] .pillar[data-pillar="licensing"] .pillar-title em {
-  background: linear-gradient(90deg, #FBBF24 0%, #FB923C 50%, #F97316 100%);
-  -webkit-background-clip: text; background-clip: text;
-}
-
-/* Positioning slide — silver text gradient on the title em. */
+/* Positioning = TIS overall, which carries no colour of its own. On the black
+   hero the silver register is the light end of the slate ramp. */
 .pillar[data-pillar="positioning"] .pillar-title em {
-  background: linear-gradient(90deg,
-    var(--slate-500) 0%, var(--slate-700) 50%, var(--slate-900) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
+  color: var(--slate-200);
+  -webkit-text-fill-color: var(--slate-200);
+  font-style: normal;
   white-space: nowrap;
 }
-[data-theme="dark"] .pillar[data-pillar="positioning"] .pillar-title em {
-  background: linear-gradient(90deg,
-    var(--slate-100) 0%, var(--slate-200) 50%, var(--slate-400) 100%);
-  -webkit-background-clip: text; background-clip: text;
-}
-.hero .pillar[data-pillar="positioning"] .btn-secondary {
-  background: var(--slate-200);
-  color: var(--slate-900);
-  -webkit-text-fill-color: var(--slate-900);
-}
-.hero .pillar[data-pillar="positioning"] .btn-secondary:hover {
-  background: var(--slate-400);
-  filter: none;
-}
-[data-theme="dark"] .hero .pillar[data-pillar="positioning"] .btn-secondary {
+/* The positioning slide's own light-fill override is now the base treatment for
+   every surface (see .hero .btn-secondary above), so only the dark-theme pair
+   still needs to differ. */
+[data-theme="dark"] .hero .btn-secondary {
   background: var(--slate-700);
   color: var(--slate-100);
   -webkit-text-fill-color: var(--slate-100);
 }
-[data-theme="dark"] .hero .pillar[data-pillar="positioning"] .btn-secondary:hover {
+[data-theme="dark"] .hero .btn-secondary:hover {
   background: var(--slate-500);
   filter: none;
 }
@@ -1273,16 +1249,19 @@ main { padding-top: 64px; }
   margin-top: 12px;
 }
 
-/* Hero secondary CTA — warm gold→orange gradient by default; overridden
-   per-slide above (cool for signal, slate for positioning). */
+/* Hero secondary CTA — one flat treatment for every surface. Was a per-pillar
+   gradient fill (warm / cool tritone / slate); the accents can't carry button
+   text at AA on a dark hero (#EC4200 is 3.9:1 against both white and ink), so
+   the CTA takes the high-contrast light fill the positioning slide already used
+   and the accent stays reserved for text emphasis. */
 .hero .btn-secondary {
-  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
-  color: #FFFFFF;
-  -webkit-text-fill-color: #FFFFFF;
+  background: var(--slate-200);
+  color: var(--slate-900);
+  -webkit-text-fill-color: var(--slate-900);
 }
 .hero .btn-secondary:hover {
-  background: linear-gradient(135deg, #D4A017 0%, #F97316 100%);
-  filter: brightness(0.92);
+  background: var(--slate-400);
+  filter: none;
 }
 
 /* Hero primary CTA — pure-black fill with a hairline light border so the edge
