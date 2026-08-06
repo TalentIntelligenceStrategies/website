@@ -99,6 +99,7 @@ Tokens live in `:root`-level blocks in `styles.css`:
 | | `--surface-tertiary` | `#F3F3F3` |
 | | `--surface-quaternary` | `#EEEEEE` |
 | | `--surface-elevated` | `#FFFFFF` |
+| | `--surface-recessed` | `#E9E9EC` — the tray a card sits *in*; counterpart to `-elevated` |
 | | `--surface-inverse` | `#252525` |
 | | `--surface-inverse-hover` | `#292524` |
 | | `--surface-inverse-hover-lift` | `#3A3A3A` — see §6 |
@@ -117,6 +118,7 @@ Tokens live in `:root`-level blocks in `styles.css`:
 | Signals | `--signal-active` | `#22C55E` |
 | | `--signal-warning` | `#F59E0B` |
 | | `--success-bg` / `--success-fg` | `#F0FDF4` / `#15803D` |
+| | `--danger-border` / `--danger-border-wash` | `#C0392B` / `rgba(192,57,43,0.055)` — **edges only**, never type |
 
 ### 1.2 Surface accents — one flat accent per surface
 
@@ -167,8 +169,34 @@ so photographic/black-field imagery blends seamlessly and white copy stays legib
 (`#000`, hover `#1A1A1A`), `.report-card` scrim, the announce bar, the partner band, and
 the hero's in-hero CTA re-skin (§6).
 
-These are the **only** sanctioned raw-hex literals outside the token blocks. Everything
-else in `styles.css` resolves to a token — the count of unique invented hex is **0**.
+In `styles.css` these are the **only** sanctioned raw-hex literals outside the token
+blocks. The count of unique invented hex in the stylesheet is **0**.
+
+### 1.3.1 Frozen one-off decoration (page-inline)
+
+A second, closed list. These are literals inside a page's `<style>` block that are
+**deliberately not tokens**, and the reason is the same in every case:
+
+> A token can be retuned later, and retuning it would silently change a piece of
+> decoration that was tuned by eye for one composition. A literal is frozen. These are
+> decoration, used once, on one page, and they are meant to stay exactly where they are.
+
+Anything not on this list is a violation.
+
+| Page | Literal | What it is |
+|---|---|---|
+| `patents/` | `#E6E8EC` | `.lamp-glow` — the blurred glow core behind the hero lamp sweep |
+| `patents/` | `#F2F3F5` | `.lamp-line` — the 2px resolve line the lamp animates open |
+| `patents/` | `#ECECEC` | `--pat-ground` — drafting-paper ground for the blueprint marquee cards; deliberately off-white so the strip doesn't glare against the black page |
+| `patents/` | `#17130E` | blueprint overlay ink (name + sub-pill), 2 uses |
+| `patents/` | `#0A0A0A` | `.pat-modal` shell — near-black, one step off the `#000` blueprint ground so the modal edge reads |
+| `product/signal/lobby.html` | `#CFE9FB` `#DDEFFC` `#E8F4FE` `#F2F9FF` | the 4-stop atmospheric radial on `main#main`, resolving into `var(--surface-page)` at 74%. Tuned as a set; individually meaningless |
+| `product/signal/index.v08-concept.html` | `#0369A1` | page-local `--sig-blue-deep`. Equals light-theme `--score-b`, but the token flips to `#38BDF8` in dark and this concept needs it fixed |
+| `product/signal/index.v08-concept.html` | `#252525` (×2) | ink on a white hover fill over an always-dark panel — same rationale as `.contact-panel .btn-primary`'s `#000` |
+
+**One that is not a colour literal at all:** `patents/index.html` has
+`[fill="#FCFAF4"]` — an **attribute selector** matching SVG content emitted by the page's
+own drawing code. Tokenizing it breaks the selector. Leave it.
 
 ### 1.4 Global background — the graph-paper underlay
 
@@ -225,7 +253,7 @@ Use the tokens, never a literal stack:
 | Hero title | `.pillar-title` | `clamp(40px,5vw,60px)` | 600 | 1.05 | −0.02em | white in hero; `em` = **flat accent**, see §5 |
 | Hero eyebrow | `.pillar-eyebrow` | 16px | 600 | — | 0.02em | `--text-primary`; overridden to `#fff` on the licensing/signal heroes; `:empty` collapses in ZH |
 | Hero sub | `.pillar-sub` | `clamp(17px,1.5vw,20px)` | 450 | 1.4 | −0.01em | `max-width:52ch`; white 82% in hero |
-| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, tertiary, `margin 0 0 16px` |
+| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, `--text-secondary`, `margin 0 0 16px`. See the note below — no live page uses it |
 | Card title | `.offer-card-title` | 21px | 700 | 1.25 | −0.01em | white; about-card title = `clamp(19px,1.5vw,22px)` to match |
 | Card desc | `.offer-card-desc` | 15px | 450 | 1.5 | — | white 82%; `min-height:4.5em` (reserves 3 lines) |
 | Card eyebrow | `.offer-card-eyebrow` | 12px | 700 | — | 0.10em | uppercase **mono** — the sectional `01`/`02`/`03`, the one sanctioned mono use; white 72%. Words use `.offer-card-eyebrow--text` (Urbanist) |
@@ -237,9 +265,17 @@ Use the tokens, never a literal stack:
 > **`.h-display` no longer exists.** It was removed with the 827 dead rules in the
 > `styles.css` purge. `.h-section` is the top of the scale. Don't reintroduce it.
 
-Head pattern within a section: **eyebrow (Urbanist 12px, 0.10em, uppercase, tertiary)
-→ heading (`.h-section`) → dek (`.section-dek`, ~44ch)**. Chinese drops the negative
+Head pattern within a section: **heading (`.h-section` or `.section-head h2`) → dek
+(`.section-dek`, ~44ch)**, with an optional `.eyebrow` above. Chinese drops the negative
 tracking per the existing TC handling. `text-wrap: balance` on headings, `pretty` on prose.
+
+> **The eyebrow is optional, and today it is unused.** `.section-head` ships `h2` + dek
+> on every live page; the count of standalone `.eyebrow` elements site-wide is **0**.
+> Earlier versions of this spec described eyebrow → heading → dek as the pattern
+> "everywhere," which was never true of the shipped pages. Treat it as available, not
+> required — and if you use it, note that it was retinted to `--text-secondary`:
+> `--text-tertiary` `#8A8F98` at 12px measures **3.25:1** on white, under the AA floor,
+> and `design-tokens.md` §5 already declares that token UI/decorative-only.
 
 ---
 
@@ -432,7 +468,7 @@ lifted on hover. The scrim is theme-independent so copy reads in both themes.
 | `.offer-card` | `#0E0E0E` + `--shadow-medium` | `clamp(340px,42vw,432px)` | 18px | 28px | CSS `::before` bg photo (`/assets/imagery/coremap/*.jpg`), per-card `--img-rot` (reports flipped 180°), z −2 | `translateY(-2px)` + `--shadow-high`, image 1→1.06, arrow `translateX(4px)` |
 | `.report-card` | `--bg-placeholder-radials` + `--surface-tertiary`, `--shadow-stacked-low` | 420px | 18px | 28px | real `<img.report-card-media>` (`object-fit:cover`, z −2) | `translateY(-6px)` (transition 350ms), image 1→1.06 |
 | `.about-card` | `#000` + `1px rgba(255,255,255,0.08)` | `clamp(192px,18vw,232px)` | 20px | body `clamp(24px,2.6vw,40px)` | dot-cloud PNG bleeds right, masked left; text `max-width:56%` | `translateY(-2px)`, border → `rgba(255,255,255,0.16)` |
-| `.patent-card` | white shell, hairline border | — | — | — | none — data card (tier chip + jurisdiction chip + mono patent number) | used on `product/licensing/` and the homepage inventory teaser |
+| `.patent-card` | `--surface-recessed` tray (radius 18, pad 5) holding a white `.scard-core` (radius 13, pad 15) | — | 18 / 13 | 5 / 15 | none — data card (tier chip + jurisdiction chip + mono patent number) | `translateY(-3px)`, 3-layer shadow step-up, 700ms |
 
 > **`.content-card` no longer exists** — removed in the dead-rule purge. The visible
 > cards are offer / report / about / patent.
@@ -556,9 +592,9 @@ How the page *feels*, expressed as rules a new page must follow — not prose to
 2. **Left-anchored hero, everything else in the 1440 container.** The hero text hugs the
    left edge (`margin-left:32px`, ≤820px); body sections center in the container. One
    asymmetry (the hero), then order.
-3. **One head pattern everywhere:** eyebrow → heading → dek, in that vertical order, with
-   `--space-head-gap` before the content. Reduced-scale `.h-section` for offerings/about;
-   full scale elsewhere.
+3. **One head pattern everywhere:** heading → dek, in that vertical order, with
+   `--space-head-gap` before the content, and an optional `.eyebrow` above (§2).
+   Reduced-scale `.h-section` for offerings/about; full scale elsewhere.
 4. **One accent per surface, rationed.** The surface accent (§1.2) appears as a seal or
    foil — a single emphasized `em`, a hairline rule, one chip — on **under 15%** of the
    surface. Never a fill behind body text, never a gradient, never a clipped heading.
@@ -584,8 +620,8 @@ Run this when composing a new page so it stays consistent with the homepage:
    genuinely one-off, comment it with the page name and why.
 3. **Wrap** every section's content in `.container` (1440 / 32 / 20); use `.section`
    for cadence, `.section--tight` (+ the `+ .section` collapse) for embedded strips.
-4. **Head pattern**: eyebrow (`.eyebrow`) → heading (`.h-section`, reduced scale for
-   soft sections) → dek (`.section-dek`, ≤44ch).
+4. **Head pattern**: heading (`.h-section`, reduced scale for soft sections) → dek
+   (`.section-dek`, ≤44ch), optional `.eyebrow` above.
 5. **Colour from tokens only** (§1). No inline hex except the sanctioned `#000`/`#fff`
    on image-backed dark cards. Check the property, not the value, when picking a token —
    `#252525` is both `--surface-inverse` and `--text-primary`.
@@ -665,6 +701,24 @@ dossier, not the adrenaline of a SaaS hero.
   legible with zero motion and must never be gated invisible on JS failure.
 - **Fully bilingual** via the `data-zh` system; EN is the visible fallback where ZH is
   pending.
+
+**Measured baseline — the dark hero, 2026-08-07.** Every foreground element clears AA
+against the `#000` hero field with margin, so the hero is not the risk area it was
+assumed to be:
+
+| Element | Ratio | Floor |
+|---|---|---|
+| `.pillar-title` `#fff` | 21.0:1 | 3.0 |
+| `.pillar-sub` white 82% (→ `#D1D1D1`) | 13.8:1 | 4.5 |
+| `em` positioning `--slate-200` | 17.0:1 | 3.0 |
+| `em` signal `--surface-accent-signal` | 7.6:1 | 3.0 |
+| `em` licensing `--surface-accent-licensing` | 5.4:1 | 3.0 |
+| `.hero .btn-glass` label | 17.4:1 | 4.5 |
+| `.hero .btn-secondary` label | 14.5:1 | 4.5 |
+
+There is **no eyebrow on any hero**. `.pillar-eyebrow` (16px/600) exists only on the
+licensing and signal heroes and is forced to `#fff` there; the homepage hero has none.
+The one real finding was `.eyebrow` at 3.25:1 — see §2.
 
 ---
 

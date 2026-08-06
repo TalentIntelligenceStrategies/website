@@ -490,7 +490,7 @@ body {
    (.section--page-hero::before, .cta-banner--themed::before) which
    bloom properly against white. */
 body {
-  background-color: #FFFFFF;
+  background-color: var(--surface-page);
 }
 [data-theme="dark"] body {
   background-color: var(--surface-page);
@@ -703,7 +703,7 @@ a, button, .acc-trigger, .btn {
   background: var(--text-tertiary);  /* fallback */
 }
 [data-pillar="signal"] .deliverable-card h4::before { background: var(--surface-accent-signal); }
-[data-pillar="licensing"] .deliverable-card h4::before { background: #F97316; }
+[data-pillar="licensing"] .deliverable-card h4::before { background: var(--score-d-vivid); }
 
 /* Body — 15px / 300 / --text-secondary, aligned to title's left edge. */
 .deliverable-card p {
@@ -848,8 +848,8 @@ a, button, .acc-trigger, .btn {
 }
 .gapcover .gbento-card--trap:hover {
   opacity: 1;
-  border-color: #C0392B;
-  background: rgba(192, 57, 43, 0.055);
+  border-color: var(--danger-border);
+  background: var(--danger-border-wash);
 }
 
 .gapcover .gbento-inner { position: relative; z-index: 1; }

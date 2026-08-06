@@ -85,6 +85,10 @@
   --surface-tertiary:       #F3F3F3;
   --surface-quaternary:     #EEEEEE;
   --surface-elevated:       #FFFFFF;
+  /* The tray a card sits *in* — outer shell of a patent card, whose inner core is
+     white. Cooler than N4/N5 so the core reads as lifted out of it. Counterpart to
+     --surface-elevated: one step down, not up. Never a page ground. */
+  --surface-recessed:       #E9E9EC;
   --surface-inverse:        #252525;
   --surface-inverse-hover:  #292524;
   --surface-translucent:    rgba(0,0,0,0.05);
@@ -103,6 +107,12 @@
 
   --signal-active:  #22C55E;
   --signal-warning: #F59E0B;
+
+  /* Danger, border-only — design-tokens.md §7.4. A softer, warmer brick red than the
+     brand's danger-fg (#B91C1C), which at 1px reads as a hard alert on what is only a
+     de-emphasis cue. Edges and their paired low-alpha fill; never type. */
+  --danger-border:      #C0392B;
+  --danger-border-wash: rgba(192,57,43,0.055);
 
   /* Per-surface accents — design-tokens.md §7.4 / §7.5. One flat accent per
      surface; replaced the retired gradient system. Sampled from the shipped
@@ -217,6 +227,7 @@
   --surface-tertiary:       #1F1F1F;
   --surface-quaternary:     #262626;
   --surface-elevated:       #262626;
+  --surface-recessed:       #080808;   /* one step below --surface-page, not above */
   --surface-inverse:        #FAFAFA;
   --surface-inverse-hover:  #EEEEEE;
   --surface-translucent:    rgba(255,255,255,0.06);
@@ -234,6 +245,11 @@
   --border-focus:     #FAFAFA;
 
   --success-bg: #052E16; --success-fg: #86EFAC;
+
+  /* Danger border — dark. #C0392B is too dark to register as an edge on #0E0E0E;
+     steps up to its lighter sibling. Fill alpha rises to hold the same weight. */
+  --danger-border:      #E74C3C;
+  --danger-border-wash: rgba(231,76,60,0.10);
 
   /* Per-surface accents — dark variants. The light-mode `-text` values are too
      dark to read on #0E0E0E, so both accents step up a tint. */
@@ -380,13 +396,18 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
    Without this, hero-bottom (filled by the hero gradient) and pill-top read as ~32px,
    while pill-bottom and stats-top stack ~136px — an asymmetry the eye picks up. */
 
+/* Section eyebrow. Currently used by no live page — .section-head ships h2 + dek
+   with no eyebrow — but it stays as the sanctioned pattern for new pages.
+   Colour is --text-secondary, not --text-tertiary: at 12px this is body-scale
+   text, and #8A8F98 measures 3.25:1 on white, under the 4.5:1 AA floor.
+   design-tokens.md §5 already declares --text-tertiary UI/decorative-only. */
 .eyebrow {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   margin: 0 0 16px;
 }
 

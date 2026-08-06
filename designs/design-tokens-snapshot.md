@@ -138,6 +138,10 @@ Color scales are role-based 1–10 per hue: 1–3 backgrounds, 4–6 borders, 7�
 | N9  | `#474747` | text secondary |
 | N10 | `#252525` | ink / text primary |
 
+One neutral sits **off** this ladder by design: `#E9E9EC` (`surface-recessed`, §7.4) is
+cooler than N4/N5 so a white card reads as lifted out of the tray it sits in. It is not a
+ladder step and nothing else should use it.
+
 **Status pairings (bg / fg):**
 
 | State | bg | fg |
@@ -146,6 +150,10 @@ Color scales are role-based 1–10 per hue: 1–3 backgrounds, 4–6 borders, 7�
 | warning | `#FEF9C3` | `#A16207` |
 | danger  | `#FEE2E2` | `#B91C1C` |
 | info    | `#EFF6FF` | `#1E40AF` |
+
+Danger carries a third value for edges only: `#C0392B` (`danger-border`, §7.4), paired
+with a `rgba(192,57,43,0.055)` fill. The other three states have no border variant — add
+one only when a real surface needs it.
 
 **Signal dots:**
 
@@ -391,6 +399,7 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | surface-tertiary | `#F3F3F3` |
 | surface-quaternary | `#EEEEEE` |
 | surface-elevated | `#FFFFFF` (raised surface that must read as lifted above `surface-tertiary` tracks — segmented controls, popovers, command-palette inner cards. Same hex as `surface-page` in light. Note for dark-mode consumers: dark `surface-page` is the *darkest* surface and would recess against the track, so `surface-elevated` must alias to a *lighter* dark surface; full dark-mode mapping deferred per §6.) |
+| surface-recessed | `#E9E9EC` (the tray a card sits *in* — the outer shell of a §Patent card, whose inner core is white. Reads as recessed beneath the card, where `surface-quaternary` `#EEEEEE` is too light to separate and `surface-tertiary` `#F3F3F3` lighter still. Counterpart to `surface-elevated`: one step down, not one step up. Never a page ground.) |
 | surface-inverse | `#252525` |
 | surface-inverse-hover | `#292524` |
 | surface-inverse-hover-lift | `#3A3A3A` (hover for an inverse button on a **dark or image-backed** surface, where `surface-inverse-hover` is imperceptible against the `#252525` rest state. Not a second style — a legibility fix for one context. Never on a light page.) |
@@ -418,6 +427,8 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 | warning-fg | `#A16207` |
 | danger-bg | `#FEE2E2` |
 | danger-fg | `#B91C1C` |
+| danger-border | `#C0392B` (hairline danger signal on a card or panel **edge** — a softer, warmer brick red than `danger-fg`, which at 1px reads as a hard alert on what is only a de-emphasis cue. Borders and their matching low-alpha fill (`rgba(192,57,43,0.055)`) only. It clears AA on white at 5.44:1, but keep type on `danger-fg` so the two roles stay separable. One adjacency to respect: `score-d` `#C2410C` is a near neighbour (5.18:1), but tier D is a browner burnt orange and only ever appears as a chip, never as a 1px edge.) |
+| danger-border-wash | `rgba(192,57,43,0.055)` (the fill that pairs with `danger-border` — a tint so faint it only registers alongside the edge. Fills only; it is not a chip background, which is `danger-bg`.) |
 | info-bg | `#EFF6FF` |
 | info-fg | `#1E40AF` |
 | signal-active | `#22C55E` (live / active — `--signal-dot`; also **score-strong**, ≥ 80) |

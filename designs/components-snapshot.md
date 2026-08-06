@@ -117,6 +117,13 @@ Single-patent tile in a gapped recommendation grid — the unit cell of the Lice
 
 Container: padding 20×22, radius 12, 1px `border-tertiary`, background `surface-page`, `box-shadow: shadow-medium` at rest, `min-height: 160`. Render the card as a `<button type="button">` (or div with `role="button"`, `tabindex="0"`) so focus and keyboard activation are native — the whole tile is the click target, no inline CTAs. Inner layout `flex-direction: column`, `gap: 10`. The grid container uses `display: grid; grid-template-columns: repeat(3, 1fr); gap: 16` — no shared borders, no `overflow: hidden` on the grid (cards must be free to lift on hover). Collapses to 2 columns at ≤1024 and 1 column at ≤640.
 
+> **Tray variant — shipped, not yet folded into this spec.** The marketing site renders
+> the card as two layers: an outer shell on `surface-recessed` (§7.4, radius 18, padding
+> 5) holding a white inner core (radius 13, padding 15), so the core reads as lifted out
+> of the tray. That is a divergence from the single-layer container above, and which
+> treatment is canonical is still open — see also the licensing-cards reference set.
+> Don't reconcile one side to the other without deciding that first.
+
 Anatomy (top → bottom):
 
 - **Top row** — left cluster of `[checkbox] [pin-flag?] [patent ID]` (flex row, `align-items: center`, gap 10) on the left; chip stack on the right in canonical Jurisdiction → Tier order (see §Chip family / stacking order), 6px gap between chips. Checkbox composes §Checkbox primitive at 18×18 (a card-grid override on the primitive's 16×16 default — boosts the hit weight inside a dense 30-card surface) and lives in its own hit area; its click handler MUST `stopPropagation()` so the body click continues to open the §Patent detail Sheet unaffected. Pin-flag is conditional (see *Pin-flag* below). Patent ID is mono 12 / 600 / +0.05em / `text-primary`, ellipsis on overflow. **Title and meta share the same left edge as the checkbox** (no indent) — selection visibility is signalled through the checkbox glyph + the `[aria-selected="true"]` shell treatment, never by indenting downstream content. Status chip is omitted at this scale — it's only added on the §Patent detail Sheet, where the full Status → Jurisdiction → Tier stack reads cleanly.
