@@ -25,7 +25,7 @@
 
 <!-- ═══════════════════════════════════════════════════════════════════════
      v0.8 concept — page-scoped styles ONLY. Everything else is the shared
-     homepage system in /assets/styles.css (per website/documents/page-system.md).
+     homepage system in /assets/styles.css (per website/DESIGN.md).
      Four things are page-scoped because the homepage system has no equivalent:
      (1) the radial signal-pulse hero shader (three.js — concentric monochrome
          signal-blue rings emanating outward on black, reading as a radar pulse),
@@ -328,7 +328,7 @@
      there; it would also resample the mono numerals mid-transition. Entry mirrors
      .about-card / .offer-card: fade + settle 1.08 → 1 on .is-revealed, then zoom
      to 1.05 on hover, gated on .is-revealed so the two never fight. ── */
-  /* The hidden base state is gated on `scripting: enabled`. PRODUCT.md is explicit
+  /* The hidden base state is gated on `scripting: enabled`. DESIGN.md §14 is explicit
      that content must never be gated invisible on JS failure — an unguarded
      opacity:0 waiting on a JS-added class ships a blank section to anyone whose
      script never runs. With no scripting the image is simply visible. */

@@ -32,25 +32,42 @@ levels deep would break.
 | [product/signal/index.html](product/signal/index.html) | Signal deep-dive (= "Patent Intelligence SaaS" internally) |
 | [assets/styles.css](assets/styles.css) | All CSS — tokens, components, page layouts |
 | [assets/site.js](assets/site.js) | All JS — theme toggle, language switcher, drawer, search, slider, forms |
+| [DESIGN.md](DESIGN.md) | **The design authority for this repo** — layout, spacing, type hierarchy, chrome, cards, CTA, motion, page rhythm, principles, a11y, per-page notes |
+| [PRODUCT.md](PRODUCT.md) | Product register for the licensing page (surface, user, purpose). Not a design authority. |
 | [designs/](designs/) | **Read-only** brand snapshots + fonts/logos/icons mirrored from the brand monorepo |
+| [documents/](documents/) | Copy and script material only — PRDs, copy audits, storyboards, review tools. **Nothing here is authoritative for design.** |
 
 A small inline `<script>` at the top of each page's `<head>` sets theme + lang
 from `localStorage` before paint to avoid FOUC — keep it in sync across pages.
 
 ## Design source of truth (red line)
 
-This repo is a **rendered view** of the private TIS brand monorepo (at
-`../brand/`). Styling derives from `designs/*-snapshot.md`:
-`design-tokens-snapshot.md`, `primitives-snapshot.md`, `components-snapshot.md`,
-`visual-guide-snapshot.md`.
+**Exactly two documents are authoritative. Nothing else is.**
 
-- `designs/*` are **read-only mirrors** — never author there.
-- **No invented colors / inline hex** — use the tokens defined in the snapshots.
-- To change visual design: edit upstream in `../brand/`, resync the matching
+| Authority | Owns |
+| --- | --- |
+| `brand/`, mirrored here as [designs/](designs/)`*-snapshot.md` | tokens, colour, logo, co-branding, badge, imagery rules, **voice** |
+| [DESIGN.md](DESIGN.md) | layout, spacing, type hierarchy, chrome, cards, CTA, motion, page rhythm, per-page notes |
+
+The snapshots are `design-tokens-snapshot.md`, `primitives-snapshot.md`,
+`components-snapshot.md`, `visual-guide-snapshot.md`.
+
+- `designs/*` are **read-only mirrors** — never author there. To change a token
+  or an identity rule: edit upstream in `../brand/`, resync the matching
   `*-snapshot.md` here, *then* regenerate the rendered HTML/CSS. Never fix a
   rendered artifact or a snapshot without propagating back upstream.
-
-(This mirrors the source-of-truth rule in the parent `../CLAUDE.md`.)
+  (This mirrors the source-of-truth rule in the parent `../CLAUDE.md`.)
+- **No invented colors / inline hex** — use the tokens. The only sanctioned raw
+  literals are the pure `#000`/`#fff` on always-dark image-backed surfaces
+  (DESIGN.md §1.3).
+- Where `DESIGN.md` and `assets/styles.css` disagree, **the stylesheet is what
+  ships** — fix the doc. It is the implemented truth; DESIGN.md is the
+  page-authoring reference.
+- **No page-local `<style>` blocks.** Compose from `styles.css`. Inline blocks
+  are where drift and dead CSS accumulate — the two pages that had them carried
+  59% and 29% dead CSS. DESIGN.md §0.3 has the rule and the one exception.
+- `documents/` is copy and script material. It has never been a design
+  authority; don't treat a doc in there as one.
 
 ## Local preview
 

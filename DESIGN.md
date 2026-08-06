@@ -1,98 +1,735 @@
-# Design — Licensing Platform landing page
+# DESIGN.md — how tisglobalinc.com is built
 
-Surface-local working spec for the redesign of `product/licensing/index.html`. This is the build contract: it composes the shared system in `assets/styles.css` (tokens, locked chrome, universal components) into a page-scoped visual language. It is **not** a mirror of `brand/*.md`; it is the direction the redesign commits to.
+The single design authority for this repo. `index.html` (the homepage) is the reference
+implementation; this document captures **everything** about how the site looks and
+behaves — tokens, spacing, type hierarchy, hero/nav/CTA treatment, card patterns,
+imagery, motion, page weight, principles and accessibility — so a new page matches it
+without eyeballing.
 
-## Aesthetic direction — "The coverage dossier"
+## 0. How to use this doc
 
-A chaptered, instrument-grade document a composed advisor (泰然) walks 王董 through, replacing a vague legal dread with the calm of someone who already holds coverage. Reference lane, named: **Stripe-restraint precision meets a sealed private-bank dossier** — monochrome ink on white/warm-white, exact type, generous air, with the warm gold→orange ramp rationed like a wax seal. Explicitly **not** hype-SaaS, **not** editorial-serif, **not** brutalist.
+### 0.1 The red line — who owns what
 
-Why the dossier framing licenses the moves impeccable bans by reflex:
-- **Numbered chapter markers (01–07)** are legitimate: the page *is* a single 7-beat narrative (PRD §3), a real ordered sequence, not decorative scaffolding. They replace the banned "kicker above every section."
-- **Monospace (Inconsolata)** is literal, not costume: it sets patent IDs (`US10892431`), tier counts, license numbers, dates, figures — genuine technical registers.
-- The warm ramp as a **seal/foil**, never a fill behind text.
+Exactly two documents are authoritative for this repo. Nothing else is.
 
-## Theme
-
-Light default, dark supported (tokens already themed in `styles.css`). The body carries on white + `#252525` ink + the N-grayscale. "Warmth" is carried by *accent, a few warm-white section grounds, and the seal* — never by a cream body wash (that warm-near-white band is the AI default the page must avoid).
-
-## Color
-
-Strategy: **Restrained** — tinted-neutral grounds + one accent system used <15% of surface. Map to existing `styles.css` tokens; introduce no raw hex beyond the page-scoped warm-ramp tokens (already defined in `design-tokens.md`).
-
-| Role | Token | Use |
+| Authority | Owns | Where |
 |---|---|---|
-| Ink / body | `--text-primary` #252525, `--text-secondary` #474747 | All copy. Body ≥ secondary for ≥4.5:1. |
-| Muted meta | `--text-tertiary` #8A8F98 | Labels, captions only — never body. |
-| Page ground | `--surface-page` #FFFFFF | Default sections. |
-| Warm ground | page-scoped `--lic-surface-alt` #FBF7F1 | *Alternating* dossier sections, sparingly. |
-| Hairlines | `--border-primary` #EEEEEE | Rules, dividers, the dossier grid. |
-| **Seal accent** | warm ramp `#8B6914 → #C2410C` | Hero accent, chapter index tick, one emphasized word per major heading (solid, not clipped), primary-CTA underglow, the distribution bar origin. Rationed. |
-| Tier data | `--score-{s,a,b,c,d}` / `-vivid` | SABCD distribution bar, tier chips, patent dots **only**. |
-| Status | `--warning-*`, `--info-*`, `--success-*` | §11 scenario chips, save badges. |
+| `brand/` (mirrored here as `designs/*-snapshot.md`) | tokens, colour, logo, co-branding, badge, imagery rules, **voice** | [designs/](designs/) — read-only |
+| **This file** | layout, spacing, type hierarchy, chrome, cards, CTA, motion, page rhythm, per-page notes | `DESIGN.md` |
 
-**Banned here (carried over and enforced):**
-- **No gradient-clipped text.** The current `.lic-h2 em` and `.lic-stat-num` gradient fills are removed. Emphasis = weight + the *one* solid warm word, or a thin warm rule under the word — never `background-clip:text`.
-- **No hero-metric gradient template.** Numbers render in mono ink with a unit, set in the dossier grid, not as glowing gradient numerals.
+- `designs/*` are **read-only mirrors**. Never author there. To change a token or an
+  identity rule: edit upstream in `../brand/`, resync the matching `*-snapshot.md`,
+  *then* regenerate the rendered CSS/HTML.
+- This file does **not** restate brand rules; it composes the tokens the snapshots
+  define into page-level patterns.
+- [documents/](documents/) holds **copy and script material only** — PRDs, copy audits,
+  storyboards, review tools. Nothing in there is a design authority.
+- [PRODUCT.md](PRODUCT.md) holds the product register (surface, user, purpose). It is
+  not a design authority either; the strategic direction that used to live there is
+  §13 below.
 
-## Typography
+### 0.2 Implemented truth vs. spec
 
-One family, committed weight/scale contrast. **Urbanist** (display + body), **Inconsolata** (mono: IDs, figures, chapter numbers, dates), **Noto Sans TC** (中文) — all already self-hosted. No fourth family.
+The implemented visual truth is **`assets/styles.css`**. Where this document and the
+stylesheet disagree, the stylesheet is what ships — fix the document.
 
-Fluid modular scale, ratio ≥1.25, heading max ≤ ~84px, letter-spacing floor −0.04em:
+- `assets/styles.css` + `assets/site.js` → **implemented truth**.
+- **This doc** → the page-authoring reference: read it before building a new page.
 
-| Step | clamp | weight / tracking | role |
+> Line numbers below are navigation aids, **not contracts**. They drift on every edit —
+> grep for the selector, don't trust the number. Every value below is quoted from
+> `styles.css` / `site.js`, not re-derived.
+
+### 0.3 No page-local `<style>` blocks
+
+New pages compose from `styles.css`. A page-local `<style>` block is where drift and
+dead CSS accumulate unaudited, and the correlation is not subtle:
+
+| | inline `<style>` blocks | outcome |
+|---|---|---|
+| `index.html`, `product/signal/methodology.html`, `sample-report.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
+| `product/signal/index.html` | 1 | 29% of its inline CSS was dead |
+| `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
+
+The mechanism: 21st.dev components arrive as React + Tailwind and get hand-transliterated,
+so each one is re-derived in a different idiom instead of reusing the one that exists.
+
+**Rule.** If a pattern is reusable, it belongs in `styles.css`. If it is genuinely
+one-off, it may stay inline — but say so in a comment that names the page and the reason.
+An inline block with no such comment is treated as drift and is deleted on the next sweep.
+
+### 0.4 Bilingual authoring pattern
+
+EN is the default DOM text; Traditional Chinese lives in `data-zh` / `data-zh-html`
+attributes and is swapped by `site.js` on the language toggle. Urbanist always carries
+the Latin run; Noto Sans TC / PingFang TC sit in the fallback chain for CJK code points
+only, so toggling `lang` never re-renders Latin glyphs in a CJK face.
+
+Never invent Chinese — EN is the visible fallback where ZH is pending.
+
+> **`.lang-en-only` / `.lang-zh-only` do not exist.** Earlier versions of this spec
+> claimed CSS for them. There is none, in `styles.css` or in any page. Where EN and ZH
+> need different line breaks in the same heading, solve it in `data-zh-html`.
+
+> **Known upstream drift (do not inherit).** The jurisdiction ramp in
+> `brand/design-tokens.md` has moved ahead of the shipped CSS (brand = US/TW/EU/JP/**CH**
+> with teal EU; `styles.css` still ships US/TW/EU/JP/**KR** with slate EU, `--juris-*`
+> at `styles.css:140`). The homepage uses no jurisdiction chips, so it is unaffected —
+> but if a new page needs that ramp, source the values from `styles.css`, not the brand
+> doc. `styles.css` is the lagging side and has not been migrated.
+
+---
+
+## 1. Foundations & tokens
+
+Tokens live in `:root`-level blocks in `styles.css`:
+
+- **`:root, [data-theme="light"]`** — the full light token set (`[data-theme="light"]`
+  is hard-set on `<html>`).
+- **`[data-theme="dark"]`** — fully defined, not active by default.
+- **spacing scale + the two font tokens** — a second `:root` block near `.container`.
+- language-scoped asset-url overrides.
+
+### 1.1 Colour tokens (light)
+
+| Group | Token | Value |
+|---|---|---|
+| Surfaces | `--surface-page` | `#FFFFFF` |
+| | `--surface-secondary` | `#FAFAFA` |
+| | `--surface-tertiary` | `#F3F3F3` |
+| | `--surface-quaternary` | `#EEEEEE` |
+| | `--surface-elevated` | `#FFFFFF` |
+| | `--surface-inverse` | `#252525` |
+| | `--surface-inverse-hover` | `#292524` |
+| | `--surface-inverse-hover-lift` | `#3A3A3A` — see §6 |
+| | `--surface-translucent` | `rgba(0,0,0,0.05)` |
+| | `--surface-inverse-translucent` | `rgba(255,255,255,0.10)` |
+| | `--surface-page-translucent` | `rgba(255,255,255,0.70)` |
+| Text | `--text-primary` | `#252525` |
+| | `--text-secondary` | `#474747` |
+| | `--text-tertiary` | `#8A8F98` |
+| | `--text-quaternary` | `#A5A5A5` |
+| | `--text-inverse` | `#FFFFFF` |
+| Borders | `--border-primary` | `#EEEEEE` |
+| | `--border-secondary` | `#E8E8E8` |
+| | `--border-tertiary` | `#D5D5D5` |
+| | `--border-focus` | `#252525` |
+| Signals | `--signal-active` | `#22C55E` |
+| | `--signal-warning` | `#F59E0B` |
+| | `--success-bg` / `--success-fg` | `#F0FDF4` / `#15803D` |
+
+### 1.2 Surface accents — one flat accent per surface
+
+The three-gradient pillar system was retired 2026-08-06 (`design-tokens.md` §7.5) and
+replaced by flat per-surface accents. **There is no gradient accent left on this site.**
+
+| Token | Value | Use |
+|---|---|---|
+| `--surface-accent-licensing` | `#EC4200` | 3.93:1 on white — large text / UI chrome only |
+| `--surface-accent-licensing-text` | `#D93B00` | 4.59:1 on white — body copy |
+| `--surface-accent-signal` | `#0EA5E9` | 2.77:1 on white — **dark surfaces only** |
+| `--surface-accent-signal-text` | `#0A72B0` | 5.19:1 on white — body copy |
+| `--surface-accent-licensing-wash` | `#F1EDE7` | pale warm tint — hover/rest fills |
+| `--surface-accent-signal-wash` | `#EEF3F7` | pale cool tint — hover/rest fills |
+| `--surface-accent-tis` | `#252525` | TIS overall carries no colour of its own — neutral ink |
+
+Accents are held **off** the SABCD ramp so a surface accent never reads as a tier chip.
+Pick the `-text` variant for anything at body size; the vivid values miss AA.
+
+**Data ramps** (chips/dots — they encode real data, never decoration):
+SABCD `--score-{s,a,b,c,d}` + `--score-*-bg` tinted pairs; vivid `--score-*-vivid`
+(theme-independent: s `#D4A017`, a `#10B981`, b `#0EA5E9`, c `#8B5CF6`, d `#F97316`);
+jurisdiction `--juris-*` + `-bg`; `--bronze-mid` `#B8965A`; slate primitives
+`--slate-{100,200,400,500,700,900}`.
+
+**Partner brand colours** are externally owned, carry the `-brand-` infix
+(`--partner-brand-ipic` `#00AAEA`, `-iii` `#14156D`, `-nycu` `#0033A0`), and appear only
+on that partner's own seal or lockup — never as a TIS accent.
+
+> **Token-name trap.** `--partner-<name>` *without* the `-brand-` infix is a **logo
+> asset `url()`**, not a colour. Feeding one to `fill` or `background-color` fails
+> silently.
+
+**Shadows:** `--shadow-low` `0 2px 4px rgba(0,0,0,0.06)`; `--shadow-medium`
+`0 4px 24px rgba(0,0,0,0.08)`; `--shadow-high` `0 7px 32px rgba(0,0,0,0.12)`;
+`--shadow-stacked-low` — a 5-layer near-flat stack.
+
+**Easing:** `--ease-card` `cubic-bezier(0.16, 1, 0.3, 1)` — the primary
+reveal/hover/crossfade curve. `--ease-out` `cubic-bezier(0.23, 1, 0.32, 1)` — secondary
+(also redeclared locally on `.about-card`). **Refer to these by token name.** Calling
+`(0.16,1,0.3,1)` "ease-out" in a spec is how the two got swapped in the first place.
+
+### 1.3 The pure-`#000`/`#fff` exception
+
+Always-dark, image-backed surfaces use literal `#000` / `#0E0E0E` / `#fff` (not tokens)
+so photographic/black-field imagery blends seamlessly and white copy stays legible in
+*both* themes: `.offer-card` (`#0E0E0E`), `.about-card` / `.contact-panel .btn-primary`
+(`#000`, hover `#1A1A1A`), `.report-card` scrim, the announce bar, the partner band, and
+the hero's in-hero CTA re-skin (§6).
+
+These are the **only** sanctioned raw-hex literals outside the token blocks. Everything
+else in `styles.css` resolves to a token — the count of unique invented hex is **0**.
+
+### 1.4 Global background — the graph-paper underlay
+
+`body` paints a fixed **32px graph-paper grid** over `--surface-page`: two
+`repeating-linear-gradient`s (0deg + 90deg) at `rgba(37,37,37,0.024)`, 1px line every
+32px, `background-attachment: fixed` so it reads as a steady viewport underlay.
+Transparent sections show it through; solid sections (cards, footer, the black hero)
+cover it. Base body type: `16px / line-height 1.6 / letter-spacing 0.01em`, antialiased.
+`html { scroll-behavior: smooth; scroll-padding-top: 80px }`.
+
+---
+
+## 2. Typography
+
+**Families** (all self-hosted `@font-face`, `font-display: swap`, from `/designs/assets/fonts/`):
+
+- **Urbanist** — primary UI/display sans; 400/500/600/700.
+- **Inconsolata** — mono; 400/500/600. **Numerals only** — see the rule below.
+- **Noto Sans TC** — CJK; 400/500/600/700.
+
+Use the tokens, never a literal stack:
+
+| Token | Value |
+|---|---|
+| `--font-sans` | `'Urbanist','Inter','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif` |
+| `--font-mono` | `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace` |
+
+> ### Mono is never used on text.
+>
+> **Inconsolata is reserved for sectional numbering** — the `01` / `02` / `03` that
+> index a section — plus numerals (prices, counts, percentages, scores, dates) and
+> number-prefixed identifiers (`US 12051972 B2`, `LIC-12345`).
+>
+> **If a string reads as a word, it is `--font-sans`.** That includes eyebrows,
+> labels, metadata, chips, tags, link text, status strings, column headers, form
+> labels, and alphabetic codes — `S` / `A` / `B` / `C` / `D` tier letters and `US` /
+> `TW` / `EP` jurisdiction letters included.
+>
+> Mixed content splits: `Save 10%` leads with a word, so it is sans. `NT$8,990` is
+> sans-free — mono. When an eyebrow carries words rather than numerals, use
+> `.offer-card-eyebrow--text`.
+>
+> This rule is upstream in [`design-tokens-snapshot.md`](designs/design-tokens-snapshot.md) §3.
+> It was violated for a long time because that file's own §7.2 defined `copy-mono-*`
+> and `label-mono-*` roles that contradicted it. Those roles are now scoped to numerals.
+> Live mono selectors in `styles.css`: **7**, all numerals.
+
+**There are no numeric `--font-size-*` tokens** — every size is set per class. The full scale:
+
+| Role | Class | Size | Weight | Line-height | Tracking | Notes |
+|---|---|---|---|---|---|---|
+| Section (full) | `.h-section` | `clamp(32px,4vw,48px)` | 700 | 1.1 | −0.02em | the display step on this site |
+| Section (reduced) | `.offerings .h-section`, `.about-intro .h-section` | `clamp(24px,2.8vw,36px)` | 600 | 1.15 | −0.015em | offerings/about adopt the smaller "Latest reports" hierarchy |
+| Hero title | `.pillar-title` | `clamp(40px,5vw,60px)` | 600 | 1.05 | −0.02em | white in hero; `em` = **flat accent**, see §5 |
+| Hero eyebrow | `.pillar-eyebrow` | 16px | 600 | — | 0.02em | `--text-primary`; overridden to `#fff` on the licensing/signal heroes; `:empty` collapses in ZH |
+| Hero sub | `.pillar-sub` | `clamp(17px,1.5vw,20px)` | 450 | 1.4 | −0.01em | `max-width:52ch`; white 82% in hero |
+| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, tertiary, `margin 0 0 16px` |
+| Card title | `.offer-card-title` | 21px | 700 | 1.25 | −0.01em | white; about-card title = `clamp(19px,1.5vw,22px)` to match |
+| Card desc | `.offer-card-desc` | 15px | 450 | 1.5 | — | white 82%; `min-height:4.5em` (reserves 3 lines) |
+| Card eyebrow | `.offer-card-eyebrow` | 12px | 700 | — | 0.10em | uppercase **mono** — the sectional `01`/`02`/`03`, the one sanctioned mono use; white 72%. Words use `.offer-card-eyebrow--text` (Urbanist) |
+| Card CTA | `.offer-card-more` | 13px | 600 | — | — | white |
+| Nav link | `.topnav-link` | 14px | 600 | — | — | secondary; hover → `#000` |
+| Button (default) | `.btn` | 12px | 700 | 1 | 0.10em | — |
+| Button large | `.btn-lg` | 14px | 700 | 1 | 0.10em | — |
+
+> **`.h-display` no longer exists.** It was removed with the 827 dead rules in the
+> `styles.css` purge. `.h-section` is the top of the scale. Don't reintroduce it.
+
+Head pattern within a section: **eyebrow (Urbanist 12px, 0.10em, uppercase, tertiary)
+→ heading (`.h-section`) → dek (`.section-dek`, ~44ch)**. Chinese drops the negative
+tracking per the existing TC handling. `text-wrap: balance` on headings, `pretty` on prose.
+
+---
+
+## 3. Spacing, container & rhythm
+
+**Container:** `max-width:1440px; margin:0 auto; padding-inline:32px` → `20px` under
+768px. Non-container blocks that must align with `.container` sections (`.about-intro`,
+`.about-duo`, `.about-partners`) re-apply the same 1440/32/20 rule.
+
+**Spacing scale** — a 3-tier ratio (~16 : 44 : 80) that encodes hierarchy:
+
+- `--space-section: clamp(28px,3vw,44px)` → `.section { padding-block }`, giving equal
+  inter-section gaps (2× = ~56–88px).
+- `--space-head-gap: clamp(32px,3.5vw,48px)` → title-block → content gap.
+
+**Section cadence rules:**
+- `.section--tight { padding-block: 32px }` (24px mobile).
+- `.section--tight + .section { padding-block-start: 0 }` — a regular section following
+  a tight one drops its top padding so the tight section (e.g. the partner strip) owns
+  the full breathing room and the rhythm stays symmetric.
+
+**Grid gaps** (per section): offerings `clamp(16px,1.6vw,24px)`; about-duo
+`clamp(16px,1.8vw,28px)`; footer `48px 56px`; section-head `24px`; contact-row `16px`;
+chips / contact-panel fields `8px`.
+
+8px is the base unit. Group tightly within a beat, separate generously between sections.
+
+### 3.1 Breakpoints
+
+**Reach for a scale value first.** These carry the most weight, so a new page that
+uses them inherits behaviour that is already proven:
+
+| Value | Queries using it | Reads as |
+|---|---|---|
+| `1100px` | 2 | wide desktop |
+| `980px` (min `981px`) | 11 | desktop |
+| `880px` (min `881px`) | 13 | small desktop / large tablet |
+| `768px` (min `769px`) | 12 | tablet |
+| `640px` | 10 | large phone |
+| `560px` (min `561px`) | 12 | phone |
+| `480px` | 4 | small phone |
+
+Always `@media (max-width: 640px)` — one space after the colon, integer pixels, no
+sub-pixel values. Prefer `max-width`; add a `min-width` companion only when a rule
+genuinely needs the other side of the same edge, and use scale-value + 1 so the two
+never overlap.
+
+> **Do not "tidy" an existing breakpoint onto the scale.** Nine off-scale values are
+> still in use — `1024` `920` `900` `820` `720` `700` `600` `520` `400` — and they are
+> mostly *load-bearing*, not drift. Tested: collapsing `900px` → `880px` on the About
+> and Signal pages made 881–900px render the two-column layout at ~230px per column,
+> dropping body copy to six words a line. The `900px` edge exists because that layout
+> needs 900px to breathe. A breakpoint value is a layout decision; migrating one means
+> looking at the affected band, not matching a table.
+>
+> Custom properties **cannot** be used in a media condition —
+> `@media (max-width: var(--bp-md))` does not work. This scale therefore stays a
+> convention, not a token set. There is no build step today (see
+> [CLAUDE.md](CLAUDE.md) § Deploy); a real compiled scale needs one.
+
+---
+
+## 4. Nav (topnav)
+
+`.topnav`: `position:fixed; z-index:100; height:64px`, background
+`--surface-page-translucent`, `backdrop-filter: saturate(140%) blur(20px)`,
+`border-bottom:1px solid --border-primary`. `.topnav-inner` is a flex row,
+`height:100%`, `gap:32px`.
+
+- **Logo** (`.topnav-logo`): Secondary mark, `height:28px`, `aspect-ratio` from the SVG
+  viewBox (eng ≈8.75:1, ch ≈3.74:1), themed/lang-switched via `--logo-secondary`. Below
+  640px it falls back to the square submark (`aspect-ratio:1/1`, `height:32px`).
+- **Links** (`.topnav-link`): 14px/600, secondary colour, centered, hover → `#000`
+  (`#fff` in dark). The Products link is a `.has-dropdown` disclosure (chevron rotates
+  180° when `aria-expanded="true"`) holding two `.product-card`s with lazy `<img>` media.
+- **Controls cluster**: language globe + search (`.icon-btn`), then "Contact sales"
+  primary CTA, then the mobile hamburger (`.topnav-mobile-trigger`, shown at narrow
+  widths). The mobile drawer (`.mobile-drawer` + `.mobile-overlay`) mirrors the nav.
+
+`main` reserves `padding-top` for the fixed 64px nav; `scroll-padding-top:80px` keeps
+anchored jumps clear of it.
+
+Chrome is **duplicated per page** — there is no shared include. A nav or footer change
+means editing every page file.
+
+---
+
+## 5. Hero
+
+Full-viewport on the homepage; a layered z-stack over a WebGL shader on a black field.
+
+**Container** (`.hero`): base `height: clamp(460px,56vw,580px)`, `overflow:hidden`,
+flex-centered, `background:#000`. That black is **load-bearing** — it is the fallback if
+WebGL or esm.sh fail and the canvas never mounts. Nothing opaque may sit between it and
+the shader.
+
+**Homepage override** (`[data-page="home"] .hero`): `height:auto;
+min-height:calc(100dvh - 64px); padding-block:0` — the hero owns the first screen minus
+the nav. On home the announce bar is lifted out of flow and absolutely overlaid at
+`top:64px` (`z-index:90`) so it scrolls away with the page while only the nav pins.
+
+**Z-stack (bottom → top):**
+
+1. **`.hero::before` (z1)** — bloom + 32px ruled grid from `--hero-bp-bloom`.
+   `.hero::after` is retired (`content: none`).
+2. **`.hero-warm` / `.hero-signal` / `.hero-silver` (z2)** — three swappable slide
+   layers, each `opacity:0`, crossfaded **480ms `--ease-card`** by `[data-active-pillar]`
+   on `.hero`. **They carry no background.** The per-pillar gradient washes were retired
+   2026-08-06; each layer survives purely as the positioned carrier for its own 32px
+   ruled-grid `::before` (`rgba(37,37,37,0.020)`, white at `0.025` in dark) and, on
+   product pages, the full-bleed static hero image.
+3. **`.hero-shader#hero-shader` (z2)** — the **shifting-lines WebGL fragment shader**
+   (RGB chromatic sine lines on black), `three.js@0.160.0` imported from `esm.sh` as an
+   inline ESM module in `index.html` (`SPEED=0.003`, DPR capped at 2, `RawShaderMaterial`).
+   It mounts a `<canvas>`, adds `.is-ready` to crossfade in over **600ms**. On any
+   failure the black `.hero` shows through. (Ignore stale "sphere" comments in the CSS —
+   the ShaderGradient sphere is gone.)
+4. **`.hero-grid` (z3)** — faint 32px white grid `rgba(255,255,255,0.025)` over the shader.
+5. **`.hero-inner` / `.pillar` (z5)** — foreground text.
+
+**Foreground `.pillar`:** left-anchored (`align-items:flex-start`, `max-width:820px`,
+`margin-left:32px`, `gap:14px`) — the 32px offset matches `.innovue-collab-card`'s
+padding so the two left edges line up. `.pillar-title` white; `.pillar-sub` white 82%,
+≤52ch. `.pillar-actions` (`gap:12px`) holds a `btn-primary btn-lg` + a `btn-glass btn-lg`
+(see §6 for the in-hero re-skin). `.hero-scroll-cue` — decorative chevron at
+`bottom:28px`, `hero-cue-bounce 2.2s` infinite.
+
+**`.pillar-title em` is a flat accent, not clipped gradient.** Per pillar:
+signal → `--surface-accent-signal`; licensing → `--surface-accent-licensing`;
+positioning → `--slate-200` (TIS overall carries no colour, so the silver register is the
+light end of the slate ramp). Each also sets `font-style: normal` and
+`-webkit-text-fill-color` to clear the inherited fill. `background-clip: text` is **0
+site-wide** — do not reintroduce it.
+
+**Reduced motion:** the shader renders a single static frame (time stops advancing),
+the scroll cue stops bouncing, backdrop crossfades still resolve to the active slide.
+
+---
+
+## 6. CTAs / buttons
+
+**Base `.btn`:** `inline-flex` centered, `font-weight:700; letter-spacing:0.10em;
+line-height:1; border-radius:12px`, transition `100ms linear` on
+background/color/transform/box-shadow, `white-space:nowrap`, `:active { transform:
+scale(0.95) }`. Touch: `min-height:44px` under `(pointer:coarse)`.
+
+| Variant | Fill | Padding / size | Hover |
 |---|---|---|---|
-| Display (hero) | `clamp(40px, 6vw, 76px)` | 700 / −0.035em / lh 1.04 | hero h1 |
-| H2 (chapter title) | `clamp(30px, 4vw, 50px)` | 700 / −0.025em / lh 1.1 | section headings |
-| H3 | `clamp(20px, 2vw, 26px)` | 600 / −0.015em | tile / beat titles |
-| Lead | `clamp(17px, 1.6vw, 21px)` | 400 / lh 1.6 | section subheads |
-| Body | 16px (15px dense) | 400 / lh 1.6 | prose, max 68ch |
-| Figure (mono) | `clamp(30px, 4vw, 52px)` | 700 / −0.02em | NT$, counts |
-| Meta / label (mono) | 12px | 600 / 0.14em / uppercase | chapter no., tier counts, eyebrows-as-index |
+| `.btn-primary` | `--surface-inverse` (#252525), text inverse | `10px 18px`, 12px | `--surface-inverse-hover` |
+| `.btn-secondary` | `--surface-tertiary`, `--text-primary` | `18px 28px`, 14px | `--surface-quaternary` |
+| `.btn-glass` | `--surface-page-translucent` + `backdrop-filter saturate(140%) blur(20px)` + `1px --border-primary` | (pair with `-lg`) | `--surface-secondary` |
+| `.btn-lg` | (size modifier) | `18px 28px`, 14px, radius 12 | — |
 
-`text-wrap: balance` on h1–h3; `text-wrap: pretty` on prose. Chinese (`html[lang=zh-Hant]`) drops the negative tracking and tightens line-height per the existing TC handling.
+> **`.btn-ghost` no longer exists** in `styles.css` — it survives only in a
+> product-shot showcase file with its own CSS. Don't cite it as a site variant.
 
-## Spacing & rhythm
+**In-hero re-skin** (over the black shader):
+- `.hero .btn-primary` → glass-on-dark: `rgba(0,0,0,0.45)` + blur + `1.25px
+  rgba(255,255,255,0.26)` border, white text; hover `rgba(0,0,0,0.60)` + border `0.42`.
+- `.hero .btn-glass` → `rgba(255,255,255,0.10)` + `1.25px rgba(255,255,255,0.32)`
+  border, white text; hover `rgba(255,255,255,0.17)`.
+- `.hero .btn-secondary` → **flat light fill**, `--slate-200` on `--slate-900`, one
+  treatment for every surface; hover `--slate-400`, `filter:none`. Dark theme swaps to
+  `--slate-700` on `--slate-100`.
+  This was a per-pillar gradient fill (warm / cool / slate) until 2026-08-06. The accents
+  can't carry button text at AA on a dark hero — `#EC4200` is 3.9:1 against both white
+  and ink — so the CTA takes the high-contrast light fill and the accent stays reserved
+  for text emphasis.
 
-8px base. Section padding fluid `clamp(72px, 9vw, 128px)`; vary deliberately — the honest-edges (§11) and pricing (§14) beats get more air; rapid proof beats (§10 timeline) get less. The unifying structure is a **dossier spine**: a thin left rule / chapter index that threads the narrative sections, giving the page a documentary backbone instead of a stack of identical cards. Group tightly within a beat, separate generously between chapters.
+**Two hovers, one reason.** `--surface-inverse-hover` (`#292524`) is imperceptible
+against a `#252525` rest state on dark or image-backed surfaces. Those use
+`--surface-inverse-hover-lift` (`#3A3A3A`) instead. On light grounds, keep the standard.
 
-## Layout & composition
+**Contact submit override:** `.contact-panel .btn-primary` uses pure `#000` (hover
+`#1A1A1A`) to match the card's black field, not the global `#252525`.
 
-Break the "everything is a bordered card" monotony — each chapter gets the affordance that fits, not a default tile:
-- **§2 Hero** — asymmetric: oversized type left, a framed credential/seal slot right (IMAGE SLOT A). Warm seal accent on one word + a thin rule.
-- **§3 Why now** — editorial two-column: argument prose + a single pulled figure (NT$50,000+), no card.
-- **§4 Cost of going alone** — a 3-row *comparison ledger* (not three equal cards): File / Hire / Subscribe, the TIS row weighted by treatment (warm seal rule + ground), figures in mono.
-- **§5 What TIS gives** — 4 numbered beats as a stepped list with a credential-badge slot (IMAGE SLOT B), not a 4-card grid.
-- **§6 Why thirty** — 1 / 100 / 30 as a three-stop argument with count-up figures in the dossier grid (no gradient).
-- **§7 SABCD** — the proportional distribution bar (5·6·9·6·4) is the hero element; 5 tier role-lines as a compact legend, data-colored.
-- **§8 How AI picks** — three axes as a labeled triple + one wide output panel; add the 5-min-vs-24-hr framing line.
-- **§9 How it works** — keep the universal `howitworks` accordion + step-shot component (byte-identical copy to homepage; reuses screenshots 01–05).
-- **§10 The week after** — horizontal timeline rail Day 1 → Week 2 along the dossier spine.
-- **§11 When it doesn't go to plan** — three scenario panels with real weight + status chips; the coda gets a full-width composed line.
-- **§12 Inventory ticker / §13 partner band / §14 pricing builder / §15 FAQ / §16 contact** — keep the working universal components; restyle to the dossier language, preserve all JS contracts.
+---
 
-Responsive: single fluid system, `clamp()` everywhere, `repeat(auto-fit, minmax())` for any true grid. Test hero + chapter headings at 360 / 768 / 1280 — no overflow.
+## 7. Cards
 
-## Components (page-scoped)
+All homepage cards share one recipe: **a dark base + a full-bleed image layer + a
+bottom-up black legibility scrim + bottom-anchored white copy**, revealed on scroll and
+lifted on hover. The scrim is theme-independent so copy reads in both themes.
 
-- **Chapter head**: mono index (`01` … warm tick) + H2 with one solid warm word + lead. Replaces `.lic-eyebrow` repeated-kicker grammar.
-- **Dossier figure**: mono numeral + unit + caption, on hairline grid. Replaces gradient stat tiles.
-- **Comparison ledger row** (§4): label · figure · note, full hairline borders, TIS row weighted.
-- **Distribution bar** (§7): keep the tier-colored proportional segments; animate widths on reveal.
-- **Timeline rail** (§10): day marker + headline + body threaded on the spine.
-- **Reused universal**: `topnav`, `footer`, `announce`, `howitworks/acc-*`, `v2-section` ticker, `partner-strip`, `bp-*` bundle picker, `brand-select`, `contact-form`, `tier-chip` — all keep their markup/JS contracts; only page-scoped skin changes.
+**Shared scrim** (offer + report):
+`linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%)`.
 
-Cards only where a card is the true affordance (scenario panels, inventory rows). No nested cards.
+| Card | Base | Min-height | Radius | Pad | Image layer | Hover |
+|---|---|---|---|---|---|---|
+| `.offer-card` | `#0E0E0E` + `--shadow-medium` | `clamp(340px,42vw,432px)` | 18px | 28px | CSS `::before` bg photo (`/assets/imagery/coremap/*.jpg`), per-card `--img-rot` (reports flipped 180°), z −2 | `translateY(-2px)` + `--shadow-high`, image 1→1.06, arrow `translateX(4px)` |
+| `.report-card` | `--bg-placeholder-radials` + `--surface-tertiary`, `--shadow-stacked-low` | 420px | 18px | 28px | real `<img.report-card-media>` (`object-fit:cover`, z −2) | `translateY(-6px)` (transition 350ms), image 1→1.06 |
+| `.about-card` | `#000` + `1px rgba(255,255,255,0.08)` | `clamp(192px,18vw,232px)` | 20px | body `clamp(24px,2.6vw,40px)` | dot-cloud PNG bleeds right, masked left; text `max-width:56%` | `translateY(-2px)`, border → `rgba(255,255,255,0.16)` |
+| `.patent-card` | white shell, hairline border | — | — | — | none — data card (tier chip + jurisdiction chip + mono patent number) | used on `product/licensing/` and the homepage inventory teaser |
 
-## Motion
+> **`.content-card` no longer exists** — removed in the dead-rule purge. The visible
+> cards are offer / report / about / patent.
 
-Composed = orchestrated restraint, not micro-interaction confetti. Ease-out only (`cubic-bezier(0.16,1,0.3,1)`); no bounce.
-- One deliberate hero entrance (type + seal settle).
-- Scroll reveals that **enhance an already-visible default** — keep `[data-reveal]` driven by `site.js` (it falls back to instant under reduced-motion / no-IO); stagger only within a list, never one uniform reflex per section.
-- Count-up on real figures via the existing `.counter[data-target]` hook (reduced-motion shows final value).
-- Distribution-bar segments grow from 0 width on reveal.
-- `prefers-reduced-motion: reduce` → all reveals instant, counters final, bar static. Content never hidden behind a never-firing transition.
+**Image reveal** (offer + report): image enters at `scale(1.08)` + `opacity:0`, settles
+to `scale(1)` over **700ms `--ease-card`** when `.is-in` lands; hover then zooms to
+`1.06` (gated on `.is-in` so it never fights the entry). `--img-rot` composes with both
+zooms. Reduced motion: image just shows, no zoom.
 
-## Voice (enforced in copy)
+**Chips & forms.** `.topic-chip`: `padding:8px 16px; border-radius:9999px;
+1px --border-tertiary; 13px/600`, native radio visually hidden (`opacity:0; width:0`),
+`:has(input:checked)` → filled `--surface-inverse` with `--text-inverse`, `:active
+{ scale(0.97) }`, `:focus-within` outline. The mkt popup uses a `.brand-select` custom
+listbox; the contact form pairs inquiry-type chips with the black-submit override (§6).
 
-泰然, anti-hype. Banned EN (may/could, AI-powered, revolutionary, disruptive, unlock, empower, seamless, leverage v., solutions, world-class, actionable insights, trusted by) and ZH (革命性/顛覆性/智能-prefix/完全/業界領先/賦能). No em dashes in *new* copy (existing verbatim PRD copy is preserved as-is). Anchor numbers verbatim. Credit Innovue once near the top. Never invent ZH — EN visible fallback + `<!-- TODO ZH -->` for every `[ZH NEEDED]` gap.
+Cards only where a card is the true affordance. **No nested cards.**
+
+> **Dynamic class construction — static analysis will call these dead.** `site.js`
+> builds `ts-tier-${…}` / `ts-juris-${…}`; `product/licensing/index.html` builds
+> `patent-card`+`is-dup`, `juris-tile ${juris.toLowerCase()}` and
+> `tier-tile ${tier.toLowerCase()}` — so bare `cn` / `ep` / `jp` / `kr` are live classes.
+> The only classes actually toggled by name are `is-active`, `is-current`, `is-done`,
+> `hiw-anim`.
+
+---
+
+## 8. Footer
+
+`.footer`: background `--surface-secondary`, `padding-block:68px`. `.footer-grid` =
+`1.4fr 1fr 1fr 1fr`; `.footer-cols { display:contents }` dissolves the three link
+columns into that parent grid. Contains: a newsletter block (44px input, arrow → check
+success swap), the co-branded **TIS × Innovue** lockup (32px TIS submark + 1px×32px
+divider + Innovue wordmark 103×36), and three link columns (Products / Company / Legal)
+with 15px Lucide icons. A `.footer-baseline` band carries the centered
+"© 2026 Talent Intelligence Strategies" over an inset hairline.
+
+Attribution phrasing for the Innovue lockup is owned by
+[visual-guide-snapshot.md](designs/visual-guide-snapshot.md), not by this file.
+
+---
+
+## 9. Imagery
+
+- **Behind components** — the signature move: images sit *under* a bottom-up black
+  scrim so white copy reads. Offer/contact cards use CSS `background-image` on `::before`;
+  report/press cards use a real `<img>`. Per-card rotation via `--img-rot` (reports 180°).
+  Contact left panel: `venture.jpg` under a top+bottom scrim (`rgba(0,0,0,0.45…0.55)`).
+- **Dot-cloud bleed** — `.about-card` dot PNGs (`/assets/imagery/home/*-dots.png`) bleed
+  off the right on a pure-black field, masked left with a `linear-gradient(90deg, #000
+  0%, #000 18%, transparent 62%)` so the text half stays clean.
+- **Partner logos** — CSS `background-image` from `--partner-*` SVG url() tokens, treated
+  `grayscale(1) invert(1) brightness(1.4)` at `opacity:0.85` on the dark band, full
+  colour on hover.
+- **Lazy `<img>`** — nav/drawer product-card media set explicit `width`/`height` and use
+  `loading="lazy" decoding="async"`. Global: `img { max-width:100%; height:auto }`,
+  `object-fit:cover` on media.
+- **Logos** are theme + language switched via `--logo-*` / `--partner-*` url() tokens
+  (dark/light × eng/ch). OG/Twitter images + favicons are declared in `<head>`.
+
+Which gradients survive is a **functional** list: ruled-paper grids, legibility scrims,
+SABCD seals, mask rings, the QR conic, and `--bg-placeholder-radials`. There is no
+decorative gradient left. Don't add one.
+
+---
+
+## 10. Motion & reveal
+
+**Three motion techniques ship, not one.** All are sanctioned; the constraint is *where*
+each is allowed and that each has a fallback.
+
+| Technique | Where | Fallback |
+|---|---|---|
+| `IntersectionObserver` + CSS transitions (`site.js`) | every page — the default | `prefers-reduced-motion` shows the resolved state |
+| GLSL / WebGL via `three.js@0.160.0` (esm.sh) | hero backdrops only (`index.html`, `about/`) | DPR capped at 2; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
+| GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
+
+Prefer the observer. Reach for GSAP only when a timeline genuinely needs scrub-linked
+sequencing, and never introduce a fourth library.
+
+- **`[data-reveal]`** (headings, deks, about cards, partner band): fade + 10px rise →
+  `.is-revealed` transitions `opacity/transform` over **450ms `--ease-card`**; the dek
+  trails the heading by **70ms**. Observer `threshold:0.12, rootMargin:'0px 0px -8% 0px'`.
+- **`.offer-card` → `.is-in`**: image `scale(1.08)→1` + fade over 700ms, **staggered
+  `i*90ms`** per card; `threshold:0.25`.
+- **`.report-card` → `.is-in`**: same 700ms image reveal, per-carousel (not staggered).
+- **Hover language** (`(hover:hover) and (pointer:fine)` only): cards lift
+  (`-2/-6px`) with a shadow step-up and image zoom to 1.06; nav links darken to
+  `#000`; arrows translate; `.arrow-link`/`.contact-email`/`.contact-meta a` share a
+  left-origin 1px underline wipe (`scaleX(0)→1`, 280ms `--ease-out`).
+- **Partner marquee**: `@keyframes partner-scroll` translateX `0→-50%` over **45s
+  linear infinite**, duplicated set for a seamless loop,
+  `animation-play-state:paused` on hover, progressive-blur edge fades.
+- **Crossfades**: hero backdrops 480ms, shader 600ms, theme swap 250ms, buttons ~100ms.
+- **Counters**: `.counter[data-target]` count-up via `counterObserver` (`threshold:0.3`),
+  driven entirely from `site.js` — there is no `.counter` CSS rule. Live on `/about/`
+  and `product/licensing/`.
+
+Ease-out only; **no bounce** — the hero scroll cue is the single sanctioned exception.
+
+**Every effect has a `@media (prefers-reduced-motion: reduce)` fallback**: reveals show
+instantly, image zooms are disabled, the marquee goes static, the shader renders one
+frame, counters show the final value, the scroll cue stops. Content is **never** hidden
+behind a never-firing transition, and never gated invisible on JS failure.
+
+> **Verification note.** Motion-frozen screenshots require
+> `--force-prefers-reduced-motion`; without it the shader, marquees and sheens produce
+> false positives. Never capture below the fold with a tall viewport — it inflates the
+> `100vh` heroes and the capture is meaningless. Scroll with URL fragments instead.
+
+---
+
+## 11. Page rhythm & weight (buildable rules)
+
+How the page *feels*, expressed as rules a new page must follow — not prose to admire:
+
+1. **Alternate light ground with pure-black image cards.** The page is white/graph-paper
+   with occasional bands of dense, near-black image cards (offerings, about, contact).
+   That alternation is what gives the page its weight — light air, then a heavy anchored
+   block, then air again. Don't fill a whole section with a colour wash; carry weight
+   with a black card, not a coloured background.
+2. **Left-anchored hero, everything else in the 1440 container.** The hero text hugs the
+   left edge (`margin-left:32px`, ≤820px); body sections center in the container. One
+   asymmetry (the hero), then order.
+3. **One head pattern everywhere:** eyebrow → heading → dek, in that vertical order, with
+   `--space-head-gap` before the content. Reduced-scale `.h-section` for offerings/about;
+   full scale elsewhere.
+4. **One accent per surface, rationed.** The surface accent (§1.2) appears as a seal or
+   foil — a single emphasized `em`, a hairline rule, one chip — on **under 15%** of the
+   surface. Never a fill behind body text, never a gradient, never a clipped heading.
+   Everything else is ink on white or white on black.
+5. **Data colour is data only.** The SABCD and jurisdiction ramps appear where they
+   encode a real tier or a real jurisdiction — distribution bars, tier chips, patent
+   dots. Never as decoration. And never as the *sole* signal: always pair with the
+   letter token.
+6. **Restraint in motion.** Reveals *enhance an already-visible default*; stagger only
+   within a list, never one uniform reflex per section. Ease-out only, no bounce (§10).
+7. **Black mass is allowed** on image-backed cards and the hero — that's where the pure
+   `#000`/`#fff` exception lives (§1.3). Nowhere else.
+
+---
+
+## 12. New-page checklist
+
+Run this when composing a new page so it stays consistent with the homepage:
+
+1. **Chrome**: copy the locked `topnav` + `footer` + the `<head>` FOUC theme/lang guard
+   verbatim from an existing page (chrome is duplicated per page — no shared include).
+2. **No page-local `<style>` block** (§0.3). Compose from `styles.css`; if a rule is
+   genuinely one-off, comment it with the page name and why.
+3. **Wrap** every section's content in `.container` (1440 / 32 / 20); use `.section`
+   for cadence, `.section--tight` (+ the `+ .section` collapse) for embedded strips.
+4. **Head pattern**: eyebrow (`.eyebrow`) → heading (`.h-section`, reduced scale for
+   soft sections) → dek (`.section-dek`, ≤44ch).
+5. **Colour from tokens only** (§1). No inline hex except the sanctioned `#000`/`#fff`
+   on image-backed dark cards. Check the property, not the value, when picking a token —
+   `#252525` is both `--surface-inverse` and `--text-primary`.
+6. **Type from tokens only**: `var(--font-sans)` / `var(--font-mono)`, never a literal
+   font stack. Then read every mono string back — **if it reads as a word, it is sans**
+   (§2). Eyebrows, labels, chips, tags, column heads, and tier / jurisdiction letters
+   are all sans; mono is sectional numbering, numerals, and number-prefixed IDs.
+7. **Cards**: reuse the base + image + scrim recipe (§7); don't invent a new card shell.
+8. **Wire reveals**: add `[data-reveal]` to headings/deks and `.is-in` targets to image
+   cards — `site.js` observers pick them up automatically.
+9. **Reduced-motion parity**: any new transition needs a `prefers-reduced-motion` branch
+   that shows the resolved state.
+10. **Bilingual**: author EN in the DOM, ZH in `data-zh` / `data-zh-html`. Never invent ZH.
+11. **Accessibility pass** (§14): contrast against the *actual* backdrop, 44px targets,
+    visible focus.
+12. **Verify locally**: `python3 -m http.server 8000` (root-relative paths need a server),
+    check at 390 / 768 / 1280 / 1440, light + dark, EN + ZH.
+
+---
+
+## 13. Brand personality, principles & anti-references
+
+Word-level voice rules live upstream in `brand/brand-voice.md`. What follows is the
+*design* register those rules imply.
+
+### 13.1 Personality
+
+**泰然 (tài-rán): composed, methodical, honest.** Three words: *unhurried · precise ·
+candid.* The design never oversells — it presents evidence and lets the reader conclude.
+Emotional goal: the quiet authority of a private-bank statement or a sealed legal
+dossier, not the adrenaline of a SaaS hero.
+
+### 13.2 Design principles
+
+1. **Composed, not loud.** Restraint *with* intent. Premium is generous whitespace,
+   exact typography and precise rhythm — not decoration. Colour is rationed like gold
+   foil on a black-and-white document.
+2. **The dossier, not the brochure.** Present as a chaptered file a methodical advisor
+   walks you through. Sectional numbering and monospaced metadata are legitimate here
+   because the content literally *is* a sequence of patent IDs, tiers, licence numbers
+   and dates.
+3. **Evidence over adjectives.** Lead with the real number (30, NT$50,000+, 18 months,
+   5·6·9·6·4, 1.7億件). The design's job is to make those numbers land, never to inflate
+   them.
+4. **Honest about the edges.** The "when it doesn't go to plan" beat is a feature of the
+   brand, not fine print. Give it real weight.
+5. **Colour earns its place.** The surface accent appears only as a deliberate signal —
+   a seal, a single emphasized word, one key CTA. The SABCD palette appears only where
+   it encodes real data. Never a wash.
+
+### 13.3 Anti-references
+
+- **Hype-SaaS landing pages.** Gradient-washed heroes, "AI-powered / unlock / seamless"
+  copy, the big-gradient-number hero-metric template, fade-in-on-scroll on every block.
+  The whole genre the reader distrusts.
+- **Editorial-magazine affectation.** Display-serif + italic drop caps + broadsheet ruled
+  columns. Wrong register for an IP consultancy; reads as a lifestyle brand.
+- **Brutalist / acid-maximalism.** Loud, raw, ironic. Actively repels a conservative
+  48–58yo B2B export buyer.
+- **The site's own historical tells:** gradient-clipped headings, a tiny uppercase
+  tracked kicker above *every* section, near-identical bordered bento cards repeated for
+  nine sections. All three have been removed. Don't bring them back.
+
+---
+
+## 14. Accessibility & inclusion
+
+- **WCAG 2.1 AA.** Body text ≥4.5:1, large text ≥3:1, measured against the *actual*
+  backdrop — including image-backed and warm-tinted grounds, not the nominal page white.
+  Use the `-text` accent variants for anything at body size (§1.2).
+- **Colour is never the sole signal.** Tier colours always pair with the letter token
+  (S/A/B/C/D); jurisdiction colours always pair with the code.
+- **Tap targets ≥44px** (`min-height:44px` under `(pointer:coarse)` on `.btn`).
+- **Visible focus** — inherit `--border-focus`; never remove an outline without
+  replacing it.
+- **`prefers-reduced-motion: reduce` honoured on every animation** (§10). Content is
+  legible with zero motion and must never be gated invisible on JS failure.
+- **Fully bilingual** via the `data-zh` system; EN is the visible fallback where ZH is
+  pending.
+
+---
+
+## 15. Per-page notes
+
+Everything above is site-wide. This section holds what is genuinely scoped to one page.
+Keep additions here as subsections — do not split them into separate files.
+
+### 15.1 Licensing Platform landing page — `product/licensing/index.html`
+
+**Aesthetic direction — "the coverage dossier."** A chaptered, instrument-grade document
+a composed advisor walks the reader through, replacing vague legal dread with the calm of
+someone who already holds coverage. Reference lane, named: **Stripe-restraint precision
+meets a sealed private-bank dossier** — monochrome ink on white/warm-white, exact type,
+generous air, with the licensing accent rationed like a wax seal.
+
+Why the dossier framing licenses moves that are banned by reflex elsewhere:
+
+- **Sectional numbering** is legitimate: the page *is* an ordered narrative, not
+  decorative scaffolding. It replaces the banned "kicker above every section."
+- **Inconsolata** is literal, not costume: it sets patent IDs (`US10892431`), tier
+  counts, licence numbers, dates and figures — genuine technical registers.
+- The accent acts as a **seal/foil**, never a fill behind text.
+
+**Colour.** Licensing accent = `--surface-accent-licensing` (large text / UI),
+`--surface-accent-licensing-text` (body copy), `--surface-accent-licensing-wash` (the
+warm alternating ground). `--score-*` and `--score-*-vivid` are reserved for SABCD tier
+data on this page — distribution bar, tier chips, patent dots — and nothing else.
+
+> There is no `--lic-surface-alt`. Earlier drafts of this spec invented `#FBF7F1` and
+> claimed it was already defined; it exists nowhere in code. Use
+> `--surface-accent-licensing-wash` (`#F1EDE7`).
+
+**Live composition** (in DOM order): `hero.hero--showcase` → `deliverables` →
+`gapcover` → `lic-showcase` → `walkaway` → `pricing` (`section--alt`) → contact. The
+page reuses the universal `howitworks` / `acc-*` accordion, the `bp-*` bundle picker,
+`brand-select`, `contact-form`, and `patent-card`, all with their markup and JS contracts
+intact — only the skin is page-scoped.
+
+**Layout intent that still governs edits here:**
+
+- **Hero** — asymmetric: oversized type left, a framed credential/seal slot right. Accent
+  on one word plus a thin rule. All hero copy is forced to `#fff` over the warm photo
+  (there is no scrim), which is why the eyebrow, title, `em` and sub are pinned together.
+- **Comparison ledger, not a card grid** — the three-way File / Hire / Subscribe
+  comparison is hairline-split rows with mono cost figures, the Subscribe row lifted into
+  a single warm-white panel with an accent seal rule. Not three equal cards.
+- **Figures** render in mono ink with a unit, set on the hairline grid — never as glowing
+  numerals.
+- **Distribution bar** — proportional tier-coloured segments, animated from 0 width on
+  reveal; the tier role-lines are a compact data-coloured legend.
+- **Cards only where a card is the true affordance** (scenario panels, inventory rows).
+  No nested cards.
+
+**Motion.** This is the **only** page cleared for GSAP + ScrollTrigger (§10), and it must
+keep the 3-CDN fallback chain and a reduced-motion branch. One deliberate hero entrance;
+`[data-reveal]` for the rest; `.counter[data-target]` for real figures.
+
+**Voice.** Anchor numbers verbatim. Credit Innovue once near the top, in the phrasing
+`visual-guide-snapshot.md` approves. No em dashes in *new* copy; existing verbatim copy is
+preserved as-is.
+
+### 15.2 Signal — `product/signal/index.html`
+
+Signal accent = `--surface-accent-signal` (dark surfaces only) /
+`--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.
+The page still carries one inline `<style>` block; it is scheduled for extraction under
+§0.3 and should not grow.

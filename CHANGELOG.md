@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-07 00:58 +08:00** · Collapsed page-system.md, DESIGN.md and PRODUCT.md into one authoritative DESIGN.md; resolved 11 contradictions and every dangling reference.
 - **2026-08-07 00:52 +08:00** · Normalized media-query formatting site-wide and documented the breakpoint scale; found the off-scale values are load-bearing, so left them alone.
 - **2026-08-07 00:30 +08:00** · Eliminated every invented hex in styles.css — exact-value token swaps plus new wash / hover-lift / partner-brand tokens; verified pixel-identical.
 - **2026-08-07 00:08 +08:00** · Swept dead inline CSS from the licensing (-51 KB, 384→148 classes) and signal (-21 KB, 192→134) pages; verified identical at 4 breakpoints and 3 scroll positions.
