@@ -355,7 +355,7 @@
      ledger → trade card → timeline panel. The PSS stack leads on a phone because
      the section's claim is the score's traceability; the process timeline is the
      longer read and follows. ── */
-  @media (max-width: 959.98px){
+  @media (max-width: 960px){
     .sig-proof__head{ grid-template-columns:1fr; gap:24px; align-items:start; }
     .sig-proof__duo{ flex-direction:column; }
     .sig-proof__stack{ order:1; }
@@ -650,7 +650,7 @@
 
   /* Retrieve — desktop flip: form left, image/heading right. Below 881px the base
      .contact-card collapse (≤880px → 1fr) takes over and heading stacks over form. */
-  @media (min-width:881px){
+  @media (min-width: 881px){
     .contact-card--sig-retrieve{ grid-template-columns:6fr 5fr; }
     .contact-card--sig-retrieve .contact-panel{ grid-column:1; grid-row:1; }
     .contact-card--sig-retrieve .contact-overlay{ grid-column:2; grid-row:1; }
@@ -693,7 +693,7 @@
   .sig-xclose svg{ width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; transform:rotate(45deg); }
   .offer-card[data-report]:focus-visible{ outline:2px solid var(--sig-blue); outline-offset:3px; }
   body.sig-xlock{ overflow:hidden; }
-  @media (max-width:760px){ .sig-xpanel__media{ height:150px; } }
+  @media (max-width: 760px){ .sig-xpanel__media{ height:150px; } }
   @media (prefers-reduced-motion: reduce){
     .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
   }

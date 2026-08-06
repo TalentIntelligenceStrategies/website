@@ -195,6 +195,38 @@ hierarchy:
 `clamp(16px,1.8vw,28px)`; footer `48px 56px`; section-head `24px`; contact-row `16px`;
 chips / contact-panel fields `8px`.
 
+### 3.1 Breakpoints
+
+**Reach for a scale value first.** These carry the most weight, so a new page that
+uses them inherits behaviour that is already proven:
+
+| Value | Queries using it | Reads as |
+|---|---|---|
+| `1100px` | 2 | wide desktop |
+| `980px` (min `981px`) | 11 | desktop |
+| `880px` (min `881px`) | 13 | small desktop / large tablet |
+| `768px` (min `769px`) | 12 | tablet |
+| `640px` | 10 | large phone |
+| `560px` (min `561px`) | 12 | phone |
+| `480px` | 4 | small phone |
+
+Always `@media (max-width: 640px)` — one space after the colon, integer pixels, no
+sub-pixel values. Prefer `max-width`; add a `min-width` companion only when a rule
+genuinely needs the other side of the same edge, and use scale-value + 1 so the two
+never overlap.
+
+> **Do not "tidy" an existing breakpoint onto the scale.** Nine off-scale values are
+> still in use — `1024` `920` `900` `820` `720` `700` `600` `520` `400` — and they are
+> mostly *load-bearing*, not drift. Tested: collapsing `900px` → `880px` on the About
+> and Signal pages made 881–900px render the two-column layout at ~230px per column,
+> dropping body copy to six words a line. The `900px` edge exists because that layout
+> needs 900px to breathe. A breakpoint value is a layout decision; migrating one means
+> looking at the affected band, not matching a table.
+>
+> Custom properties **cannot** be used in a media condition —
+> `@media (max-width: var(--bp-md))` does not work — so this scale stays a convention
+> until a build step can compile it (see §Build).
+
 ---
 
 ## 4. Nav (topnav)
