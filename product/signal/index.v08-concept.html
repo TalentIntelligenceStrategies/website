@@ -36,6 +36,15 @@
          the two payment milestones accented.
      Tokens only; signal blue = --score-b-vivid. No invented hex beyond the
      hero shader's literal blue (#0EA5E9) + black fallback.
+
+     DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
+     Audited 2026-08-07: 69 classes, of which 51 are sig-* page-namespaced, 5 are
+     modifiers on shared components, and 11 are properly scoped overrides
+     ([data-page="signal"] .hero, .sig-flow-panel .btn-primary). Zero dead rules.
+     Nothing here is reusable enough to earn a place in the shared 164 KB
+     stylesheet; promoting it would repeat the dead-CSS problem, not fix it.
+     If you change this block, re-run the dead-class check — that is the
+     condition attached to the exception.
      ═══════════════════════════════════════════════════════════════════════ -->
 <style>
   :root{
@@ -60,7 +69,7 @@
      it darkens the lower-left copy zone and reaches full transparency well before
      the top-right, leaving the pulse origin completely unscrimmed. Sits above the
      shader (z-index 2) and below the foreground content (z-index 4). ── */
-  [data-page="signal"] .hero-scrim{
+  [data-page="signal"] .sig-hero-scrim{
     position:absolute;
     inset:0;
     z-index:3;
@@ -685,7 +694,7 @@
   .sig-xsimlist li{ display:flex; justify-content:space-between; gap:16px; padding:11px 0;
     border-top:1px solid var(--border-primary); font-size:14px; color:var(--text-primary); }
   .sig-xsimlist li:first-child{ border-top:0; }
-  .sig-xsimlist .score{ font-family:var(--font-mono); font-weight:600; color:var(--sig-blue-deep); }
+  .sig-xsimlist .sig-score{ font-family:var(--font-mono); font-weight:600; color:var(--sig-blue-deep); }
   .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
     display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
     color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
@@ -887,7 +896,7 @@
     <div class="hero-grid" aria-hidden="true"></div>
     <!-- Legibility scrim: darkens the lower-left behind the headline so the
          full-frame shader stays readable. Above the shader, below the text. -->
-    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="sig-hero-scrim" aria-hidden="true"></div>
 
     <div class="container hero-inner">
       <div class="pillar" data-pillar="signal">
@@ -1323,13 +1332,13 @@
         <div class="sig-xpanel__body">
           <p data-zh-html data-zh="以下為 top-10 相似清單的樣張。<span class='sig-mockflag'>示意</span> 完整版面待新穎向量比對 API 串接。">A sample of the top-10 similarity list. <span class="sig-mockflag">mock</span> Full layout pending Innovue's vector-comparison API.</p>
           <ul class="sig-xsimlist">
-            <li><span data-zh="US9876543 — 無人機降落控制">US9876543 — UAV landing control</span><span class="score">0.94</span></li>
-            <li><span data-zh="US9123456 — 定域到懸浮過渡">US9123456 — hover-to-perch transition</span><span class="score">0.91</span></li>
-            <li><span data-zh="EP3211222 — 重新試飛機制">EP3211222 — re-attempt flight logic</span><span class="score">0.88</span></li>
-            <li><span data-zh="US8765432 — 多模態感測一致性">US8765432 — multimodal sensing coherence</span><span class="score">0.85</span></li>
-            <li><span data-zh="US8123901 — 自主返航路徑規劃">US8123901 — autonomous return-path planning</span><span class="score">0.82</span></li>
-            <li><span data-zh="WO2019123456 — 風擾下姿態穩定">WO2019123456 — attitude hold under gust</span><span class="score">0.80</span></li>
-            <li style="color:var(--text-tertiary)"><span data-zh="…其餘 4 件，各附相似原因">…4 more, each with its reason for matching</span><span class="score">—</span></li>
+            <li><span data-zh="US9876543 — 無人機降落控制">US9876543 — UAV landing control</span><span class="sig-score">0.94</span></li>
+            <li><span data-zh="US9123456 — 定域到懸浮過渡">US9123456 — hover-to-perch transition</span><span class="sig-score">0.91</span></li>
+            <li><span data-zh="EP3211222 — 重新試飛機制">EP3211222 — re-attempt flight logic</span><span class="sig-score">0.88</span></li>
+            <li><span data-zh="US8765432 — 多模態感測一致性">US8765432 — multimodal sensing coherence</span><span class="sig-score">0.85</span></li>
+            <li><span data-zh="US8123901 — 自主返航路徑規劃">US8123901 — autonomous return-path planning</span><span class="sig-score">0.82</span></li>
+            <li><span data-zh="WO2019123456 — 風擾下姿態穩定">WO2019123456 — attitude hold under gust</span><span class="sig-score">0.80</span></li>
+            <li style="color:var(--text-tertiary)"><span data-zh="…其餘 4 件，各附相似原因">…4 more, each with its reason for matching</span><span class="sig-score">—</span></li>
           </ul>
         </div>
       </div>

@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-07 13:12 +08:00** · Swept the v0.8 Signal concept to the new DESIGN.md rules — namespaced the two stray classes and recorded the §0.3 page-local exception with its audit.
 - **2026-08-07 02:00 +08:00** · Added a build layer: Tailwind config generated from the brand tokens, React island mount, three.js + GSAP bundled locally. Deploy unchanged.
 - **2026-08-07 01:45 +08:00** · Added documents/voice-state-audit.md — 11 findings across 1,271 copy units; no copy rewritten. Flags a live scaffolding marker on badge.html.
 - **2026-08-07 01:25 +08:00** · Tokenized the last two page-inline hexes, froze the remaining nine as documented one-off decoration, and fixed the .eyebrow AA miss.
