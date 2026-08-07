@@ -34,9 +34,9 @@ eyebrow / CTA / form label (the appendix inventory), the rest is body prose and 
 | # | Finding | Severity | Scope |
 |---|---|---|---|
 | 1 | A production page ships `[PAGE SCAFFOLDING \| COPY NOT WORKED ON]` in its hero | **Live defect** | `product/licensing/badge.html` |
-| 2 | Anchor numbers render four different ways; §5 requires one | **Systematic** | 6 pages |
+| 2 | Anchor numbers render four different ways; §5 requires one | **Systematic** · rule resolved 2026-08-07 | 6 pages |
 | 3 | EN and ZH have diverged in meaning — ZH advanced, EN did not | **Systematic** | 59 strings, 10 pages |
-| 4 | `brand-voice.md` bans a word that `positioning.md` uses in the locked one-liner | **Brand-system contradiction** | 5 site strings |
+| 4 | `brand-voice.md` bans a word that `positioning.md` uses in the locked one-liner | **Resolved 2026-08-07** | 5 site strings |
 | 5 | "starting at NT$3,390/month" — §5 explicitly bans this construction | Rule violation | licensing |
 | 6 | Bare tier letters in chips; §4 requires the full `Tier S` token | Rule violation | 2 pages, 6 chips |
 | 7 | **`brand-voice.md` is mirrored into no consumer repo** — the voice authority is unreachable from here | **Structural — likely cause of 2 and 3** | all repos |
@@ -85,9 +85,22 @@ The cleanest illustration is `about/index.html:496`, which breaks three anchors 
 sentence — `fifty indicators`, `third-largest`, and `一億八千萬` — while `home:424` says the
 same three things as `50 indicators`, `3rd-largest`, `1.8 億`.
 
-**Note for the rewrite:** §5 gives the canonical EN form but is silent on the **ZH** form of
-each anchor. `1.8 億` vs `一億八千萬` is currently unadjudicated, so this is a gap in the
-rule, not only in the copy. Decide the ZH canon and add it to §5.
+**RESOLVED 2026-08-07 — `brand-voice.md` §5.1.** The ZH canon is now written down:
+Arabic numerals never spelled-out (derived from §3 scoping Inconsolata to numerals — `50`
+can render in the numeral register, `五十` cannot), and a per-anchor table —
+`1.8 億件專利資料庫` · `全球第三大` · `S 到 D` · `50 項指標` · `30 件` ·
+`NT$3,390–9,990/月` · `3 個月 / 1 年 / 3 年` · `18 個月`.
+
+`項` beat `個` because every `50 個指標` on the site traces to **one shared navigation
+string duplicated across pages**, not to nine independent decisions — all page-authored copy
+already uses `項`.
+
+**Still open, and needs sign-off:** applying this touches `positioning.md` §4, which is
+marked *locked · public* and spells the number out in both languages (`fifty indicators` /
+`五十項指標`). `about/index.html` mirrors that faithfully, including `third-largest` and
+`一億八千萬`. §5.1 records the conflict and the alternative resolution (carve out flowing
+profile prose the way §6 carves out natural-language dates). **Do not "fix" the site copy
+that mirrors the locked paragraph until this is decided.**
 
 ---
 
@@ -149,6 +162,16 @@ So all five site hits are **faithful to positioning.md**, not drift:
 | home:346 | We unlock the value of patents. |
 | home:402 | …here to make patent value seen, measured, and unlocked. |
 | about:442 | Three ways we unlock value |
+
+**RESOLVED 2026-08-07 — `brand-voice.md` §4, "The one carve-out."** The triad won, narrowly.
+`"unlocked"` is sanctioned as the triad's third verb, plus the canonical expansion where the
+same sentence names the three ways (`positioning.md` §4). A bare *"we unlock the value of
+patents"* with nothing naming what or how **stays banned** — so of the four site hits,
+`home:319` and `home:402` are correct and `home:346` and `about:442` still need rewording.
+The test recorded in the rule: *if you deleted "unlock" from the sentence, would a reader
+still know what happens?*
+
+The original framing of this finding, kept for the record:
 
 **This is not a copy fix.** One of the two brand docs has to yield: either §4 carves out the
 positioning triad by name, or positioning.md picks a different verb — which would mean
@@ -328,9 +351,10 @@ The standing pre-edit check. Only **5** collisions, and three are benign:
 The rewrite session should take these in order, because the later ones depend on the earlier:
 
 1. **Ship the `badge.html` fix now** — it is a live defect, not a voice decision (§1).
-2. **Adjudicate the two brand-system questions** before touching page copy: the `unlock`
-   carve-out (§4) and the ZH canon for each anchor number (§2). Both are `brand/` edits, and
-   writing page copy against unresolved rules just moves the problem.
+2. ~~**Adjudicate the two brand-system questions**~~ — **done 2026-08-07.** The `unlock`
+   carve-out and the ZH anchor canon are both written into `brand-voice.md` (§4, §5.1).
+   One dependency remains: the ZH canon conflicts with `positioning.md` §4's *locked*
+   profile copy, which needs sign-off before the copy that mirrors it is touched.
 3. **Decide the EN↔ZH direction of travel** (§3). Every remaining decision depends on whether
    EN is brought up to the ZH's insurance-metaphor positioning or the ZH is pulled back. This
    is the actual "voice is outdated" question.
