@@ -29,6 +29,9 @@
 
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<!-- Inconsolata SemiBold carries the pool numeral, which is set inline in a sentence —
+     a swap-in after first paint reflows the words around it, not just the digits. -->
+<link rel="preload" href="/designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf" as="font" type="font/ttf" crossorigin />
 
 <link rel="stylesheet" href="/assets/styles.css?v=16">
 
@@ -43,23 +46,34 @@
 <!-- ═══════════════════════════════════════════════════════════════════════
      Signal page — page-scoped styles ONLY. Everything else is the shared
      homepage system in /assets/styles.css (per website/DESIGN.md).
-     Four things are page-scoped because the homepage system has no equivalent:
-     (1) the radial signal-pulse hero shader (three.js — concentric monochrome
-         signal-blue rings emanating outward on black, reading as a radar pulse),
-     (2) signal-gradient imagery behind the report + contact cards,
-     (3) the proof duo — a full-height gradient beside a black PSS ledger card and
-         a scrim-captioned image card,
-     (4) the how-it-works vertical timeline — 7 beats on one spine, 3 phases, with
-         the two payment milestones accented.
-     Tokens only; signal blue = --score-b-vivid. No invented hex beyond the
-     hero shader's literal blue (#0EA5E9) + black fallback.
+     Two things are page-scoped because the homepage system has no equivalent:
+     (1) signal-gradient imagery behind the report + contact cards,
+     (2) the proof grid — a wide black PSS ledger and a scrim-captioned image card
+         beside a full-height cool-wash panel carrying the three process phases.
+     The hero is NOT in that list any more: it now runs the homepage's own
+     shifting-lines shader on the shared .hero-shader carrier, recoloured in the
+     module rather than in CSS, so the only page-local hero rule left is the scrim.
+     Tokens only; signal blue = --score-b-vivid. No invented hex beyond the hero's
+     #000 ground and the shader's three blue literals (GLSL can't read CSS tokens).
+
+     (Until 2026-08-10 there was a fourth: a 7-beat how-it-works timeline on its own
+     black panel, with spine + node geometry derived from five custom properties. The
+     proof section was recomposed and the process compressed to three phases, so the
+     spine, the nodes and ~190 lines of geometry are gone.)
 
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
-     Audited 2026-08-07: 69 classes, of which 51 are sig-* page-namespaced, 5 are
-     modifiers on shared components, and 11 are properly scoped overrides
-     ([data-page="signal"] .hero, .sig-flow-panel .btn-primary). Zero dead rules.
+     Audited 2026-08-11: 65 classes, of which 48 are sig-* page-namespaced, 5 are
+     modifiers on shared components (contact-card--sig-*, offer-card--sig*), and
+     the remaining 12 are shared classes reached through a scoped or descendant
+     selector ([data-page="signal"] .hero, .sig-phases .btn,
+     .topic-chip:has(input:disabled)). Two are applied at runtime rather than in
+     the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
+     Zero dead rules.
      Nothing here is reusable enough to earn a place in the shared 164 KB
      stylesheet; promoting it would repeat the dead-CSS problem, not fix it.
+     The one thing that did earn it is .innovue-wordmark — the "Powered by" credit
+     in the proof head shares it with /about/, so it lives in styles.css beside
+     .innovue-wm rather than being copied down here.
      If you change this block, re-run the dead-class check — that is the
      condition attached to the exception.
      ═══════════════════════════════════════════════════════════════════════ -->
@@ -69,248 +83,354 @@
     --sig-blue-deep: #0369A1;           /* --score-b light text token */
   }
 
-  /* ── Hero — homepage .hero foreground over the radial signal-pulse shader ──
-     Reuses the homepage full-viewport override + .hero-shader crossfade layer;
-     the fallback is pure black so a failed shader degrades to the shader's own
-     black base, not navy. */
+  /* ── Hero — homepage .hero foreground over the shifting-lines shader ──
+     Reuses the homepage full-viewport override and its shared .hero-shader
+     carrier, so there is no page-local backdrop layer at all. Black base: a
+     failed shader degrades to the same ground the shader draws on. */
   [data-page="signal"] .hero{
     height:auto;
     min-height:calc(100dvh - 64px);
     padding-block:0;
-    background:#000;                    /* black fallback if WebGL/esm.sh fail — matches shader base */
+    background:#000;
   }
 
-  /* ── Hero legibility scrim — the full-frame shader would otherwise wash over the
-     headline. Tuned for the corner-anchored pulse (origin near the top-right, see
-     the shader module): the diagonal runs the other way from the old 105deg one so
-     it darkens the lower-left copy zone and reaches full transparency well before
-     the top-right, leaving the pulse origin completely unscrimmed. Sits above the
-     shader (z-index 2) and below the foreground content (z-index 4). ── */
+  /* ── Hero legibility scrim — much lighter than the versions this replaces, all
+     of which were holding copy against a backdrop that ran behind it. The lines
+     sit BELOW the copy now and the copy sits on plain black, so this only has to
+     take the top edge off the glow where it rises toward the CTA row, and seat
+     the scroll cue. Local stack: shader 2 (shared .hero-shader) · scrim 3 ·
+     content 5 (the shared .hero-inner z-index, hence no override here). ── */
   [data-page="signal"] .sig-hero-scrim{
     position:absolute;
     inset:0;
     z-index:3;
     pointer-events:none;
     background:
-      /* Diagonal toward the top-right — dark at the lower-left, fully clear by 68%
-         so the pulse origin and its tightest rings stay untouched. */
-      linear-gradient(55deg,
-        rgba(0,0,0,0.80) 0%,
-        rgba(0,0,0,0.64) 28%,
-        rgba(0,0,0,0.32) 48%,
-        rgba(0,0,0,0.00) 68%),
-      /* Horizontal guard — holds contrast on the left copy column at any viewport
-         height, independent of where the diagonal happens to fall. */
-      linear-gradient(to right,
-        rgba(0,0,0,0.34) 0%,
-        rgba(0,0,0,0.16) 38%,
-        rgba(0,0,0,0.00) 58%),
-      /* Base lift under the scroll cue. */
+      /* Floor under the copy block. Reaches to 56% because the band was lifted to
+         run behind the CTA row, so at its highest phase the crest now grazes the
+         last paragraph lines — this is what keeps them readable when it does. */
       linear-gradient(to top,
-        rgba(0,0,0,0.36) 0%,
-        rgba(0,0,0,0.00) 34%);
+        rgba(0,0,0,0.42) 0%,
+        rgba(0,0,0,0.26) 22%,
+        rgba(0,0,0,0.10) 40%,
+        rgba(0,0,0,0.00) 56%),
+      /* Left guard over the copy column, where the crest is brightest. */
+      linear-gradient(to right,
+        rgba(0,0,0,0.42) 0%,
+        rgba(0,0,0,0.18) 34%,
+        rgba(0,0,0,0.00) 56%);
   }
-  [data-page="signal"] .hero-inner{ position:relative; z-index:4; }
 
   /* ── Report value-cards — signal-gradient image behind the shared offer-card
      scrim (same recipe as the homepage offer cards; only the image changes). ── */
   /* The cards are <button>s (FLIP triggers); keep their copy left-aligned like the
      homepage offer-card anchors (buttons default to text-align:center). */
   .offer-card[data-report]{ text-align:left; }
-  /* Report-render images anchor to the top so the document header (title + score)
-     shows above the bottom-up scrim, rather than the middle of the page. */
-  .offer-card[data-report]::before{ background-position:center top; }
-  .offer-card--sigA::before{ background-image:url('/assets/imagery/signal/report_short.jpg'); }
-  .offer-card--sigB::before{ background-image:url('/assets/imagery/signal/report_long.jpg'); }
-  .offer-card--sigC::before{ background-image:url('/assets/imagery/signal/report_advance2.jpg'); }
+  /* These are abstract particle fields, not document renders — the composition sits
+     mid-frame, so centre the crop. A top anchor would show the empty black margin. */
+  .offer-card[data-report]::before{ background-position:center; }
+  .offer-card--sigA::before{ background-image:url('/assets/imagery/signal/short_report.jpg'); }
+  .offer-card--sigB::before{ background-image:url('/assets/imagery/signal/long_report.jpg'); }
+  .offer-card--sigC::before{ background-image:url('/assets/imagery/signal/advance_report.jpg'); }
 
-  /* ── Proof — 2-col header, then a media + two-card duo ───────────────────
-     Reference grammar → vanilla: (1) heading left + prose right; (2) a flex row
-     with one full-height image left and two stacked cards right; (3) card 1 =
-     black padded body; (4) card 2 = image with a bottom-gradient caption. Card
-     radius / fill / hairline match the shared .about-card register so this reads
-     as the same family as the homepage dark cards. ── */
+  /* The subtext on these three cards is written to two lines, so reserve two. The
+     shared .offer-card-desc reserves three (min-height:4.5em) for the homepage tiles,
+     whose copy is longer — scoped here rather than changing the shared class. */
+  .offer-card[data-report] .offer-card-desc{ min-height:3em; }
+  /* The shared .offer-card-eyebrow--text modifier (Urbanist for word eyebrows, per
+     its own comment) is declared BEFORE .offer-card-eyebrow at equal specificity in
+     styles.css, so the mono base wins and the modifier never applies. These eyebrows
+     are words, and the matching overlay label (.sig-xpanel__head .sig-xcard__kind
+     above) already forces sans — restate it here so card and panel agree. Sentence
+     case, not caps: these read as a plain three-word system (fast / deep / wide), and
+     uppercasing them turns a phrase into a label. Tracking eases off to suit. */
+  .offer-card[data-report] .offer-card-eyebrow--text{
+    font-family:var(--font-sans);
+    text-transform:none;
+    letter-spacing:0.04em;
+  }
+  /* Stack the row one card per row below 1280px. .offerings-grid stacks at 720px, but
+     the subtext here is written to fill two full lines, which needs ~95 characters of
+     measure — only a third-of-container card at 1280px+ gives that. Below it the copy
+     would run to four lines. Scoped to #reports so the homepage keeps its own. */
+  @media (max-width: 1280px){ #reports .offerings-grid{ grid-template-columns:1fr; } }
+
+  /* ── Proof + process — 2-col header, then an asymmetric three-panel grid ────────
+     Reference grammar → vanilla: unequal panel weights instead of a row of equals.
+     One wide black panel (how the score decomposes — the section's actual proof), one
+     tall cool-wash panel (how you buy), one photographic panel (the trade-off). The
+     black panel keeps the radius / fill / hairline of the shared .about-card register
+     so it still reads as the same family as the homepage dark cards.
+
+     What this replaced: three black cards in a flex row, which read as one heavy slab
+     and spent the page's only vivid accent in two places. Three distinct weights fix
+     both, and --sig-blue now has exactly one home. ── */
   .sig-proof{
     /* framer spring(stiffness:250, damping:20) → ζ≈0.63, ~400ms settle with a
        small overshoot. A back-out bezier is the closest CSS gets. */
     --sig-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* Header — 2 columns, TOP-aligned. Bottom-aligning (the earlier align-items:end)
-     only reads as a decision when the two blocks are close in height; here the h2
-     is ~2 display lines against a 4-line dek + a 42px numeral + a button, so it
-     opened a ~300px void above the heading that no content justified. Sharing a
-     top edge is a legible grid; the smaller residue below the h2 is the honest
-     cost. Ratio favours the heading because it carries display type. */
+  /* Header — claim + argument left, denominator + credit + methodology exit right.
+     The h2 and the dek belong in one column because the dek is the claim's argument,
+     not a parallel one; the right column then carries what the reader acts on (the
+     pool figure, who powers it, where to go next).
+
+     `stretch`, not `start`: the two columns share a row box sized by the taller
+     (left) one, so the aside's space-between can push the CTA row onto the dek's
+     bottom edge. The gap still applies as a MINIMUM, so if the right column ever
+     outgrows the left the row just grows instead of the two colliding. */
   .sig-proof__head{
     display:grid;
     grid-template-columns:minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap:clamp(24px, 3vw, 48px);
-    align-items:start;
+    align-items:stretch;
+  }
+  .sig-proof__claim{
+    display:flex; flex-direction:column; align-items:flex-start;
+    /* h2 → dek, so it tracks .section-dek's own 16px rhythm rather than the wider
+       gap the numeral wanted when it sat here. */
+    gap:clamp(16px, 1.6vw, 20px);
   }
   .sig-proof__head .h-section{ margin:0; text-wrap:balance; }
   .sig-proof__aside{
     display:flex; flex-direction:column; align-items:flex-start;
-    gap:24px;
+    justify-content:space-between;
+    gap:clamp(28px, 3vw, 40px);
   }
-  /* .section-dek ships margin-top:16px + max-width:44ch — neither applies when
-     it's the top of its own column. */
-  .sig-proof__aside .section-dek{ margin:0; max-width:52ch; text-wrap:pretty; }
+  /* .section-dek ships margin-top:16px + max-width:44ch — neither applies when it
+     sits directly under the h2 as this column's argument. `balance` rather than
+     `pretty`: this paragraph is short enough to set as even lines, and it has to
+     work in both EN and ZH. A hard <br> cannot — the language swapper writes
+     textContent and would strip it. */
+  .sig-proof__claim .section-dek{ margin:0; max-width:58ch; text-wrap:balance; }
 
-  /* Pool — the denominator the whole score is relative to, not a pipeline stage,
-     so it lives with the argument on the page surface. Theme tokens only: neither
-     --sig-blue (2.77:1 on white) nor --sig-blue-deep (3.29:1 on the dark-theme
-     page) clears AA for a numeral, so it takes --text-primary. */
-  .sig-pool{ display:flex; align-items:baseline; gap:14px; margin:0; }
+  /* Pool — display numeral with its label set beside it on two lines. Sized to
+     answer the two-line h2 across the gutter; at 36px it read as a caption on a
+     column that had nothing else holding the top.
+
+     `last baseline` puts the label's SECOND line on the numeral's baseline, so the
+     two share one floor rather than one ceiling. Plain `baseline` would align the
+     label's FIRST line and hang the second below the digits. flex-end is the
+     fallback for engines without last-baseline (bottom edges instead of baselines,
+     ~2px off) — declaration order matters, keep it above.
+
+     Theme tokens only: neither --sig-blue (2.77:1 on white) nor --sig-blue-deep
+     (3.29:1 on the dark-theme page) clears AA for a numeral, so it takes
+     --text-primary. */
+  .sig-pool{
+    display:flex; flex-wrap:wrap; margin:0;
+    align-items:flex-end;
+    align-items:last baseline;
+    gap:clamp(12px, 1.2vw, 16px);
+  }
   .sig-pool__num{
     font-family:var(--font-mono);
-    font-size:clamp(30px, 3.4vw, 42px);
-    font-weight:700;
+    font-size:clamp(44px, 5vw, 72px);
+    /* 600, not 700 — Inconsolata ships 400/500/600 only, so 700 is synthetic bold,
+       and at this size the smearing is obvious. -0.02em rather than the -0.01em of
+       design-tokens.md num-mono-40: this runs well past that role's size, and
+       tracking has to tighten as the display scale climbs. */
+    font-weight:600;
     line-height:1;
     letter-spacing:-0.02em;
     color:var(--text-primary);
     font-variant-numeric:tabular-nums;
+    /* Reserve the full 4-digit box so the count-up cannot shove the label sideways.
+       tabular-nums fixes digit WIDTH, not digit COUNT — 0→1→14→143→1433 still grows
+       the box without this. 1ch is one Inconsolata digit, so it scales with the clamp. */
+    min-width:4ch;
   }
-  .sig-pool__label{ font-size:14px; line-height:1.45; color:var(--text-secondary); max-width:22ch; }
+  /* max-width forces the two lines and `balance` evens them, which survives the
+     language swap where a <br> would not. ZH is compact enough to set on one line;
+     that is fine — the baseline still lands where the numeral's does. */
+  .sig-pool__label{
+    font-size:14px; line-height:1.4; color:var(--text-secondary);
+    max-width:17ch; text-wrap:balance;
+  }
 
-  /* Duo — the process timeline left, the PSS card stack right. The left column
-     used to hold a decorative gradient; it now carries the 7-beat timeline, which
-     is why this section absorbed the old how-it-works section entirely. Both
-     columns are dark, so the duo reads as one deliberate dark band under a light
-     header rather than two unrelated cards. */
-  .sig-proof__duo{
+  /* Credit + exit. "Powered by Innovue" in the lockup register, left of the CTA —
+     visual-guide.md §Innovue Co-Branding. .innovue-wordmark is shared with /about/
+     and lives in styles.css; it sizes in em, so it tracks the 14px credit text. */
+  .sig-proof__cta{
+    display:flex; align-items:center; flex-wrap:wrap;
+    gap:clamp(16px, 2vw, 28px);
+  }
+  .sig-credit{
+    margin:0;
+    display:inline-flex; align-items:baseline; gap:0.4em;
+    font-size:14px; line-height:1;
+    color:var(--text-secondary);
+  }
+
+  /* ── The grid. Asymmetric on purpose. The ledger is the proof, so it takes the wide
+     column; the process runs down the narrow one and spans both rows so the two
+     columns bottom out together; the trade card closes the wide column. ── */
+  .sig-proof__grid{
     margin-top:var(--space-head-gap);
-    display:flex;
-    align-items:stretch;
+    display:grid;
+    grid-template-columns:minmax(0, 1.75fr) minmax(0, 1fr);
     gap:clamp(16px, 1.6vw, 24px);
   }
-  .sig-proof__stack{
-    flex:1 1 0; min-width:0;
-    display:flex; flex-direction:column;
-    gap:clamp(16px, 1.6vw, 24px);
-  }
+  .sig-ledger{ grid-column:1; grid-row:1; }
+  .sig-trade { grid-column:1; grid-row:2; }
+  .sig-phases{ grid-column:2; grid-row:1 / span 2; }
 
-  /* ── Left panel · the process timeline on black. Same fill, radius and hairline
-     as .sig-ledger opposite it, so the two read as a matched pair. Black also buys
-     the payment nodes their contrast: --sig-blue is 7.58:1 on #000 against only
-     2.77:1 on white, which is why the accent finally works as an accent here. ── */
-  .sig-flow-panel{
-    flex:1 1 0; min-width:0;
-    display:flex; flex-direction:column;
-    background:#000;
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:20px;
-    padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
-    color:#fff;
-  }
-  [data-theme="dark"] .sig-flow-panel{ border-color:rgba(255,255,255,0.16); }
-  /* Panel title. It must NOT match the phase labels below it — at 12px/0.12em/50%
-     white they were within 1px and one tracking step of each other, so the panel's
-     name and its group labels read as one flat level. Separated on brightness and
-     size: 75% white here against 50% there, 12px against 11px. */
-  .sig-flow-panel__kicker{
-    margin:0 0 26px;
-    font-family:var(--font-sans);
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:0.12em;               /* all-caps tracking, 5–12% band */
-    text-transform:uppercase;
-    color:rgba(255,255,255,0.75);        /* 11.6:1 on #000 */
-  }
-  /* Timeline absorbs any free space so the CTA sits at the panel's foot when the
-     opposite column is the taller one. */
-  .sig-flow-panel .sig-flow{ flex:1 1 auto; }
-  /* CTA closes the sequence: the reader finishes beat 07 and the action is there.
-     .btn-primary is dark-on-dark inside this card, so it is pinned to the inverse
-     pair — same fix as the hero's btn-secondary at styles.css:1474. */
-  .sig-flow-panel .btn{ margin-top:32px; align-self:flex-start; }
-  .sig-flow-panel .btn-primary,
-  .sig-flow-panel .btn-primary:hover{ background:#FFFFFF; color:#252525; -webkit-text-fill-color:#252525; }
-  .sig-flow-panel .btn-primary:hover{ background:var(--surface-accent-signal-wash); }
-
-  /* ── Card 1 · the PSS ledger — four numbered facts on black. Deliberately NO
-     connective line and NO node dots: the how-it-works timeline below owns the
-     vertical line-and-nodes language and we don't repeat it. Facts are separated
-     by horizontal hairlines instead. Mono tabular numerals are legitimate — the
-     content literally is scoring metadata, not decoration. ── */
+  /* ── Panel 1 · the PSS ledger — four facts on black, 2×2. Mono tabular numerals are
+     legitimate: the content literally is scoring metadata, not decoration. Numeral
+     above label rather than beside it, which aligns all four by construction — the
+     old beside-layout needed subgrid to stop "0–100" pushing its label out of line
+     with "8"'s. ── */
   .sig-ledger{
-    flex:0 0 auto;
     background:#000;                           /* matches .about-card / .partner-band */
     border:1px solid rgba(255,255,255,0.08);   /* same hairline as .about-card */
     border-radius:20px;
     padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
     color:#fff;
   }
-  /* In dark theme the page surface is #0E0E0E, so a #000 card is defined only by
-     its hairline. .about-card gets away with it because its image defines the
-     edges; this card is all type, so lift the edge. */
+  /* In dark theme the page surface is #0E0E0E, so a #000 card is defined only by its
+     hairline. .about-card gets away with it because its image defines the edges; this
+     card is all type, so lift the edge. */
   [data-theme="dark"] .sig-ledger{ border-color:rgba(255,255,255,0.16); }
 
   .sig-ledger__kicker{
-    margin:0 0 20px;
+    margin:0 0 clamp(22px, 2.2vw, 30px);
     font-family:var(--font-sans);
     font-size:12px;
     font-weight:600;
     letter-spacing:0.14em;
     text-transform:uppercase;
-    color:rgba(255,255,255,0.46);
+    color:rgba(255,255,255,0.46);              /* 5.0:1 on #000 */
   }
 
-  /* The numeral column is sized ONCE on the list, not per row — otherwise each
-     <li> resolves its own max-content and the labels/notes go ragged ("0–100" is
-     wider than "8", so its label would sit further right than the others).
-     subgrid makes every row inherit the one shared column pair. */
   .sig-facts{
     list-style:none; margin:0; padding:0;
     display:grid;
-    grid-template-columns:max-content minmax(0, 1fr);
-    column-gap:18px;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    column-gap:clamp(24px, 3vw, 52px);
+    row-gap:clamp(24px, 2.6vw, 34px);
   }
   .sig-fact{
-    grid-column:1 / -1;
-    display:grid;
-    grid-template-columns:subgrid;
-    row-gap:6px;
-    align-items:baseline;
-    padding:14px 0;
-    border-top:1px solid rgba(255,255,255,0.08);
+    display:flex; flex-direction:column; align-items:flex-start;
+    gap:4px;
   }
-  .sig-fact:first-child{ border-top:0; padding-top:0; }
-  .sig-fact:last-child{ padding-bottom:0; }
   .sig-fact__num{
-    grid-column:1; grid-row:1; justify-self:end;
     font-family:var(--font-mono);
-    font-size:clamp(26px, 2.6vw, 36px);
-    font-weight:700;
+    font-size:clamp(28px, 2.8vw, 38px);
+    font-weight:600;                           /* matches .sig-pool__num — see note there */
     line-height:1;
-    letter-spacing:-0.02em;
+    letter-spacing:-0.01em;
     color:#fff;
     font-variant-numeric:tabular-nums;
   }
-  /* Terminal fact = the grade, the output. --sig-blue is 7.58:1 on #000; it must
-     never migrate off this black card (2.77:1 on white). */
+  /* Terminal fact = the grade, the output, and the one place the vivid accent lives.
+     --sig-blue is 7.58:1 on #000; it must never migrate off this black card (2.77:1
+     on white). */
   .sig-fact--out .sig-fact__num{ color:var(--sig-blue); }
   .sig-fact__label{
-    grid-column:2; grid-row:1;
     font-size:14px; line-height:1.35;
     color:rgba(255,255,255,0.72);
   }
   .sig-fact__note{
-    grid-column:2; grid-row:2;
-    margin:0;
-    font-size:13px; line-height:1.5;
-    color:rgba(255,255,255,0.52);          /* 5.7:1 on #000 */
-    max-width:38ch;
+    margin:2px 0 0;
+    font-size:13px; line-height:1.55;
+    letter-spacing:0.01em;                     /* light-on-dark compensation */
+    color:rgba(255,255,255,0.58);              /* 6.1:1 on #000 */
+    max-width:40ch;
+    text-wrap:pretty;
   }
 
-  /* ── Card 2 · the human + AI trade-off — caption over a bottom-up scrim.
-     REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep navy →
-     mid blue across its bottom band, ~7.9:1 for white at the top of the caption);
-     every pale gradient in that folder (-1, -2, -6, -7) drops it to 2.6–3.0:1.
-     Do not swap the image without re-measuring. Scrim ramp is the audited
-     .offer-card one, not a flat black/70. ── */
+  /* ── Panel 2 · the process, compressed to its three phases ─────────────────────
+     Was seven beats on a continuous spine with node geometry derived from four
+     custom properties. Three hairline-separated phases need no track to read as
+     ordered, so the spine, the nodes and the visible ordinals are all gone — which
+     also removes a contrast problem, since --text-tertiary is only 2.66:1 on this
+     wash and a decorative ordinal is still text.
+
+     The wash is why the panel is not black: three black cards was the old failure.
+     --surface-accent-signal-text is 4.64:1 on --surface-accent-signal-wash in light
+     and 8.6:1 on its #121D24 dark-theme value, so the accent is AA in both without
+     the vivid --sig-blue, which stays on the ledger. ── */
+  .sig-phases{
+    display:flex; flex-direction:column;
+    background:var(--surface-accent-signal-wash);
+    border:1px solid var(--border-secondary);
+    border-radius:20px;
+    padding:clamp(26px, 2.6vw, 38px) clamp(22px, 2.2vw, 32px);
+  }
+  .sig-phases__kicker{
+    margin:0 0 clamp(18px, 1.8vw, 24px);
+    font-family:var(--font-sans);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-secondary);               /* 8.3:1 on the wash */
+  }
+  /* The list absorbs free space so the CTA sits at the panel's foot whenever the
+     opposite column is the taller one. */
+  .sig-phases__list{ list-style:none; margin:0; padding:0; flex:1 1 auto; }
+
+  .sig-phase{ padding:clamp(18px, 1.8vw, 22px) 0; }
+  .sig-phase:first-child{ padding-top:0; }
+  .sig-phase:last-child{ padding-bottom:0; }
+  .sig-phase + .sig-phase{ border-top:1px solid var(--border-tertiary); }
+
+  /* Phase name — sentence case, not another tracked uppercase label. This page already
+     carries two of those and a third at the same register would stop grouping and
+     start scaffolding. Colour separates it from the title instead of tracking. */
+  .sig-phase__name{
+    margin:0 0 6px;
+    font-family:var(--font-sans);
+    font-size:13.5px;
+    font-weight:600;
+    line-height:1.3;
+    letter-spacing:0.01em;
+    text-transform:none;
+    color:var(--surface-accent-signal-text);   /* 4.64:1 on the wash */
+  }
+  .sig-phase__title{
+    margin:0 0 6px;
+    display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 10px;
+    font-size:17px;
+    font-weight:600;
+    line-height:1.35;
+    color:var(--text-primary);                 /* 13.7:1 on the wash */
+  }
+  /* Payment chip — the two-stage structure, carried by a label rather than by hue
+     (WCAG 1.4.1). White ground so the pill lifts off the wash; the accent is 5.19:1
+     on white. */
+  .sig-phase__chip{
+    flex:none;
+    padding:2px 8px;
+    border-radius:9999px;
+    background:var(--surface-page);
+    border:1px solid var(--border-secondary);
+    color:var(--surface-accent-signal-text);
+    font-size:11px;
+    font-weight:600;
+    line-height:16px;
+    letter-spacing:0.04em;
+    white-space:nowrap;
+  }
+  .sig-phase__desc{
+    margin:0;
+    max-width:46ch;
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--text-secondary);               /* 8.3:1 on the wash */
+    text-wrap:pretty;
+    overflow-wrap:break-word;                  /* guard: mixed-script ZH at 390px */
+  }
+  .sig-phases .btn{ margin-top:clamp(24px, 2.4vw, 32px); align-self:flex-start; }
+
+  /* ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
+     REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep navy → mid
+     blue across its bottom band, ~7.9:1 for white at the top of the caption); every
+     pale gradient in that folder (-1, -2, -6, -7) drops it to 2.6–3.0:1. Do not swap
+     the image without re-measuring. The scrim ramp is the audited .offer-card one,
+     not a flat black/70. ── */
   .sig-trade{
-    flex:1 1 auto;
     min-height:clamp(220px, 20vw, 280px);
     position:relative;
     isolation:isolate;
@@ -338,30 +458,33 @@
     padding:clamp(22px, 2.4vw, 30px);
     display:flex; flex-direction:column; gap:8px;
   }
-  /* No kicker here. It was invented copy, and it would have been the fifth tracked
-     uppercase mono label across these two sections — the point where a named
-     dossier system tips into scaffolding-by-reflex. The caption carries itself. */
+  /* No kicker here. It was invented copy, and it would have been the third tracked
+     uppercase label in this one section. The caption carries itself. */
   .sig-trade__body{
     margin:0;
     font-size:15px; line-height:1.5;
     color:rgba(255,255,255,0.90);
-    max-width:46ch;
+    max-width:52ch;
   }
   .sig-trade__body strong{ color:#fff; font-weight:700; }
 
-  /* ── Motion — only the trade card's IMAGE moves. The cards are non-interactive
-     divs, and a hover-scale on a non-clickable card promises a click that isn't
-     there; it would also resample the mono numerals mid-transition. Entry mirrors
-     .about-card / .offer-card: fade + settle 1.08 → 1 on .is-revealed, then zoom
-     to 1.05 on hover, gated on .is-revealed so the two never fight. ── */
-  /* The hidden base state is gated on `scripting: enabled`. DESIGN.md §14 is explicit
-     that content must never be gated invisible on JS failure — an unguarded
+  /* ── Motion. The trade card's IMAGE settles and the phases rise; the ledger does
+     not move, because a 2×2 of numerals staggering in reads as a slot machine and
+     resamples mono glyphs mid-transition. The cards are non-interactive divs, so no
+     hover-scale on the card itself — that would promise a click that isn't there.
+
+     Every hidden base state is gated on `scripting: enabled`. DESIGN.md §14 is
+     explicit that content must never be gated invisible on JS failure: an unguarded
      opacity:0 waiting on a JS-added class ships a blank section to anyone whose
-     script never runs. With no scripting the image is simply visible. */
+     script never runs. ── */
   @media (scripting: enabled){
     .sig-trade[data-reveal] img{
       opacity:0;
       transform:scale(1.08);
+    }
+    .sig-phase[data-reveal]{
+      opacity:0;
+      transform:translateY(8px);
     }
   }
   .sig-trade[data-reveal] img{
@@ -370,6 +493,13 @@
   }
   .sig-trade[data-reveal].is-revealed img{ opacity:1; transform:scale(1); }
 
+  /* No nth-child delays — the observer fires per element as each crosses the
+     threshold, so scroll cadence IS the stagger. */
+  .sig-phase[data-reveal]{
+    transition:opacity 380ms var(--ease-card), transform 380ms var(--ease-card);
+  }
+  .sig-phase[data-reveal].is-revealed{ opacity:1; transform:none; }
+
   @media (hover: hover) and (pointer: fine){
     .sig-trade[data-reveal].is-revealed:hover img{
       transform:scale(1.05);
@@ -377,26 +507,25 @@
     }
   }
 
-  /* ── Responsive — one column below 960px. Order: heading → argument/pool/CTA →
-     ledger → trade card → timeline panel. The PSS stack leads on a phone because
-     the section's claim is the score's traceability; the process timeline is the
-     longer read and follows. ── */
+  /* ── Responsive — one column below 960px. Order: heading → argument → ledger →
+     trade card → process. The proof (ledger + trade) leads on a phone because the
+     section's claim is the score's traceability; the process is the longer read, and
+     it carries the CTA, so it belongs last, closest to the intake form below. ── */
   @media (max-width: 960px){
-    .sig-proof__head{ grid-template-columns:1fr; gap:24px; align-items:start; }
-    .sig-proof__duo{ flex-direction:column; }
-    .sig-proof__stack{ order:1; }
-    .sig-flow-panel{
-      order:2;
-      /* MUST drop the desktop `flex:1 1 0`. Once the container is a column,
-         flex-basis governs HEIGHT — a 0 basis with nothing to grow into (the
-         column has no definite height) collapses the panel to nothing. */
-      flex:0 0 auto;
-      padding:28px 22px;
-    }
+    .sig-proof__head{ grid-template-columns:1fr; gap:24px; }
+    .sig-proof__grid{ grid-template-columns:1fr; }
+    /* MUST reset the explicit row/column placement, or the items keep stacking into
+       the named tracks and the phases panel sits beside a 1-col grid. */
+    .sig-ledger,
+    .sig-trade,
+    .sig-phases{ grid-column:1; grid-row:auto; }
+    .sig-trade { order:1; }
+    .sig-phases{ order:2; }
     .sig-ledger{ padding:26px 22px; }
-    /* The caption runs ~8 lines in one column, so its top reaches well into the
-       weakly-scrimmed band and over the image's bright cyan corner. Steepen the
-       ramp: the image still reads at the top edge, the copy stays ≥4.5:1. */
+    .sig-phases{ padding:28px 22px; }
+    /* The caption runs ~6 lines in one column, so its top reaches well into the
+       weakly-scrimmed band and over the image's bright cyan corner. Steepen the ramp:
+       the image still reads at the top edge, the copy stays ≥4.5:1. */
     .sig-trade::after{
       background:linear-gradient(to top,
         rgba(0,0,0,0.92) 0%,
@@ -405,251 +534,17 @@
     }
   }
   @media (max-width: 560px){
-    .sig-fact{ column-gap:14px; }
+    .sig-facts{ grid-template-columns:1fr; row-gap:22px; }
     .sig-fact__note{ max-width:none; }
+    .sig-phase__desc{ font-size:13px; max-width:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
     .sig-trade[data-reveal] img,
-    .sig-trade[data-reveal].is-revealed:hover img{
+    .sig-trade[data-reveal].is-revealed:hover img,
+    .sig-phase[data-reveal],
+    .sig-phase[data-reveal].is-revealed{
       opacity:1; transform:none; transition:none;
-    }
-  }
-
-  /* ── The process timeline, inside the dark left panel ───────────────────────
-     Seven ordered beats hanging off ONE continuous spine, grouped into three
-     phases, with 02 + 07 accented as the two payment milestones. The page's only
-     line-and-nodes treatment (the PSS ledger opposite deliberately avoids it).
-
-     Layout: each <li> is a 2-column grid — a fixed rail column (spine + node) and
-     a fluid content column. The spine is a per-item ::before spanning that item's
-     FULL height, so contiguous items (padding only, never margin) form one
-     unbroken line, and continuity across a phase boundary is structural: the
-     phase <h3> lives inside its <li>, so that segment covers the label too. Only
-     the first and last segments are trimmed, to start at node 01 and stop at 07.
-
-     TYPE HIERARCHY — three steps, ≥1.25 apart so the ramp can't go muddy, each
-     separated on three dimensions at once (size + weight + colour), not size
-     alone:
-       phase   11px mono 600, uppercase 0.12em, 50% white   — the group label
-       title   17px 600, 100% white                          — the beat itself
-       note    13.5px 400, 60% white                         — the annotation
-     17 / 13.5 = 1.26. The index moved INLINE with the title rather than owning a
-     row above it: in a ~570px panel column that reclaimed ~160px of height and
-     stopped the number reading as a heading in its own right.
-
-     Light-on-dark compensation is applied on all three axes the reference calls
-     for, because perceived weight drops across all of them, not just colour:
-     line-height +0.05, letter-spacing +0.01em, and the note's alpha lifted to
-     0.60 rather than stepping to a heavier cut of Urbanist.
-
-     Vertical geometry derives from custom properties so the node and the two
-     spine trims can't drift apart when type sizes change:
-       --sig-flow-meta-h   height of the title/chip line box (node centres on it)
-       --sig-flow-phase-h  phase-label block height (line box + its margin) ── */
-  .sig-flow{
-    --sig-flow-rail:22px;                /* node column width */
-    --sig-flow-gap:clamp(14px, 1.6vw, 20px);
-    --sig-flow-node:11px;
-    --sig-flow-pad:16px;
-    --sig-flow-phase-gap:22px;           /* extra air before a new phase */
-    --sig-flow-meta-h:23px;              /* 17px title × 1.32 — chip is pinned to match */
-    --sig-flow-phase-h:28px;             /* 16px line box + 12px margin-bottom */
-  }
-
-  .sig-flow__list{ list-style:none; margin:0; padding:0; }
-
-  .sig-flow__item{
-    position:relative;
-    display:grid;
-    grid-template-columns:var(--sig-flow-rail) minmax(0, 1fr);
-    column-gap:var(--sig-flow-gap);
-    padding-block:var(--sig-flow-pad);
-  }
-  .sig-flow__node{ grid-column:1; grid-row:1; }
-  .sig-flow__content{ grid-column:2; grid-row:1; }
-  .sig-flow__phase{ grid-column:2; grid-row:1; }
-  /* Phase-leading items push node + content down one row so the node still
-     centres on the index line, not on the phase label. */
-  .sig-flow__item--phase{ padding-top:calc(var(--sig-flow-pad) + var(--sig-flow-phase-gap)); }
-  .sig-flow__item--phase .sig-flow__node,
-  .sig-flow__item--phase .sig-flow__content{ grid-row:2; }
-
-  /* The spine. One segment per item, full height → continuous by construction. */
-  .sig-flow__item::before{
-    content:"";
-    position:absolute;
-    top:0; bottom:0;
-    left:calc(var(--sig-flow-rail) / 2);
-    margin-left:-0.5px;
-    width:1px;
-    background:rgba(255,255,255,0.14);   /* on black now, not --border-tertiary */
-    pointer-events:none;
-  }
-  /* Trim the two ends to the first and last node centres. */
-  .sig-flow__item:first-child{ padding-top:0; }
-  .sig-flow__item:first-child::before{
-    top:calc(var(--sig-flow-phase-h) + var(--sig-flow-meta-h) / 2);
-  }
-  .sig-flow__item:last-child{ padding-bottom:0; }
-  .sig-flow__item:last-child::before{
-    bottom:auto;
-    height:calc(var(--sig-flow-pad) + var(--sig-flow-meta-h) / 2);
-  }
-
-  /* Node — hollow ring on black. 38% white is 4.0:1 against #000, clearing the 3:1
-     non-text floor with margin. #000 fill so the spine can't show through. */
-  .sig-flow__node{
-    justify-self:center;
-    align-self:start;
-    margin-top:calc((var(--sig-flow-meta-h) - var(--sig-flow-node)) / 2);
-    width:var(--sig-flow-node);
-    height:var(--sig-flow-node);
-    border-radius:50%;
-    background:#000;
-    border:1.5px solid rgba(255,255,255,0.38);
-    /* MUST stay positioned. The spine is an absolutely-positioned ::before on the
-       <li>; positioned elements paint above static content whatever the DOM order,
-       so without this the spine draws straight THROUGH every node and the opaque
-       fill can't mask it. */
-    position:relative;
-    z-index:1;
-  }
-  /* Payment milestones. On black --sig-blue is 7.58:1, so the accent finally works
-     at full vividness — the reason this panel went dark. */
-  .sig-flow__item--pay .sig-flow__node{
-    background:var(--sig-blue);
-    border-color:var(--sig-blue);
-    box-shadow:0 0 0 4px rgba(14,165,233,0.20);
-  }
-
-  /* Phase label — the group step of the ramp. Same register as the panel kicker
-     but dimmer, so it groups without competing with the beat titles. nowrap is a
-     guard: a wrapped label would desync --sig-flow-phase-h. */
-  .sig-flow__phase{
-    margin:0 0 12px;
-    font-family:var(--font-sans);
-    font-size:11px;
-    font-weight:600;
-    line-height:16px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    white-space:nowrap;
-    color:rgba(255,255,255,0.50);        /* 5.4:1 on #000 */
-  }
-
-  /* Title row — index, title and chip on ONE line. The index used to own a row
-     above the title, which cost ~23px per beat and gave a decorative number the
-     same vertical status as the beat itself. Inline, it reads as what it is: an
-     ordinal prefix. Fixed height = --sig-flow-meta-h, which the node keys off. */
-  .sig-flow__meta{
-    margin:0 0 4px;
-    display:flex;
-    align-items:baseline;
-    gap:12px;
-    min-height:var(--sig-flow-meta-h);
-  }
-  .sig-flow__index{
-    flex:none;
-    font-family:var(--font-mono);
-    font-size:13px;
-    font-weight:600;
-    letter-spacing:0.08em;
-    color:rgba(255,255,255,0.55);        /* 6.0:1 on #000 */
-    font-variant-numeric:tabular-nums;
-  }
-  .sig-flow__item--pay .sig-flow__index{ color:var(--sig-blue); }
-
-  /* PAYMENT chip — the non-colour signal for the two payment beats (WCAG 1.4.1
-     forbids carrying that on hue alone). --score-b-bg is a near-white #F0F9FF in
-     light theme, which would read as a white pill on this black panel, so the chip
-     takes an explicit translucent-blue ground instead: --sig-blue on ~#02202F
-     composites to ≈6.3:1, and it stays correct in dark theme because both values
-     are theme-independent. */
-  .sig-flow__chip{
-    flex:none;
-    padding:1px 7px;
-    border-radius:9999px;
-    background:rgba(14,165,233,0.16);
-    color:var(--sig-blue);
-    font-family:var(--font-sans);
-    font-size:11px;
-    font-weight:600;
-    line-height:16px;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    white-space:nowrap;
-  }
-
-  /* Beat title — the ramp's top step. Full white against the note's 60%. */
-  .sig-flow__title{
-    margin:0;
-    font-size:17px;
-    font-weight:600;
-    line-height:1.32;
-    letter-spacing:-0.005em;             /* eased off -0.01em: light-on-dark needs air */
-    color:#fff;
-    overflow-wrap:break-word;            /* guard: mixed-script ZH title at 390px */
-  }
-  /* Note — the annotation step. 13.5px against the title's 17px is a 1.26 ratio,
-     clear of the 1.25 floor. Light-on-dark compensation: line-height 1.6 (up from
-     1.55) and +0.01em tracking, with alpha at 0.60 (6.4:1) doing the work a
-     heavier Urbanist cut would otherwise be needed for. */
-  .sig-flow__desc{
-    margin:0;
-    max-width:52ch;
-    font-size:13.5px;
-    line-height:1.6;
-    letter-spacing:0.01em;
-    color:rgba(255,255,255,0.60);
-    text-wrap:pretty;
-    overflow-wrap:break-word;
-  }
-
-  /* Scroll reveal — shares the [data-reveal] observer in site.js. The transform
-     is applied to the item's CHILDREN (> *), never the <li> itself: the spine is
-     a ::before on the <li>, and translating the <li> would drag the spine segment
-     out of line mid-animation. Pseudo-elements aren't matched by > *, so the
-     spine stays pinned and reads as a fixed track the beats land on. No
-     nth-child delays — the observer fires per element as each crosses the
-     threshold, so scroll cadence IS the stagger. */
-  /* Hidden base gated on scripting, same reasoning as §3's images: never ship a
-     blank list to a reader whose JS didn't run. */
-  @media (scripting: enabled){
-    .sig-flow__item[data-reveal] > *{
-      opacity:0;
-      transform:translateY(8px);
-    }
-  }
-  .sig-flow__item[data-reveal].is-revealed > *{
-    opacity:1;
-    transform:none;
-    transition:opacity 380ms var(--ease-card), transform 380ms var(--ease-card);
-  }
-
-  /* Responsive — no layout change; a vertical timeline is narrow-native. Only the
-     rail gutter and type tighten. At 390px: 390 − 40 (container) − 18 (rail) − 13
-     (gap) = 319px of content column. */
-  @media (max-width: 560px){
-    .sig-flow{
-      --sig-flow-rail:18px;
-      --sig-flow-gap:13px;
-      --sig-flow-node:9px;
-      --sig-flow-pad:14px;
-      --sig-flow-phase-gap:16px;
-      --sig-flow-meta-h:22px;            /* tracks the 16px title below */
-    }
-    .sig-flow__title{ font-size:16px; }
-    .sig-flow__desc{ font-size:13px; max-width:none; }
-    .sig-flow__meta{ gap:10px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .sig-flow__item[data-reveal] > *,
-    .sig-flow__item[data-reveal].is-revealed > *{
-      opacity:1;
-      transform:none;
-      transition:none;
     }
   }
 
@@ -696,10 +591,11 @@
   .sig-xpanel[hidden]{ display:none; }
   .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
   .sig-xpanel__media{ height:200px; overflow:hidden; }
-  .sig-xpanel__media img{ width:100%; height:100%; object-fit:cover; object-position:center top; }
+  .sig-xpanel__media img{ width:100%; height:100%; object-fit:cover; object-position:center; }
   .sig-xpanel__head{ padding:clamp(24px,3vw,36px) clamp(24px,3vw,36px) 0; display:flex; flex-direction:column; gap:8px; }
+  /* Sentence case here too, matching the card eyebrow it morphs out of. */
   .sig-xpanel__head .sig-xcard__kind{ font-family:var(--font-sans);
-    font-size:12px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase; color:var(--sig-blue-deep); }
+    font-size:12px; font-weight:600; letter-spacing:0.04em; color:var(--sig-blue-deep); }
   .sig-xpanel__head h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:0; color:var(--text-primary); }
   .sig-xpanel__lede{ font-size:16px; line-height:1.55; color:var(--text-secondary); margin:0; max-width:56ch; }
   .sig-xpanel__body{ padding:clamp(20px,2.4vw,28px) clamp(24px,3vw,36px) clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:16px; }
@@ -723,6 +619,23 @@
   @media (prefers-reduced-motion: reduce){
     .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
   }
+
+  /* Intake report-choice gating (PRD F-ROUTE). The shared .topic-chip has no
+     disabled state because no other form needs one — scoped here rather than
+     promoted, per §0.3. Dimming a disabled control is exempt from 1.4.3, and the
+     rule is also carried in text (#intake-route-note), so nothing depends on the
+     visual alone. pointer-events stays ON so the cursor still reads not-allowed. */
+  .topic-chip:has(input:disabled){
+    opacity:0.42;
+    cursor:not-allowed;
+  }
+  @media (hover: hover) and (pointer: fine){
+    .topic-chip:has(input:disabled):hover{
+      border-color:var(--border-tertiary);
+      color:var(--text-secondary);
+    }
+  }
+  .topic-chip:has(input:disabled):active{ transform:none; }
 
   /* Retrieve status block — small, token-only. */
   .sig-status{ display:flex; align-items:center; gap:10px; margin-top:4px;
@@ -903,16 +816,18 @@
 
 <main id="main">
 
-  <!-- ── 1 · Hero — homepage .hero foreground + radial signal-pulse shader ── -->
+  <!-- ── 1 · Hero — homepage .hero foreground + shifting-lines shader ── -->
   <section class="hero" data-active-pillar="signal" aria-label="Hero">
-    <!-- Radial signal-pulse shader (three.js) — mounted by the ESM module near
-         </body> into #hero-shader; uses the shared .hero-shader crossfade layer.
-         Degrades to the #000 black .hero background if WebGL / esm.sh fail. -->
+    <!-- Shifting-lines shader, the homepage's, recoloured to one blue hue and
+         dropped below the copy. Uses the SHARED .hero-shader carrier from
+         styles.css (position, z2, the 600ms .is-ready crossfade) rather than a
+         sig-* layer, so this page and the homepage stay one mechanism.
+         Degrades to the #000 black .hero if WebGL / esm.sh fail. -->
     <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
-    <!-- Faint 32px graph-paper grid over the shader. -->
-    <div class="hero-grid" aria-hidden="true"></div>
-    <!-- Legibility scrim: darkens the lower-left behind the headline so the
-         full-frame shader stays readable. Above the shader, below the text. -->
+    <!-- No .hero-grid here (the homepage keeps it): a 32px square graph-paper
+         grid crossing the glow band reads as interference. -->
+    <!-- Legibility scrim: light, since the lines run below the copy and the copy
+         sits on plain black. Mostly seats the scroll cue. -->
     <div class="sig-hero-scrim" aria-hidden="true"></div>
 
     <div class="container hero-inner">
@@ -937,15 +852,15 @@
   <!-- ── 2 · Reports — three value-cards (offerings pattern) ── -->
   <section class="section offerings" id="reports" aria-labelledby="reports-heading">
     <div class="container">
-      <h2 id="reports-heading" class="h-section" data-reveal data-zh="三種深度的報告。">Three depths of report.</h2>
-      <p class="section-dek" data-reveal data-zh="從快速初篩到盡職調查等級的解讀——依你的決策需求選擇。">From a fast screen to a due-diligence read — pick what your decision needs.</p>
+      <h2 id="reports-heading" class="h-section" data-reveal data-zh="三種報告。">Three reports.</h2>
+      <p class="section-dek" data-reveal data-zh="一個分數、一份完整解讀，或你專利周邊的市場——依你的決策需求選擇。">A score, a full read, or the market around you — pick what your decision needs.</p>
       <div class="offerings-grid">
 
         <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定量">Quantitative</span>
-            <span class="offer-card-title" data-zh="報告 A · 短版">Report A · Short</span>
-            <span class="offer-card-desc" data-zh="分數、SABCD 等級與全池排名——快速客觀的初篩。">A score, an SABCD grade, and full-pool rank — fast, objective screening.</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="快速解讀">Fast read</span>
+            <span class="offer-card-title" data-zh="分數報告">Score Report</span>
+            <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1,433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1,433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -954,9 +869,9 @@
 
         <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定性 · 深度">Qualitative · in-depth</span>
-            <span class="offer-card-title" data-zh="報告 B · 長版">Report B · Long</span>
-            <span class="offer-card-desc" data-zh="七章深度報告——盡職調查等級的完整解讀。">The full seven-chapter report — a due-diligence-grade read.</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="深度解讀">Deep read</span>
+            <span class="offer-card-title" data-zh="完整報告">Full Report</span>
+            <span class="offer-card-desc" data-zh="含分數報告全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Score Report, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -965,9 +880,9 @@
 
         <button type="button" class="offer-card offer-card--sigC" data-report="c" aria-expanded="false" aria-controls="sig-panel-c">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="定性 · 進階">Qualitative · advanced</span>
-            <span class="offer-card-title" data-zh="報告 B · 進階版">Report B · Advanced</span>
-            <span class="offer-card-desc" data-zh="市場上最相關的十件專利，附比對解讀。">The ten most relevant patents on the market, with comparison.</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="廣度解讀">Wide read</span>
+            <span class="offer-card-title" data-zh="市場地景報告">Landscape Report</span>
+            <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可——連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -978,206 +893,181 @@
     </div>
   </section>
 
-  <!-- ── 3 · Proof + process — 2-col header, then a two-panel duo ──────────────
-       Header: claim left / argument, pool counter and methodology exit right.
-       Duo: the 7-beat process timeline on black (left) against the PSS ledger and
-       the human+AI caption card (right). Both panels are dark, so the duo reads as
-       one deliberate dark band under a light header.
+  <!-- ── 3 · Proof + process — claim and denominator left, argument right, then an
+       asymmetric three-panel grid ──────────────────────────────────────────────
+       Composition: the decomposition of the score IS this section's proof, so it
+       takes the widest and darkest cell (four facts, 2×2). The purchase process is
+       secondary and runs down the narrow column beside it. The human + AI caption
+       card closes the wide column.
 
-       This section absorbed the former "How it works" section wholesale — the
-       timeline used to be its own section below, and the left panel used to be a
-       decorative gradient. Consequence to keep in mind when editing: the retired
-       heading ("Submit a form, pay in two stages, retrieve with a code") and its
-       dek are GONE, so the two-stage payment structure is now carried only by the
-       accented 02 / 07 nodes and their PAYMENT chips. Don't quietly drop those.
+       Three deliberate weights — black ink, cool wash, photographic — replacing the
+       earlier three-black-cards band. That band read as one heavy slab and sent the
+       eye down the left column and back up the right; it also spent the page's only
+       vivid accent twice.
 
-       Counters (1,433 / 50 / 8) drive from site.js; 0–100 and S–D are static. ── -->
+       --sig-blue at full vividness now lives on the black ledger ONLY (7.58:1 there
+       against 2.77:1 on white, which is the whole reason that panel is black). The
+       wash panel takes --surface-accent-signal-text instead: 4.64:1 on
+       --surface-accent-signal-wash in light, 8.6:1 on its dark-theme value.
+
+       The two-stage payment structure is carried by the two chips inside phases 01
+       and 03. The retired 7-beat timeline said it with accented nodes and a pair of
+       PAYMENT chips; the chips now name the amounts outright. Don't drop them.
+
+       Counters (1433 / 50 / 8) drive from site.js; 0–100 and S–D are static. The
+       pool counter alone carries data-sep="none" — a separator inside a display
+       numeral this large reads as punctuation, not scale. The running prose
+       elsewhere on this page keeps "1,433". ── -->
   <section class="section" aria-labelledby="proof-heading">
     <div class="container">
       <div class="sig-proof">
 
-        <!-- Header — the claim left; the argument, the pool it's measured against,
-             and the methodology exit right. -->
+        <!-- Header — the claim and the argument own the left column; the right
+             column carries the denominator over the credit + methodology exit.
+
+             The pool figure is a display numeral with its label set BESIDE it on two
+             lines, not stacked above a caption. Stacked, it is the hero-metric
+             template and the label reads as an afterthought; beside, the two are one
+             phrase ("1433 patents in the reference pool") and the numeral can carry
+             the weight this column needs to answer the two-line h2 across the gutter.
+
+             No comma in the numeral (data-sep="none" on the counter). The markup text
+             is the no-JS value, so it must match what the counter lands on.
+
+             data-zh must never land on .sig-pool or .sig-pool__num — the language
+             swapper writes textContent and would delete the .counter child. Only the
+             label carries data-zh; the numeral carries none. -->
         <div class="sig-proof__head">
-          <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
+          <div class="sig-proof__claim">
+            <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
+
+            <p class="section-dek" data-reveal data-zh="為新創與創投提供專利評估，建立在新穎數位的 PSS 評分引擎之上，將任何專利與 TIS 自有及夥伴專利比較排名。">Patent evaluation for startups and venture investors, built on Innovue's PSS scoring engine, ranking any patent against TIS's own and partner patents.</p>
+          </div>
 
           <div class="sig-proof__aside">
-            <p class="section-dek" data-reveal data-zh="VC Signal 為創投提供專利盡職調查。核心是新穎數位的 PSS 評分引擎——把每一件專利放進 TIS 的參考專利池，做客觀、可追溯的排名；每一個評等，都能回溯到背後的每一項指標。">VC Signal is IP due diligence for venture investors. At its core is Innovue's PSS scoring engine, which places any patent into TIS's full reference pool for an objective, traceable ranking — every grade walks back to the indicators behind it.</p>
-
-            <!-- The pool is the denominator the whole score is relative to, not a
-                 stage of the pipeline — it belongs with the argument, on the page
-                 surface, where its numeral can use --text-primary in both themes. -->
             <p class="sig-pool">
-              <span class="sig-pool__num"><span class="counter" data-target="1433">1,433</span></span>
-              <span class="sig-pool__label" data-zh="件專利的參考池，作為排名基準">patents in the pool it's ranked against</span>
+              <span class="sig-pool__num"><span class="counter" data-target="1433" data-sep="none">1433</span></span>
+              <span class="sig-pool__label" data-zh="件專利的參考池">patents in the reference pool</span>
             </p>
 
-            <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看評分方法">See the methodology</a>
+            <!-- Innovue credit in the lockup register — visual-guide.md §Innovue
+                 Co-Branding: "Powered by Innovue", no variations, carried by the
+                 mark. Left of the CTA so the credential is read before the exit.
+                 The phrase stays EN in both languages, matching the footer lockup. -->
+            <div class="sig-proof__cta">
+              <p class="sig-credit">Powered by <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></p>
+
+              <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看評分方法">See the methodology</a>
+            </div>
           </div>
         </div>
 
-        <div class="sig-proof__duo">
+        <div class="sig-proof__grid">
 
-          <!-- ── Left panel · the process timeline ──────────────────────────────
-               Seven ordered beats on ONE continuous spine, grouped into three
-               phases, with 02 and 07 accented as the two payment milestones so the
-               two-stage structure is visible without reading a word.
+          <!-- ── Panel 1 · the PSS ledger — four facts on black, 2×2. Deliberately no
+               connective line and no node dots; nothing else in this section uses
+               that language now either. Facts are separated by one hairline between
+               the rows. Mono tabular numerals are legitimate: the content literally
+               is scoring metadata, not decoration.
 
-               Semantics: flat <ol role="list"> of exactly 7 <li> — one honest step
-               count. role="list" is required because list-style:none makes WebKit
-               strip list semantics, which is the only channel carrying ordinality
-               (the visible 01–07 indices are aria-hidden decorative duplicates).
-               Phase labels are <h3> inside the phase-leading <li>: 3 useful rotor
-               entries rather than 7. Beat titles are therefore <p>, not <h3>.
+               The numeral columns are sized on the LIST, not per row, via subgrid —
+               otherwise each <li> resolves its own max-content and the labels go
+               ragged, since "0–100" is wider than "50". ── -->
+          <div class="sig-ledger">
+            <p class="sig-ledger__kicker" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</p>
+            <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
 
-               ⚠ NEW COPY — needs review: the panel label (How it works / 如何進行)
-               and the payment chip (Payment / 付款). Phase labels reuse vocabulary
-               already on this page — 送件 and 取件 from the retired section heading,
-               產出 from beat 04. -->
-          <div class="sig-flow-panel">
-            <p class="sig-flow-panel__kicker" id="sig-flow-label" data-zh="如何進行">How it works</p>
+              <li class="sig-fact">
+                <span class="sig-fact__num"><span class="counter" data-target="50">50</span></span>
+                <span class="sig-fact__label" data-zh="項可追溯指標">traceable indicators</span>
+                <p class="sig-fact__note" data-zh="每個支柱拆解為 4–8 項指標：原值、百分位、權重，皆可追溯到計算公式。">Every pillar unpacks into 4–8 indicators: raw value, percentile, weight, each traceable to the formula.</p>
+              </li>
 
-            <div class="sig-flow">
-              <ol class="sig-flow__list" role="list" aria-labelledby="sig-flow-label">
+              <li class="sig-fact">
+                <span class="sig-fact__num"><span class="counter" data-target="8">8</span></span>
+                <span class="sig-fact__label" data-zh="大強度支柱">strength pillars</span>
+                <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八大支柱，各自獨立加權。">Citation, legal, technical, market and four more, each independently weighted.</p>
+              </li>
 
-                <!-- ── Phase 1 · Submit ── -->
-                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <h3 class="sig-flow__phase" data-zh="送件">Submit</h3>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">01</span>
-                      <span class="sig-flow__title" data-zh="選報告，上傳資料">Pick a report, add your input</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="專利號、申請中草稿，或一段想法的描述。">A patent number, a pending draft, or a description of the idea.</p>
-                  </div>
-                </li>
+              <li class="sig-fact">
+                <span class="sig-fact__num">0–100</span>
+                <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
+                <p class="sig-fact__note" data-zh="原始值先在全 1,433 件專利池內取百分位，跨產業單一基準，再聚合為 0–100 的 PSS。">Raw values are ranked inside the full 1,433-patent pool, one cross-industry benchmark, then aggregated into a 0–100 PSS.</p>
+              </li>
 
-                <li class="sig-flow__item sig-flow__item--pay" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">02</span>
-                      <span class="sig-flow__title" data-zh="線上刷卡付 10% 訂金">Pay a 10% deposit by card</span>
-                      <span class="sig-flow__chip" data-zh="付款">Payment</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="訂金啟動作業；格式錯誤或查無資料會提前擋下，不收費。">The deposit starts the work; bad input is caught earlier, at no charge.</p>
-                  </div>
-                </li>
+              <li class="sig-fact sig-fact--out">
+                <span class="sig-fact__num">S–D</span>
+                <span class="sig-fact__label" data-zh="級 SABCD 評等">SABCD grade</span>
+                <p class="sig-fact__note" data-zh="評級是全池百分位的分級。S 為池內前 15%。">A tier is a discretisation of pool percentile. S is the top 15% of the pool.</p>
+              </li>
 
-                <li class="sig-flow__item" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">03</span>
-                      <span class="sig-flow__title" data-zh="收到 confirmation letter + code">Confirmation letter with a code</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="一組不透明的英數字碼，搭配你的信箱作為日後取件憑證。">An opaque alphanumeric code, paired with your email to retrieve the report.</p>
-                  </div>
-                </li>
+            </ol>
+          </div>
 
-                <!-- ── Phase 2 · Produce ── -->
-                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <h3 class="sig-flow__phase" data-zh="產出">Produce</h3>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">04</span>
-                      <span class="sig-flow__title" data-zh="TIS 人工 + AI 產出報告">TIS produces your report</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="串接新穎資料、跑 PSS 或向量比對，再由 AI 協作撰寫；以小時 / 日計。">We pull Innovue data, run the match, and write it up with AI. Hours to days.</p>
-                  </div>
-                </li>
+          <!-- ── Panel 2 · the process, compressed to its three phases ─────────────
+               Was seven beats on a spine; the spine and its node geometry are gone.
+               Three phases hairline-separated need no track to be read as ordered,
+               and the <ol> carries the ordinality that matters.
 
-                <li class="sig-flow__item" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">05</span>
-                      <span class="sig-flow__title" data-zh="完成後 email 通知你">We email you when it's ready</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="通知只是通知；報告留在頁面上，憑憑證取件。">The email is only a notification; the report stays on the site, retrieved by credential.</p>
-                  </div>
-                </li>
+               role="list" is REQUIRED: list-style:none makes WebKit strip list
+               semantics, and with the visible ordinals gone the list role is the only
+               channel left carrying sequence at all. Phase names are <h3> — three
+               useful rotor entries. Beat titles are therefore <p>, not headings. ── -->
+          <div class="sig-phases">
+            <p class="sig-phases__kicker" id="sig-phases-label" data-zh="如何進行">How it works</p>
 
-                <!-- ── Phase 3 · Retrieve ── -->
-                <li class="sig-flow__item sig-flow__item--phase" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <h3 class="sig-flow__phase" data-zh="取件">Retrieve</h3>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">06</span>
-                      <span class="sig-flow__title" data-zh="驗證後免費預覽大綱">Verify, preview the outline free</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="免費預覽各章節將涵蓋的內容全貌（非摘錄），先確認價值。">See the full outline of what each chapter covers (not excerpts), and confirm the value.</p>
-                  </div>
-                </li>
+            <ol class="sig-phases__list" role="list" aria-labelledby="sig-phases-label">
 
-                <li class="sig-flow__item sig-flow__item--pay" data-reveal>
-                  <span class="sig-flow__node" aria-hidden="true"></span>
-                  <div class="sig-flow__content">
-                    <p class="sig-flow__meta">
-                      <span class="sig-flow__index" aria-hidden="true">07</span>
-                      <span class="sig-flow__title" data-zh="付 90% 尾款，下載完整報告">Pay the balance, download the report</span>
-                      <span class="sig-flow__chip" data-zh="付款">Payment</span>
-                    </p>
-                    <p class="sig-flow__desc" data-zh="含浮水印 PDF，憑信箱 + code 永久取回。">Watermarked PDF, retrievable forever with your email + code.</p>
-                  </div>
-                </li>
+              <li class="sig-phase" data-reveal>
+                <h3 class="sig-phase__name" data-zh="送件">Submit</h3>
+                <p class="sig-phase__title">
+                  <span data-zh="選報告，上傳資料">Pick a report, add your input</span>
+                  <span class="sig-phase__chip" data-zh="訂金 10%">10% deposit</span>
+                </p>
+                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含取件碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation letter carrying a retrieval code.</p>
+              </li>
 
-              </ol>
-            </div>
+              <li class="sig-phase" data-reveal>
+                <h3 class="sig-phase__name" data-zh="產出">Produce</h3>
+                <p class="sig-phase__title">
+                  <span data-zh="TIS 人工 + AI 產出報告">TIS produces your report</span>
+                </p>
+                <p class="sig-phase__desc" data-zh="串接新穎資料、跑 PSS 或向量比對，再由 AI 協作撰寫。以小時 / 日計，不是以週計。完成後 email 通知你，報告本身留在頁面上。">We pull Innovue data, run the match, and write it up with AI. Hours to days, not weeks. We email you when it is ready; the report itself stays on the site.</p>
+              </li>
 
-            <!-- Copy is byte-identical to the hero's primary CTA — no new strings. -->
+              <li class="sig-phase" data-reveal>
+                <h3 class="sig-phase__name" data-zh="取件">Retrieve</h3>
+                <p class="sig-phase__title">
+                  <span data-zh="驗證、預覽，再下載">Verify, preview, then download</span>
+                  <span class="sig-phase__chip" data-zh="尾款 90%">90% balance</span>
+                </p>
+                <p class="sig-phase__desc" data-zh="以信箱加取件碼免費預覽各章節將涵蓋的內容全貌，而非摘錄。付尾款後下載含浮水印 PDF，日後憑同一組憑證永久取回。">Your email and code unlock a free outline of what every chapter covers, not excerpts. Settle the balance to download the watermarked PDF, retrievable forever with the same credentials.</p>
+              </li>
+
+            </ol>
+
+            <!-- CTA closes the sequence: the reader finishes the last phase and the
+                 action is there. Copy is byte-identical to the hero's primary CTA — no
+                 new strings. On the wash ground .btn-primary needs no re-skin, so the
+                 pair of frozen ink literals this page used to carry for a white-on-black
+                 hover fill are gone from §1.3.1. (Naming them here would put them back
+                 into every hex grep, which is the trap they were listed for.) -->
             <a href="#intake" class="btn btn-primary" data-zh="開始評估">Start an evaluation</a>
           </div>
 
-          <div class="sig-proof__stack">
-
-            <!-- Card 1 — the PSS pipeline as four numbered facts. Deliberately NO
-                 connective line and NO node dots: the how-it-works timeline below
-                 owns that language now. Separation is horizontal hairlines. -->
-            <div class="sig-ledger">
-              <p class="sig-ledger__kicker" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</p>
-              <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
-
-                <li class="sig-fact">
-                  <span class="sig-fact__num"><span class="counter" data-target="50">50</span></span>
-                  <span class="sig-fact__label" data-zh="項可追溯指標">traceable indicators</span>
-                  <p class="sig-fact__note" data-zh="每個支柱拆解為 4–8 項指標：原值、百分位、權重——可追溯到計算公式。">Every pillar unpacks into 4–8 indicators: raw value, percentile, weight — traceable to the formula.</p>
-                </li>
-
-                <li class="sig-fact">
-                  <span class="sig-fact__num"><span class="counter" data-target="8">8</span></span>
-                  <span class="sig-fact__label" data-zh="大強度支柱">strength pillars</span>
-                  <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八大支柱，各自獨立加權。">Citation, legal, technical, market and four more — eight pillars, independently weighted.</p>
-                </li>
-
-                <li class="sig-fact">
-                  <span class="sig-fact__num">0–100</span>
-                  <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
-                  <p class="sig-fact__note" data-zh="原始值先對同產業同儕池正規化，聚合為 0–100 的 PSS。">Raw values are normalised against the same-industry pool, then aggregated into a 0–100 PSS.</p>
-                </li>
-
-                <li class="sig-fact sig-fact--out">
-                  <span class="sig-fact__num">S–D</span>
-                  <span class="sig-fact__label" data-zh="級 SABCD 評等">SABCD grade</span>
-                  <p class="sig-fact__note" data-zh="評級是同儕百分位的分級。S 為同儕池前 15%。">A tier is a discretisation of cohort percentile. S is the top 15% of the pool.</p>
-                </li>
-
-              </ol>
+          <!-- ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
+               REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep
+               navy to mid blue across its bottom band, ~7.9:1 for white at the top of
+               the caption); every pale gradient in that folder (-1, -2, -6, -7) drops
+               it to 2.6–3.0:1. Do not swap the image without re-measuring. The scrim
+               ramp is the audited .offer-card one, not a flat black/70. ── -->
+          <div class="sig-trade" data-reveal>
+            <img src="/assets/imagery/signal/signal-graident-3.png" alt="" loading="lazy" decoding="async" width="1920" height="1080" />
+            <div class="sig-trade__caption">
+              <p class="sig-trade__body" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade: real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
             </div>
-
-            <!-- Card 2 — the human + AI trade-off, captioned over a bottom-up scrim
-                 on signal-gradient imagery. -->
-            <div class="sig-trade" data-reveal>
-              <img src="/assets/imagery/signal/signal-graident-3.png" alt="" loading="lazy" decoding="async" width="1920" height="1080" />
-              <div class="sig-trade__caption">
-                <p class="sig-trade__body" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：我們用合理的作業時間，換來遠高於黑箱工具的準度與深度——但仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That's a deliberate trade: we spend real working time to return precision and depth a black-box tool can't — while still moving far faster than the 1–4 weeks of a traditional consultant.</p>
-              </div>
-            </div>
-
           </div>
+
         </div>
       </div>
     </div>
@@ -1207,13 +1097,20 @@
               </div>
             </fieldset>
 
-            <fieldset class="contact-topics">
+            <!-- Report choice is gated by the input type above (PRD v0.7 F-ROUTE /
+                 §8.2.1): a full PSS ranking needs a published patent's citation,
+                 family and legal record, so a pending draft or a bare idea can only
+                 take Landscape Report. The rule is stated in copy as well as
+                 enforced, so it holds without JS — the gating script below is the
+                 convenience, the note is the contract. -->
+            <fieldset class="contact-topics" aria-describedby="intake-route-note">
               <legend data-zh="② 報告類型">② Report</legend>
               <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="report" value="a-short" /><span data-zh="報告 A 短版">Report A · Short</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-long" /><span data-zh="報告 B 長版">Report B · Long</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="報告 B 進階版">Report B · Advanced</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="分數報告">Score Report</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="完整報告">Full Report</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="市場地景報告">Landscape Report</span></label>
               </div>
+              <p class="sig-callout" id="intake-route-note" data-zh-html data-zh="分數報告與完整報告需要完整的 PSS 資料（引用、專利家族、法律狀態），因此<strong>僅適用已核准或已公開專利</strong>。申請中草稿與純想法只能走市場地景報告。">Score Report and Full Report need a full PSS record — citations, family, legal status — so they are <strong>granted or published patents only</strong>. A pending draft or a bare idea takes Landscape Report.</p>
             </fieldset>
 
             <div class="field">
@@ -1276,7 +1173,7 @@
 
             <div class="sig-status">
               <span class="sig-status-pill" data-zh="✓ 報告完成">✓ Report ready</span>
-              <span data-zh="報告 B 進階版 · 訂金已付 10%">Report B · Advanced · 10% deposit paid</span>
+              <span data-zh="市場地景報告 · 訂金已付 10%">Landscape Report · 10% deposit paid</span>
             </div>
             <p class="sig-callout" data-zh-html data-zh="可先免費預覽<strong>報告大綱</strong>（各章節將涵蓋內容之全貌，非摘錄）；付 <strong>90% 尾款</strong>後下載完整報告（含浮水印 PDF）。">Preview the <strong>report outline free</strong> (the full scope of each chapter, not excerpts); pay the <strong>90% balance</strong> to download the full watermarked PDF.</p>
 
@@ -1306,15 +1203,15 @@
     <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_short.jpg" alt="" /></div>
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/short_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="定量">Quantitative</span>
-          <h2 id="sig-panel-a-title" data-zh="報告 A · 短版">Report A · Short</h2>
+          <span class="sig-xcard__kind" data-zh="快速解讀">Fast read</span>
+          <h2 id="sig-panel-a-title" data-zh="分數報告">Score Report</h2>
           <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是報告 A 的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Report A looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="Sample Report A — score, SABCD grade, percentile, rank, and 8-pillar radar" loading="lazy" />
+          <p data-zh-html data-zh="以下是分數報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Score Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="Sample Score Report — score, SABCD grade, percentile, rank, and 8-pillar radar" loading="lazy" />
         </div>
       </div>
     </div>
@@ -1323,15 +1220,15 @@
     <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_long.jpg" alt="" /></div>
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/long_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="定性 · 深度">Qualitative · in-depth</span>
-          <h2 id="sig-panel-b-title" data-zh="報告 B · 長版">Report B · Long</h2>
+          <span class="sig-xcard__kind" data-zh="深度解讀">Deep read</span>
+          <h2 id="sig-panel-b-title" data-zh="完整報告">Full Report</h2>
           <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是報告 B 長版的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Report B · Long looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Report B — full report with facts grid, metric cards, and 8-pillar radar" loading="lazy" />
+          <p data-zh-html data-zh="以下是完整報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Full Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Full Report — facts grid, metric cards, and 8-pillar radar" loading="lazy" />
         </div>
       </div>
     </div>
@@ -1340,10 +1237,10 @@
     <div class="sig-xpanel" id="sig-panel-c" role="dialog" aria-modal="true" aria-labelledby="sig-panel-c-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/report_advance2.jpg" alt="" /></div>
+        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/advance_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="定性 · 進階">Qualitative · advanced</span>
-          <h2 id="sig-panel-c-title" data-zh="報告 B · 進階版">Report B · Advanced</h2>
+          <span class="sig-xcard__kind" data-zh="廣度解讀">Wide read</span>
+          <h2 id="sig-panel-c-title" data-zh="市場地景報告">Landscape Report</h2>
           <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得。此報告不評級你自己的專利。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search. Your own patent is not graded here.</p>
         </div>
         <div class="sig-xpanel__body">
@@ -1548,27 +1445,46 @@
   })();
 </script>
 
-<!-- Radial signal-pulse hero shader. ESM module → three.js core from esm.sh (no
-     build step, no React), same idiom as the homepage hero. Renders a single
-     full-screen quad whose fragment shader accumulates concentric rings from a
-     length(uv) field — reading as a radar/signal pulse emanating outward. The
-     original RGB channel split is collapsed to a single monochrome signal-blue
-     (#0EA5E9 = --score-b-vivid) on black. Mounts into #hero-shader (the shared
-     .hero-shader crossfade layer). On any failure the catch leaves it empty →
-     the black .hero background shows through. -->
+<!-- Shifting-lines hero shader — the homepage's (index.html), in one blue hue and
+     dropped below the copy. Same idiom throughout: ESM module → three.js from the
+     local bundle with an esm.sh fallback, one full-screen quad, RawShaderMaterial,
+     DPR capped at 2, the coarse-pointer URL-bar guard, and the shared .hero-shader
+     crossfade carrier. On any failure the catch leaves #hero-shader empty → the
+     black .hero shows through.
+
+     Two departures from the homepage copy, and both are deliberate:
+
+     1. COLOUR. The homepage splits one line into R/G/B and mutes it with a
+        `saturation` uniform that blends toward the brightest channel. That is a
+        chroma control, so it can only ever travel between "full RGB" and "grey" —
+        there is no value of it that produces a blue. Here the three split strands
+        are instead multiplied by three steps of a single blue and summed, so the
+        hue is fixed and the split survives as depth: deep blue at the outside,
+        --sig-blue at the inside, and an additive near-white core where all three
+        converge. `saturation` is therefore gone rather than set to 0.
+
+     2. TIME. The homepage advances `time` by a fixed amount per frame, so it runs
+        at double speed on a 120Hz display. This one reads performance.now(), and
+        under reduced motion renders a single frame instead of leaving a rAF loop
+        spinning with a frozen clock. index.html still has both quirks — worth
+        fixing there too, but that is a homepage edit, not this one. -->
 <script type="module">
   (async () => {
     const mount = document.getElementById('hero-shader');
     if (!mount) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Animation speed — the source shader's rate (time += 0.05/frame) slowed 40%.
-    // Scaled again by *0.05 inside the shader (t = time*0.05).
-    const SPEED = 0.03;
+    // Seconds of shader time per real second. The homepage's 0.003/frame at 60Hz
+    // is 0.18/s — matched here so the two heroes move at the same rate.
+    const RATE = 0.18;
+    // Frozen clock for the reduced-motion still. NOT arbitrary: π/2 puts sin() at
+    // its maximum at x=0, which drops the band lowest at frame centre and lifts it
+    // symmetrically toward both edges. Picking a round number instead lands the
+    // crest wherever it happens to fall — the first attempt here ran it straight
+    // through the headline.
+    const STATIC_T = 1.5708;
 
     try {
-      // Local bundle first (assets/build/three.js, pinned 0.160.0 — see vite.config.js);
-      // esm.sh stays as a fallback so a missing build artifact can't blank the hero.
       let THREE;
       try {
         THREE = await import('/assets/build/three.js');
@@ -1582,56 +1498,53 @@
           gl_Position = vec4(position, 1.0);
         }
       `;
-      // The source shader's field, unchanged — same t = time*0.05, same nested loops,
-      // same fract(...)*5.0 - length(uv) + mod() expression, same lineWidth. Two
-      // deliberate departures from the original:
-      //   1. Colour — the original wrote three separate RGB channels (color[0/1/2])
-      //      for a chromatic split; we accumulate one scalar intensity and tint it
-      //      monochrome signal-blue instead.
-      //   2. Placement — the pulse origin is corner-anchored to the upper right (see
-      //      PULSE_ANCHOR below) rather than centred. This is a translation of the
-      //      whole uv field, not just the radius term, so the rendered pattern and
-      //      its motion are identical to the centred version — only repositioned.
       const fragmentShader = `
-        #define TWO_PI 6.2831853072
-        #define PI 3.14159265359
-
         precision highp float;
-        uniform vec2 resolution;
+        uniform vec2  resolution;
         uniform float time;
+        uniform float xScale;
+        uniform float yScale;
+        uniform float distortion;
+        uniform float yOffset;
 
-        // Pulse origin as a fraction of each half-axis, measured from frame centre:
-        // 0.60 of the half-width right, 0.45 of the half-height up. Expressed per
-        // axis (not in raw uv units) so the anchor holds its relative position at
-        // any aspect ratio — portrait phones land it high-right, wide desktops
-        // land it near the top-right corner.
-        #define PULSE_ANCHOR vec2(0.60, 0.45)
+        // One hue, three values. Outer strands sit deep, the inner strand carries
+        // --sig-blue; summing them lifts the convergence to a near-white core.
+        #define C_DEEP vec3(0.024, 0.204, 0.310)   // #06344F
+        #define C_MID  vec3(0.039, 0.447, 0.690)   // #0A72B0
+        #define C_SIG  vec3(0.055, 0.647, 0.914)   // #0EA5E9 = --sig-blue
 
-        void main(void) {
-          float m = min(resolution.x, resolution.y);
-          vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / m;
-          // Translate the entire field so uv == 0 (the pulse origin) sits at the
-          // anchor. resolution/m is the half-extent of each axis in uv units.
-          uv -= PULSE_ANCHOR * (resolution.xy / m);
-          float t = time*0.05;
-          float lineWidth = 0.002;
+        void main() {
+          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          // Positive yOffset lifts the band; negative drops it. Negative here so
+          // the lines run beneath the copy block.
+          p.y -= yOffset;
 
-          float v = 0.0;
-          for(int j = 0; j < 3; j++){
-            for(int i=0; i < 5; i++){
-              v += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
-            }
-          }
+          float d = length(p) * distortion;
 
-          // #0EA5E9 = --score-b-vivid (sanctioned shader-hex; GLSL can't read CSS tokens)
-          gl_FragColor = vec4(v * vec3(0.055, 0.647, 0.914), 1.0);
+          // The three strands diverge toward the frame edges and converge at centre.
+          float o = p.x * (1.0 + d);
+          float m = p.x;
+          float i = p.x * (1.0 - d);
+
+          float go = 0.04 / abs(p.y + sin((o + time) * xScale) * yScale);
+          float gm = 0.04 / abs(p.y + sin((m + time) * xScale) * yScale);
+          float gi = 0.04 / abs(p.y + sin((i + time) * xScale) * yScale);
+
+          // Compress each strand to 0..1 BEFORE tinting. The raw 1/abs() term is
+          // unbounded, so summing three of them clipped every channel at the
+          // crest and the core came out white — which defeats the point of a
+          // single hue. Compressing first keeps the sum in range, so the crest
+          // stays the brightest blue instead of turning into no colour at all.
+          go = go / (1.0 + go);
+          gm = gm / (1.0 + gm);
+          gi = gi / (1.0 + gi);
+
+          gl_FragColor = vec4(go * C_DEEP + gm * C_MID + gi * C_SIG, 1.0);
         }
       `;
 
       const canvas = document.createElement('canvas');
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
-      // Cap DPR at 2 — a full-screen fragment shader at 3× on retina phones is a
-      // real GPU/battery cost for no visible gain (matches the homepage hero).
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setClearColor(new THREE.Color(0x000000));
       mount.appendChild(canvas);
@@ -1643,6 +1556,19 @@
       const uniforms = {
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
         time:       { value: 0.0 },
+        xScale:     { value: 1.0 },
+        // Amplitude and offset are a pair. The band is deliberately lifted so its
+        // convergence runs BEHIND the CTA row rather than below it, so the old
+        // "must clear the copy at every phase" constraint no longer holds — the
+        // amplitude is pulled in instead so the crest stays out of the paragraph.
+        // Reach is (yOffset ± yScale) = -0.18 … -0.54; the CTA row spans about
+        // p.y -0.32 … -0.44 and the paragraph bottom sits at about -0.25.
+        yScale:     { value: 0.18 },
+        // Wider than the homepage's 0.05. Compressing the strands (see the shader)
+        // costs their brightness separation, so the split has to carry the depth
+        // geometrically instead — at 0.05 the three merged into one band.
+        distortion: { value: 0.11 },
+        yOffset:    { value: -0.36 },  // negative = below centre. See yScale above.
       };
 
       const position = [
@@ -1661,38 +1587,80 @@
       });
       scene.add(new THREE.Mesh(geometry, material));
 
-      // On touch devices the mobile URL bar collapsing on scroll changes only the
-      // viewport HEIGHT (the hero is 100dvh), which would fire ResizeObserver on
-      // every scroll and snap the rings — a visible "flash". Fix: on coarse
-      // pointers react only to WIDTH changes (orientation) and lock the draw
-      // buffer to the tallest height the hero can reach. hero overflow:hidden
-      // clips any excess. On desktop, keep normal responsive resizing.
+      // resolution stays in CSS px while setPixelRatio drives the device-px draw
+      // buffer — that reproduces the homepage's line scale on retina. On coarse
+      // pointers react to WIDTH only and lock the buffer to the tallest reachable
+      // height, so the mobile URL bar collapsing on scroll can't snap the wave.
       const coarse = window.matchMedia('(pointer: coarse)').matches;
       let lastW = -1;
       const resize = (force) => {
         const w = mount.clientWidth;
-        if (coarse && !force && w === lastW) return;   // ignore height-only (URL bar) on touch
+        if (coarse && !force && w === lastW) return;
         lastW = w;
         const h = coarse
           ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
           : mount.clientHeight;
         renderer.setSize(w, h, false);
         uniforms.resolution.value = [w, h];
+        if (reduce) renderer.render(scene, camera);   // no loop to pick the size up
       };
       resize(true);
       new ResizeObserver(() => resize(false)).observe(mount);
 
-      const animate = () => {
-        if (!reduce) uniforms.time.value += SPEED;
+      if (reduce) {
+        uniforms.time.value = STATIC_T;
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      };
-      if (reduce) renderer.render(scene, camera);   // render one static frame
-      animate();
+      } else {
+        const start = performance.now();
+        const animate = () => {
+          uniforms.time.value = ((performance.now() - start) / 1000) * RATE;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        };
+        animate();
+      }
     } catch (err) {
-      console.error('[hero-shader] radial signal-pulse shader failed to load; falling back to black hero.', err);
+      console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
       // #hero-shader stays empty → the black hero background shows through.
     }
+  })();
+</script>
+
+<!-- Intake report gating — PRD v0.7 F-ROUTE / §8.2.1 AC-6. A full PSS ranking needs
+     a published patent's citation, family and legal record, so Score Report and Full Report
+     (marked data-requires="granted") are only offered once the input type is a
+     granted / published patent. Pending drafts and bare ideas leave only Landscape Report.
+     The radio values (a-short / b-long / b-advanced) intentionally keep the PRD's
+     A / B / BX tier codes — only the visible labels were renamed.
+
+     Progressive enhancement: with no JS every option stays selectable and
+     #intake-route-note still states the rule, so the page never hides a choice it
+     hasn't explained. The note is wired as the fieldset's aria-describedby, so a
+     screen-reader user hears the constraint on entering the group rather than
+     discovering it by hitting a disabled radio. -->
+<script>
+  (() => {
+    const form = document.getElementById('intake-form');
+    if (!form) return;
+    const inputTypes = [...form.querySelectorAll('input[name="input-type"]')];
+    const gated = [...form.querySelectorAll('input[name="report"][data-requires="granted"]')];
+    if (!inputTypes.length || !gated.length) return;
+
+    const sync = () => {
+      const chosen = inputTypes.find(r => r.checked);
+      // No input type chosen yet → nothing is ruled out yet. Only a non-granted
+      // choice closes options, so the form never opens in a restricted state.
+      const allow = !chosen || chosen.value === 'granted';
+      gated.forEach(radio => {
+        radio.disabled = !allow;
+        // A checked-then-disabled radio still submits its value in some engines, and
+        // would in any case leave an impossible pairing visibly selected. Clear it.
+        if (!allow && radio.checked) radio.checked = false;
+      });
+    };
+
+    inputTypes.forEach(radio => radio.addEventListener('change', sync));
+    sync();
   })();
 </script>
 

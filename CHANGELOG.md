@@ -9,6 +9,13 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-11 00:46 +08:00** · Signal: recomposed the proof head — dek under the claim, pool figure to a 72px numeral with a two-line label, "Powered by Innovue" beside the methodology CTA.
+- **2026-08-10 21:04 +08:00** · Signal: renamed the report cards to Score / Full / Landscape Report, set every subtext to two lines, swapped in new imagery.
+- **2026-08-10 23:53 +08:00** · Signal: hero adopts the homepage shifting-lines shader in one blue hue, running behind the CTA row on the shared .hero-shader carrier.
+- **2026-08-10 21:07 +08:00** · Signal: retired the hero three.js shader for a drifting still — reports.jpg rotated 90° CCW so the copy column sits on black.
+- **2026-08-10 20:04 +08:00** · Signal: recomposed the proof section as an asymmetric grid, compressed the 7-beat process to three phases, retired the timeline spine.
+- **2026-08-10 19:59 +08:00** · Badge workbook: added dark-medallion / light-submark seal variants to the reversed row and both shape-exploration rows.
+- **2026-08-10 19:16 +08:00** · Signal: gated report choice by input type per PRD F-ROUTE, and corrected PSS ranking copy from same-industry cohort to full pool.
 - **2026-08-10 19:15 +08:00** · Made the 21st.dev island pipeline usable: preflight scoped, shadcn names aliased, Tailwind's content glob narrowed off the pages.
 - **2026-08-10 18:43 +08:00** · Added a workflow_dispatch-only Pages Actions workflow as a reversible switch path; deploy stays legacy.
 - **2026-08-10 18:07 +08:00** · Rebuilt the stale committed islands.css so it matches src/ again — two dropped Tailwind utilities, no page loads it.

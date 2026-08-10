@@ -114,17 +114,8 @@
     font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
     line-height: 1.15; margin: 0; color: var(--text-primary); text-wrap: balance;
   }
-  /* Innovue EN wordmark set inline in the title, proportioned to "Built with"
-     and baseline-aligned. Blue on light; Light_eng + brightness on dark. */
-  .innovue-wordmark {
-    display: inline-block; height: 0.72em; width: 5.27em; /* inline crop 300:41 */
-    vertical-align: baseline; position: relative; top: 0.02em;
-    background: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg') left center/contain no-repeat;
-  }
-  [data-theme="dark"] .innovue-wordmark {
-    background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
-    filter: brightness(1.6);
-  }
+  /* .innovue-wordmark (the inline Innovue mark in the title) lives in styles.css
+     beside .innovue-wm — it is shared with the Signal page's "Powered by" credit. */
   .about-partner__body {
     font-size: clamp(15px, 1vw, 16px); line-height: 1.6;
     color: var(--text-secondary); margin: clamp(14px, 1.4vw, 18px) 0 0;

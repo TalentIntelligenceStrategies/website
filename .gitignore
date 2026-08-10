@@ -18,3 +18,7 @@ skills-lock.json
 
 # assets/build/ is intentionally NOT ignored. GitHub Pages serves this repo root in
 # `legacy` mode, so the built artifacts must be committed for the site to work.
+
+# Section bench for redesigns — same rule as .island-harness.html: never ships.
+.section-probe.html
+.wave-probe.html

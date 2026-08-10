@@ -1338,18 +1338,20 @@ main { padding-top: 64px; }
 }
 [data-page="licensing"] .hero .btn-secondary:hover { background: var(--surface-accent-licensing-wash); }
 
-/* ───────── Signal deep-dive hero — full-bleed cool coremap image ─────────
-   Cool twin of the licensing hero above; same composition, blue instead of warm.
-   Page-scoped to [data-page="signal"] .hero. IMPORTANT: the signal page also has
-   .hero-warm/.hero-silver/.hero-signal inside the .rxscroll walkthrough below, so
-   every backdrop rule here is scoped as a descendant of .hero — never bare — or it
-   would wipe the rxscroll's own gradient/grid. Grid carrier is .hero-signal (not
-   .hero-warm): data-active-pillar="signal" activates .hero-signal via the global
-   .hero[data-active-pillar="signal"] .hero-signal rule. No scrim; copy stays white. */
-[data-page="signal"] .hero {
-  background:
-    url('/assets/imagery/coremap/dirk-lach-fSgF4pEQEY8-hero-flip.jpg') center / cover no-repeat;
-}
+/* ───────── Signal deep-dive hero — backdrop suppression ─────────
+   The signal hero composes the SHARED .hero-shader carrier above, same as the
+   homepage — it just runs the shifting-lines shader recoloured to one blue and
+   dropped below the copy (see DESIGN.md §16). The full-bleed image rule that used
+   to sit here was dead from the moment that page set background:#000 on the same
+   selector later in the cascade — removed 2026-08-10. What remains is still
+   load-bearing.
+
+   IMPORTANT: the signal page also has .hero-warm/.hero-silver/.hero-signal inside
+   the .rxscroll walkthrough below, so every backdrop rule here is scoped as a
+   descendant of .hero — never bare — or it would wipe the rxscroll's own
+   gradient/grid. Grid carrier is .hero-signal (not .hero-warm):
+   data-active-pillar="signal" activates .hero-signal via the global
+   .hero[data-active-pillar="signal"] .hero-signal rule. Copy stays white. */
 [data-page="signal"] .hero::before { display: none; }
 [data-page="signal"] .hero .hero-signal { background: none; }
 [data-page="signal"] .hero .hero-signal::before {
@@ -2689,6 +2691,26 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: 0 0 40px;        /* generous breathing room before the sentence */
   color: #fff;
 }
+/* Full-color Innovue EN wordmark set inline in a text run, baseline-aligned and
+   sized in em so it tracks whatever type it sits in. Blue on light; Light_eng +
+   brightness(1.6) on dark — never inverted to grayscale (visual-guide.md
+   §Innovue Co-Branding). Shared: /about/ sets it in a section title, the Signal
+   page sets it in the "Powered by" credit beside the methodology CTA. For the
+   white-on-black variant use .innovue-wm below. */
+.innovue-wordmark {
+  display: inline-block;
+  height: 0.72em;
+  width: 5.27em;          /* inline crop 300:41 */
+  vertical-align: baseline;
+  position: relative;
+  top: 0.02em;
+  background: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng_inline.svg') left center/contain no-repeat;
+}
+[data-theme="dark"] .innovue-wordmark {
+  background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
+  filter: brightness(1.6);
+}
+
 /* White Innovue wordmark set inline in the title, sized to the cap-height of
    "Partnership with" so it reads as the word it replaces. Baseline-cropped white
    SVG; width/height in em so it tracks the responsive title size. */

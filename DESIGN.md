@@ -48,7 +48,7 @@ dead CSS accumulate unaudited, and the correlation is not subtle:
 | | inline `<style>` blocks | outcome |
 |---|---|---|
 | `index.html`, `product/signal/methodology.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
-| `product/signal/index.html` | 1 | audited exception — 69 classes, zero dead rules (see §16.2) |
+| `product/signal/index.html` | 1 | audited exception — 63 classes, zero dead rules (see §16.2) |
 | `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
 
 The `product/signal/index.html` row is the one sanctioned exception, and it earned that
@@ -195,7 +195,11 @@ Anything not on this list is a violation.
 | `patents/` | `#17130E` | blueprint overlay ink (name + sub-pill), 2 uses |
 | `patents/` | `#0A0A0A` | `.pat-modal` shell — near-black, one step off the `#000` blueprint ground so the modal edge reads |
 | `product/signal/index.html` | `#0369A1` | page-local `--sig-blue-deep`. Equals light-theme `--score-b`, but the token flips to `#38BDF8` in dark and this page needs it fixed |
-| `product/signal/index.html` | `#252525` (×2) | ink on a white hover fill over an always-dark panel — same rationale as `.contact-panel .btn-primary`'s `#000` |
+
+> Retired 2026-08-10: this page also carried an ink literal twice, for a white hover fill
+> over an always-dark panel. The 2026-08-10 proof-grid recomposition moved that CTA onto a
+> wash ground where `.btn-primary` needs no re-skin, so both uses are gone. The list is
+> closed, so an entry that no longer exists is removed rather than left to rot.
 
 **One that is not a colour literal at all:** `patents/index.html` has
 `[fill="#FCFAF4"]` — an **attribute selector** matching SVG content emitted by the page's
@@ -403,6 +407,7 @@ the nav. On home the announce bar is lifted out of flow and absolutely overlaid 
    failure the black `.hero` shows through. (Ignore stale "sphere" comments in the CSS —
    the ShaderGradient sphere is gone.)
 4. **`.hero-grid` (z3)** — faint 32px white grid `rgba(255,255,255,0.025)` over the shader.
+   **Not present on the signal page**, where it would cross the glow band — see §16.
 5. **`.hero-inner` / `.pillar` (z5)** — foreground text.
 
 **Foreground `.pillar`:** left-anchored (`align-items:flex-start`, `max-width:820px`,
@@ -573,7 +578,15 @@ sequencing, and never introduce a fourth library.
 - **Crossfades**: hero backdrops 480ms, shader 600ms, theme swap 250ms, buttons ~100ms.
 - **Counters**: `.counter[data-target]` count-up via `counterObserver` (`threshold:0.3`),
   driven entirely from `site.js` — there is no `.counter` CSS rule. Live on `/about/`
-  and `product/licensing/`.
+  (`180`, `100`) and `product/signal/` (`1433`, `50`, `8`).
+  Values are formatted with `toLocaleString('en-US')`, so four digits and up get a
+  thousands comma. **`data-sep="none"` opts an element out** — used on the Signal pool
+  numeral, where at 72px a separator reads as punctuation rather than scale.
+  Two rules for any counter with copy set beside it: the markup text must equal what the
+  counter lands on (it is the no-JS value), and the element needs a reserved width
+  (`min-width` in `ch`, which tracks a `clamp()`ed font-size for free) or the growing
+  digit *count* will shove that copy sideways — `tabular-nums` fixes digit width, not
+  digit count.
 
 Ease-out only; **no bounce** — the hero scroll cue is the single sanctioned exception.
 
@@ -969,20 +982,71 @@ Signal accent = `--surface-accent-signal` (dark surfaces only) /
 `--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.
 
 The page carries **one inline `<style>` block, and it is a sanctioned §0.3 exception —
-not drift.** The header comment above the block records the audit: 69 classes, of which 51
-are `sig-*` page-namespaced, 5 are modifiers on shared components, and 11 are properly
-scoped overrides (`[data-page="signal"] .hero`, `.sig-flow-panel .btn-primary`). Zero dead
-rules. Nothing in it is reusable enough to earn a place in the shared stylesheet; promoting
-it would repeat the dead-CSS problem rather than fix it.
+not drift.** The header comment above the block records the audit: 63 classes, of which 46
+are `sig-*` page-namespaced, 5 are modifiers on shared components, and 12 are shared classes
+reached through a scoped or descendant selector (`[data-page="signal"] .hero`,
+`.sig-phases .btn`). Zero dead rules. Nothing in it is reusable enough to earn a place in
+the shared stylesheet; promoting it would repeat the dead-CSS problem rather than fix it.
 
 **The condition attached to the exception: if you change that block, re-run the dead-class
 check and update the audit line in its header comment.** An unaudited block loses the
 exception and is swept.
 
-Four things are page-scoped because `styles.css` has no equivalent — the radial
-signal-pulse hero shader (three.js, local bundle first with an `esm.sh` fallback per §15),
-the signal-gradient imagery behind the report and contact cards, the proof duo, and the
-how-it-works vertical timeline. Two hex literals are frozen on the §1.3 list.
+Two things are page-scoped because `styles.css` has no equivalent — the signal-gradient
+imagery behind the report and contact cards, and the proof grid. The hero is no longer one
+of them; it composes the shared `.hero-shader` carrier.
+
+**The hero** (2026-08-11) runs **the homepage's own shifting-lines shader**, recoloured to a
+single blue hue and positioned so the band runs behind the CTA row. It uses the **shared
+`.hero-shader` carrier**
+from `styles.css` — position, `z-index:2`, the 600ms `.is-ready` crossfade — so there is no
+page-local backdrop layer at all and the only page-local hero rule left is `.sig-hero-scrim`
+(z3). Content is z5, the shared `.hero-inner` value.
+
+Everything before it is gone: a radial ring pulse, then a scanning hex-dot lattice, then a
+Stripe-style mesh gradient over a rotated still. Four things to know:
+
+- **The recolour is not the `saturation` uniform.** The homepage splits one line into R/G/B
+  and mutes it by blending toward the brightest channel — that is a *chroma* control, so it
+  travels between "full RGB" and "grey" and no value of it produces a blue. Here the three
+  split strands are multiplied by three steps of one blue (`#06344F` / `#0A72B0` /
+  `#0EA5E9` = `--sig-blue`) and summed, so hue is fixed and the split survives as depth.
+  `saturation` is deleted rather than set to 0. **These three hex literals are sanctioned
+  shader-hex** — GLSL cannot read CSS custom properties (§1.3).
+- **Each strand is compressed to 0..1 before tinting.** The raw `1/abs()` glow is unbounded;
+  summing three of them clipped every channel at the crest and the core came out white,
+  which defeats a single-hue palette. `g/(1+g)` first keeps the sum in range.
+- **`yScale` and `yOffset` are a pair, and they encode a composition decision.** The band is
+  positioned so its convergence runs **behind the CTA row**, not below it: `yOffset -0.36`,
+  `yScale 0.18`, so the reach is `p.y -0.18 … -0.54` against a CTA row spanning about
+  `-0.32 … -0.44`. The amplitude is deliberately small — at the top of that range the crest
+  grazes the last paragraph lines, and anything wider pushes it further into them. That is
+  also why the scrim's bottom lift reaches 56%. Change one of the two and you have to
+  re-check the other **across phases**, not in whatever single frame is on screen; the crest
+  travels, so a frame that looks clear proves nothing. For the same reason `STATIC_T` is
+  `π/2` — it puts the still's crest lowest at frame centre rather than wherever it lands.
+  `distortion` is `0.11`, wider than the homepage's `0.05`, because compression costs the
+  strands their brightness separation so the split has to carry depth geometrically.
+- **Two fixes the homepage copy still needs.** This one drives `time` from
+  `performance.now()` (the homepage advances it per frame, so it runs at double speed on a
+  120Hz display) and renders a single frame under reduced motion instead of leaving a rAF
+  loop spinning on a frozen clock. `index.html` has both quirks and is worth fixing.
+- **This page drops `.hero-grid`** (the homepage keeps it) — a square grid crossing the glow
+  band reads as interference.
+
+**The proof grid** (2026-08-10) is asymmetric on purpose: a wide black PSS ledger with the
+four facts 2×2, a scrim-captioned image card below it, and a full-height
+`--surface-accent-signal-wash` panel beside both carrying the process as three phases.
+It replaced three black cards in a flex row plus a 7-beat timeline on a spine. Two things
+to know before editing it:
+
+- **The vivid `--sig-blue` lives on the black ledger and nowhere else.** It is 7.58:1 on
+  `#000` and 2.77:1 on white, which is the entire reason that panel is black. The wash
+  panel uses `--surface-accent-signal-text` (4.64:1 on the wash, 8.6:1 on its `#121D24`
+  dark-theme value).
+- **The two-stage payment structure is carried by the two chips** (`10% deposit` /
+  `90% balance`) in the first and last phase. The retired timeline said it with accented
+  nodes; don't quietly drop the chips.
 
 The in-page anchors `#reports` and `#intake` are link targets from
 `methodology.html` — don't rename them without fixing that page's `.loop-ctas`.

@@ -223,7 +223,7 @@
           <span data-zh="SABCD 評級方法">SABCD Methodology.</span>
         </h1>
         <p class="pillar-sub" data-zh="8 大支柱 · 50 項量化指標 · 0–100 分綜合評分。">Eight pillars. Fifty indicators. One PSS score on a 0–100 scale.</p>
-        <p class="pillar-sub" data-zh="每一份 Signal 報告背後的同一套評分引擎——每根支柱量測什麼、50 項指標如何運作，以及 0–100 分的 PSS 如何在同產業同儕中對應到 S–D 評級。">The same scoring engine behind every Signal report — what each pillar measures, how the 50 indicators work, and how a 0–100 PSS resolves to an S–D tier against industry peers.</p>
+        <p class="pillar-sub" data-zh="每一份 Signal 報告背後的同一套評分引擎——每根支柱量測什麼、50 項指標如何運作，以及 0–100 分的 PSS 如何在全池同儕中對應到 S–D 評級。">The same scoring engine behind every Signal report — what each pillar measures, how the 50 indicators work, and how a 0–100 PSS resolves to an S–D tier against the full reference pool.</p>
         <div class="pillar-actions">
           <a href="/product/signal/" class="btn btn-secondary" data-zh="回到 Signal">Back to Signal</a>
         </div>
@@ -242,7 +242,7 @@
       <header class="section-head">
         <div>
           <h2 id="cscore-heading" class="h-section grad-text-silver-solid" data-zh="SABCD 評級">SABCD tiers</h2>
-          <p class="section-dek" data-zh="評級是同儕百分位的分級。S 為同儕池前 15%——即首頁所述的「S 級（前 15%）」。">A tier is a discretisation of cohort percentile. S is the top 15% of the pool — the "S (top 15%)" the homepage cites.</p>
+          <p class="section-dek" data-zh="評級是全池百分位的分級。S 為池內前 15%——即首頁所述的「S 級（前 15%）」。">A tier is a discretisation of pool percentile. S is the top 15% of the pool — the "S (top 15%)" the homepage cites.</p>
         </div>
       </header>
 
@@ -422,7 +422,7 @@
       <header class="section-head">
         <div>
           <h2 id="pss-heading" class="h-section grad-text-silver-solid" data-zh="PSS 分數怎麼算出來">How the PSS score is built</h2>
-          <p class="section-dek" data-zh="每件專利依 8 大支柱、50 項指標評分。原始值先對同產業同儕池正規化，聚合為 0–100 的 PSS，再對應 SABCD 評級——同儕百分位與池內排名，皆由同一次比較得出。">Every patent is graded on 50 indicators across 8 pillars. Raw values are normalised against the same-industry pool, aggregated into a 0–100 PSS, and mapped to a SABCD tier — cohort percentile and rank fall out of the same comparison.</p>
+          <p class="section-dek" data-zh="每件專利依 8 大支柱、50 項指標評分。原始值先在全池內正規化，聚合為 0–100 的 PSS，再對應 SABCD 評級——百分位與池內排名，皆由同一次比較得出。">Every patent is graded on 50 indicators across 8 pillars. Raw values are normalised inside the full reference pool, aggregated into a 0–100 PSS, and mapped to a SABCD tier — percentile and rank fall out of the same comparison.</p>
         </div>
       </header>
 
@@ -437,7 +437,7 @@
           </tr></thead>
           <tbody>
             <tr><td class="mono">1</td><td data-zh="為 50 項指標計算結構化訊號與 NLP 評分。">Structured signals and NLP rubric scores are computed for all 50 indicators.</td></tr>
-            <tr><td class="mono">2</td><td data-zh="每個數值對同產業同儕池排名——取百分位，而非絕對值。">Each value is ranked against the same-industry cohort — a percentile, not an absolute.</td></tr>
+            <tr><td class="mono">2</td><td data-zh="每個數值對全池排名——取百分位，而非絕對值；單一跨產業基準。">Each value is ranked against the full pool — a percentile, not an absolute, on one cross-industry benchmark.</td></tr>
             <tr><td class="mono">3</td><td data-zh="指標聚合為八大支柱，各自獨立加權。">Indicators roll up into eight pillars, each independently weighted.</td></tr>
             <tr><td class="mono">4</td><td data-zh="綜合結果對應到 0–100 的 PSS 與一個 SABCD 評級。">The composite resolves to a 0–100 PSS and one SABCD tier.</td></tr>
           </tbody>
@@ -507,8 +507,8 @@
       <header class="section-head">
         <div>
           <h2 id="transparency-heading" class="h-section grad-text-silver-solid" data-zh="透明優先於精準">Transparency over precision</h2>
-          <p class="section-dek" data-zh="每個分數都可追溯到公式。結構化指標揭示原始輸入；NLP 指標附帶評分標準與可稽核的推理軌跡。同儕池每週重新排名——專利進池或失效時，即使本身指標未變，排名與百分位仍可能變動。">Every score traces to a formula. Structured indicators show their raw inputs; NLP indicators carry a rubric score and a reasoning trail you can audit. The cohort re-ranks weekly — rank and percentile can move as patents enter or lapse, even when a patent's own indicators don't.</p>
-          <p class="section-dek" data-zh="所有指標取自新穎 1.8 億筆專利索引——涵蓋 100 多個司法管轄區，每日更新。產業歸屬依專利主要 IPC 分類。">All indicators draw from the Innovue 180M-patent index — 100+ jurisdictions, refreshed daily. Industry assignment uses the patent's primary IPC code.</p>
+          <p class="section-dek" data-zh="每個分數都可追溯到公式。結構化指標揭示原始輸入；NLP 指標附帶評分標準與可稽核的推理軌跡。參考池每週重新排名——專利進池或失效時，即使本身指標未變，排名與百分位仍可能變動。">Every score traces to a formula. Structured indicators show their raw inputs; NLP indicators carry a rubric score and a reasoning trail you can audit. The pool re-ranks weekly — rank and percentile can move as patents enter or lapse, even when a patent's own indicators don't.</p>
+          <p class="section-dek" data-zh="所有指標取自新穎 1.8 億筆專利索引——涵蓋 100 多個司法管轄區，每日更新。產業別為描述性資訊，不切分比較基準——排名一律對全池。">All indicators draw from the Innovue 180M-patent index — 100+ jurisdictions, refreshed daily. Industry is descriptive metadata, not a comparison cohort — ranking is always against the full pool.</p>
         </div>
       </header>
       <!-- Loop CTAs — methodology answers "how"; now route to "what you get" (#reports)
