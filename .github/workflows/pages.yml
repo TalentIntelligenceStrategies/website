@@ -1,0 +1,62 @@
+# GitHub Pages deploy via Actions — NOT ACTIVE.
+#
+# The site currently deploys in Pages `legacy` mode: GitHub serves the repo root of
+# `main` directly, and the built artifacts in assets/build/ are committed so that
+# keeps working. Nothing about the deploy has changed.
+#
+# This workflow exists so switching to an Actions deploy is a one-step, reversible
+# decision rather than a from-scratch job. It is `workflow_dispatch` only, so it
+# never fires on push and cannot take over the deploy by accident.
+#
+# To switch (do this from a branch first and confirm the custom domain, CNAME and
+# certificate survive before pointing production at it):
+#   1. Run this workflow manually and check the artifact contains every route.
+#   2. gh api -X PUT repos/OWNER/REPO/pages -f build_type=workflow
+#   3. Add `push: branches: [main]` below.
+# To revert: set build_type back to `legacy`. The committed assets/build/ means the
+# root of `main` is always servable as-is, so the rollback needs no code change.
+#
+# Note the failure mode changes: today a broken build ships anyway because the
+# committed artifact is served; under Actions a broken build blocks the deploy.
+# Safer, but different — see website/CLAUDE.md.
+
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Fails if the committed assets/build/ has drifted from src/.
+      - run: npm run verify
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          # The repo root IS the site — hand-authored HTML plus committed build output.
+          path: .
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
