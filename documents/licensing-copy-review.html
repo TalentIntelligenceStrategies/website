@@ -484,13 +484,12 @@ const ROADMAP = [
     desc:"The embeddable, public badge — unique license number + QR code that a buyer scans to verify a license in ~2 seconds. Co-branded TIS × issuing institution; printable on booths, decks, and packaging." },
   { id:"rm-signal-method",name:"Signal — Methodology",            path:"/product/signal/methodology.html",
     desc:"Explainer for the SABCD grading: the 50 evidence-based indicators and how each patent is scored and peer-ranked against its own industry. The trust/credibility page behind Signal." },
-  { id:"rm-signal-sample",name:"Signal — Sample Report",          path:"/product/signal/sample-report.html",
-    desc:"A full example patent-valuation report (SABCD grade, evidence, comparison, work-around guidance) that prospects can view before subscribing — the proof-of-value artifact." },
   { id:"rm-signal-index", name:"Signal — Product Page",           path:"/product/signal/index.html",
-    desc:"The Signal deep-dive (the Patent Intelligence SaaS): token-based patent valuation, comparison, and pre-built report sales — aimed at VCs / PE funds and incubators running IP due diligence." },
-  { id:"rm-signal-lobby", name:"Signal — Lobby (Path to Sign-up)", path:"/product/signal/lobby.html",
-    desc:"The get-started / account gateway for Signal — sign-up + login, mirroring the licensing lobby's split-screen brand panel + form." },
+    desc:"The Signal deep-dive (the Patent Intelligence SaaS): an objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — aimed at VCs / PE funds and incubators running IP due diligence." },
 ];
+// Removed 2026-08-10: the Sample Report and Lobby entries. Both pages were deleted when
+// the v0.8 Signal page shipped — it folds the report proof into #reports and the sign-up
+// path into the in-page #intake form, so neither is a roadmap item any more.
 
 // id -> {section, textLocation} for readable Sheet rows
 const META = {};

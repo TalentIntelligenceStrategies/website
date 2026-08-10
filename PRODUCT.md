@@ -33,5 +33,5 @@ distrusts hype. Reads bilingually (EN / 中文 toggle).
 Convert that one anxiety into the calm of someone who already has coverage. The page
 sells a *deliverable* — a 30-patent, SABCD-graded, institution-licensed bundle activating
 the week you subscribe — not a tool. Success = 王董 reaches
-[product/signal/lobby.html](product/signal/lobby.html) believing TIS is the composed,
-methodical, honest party in a market full of fear-selling.
+`license.tisglobalinc.com/welcome` — where all three of this page's signup CTAs land —
+believing TIS is the composed, methodical, honest party in a market full of fear-selling.

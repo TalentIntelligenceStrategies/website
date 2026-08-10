@@ -19,7 +19,12 @@ Checked against `brand/brand-voice.md` §2 tone anchor, §3 anti-hype, §4 banne
 §5 anchor numbers, §6 date format, §7 Innovue attribution. That file lives **only** in the
 brand monorepo — see finding 7 — so this audit had to read it from outside this repo.
 
-`product/signal/index.v08-concept.html` is excluded — it is a `noindex` concept page.
+> **Stale as of 2026-08-10.** The page audited below as `product/signal/index.html` has
+> since been replaced: the former `index.v08-concept.html` was promoted in its place, and
+> `sample-report.html` + `lobby.html` were deleted. The `product/signal/index.html` (73
+> rows), `sample-report.html` (19 rows), and `lobby.html` (3 rows) sections therefore
+> describe copy that is no longer on the site, and the promoted page is **unaudited**.
+> Everything else here still holds. Re-audit the Signal surface before acting on it.
 
 The Δ-divergence vocabulary is reused from
 [`licensing-copy-comparison.md`](licensing-copy-comparison.md) rather than reinvented.

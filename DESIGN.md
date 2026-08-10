@@ -47,9 +47,13 @@ dead CSS accumulate unaudited, and the correlation is not subtle:
 
 | | inline `<style>` blocks | outcome |
 |---|---|---|
-| `index.html`, `product/signal/methodology.html`, `sample-report.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
-| `product/signal/index.html` | 1 | 29% of its inline CSS was dead |
+| `index.html`, `product/signal/methodology.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
+| `product/signal/index.html` | 1 | audited exception — 69 classes, zero dead rules (see §16.2) |
 | `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
+
+The `product/signal/index.html` row is the one sanctioned exception, and it earned that
+standing by audit, not by age — the page it replaced carried the same single block with
+**29% of its inline CSS dead**.
 
 The mechanism: 21st.dev components arrive as React + Tailwind and get hand-transliterated,
 so each one is re-derived in a different idiom instead of reusing the one that exists.
@@ -190,9 +194,8 @@ Anything not on this list is a violation.
 | `patents/` | `#ECECEC` | `--pat-ground` — drafting-paper ground for the blueprint marquee cards; deliberately off-white so the strip doesn't glare against the black page |
 | `patents/` | `#17130E` | blueprint overlay ink (name + sub-pill), 2 uses |
 | `patents/` | `#0A0A0A` | `.pat-modal` shell — near-black, one step off the `#000` blueprint ground so the modal edge reads |
-| `product/signal/lobby.html` | `#CFE9FB` `#DDEFFC` `#E8F4FE` `#F2F9FF` | the 4-stop atmospheric radial on `main#main`, resolving into `var(--surface-page)` at 74%. Tuned as a set; individually meaningless |
-| `product/signal/index.v08-concept.html` | `#0369A1` | page-local `--sig-blue-deep`. Equals light-theme `--score-b`, but the token flips to `#38BDF8` in dark and this concept needs it fixed |
-| `product/signal/index.v08-concept.html` | `#252525` (×2) | ink on a white hover fill over an always-dark panel — same rationale as `.contact-panel .btn-primary`'s `#000` |
+| `product/signal/index.html` | `#0369A1` | page-local `--sig-blue-deep`. Equals light-theme `--score-b`, but the token flips to `#38BDF8` in dark and this page needs it fixed |
+| `product/signal/index.html` | `#252525` (×2) | ink on a white hover fill over an always-dark panel — same rationale as `.contact-panel .btn-primary`'s `#000` |
 
 **One that is not a colour literal at all:** `patents/index.html` has
 `[fill="#FCFAF4"]` — an **attribute selector** matching SVG content emitted by the page's
@@ -875,5 +878,22 @@ preserved as-is.
 
 Signal accent = `--surface-accent-signal` (dark surfaces only) /
 `--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.
-The page still carries one inline `<style>` block; it is scheduled for extraction under
-§0.3 and should not grow.
+
+The page carries **one inline `<style>` block, and it is a sanctioned §0.3 exception —
+not drift.** The header comment above the block records the audit: 69 classes, of which 51
+are `sig-*` page-namespaced, 5 are modifiers on shared components, and 11 are properly
+scoped overrides (`[data-page="signal"] .hero`, `.sig-flow-panel .btn-primary`). Zero dead
+rules. Nothing in it is reusable enough to earn a place in the shared stylesheet; promoting
+it would repeat the dead-CSS problem rather than fix it.
+
+**The condition attached to the exception: if you change that block, re-run the dead-class
+check and update the audit line in its header comment.** An unaudited block loses the
+exception and is swept.
+
+Four things are page-scoped because `styles.css` has no equivalent — the radial
+signal-pulse hero shader (three.js, local bundle first with an `esm.sh` fallback per §15),
+the signal-gradient imagery behind the report and contact cards, the proof duo, and the
+how-it-works vertical timeline. Two hex literals are frozen on the §1.3 list.
+
+The in-page anchors `#reports` and `#intake` are link targets from
+`methodology.html` — don't rename them without fixing that page's `.loop-ctas`.

@@ -1114,64 +1114,6 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
 })();
 
 /* ════════════════════════════════════════════════════════════════════════
-   Report Card Stack — cursor-tracked specular sheen (sample-report hero).
-   The splay (rest deck ↔ horizontal fan) is CSS-only (:hover / :focus-within),
-   so it works with JS disabled. This block ONLY moves each card's --sx/--sy
-   highlight toward the pointer while the stage is hovered. Honors
-   prefers-reduced-motion and skips coarse/no-hover pointers (touch).
-   ════════════════════════════════════════════════════════════════════════ */
-(() => {
-  const stages = document.querySelectorAll('.rcs-stage');
-  if (!stages.length) return;
-
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointer  = matchMedia('(hover: hover) and (pointer: fine)');
-
-  const initStage = (stage) => {
-    const cards  = Array.from(stage.querySelectorAll('.rcs-card'));
-    if (!cards.length) return;
-    const sheens = cards.map(c => c.querySelector('.rcs-sheen'));
-    let hovered = false, raf = null, lastX = 0, lastY = 0;
-
-    const paint = () => {
-      raf = null;
-      for (let i = 0; i < cards.length; i++) {
-        const sheen = sheens[i];
-        if (!sheen) continue;
-        const r = cards[i].getBoundingClientRect();
-        if (!r.width || !r.height) continue;
-        sheen.style.setProperty('--sx', ((lastX - r.left) / r.width)  * 100 + '%');
-        sheen.style.setProperty('--sy', ((lastY - r.top)  / r.height) * 100 + '%');
-      }
-    };
-    const onMove = (e) => {
-      if (!hovered) return;
-      lastX = e.clientX; lastY = e.clientY;
-      if (!raf) raf = requestAnimationFrame(paint);   // one paint per frame
-    };
-    const onEnter = () => {
-      if (reduceMotion.matches || !finePointer.matches) return;
-      hovered = true;
-    };
-    const onLeave = () => {
-      hovered = false;
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-      sheens.forEach(s => { if (s) { s.style.removeProperty('--sx'); s.style.removeProperty('--sy'); } });
-    };
-
-    stage.addEventListener('mouseenter', onEnter);
-    stage.addEventListener('mousemove', onMove);
-    stage.addEventListener('mouseleave', onLeave);
-
-    const sync = () => { if (reduceMotion.matches || !finePointer.matches) onLeave(); };
-    reduceMotion.addEventListener('change', sync);
-    finePointer.addEventListener('change', sync);
-  };
-
-  stages.forEach(initStage);
-})();
-
-/* ════════════════════════════════════════════════════════════════════════
    Board of Directors showcase (/about/) — correlated hover/focus highlight.
    The photo grid and the name list each carry [data-member] ids. Pointing at
    or focusing any member adds .is-active to every element sharing that id and
