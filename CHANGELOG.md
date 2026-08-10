@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-10 17:21 +08:00** · Fixed the badge-preview Noto Sans TC path escaping the repo, and made the Signal mock retrieval CTA an inert button instead of a scroll-jumping link.
 - **2026-08-10 10:31 +08:00** · Promoted the v0.8 concept to product/signal/index.html (indexable, canonical + og), archived the old page, deleted the sample-report and lobby funnel with their dead CSS.
 - **2026-08-07 13:12 +08:00** · Swept the v0.8 Signal concept to the new DESIGN.md rules — namespaced the two stray classes and recorded the §0.3 page-local exception with its audit.
 - **2026-08-07 02:00 +08:00** · Added a build layer: Tailwind config generated from the brand tokens, React island mount, three.js + GSAP bundled locally. Deploy unchanged.
