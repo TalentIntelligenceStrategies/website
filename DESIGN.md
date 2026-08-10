@@ -766,6 +766,29 @@ is likely to use are aliased onto TIS tokens — `bg-blue-500` resolves to
 the component renders visibly unstyled rather than quietly off-brand. That is the intended
 failure: this is the mechanism that let 119 invented hexes in the first time.
 
+The **shadcn/ui semantic names** are aliased the same way, because nearly every 21st.dev
+component is built on shadcn and its primitives arrive wearing them: `bg-background`,
+`bg-card`, `text-muted-foreground`, `bg-primary`, `bg-destructive`, `border-input`,
+`ring-ring`. They map to the nearest TIS token — `primary` is `--surface-inverse` with
+`--text-inverse` on top, since the TIS primary action is near-black ink and not a brand hue
+(§6). `border-border` and a bare `border` both resolve through `borderColor.DEFAULT`
+(`--border-primary`), which the scoped reset in §15.3 also sets.
+
+**The `content` glob scans `src/islands/` and nothing else, and that is a boundary rule, not
+a build-speed one.** Tailwind emits a utility for any string in a scanned file that looks
+like one, *unscoped*. While the glob also covered `./*.html`, the pages' own class names were
+generating Tailwind utilities that then overrode `styles.css`: the site's `.container`
+produced `.container{max-width:1100px}`, so the first page to load `islands.css` had its
+whole layout pulled in ~90px a side. `.h-section` collided too (a height utility, courtesy of
+the `spacing.section` extension), along with `.text-secondary`, `.hidden`, `.visible`,
+`.block`, `.flex`, `.uppercase` and a few dozen more. Found by the first real port. If you
+ever want Tailwind classes inside a hand-authored page, that is a §15.3 decision — not a glob
+edit.
+
+> The corollary bites inside island sources too: comments are scanned. Naming the classes you
+> stripped from a port, in that port's own header comment, regenerates them as dead CSS.
+> Paraphrase instead.
+
 Two guards worth knowing:
 
 - A §7.4 token with no matching `--var` in `styles.css` is emitted as `var(--x, #hex)` with
@@ -798,8 +821,17 @@ Rules that keep the two idioms from bleeding:
    hand-authored. An island renders *inside* a section, never wraps one.
 2. **No island owns page layout.** `.container`, `.section` and the spacing scale (§3) stay
    in `styles.css`. An island sizes itself to the box it is given.
-3. **The Tailwind reset is scoped and must stay scoped.** It cannot be allowed to reach
-   hand-authored markup — a global preflight would silently restyle all 11 pages.
+3. **Tailwind's preflight is off, and a `[data-island]`-scoped reset stands in for it.**
+   Preflight is a global reset — `margin: 0` on everything, `list-style: none`,
+   `h1..h6 { font-size: inherit }` — so the first page to load `islands.css` would have had
+   all of its hand-authored markup restyled. `corePlugins.preflight: false` in the generator
+   turns it off; the replacement lives in `src/islands/tailwind.css` under `[data-island]`.
+   That block is load-bearing, not tidiness: Tailwind's `border-*` utilities set only a
+   *width*, and take `border-style: solid` plus the default colour from preflight. Without
+   the scoped reset every ported border silently disappears. The two must move together.
+   > Verify with `grep -c blockquote assets/build/islands.css` → `0`. The
+   > `*,:before,:after{--tw-…}` block at the top of the file is a different thing — inherited
+   > custom-property defaults from Tailwind's internal `defaults` plugin, no visual effect.
 4. **An island that fails to load leaves an empty box, never a hole.** `islands.js` catches
    the import and logs; the surrounding page is untouched.
 5. **If a pattern gets reused, it graduates.** Two pages needing the same island means it
@@ -812,6 +844,63 @@ Rules that keep the two idioms from bleeding:
 - Deploy is still `git push origin main` → Pages. `build_type` is still `legacy`.
 - The real constraint, replacing "no build step": **output must be static files servable
   from the root of `main` by GitHub Pages.**
+
+### 15.5 Porting a 21st.dev component
+
+The catalog is reachable from this repo through the 21st.dev MCP server (configured
+project-scoped, paid tier, unmetered): `search_picker` to browse visually, `get_component`
+with a result's `id` for the source. The step-by-step procedure is the `port-21st` skill in
+the monorepo's `.claude/skills/`; what belongs *here* is the shape of the target.
+
+**What the rails give you.** `@` resolves to `src/islands/` (`vite.config.js`), so
+`@/components/ui/card` and `@/lib/utils` — the two imports nearly every payload carries —
+work unedited. `cn` is at `src/islands/lib/utils.ts`. shadcn primitives that come down in
+the payload go into `src/islands/components/ui/` **as they arrive**; that directory is
+populated by porting and never pre-scaffolded, because a pre-installed set would bind every
+later port to whichever variant landed first.
+
+**Dependencies: `lucide-react` only.** Icons are the one thing a ported component needs that
+this repo has no equivalent for. Everything else gets rewritten rather than installed:
+
+| Arrives as | Becomes |
+|---|---|
+| `motion/react`, `framer-motion` | nothing — strip it. See the note below. |
+| `@number-flow/react` and other counters | render the number directly. Not `.counter[data-target]`. |
+| `next/image`, `next/link` | plain `<img>` / `<a>` — there is no Next here |
+| anything else | ask whether the component is worth the dependency; usually it is not |
+
+> **Neither `[data-reveal]` nor `.counter` works inside an island, and it is worth knowing
+> why before you reach for them.** Both are one-shot `querySelectorAll` calls in `site.js` at
+> `DOMContentLoaded`; an island mounts later, so its nodes are never observed. And
+> `[data-reveal]`'s hidden/revealed CSS is defined only for `.h-section`, `.section-dek` and
+> `.partner-band` — a bare `[data-reveal]` on some other element has no styles attached and
+> does nothing at all. A `.counter` that is never observed never has its text set, so it
+> renders empty. If an island genuinely needs an entrance, put it on the host `<div
+> data-island>` in the page HTML (which does exist when the observer runs) with its own rule
+> in `styles.css` — and treat that as a §0.3 decision, not a port detail.
+
+**What must be stripped, every time.** These are not style preferences, they are the four
+ways a port re-introduces the drift §15.2 exists to stop:
+
+- **Layout claims** — `min-h-screen`, `mx-auto`, `max-w-7xl`, section padding. The island
+  sizes itself to the box the page gives it (§15.3 rule 2).
+- **Inline `style={{…}}`** — the one route that bypasses the replaced palette *and* the
+  disabled gradient plugin. Real example from a real payload:
+  `style={{ backgroundImage: 'radial-gradient(circle at center, #206ce8 …)' }}`.
+- **`dark:` variants** — theming here is `[data-theme]` on `<html>` driving custom
+  properties. A `dark:` class is a second, competing system.
+- **Colour names outside the ramps** — `fuchsia`, `teal`, `lime`, `pink`, `purple`, `yellow`
+  and friends resolve to nothing. If one is load-bearing, pick a real token; do not add the
+  name to the generator to make a single component compile.
+
+**Two things about the payload itself.** `npmDependencies` can be empty while the source
+imports three packages — derive dependencies by reading the imports, never from that field.
+And `registryDependencies.filesWithRegistry` can omit a registry file the component imports;
+search for it by name or drop the wrapper.
+
+**Then it graduates or it doesn't.** One page needing the component: it stays an island. A
+second page needing it: promote it to a real `styles.css` component and delete the island
+(§15.3 rule 5). Copying an island to a second page is how 345 dead classes happened.
 
 ---
 

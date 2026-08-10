@@ -20,7 +20,8 @@ import './tailwind.css';
 
 /** name -> lazy loader. Add 21st.dev components here. */
 const REGISTRY = {
-  // 'my-widget': () => import('./MyWidget.jsx'),
+  // Pilot port — mounted only by the gitignored .island-harness.html, not by any page.
+  'pricing-section': () => import('./PricingSection.tsx'),
 };
 
 function mount(el) {

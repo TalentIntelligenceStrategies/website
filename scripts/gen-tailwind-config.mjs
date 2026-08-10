@@ -96,11 +96,43 @@ alias.cyan = alias.sky;
 alias.emerald = alias.green;
 alias.rose = alias.red;
 
+// shadcn/ui semantic names. Nearly every 21st.dev component is built on shadcn, so its
+// primitives arrive wearing `bg-card`, `text-muted-foreground`, `bg-primary`,
+// `border-input`, `ring-ring`. None of those are TIS token names, so without this block
+// they resolve to nothing and a ported card renders as unstyled text on the page ground.
+// Mapped here once instead of hand-rewritten per component — the alias is the same kind
+// of consumption-layer mapping as the scale names above, not a new token.
+const semantic = {
+  background: pick('surface-page'),
+  foreground: pick('text-primary'),
+  card: pick('surface-elevated'),
+  'card-foreground': pick('text-primary'),
+  popover: pick('surface-elevated'),
+  'popover-foreground': pick('text-primary'),
+  // The TIS primary action is near-black ink with inverse text (§6), not a brand hue.
+  primary: pick('surface-inverse'),
+  'primary-foreground': pick('text-inverse'),
+  secondary: pick('surface-secondary'),
+  'secondary-foreground': pick('text-secondary'),
+  muted: pick('surface-tertiary'),
+  'muted-foreground': pick('text-tertiary'),
+  accent: pick('surface-tertiary'),
+  'accent-foreground': pick('text-primary'),
+  destructive: pick('danger-fg'),
+  'destructive-foreground': pick('text-inverse'),
+  input: pick('border-primary'),
+  ring: pick('border-focus'),
+};
+
+// `border-border` is shadcn's hairline class, and borderColor.DEFAULT is what a bare
+// `border` utility uses now that preflight (which used to supply it) is off.
+border.DEFAULT = pick('border-primary');
+
 const colors = {
   inherit: 'inherit', current: 'currentColor', transparent: 'transparent',
   // The §1.3 sanctioned exception — always-dark, image-backed surfaces only.
   black: '#000', white: '#fff',
-  surface, text, border, score, juris, ...status, ...alias,
+  surface, text, border, score, juris, ...status, ...alias, ...semantic,
 };
 
 // ── 4. Non-colour scales, lifted from the shipped stylesheet ──────────────────
@@ -116,18 +148,33 @@ const banner = `/**
  * authoritative. This file is a consumption layer — on conflict, the stylesheet wins.
  *
  * The default Tailwind palette is REPLACED, not extended. Scale names such as
- * blue/slate/gray are aliased onto TIS tokens so a pasted 21st.dev component cannot
- * introduce a colour that is in no TIS ramp. A name that is not mapped here does not
- * exist, and the component will render visibly unstyled rather than off-brand.
+ * blue/slate/gray, and the shadcn/ui semantic names (card, muted, primary, ring…),
+ * are aliased onto TIS tokens so a pasted 21st.dev component cannot introduce a colour
+ * that is in no TIS ramp. A name that is not mapped here does not exist, and the
+ * component will render visibly unstyled rather than off-brand.
+ *
+ * Preflight is off; src/islands/tailwind.css carries a [data-island]-scoped reset in
+ * its place. See DESIGN.md §15.3.
  */`;
 
 const body = `${banner}
 /** @type {import('tailwindcss').Config} */
 export default {
+  // ISLAND SOURCES ONLY. The hand-authored pages must never be scanned, and this is not a
+  // performance note — it is the same class of leak as preflight was.
+  //
+  // Tailwind generates a utility for any string in a scanned file that matches a utility
+  // pattern, and emits it UNSCOPED. The pages carry class names that collide: the site's
+  // own \`.container\` matches Tailwind's container plugin, so islands.css shipped
+  // \`.container{max-width:1100px}\` and the first page to load it had its whole layout
+  // pulled in by ~90px a side. \`.h-section\` collided too (a height utility, via the
+  // \`spacing.section\` extension below), and so did \`.text-secondary\`, \`.hidden\`,
+  // \`.visible\`, \`.block\`, \`.flex\`, \`.uppercase\` and a few dozen more.
+  //
+  // Islands are authored in src/islands/. If you ever want Tailwind classes inside a
+  // hand-authored page, that is a §15.3 conversation, not a glob edit.
   content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-    './*.html',
-    './*/**/*.html',
+    './src/islands/**/*.{js,jsx,ts,tsx}',
   ],
   // No dark: variant — theming is done with [data-theme] on <html>, driven by the
   // CSS custom properties. A Tailwind dark: class would be a second, competing system.
@@ -159,6 +206,12 @@ export default {
     // Tailwind gradient utilities are off: gradients were retired 2026-08-06
     // (design-tokens.md §7.5) and this is where they would creep back in.
     backgroundImage: false,
+    // Preflight is a GLOBAL reset — margin: 0 on everything, list-style: none,
+    // h1..h6 { font-size: inherit }. The 11 pages are hand-authored and styled by
+    // assets/styles.css, so the first page to load islands.css would have had all of
+    // its markup silently restyled. The replacement is the [data-island]-scoped reset
+    // in src/islands/tailwind.css, which must stay in step with this (DESIGN.md §15.3).
+    preflight: false,
   },
   plugins: [],
 };

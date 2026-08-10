@@ -6,16 +6,31 @@
  * authoritative. This file is a consumption layer — on conflict, the stylesheet wins.
  *
  * The default Tailwind palette is REPLACED, not extended. Scale names such as
- * blue/slate/gray are aliased onto TIS tokens so a pasted 21st.dev component cannot
- * introduce a colour that is in no TIS ramp. A name that is not mapped here does not
- * exist, and the component will render visibly unstyled rather than off-brand.
+ * blue/slate/gray, and the shadcn/ui semantic names (card, muted, primary, ring…),
+ * are aliased onto TIS tokens so a pasted 21st.dev component cannot introduce a colour
+ * that is in no TIS ramp. A name that is not mapped here does not exist, and the
+ * component will render visibly unstyled rather than off-brand.
+ *
+ * Preflight is off; src/islands/tailwind.css carries a [data-island]-scoped reset in
+ * its place. See DESIGN.md §15.3.
  */
 /** @type {import('tailwindcss').Config} */
 export default {
+  // ISLAND SOURCES ONLY. The hand-authored pages must never be scanned, and this is not a
+  // performance note — it is the same class of leak as preflight was.
+  //
+  // Tailwind generates a utility for any string in a scanned file that matches a utility
+  // pattern, and emits it UNSCOPED. The pages carry class names that collide: the site's
+  // own `.container` matches Tailwind's container plugin, so islands.css shipped
+  // `.container{max-width:1100px}` and the first page to load it had its whole layout
+  // pulled in by ~90px a side. `.h-section` collided too (a height utility, via the
+  // `spacing.section` extension below), and so did `.text-secondary`, `.hidden`,
+  // `.visible`, `.block`, `.flex`, `.uppercase` and a few dozen more.
+  //
+  // Islands are authored in src/islands/. If you ever want Tailwind classes inside a
+  // hand-authored page, that is a §15.3 conversation, not a glob edit.
   content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-    './*.html',
-    './*/**/*.html',
+    './src/islands/**/*.{js,jsx,ts,tsx}',
   ],
   // No dark: variant — theming is done with [data-theme] on <html>, driven by the
   // CSS custom properties. A Tailwind dark: class would be a second, competing system.
@@ -72,7 +87,8 @@ export default {
                 "secondary": "var(--border-secondary)",
                 "tertiary": "var(--border-tertiary)",
                 "focus": "var(--border-focus)",
-                "divider": "var(--border-divider, #EEEEEE)"
+                "divider": "var(--border-divider, #EEEEEE)",
+                "DEFAULT": "var(--border-primary)"
           },
           "score": {
                 "s": "var(--score-s)",
@@ -246,7 +262,25 @@ export default {
                 "600": "var(--danger-fg, #B91C1C)",
                 "700": "var(--danger-fg, #B91C1C)",
                 "DEFAULT": "var(--danger-fg, #B91C1C)"
-          }
+          },
+          "background": "var(--surface-page)",
+          "foreground": "var(--text-primary)",
+          "card": "var(--surface-elevated)",
+          "card-foreground": "var(--text-primary)",
+          "popover": "var(--surface-elevated)",
+          "popover-foreground": "var(--text-primary)",
+          "primary": "var(--surface-inverse)",
+          "primary-foreground": "var(--text-inverse)",
+          "secondary": "var(--surface-secondary)",
+          "secondary-foreground": "var(--text-secondary)",
+          "muted": "var(--surface-tertiary)",
+          "muted-foreground": "var(--text-tertiary)",
+          "accent": "var(--surface-tertiary)",
+          "accent-foreground": "var(--text-primary)",
+          "destructive": "var(--danger-fg, #B91C1C)",
+          "destructive-foreground": "var(--text-inverse)",
+          "input": "var(--border-primary)",
+          "ring": "var(--border-focus)"
     },
     extend: {
       fontFamily: {
@@ -272,6 +306,12 @@ export default {
     // Tailwind gradient utilities are off: gradients were retired 2026-08-06
     // (design-tokens.md §7.5) and this is where they would creep back in.
     backgroundImage: false,
+    // Preflight is a GLOBAL reset — margin: 0 on everything, list-style: none,
+    // h1..h6 { font-size: inherit }. The 11 pages are hand-authored and styled by
+    // assets/styles.css, so the first page to load islands.css would have had all of
+    // its markup silently restyled. The replacement is the [data-island]-scoped reset
+    // in src/islands/tailwind.css, which must stay in step with this (DESIGN.md §15.3).
+    preflight: false,
   },
   plugins: [],
 };

@@ -12,5 +12,9 @@ skills-lock.json
 # Build layer (DESIGN.md §15)
 .vite/
 
+# Local bench for island ports — loads the real stylesheet + bundle, but is not a page and
+# must never ship. Pages serves this repo root, so an un-ignored harness would be public.
+.island-harness.html
+
 # assets/build/ is intentionally NOT ignored. GitHub Pages serves this repo root in
 # `legacy` mode, so the built artifacts must be committed for the site to work.

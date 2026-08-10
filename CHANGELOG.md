@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-10 19:15 +08:00** · Made the 21st.dev island pipeline usable: preflight scoped, shadcn names aliased, Tailwind's content glob narrowed off the pages.
 - **2026-08-10 18:43 +08:00** · Added a workflow_dispatch-only Pages Actions workflow as a reversible switch path; deploy stays legacy.
 - **2026-08-10 18:07 +08:00** · Rebuilt the stale committed islands.css so it matches src/ again — two dropped Tailwind utilities, no page loads it.
 - **2026-08-10 17:21 +08:00** · Fixed the badge-preview Noto Sans TC path escaping the repo, and made the Signal mock retrieval CTA an inert button instead of a scroll-jumping link.

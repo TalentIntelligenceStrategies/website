@@ -24,6 +24,13 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    // 21st.dev components ship shadcn/ui import paths — `@/components/ui/card`,
+    // `@/lib/utils`. Aliasing `@` to src/islands (not src/) makes both resolve with
+    // zero edits to the pasted source, which is the point: the fewer hand-rewrites a
+    // port needs, the fewer chances to re-derive the component in a private idiom.
+    alias: { '@': resolve(import.meta.dirname, 'src/islands') },
+  },
   build: {
     outDir: 'assets/build',
     emptyOutDir: true,

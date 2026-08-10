@@ -1,7 +1,100 @@
-/* Tailwind layer for React islands ONLY.
-   The 11 hand-authored pages are styled by assets/styles.css and must not depend
-   on this file. Scoped under [data-island] so a Tailwind reset can never reach
-   the hand-authored markup — see DESIGN.md §16. */
+/* Tailwind layer for React islands ONLY — see DESIGN.md §15.3.
+   The 11 hand-authored pages are styled by assets/styles.css and must not depend on
+   this file.
+
+   Tailwind's own preflight is DISABLED (scripts/gen-tailwind-config.mjs sets
+   corePlugins.preflight: false). It is a global reset — `margin: 0` on everything,
+   `list-style: none`, `h1..h6 { font-size: inherit }` — and any page that loaded this
+   bundle would have had all of its hand-authored markup silently restyled.
+
+   ══ The selector shape below is exact, and both halves are load-bearing ══
+
+   The reset has to land in a narrow band: strong enough to beat the element rules in
+   styles.css that islands inherit, weak enough to lose to Tailwind's own utilities.
+
+     styles.css `button { … border: 0; padding: 0 }`   (0,0,1)   must LOSE
+     this reset                                        (0,1,0)
+     a utility — `.border`, `.p-4`, `.bg-card`         (0,1,0)   must WIN
+
+   The reset and the utilities tie at (0,1,0), and Tailwind emits `@layer utilities`
+   after `@layer base`, so on a tie the utility wins. That is the whole mechanism.
+
+   Hence: the scope `[data-island]` carries the specificity (an attribute selector is
+   (0,1,0)) and every element list is wrapped in `:where(…)`, which contributes zero.
+   `[data-island] :where(button)` is (0,1,0). `[data-island] button` would be (0,1,1) and
+   would start beating the utilities — a ported button then renders with no padding and no
+   fill whatever classes it carries. `:where([data-island]) button` is (0,0,1) and loses to
+   styles.css instead — `border: 0` there sets `border-style: none`, so `.border` sets a
+   width against no style and the border silently vanishes.
+
+   Both failure modes were found by the first real port, not in review. If you touch this
+   block, re-render an island with a bordered secondary button and a padded pill before
+   you believe it.
+
+   Tailwind's `border-*` utilities set only a *width*; `border-style: solid` and the default
+   colour come from here. That is why this block cannot simply be deleted.
+
+   One thing still reaches the whole document and is meant to: the `*,::before,::after`
+   block of `--tw-*` custom-property defaults, emitted by Tailwind's internal `defaults`
+   plugin rather than by preflight. Those are inherited custom properties with no visual
+   effect of their own. Seeing them at the top of the built islands.css does not mean the
+   leak is back — grep for `list-style` / `blockquote` / `tab-size` to check that. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Everything Tailwind-authored markup assumes, scoped to the island subtree. */
+  [data-island],
+  [data-island] *,
+  [data-island] *::before,
+  [data-island] *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    /* Matches borderColor.DEFAULT in the generated config, so a bare `border`
+       utility draws a TIS hairline rather than currentColor's near-black ink. */
+    border-color: var(--border-primary);
+    margin: 0;
+  }
+
+  /* Components set their own type classes; inheriting the site's h1..h6 sizes on top
+     of those is how a ported heading ends up double-styled. */
+  [data-island] :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  [data-island] :where(ul, ol) {
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-island] :where(img, svg, video, canvas) {
+    display: block;
+    vertical-align: middle;
+  }
+
+  [data-island] :where(img, video) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  [data-island] :where(button, input, optgroup, select, textarea) {
+    font: inherit;
+    color: inherit;
+    padding: 0;
+    line-height: inherit;
+  }
+
+  [data-island] :where(button, [type='button'], [type='reset'], [type='submit']) {
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  [data-island] :where(pre, code, kbd, samp) {
+    font-family: var(--font-mono);
+  }
+}
