@@ -2934,7 +2934,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 @media (max-width: 880px) {
   .contact-overlay { min-height: 240px; }
 }
-.contact-overlay-top { max-width: 26ch; }
+/* Measure lives on the children, not the block. A `ch` on .contact-overlay-top
+   resolves against ITS font-size (~16px), so `max-width: 26ch` handed the h2 —
+   which runs up to 44px — only ~222px of line. Short headings ("Get in touch.")
+   never noticed; a real two-line heading shattered into four ragged lines. Each
+   child now carries a measure in its own type size, so both scale correctly. */
+.contact-overlay-top { max-width: none; }
 .contact-overlay h2 {
   font-size: clamp(28px, 3.2vw, 44px);
   font-weight: 600;
@@ -2942,6 +2947,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   line-height: 1.1;
   margin: 0 0 16px;
   color: #FFFFFF;
+  max-width: 20ch;              /* measured in the heading's own type, so it scales */
 }
 .contact-lead {
   font-size: clamp(15px, 1.1vw, 17px);
@@ -2949,6 +2955,11 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: rgba(255,255,255,0.82);
   margin: 0;
 }
+/* 15.483rem == the 247.728px the lead used to inherit from the block's 26ch of
+   16px text. Pinned in rem, not ch, because the lead's own size is a vw clamp —
+   a ch measure here would drift with viewport and re-wrap every "Get in touch."
+   lead on the seven other pages that share this component. */
+.contact-overlay-top .contact-lead { max-width: 15.483rem; }
 .contact-overlay-meta {
   display: grid;
   grid-template-columns: auto auto;
@@ -3077,6 +3088,60 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .contact-panel .field textarea:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px var(--surface-translucent);
+}
+
+/* File input — the browser's own button, wearing .btn-secondary's clothes.
+   Styling ::file-selector-button keeps this a real <input type="file">: native
+   keyboard behaviour, native picker, no label proxy or JS shim. The text beside
+   the button ("No file chosen", later the filename) is the input's own text, so
+   it takes the field's colour rather than the OS default. */
+.contact-panel .field input[type="file"] {
+  /* 8px + a 32px button + 1px border == the 50px of the text fields above it,
+     so the three inputs in this stack share one height. */
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+}
+/* Two selectors, two rules on purpose — a browser that knows only one would
+   discard the whole block if they were combined in a single list. The values
+   below mirror .btn + .btn-secondary — the quiet grey button, not the black
+   primary, so it doesn't compete with the submit CTA at the foot of the form.
+   font-family (not the `font` shorthand) so
+   Urbanist is inherited without the shorthand resetting size and weight. */
+.contact-panel .field input[type="file"]::file-selector-button {
+  margin-right: 14px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 100ms linear;
+}
+.contact-panel .field input[type="file"]::-webkit-file-upload-button {
+  margin-right: 14px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  line-height: 1;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .contact-panel .field input[type="file"]:hover::file-selector-button {
+    background: var(--surface-quaternary);
+  }
 }
 
 /* Inquiry-type chips — native radios, no JS. */

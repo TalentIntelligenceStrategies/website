@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-11 02:40 +0800** · Signal: streamlined the intake and retrieve cards, styled the file input, fixed the contact-overlay heading measure.
 - **2026-08-11 00:46 +08:00** · Signal: recomposed the proof head — dek under the claim, pool figure to a 72px numeral with a two-line label, "Powered by Innovue" beside the methodology CTA.
 - **2026-08-10 21:04 +08:00** · Signal: renamed the report cards to Score / Full / Landscape Report, set every subtext to two lines, swapped in new imagery.
 - **2026-08-10 23:53 +08:00** · Signal: hero adopts the homepage shifting-lines shader in one blue hue, running behind the CTA row on the shared .hero-shader carrier.

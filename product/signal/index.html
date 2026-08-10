@@ -623,8 +623,8 @@
   /* Intake report-choice gating (PRD F-ROUTE). The shared .topic-chip has no
      disabled state because no other form needs one — scoped here rather than
      promoted, per §0.3. Dimming a disabled control is exempt from 1.4.3, and the
-     rule is also carried in text (#intake-route-note), so nothing depends on the
-     visual alone. pointer-events stays ON so the cursor still reads not-allowed. */
+     disabled attribute itself is what assistive tech announces, so the dimming is
+     never the only signal. pointer-events stays ON so the cursor reads not-allowed. */
   .topic-chip:has(input:disabled){
     opacity:0.42;
     cursor:not-allowed;
@@ -637,13 +637,6 @@
   }
   .topic-chip:has(input:disabled):active{ transform:none; }
 
-  /* Retrieve status block — small, token-only. */
-  .sig-status{ display:flex; align-items:center; gap:10px; margin-top:4px;
-    font-size:14px; color:var(--text-secondary); }
-  .sig-status-pill{ display:inline-flex; align-items:center; gap:6px;
-    padding:4px 10px; border-radius:9999px;
-    background:var(--success-bg); color:var(--success-fg);
-    font-size:12px; font-weight:600; }
   .sig-callout{ margin:4px 0 0; font-size:13px; line-height:1.55; color:var(--text-tertiary); }
 </style>
 </head>
@@ -1081,15 +1074,14 @@
         <aside class="contact-overlay">
           <div class="contact-overlay-top">
             <h2 id="intake-heading" data-zh-html data-zh="選報告類型，<br>上傳資料。">Choose a report,<br>upload your input.</h2>
-            <p class="contact-lead" data-zh-html data-zh="表單式送件，非即時對話。<br>送出前付 10% 訂金啟動作業。">A form, not a live conversation.<br>A 10% deposit on submit starts the work.</p>
+            <p class="contact-lead" data-zh-html data-zh="送出前付 <strong>10% 訂金</strong>，收到含 <strong>registration code</strong> 的 confirmation letter，憑信箱 + code 回頁免費預覽，再付 <strong>90% 尾款</strong> 下載完整報告。">Pay a <strong>10% deposit</strong> on submit, get a confirmation letter with your <strong>registration code</strong>, return to preview free, then pay the <strong>90% balance</strong> to download.</p>
           </div>
-          <p class="contact-lead" data-zh-html data-zh="送出前付 <strong>10% 訂金</strong>，收到含 <strong>registration code</strong> 的 confirmation letter，憑信箱 + code 回頁免費預覽，再付 <strong>90% 尾款</strong> 下載完整報告。">Pay a <strong>10% deposit</strong> on submit, get a confirmation letter with your <strong>registration code</strong>, return to preview free, then pay the <strong>90% balance</strong> to download.</p>
         </aside>
 
         <div class="contact-panel">
           <form class="contact-form" id="intake-form" novalidate>
             <fieldset class="contact-topics">
-              <legend data-zh="① 你的輸入類型">① Your input type</legend>
+              <legend data-zh="你的輸入類型">Your input type</legend>
               <div class="topic-chips">
                 <label class="topic-chip"><input type="radio" name="input-type" value="granted" /><span data-zh="已核准 / 已公開專利">Granted / published patent</span></label>
                 <label class="topic-chip"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中未公開（草稿）">Pending / unpublished (draft)</span></label>
@@ -1103,18 +1095,17 @@
                  take Landscape Report. The rule is stated in copy as well as
                  enforced, so it holds without JS — the gating script below is the
                  convenience, the note is the contract. -->
-            <fieldset class="contact-topics" aria-describedby="intake-route-note">
-              <legend data-zh="② 報告類型">② Report</legend>
+            <fieldset class="contact-topics">
+              <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
                 <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="分數報告">Score Report</span></label>
                 <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="完整報告">Full Report</span></label>
                 <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="市場地景報告">Landscape Report</span></label>
               </div>
-              <p class="sig-callout" id="intake-route-note" data-zh-html data-zh="分數報告與完整報告需要完整的 PSS 資料（引用、專利家族、法律狀態），因此<strong>僅適用已核准或已公開專利</strong>。申請中草稿與純想法只能走市場地景報告。">Score Report and Full Report need a full PSS record — citations, family, legal status — so they are <strong>granted or published patents only</strong>. A pending draft or a bare idea takes Landscape Report.</p>
             </fieldset>
 
             <div class="field">
-              <label for="intake-input" data-zh="③ 提供資料">③ Provide your input</label>
+              <label for="intake-input" data-zh="提供資料">Provide your input</label>
               <input id="intake-input" name="input" type="text" data-zh-placeholder="專利號（如 US10148981）" placeholder="Patent number (e.g. US10148981)" />
             </div>
             <div class="field">
@@ -1127,7 +1118,7 @@
             </div>
 
             <div class="field">
-              <label for="intake-email" data-zh="④ 聯絡 / 通知信箱">④ Contact / notification email</label>
+              <label for="intake-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
               <input id="intake-email" name="email" type="email" placeholder="you@vcfund.com" />
               <p class="sig-callout" data-zh-html data-zh="用於寄送 confirmation letter 與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation letter and completion notice. <strong>The report is not emailed here.</strong></p>
             </div>
@@ -1164,22 +1155,18 @@
               <input id="retrieve-email" name="email" type="email" placeholder="you@vcfund.com" />
             </div>
             <div class="field">
-              <label for="retrieve-code" data-zh="registration code（如 E240710TWN31346058015）">registration code (e.g. E240710TWN31346058015)</label>
+              <label for="retrieve-code" data-zh="Registration code（如 E240710TWN31346058015）">Registration code (e.g. E240710TWN31346058015)</label>
               <input id="retrieve-code" name="code" type="text" placeholder="E240710TWN31346058015" />
             </div>
             <div class="contact-actions">
-              <button type="submit" class="btn btn-secondary" data-zh="查詢">Look up</button>
+              <button type="submit" class="btn btn-secondary btn-lg" data-zh="查詢">Look up</button>
             </div>
 
-            <div class="sig-status">
-              <span class="sig-status-pill" data-zh="✓ 報告完成">✓ Report ready</span>
-              <span data-zh="市場地景報告 · 訂金已付 10%">Landscape Report · 10% deposit paid</span>
-            </div>
             <p class="sig-callout" data-zh-html data-zh="可先免費預覽<strong>報告大綱</strong>（各章節將涵蓋內容之全貌，非摘錄）；付 <strong>90% 尾款</strong>後下載完整報告（含浮水印 PDF）。">Preview the <strong>report outline free</strong> (the full scope of each chapter, not excerpts); pay the <strong>90% balance</strong> to download the full watermarked PDF.</p>
 
             <div class="contact-actions" style="gap:12px;">
-              <button type="button" class="btn btn-glass" data-zh="預覽報告大綱（免費）">Preview outline (free)</button>
-              <button type="button" class="btn btn-primary" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
+              <button type="button" class="btn btn-glass btn-lg" data-zh="預覽報告大綱（免費）">Preview outline (free)</button>
+              <button type="button" class="btn btn-primary btn-lg" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
             </div>
           </form>
         </div>
@@ -1633,11 +1620,12 @@
      The radio values (a-short / b-long / b-advanced) intentionally keep the PRD's
      A / B / BX tier codes — only the visible labels were renamed.
 
-     Progressive enhancement: with no JS every option stays selectable and
-     #intake-route-note still states the rule, so the page never hides a choice it
-     hasn't explained. The note is wired as the fieldset's aria-describedby, so a
-     screen-reader user hears the constraint on entering the group rather than
-     discovering it by hitting a disabled radio. -->
+     Progressive enhancement: with no JS every option stays selectable, so nothing
+     is ever unreachable — but note the trade-off taken when the explanatory callout
+     was removed from this fieldset: the routing rule is no longer stated in the form
+     itself. With JS on, the invalid choices are disabled and announced as such. With
+     JS off, an invalid pair can be submitted and is rejected server-side instead.
+     Restoring a visually-hidden note here would return the aria-describedby. -->
 <script>
   (() => {
     const form = document.getElementById('intake-form');
