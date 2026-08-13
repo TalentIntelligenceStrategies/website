@@ -3210,9 +3210,14 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .footer-nl-block.is-error .footer-nl-label { color: var(--danger-border); }
 .footer-nl-block.is-error .footer-nl-form input { border-color: var(--danger-border); }
 
+/* Centred on both axes. site.js pins min-height to the form's measured height
+   before hiding it, so the card never changes size and the confirmation lands
+   exactly where the user was already looking. */
 .contact-success {
   display: none;
-  flex-direction: column; gap: 24px;
+  flex-direction: column; gap: 20px;
+  align-items: center; justify-content: center;
+  text-align: center;
   padding: 32px 0;
 }
 .contact-success.is-shown { display: flex; }
@@ -3233,13 +3238,75 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0 0 8px;
+  margin: 0;              /* was 0 0 8px for the subtext that used to follow */
 }
-.contact-success p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.55;
+/* ───────── Confirmation check — draw-on choreography ─────────
+   A form success is a rare, first-time event, so it earns motion that a
+   50-times-a-day control never would. Entering element → ease-out, and
+   --ease-card is already that curve, so this stays in the site's existing
+   motion vocabulary rather than introducing a second one.
+
+   Keyframes rather than transitions: this is a one-shot reveal that can
+   never be interrupted or retriggered, and a staggered stroke-draw needs
+   them. Steps overlap so the sequence reads as one gesture, not four.
+
+   `.is-primed` is added by site.js AFTER it sets pathLength="1" on the
+   geometry. Without that attribute, stroke-dasharray: 1 would render the
+   path as dozens of 1-unit dashes — so the dash rules are gated behind the
+   class and markup that never meets JS simply renders normally. */
+svg.is-primed path,
+svg.is-primed polyline {
+  stroke-dasharray: 1;      /* pathLength=1 → one dash covers the whole path */
+  stroke-dashoffset: 0;     /* resting state is fully drawn */
+}
+
+@keyframes check-pill-in  { from { opacity: 0; transform: scale(0.95); } }
+@keyframes check-draw     { from { stroke-dashoffset: 1; } }
+@keyframes check-label-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* Contact — two paths: the arc sweeps, then the tick writes inside it. */
+.contact-success.is-shown .check-pill {
+  animation: check-pill-in 220ms var(--ease-card) both;
+}
+.contact-success.is-shown .check-pill svg.is-primed path:nth-of-type(1) {
+  animation: check-draw 300ms var(--ease-card) 120ms both;
+}
+.contact-success.is-shown .check-pill svg.is-primed path:nth-of-type(2) {
+  animation: check-draw 240ms var(--ease-card) 340ms both;
+}
+.contact-success.is-shown h3 {
+  animation: check-label-in 260ms var(--ease-card) 420ms both;
+}
+
+/* Popup — single tick path, so a shorter run. */
+.mkt-success .seal {
+  animation: check-pill-in 220ms var(--ease-card) both;
+}
+.mkt-success .seal svg.is-primed path {
+  animation: check-draw 260ms var(--ease-card) 120ms both;
+}
+.mkt-success h3 {
+  animation: check-label-in 260ms var(--ease-card) 260ms both;
+}
+
+/* Footer newsletter — same tick draw so all three confirmations agree. */
+.footer-nl-block.is-success .footer-nl-form svg.icon-check.is-primed polyline {
+  animation: check-draw 260ms var(--ease-card) 60ms both;
+}
+
+/* The global reduce block below zeroes animation-duration but not delay, which
+   would leave these holding their hidden `from` state for up to 420ms. Zero the
+   delays too: the confirmation still appears, it just doesn't travel. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-success.is-shown .check-pill,
+  .contact-success.is-shown .check-pill svg path,
+  .contact-success.is-shown h3,
+  .mkt-success .seal,
+  .mkt-success .seal svg path,
+  .mkt-success h3,
+  .footer-nl-block.is-success .footer-nl-form svg.icon-check polyline {
+    animation-delay: 0ms !important;
+  }
 }
 
 /* ───────── Reduced motion ───────── */

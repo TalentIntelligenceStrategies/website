@@ -595,6 +595,24 @@
     if (el) el.classList.remove('is-shown');
   };
 
+  // Normalises every check SVG to pathLength="1" so the CSS can draw it with
+  // stroke-dashoffset 1 → 0 regardless of the path's real geometry — no
+  // measuring, and it covers the contact arc, the popup tick and the footer
+  // <polyline> identically. The .is-primed class is the CSS's signal that the
+  // attribute is set; without it the dash rules stay off, so markup that never
+  // meets this JS still renders a normal, undashed check.
+  // Accepts either an <svg> itself or a container holding one.
+  const primeCheck = (scope) => {
+    if (!scope) return;
+    const svgs = scope.tagName && scope.tagName.toLowerCase() === 'svg'
+      ? [scope]
+      : scope.querySelectorAll('svg');
+    svgs.forEach(svg => {
+      svg.querySelectorAll('path, polyline').forEach(p => p.setAttribute('pathLength', '1'));
+      svg.classList.add('is-primed');
+    });
+  };
+
   // Restores whatever label was there before rather than a hardcoded string,
   // so a language swap mid-request can't strand the button in one language.
   const pending = (btn, on) => {
@@ -633,6 +651,16 @@
       if (invalid) { showFormError(contactForm, invalid); return; }
 
       const succeed = () => {
+        // Pin the panel to the height the form occupied BEFORE hiding it, so
+        // the card doesn't collapse ~450px and strand the confirmation off
+        // the top of the viewport. Measured rather than hardcoded, so it
+        // holds at every breakpoint.
+        contactSuccess.style.minHeight = contactForm.offsetHeight + 'px';
+        // Shim: capital/ is a separate repo still carrying the old subtext.
+        // Drop it once that repo has the markup change.
+        const stale = contactSuccess.querySelector('p');
+        if (stale) stale.remove();
+        primeCheck(contactSuccess);
         contactForm.style.display = 'none';
         contactSuccess.classList.add('is-shown');
       };
@@ -671,18 +699,19 @@
       nlLabel.textContent = (isZh() ? nlLabel.dataset.zh : nlLabel.dataset.en) || nlOrig;
     };
 
+    // Persists rather than auto-reverting. The old 1.6s reset made sense when
+    // nothing was actually being sent; now that it is, a confirmation you can
+    // miss by looking away is the wrong signal. Input clears immediately so the
+    // state can't be resubmitted.
     const nlSucceed = () => {
+      clearTimeout(nlTimer);
       nlBlock.classList.remove('is-error');
+      primeCheck(nlForm.querySelector('.icon-check'));
       nlBlock.classList.add('is-success');
       nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，感謝您');
+      nlInput.value = '';
       // Cross-suppress the IP-intel drop popup — already engaged via footer.
       markMktSeen();
-      clearTimeout(nlTimer);
-      nlTimer = setTimeout(() => {
-        nlBlock.classList.remove('is-success');
-        nlRestore();
-        nlInput.value = '';
-      }, 1600);
     };
 
     nlForm.addEventListener('submit', async (e) => {
@@ -806,15 +835,20 @@
     function showSuccess() {
       // Drop layout-modifying class so success renders centered without the hero image.
       mktCard.classList.remove('with-hero');
+      // Built after init, so this heading isn't in the static i18nEls NodeList
+      // and won't follow a later language toggle. Resolving it through t() at
+      // creation is the correct fix — the modal is dismissed long before that
+      // would matter. Until now it was hardcoded English for ZH readers too.
       mktCard.innerHTML =
         '<button class="mkt-close" type="button" aria-label="Close" data-mkt-close>' +
           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
         '</button>' +
         '<div class="mkt-success">' +
           '<div class="seal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>' +
-          '<h3>You’re on the list.</h3>' +
-          '<p>The next brief lands in your inbox in roughly six weeks. Until then, watch for the early-access note when new bundles drop.</p>' +
+          '<h3>' + t('You’re on the list.', '已加入訂閱名單。') + '</h3>' +
         '</div>';
+      // Only the tick — not the close button's X, which shouldn't draw itself.
+      primeCheck(mktCard.querySelector('.seal'));
     }
 
     // → `newsletter` tab, source=popup. Role and Industry come from the
