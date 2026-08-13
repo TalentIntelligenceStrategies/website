@@ -48,7 +48,7 @@ dead CSS accumulate unaudited, and the correlation is not subtle:
 | | inline `<style>` blocks | outcome |
 |---|---|---|
 | `index.html`, `product/signal/methodology.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
-| `product/signal/index.html` | 1 | audited exception — 63 classes, zero dead rules (see §16.2) |
+| `product/signal/index.html` | 1 | audited exception — 67 classes, zero dead rules (see §16.2) |
 | `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
 
 The `product/signal/index.html` row is the one sanctioned exception, and it earned that
@@ -982,19 +982,100 @@ Signal accent = `--surface-accent-signal` (dark surfaces only) /
 `--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.
 
 The page carries **one inline `<style>` block, and it is a sanctioned §0.3 exception —
-not drift.** The header comment above the block records the audit: 63 classes, of which 46
-are `sig-*` page-namespaced, 5 are modifiers on shared components, and 12 are shared classes
+not drift.** The header comment above the block records the audit: 88 classes, of which 67
+are `sig-*` page-namespaced, 6 are modifiers on shared components, and 15 are shared classes
 reached through a scoped or descendant selector (`[data-page="signal"] .hero`,
-`.sig-phases .btn`). Zero dead rules. Nothing in it is reusable enough to earn a place in
-the shared stylesheet; promoting it would repeat the dead-CSS problem rather than fix it.
+`.sig-phases .btn`, `.contact-form .field[hidden]`). Zero dead rules. Nothing in it is
+reusable enough to earn a place in the shared stylesheet; promoting it would repeat the
+dead-CSS problem rather than fix it.
 
 **The condition attached to the exception: if you change that block, re-run the dead-class
 check and update the audit line in its header comment.** An unaudited block loses the
 exception and is swept.
 
-Two things are page-scoped because `styles.css` has no equivalent — the signal-gradient
-imagery behind the report and contact cards, and the proof grid. The hero is no longer one
-of them; it composes the shared `.hero-shader` carrier.
+Two things are page-scoped because `styles.css` has no equivalent — the imagery behind the
+report and contact cards, and the proof grid. The hero is no longer one of them; it composes
+the shared `.hero-shader` carrier.
+
+**The two contact cards are deliberately not the same treatment.** Retrieve is full-bleed —
+one signal gradient stretched across the whole card, the overlay's own image and scrim killed
+so there is no column seam. Intake runs the **homepage** treatment instead
+(`index.html .contact-card--venture`): `coremap/reports.jpg` framed in the left overlay column
+only, the card's black base filling the rest, the shared scrim and meta row intact. Its scrim
+is the one local deviation — the shared ramp ends at 0.55 because `venture.jpg` is already
+black at the foot, and `reports.jpg` is not, so the last third is steepened to seat the meta row.
+
+**Intake form — the input type is a mode switch, not a filter.** A segmented track
+(`.sig-seg`) picks granted / pending / idea, and exactly one input renders further down:
+patent number, PDF upload, or free text. Asking for all three at once made the user answer
+the same question twice. The report pills stay pills because they are a choice that can be
+*ruled out*; `#intake-gate-note` states the PRD routing rule in copy and appears only when
+it bites.
+
+Order is **input type → report → the input → email**: both selections resolve as one block
+before any data entry starts, which is also the heading's order ("Choose a report, upload
+your input"). The overlay carries a single `.contact-meta` pair (`Pay today / 10% deposit`)
+at the foot, left-aligned in the shared component's first grid column — no override.
+
+**The intake card holds the homepage card's exact height, at every width and in every input
+state.** It is not a pinned pixel table — the homepage's own height is
+`#contact-form + 2 × .contact-panel padding + 2 × .contact-panel margin`, and the last two are
+`vw` clamps, so the min-height restates that formula and tracks `index.html` through every
+width rather than at four sampled ones. Verified equal at 881 / 1280 / 1440 / 1600 (1 px apart
+at 1024, sub-pixel). **Only `#contact-form`'s own height is a literal, and it takes one step:**
+the homepage's six inquiry chips sit on three rows to 1298 px and two rows from 1299 px, so
+640 → 593 there. If the homepage's inquiry chips or field count change, those two numbers go
+stale and the cards drift — re-measure `#contact-form` on `index.html` and update them.
+
+**Matching the height is not matching the spacing.** The first version spread the slack with
+`justify-content:space-between`, which hit the homepage's height with ~55 px gaps against its
+18 px — same box, wrong rhythm, and it read sparse. The gap now stays the shared 18 px and the
+slack goes into the **two textareas** (`.sig-notes` and the idea input), the only fields with
+no natural height. Both are `flex:1 1 0%`; every other child is `flex-shrink:0`. A zero basis
+keeps them out of the base sum, so the leftover is always positive and simply gets split — the
+form never has to claw height back out of a fixed field. This also absorbs the ~50 px swing
+between a text input and a 3-row textarea, which is why the card, the panel and the button hold
+still when you switch input type.
+
+**Three things had to be true for that to resolve, and each failed on its own first:**
+
+1. `height`, not `min-height`, on the card — a floor caps nothing.
+2. `grid-template-rows: minmax(0, 1fr)` — a definite container height still leaves an `auto`
+   row sizing to content and overflowing. `.contact-card` is `overflow:hidden`, so the excess
+   was *clipped*: the submit button lost its bottom edge in the idea state.
+3. `min-height: 0` on the panel and the form — flex and grid items floor at min-content unless
+   told otherwise, so the constraint stops there instead of reaching the textareas.
+
+Below 881 px the shared component collapses to one column, the height goes back to
+content-driven, and none of this applies.
+
+**Retrieve is one centred column, and deliberately not the two-column card.** Intake *asks*
+for things, so a fixed frame suits it. Retrieve *returns* something whose size isn't known
+until the lookup resolves — a status line, or a status line plus a locked report and a
+seven-chapter outline — so it keeps the shared frame (radius, shadow, the full-bleed
+gradient) and drops the columns: heading centred, `.sig-lookup` bar under it, result growing
+beneath. It is the one card on the site with **no fixed height**, by design.
+
+Three things this composition needs:
+
+- **The image is `signal-cool-rot.jpg` — `signal-cool.jpg` turned 180°** (the repo's own
+  `-flip` / `-rot` asset convention). Un-rotated, the image's near-white end sits at the top,
+  exactly where the centred heading landed, and white measured well under 4.5:1 there; the
+  two-column version never hit this because the heading sat on the deep-blue side. Rotated,
+  the deep blue is under the heading and the pale cyan at the foot, so the composition does
+  the work. `::before` still carries a light top-down scrim as insurance, because the image's
+  dark corner is top-*right* and the left half of a centred heading still crosses mid-blue.
+  **Any future image swap here has to be re-checked against that scrim.**
+- **`background-position: center top`.** The card grows ~370 px → ~1290 px when a result
+  opens. A centred `cover` image re-frames the whole card mid-interaction; anchoring to the
+  top holds the heading's band still and grows downward into more image.
+- **`grid-template-rows: 0fr → 1fr`** for the reveal, so it animates to the panel's own
+  height. A `max-height` guess either clips the tall state or eases against a wrong number.
+
+The free preview is **blurred on purpose**: PRD §8.8.0b AC-3 gives away the report's *shape*
+for free (各章節將涵蓋內容之全貌) and never its content. The page mock stays unreadable; the
+chapter list beside it is the accessible equivalent and carries the actual scope, in both
+languages. Chapter names are PRD §8.6.1 verbatim.
 
 **The hero** (2026-08-11) runs **the homepage's own shifting-lines shader**, recoloured to a
 single blue hue and positioned so the band runs behind the CTA row. It uses the **shared

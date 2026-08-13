@@ -47,7 +47,9 @@
      Signal page — page-scoped styles ONLY. Everything else is the shared
      homepage system in /assets/styles.css (per website/DESIGN.md).
      Two things are page-scoped because the homepage system has no equivalent:
-     (1) signal-gradient imagery behind the report + contact cards,
+     (1) the imagery behind the report + contact cards — a signal gradient full-bleed
+         across the retrieve card, and reports.jpg framed in the left column of the
+         intake card, which otherwise runs the homepage's own contact-card treatment,
      (2) the proof grid — a wide black PSS ledger and a scrim-captioned image card
          beside a full-height cool-wash panel carrying the three process phases.
      The hero is NOT in that list any more: it now runs the homepage's own
@@ -62,13 +64,24 @@
      spine, the nodes and ~190 lines of geometry are gone.)
 
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
-     Audited 2026-08-11: 65 classes, of which 48 are sig-* page-namespaced, 5 are
-     modifiers on shared components (contact-card--sig-*, offer-card--sig*), and
-     the remaining 12 are shared classes reached through a scoped or descendant
-     selector ([data-page="signal"] .hero, .sig-phases .btn,
-     .topic-chip:has(input:disabled)). Two are applied at runtime rather than in
-     the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
+     Audited 2026-08-13: 88 classes, of which 67 are sig-* page-namespaced, 6 are
+     modifiers on shared components (contact-card--sig-*, offer-card--sig*,
+     offer-card-eyebrow--text), and the remaining 15 are shared classes reached
+     through a scoped or descendant selector ([data-page="signal"] .hero,
+     .sig-phases .btn, .topic-chip:has(input:disabled), .contact-form .field[hidden],
+     .contact-card--sig-intake .contact-panel). Two are applied at runtime rather than
+     in the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
      Zero dead rules.
+
+     (63 before 2026-08-13, over two rebuilds of the two contact cards.
+      Intake added .sig-seg / .sig-seg__opt / .sig-notes and reached four shared classes
+      through .contact-card--sig-intake: .contact-form and .field to drop the inputs the
+      chosen type doesn't call for and to hold the homepage's 18px field rhythm,
+      .contact-overlay-top .contact-lead to widen the measure for a longer lead.
+      Retrieve added the .sig-rt__* / .sig-lookup / .sig-status set for its one-column
+      layout and its result panel, and DELETED the two-column flip rules and the two
+      .contact-card--sig-retrieve .contact-overlay selectors, which went dead when that
+      card stopped using the shared overlay.)
      Nothing here is reusable enough to earn a place in the shared 164 KB
      stylesheet; promoting it would repeat the dead-CSS problem, not fix it.
      The one thing that did earn it is .innovue-wordmark — the "Powered by" credit
@@ -551,33 +564,304 @@
   /* ── Contact cards — swap the overlay image for signal-toned imagery; the
      retrieve card flips so the form sits left. Everything else is the shared
      .contact-card component. ── */
-  /* Single image stretched across the WHOLE card (behind both the heading side
-     AND the white form panel) — put it on the card, and kill the overlay's own
-     image + scrim so there's no column seam. The heading stays legible with a
-     text-shadow, not a scrim; the form stays legible because .contact-panel is
-     already a solid white elevated card floating over the image. */
-  .contact-card--sig-intake{
-    background:var(--surface-inverse) url('/assets/imagery/coremap/dirk-lach-fSgF4pEQEY8-hero-flip.jpg') center/cover no-repeat;
-  }
+  /* Retrieve keeps the full-bleed treatment: a single image stretched across the
+     WHOLE card (behind both the heading side AND the white form panel), with the
+     overlay's own image + scrim killed so there is no column seam. The heading
+     stays legible with a text-shadow, not a scrim; the form stays legible because
+     .contact-panel is already a solid white elevated card over the image. */
   .contact-card--sig-retrieve{
-    background:var(--surface-inverse) url('/assets/imagery/signal/signal-graident-5.jpg') center/cover no-repeat;
+    background:var(--surface-inverse) url('/assets/imagery/signal/signal-cool-rot.jpg') center/cover no-repeat;
   }
-  .contact-card--sig-intake .contact-overlay::before,
-  .contact-card--sig-intake .contact-overlay::after,
-  .contact-card--sig-retrieve .contact-overlay::before,
-  .contact-card--sig-retrieve .contact-overlay::after{ display:none; }
-  .contact-card--sig-intake .contact-overlay,
-  .contact-card--sig-retrieve .contact-overlay{ text-shadow:0 1px 16px rgba(6,12,32,.45); }
 
-  /* Retrieve — desktop flip: form left, image/heading right. Below 881px the base
-     .contact-card collapse (≤880px → 1fr) takes over and heading stacks over form. */
-  @media (min-width: 881px){
-    .contact-card--sig-retrieve{ grid-template-columns:6fr 5fr; }
-    .contact-card--sig-retrieve .contact-panel{ grid-column:1; grid-row:1; }
-    .contact-card--sig-retrieve .contact-overlay{ grid-column:2; grid-row:1; }
+  /* Intake takes the HOMEPAGE treatment instead (index.html .contact-card--venture):
+     the image is framed in the LEFT overlay column only, and the card's black base —
+     which is also reports.jpg's own background — fills the rest, so the area behind
+     the floating white panel reads as a seamless extension of the image rather than
+     a second crop of it. Only the URL changes here; the scrim (::after), the measure
+     and the meta row are all the shared component's. */
+  .contact-card--sig-intake .contact-overlay::before{
+    background:url('/assets/imagery/coremap/reports.jpg') center / cover no-repeat, #000;
   }
-  @media (max-width: 880px){
-    .contact-card--sig-retrieve .contact-overlay{ order:-1; }
+  /* The shared scrim ramps to 0.55 at the foot because venture.jpg is already black
+     down there. reports.jpg is not — its brightest arm sweeps the bottom-left, exactly
+     under the meta row — so steepen the last third for this card only. The middle band
+     stays fully open, which is where the swirl actually reads. */
+  .contact-card--sig-intake .contact-overlay::after{
+    background:linear-gradient(180deg,
+      rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.88) 100%);
+  }
+
+  /* ── The card holds the homepage card's exact height, at every width ──────────
+     Not a pinned pixel table: the homepage's own height is
+       #contact-form  +  2 × .contact-panel padding  +  2 × .contact-panel margin
+     and the last two are the vw clamps from styles.css, so restating the formula
+     tracks it through every width instead of at four sampled ones. Verified against
+     .contact-card--venture: 720@881 · 724@1024 · 742@1280 · 698@1320 · 708@1440 ·
+     718@1600 · 721@1920, all exact.
+
+     Only #contact-form's own height is a literal, and it takes one step: the
+     homepage's six inquiry chips sit on three rows up to 1298px and two rows from
+     1299px, so 640 → 593 there. Measured, not guessed — 1298 is 640, 1299 is 593.
+
+     If the homepage's inquiry chips or field count ever change, these two numbers go
+     stale and the cards drift apart. That is the cost of "exactly"; re-measure
+     #contact-form on index.html and update the two literals.
+
+     `height`, not `min-height`. A minimum is a floor, and a floor caps nothing — the
+     grid row still sized to the tallest input state and the textareas below never had
+     to give ground, so the idea state ran 48px past the homepage. A definite height
+     makes the row definite, which makes the panel definite, which is what lets the
+     form's flex split actually resolve. The textareas carry ~90px of give before their
+     min-height binds, which is the headroom against a legend wrapping or a larger
+     default font size.
+
+     Below 881px the shared component collapses to one column and the panel goes
+     full-bleed, so the height is content-driven there and this must not apply. ── */
+  @media (min-width: 881px){
+    .contact-card--sig-intake{
+      height:calc(640px + 2 * clamp(26px, 2.4vw, 40px) + 2 * clamp(14px, 1.6vw, 24px));
+      /* A definite height on the grid container is not enough: an auto row still sizes
+         to its content and simply overflows it — and .contact-card is overflow:hidden,
+         so the excess was being CLIPPED (the submit button lost its bottom edge in the
+         idea state) rather than squeezed. minmax(0,1fr) pins the row to the container,
+         which is what pushes the constraint down to the panel, the form, and finally
+         the two textareas that are meant to absorb it. */
+      grid-template-rows:minmax(0, 1fr);
+    }
+    /* The panel fills that height rather than floating centred in it — the homepage
+       panel does the same (670 of 718 at 1600, the balance being its own margin), so
+       stretching is what matches, not a compact card centred in dead space. */
+    .contact-card--sig-intake .contact-panel{
+      align-self:stretch;
+      display:flex;
+      flex-direction:column;
+      min-height:0;   /* flex/grid items floor at min-content unless told otherwise */
+    }
+    /* The form fills the panel, but the slack does NOT go into the gaps: the gap
+       stays the shared 18px, so the field rhythm is byte-identical to the homepage
+       form. Spreading it instead (justify-content:space-between) matched the card's
+       height while missing its spacing, which is what made the form read sparse —
+       same box, wrong rhythm. */
+    .contact-card--sig-intake .contact-form{ flex:1; min-height:0; }
+
+    /* The two textareas are the form's springs — they are the only fields with no
+       natural height, so they take the leftover and every fixed field above them
+       holds still. flex-basis:0 is doing the real work: it keeps them out of the
+       base sum, so the leftover is always positive and simply gets split, rather
+       than the form having to claw height back out of them. (basis:0 with grow but
+       no usable shrink was the earlier bug — the notes field could grow into slack
+       but could not give it back, so the idea state ran 48px past the homepage
+       height.) Everything else is shrink:0: nothing above them may give ground,
+       which is what keeps the field cadence identical to the homepage's. */
+    .contact-card--sig-intake .contact-form > *{ flex-shrink:0; }
+    .contact-card--sig-intake .sig-notes,
+    .contact-card--sig-intake .field[data-input-for="idea"]{ flex:1 1 0%; min-height:0; }
+    .contact-card--sig-intake .sig-notes textarea,
+    .contact-card--sig-intake .field[data-input-for="idea"] textarea{
+      flex:1;
+      min-height:52px;   /* ~2 rows; the split lands well above this, so it never binds */
+    }
+  }
+  @media (min-width: 1299px){
+    .contact-card--sig-intake{
+      height:calc(593px + 2 * clamp(26px, 2.4vw, 40px) + 2 * clamp(14px, 1.6vw, 24px));
+    }
+  }
+
+  /* The shared lead measure (15.483rem) is pinned to keep "Get in touch." wrapping
+     identically on the seven other pages that carry it. This lead is 90 characters,
+     not 20, and at that measure it breaks four ways with "AI." orphaned on the last
+     line. Widened here only. */
+  .contact-card--sig-intake .contact-overlay-top .contact-lead{ max-width:19rem; }
+
+  /* ══ Retrieve — one centred column, not the two-column contact card ═══════════
+     Intake asks for things; retrieve GIVES something back, and what it gives has no
+     fixed size — a status line, or a status line plus a locked report and a seven-
+     chapter outline. A 5fr/6fr split has nowhere to put that. So the card keeps the
+     shared frame (radius, shadow, the full-bleed gradient) and drops the columns:
+     heading centred, a lookup bar under it, and the result growing beneath that.
+     ═════════════════════════════════════════════════════════════════════════════ */
+  .contact-card--sig-retrieve{
+    display:block;                 /* not the shared 2-col grid */
+    padding:clamp(32px, 4vw, 56px) clamp(20px, 2.6vw, 40px) clamp(28px, 3.2vw, 48px);
+    /* The card grows from ~370px to ~900px when a result opens. `cover` on a centred
+       image re-frames the whole thing mid-interaction, exactly when the user is
+       looking at it; anchoring to the top means the band behind the heading holds
+       still and the card simply grows downward into more image. */
+    background-position:center top;
+    text-align:center;
+  }
+  /* signal-cool-rot is signal-cool turned 180°, so the deep blue is at the TOP, under
+     the heading, and the pale cyan at the foot. That is the right way up for this card:
+     white heading copy lands on the dark end by itself. The scrim survives only as
+     insurance — the image's dark corner is top-RIGHT, so the left half of a centred
+     heading still crosses mid-blue — at roughly a third of its previous strength. */
+  .contact-card--sig-retrieve::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(6,12,32,0.22) 0%, rgba(6,12,32,0.10) 30%, rgba(6,12,32,0) 50%);
+  }
+  .contact-card--sig-retrieve > *{ position:relative; z-index:1; }
+
+  .sig-rt__head{
+    max-width:34rem; margin:0 auto clamp(22px, 2.4vw, 32px);
+    text-shadow:0 1px 16px rgba(6,12,32,.45);
+  }
+  .sig-rt__head h2{
+    font-size:clamp(28px, 3.2vw, 44px);
+    font-weight:600; letter-spacing:-0.02em; line-height:1.1;
+    margin:0 0 14px; color:#FFFFFF;
+  }
+  .sig-rt__head .contact-lead{ max-width:32rem; margin-inline:auto; }
+
+  /* Lookup bar — the shared .contact-panel skin, centred and capped rather than
+     column-bound. Email · code · button on one line: this is a return visit with a
+     letter open beside it, so it should read as one action, not a form to fill in. */
+  .contact-card--sig-retrieve .contact-panel{
+    max-width:920px;
+    /* 48px == the footprint of the sample-codes chip that used to sit here (14px
+       margin + ~34px chip). Held deliberately: the chip was pulled without resizing
+       the card, and this is also the gap the result panel opens into. */
+    margin:0 auto 48px;
+    align-self:auto;
+    text-align:left;
+  }
+  .sig-lookup{ display:grid; grid-template-columns:1fr 1fr auto; gap:16px; align-items:end; }
+  .sig-lookup .btn{ height:50px; }            /* == the .field input height beside it */
+  @media (max-width: 640px){
+    .sig-lookup{ grid-template-columns:1fr; }
+    .sig-lookup .btn{ width:100%; }
+  }
+  /* Sits BELOW the scrim's fade, on whatever the gradient happens to be doing at that
+     height — which varies with the card's own height, and the card's height changes as
+     the result opens. So it carries its own ground rather than depending on the image. */
+  .sig-rt__error{
+    display:block; width:fit-content; margin:14px auto 0; padding:7px 14px;
+    border-radius:9999px; background:rgba(6,12,32,0.62);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    font-size:13.5px; line-height:1.5; color:#FFFFFF;
+  }
+  .sig-rt__error[hidden]{ display:none; }
+
+  /* Result — grid-template-rows 0fr→1fr animates to the panel's OWN height, so the
+     reveal never has to guess a max-height and never clips a taller state. */
+  .sig-rt__reveal{
+    display:grid; grid-template-rows:0fr;
+    transition:grid-template-rows 420ms var(--ease-card);
+  }
+  .sig-rt__reveal[data-open="true"]{ grid-template-rows:1fr; }
+  .sig-rt__reveal > div{ overflow:hidden; min-height:0; }
+  .sig-rt__panel{
+    max-width:920px; margin:clamp(18px, 2vw, 26px) auto 0;
+    padding:clamp(22px, 2.4vw, 32px);
+    background:var(--surface-elevated); border-radius:18px; box-shadow:var(--shadow-high);
+    text-align:left;
+  }
+
+  /* Order line */
+  .sig-rt__order{
+    display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:space-between; align-items:baseline;
+    padding-bottom:16px; border-bottom:1px solid var(--border-primary);
+  }
+  .sig-rt__order h3{
+    margin:0; font-size:15px; font-weight:600; letter-spacing:-0.01em; color:var(--text-primary);
+  }
+  /* Programmatic focus target (the script moves focus here on a successful lookup) —
+     the user never tabbed to it, so a focus ring would be noise. Keyboard focus keeps
+     its ring via :focus-visible, which a scripted .focus() does not set. */
+  .sig-rt__order h3:focus{ outline:none; }
+  .sig-rt__order h3:focus-visible{ outline:2px solid var(--border-focus); outline-offset:3px; }
+  .sig-rt__order .sig-rt__no{ font-family:var(--font-mono); }
+  .sig-rt__order p{ margin:0; font-size:13px; color:var(--text-tertiary); }
+
+  /* Status track — three steps, PRD §8.8.0b AC-1 (收件 / 處理中 / 完成). Reached state
+     is filled, current is ringed, pending is hollow; the label carries the state in
+     words as well, so the dot is never the only signal. */
+  .sig-status{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:0;
+    margin:20px 0 4px; padding:0; list-style:none;
+  }
+  .sig-status li{ position:relative; padding-top:22px; padding-right:12px; }
+  .sig-status li::before{         /* connector, drawn behind the dot */
+    content:""; position:absolute; top:5px; left:0; right:0; height:2px;
+    background:var(--border-tertiary);
+  }
+  .sig-status li:last-child::before{ right:auto; width:12px; }
+  .sig-status li::after{          /* the dot */
+    content:""; position:absolute; top:0; left:0; width:12px; height:12px;
+    border-radius:9999px; background:var(--surface-page);
+    box-shadow:inset 0 0 0 2px var(--border-tertiary);
+  }
+  .sig-status li[data-state="done"]::before{ background:var(--sig-blue); }
+  .sig-status li[data-state="done"]::after{
+    background:var(--sig-blue); box-shadow:inset 0 0 0 2px var(--sig-blue);
+  }
+  .sig-status li[data-state="now"]::after{
+    background:var(--surface-page); box-shadow:inset 0 0 0 3px var(--sig-blue);
+  }
+  .sig-status li[data-state="now"]::before{
+    background:linear-gradient(to right, var(--sig-blue) 50%, var(--border-tertiary) 50%);
+  }
+  .sig-status__name{ display:block; font-size:13px; font-weight:600; color:var(--text-tertiary); }
+  .sig-status li[data-state="done"] .sig-status__name,
+  .sig-status li[data-state="now"] .sig-status__name{ color:var(--text-primary); }
+  .sig-status__note{ display:block; margin-top:2px; font-size:12px; color:var(--text-tertiary); }
+
+  /* Preview — locked page beside the chapter scope. The blur is the point: PRD
+     §8.8.0b AC-3 gives away the report's SHAPE for free (各章節將涵蓋內容之全貌),
+     never its content, so the page must read as a real document and stay unreadable.
+     aria-hidden because the outline list beside it is the accessible equivalent. */
+  .sig-rt__preview{ display:grid; grid-template-columns:200px 1fr; gap:clamp(20px, 2.4vw, 32px); margin-top:24px; }
+  @media (max-width: 700px){
+    .sig-rt__preview{ grid-template-columns:1fr; }
+    .sig-rt__page{ max-width:200px; }
+  }
+  .sig-rt__page{ position:relative; overflow:hidden; border-radius:12px; border:1px solid var(--border-primary); }
+  /* Blurred enough that no figure or sentence survives, light enough that the page's
+     STRUCTURE does — header band, the score block, the radar. That is the whole trade
+     the free preview is making: shape yes, content no. scale() hides the soft edge the
+     blur leaves at the frame. */
+  .sig-rt__page img{ display:block; width:100%; height:auto; filter:blur(4px) saturate(0.75); transform:scale(1.06); }
+  .sig-rt__page::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.46));
+  }
+  .sig-rt__lock{
+    position:absolute; z-index:1; left:50%; top:50%; transform:translate(-50%,-50%);
+    display:flex; align-items:center; gap:6px;
+    padding:7px 12px; border-radius:9999px;
+    background:var(--surface-inverse); color:var(--text-inverse);
+    font-size:11.5px; font-weight:600; white-space:nowrap;
+  }
+  .sig-rt__lock svg{ width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; }
+  .sig-rt__pagemeta{ margin:8px 0 0; font-size:12px; line-height:1.5; color:var(--text-tertiary); }
+
+  .sig-rt__outline h4{
+    margin:0 0 12px; font-size:12px; font-weight:600; letter-spacing:0.02em; color:var(--text-secondary);
+  }
+  .sig-rt__chapters{ margin:0; padding:0; list-style:none; counter-reset:ch; }
+  .sig-rt__chapters li{
+    counter-increment:ch;
+    display:grid; grid-template-columns:22px 1fr; gap:2px 10px;
+    padding:7px 0; border-top:1px solid var(--border-primary);
+    font-size:13.5px; line-height:1.45; color:var(--text-primary);
+  }
+  .sig-rt__chapters li:first-child{ border-top:0; padding-top:0; }
+  /* Only the numeral is generated content — it is decorative (the list is already
+     ordered) so nothing is lost if a screen reader skips it. The chapter name and its
+     scope line are real elements, because CSS content:attr() cannot be translated by
+     the language switcher and is read inconsistently by assistive tech. */
+  .sig-rt__chapters li::before{
+    content:counter(ch); grid-column:1; grid-row:1;
+    font-family:var(--font-mono); font-size:12px; color:var(--sig-blue-deep);
+  }
+  .sig-rt__chapters li > span{ grid-column:2; }
+  .sig-rt__chnote{ font-size:12.5px; color:var(--text-tertiary); }
+  .sig-rt__pay{ margin-top:24px; }
+  .sig-rt__pay .btn{ width:100%; }
+
+  @media (prefers-reduced-motion: reduce){
+    .sig-rt__reveal{ transition:none; }
   }
 
   /* ── Expandable report sample cards — v07 FLIP morph, re-skinned to the system ── */
@@ -619,6 +903,49 @@
   @media (prefers-reduced-motion: reduce){
     .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
   }
+
+  /* ── Intake input-type selector — one segmented track, not three loose pills.
+     The distinction is deliberate: this control is a MODE switch (exactly one of
+     the three inputs below it renders, and this is which), so a connected track
+     reads "always one of these", while the report pills under it stay separate
+     choices that can be ruled out. Checked state borrows .topic-chip's inverse
+     fill so the two controls read as one family rather than two idioms. ── */
+  .sig-seg{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:4px;
+    padding:4px;
+    border-radius:9999px;
+    background:var(--surface-tertiary);
+  }
+  .sig-seg__opt{
+    position:relative;
+    display:grid;
+    place-items:center;
+    padding:8px 10px;
+    border-radius:9999px;
+    font-size:13px;
+    font-weight:600;
+    line-height:1.25;
+    text-align:center;   /* labels wrap to 2 lines on a phone rather than overflow */
+    color:var(--text-secondary);
+    cursor:pointer;
+    user-select:none;
+    transition:background 140ms ease-out, color 140ms ease-out;
+  }
+  .sig-seg__opt input{ position:absolute; opacity:0; width:0; height:0; margin:0; }
+  @media (hover: hover) and (pointer: fine){
+    .sig-seg__opt:hover{ color:var(--text-primary); }
+  }
+  .sig-seg__opt:has(input:checked){
+    background:var(--surface-inverse);
+    color:var(--text-inverse);
+  }
+  .sig-seg__opt:focus-within{ outline:2px solid var(--border-focus); outline-offset:2px; }
+
+  /* .field is display:flex, which outranks the UA sheet's [hidden] — the two
+     inputs the chosen type doesn't call for need this to actually leave. */
+  .contact-form .field[hidden]{ display:none; }
 
   /* Intake report-choice gating (PRD F-ROUTE). The shared .topic-chip has no
      disabled state because no other form needs one — scoped here rather than
@@ -1017,7 +1344,7 @@
                   <span data-zh="選報告，上傳資料">Pick a report, add your input</span>
                   <span class="sig-phase__chip" data-zh="訂金 10%">10% deposit</span>
                 </p>
-                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含取件碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation letter carrying a retrieval code.</p>
+                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含取件碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation email carrying a retrieval code.</p>
               </li>
 
               <li class="sig-phase" data-reveal>
@@ -1066,7 +1393,7 @@
     </div>
   </section>
 
-  <!-- ── 4 · Intake — standard contact-card, signal-toned image ── -->
+  <!-- ── 4 · Intake — homepage contact-card treatment, reports.jpg framed left ── -->
   <section class="contact" id="intake" aria-labelledby="intake-heading">
     <div class="container">
       <div class="contact-card contact-card--sig-intake">
@@ -1074,53 +1401,89 @@
         <aside class="contact-overlay">
           <div class="contact-overlay-top">
             <h2 id="intake-heading" data-zh-html data-zh="選報告類型，<br>上傳資料。">Choose a report,<br>upload your input.</h2>
-            <p class="contact-lead" data-zh-html data-zh="送出前付 <strong>10% 訂金</strong>，收到含 <strong>registration code</strong> 的 confirmation letter，憑信箱 + code 回頁免費預覽，再付 <strong>90% 尾款</strong> 下載完整報告。">Pay a <strong>10% deposit</strong> on submit, get a confirmation letter with your <strong>registration code</strong>, return to preview free, then pay the <strong>90% balance</strong> to download.</p>
+            <!-- The lead used to restate the whole 10% / 90% / registration-code flow.
+                 The how-it-works panel above and the email note below both already carry
+                 it, so it says what comes back instead — the one thing neither does. -->
+            <p class="contact-lead" data-zh="客觀分數、深度報告，或所處的競爭地景——由人工 + AI 產出。">An objective score, a deep report, or the competitive landscape it lands in — human + AI.</p>
           </div>
+          <!-- Same dl the homepage card carries under "Get in touch.", one item instead
+               of two: the only thing worth stating at the foot is what leaves your card
+               today. The rest of the payment flow is below the fold of this column. -->
+          <dl class="contact-overlay-meta">
+            <div class="contact-meta">
+              <dt data-zh="今日支付">Pay today</dt>
+              <dd data-zh="10% 訂金">10% deposit</dd>
+            </div>
+          </dl>
         </aside>
 
         <div class="contact-panel">
           <form class="contact-form" id="intake-form" novalidate>
+
+            <!-- Input type — a segmented track rather than pills, because it is a mode
+                 switch: exactly one of the three inputs below renders, and this is which.
+                 Defaults to `granted`, the only type that leaves all three reports open,
+                 so the form opens unrestricted and on its most common case. -->
             <fieldset class="contact-topics">
               <legend data-zh="你的輸入類型">Your input type</legend>
-              <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="input-type" value="granted" /><span data-zh="已核准 / 已公開專利">Granted / published patent</span></label>
-                <label class="topic-chip"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中未公開（草稿）">Pending / unpublished (draft)</span></label>
-                <label class="topic-chip"><input type="radio" name="input-type" value="idea" /><span data-zh="純點子 / 想法">Just an idea</span></label>
+              <div class="sig-seg">
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="granted" checked /><span data-zh="已核准 / 已公開">Granted / published</span></label>
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中草稿">Pending draft</span></label>
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="idea" /><span data-zh="純想法">Just an idea</span></label>
               </div>
             </fieldset>
 
             <!-- Report choice is gated by the input type above (PRD v0.7 F-ROUTE /
                  §8.2.1): a full PSS ranking needs a published patent's citation,
                  family and legal record, so a pending draft or a bare idea can only
-                 take Landscape Report. The rule is stated in copy as well as
-                 enforced, so it holds without JS — the gating script below is the
-                 convenience, the note is the contract. -->
-            <fieldset class="contact-topics">
+                 take Landscape Report. The note carries the rule in copy — it is the
+                 contract; the disabling below is the convenience. It appears only when
+                 the rule actually bites, so the default state pays nothing for it. -->
+            <fieldset class="contact-topics" aria-describedby="intake-gate-note">
               <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
                 <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="分數報告">Score Report</span></label>
                 <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="完整報告">Full Report</span></label>
                 <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="市場地景報告">Landscape Report</span></label>
               </div>
+              <p class="sig-callout" id="intake-gate-note" hidden data-zh="分數報告與完整報告需要已公開專利；草稿或想法走市場地景報告。">Score Report and Full Report need a published patent. A draft or an idea takes the Landscape Report.</p>
             </fieldset>
 
-            <div class="field">
-              <label for="intake-input" data-zh="提供資料">Provide your input</label>
-              <input id="intake-input" name="input" type="text" data-zh-placeholder="專利號（如 US10148981）" placeholder="Patent number (e.g. US10148981)" />
+            <!-- One input per type (PRD v0.7 §8.2.1 + build handoff §2): a patent number
+                 for a granted or published patent, the PDF for a pending draft, free text
+                 for an idea. It sits after the report choice so the two selections read as
+                 one block — pick what you have, pick what you want — and data entry starts
+                 only once both are settled, which is also the heading's order. All three
+                 ship in the markup; the script at the foot of the page hides the two the
+                 chosen type doesn't call for. With JS off all three stay reachable and
+                 labelled — the same no-JS stance the report gating takes. -->
+            <div class="field" data-input-for="granted">
+              <label for="intake-input" data-zh="專利號">Patent number</label>
+              <input id="intake-input" name="input" type="text" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
             </div>
-            <div class="field">
-              <label for="intake-file" data-zh="上傳草稿 / 說明書 / pitch 文件（PDF）">Upload a draft / specification / pitch document (PDF)</label>
+            <div class="field" data-input-for="pending">
+              <label for="intake-file" data-zh="上傳草稿 / 說明書（PDF）">Upload the draft or specification (PDF)</label>
               <input id="intake-file" name="file" type="file" accept="application/pdf" />
             </div>
-            <div class="field">
-              <label for="intake-desc" data-zh="或描述你的技術想法">Or describe your technical idea</label>
+            <div class="field" data-input-for="idea">
+              <label for="intake-desc" data-zh="描述你的技術想法">Describe your technical idea</label>
               <textarea id="intake-desc" name="desc" rows="3" data-zh-placeholder="描述你的技術想法…" placeholder="Describe your technical idea…"></textarea>
             </div>
 
             <div class="field">
               <label for="intake-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
               <input id="intake-email" name="email" type="email" placeholder="you@vcfund.com" />
-              <p class="sig-callout" data-zh-html data-zh="用於寄送 confirmation letter 與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation letter and completion notice. <strong>The report is not emailed here.</strong></p>
+              <p class="sig-callout" data-zh-html data-zh="用於寄送 confirmation email 與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation email and completion notice. <strong>The report is not emailed here.</strong></p>
+            </div>
+
+            <!-- 備註, the last field on the build handoff's §2 table that wasn't built.
+                 Optional, and deliberately last: this is a concierge flow, so the thing
+                 the fixed fields can't capture — a deadline, a deal stage, what the
+                 report is feeding — is worth somewhere to land. It is also the field
+                 that flexes (see .sig-notes above); rows="2" is only the no-flex floor. -->
+            <div class="field sig-notes">
+              <label for="intake-notes" data-zh="備註（選填）">Notes (optional)</label>
+              <textarea id="intake-notes" name="notes" rows="2" data-zh-placeholder="時程、決策背景，或任何我們該知道的事…" placeholder="Timing, the decision this feeds, anything we should know…"></textarea>
             </div>
 
             <div class="contact-actions">
@@ -1134,7 +1497,7 @@
             </span>
             <div>
               <h3 data-zh="已送出。">Submitted.</h3>
-              <p data-zh="你會收到含 registration code 的 confirmation letter。">You'll receive a confirmation letter with your registration code.</p>
+              <p data-zh="你會收到含 registration code 的 confirmation email。">You'll receive a confirmation email with your registration code.</p>
             </div>
           </div>
         </div>
@@ -1143,40 +1506,130 @@
     </div>
   </section>
 
-  <!-- ── 5 · Retrieve — standard contact-card, flipped (form left) ── -->
+  <!-- ── 5 · Retrieve — one centred column; the result opens inside the card ──────
+       This is the return visit: the customer already paid the deposit, has the
+       confirmation email open, and wants status / preview / download. So the card
+       leads with one action (email + code + Look up on a line) and keeps the rest of
+       its height in reserve for whatever comes back. ─────────────────────────────── -->
   <section class="contact" id="retrieve" aria-labelledby="retrieve-heading">
     <div class="container">
       <div class="contact-card contact-card--sig-retrieve">
 
+        <div class="sig-rt__head">
+          <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>registration code 取件。">Retrieve with your email + registration code.</h2>
+          <p class="contact-lead" data-zh="點 confirmation email 中的連結，或輸入 registration code，即可驗證身分、查進度、預覽或下載。">Follow the link in your confirmation email or enter your registration code to verify, check status, preview, or download.</p>
+        </div>
+
         <div class="contact-panel">
           <form class="contact-form" id="retrieve-form" novalidate>
-            <div class="field">
-              <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-              <input id="retrieve-email" name="email" type="email" placeholder="you@vcfund.com" />
-            </div>
-            <div class="field">
-              <label for="retrieve-code" data-zh="Registration code（如 E240710TWN31346058015）">Registration code (e.g. E240710TWN31346058015)</label>
-              <input id="retrieve-code" name="code" type="text" placeholder="E240710TWN31346058015" />
-            </div>
-            <div class="contact-actions">
-              <button type="submit" class="btn btn-secondary btn-lg" data-zh="查詢">Look up</button>
-            </div>
-
-            <p class="sig-callout" data-zh-html data-zh="可先免費預覽<strong>報告大綱</strong>（各章節將涵蓋內容之全貌，非摘錄）；付 <strong>90% 尾款</strong>後下載完整報告（含浮水印 PDF）。">Preview the <strong>report outline free</strong> (the full scope of each chapter, not excerpts); pay the <strong>90% balance</strong> to download the full watermarked PDF.</p>
-
-            <div class="contact-actions" style="gap:12px;">
-              <button type="button" class="btn btn-glass btn-lg" data-zh="預覽報告大綱（免費）">Preview outline (free)</button>
-              <button type="button" class="btn btn-primary btn-lg" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
+            <div class="sig-lookup">
+              <div class="field">
+                <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
+                <input id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="you@vcfund.com" />
+              </div>
+              <div class="field">
+                <label for="retrieve-code" data-zh="Registration code">Registration code</label>
+                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="E240710TWN31346058015" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
             </div>
           </form>
         </div>
 
-        <aside class="contact-overlay">
-          <div class="contact-overlay-top">
-            <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>registration code 取件。">Retrieve with your email<br>+ registration code.</h2>
-            <p class="contact-lead" data-zh="點 confirmation letter（或完成通知）中的連結回到這裡，驗證身分後查進度、預覽或下載。報告不會直接寄出。">Follow the link in your confirmation letter (or completion email) back here to verify, check status, preview, or download. The report is never sent directly.</p>
+        <!-- The sample codes used to print here. Pulled from the page 2026-08-13, kept
+             here because they are still the only way to exercise the two F-STATUS
+             outcomes on a site with no backend:
+               in production  E240710TWN31346058015   → SIG-BX-20260810-004, Landscape
+               complete       E240628TWN20871445093   → SIG-B-20260805-001, Full Report
+             Any email; the match is case-insensitive and ignores spaces and hyphens.
+             Their vertical space is held by .contact-panel's margin-bottom below, so
+             removing them did not resize the card. -->
+
+        <!-- §8.8.0b AC-2: a mismatch must not say WHICH half was wrong (防猜). -->
+        <p class="sig-rt__error" id="retrieve-error" role="alert" hidden data-zh="查無相符的紀錄。請對照 confirmation email 再確認一次。">No matching record. Check both against your confirmation email.</p>
+
+        <div class="sig-rt__reveal" id="retrieve-reveal" data-open="false">
+          <div>
+            <div class="sig-rt__panel" role="status" aria-live="polite">
+
+              <div class="sig-rt__order">
+                <h3 tabindex="-1" id="retrieve-result-heading"><span class="sig-rt__no" id="rt-order">SIG-B-20260805-001</span> · <span id="rt-kind" data-zh="完整報告">Full Report</span></h3>
+                <p><span data-zh="送出日">Submitted</span> <span id="rt-date">2026-08-05</span></p>
+              </div>
+
+              <ol class="sig-status" id="rt-status">
+                <li data-state="done">
+                  <span class="sig-status__name" data-zh="已收件">Received</span>
+                  <span class="sig-status__note" data-zh="訂金已付，作業啟動">Deposit paid, work started</span>
+                </li>
+                <li data-state="done">
+                  <span class="sig-status__name" data-zh="處理中">In production</span>
+                  <span class="sig-status__note" data-zh="新穎資料 + 人工 + AI">Innovue data, human + AI</span>
+                </li>
+                <li data-state="done">
+                  <span class="sig-status__name" data-zh="已完成">Complete</span>
+                  <span class="sig-status__note" data-zh="可預覽大綱，付尾款下載">Preview free, pay to download</span>
+                </li>
+              </ol>
+
+              <!-- Everything below is gated on 完成 (§8.8.0b AC-3) — an in-production
+                   order gets the status track and nothing else. -->
+              <div id="rt-done">
+                <div class="sig-rt__preview">
+                  <div>
+                    <div class="sig-rt__page">
+                      <span class="sig-rt__lock">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                        <span data-zh="尾款後解鎖">Unlocks with the balance</span>
+                      </span>
+                      <img src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="2272" height="3024" />
+                    </div>
+                    <p class="sig-rt__pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
+                  </div>
+
+                  <div class="sig-rt__outline">
+                    <h4 data-zh="報告涵蓋範圍（免費預覽）">What the report covers — free preview</h4>
+                    <!-- Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
+                    <ol class="sig-rt__chapters">
+                      <li>
+                        <span data-zh="專利基本資料">Patent facts &amp; family</span>
+                        <span class="sig-rt__chnote" data-zh="專利號、國家、專利權人、主 IPC、申請日、公告日、法律狀態、請求項數、家族國家">Number, jurisdiction, owner, IPC, dates, claims, family</span>
+                      </li>
+                      <li>
+                        <span data-zh="PSS 總覽">PSS overview</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                      </li>
+                      <li>
+                        <span data-zh="八大支柱深度分析">Eight pillars, all 50 indicators</span>
+                        <span class="sig-rt__chnote" data-zh="P1–P8 逐一展開：各指標名稱、原始值、正規化分數、百分位、權重">P1–P8 opened up: every indicator, weight and percentile</span>
+                      </li>
+                      <li>
+                        <span data-zh="強項亮點 Top 10">Top 10 strengths</span>
+                        <span class="sig-rt__chnote" data-zh="50 項指標中百分位最高的 10 項，含原始值">The 10 highest-percentile indicators, with raw values</span>
+                      </li>
+                      <li>
+                        <span data-zh="風險弱項 Top 10">Top 10 risks</span>
+                        <span class="sig-rt__chnote" data-zh="百分位最低的 10 項，同樣處理">The 10 lowest, same treatment</span>
+                      </li>
+                      <li>
+                        <span data-zh="跨方案穩定性分析">Cross-scenario stability</span>
+                        <span class="sig-rt__chnote" data-zh="同一專利在授權導向 / 訴訟強度 / 投資併購 / 技術布局四種場景下的分數">The same patent scored for licensing, litigation, M&amp;A and portfolio</span>
+                      </li>
+                      <li>
+                        <span data-zh="綜合評估與行動建議">Assessment &amp; licensing strategy</span>
+                        <span class="sig-rt__chnote" data-zh="授權策略目標、需補強市場、風險提示、具體行動建議">Licensing targets, gaps to close, risks, and what to do next</span>
+                      </li>
+                    </ol>
+                    <div class="sig-rt__pay">
+                      <button type="button" class="btn btn-primary btn-lg" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-        </aside>
+        </div>
 
       </div>
     </div>
@@ -1254,7 +1707,7 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" placeholder="Your Email" aria-label="Email address" required />
+              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
               <button type="submit" aria-label="Subscribe">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1326,7 +1779,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=4" defer></script>
+<script src="/assets/site.js?v=6" defer></script>
 
 <!-- Expandable report sample cards — vanilla FLIP morph (Web Animations API),
      ported from v0.7. The report cards (.offer-card[data-report]) are the triggers;
@@ -1613,42 +2066,126 @@
   })();
 </script>
 
-<!-- Intake report gating — PRD v0.7 F-ROUTE / §8.2.1 AC-6. A full PSS ranking needs
-     a published patent's citation, family and legal record, so Score Report and Full Report
-     (marked data-requires="granted") are only offered once the input type is a
-     granted / published patent. Pending drafts and bare ideas leave only Landscape Report.
-     The radio values (a-short / b-long / b-advanced) intentionally keep the PRD's
-     A / B / BX tier codes — only the visible labels were renamed.
+<!-- Intake routing — PRD v0.7 F-ROUTE / §8.2.1 AC-6. The input type drives two things.
 
-     Progressive enhancement: with no JS every option stays selectable, so nothing
-     is ever unreachable — but note the trade-off taken when the explanatory callout
-     was removed from this fieldset: the routing rule is no longer stated in the form
-     itself. With JS on, the invalid choices are disabled and announced as such. With
-     JS off, an invalid pair can be submitted and is rejected server-side instead.
-     Restoring a visually-hidden note here would return the aria-describedby. -->
+     (1) Which input renders. The type already answers "patent number, PDF, or free
+     text?", so asking all three at once asked the user to answer it twice — once in
+     the chips, once by picking a field. Only the matching one stays.
+
+     (2) Which reports are offered. A full PSS ranking needs a published patent's
+     citation, family and legal record, so Score Report and Full Report (marked
+     data-requires="granted") are offered only for a granted / published patent;
+     pending drafts and bare ideas leave Landscape Report. The radio values
+     (a-short / b-long / b-advanced) intentionally keep the PRD's A / B / BX tier
+     codes — only the visible labels were renamed.
+
+     Progressive enhancement: with no JS, all three inputs stay visible and every
+     report stays selectable, so nothing is unreachable — an invalid pair is then
+     rejected server-side. With JS on the invalid reports are disabled, announced as
+     such, and #intake-gate-note states the rule in copy (it is the fieldset's
+     aria-describedby). -->
 <script>
   (() => {
     const form = document.getElementById('intake-form');
     if (!form) return;
     const inputTypes = [...form.querySelectorAll('input[name="input-type"]')];
     const gated = [...form.querySelectorAll('input[name="report"][data-requires="granted"]')];
-    if (!inputTypes.length || !gated.length) return;
+    const fields = [...form.querySelectorAll('.field[data-input-for]')];
+    const note = form.querySelector('#intake-gate-note');
+    if (!inputTypes.length) return;
 
     const sync = () => {
       const chosen = inputTypes.find(r => r.checked);
-      // No input type chosen yet → nothing is ruled out yet. Only a non-granted
-      // choice closes options, so the form never opens in a restricted state.
-      const allow = !chosen || chosen.value === 'granted';
+      // Markup checks `granted`, so `chosen` is only ever null if that attribute is
+      // dropped; fall back to it rather than opening in a restricted state.
+      const type = chosen ? chosen.value : 'granted';
+      const allow = type === 'granted';
+
+      // `hidden` rather than a class, so the label and its control leave the a11y
+      // tree together and the two inactive inputs stop taking tab stops.
+      fields.forEach(field => { field.hidden = field.dataset.inputFor !== type; });
+
       gated.forEach(radio => {
         radio.disabled = !allow;
         // A checked-then-disabled radio still submits its value in some engines, and
         // would in any case leave an impossible pairing visibly selected. Clear it.
         if (!allow && radio.checked) radio.checked = false;
       });
+
+      if (note) note.hidden = allow;
     };
 
     inputTypes.forEach(radio => radio.addEventListener('change', sync));
     sync();
+  })();
+</script>
+
+<!-- Retrieve lookup — PRD v0.7 §8.8.0b F-STATUS, front-end only. There is no backend
+     on this site, so two sample orders stand in for the two outcomes the spec defines:
+     an order still in production (AC-1: status only) and a finished one (AC-3: free
+     outline preview + the balance CTA). Everything the real endpoint would return is
+     in the markup already; this only picks which parts are shown.
+
+     AC-2 is the one rule that is a security property rather than a convenience: a
+     mismatch must not reveal which half was wrong, or the form becomes an oracle for
+     enumerating codes. Hence one message for every failure, and no email check at all
+     — any email is accepted, so nothing here can confirm an address exists either. -->
+<script>
+  (() => {
+    const form = document.getElementById('retrieve-form');
+    const reveal = document.getElementById('retrieve-reveal');
+    if (!form || !reveal) return;
+
+    const errorEl = document.getElementById('retrieve-error');
+    const doneEl  = document.getElementById('rt-done');
+    const steps   = [...document.querySelectorAll('#rt-status li')];
+    const heading = document.getElementById('retrieve-result-heading');
+
+    // Keyed by code. `en`/`zh` pairs stay parallel to the data-zh convention the rest
+    // of the page uses, since the language switcher only rewrites markup it can see.
+    const ORDERS = {
+      'E240710TWN31346058015': {
+        order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 1, done: false,
+        kind: { en: 'Landscape Report', zh: '市場地景報告' }
+      },
+      'E240628TWN20871445093': {
+        order: 'SIG-B-20260805-001', date: '2026-08-05', step: 2, done: true,
+        kind: { en: 'Full Report', zh: '完整報告' }
+      }
+    };
+
+    const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = (document.getElementById('retrieve-code').value || '')
+        .trim().toUpperCase().replace(/[\s-]/g, '');   // letter-transcription slips
+      const hit = ORDERS[code];
+
+      if (!hit) {
+        reveal.dataset.open = 'false';
+        if (errorEl) errorEl.hidden = false;
+        return;
+      }
+      if (errorEl) errorEl.hidden = true;
+
+      document.getElementById('rt-order').textContent = hit.order;
+      document.getElementById('rt-date').textContent = hit.date;
+      const kindEl = document.getElementById('rt-kind');
+      kindEl.textContent = isZh() ? hit.kind.zh : hit.kind.en;
+      kindEl.setAttribute('data-zh', hit.kind.zh);   // survives a later language switch
+
+      // step = index of the CURRENT stage; everything before it is done.
+      steps.forEach((li, i) => {
+        li.dataset.state = i < hit.step ? 'done' : (i === hit.step ? 'now' : 'todo');
+      });
+
+      doneEl.hidden = !hit.done;
+      reveal.dataset.open = 'true';
+      // Focus the result rather than scrolling to it: the browser scrolls as much as
+      // it needs to, and keyboard / screen-reader users land on what just appeared.
+      heading.focus({ preventScroll: false });
+    });
   })();
 </script>
 
