@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-13 19:11 +0800** · Wired the contact, footer-newsletter and popup forms to a Google Sheet via Apps Script; added real validation, pending and error states.
+- **2026-08-13 19:20 +0800** · Signal: intake card rebuilt on the homepage card — reports.jpg framed left, segmented input-type switch, one input at a time, height locked to index.html's.
 - **2026-08-11 02:40 +0800** · Signal: streamlined the intake and retrieve cards, styled the file input, fixed the contact-overlay heading measure.
 - **2026-08-11 00:46 +08:00** · Signal: recomposed the proof head — dek under the claim, pool figure to a 72px numeral with a two-line label, "Powered by Innovue" beside the methodology CTA.
 - **2026-08-10 21:04 +08:00** · Signal: renamed the report cards to Score / Full / Landscape Report, set every subtext to two lines, swapped in new imagery.

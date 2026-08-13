@@ -24,6 +24,17 @@ Each page is self-contained HTML — no build step, no router. Shared chrome (to
 
 A small inline `<script>` block lives at the top of each page's `<head>` to read `tis-theme` and `tis-lang` from `localStorage` and set `<html data-theme>` / `<html lang>` before paint. This prevents flash-of-unstyled-content on dark mode. Keep it in sync across pages; everything else lives in `assets/site.js`.
 
+## Form capture — "Front Desk"
+
+The contact form, the footer newsletter and the IP-drop popup post to a Google Apps Script Web App that appends to a Google Sheet named **TIS Front Desk**, owned by `contact@tisglobalinc.com`. One endpoint serves all three; the server routes on a `form` key in the payload and creates each tab, with its header row, on first submission — **adding a form later needs no server change.**
+
+The Apps Script source and the full deploy walkthrough live in a block comment at the **foot of [`assets/site.js`](assets/site.js)**. The endpoint itself is the `FRONT_DESK_ENDPOINT` constant near the capture module in the same file.
+
+Two things to know before touching it:
+
+- **While `FRONT_DESK_ENDPOINT` is empty, every form falls back to its old local-only behaviour** — it shows success without sending anything. That is a safe half-configured state, not a working one. Don't ship it believing submissions are being captured.
+- **Editing the Apps Script does not update the live endpoint.** You must `Deploy → Manage deployments → pencil → Version: New version`. Picking "New deployment" instead mints a different URL while the site keeps posting to the old one.
+
 ## Source of truth
 
 This repo is a **rendered view** of the TIS brand monorepo (kept private), where tokens, primitives, components, identity, and the website PRD are authored. The brand `.md` files are authoritative; this repo ships the resulting pages.

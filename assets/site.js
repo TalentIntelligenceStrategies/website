@@ -506,41 +506,207 @@
     });
   });
 
-  // ──────────────── Contact form — demo: preventDefault + show success ────────────────
+  // ════════════════ Front Desk — form capture → Google Sheet ════════════════
+  // One Apps Script Web App, routed server-side on the `form` key. The script
+  // source and the full deploy walkthrough live in the block comment at the
+  // foot of this file.
+  //
+  // While ENDPOINT is empty every form falls back to its previous local-only
+  // behaviour, so a half-configured deploy cannot break the live site.
+  const FRONT_DESK_ENDPOINT = 'https://script.google.com/macros/s/AKfycby0iyNlKyFl6F03VC4AQesH9L8e454kxmr6QU4YrRyC2AI9wxB9ueGo8dyedIXTvDp-/exec';
+
+  const frontDeskLive = () => FRONT_DESK_ENDPOINT.length > 10;
+  const isZh = () => (root.getAttribute('lang') || '').toLowerCase().startsWith('zh');
+  const t = (en, zh) => (isZh() ? zh : en);
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const sendFailed = () => t(
+    'Couldn’t send. Please try again, or email contact@tisglobalinc.com.',
+    '傳送失敗，請再試一次，或來信 contact@tisglobalinc.com。'
+  );
+
+  // Bots fill every field they can reach. Off-canvas, unfocusable, out of the
+  // tab order; a non-empty value makes the server drop the row silently.
+  const addHoneypot = (form) => {
+    if (form.querySelector('input[name="_hp"]')) return;
+    const hp = document.createElement('input');
+    hp.type = 'text';
+    hp.name = '_hp';
+    hp.tabIndex = -1;
+    hp.autocomplete = 'off';
+    hp.setAttribute('aria-hidden', 'true');
+    hp.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+    form.appendChild(hp);
+  };
+
+  // FormData alone loses two of the three forms:
+  //   · the footer and popup email inputs ship without a name attribute
+  //   · Role / Industry are .brand-select divs, invisible to FormData — their
+  //     value lives in dataset.value (see the Brand select block above)
+  // The bare-email fallback is load-bearing: capital/ is a separate repo that
+  // loads this file cross-origin and will run it before its markup catches up.
+  const serializeForm = (form, extra) => {
+    const out = {};
+    new FormData(form).forEach((v, k) => {
+      if (typeof v === 'string') out[k] = v.trim();
+    });
+    form.querySelectorAll('.brand-select[data-name]').forEach(sel => {
+      out[sel.dataset.name] = sel.dataset.value || '';
+    });
+    if (!out.email) {
+      const mail = form.querySelector('input[type="email"]');
+      if (mail) out.email = mail.value.trim();
+    }
+    out.page = location.host + location.pathname;   // distinguishes capital. from www
+    out.lang = isZh() ? 'zh' : 'en';
+    out.ua   = navigator.userAgent;
+    return Object.assign(out, extra);
+  };
+
+  // text/plain keeps this a CORS *simple request*, so the browser skips the
+  // preflight OPTIONS that Apps Script cannot answer. Deliberately NOT
+  // mode:'no-cors' — the response has to stay readable, or every failure
+  // would be indistinguishable from a success.
+  const frontDeskPost = async (payload) => {
+    const res = await fetch(FRONT_DESK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!data || !data.ok) throw new Error((data && data.error) || 'write failed');
+  };
+
+  // Injected rather than authored, so the eight pages carrying the contact
+  // form need no markup change.
+  const showFormError = (form, msg) => {
+    let el = form.querySelector('.form-error');
+    if (!el) {
+      el = document.createElement('p');
+      el.className = 'form-error';
+      el.setAttribute('role', 'alert');
+      const actions = form.querySelector('.contact-actions');
+      if (actions) form.insertBefore(el, actions); else form.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('is-shown');
+  };
+  const clearFormError = (form) => {
+    const el = form.querySelector('.form-error');
+    if (el) el.classList.remove('is-shown');
+  };
+
+  // Restores whatever label was there before rather than a hardcoded string,
+  // so a language swap mid-request can't strand the button in one language.
+  const pending = (btn, on) => {
+    if (!btn) return;
+    if (on) {
+      btn.dataset.prevLabel = btn.textContent;
+      btn.textContent = t('Sending…', '傳送中…');
+      btn.disabled = true;
+      btn.classList.add('is-pending');
+    } else {
+      if (btn.dataset.prevLabel !== undefined) btn.textContent = btn.dataset.prevLabel;
+      delete btn.dataset.prevLabel;
+      btn.disabled = false;
+      btn.classList.remove('is-pending');
+    }
+  };
+
+  // ──────────────── Contact form → `contact` tab ────────────────
+  // The markup carries `novalidate` and no `required` attributes, so validation
+  // belongs here. Until now an entirely empty form reported success.
   const contactForm = document.getElementById('contact-form');
   const contactSuccess = document.getElementById('contact-success');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+  if (contactForm && contactSuccess) {
+    addHoneypot(contactForm);
+    const contactBtn = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      contactForm.style.display = 'none';
-      contactSuccess.classList.add('is-shown');
+      clearFormError(contactForm);
+
+      const payload = serializeForm(contactForm, { form: 'contact', source: 'contact' });
+      const invalid =
+        !payload.name                       ? t('Please enter your name.', '請填寫姓名。') :
+        !EMAIL_RE.test(payload.email || '') ? t('Please enter a valid email address.', '請填寫有效的電子郵件。') :
+        !payload.message                    ? t('Please tell us briefly what you need.', '請簡述您的需求。') : '';
+      if (invalid) { showFormError(contactForm, invalid); return; }
+
+      const succeed = () => {
+        contactForm.style.display = 'none';
+        contactSuccess.classList.add('is-shown');
+      };
+      if (!frontDeskLive()) { succeed(); return; }   // endpoint unset — prior behaviour
+
+      pending(contactBtn, true);
+      try {
+        await frontDeskPost(payload);
+        succeed();
+      } catch (err) {
+        showFormError(contactForm, sendFailed());
+      } finally {
+        pending(contactBtn, false);
+      }
     });
   }
 
-  // ──────────────── Footer newsletter — components.md §Footer (in-place success, 1.6s auto-reset) ────────────────
+  // ──────────────── Footer newsletter → `newsletter` tab, source=footer ────────────────
+  // components.md §Footer — in-place success, 1.6s auto-reset.
   const MKT_KEY = 'tis-mkt-drop-seen';
   const markMktSeen = () => { try { localStorage.setItem(MKT_KEY, String(Date.now())); } catch (_) {} };
 
   const nlBlock = document.getElementById('footer-nl-block');
   const nlForm  = document.getElementById('footer-nl-form');
   if (nlBlock && nlForm) {
-    const nlInput = nlForm.querySelector('input');
+    addHoneypot(nlForm);
+    const nlInput = nlForm.querySelector('input[type="email"]');
     const nlLabel = nlBlock.querySelector('.footer-nl-label');
+    const nlBtn   = nlForm.querySelector('button[type="submit"]');
     const nlOrig  = nlLabel.textContent;
     let nlTimer = null;
-    nlForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!nlInput.checkValidity() || !nlInput.value.trim()) return;
+
+    // Read the label back from data-en/data-zh (captured on init) so a reset
+    // after a language swap restores the right one.
+    const nlRestore = () => {
+      nlLabel.textContent = (isZh() ? nlLabel.dataset.zh : nlLabel.dataset.en) || nlOrig;
+    };
+
+    const nlSucceed = () => {
+      nlBlock.classList.remove('is-error');
       nlBlock.classList.add('is-success');
-      nlLabel.textContent = "Thanks — you're subscribed";
+      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，感謝您');
       // Cross-suppress the IP-intel drop popup — already engaged via footer.
       markMktSeen();
       clearTimeout(nlTimer);
       nlTimer = setTimeout(() => {
         nlBlock.classList.remove('is-success');
-        nlLabel.textContent = nlOrig;
+        nlRestore();
         nlInput.value = '';
       }, 1600);
+    };
+
+    nlForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = serializeForm(nlForm, { form: 'newsletter', source: 'footer' });
+      if (!EMAIL_RE.test(payload.email || '')) return;
+      if (!frontDeskLive()) { nlSucceed(); return; }
+
+      nlBtn.disabled = true;
+      try {
+        await frontDeskPost(payload);
+        nlSucceed();
+      } catch (err) {
+        // The strip has no room for a message node — the label carries it.
+        nlBlock.classList.add('is-error');
+        nlLabel.textContent = t('Couldn’t subscribe — try again', '訂閱失敗，請再試一次');
+        clearTimeout(nlTimer);
+        nlTimer = setTimeout(() => {
+          nlBlock.classList.remove('is-error');
+          nlRestore();
+        }, 2600);
+      } finally {
+        nlBtn.disabled = false;
+      }
     });
   }
 
@@ -592,6 +758,7 @@
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
   if (mkt && mktCard && mktForm) {
+    addHoneypot(mktForm);
     const TTL_MS = 30 * 24 * 60 * 60 * 1000;
     const DELAY_MS = 45000;
     const SCROLL_THRESHOLD = 0.50;
@@ -650,11 +817,29 @@
         '</div>';
     }
 
-    mktForm.addEventListener('submit', (e) => {
+    // → `newsletter` tab, source=popup. Role and Industry come from the
+    // .brand-select widgets, which serializeForm() reads via dataset.value.
+    mktForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = mktForm.querySelector('input[type="email"]');
-      if (!email || !email.checkValidity() || !email.value.trim()) return;
-      showSuccess();
+      clearFormError(mktForm);
+
+      const payload = serializeForm(mktForm, { form: 'newsletter', source: 'popup' });
+      if (!EMAIL_RE.test(payload.email || '')) {
+        showFormError(mktForm, t('Please enter a valid work email.', '請填寫有效的公司電子郵件。'));
+        return;
+      }
+      if (!frontDeskLive()) { showSuccess(); return; }
+
+      // The CTA lives in .mkt-foot, outside the form, wired via form="mkt-form".
+      const mktBtn = mktCard.querySelector('.mkt-cta');
+      pending(mktBtn, true);
+      try {
+        await frontDeskPost(payload);   // must land before showSuccess() wipes the card
+        showSuccess();                  // card innerHTML replaced — no un-pending needed
+      } catch (err) {
+        showFormError(mktForm, sendFailed());
+        pending(mktBtn, false);
+      }
     });
     mkt.addEventListener('click', (e) => {
       if (e.target === mkt) closePopup();
@@ -1258,3 +1443,133 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     : reduceMotion.addListener(onMotionChange);
 })();
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FRONT DESK — Google Apps Script backend
+
+   Captures the contact form, the footer newsletter and the IP-drop popup into
+   a Google Sheet named "TIS Front Desk", owned by contact@tisglobalinc.com.
+
+   ── ONE-TIME SETUP (~10 min) ─────────────────────────────────────────────
+   0. Sign in as contact@tisglobalinc.com in a SEPARATE Chrome profile or an
+      incognito window. Google's account switcher will otherwise happily let
+      you create the Sheet as contact@ but deploy as someone else, and
+      "Execute as: Me" binds the endpoint to whoever clicks Deploy — forever.
+   1. Open the "TIS Front Desk" Sheet. Confirm Share lists contact@ as Owner
+      and nobody else. Leave the default tab alone — the tabs below are
+      created automatically on first submission.
+   2. Extensions -> Apps Script. Delete the stub, paste everything between the
+      SCRIPT markers below. Rename the project "TIS Front Desk — Capture". Save.
+   3. Deploy -> New deployment -> gear -> Web app
+         Description:     v1
+         Execute as:      Me (contact@tisglobalinc.com)
+         Who has access:  Anyone
+      "Anyone" must be literally Anyone — not "Anyone with a Google account",
+      not "Anyone at Talent Intelligence Strategies". Both require the visitor
+      to be signed in, so every real submission would fail.
+      If "Anyone" is missing, it is Workspace policy. As an admin, check
+      Admin console -> Apps -> Google Workspace -> Drive and Docs -> Sharing
+      settings (external sharing must be allowed), and the Google Apps Script
+      entry in the same list. Allow a few minutes to propagate.
+   4. Authorize -> "Google hasn't verified this app" is expected for your own
+      script: Advanced -> Go to TIS Front Desk — Capture (unsafe) -> Allow.
+   5. Copy the Web app URL ending in /exec. Open it in a browser tab; it must
+      return {"ok":true,"service":"tis-front-desk"}. Paste it into
+      FRONT_DESK_ENDPOINT near the top of this file.
+
+   ── EDITING THE SCRIPT LATER ─────────────────────────────────────────────
+   Saving does NOT update the live endpoint. Deploy -> Manage deployments ->
+   pencil -> Version: New version -> Deploy. That keeps the same /exec URL.
+   Picking "New deployment" instead mints a DIFFERENT URL while the site keeps
+   posting to the old one — the usual reason a fix appears to be ignored.
+
+   ── ADDING A FORM LATER ──────────────────────────────────────────────────
+   Add one entry to ROUTES and post { form: '<key>', ... } from the page. The
+   tab and its header row are created on the first submission. No redeploy of
+   the site, no schema migration. To send a form to a DIFFERENT spreadsheet
+   (e.g. Signal), give its route a spreadsheetId and open it by ID.
+
+   ── SECURITY ─────────────────────────────────────────────────────────────
+   The /exec URL sits in this public file, so anyone can find it and POST.
+   Same accepted trade-off as documents/platform-copy-review.html. The
+   honeypot and validation blunt casual abuse; they don't eliminate it.
+   doGet only ever returns a health check — rows are never readable.
+
+   ─────────────────────── SCRIPT — paste from here ────────────────────────
+
+const ROUTES = {
+  contact: {
+    tab: 'contact',
+    headers: ['ts','name','title','email','phone','org','topic','message','source','page','lang','ua'],
+  },
+  newsletter: {
+    tab: 'newsletter',
+    headers: ['ts','email','role','industry','source','page','lang','ua'],
+  },
+};
+
+const ERROR_HEADERS = ['ts','raw','error'];
+
+// Returns the tab, creating it and seeding its header row on first use.
+function tab_(name, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sh = ss.getSheetByName(name) || ss.insertSheet(name);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(headers);
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  }
+  return sh;
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Health check — paste the /exec URL into a browser to confirm the deployment.
+function doGet() {
+  return json_({ ok: true, service: 'tis-front-desk' });
+}
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);                       // serialise concurrent appends
+  try {
+    const raw = (e && e.postData && e.postData.contents) || '';
+    let b;
+    try {
+      b = JSON.parse(raw);                    // text/plain body, JSON inside
+    } catch (err) {
+      tab_('_errors', ERROR_HEADERS).appendRow([new Date(), raw.slice(0, 4000), 'unparseable JSON']);
+      return json_({ ok: false, error: 'bad payload' });
+    }
+
+    // Honeypot tripped. Accept silently — never tell a bot it was caught.
+    if (b._hp) return json_({ ok: true });
+
+    const route = ROUTES[b.form];
+    if (!route) {
+      tab_('_errors', ERROR_HEADERS).appendRow([new Date(), raw.slice(0, 4000), 'unknown form: ' + b.form]);
+      return json_({ ok: false, error: 'unknown form' });
+    }
+
+    b.ts = new Date();                        // server-stamped; client clocks lie
+    // Map by header name, never by key order, so a missing field (e.g. an
+    // unselected topic radio) leaves a blank cell instead of shifting the row.
+    tab_(route.tab, route.headers)
+      .appendRow(route.headers.map(function (h) { return b[h] !== undefined ? b[h] : ''; }));
+
+    return json_({ ok: true });
+  } catch (err) {
+    try {
+      tab_('_errors', ERROR_HEADERS).appendRow([new Date(), '', String(err)]);
+    } catch (ignored) {}
+    return json_({ ok: false, error: 'server error' });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+   ──────────────────────── SCRIPT — paste to here ─────────────────────────
+   ══════════════════════════════════════════════════════════════════════════ */

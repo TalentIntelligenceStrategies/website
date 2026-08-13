@@ -3183,6 +3183,33 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .contact-panel .btn-primary { background: #000; }
 .contact-panel .btn-primary:hover { background: #1A1A1A; }
 
+/* ───────── Form capture states — Front Desk (site.js) ─────────
+   The .form-error node is injected by JS, not authored, so the eight pages
+   carrying the contact form need no markup change. Hidden until a submit
+   actually fails; never shown pre-emptively. */
+.form-error {
+  display: none;
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--danger-border);
+  background: var(--danger-border-wash);
+  border-left: 2px solid var(--danger-border);
+  border-radius: 0 8px 8px 0;
+}
+.form-error.is-shown { display: block; }
+.mkt-form .form-error { margin-top: 14px; }
+
+/* In-flight. The label swap to "Sending…" happens in site.js; this only stops
+   the button reading as clickable while the request is out. */
+.btn.is-pending,
+.btn:disabled { opacity: 0.55; pointer-events: none; }
+
+/* Footer newsletter failure — mirrors the .is-success treatment above. */
+.footer-nl-block.is-error .footer-nl-label { color: var(--danger-border); }
+.footer-nl-block.is-error .footer-nl-form input { border-color: var(--danger-border); }
+
 .contact-success {
   display: none;
   flex-direction: column; gap: 24px;
