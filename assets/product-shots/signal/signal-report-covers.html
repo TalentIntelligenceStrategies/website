@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Signal report covers</title>
+<!--
+  Render source for /assets/imagery/signal-reports/signal-report-p1-{score,full,landscape}.png.
+  Ships to assets/product-shots/signal/ alongside the licensing showcases.
+
+  Form: a credit-rating action (S&P / Moody's Research Update) — masthead, the finding
+  stated as a sentence, a summary box, the issuer facts, the metric readouts, then the
+  chapter that tier actually leads with, then contents.
+
+  LINEAGE. The masthead, the issuer facts grid, the three metric readouts and the radar
+  are ported from the June Pro Report (brand/catalog/signal-reports-preview.html, whose
+  page-1 grammar is the older .r-titlebar/.r-cover/.r-metricstrip stack surviving there
+  as dead CSS). They are rebuilt on hairlines rather than in rounded card boxes — the
+  stacked 14px-radius containers are what made that page read as a dashboard.
+
+  THE MASTHEAD IS LOGO SVGs, NEVER TEXT. This file previously set the string "INNOVUE"
+  in letterspaced Urbanist. A text substitute for a partner wordmark is a brand-identity
+  defect; visual-guide.md owns Innovue attribution and construction. If the <img> 404s it
+  renders its alt text and silently reproduces exactly that bug — check the rendered PNG,
+  not the DOM.
+
+  THE ONE HARD CONSTRAINT. These are shown at 260px behind a 4px blur. All three tiers
+  carry the same grade, subject, facts grid and metric row, so the difference lives in
+  the chapter block and the contents length:
+      Score      radar                 → circular mass, short list
+      Full       eight pillar bars     → even bar band, long list
+      Landscape  ten stepped bars      → descending ladder, short list
+  Score gets the radar and Full does not, because that is what their chapters are:
+  Score ch.3 is "Eight pillars at a glance", Full ch.3 is "Eight pillars, all 50
+  indicators". At-a-glance is a radar; the drill-down is per-pillar values. Giving both
+  a radar was the first draft, and it made the two thumbnails near-identical.
+  Change a cover and re-run the blur test, or the thumbnail stops distinguishing tiers.
+
+  HEIGHT. .page is a fixed 1512px flex column, so a sheet that runs long silently
+  COMPRESSES its children instead of overflowing — that clipped the Landscape grade cell
+  in half once. Every sheet block carries flex:none so overflow stays visible. Measure
+  scrollHeight vs clientHeight; do not eyeball it.
+-->
+<style>
+  @font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:block;}
+  @font-face{font-family:"Inconsolata";src:url("/designs/assets/fonts/Inconsolata/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype-variations");font-weight:200 900;font-style:normal;font-display:block;}
+
+  /* Values mirror assets/styles.css §tokens, which mirrors brand/design-tokens.md §7.4.
+     Local names because this file renders standalone, but no value is invented here. */
+  :root{
+    --ink:#252525;        /* --text-primary    */
+    --ink-2:#474747;      /* --text-secondary  */
+    --ink-3:#8A8F98;      /* --text-tertiary   */
+    --ink-4:#A5A5A5;      /* --text-quaternary */
+    --rule:#E8E8E8;       /* --border-secondary */
+    --rule-2:#EEEEEE;     /* --border-primary   */
+    --rule-3:#D5D5D5;     /* --border-tertiary  */
+    --paper:#FFFFFF;      /* --surface-page       */
+    --paper-2:#FAFAFA;    /* --surface-secondary  */
+    --wash:#EEEEEE;       /* --surface-quaternary */
+    --band:#252525;       /* --surface-inverse    */
+    --accent:#0369A1;     /* --score-b, patent codes only */
+    /* SABCD tier S, LIGHT-surface value. The cell sits on white, so this is --score-s
+       #8B6914, not the #D4A017 dark-surface value a filled black tile would have needed.
+       Getting that backwards is the likely mistake. The colour is the tier, never
+       decoration: a grade-A report takes --score-a #047857, B --score-b #0369A1,
+       C --score-c #6D28D9, D --score-d #C2410C. #8B6914 on white is 5.86:1. */
+    --tier:#8B6914;       /* --score-s */
+    --sans:'Urbanist', system-ui, sans-serif;
+    --mono:'Inconsolata', ui-monospace, monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#5a5f66; font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+
+  /* 1136×1512 — aspect 0.751, matching the existing signal-pro-report-* renders at half
+     their pixel size. >2x for the 260px slot after the thumbnail's scale(1.06). */
+  .page{ width:1136px; height:1512px; background:var(--paper); color:var(--ink);
+         display:flex; flex-direction:column; overflow:hidden; }
+
+  /* ── masthead ── ported from .r-letterhead, signal-reports-preview.html:2138.
+     46px horizontal padding rather than June's 32px so the band aligns with the
+     sheet gutter; everything else is the June spec. ──────────────── */
+  .band{ background:var(--band); color:#fff; flex:none;
+         display:grid; grid-template-columns:1fr auto; align-items:center; gap:16px;
+         padding:14px 46px;
+         font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; }
+  .band-l{ display:flex; align-items:center; gap:14px; justify-self:start; }
+  .l-tis{ height:22px; width:auto; display:block; }
+  .band-div{ width:1px; height:22px; background:rgba(255,255,255,0.32); }
+  .l-innovue{ height:30px; width:auto; display:block; }
+  .band-r{ justify-self:end; display:flex; align-items:center; gap:14px; color:rgba(255,255,255,0.72); }
+  .band-r b{ color:#fff; font-weight:600; }
+
+  .sheet{ flex:1; min-height:0; display:flex; flex-direction:column; padding:32px 46px 0; }
+
+  /* ── the finding, as a sentence ───────────────────────────────── */
+  .kicker{ font-family:var(--mono); font-size:11px; letter-spacing:0.17em; color:var(--ink-3); text-transform:uppercase; }
+  /* 28ch, not 20: at 20ch the Score headline broke to three lines and cost 50px the
+     radar needed. All three headlines set to two lines here — check that after any
+     copy edit, because a third line is the single most expensive thing on the sheet. */
+  .headline{ margin-top:16px; font-size:44px; line-height:1.13; font-weight:600;
+             letter-spacing:-0.023em; max-width:28ch; text-wrap:balance; }
+  .subject{ margin-top:16px; padding-top:14px; border-top:1px solid var(--rule);
+            font-size:15px; color:var(--ink-2); }
+  .subject b{ font-family:var(--mono); font-weight:600; color:var(--ink); }
+
+  /* flex-shrink:0 on every sheet block — see the height note in the header comment. */
+  .summary, .facts, .metrics, .texture, .drivers, .rationale, .contents{ flex:none; }
+
+  /* ── summary box ──────────────────────────────────────────────── */
+  .summary{ margin-top:22px; border:1px solid var(--rule); border-radius:14px;
+            display:grid; grid-template-columns:232px 1fr; overflow:hidden; }
+  /* No fill. The letter alone carries the grade, in its tier colour, on the page ground.
+     A filled cell was tried twice — cream, then solid black — and both made the grade a
+     panel you read around rather than the thing you read. The black one was also the
+     heaviest shape in the blurred retrieve thumbnail; with the cover sheet now in front,
+     that constraint is gone, so the colour goes back to doing its real job. */
+  .grade{ border-right:1px solid var(--rule);
+          display:flex; flex-direction:column; align-items:center; justify-content:center;
+          gap:3px; padding:20px 0; }
+  .grade-k{ font-family:var(--mono); font-size:10px; letter-spacing:0.17em; color:var(--tier); text-transform:uppercase; }
+  .grade-l{ font-size:84px; line-height:0.94; font-weight:700; color:var(--tier); }
+  .grade-n{ font-family:var(--mono); font-size:12px; color:var(--tier); }
+  .rows{ display:grid; grid-template-columns:1fr 1fr; align-content:center; gap:0; }
+  .row{ padding:12px 26px; }
+  .row + .row{ border-left:1px solid var(--rule-2); }
+  .rows .row:nth-child(2n+1){ border-left:0; }
+  .rows .row:nth-child(n+3){ border-top:1px solid var(--rule-2); }
+  .row dt{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase; }
+  .row dd{ margin-top:6px; font-family:var(--mono); font-size:20px; font-weight:600; letter-spacing:-0.01em; }
+  .row dd small{ font-family:var(--sans); font-size:13px; font-weight:500; color:var(--ink-3); letter-spacing:0; }
+
+  /* ── issuer facts ── ported from .r-issuer. June stacks these 2×5, which costs ~240px
+     of a 1512px sheet; the 5×2 arrangement is June's own .r-issuer-band variant and
+     uses the width this page has anyway. ────────────────────────── */
+  /* Appears on Score and Full, not Landscape — those two open on "Patent facts & family"
+     and Landscape opens on "PSS overview". The block sits where the report has the
+     chapter, which is also what makes room for Landscape's ten-row ladder. */
+  .facts{ margin-top:18px; padding-top:16px; border-top:1px solid var(--rule);
+          display:grid; grid-template-columns:repeat(5, 1fr); gap:14px 24px; }
+  .fact dt{ font-size:9px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
+            text-transform:uppercase; margin-bottom:5px; }
+  .fact dd{ font-size:13.5px; font-weight:500; line-height:1.35; color:var(--ink); }
+  .fact dd .sep{ color:var(--ink-4); }
+  .fact dd small{ font-size:11.5px; font-weight:500; color:var(--ink-3); }
+  .dot{ display:inline-block; width:6px; height:6px; border-radius:50%;
+        background:#22C55E; margin-right:6px; vertical-align:1px; }
+
+  /* ── metric readouts ── ported from .r-metricstrip. Hairline columns, not three
+     rounded cards: the boxes are what made the June page read as a dashboard. ── */
+  .metrics{ margin-top:18px; padding-top:16px; border-top:1px solid var(--rule);
+            display:grid; grid-template-columns:repeat(3, 1fr); }
+  .met{ padding:0 26px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .met + .met{ border-left:1px solid var(--rule-2); }
+  .met-l{ font-size:9.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+          color:var(--ink-3); margin-bottom:9px; }
+  .met-v{ font-feature-settings:"tnum"; font-size:28px; font-weight:600; letter-spacing:-0.02em;
+          line-height:1; color:var(--ink); }
+  .met-v small{ font-size:0.42em; font-weight:500; color:var(--ink-3); letter-spacing:0; margin-left:2px; }
+  .met-s{ font-size:11px; color:var(--ink-3); margin-top:8px; }
+
+  .arc{ position:relative; width:96px; height:96px; display:flex; align-items:center; justify-content:center; }
+  .arc svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .arc .arc-track{ fill:none; stroke:var(--rule-3); stroke-width:6; stroke-linecap:round; }
+  .arc .arc-fill{ fill:none; stroke:var(--ink); stroke-width:6; stroke-linecap:round; }
+  .arc .met-v{ position:relative; z-index:1; font-size:24px; }
+
+  .dist{ width:100%; max-width:216px; margin-top:8px; }
+  .dist svg{ width:100%; height:56px; display:block; }
+  .dist .bar{ fill:var(--ink-3); fill-opacity:0.32; }
+  .dist .bar.is-this{ fill:var(--ink); fill-opacity:1; }
+  /* Rank 4 of 1,433 lands in the first bin, which is 8 units tall — true to the data and
+     invisible on its own. The locator drops a rule through it so the position reads
+     without inflating the bar. */
+  .dist .marker{ fill:var(--ink); }
+  .dist .locator{ stroke:var(--ink); stroke-width:1; }
+  .dist .baseline{ stroke:var(--rule-3); stroke-width:1; }
+
+  .meter{ width:100%; max-width:216px; margin-top:12px; }
+  .meter-bar{ position:relative; width:100%; height:18px; background:var(--wash);
+              border:1px solid var(--rule-3); border-radius:3px; overflow:hidden; }
+  .meter-fill{ position:absolute; top:0; bottom:0; left:0; background:var(--ink); }
+  .meter-tick{ position:absolute; top:-3px; bottom:-3px; left:50%; width:1px; background:var(--rule-3); }
+  /* Landscape's meter runs 0.00–1.00 cosine, so its reference is the 0.70 retrieval floor,
+     not the midpoint. */
+  .meter-tick--70{ left:70%; }
+  .meter-scale{ display:flex; justify-content:space-between; font-family:var(--mono);
+                font-feature-settings:"tnum"; font-size:9px; font-weight:600;
+                color:var(--ink-3); margin-top:5px; letter-spacing:0.04em; }
+
+  /* ── the chapter block — the differentiator ───────────────────── */
+  .texture{ margin-top:20px; padding-top:16px; border-top:1px solid var(--rule); }
+  .texture-h{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+  .texture-h span{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase; }
+  .texture-h em{ font-family:var(--mono); font-style:normal; font-size:11px; color:var(--ink-3); }
+
+  /* Score — the eight pillars at a glance. Ported from .r-radar-svg; monochrome by
+     design-tokens.md §7.2, which keeps the radar off the tier ramp even when the grade
+     chip is coloured. Markup is generated statically so the render needs no JS. */
+  /* Score and Full pair their chapter visual with the rating rationale instead of stacking
+     the two full-width. Two problems solved at once: the visual gets a sane aspect (the
+     radar was stranded in ~250px of dead gutter; the eight pillars, given all 1044px,
+     became 117px-wide solid slabs rather than bars), and the rationale stops costing a
+     block of its own, which is where the slack above CONTENTS was coming from.
+     Landscape keeps the full width — a ten-row ladder needs it. */
+  .texture--split{ display:grid; grid-template-columns:1fr 360px; column-gap:44px; row-gap:12px;
+                   align-items:center; }
+  .texture--split .texture-h{ grid-column:1 / -1; margin-bottom:0; }
+  .texture--split .radar{ width:100%; max-width:540px; margin:0 auto; }
+  .rat h2{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
+           text-transform:uppercase; margin-bottom:10px; }
+  .rat p{ font-size:14.5px; line-height:1.55; color:var(--ink-2); text-wrap:pretty; }
+  .rat p b{ color:var(--ink); font-weight:600; }
+  .rat p + p{ margin-top:10px; }
+  .radar{ display:block; width:350px; height:auto; margin:0 auto; }
+  .radar .ring{ fill:none; stroke:var(--rule); stroke-width:1; }
+  .radar .ring.outer{ stroke:var(--rule-3); }
+  .radar .axis{ stroke:var(--rule); stroke-width:1; }
+  .radar .area{ fill:rgba(71,71,71,0.08); stroke:var(--ink-2); stroke-width:1.5; stroke-linejoin:round; }
+  .radar .point{ fill:var(--paper); stroke:var(--ink-2); stroke-width:2; }
+  .radar .label-pillar{ font-family:var(--sans); font-size:12px; font-weight:600; fill:var(--ink); }
+  .radar .label-score{ font-family:var(--sans); font-size:11px; font-weight:600; fill:var(--ink-3); }
+  .radar .ring-label{ font-family:var(--mono); font-size:9px; fill:var(--ink-4); letter-spacing:0.06em; }
+
+  /* Full — eight pillars, even band */
+  .pillars{ display:grid; grid-template-columns:repeat(8,1fr); gap:12px; }
+  .pil{ display:flex; flex-direction:column; gap:8px; }
+  .pil-t{ display:flex; align-items:baseline; justify-content:space-between; }
+  .pil-c{ font-family:var(--mono); font-size:11px; color:var(--accent); font-weight:600; }
+  .pil-v{ font-family:var(--mono); font-size:13px; font-weight:600; }
+  /* Paired with the ~70px column width the split gives, this is a bar; at the full sheet
+     width it was a 117px square slab. */
+  .pil-b{ position:relative; height:112px; background:var(--rule-2); border-radius:3px;
+          display:flex; align-items:flex-end; overflow:hidden; }
+  .pil-b i{ display:block; width:100%; background:var(--ink); }
+  /* Every pillar scores 68–87, so eight bars off a zero baseline are a near-level black
+     wall with no readable variation. The 50 tick is the same reference the PSS meter
+     already prints in the metric row above, and it gives the band something to read
+     against. It always lands on ink because every value clears 50. */
+  .pil-b::after{ content:''; position:absolute; left:0; right:0; bottom:50%; height:1px;
+                 background:rgba(255,255,255,0.45); }
+  .pil-n{ font-size:9.5px; line-height:1.25; color:var(--ink-3); }
+
+  /* Full only — a four-row cut of chapters 4 and 5. Codes, names and percentiles are the
+     `drivers` and `sensitivities` arrays of REPORTS['macrosilicon-s'] in
+     signal-reports-preview.html, i.e. the canonical record for this sample patent, not
+     invented figures. It also gives Full a text-dense lower half, which is what separates
+     its thumbnail from Score's once both carry the same header and metric row. */
+  .drivers{ margin-top:16px; padding-top:12px; border-top:1px solid var(--rule);
+            display:grid; grid-template-columns:1fr 1fr; column-gap:44px; }
+  .drv h3{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
+           text-transform:uppercase; padding-bottom:7px; border-bottom:1px solid var(--rule-2); }
+  .drv-r{ display:grid; grid-template-columns:40px 1fr auto; gap:12px; align-items:baseline;
+          padding:4px 0; border-bottom:1px solid var(--rule-2); }
+  .drv-c{ font-family:var(--mono); font-size:10.5px; color:var(--accent); font-weight:600; }
+  .drv-n{ font-size:12.5px; font-weight:500; }
+  .drv-v{ font-family:var(--mono); font-size:12px; font-weight:600; }
+
+  /* Landscape — ten matches, descending ladder */
+  .ladder{ display:flex; flex-direction:column; }
+  /* 5px, not the 9.5 the other rhythms use: ten rows plus a rationale and a four-item
+     contents makes this the densest of the three covers, and it now carries the facts
+     grid and metric row too. Ten rows amplify every pixel here — check the overflow
+     measurement, not the eye, after changing it. */
+  .lad{ display:grid; grid-template-columns:26px 1fr 176px 52px; gap:16px; align-items:center;
+        padding:5px 0; border-top:1px solid var(--rule-2); }
+  .ladder .lad:first-child{ border-top:1px solid var(--rule); }
+  .lad-r{ font-family:var(--mono); font-size:11px; color:var(--ink-3); }
+  .lad-p{ min-width:0; }
+  .lad-no{ font-family:var(--mono); font-size:11px; color:var(--accent); font-weight:600; display:block; }
+  .lad-t{ display:block; font-size:12.5px; font-weight:500; margin-top:1px;
+          white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lad-b{ height:8px; border-radius:4px; background:var(--rule-2); overflow:hidden; }
+  .lad-b i{ display:block; height:100%; background:var(--ink); }
+  .lad-s{ font-family:var(--mono); font-size:13px; font-weight:600; text-align:right; }
+
+  /* ── rationale — the prose an S&P Research Update carries under its rating action ── */
+  .rationale{ margin-top:20px; padding-top:16px; border-top:1px solid var(--rule);
+              display:grid; grid-template-columns:172px 1fr; gap:34px; align-items:start; }
+  .rationale h2{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
+                 text-transform:uppercase; padding-top:3px; }
+  .rationale p{ font-size:14.5px; line-height:1.55; color:var(--ink-2); max-width:68ch; text-wrap:pretty; }
+  .rationale p b{ color:var(--ink); font-weight:600; }
+  .rationale p + p{ margin-top:10px; }
+
+  /* ── contents ─────────────────────────────────────────────────── */
+  /* margin-top:auto pins contents to the foot of the sheet, so whatever slack the tier
+     has left opens as a gap above it rather than a ragged bottom edge. */
+  .contents{ margin-top:auto; padding:18px 0 12px; }
+  .contents-h{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
+               text-transform:uppercase; padding-bottom:8px; border-bottom:1px solid var(--rule); }
+  .toc{ list-style:none; counter-reset:c; }
+  .toc li{ counter-increment:c; display:grid; grid-template-columns:30px 1fr auto; gap:14px;
+           align-items:baseline; padding:6px 0; border-bottom:1px solid var(--rule-2); }
+  .toc li::before{ content:counter(c,decimal-leading-zero); font-family:var(--mono);
+                   font-size:11px; color:var(--ink-3); }
+  .toc b{ font-size:14px; font-weight:500; }
+  .toc i{ font-style:normal; font-size:11.5px; color:var(--ink-3); font-family:var(--mono); }
+
+  /* Basis-of-rating small print. Every rating action carries one, and PRD §8.6.1 lists
+     免責聲明 as part of the report proper — so it is content, not chrome. */
+  /* Sits between .sheet and .foot, so it carries the page's own horizontal padding
+     rather than inheriting the sheet's. */
+  .basis{ flex:none; display:grid; grid-template-columns:172px 1fr; gap:34px;
+          margin:0 46px; padding:12px 0 18px; border-top:1px solid var(--rule); }
+  .basis h2{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase; }
+  .basis p{ font-size:11.5px; line-height:1.5; color:var(--ink-3); max-width:86ch; }
+
+  /* Colophon — the same band, 1fr 1fr per June's .r-letterhead--colophon. */
+  .foot{ flex:none; background:var(--band); color:rgba(255,255,255,0.72);
+         display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:16px;
+         padding:12px 46px;
+         font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; }
+  .foot .band-l .l-tis{ height:18px; }
+  .foot .band-l .band-div{ height:18px; }
+  .foot .band-l .l-innovue{ height:24px; }
+  .foot .foot-r{ justify-self:end; }
+</style>
+</head>
+<body>
+
+<!-- ═════════════ A · SCORE — radar ═════════════ -->
+<div class="page" id="p-score">
+  <div class="band">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r"><b>Score Report</b> <span>Issued 2026-08-12</span></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating</span>
+    <h1 class="headline">Rated S, fourth of 1,433 patents in the reference pool.</h1>
+    <p class="subject"><b>US9876543</b> &nbsp;·&nbsp; Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes &nbsp;·&nbsp; Macrosilicon Manufacturing Corp.</p>
+
+    <div class="summary">
+      <div class="grade">
+        <span class="grade-k">SABCD Grade</span>
+        <span class="grade-l">S</span>
+        <span class="grade-n">Top 2.2%</span>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt>PSS score</dt><dd>78.91</dd></div>
+        <div class="row"><dt>Rank in pool</dt><dd>4 <small>of 1,433</small></dd></div>
+        <div class="row"><dt>Cohort percentile</dt><dd>97.8<small>%</small></dd></div>
+        <div class="row"><dt>Analysed</dt><dd>2026-08-12</dd></div>
+      </dl>
+    </div>
+
+    <dl class="facts">
+      <div class="fact"><dt>Status</dt><dd><span class="dot"></span>Active</dd></div>
+      <div class="fact"><dt>Filing jurisdiction</dt><dd>US</dd></div>
+      <div class="fact"><dt>IPC number</dt><dd>H01L 21/336</dd></div>
+      <div class="fact"><dt>IPC category</dt><dd>Gate fabrication</dd></div>
+      <div class="fact"><dt>Owner</dt><dd>Macrosilicon Mfg Corp.</dd></div>
+      <div class="fact"><dt>Filed</dt><dd>2018-06-04</dd></div>
+      <div class="fact"><dt>Granted</dt><dd>2021-09-14</dd></div>
+      <div class="fact"><dt>Claims</dt><dd>32 <small>(4 indep <span class="sep">·</span> 28 dep)</small></dd></div>
+      <div class="fact"><dt>Family countries</dt><dd>US <span class="sep">·</span> TW <span class="sep">·</span> KR <span class="sep">·</span> EP <span class="sep">·</span> CN <span class="sep">·</span> JP</dd></div>
+      <div class="fact"><dt>Remaining life</dt><dd>~12 yrs <small>· to 2038-06-04</small></dd></div>
+    </dl>
+
+    <div class="metrics">
+      <div class="met">
+        <div class="met-l">Cohort percentile</div>
+        <div class="arc">
+          <svg viewBox="0 0 148 148" aria-hidden="true">
+            <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+            <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="271.9 283"/>
+          </svg>
+          <div class="met-v">97.8<small>%</small></div>
+        </div>
+        <div class="met-s">1,433-patent reference pool</div>
+      </div>
+      <div class="met">
+        <div class="met-l">Rank in pool</div>
+        <div class="met-v">4<small> / 1,433</small></div>
+        <div class="dist">
+          <svg viewBox="-12 0 258 120" preserveAspectRatio="none" aria-hidden="true">
+            <line class="baseline" x1="-12" y1="112" x2="246" y2="112"/>
+            <rect class="bar is-this" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="102" width="10" height="10"/><rect class="bar" x="225" y="106" width="10" height="6"/>
+            <line class="locator" x1="9" y1="15" x2="9" y2="112"/>
+            <polygon class="marker" points="4,0 14,0 9,15"/>
+          </svg>
+        </div>
+        <div class="met-s">Re-ranked weekly as the pool updates</div>
+      </div>
+      <div class="met">
+        <div class="met-l">PSS score</div>
+        <div class="met-v">78.91</div>
+        <div class="meter">
+          <div class="meter-bar">
+            <span class="meter-tick"></span>
+            <div class="meter-fill" style="width:78.91%"></div>
+          </div>
+          <div class="meter-scale"><span>0</span><span>50</span><span>100</span></div>
+        </div>
+        <div class="met-s">Composite of 8 pillars · 50 indicators</div>
+      </div>
+    </div>
+
+    <div class="texture texture--split">
+      <div class="texture-h"><span>Eight pillars at a glance</span><em>percentile against the full pool</em></div>
+      <svg class="radar" viewBox="0 0 600 480" aria-hidden="true">
+        <polygon class="ring" points="300.0,196.3 330.9,209.1 343.8,240.0 330.9,270.9 300.0,283.8 269.1,270.9 256.3,240.0 269.1,209.1" />
+        <polygon class="ring" points="300.0,152.5 361.9,178.1 387.5,240.0 361.9,301.9 300.0,327.5 238.1,301.9 212.5,240.0 238.1,178.1" />
+        <polygon class="ring" points="300.0,108.8 392.8,147.2 431.3,240.0 392.8,332.8 300.0,371.3 207.2,332.8 168.8,240.0 207.2,147.2" />
+        <polygon class="ring outer" points="300.0,65.0 423.7,116.3 475.0,240.0 423.7,363.7 300.0,415.0 176.3,363.7 125.0,240.0 176.3,116.3" />
+        <text class="ring-label" x="304" y="199.25">25</text>
+        <text class="ring-label" x="304" y="155.5">50</text>
+        <text class="ring-label" x="304" y="111.75">75</text>
+        <text class="ring-label" x="304" y="68">100</text>
+        <line class="axis" x1="300" y1="240" x2="300.0" y2="65.0" />
+        <text class="label-pillar" x="300.0" y="20.5" text-anchor="middle">Citation</text>
+        <text class="label-pillar" x="300.0" y="33.5" text-anchor="middle">Impact</text>
+        <text class="label-score" x="300.0" y="46.5" text-anchor="middle">P1 · 84.2</text>
+        <line class="axis" x1="300" y1="240" x2="423.7" y2="116.3" />
+        <text class="label-pillar" x="450.6" y="82.9" text-anchor="start">Legal</text>
+        <text class="label-pillar" x="450.6" y="95.9" text-anchor="start">Strength</text>
+        <text class="label-score" x="450.6" y="108.9" text-anchor="start">P2 · 81.4</text>
+        <line class="axis" x1="300" y1="240" x2="475.0" y2="240.0" />
+        <text class="label-pillar" x="513.0" y="233.5" text-anchor="start">Technical</text>
+        <text class="label-pillar" x="513.0" y="246.5" text-anchor="start">Value</text>
+        <text class="label-score" x="513.0" y="259.5" text-anchor="start">P3 · 77.3</text>
+        <line class="axis" x1="300" y1="240" x2="423.7" y2="363.7" />
+        <text class="label-pillar" x="450.6" y="384.1" text-anchor="start">Market</text>
+        <text class="label-pillar" x="450.6" y="397.1" text-anchor="start">Coverage</text>
+        <text class="label-score" x="450.6" y="410.1" text-anchor="start">P4 · 86.5</text>
+        <line class="axis" x1="300" y1="240" x2="300.0" y2="415.0" />
+        <text class="label-pillar" x="300.0" y="446.5" text-anchor="middle">Text</text>
+        <text class="label-pillar" x="300.0" y="459.5" text-anchor="middle">Quality</text>
+        <text class="label-score" x="300.0" y="472.5" text-anchor="middle">P5 · 72.1</text>
+        <line class="axis" x1="300" y1="240" x2="176.3" y2="363.7" />
+        <text class="label-pillar" x="149.4" y="384.1" text-anchor="end">Network</text>
+        <text class="label-pillar" x="149.4" y="397.1" text-anchor="end">Centrality</text>
+        <text class="label-score" x="149.4" y="410.1" text-anchor="end">P6 · 81.8</text>
+        <line class="axis" x1="300" y1="240" x2="125.0" y2="240.0" />
+        <text class="label-pillar" x="87.0" y="233.5" text-anchor="end">Licensing</text>
+        <text class="label-pillar" x="87.0" y="246.5" text-anchor="end">Potential</text>
+        <text class="label-score" x="87.0" y="259.5" text-anchor="end">P7 · 79.4</text>
+        <line class="axis" x1="300" y1="240" x2="176.3" y2="116.3" />
+        <text class="label-pillar" x="149.4" y="82.9" text-anchor="end">Forward</text>
+        <text class="label-pillar" x="149.4" y="95.9" text-anchor="end">Looking</text>
+        <text class="label-score" x="149.4" y="108.9" text-anchor="end">P8 · 68.5</text>
+        <polygon class="area" points="300.0,92.6 400.7,139.3 435.3,240.0 407.0,347.0 300.0,366.2 198.8,341.2 161.0,240.0 215.2,155.2" />
+        <circle class="point" cx="300.0" cy="92.6" r="3.5" />
+        <circle class="point" cx="400.7" cy="139.3" r="3.5" />
+        <circle class="point" cx="435.3" cy="240.0" r="3.5" />
+        <circle class="point" cx="407.0" cy="347.0" r="3.5" />
+        <circle class="point" cx="300.0" cy="366.2" r="3.5" />
+        <circle class="point" cx="198.8" cy="341.2" r="3.5" />
+        <circle class="point" cx="161.0" cy="240.0" r="3.5" />
+        <circle class="point" cx="215.2" cy="155.2" r="3.5" />
+      </svg>
+      <div class="rat">
+        <h2>Rating rationale</h2>
+        <p>The patent sits in the top <b>2.2%</b> of the reference pool, carried by market coverage
+        (86.5) and citation impact (84.2). Forward-looking value is the weakest pillar at 68.5, and
+        the one group to watch on renewal.</p>
+        <p>The grade is a position against all <b>1,433</b> patents in the pool, not against this
+        patent's own industry alone.</p>
+      </div>
+    </div>
+
+    <div class="contents">
+      <div class="contents-h">Contents</div>
+      <ol class="toc">
+        <li><b>Patent facts &amp; family</b><i>p. 2</i></li>
+        <li><b>PSS overview</b><i>p. 3</i></li>
+        <li><b>Eight pillars at a glance</b><i>p. 4</i></li>
+        <li><b>Plain-language assessment</b><i>p. 6</i></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="basis">
+    <h2>Basis of rating</h2>
+    <p>Scored by the TIS PSS engine on Innovue data. Percentile and rank are against the full 1,433-patent reference pool, one cross-industry benchmark, recomputed weekly. AI-assisted analysis; not legal or investment advice.</p>
+  </div>
+
+  <div class="foot">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="foot-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+<!-- ═════════════ B · FULL — eight even pillar bars ═════════════ -->
+<div class="page" id="p-full">
+  <div class="band">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r"><b>Full Report</b> <span>Issued 2026-08-05</span></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating · Full Analysis</span>
+    <h1 class="headline">Rated S across eight pillars and fifty indicators.</h1>
+    <p class="subject"><b>US9876543</b> &nbsp;·&nbsp; Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes &nbsp;·&nbsp; Macrosilicon Manufacturing Corp.</p>
+
+    <div class="summary">
+      <div class="grade">
+        <span class="grade-k">SABCD Grade</span>
+        <span class="grade-l">S</span>
+        <span class="grade-n">Top 2.2%</span>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt>PSS score</dt><dd>78.91</dd></div>
+        <div class="row"><dt>Rank in pool</dt><dd>4 <small>of 1,433</small></dd></div>
+        <div class="row"><dt>Cohort percentile</dt><dd>97.8<small>%</small></dd></div>
+        <div class="row"><dt>Analysed</dt><dd>2026-08-05</dd></div>
+      </dl>
+    </div>
+
+    <dl class="facts">
+      <div class="fact"><dt>Status</dt><dd><span class="dot"></span>Active</dd></div>
+      <div class="fact"><dt>Filing jurisdiction</dt><dd>US</dd></div>
+      <div class="fact"><dt>IPC number</dt><dd>H01L 21/336</dd></div>
+      <div class="fact"><dt>IPC category</dt><dd>Gate fabrication</dd></div>
+      <div class="fact"><dt>Owner</dt><dd>Macrosilicon Mfg Corp.</dd></div>
+      <div class="fact"><dt>Filed</dt><dd>2018-06-04</dd></div>
+      <div class="fact"><dt>Granted</dt><dd>2021-09-14</dd></div>
+      <div class="fact"><dt>Claims</dt><dd>32 <small>(4 indep <span class="sep">·</span> 28 dep)</small></dd></div>
+      <div class="fact"><dt>Family countries</dt><dd>US <span class="sep">·</span> TW <span class="sep">·</span> KR <span class="sep">·</span> EP <span class="sep">·</span> CN <span class="sep">·</span> JP</dd></div>
+      <div class="fact"><dt>Remaining life</dt><dd>~12 yrs <small>· to 2038-06-04</small></dd></div>
+    </dl>
+
+    <div class="metrics">
+      <div class="met">
+        <div class="met-l">Cohort percentile</div>
+        <div class="arc">
+          <svg viewBox="0 0 148 148" aria-hidden="true">
+            <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+            <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="271.9 283"/>
+          </svg>
+          <div class="met-v">97.8<small>%</small></div>
+        </div>
+        <div class="met-s">1,433-patent reference pool</div>
+      </div>
+      <div class="met">
+        <div class="met-l">Rank in pool</div>
+        <div class="met-v">4<small> / 1,433</small></div>
+        <div class="dist">
+          <svg viewBox="-12 0 258 120" preserveAspectRatio="none" aria-hidden="true">
+            <line class="baseline" x1="-12" y1="112" x2="246" y2="112"/>
+            <rect class="bar is-this" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="102" width="10" height="10"/><rect class="bar" x="225" y="106" width="10" height="6"/>
+            <line class="locator" x1="9" y1="15" x2="9" y2="112"/>
+            <polygon class="marker" points="4,0 14,0 9,15"/>
+          </svg>
+        </div>
+        <div class="met-s">Re-ranked weekly as the pool updates</div>
+      </div>
+      <div class="met">
+        <div class="met-l">PSS score</div>
+        <div class="met-v">78.91</div>
+        <div class="meter">
+          <div class="meter-bar">
+            <span class="meter-tick"></span>
+            <div class="meter-fill" style="width:78.91%"></div>
+          </div>
+          <div class="meter-scale"><span>0</span><span>50</span><span>100</span></div>
+        </div>
+        <div class="met-s">Composite of 8 pillars · 50 indicators</div>
+      </div>
+    </div>
+
+    <div class="texture texture--split">
+      <div class="texture-h"><span>Eight pillars, all 50 indicators</span><em>percentile against the full pool</em></div>
+      <div class="pillars">
+        <div class="pil"><span class="pil-t"><span class="pil-c">P1</span><span class="pil-v">84.2</span></span><span class="pil-b"><i style="height:84.2%"></i></span><span class="pil-n">Citation Impact</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P2</span><span class="pil-v">81.4</span></span><span class="pil-b"><i style="height:81.4%"></i></span><span class="pil-n">Legal Strength</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P3</span><span class="pil-v">77.3</span></span><span class="pil-b"><i style="height:77.3%"></i></span><span class="pil-n">Technical Value</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P4</span><span class="pil-v">86.5</span></span><span class="pil-b"><i style="height:86.5%"></i></span><span class="pil-n">Market Coverage</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P5</span><span class="pil-v">72.1</span></span><span class="pil-b"><i style="height:72.1%"></i></span><span class="pil-n">Text Quality</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P6</span><span class="pil-v">81.8</span></span><span class="pil-b"><i style="height:81.8%"></i></span><span class="pil-n">Network Centrality</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P7</span><span class="pil-v">79.4</span></span><span class="pil-b"><i style="height:79.4%"></i></span><span class="pil-n">Licensing Potential</span></div>
+        <div class="pil"><span class="pil-t"><span class="pil-c">P8</span><span class="pil-v">68.5</span></span><span class="pil-b"><i style="height:68.5%"></i></span><span class="pil-n">Forward-Looking</span></div>
+      </div>
+      <div class="rat">
+        <h2>Rating rationale</h2>
+        <p><b>S</b> reflects consistent strength rather than one outlier: six of the eight pillars
+        clear the 77th percentile. Market coverage (86.5) and citation impact (84.2) lead; text
+        quality (72.1) and forward-looking value (68.5) are where the gaps sit. All <b>50</b>
+        indicators are ranked individually, so every pillar score traces to the values behind it.</p>
+      </div>
+    </div>
+
+    <div class="drivers">
+      <div class="drv">
+        <h3>Top strengths · chapter 4</h3>
+        <div class="drv-r"><span class="drv-c">P4.2</span><span class="drv-n">GDP-weighted coverage</span><span class="drv-v">98.2%</span></div>
+        <div class="drv-r"><span class="drv-c">P1.2</span><span class="drv-n">Citation velocity</span><span class="drv-v">97.8%</span></div>
+        <div class="drv-r"><span class="drv-c">P6.1</span><span class="drv-n">PageRank centrality</span><span class="drv-v">97.0%</span></div>
+        <div class="drv-r"><span class="drv-c">P4.4</span><span class="drv-n">Key-market hit rate</span><span class="drv-v">96.4%</span></div>
+      </div>
+      <div class="drv">
+        <h3>Risks to watch · chapter 5</h3>
+        <div class="drv-r"><span class="drv-c">P8.5</span><span class="drv-n">Future application potential</span><span class="drv-v">58.2%</span></div>
+        <div class="drv-r"><span class="drv-c">P8.2</span><span class="drv-n">Citation-trend slope</span><span class="drv-v">61.4%</span></div>
+        <div class="drv-r"><span class="drv-c">P5.4</span><span class="drv-n">Multi-dependent claim diffusion</span><span class="drv-v">62.0%</span></div>
+        <div class="drv-r"><span class="drv-c">P3.1</span><span class="drv-n">IPC breadth</span><span class="drv-v">64.5%</span></div>
+      </div>
+    </div>
+
+    <div class="contents">
+      <div class="contents-h">Contents · seven chapters</div>
+      <ol class="toc">
+        <li><b>Patent facts &amp; family</b><i>p. 2</i></li>
+        <li><b>PSS overview</b><i>p. 4</i></li>
+        <li><b>Eight pillars, all 50 indicators</b><i>p. 5</i></li>
+        <li><b>Top 10 strengths</b><i>p. 14</i></li>
+        <li><b>Top 10 risks</b><i>p. 16</i></li>
+        <li><b>Cross-scenario stability</b><i>p. 18</i></li>
+        <li><b>Assessment &amp; licensing strategy</b><i>p. 21</i></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="basis">
+    <h2>Basis of rating</h2>
+    <p>Scored by the TIS PSS engine on Innovue data. All 50 indicators are percentile-ranked inside the full 1,433-patent pool before weighting and aggregation. AI-assisted analysis; not legal or investment advice.</p>
+  </div>
+
+  <div class="foot">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="foot-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+<!-- ═════════════ BX · LANDSCAPE — ten descending bars ═════════════ -->
+<div class="page" id="p-landscape">
+  <div class="band">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r"><b>Landscape Report</b> <span>Issued 2026-08-10</span></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating · Market Landscape</span>
+    <h1 class="headline">Rated S, with the ten closest patents on the market.</h1>
+    <p class="subject"><b>US9876543</b> &nbsp;·&nbsp; Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes &nbsp;·&nbsp; Macrosilicon Manufacturing Corp.</p>
+
+    <div class="summary">
+      <div class="grade">
+        <span class="grade-k">SABCD Grade</span>
+        <span class="grade-l">S</span>
+        <span class="grade-n">Top 2.2%</span>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt>PSS score</dt><dd>78.91</dd></div>
+        <div class="row"><dt>Matches returned</dt><dd>10</dd></div>
+        <div class="row"><dt>Search corpus</dt><dd>US <small>· last 10 yrs</small></dd></div>
+        <div class="row"><dt>Retrieved</dt><dd>2026-08-10</dd></div>
+      </dl>
+    </div>
+
+    <div class="metrics">
+      <div class="met">
+        <div class="met-l">Cohort percentile</div>
+        <div class="arc">
+          <svg viewBox="0 0 148 148" aria-hidden="true">
+            <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
+            <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="271.9 283"/>
+          </svg>
+          <div class="met-v">97.8<small>%</small></div>
+        </div>
+        <div class="met-s">1,433-patent reference pool</div>
+      </div>
+      <div class="met">
+        <div class="met-l">Rank in pool</div>
+        <div class="met-v">4<small> / 1,433</small></div>
+        <div class="dist">
+          <svg viewBox="-12 0 258 120" preserveAspectRatio="none" aria-hidden="true">
+            <line class="baseline" x1="-12" y1="112" x2="246" y2="112"/>
+            <rect class="bar is-this" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="102" width="10" height="10"/><rect class="bar" x="225" y="106" width="10" height="6"/>
+            <line class="locator" x1="9" y1="15" x2="9" y2="112"/>
+            <polygon class="marker" points="4,0 14,0 9,15"/>
+          </svg>
+        </div>
+        <div class="met-s">Re-ranked weekly as the pool updates</div>
+      </div>
+      <div class="met">
+        <div class="met-l">Top similarity</div>
+        <div class="met-v">0.96</div>
+        <div class="meter">
+          <div class="meter-bar">
+            <span class="meter-tick meter-tick--70"></span>
+            <div class="meter-fill" style="width:96%"></div>
+          </div>
+          <div class="meter-scale"><span>0.00</span><span>floor 0.70</span><span>1.00</span></div>
+        </div>
+        <div class="met-s">Cosine similarity, vector search</div>
+      </div>
+    </div>
+
+    <div class="texture">
+      <div class="texture-h"><span>Ten closest patents</span><em>vector similarity, descending</em></div>
+      <div class="ladder">
+        <div class="lad"><span class="lad-r">01</span><span class="lad-p"><span class="lad-no">US9214887</span><span class="lad-t">Adaptive etch dwell control for FinFET gate modules</span></span><span class="lad-b"><i style="width:96%"></i></span><span class="lad-s">0.96</span></div>
+        <div class="lad"><span class="lad-r">02</span><span class="lad-p"><span class="lad-no">US9019233</span><span class="lad-t">In-line CD metrology with per-die process correction</span></span><span class="lad-b"><i style="width:94%"></i></span><span class="lad-s">0.94</span></div>
+        <div class="lad"><span class="lad-r">03</span><span class="lad-p"><span class="lad-no">EP3140219</span><span class="lad-t">Gate critical-dimension uniformity at advanced nodes</span></span><span class="lad-b"><i style="width:91%"></i></span><span class="lad-s">0.91</span></div>
+        <div class="lad"><span class="lad-r">04</span><span class="lad-p"><span class="lad-no">US8877661</span><span class="lad-t">Wafer-level variance compensation in plasma etch</span></span><span class="lad-b"><i style="width:88%"></i></span><span class="lad-s">0.88</span></div>
+        <div class="lad"><span class="lad-r">05</span><span class="lad-p"><span class="lad-no">KR102330144</span><span class="lad-t">Real-time etch endpoint detection for 5&nbsp;nm logic</span></span><span class="lad-b"><i style="width:85%"></i></span><span class="lad-s">0.85</span></div>
+        <div class="lad"><span class="lad-r">06</span><span class="lad-p"><span class="lad-no">US8654902</span><span class="lad-t">Feed-forward lithography correction from etch data</span></span><span class="lad-b"><i style="width:83%"></i></span><span class="lad-s">0.83</span></div>
+        <div class="lad"><span class="lad-r">07</span><span class="lad-p"><span class="lad-no">WO2018201477</span><span class="lad-t">Statistical process control for multi-patterning</span></span><span class="lad-b"><i style="width:80%"></i></span><span class="lad-s">0.80</span></div>
+        <div class="lad"><span class="lad-r">08</span><span class="lad-p"><span class="lad-no">TW I712345</span><span class="lad-t">Chamber-matching for high-volume logic fabrication</span></span><span class="lad-b"><i style="width:77%"></i></span><span class="lad-s">0.77</span></div>
+        <div class="lad"><span class="lad-r">09</span><span class="lad-p"><span class="lad-no">US8402118</span><span class="lad-t">Overlay control using post-etch inspection feedback</span></span><span class="lad-b"><i style="width:74%"></i></span><span class="lad-s">0.74</span></div>
+        <div class="lad"><span class="lad-r">10</span><span class="lad-p"><span class="lad-no">JP6553311</span><span class="lad-t">Gate profile tuning across multi-chamber toolsets</span></span><span class="lad-b"><i style="width:71%"></i></span><span class="lad-s">0.71</span></div>
+      </div>
+    </div>
+
+    <div class="rationale">
+      <h2>Landscape rationale</h2>
+      <div>
+        <p>Ten matches returned above the <b>0.70</b> similarity floor, clustered on in-line
+        metrology feedback for advanced-node etch. The three closest all claim per-die correction,
+        which is where this patent's own independent claims sit. Chapter 4 sets out where the
+        cluster converges and where it splits.</p>
+      </div>
+    </div>
+
+    <div class="contents">
+      <div class="contents-h">Contents</div>
+      <ol class="toc">
+        <li><b>PSS overview</b><i>p. 2</i></li>
+        <li><b>The ten closest patents</b><i>p. 3</i></li>
+        <li><b>Why each one matches</b><i>p. 5</i></li>
+        <li><b>The technology cluster</b><i>p. 9</i></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="basis">
+    <h2>Basis of rating</h2>
+    <p>Matches retrieved by vector search against Innovue's patent corpus; similarity is a cosine score, not a legal opinion on infringement or validity. Grade and percentile are against the full 1,433-patent pool. AI-assisted analysis; not legal or investment advice.</p>
+  </div>
+
+  <div class="foot">
+    <span class="band-l">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="band-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="foot-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+</body>
+</html>

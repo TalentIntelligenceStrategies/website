@@ -9,6 +9,9 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-18 08:17 +0800** · Signal: grade cell is now a tier-coloured letter with no fill; cover sheets added in front of the report pages, centred-classical variant wired into the retrieve preview and sample overlay.
+- **2026-08-18 06:43 +0800** · Signal: rebuilt the three report covers on the June Pro Report's masthead, facts grid, metric readouts and radar, with a black SABCD grade tile; the sample-report overlay now shows them too.
+- **2026-08-18 00:56 +0800** · Signal: PSS ledger labels beside larger numerals with tightened balanced notes, trade card on signal-cool.jpg, hero band derived from the CTA row's top edge; retrieve preview now per-tier with three rating-action cover renders; contact chrome across all 8 pages routes to the page's own form, or the homepage's when it has none.
 - **2026-08-13 20:36 +0800** · Form confirmations: draw-on check animation, contact panel centred and height-held, subtext removed, popup heading gains Chinese.
 - **2026-08-13 19:11 +0800** · Wired the contact, footer-newsletter and popup forms to a Google Sheet via Apps Script; added real validation, pending and error states.
 - **2026-08-13 20:55 +0800** · Signal: rebuilt both contact cards — intake on the homepage card with a segmented input switch, retrieve as one column that opens a status and locked-report panel in place.

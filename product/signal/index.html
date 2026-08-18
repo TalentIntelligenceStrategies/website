@@ -290,10 +290,21 @@
   .sig-phases{ grid-column:2; grid-row:1 / span 2; }
 
   /* ── Panel 1 · the PSS ledger — four facts on black, 2×2. Mono tabular numerals are
-     legitimate: the content literally is scoring metadata, not decoration. Numeral
-     above label rather than beside it, which aligns all four by construction — the
-     old beside-layout needed subgrid to stop "0–100" pushing its label out of line
-     with "8"'s. ── */
+     legitimate: the content literally is scoring metadata, not decoration.
+
+     Label sits BESIDE the numeral, note full-width beneath both. That reads as one
+     phrase ("50 traceable indicators") rather than a numeral with a caption under it,
+     and it uses the horizontal room this wide panel actually has — which is what pays
+     for the numerals being as large as they are.
+
+     The label column is NOT aligned across the four facts, and that is the decision,
+     not an oversight. Aligning it needs a shared numeral track (min-width:5ch, or
+     subgrid — both work), but the widest values are five mono glyphs and the narrowest
+     is one, so a shared track strands "8" ~90px from its own label and the pair stops
+     reading as a phrase. Right-aligning the numeral inside that track closes the gap
+     but then unmoors the numeral from the note beneath it, which starts at the cell
+     edge. Each fact is its own unit here; the notes' common left edge is what carries
+     the column, and per-<li> max-content keeps every pair tight. ── */
   .sig-ledger{
     background:#000;                           /* matches .about-card / .partner-band */
     border:1px solid rgba(255,255,255,0.08);   /* same hairline as .about-card */
@@ -323,13 +334,22 @@
     column-gap:clamp(24px, 3vw, 52px);
     row-gap:clamp(24px, 2.6vw, 34px);
   }
+  /* `last baseline`, not plain `baseline`: a label that wraps to two lines should
+     straddle the numeral, not hang below it — plain baseline aligns the FIRST line and
+     drops the second past the digits. `end` is the fallback for engines without
+     last-baseline, so declaration order matters; keep it above. (Same progressive pair
+     as .sig-pool, which wants the identical behaviour for the identical reason.) */
   .sig-fact{
-    display:flex; flex-direction:column; align-items:flex-start;
-    gap:4px;
+    display:grid;
+    grid-template-columns:max-content minmax(0, 1fr);
+    column-gap:clamp(12px, 1.2vw, 16px);
+    row-gap:6px;
+    align-items:end;
+    align-items:last baseline;
   }
   .sig-fact__num{
     font-family:var(--font-mono);
-    font-size:clamp(28px, 2.8vw, 38px);
+    font-size:clamp(32px, 3.2vw, 46px);
     font-weight:600;                           /* matches .sig-pool__num — see note there */
     line-height:1;
     letter-spacing:-0.01em;
@@ -344,13 +364,24 @@
     font-size:14px; line-height:1.35;
     color:rgba(255,255,255,0.72);
   }
+  /* Full cell width, starting at the numeral's left edge — no measure cap. The notes
+     are one line of copy each now, and a 40ch cap (the cell is ~50ch at this size)
+     forced a second line back onto every one of them, which is the space this layout
+     was rewritten to recover. The cell itself is the measure.
+
+     `balance`, not `pretty`. These run exactly two lines, and `pretty` only guards the
+     last line against an orphan — it leaves the first line full and the second short
+     (44/25 characters on the 50-fact). `balance` evens both, which is what makes four
+     notes stacked 2×2 read as one block rather than four ragged ones. Safe at this
+     length: engines cap balancing at a handful of lines and fall back to normal
+     wrapping beyond it, so a longer translation degrades rather than breaks. */
   .sig-fact__note{
-    margin:2px 0 0;
+    grid-column:1 / -1;
+    margin:0;
     font-size:13px; line-height:1.55;
     letter-spacing:0.01em;                     /* light-on-dark compensation */
     color:rgba(255,255,255,0.58);              /* 6.1:1 on #000 */
-    max-width:40ch;
-    text-wrap:pretty;
+    text-wrap:balance;
   }
 
   /* ── Panel 2 · the process, compressed to its three phases ─────────────────────
@@ -426,23 +457,32 @@
     letter-spacing:0.04em;
     white-space:nowrap;
   }
+  /* `balance` for the same reason as .sig-fact__note — three of these stack in one
+     panel, so an even rag on each is what makes the column read as a set. These run
+     longer (4–5 lines), which is within the range engines will balance; past their cap
+     they fall back to normal wrapping, which is the old behaviour, not a break. */
   .sig-phase__desc{
     margin:0;
     max-width:46ch;
     font-size:13.5px;
     line-height:1.6;
     color:var(--text-secondary);               /* 8.3:1 on the wash */
-    text-wrap:pretty;
+    text-wrap:balance;
     overflow-wrap:break-word;                  /* guard: mixed-script ZH at 390px */
   }
   .sig-phases .btn{ margin-top:clamp(24px, 2.4vw, 32px); align-self:flex-start; }
 
   /* ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
-     REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep navy → mid
-     blue across its bottom band, ~7.9:1 for white at the top of the caption); every
-     pale gradient in that folder (-1, -2, -6, -7) drops it to 2.6–3.0:1. Do not swap
-     the image without re-measuring. The scrim ramp is the audited .offer-card one,
-     not a flat black/70. ── */
+     REQUIRES a dark-bottomed image. signal-cool.jpg is the Signal pillar's reference
+     blue still (visual-guide-snapshot.md, and the product-card image on every page),
+     and it is already the right way up for this card: near-white at the top, deep
+     navy at the foot, which is where the caption sits.
+
+     object-position:center bottom is load-bearing, not a nicety. The card is ~3.3:1
+     against a 1.55:1 image, so `cover` shows barely half its height — centred, that
+     half is the pale-to-mid band and white type on it fails. Anchored to the bottom
+     it is the navy foot. Do not swap the image or the anchor without re-measuring.
+     The scrim ramp is the audited .offer-card one, not a flat black/70. ── */
   .sig-trade{
     min-height:clamp(220px, 20vw, 280px);
     position:relative;
@@ -455,9 +495,12 @@
   .sig-trade img{
     position:absolute; inset:0; z-index:-2;
     width:100%; height:100%;
-    object-fit:cover; object-position:center;
+    object-fit:cover; object-position:center bottom;
     display:block;
-    transform-origin:center;
+    /* Matches the anchor. With a centred origin the reveal/hover scale slides the
+       crop downward, pulling paler pixels up under the caption mid-transition; pinned
+       to the bottom edge the navy band the caption sits on simply holds still. */
+    transform-origin:center bottom;
   }
   .sig-trade::after{
     content:""; position:absolute; inset:0; z-index:-1;
@@ -811,10 +854,15 @@
      §8.8.0b AC-3 gives away the report's SHAPE for free (各章節將涵蓋內容之全貌),
      never its content, so the page must read as a real document and stay unreadable.
      aria-hidden because the outline list beside it is the accessible equivalent. */
-  .sig-rt__preview{ display:grid; grid-template-columns:200px 1fr; gap:clamp(20px, 2.4vw, 32px); margin-top:24px; }
+  /* 260px, not 200: the page is the artefact being bought, and at 200 it read as a
+     chip beside the outline rather than as a document. 260×346 against a 564px text
+     column still leaves every chapter scope-line on one line at 1440. */
+  .sig-rt__preview{ display:grid; grid-template-columns:260px minmax(0, 1fr); gap:clamp(20px, 2.4vw, 32px); margin-top:24px; }
   @media (max-width: 700px){
-    .sig-rt__preview{ grid-template-columns:1fr; }
-    .sig-rt__page{ max-width:200px; }
+    /* minmax(0,1fr), not 1fr: a bare 1fr floors at the track's min-content, and at 390px
+       the outline's longest scope-line pushed that 14px past the column. */
+    .sig-rt__preview{ grid-template-columns:minmax(0, 1fr); }
+    .sig-rt__page{ max-width:260px; }
   }
   .sig-rt__page{ position:relative; overflow:hidden; border-radius:12px; border:1px solid var(--border-primary); }
   /* Blurred enough that no figure or sentence survives, light enough that the page's
@@ -886,12 +934,9 @@
   .sig-xpanel__body p{ font-size:14px; line-height:1.55; color:var(--text-secondary); margin:0; }
   .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
     color:var(--text-tertiary); font-family:'Inconsolata', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+  /* Deliberately unblurred — the inverse of .sig-rt__page img above. The sample is
+     readable; the report you have bought but not yet paid the balance on is not. */
   .sig-xreport{ width:100%; height:auto; border-radius:12px; border:1px solid var(--border-primary); }
-  .sig-xsimlist{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
-  .sig-xsimlist li{ display:flex; justify-content:space-between; gap:16px; padding:11px 0;
-    border-top:1px solid var(--border-primary); font-size:14px; color:var(--text-primary); }
-  .sig-xsimlist li:first-child{ border-top:0; }
-  .sig-xsimlist .sig-score{ font-family:var(--font-mono); font-weight:600; color:var(--sig-blue-deep); }
   .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
     display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
     color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
@@ -1039,7 +1084,13 @@
         </svg>
       </button>
 
-      <a href="#intake" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <!-- Cross-page, unlike the other ten pages' same-page "#contact": this page has
+           no .contact "Get in touch." section. Its equivalent slot is #intake, which is
+           a transactional order form — it asks which report you want and takes a card
+           deposit, so it cannot answer "Contact sales". Point the chrome at the
+           homepage's general enquiry form instead. The two "Start an evaluation" CTAs
+           below stay on #intake; that IS the order action. -->
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -1089,7 +1140,8 @@
     <a href="/about/"    data-zh="關於">About</a>
   </nav>
   <div class="mobile-auth">
-    <a href="#intake" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <!-- /#contact, not #intake — see the topnav CTA above. -->
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>
 
@@ -1126,7 +1178,7 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="#intake" class="search-link" data-zh="聯絡">
+    <a href="/#contact" class="search-link" data-zh="聯絡">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -1234,7 +1286,7 @@
        and 03. The retired 7-beat timeline said it with accented nodes and a pair of
        PAYMENT chips; the chips now name the amounts outright. Don't drop them.
 
-       Counters (1433 / 50 / 8) drive from site.js; 0–100 and S–D are static. The
+       Counters (1433 / 50 / 8) drive from site.js; 0–100 and SABCD are static. The
        pool counter alone carries data-sep="none" — a separator inside a display
        numeral this large reads as punctuation, not scale. The running prose
        elsewhere on this page keeps "1,433". ── -->
@@ -1286,13 +1338,21 @@
 
           <!-- ── Panel 1 · the PSS ledger — four facts on black, 2×2. Deliberately no
                connective line and no node dots; nothing else in this section uses
-               that language now either. Facts are separated by one hairline between
-               the rows. Mono tabular numerals are legitimate: the content literally
-               is scoring metadata, not decoration.
+               that language now either. Mono tabular numerals are legitimate: the
+               content literally is scoring metadata, not decoration.
 
-               The numeral columns are sized on the LIST, not per row, via subgrid —
-               otherwise each <li> resolves its own max-content and the labels go
-               ragged, since "0–100" is wider than "50". ── -->
+               Label beside the numeral, note full-width under both. The labels are
+               deliberately NOT aligned to a common column across the four — see the
+               CSS for why that costs more than it buys here.
+
+               The last fact is SABCD, not "S–D" with "SABCD grade" beside it: that
+               said the same thing twice. The grade names ARE the value, so they take
+               the numeral slot and the label is just what kind of thing it is.
+
+               Notes are one line of copy each, on purpose. Everything they used to
+               restate is already on the page — 1,433 in the header numeral, "PSS" in
+               the kicker above, 0–100 in its own numeral — and a fact panel that
+               explains its numbers at length stops being a fact panel. ── -->
           <div class="sig-ledger">
             <p class="sig-ledger__kicker" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</p>
             <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
@@ -1300,25 +1360,25 @@
               <li class="sig-fact">
                 <span class="sig-fact__num"><span class="counter" data-target="50">50</span></span>
                 <span class="sig-fact__label" data-zh="項可追溯指標">traceable indicators</span>
-                <p class="sig-fact__note" data-zh="每個支柱拆解為 4–8 項指標：原值、百分位、權重，皆可追溯到計算公式。">Every pillar unpacks into 4–8 indicators: raw value, percentile, weight, each traceable to the formula.</p>
+                <p class="sig-fact__note" data-zh="每支柱 4–8 項，各有原值、百分位與權重。">Each carries a raw value, a percentile and a weight — 4–8 per pillar.</p>
               </li>
 
               <li class="sig-fact">
                 <span class="sig-fact__num"><span class="counter" data-target="8">8</span></span>
                 <span class="sig-fact__label" data-zh="大強度支柱">strength pillars</span>
-                <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八大支柱，各自獨立加權。">Citation, legal, technical, market and four more, each independently weighted.</p>
+                <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八項，各自獨立加權。">Citation, legal, technical, market and four more, independently weighted.</p>
               </li>
 
               <li class="sig-fact">
                 <span class="sig-fact__num">0–100</span>
                 <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
-                <p class="sig-fact__note" data-zh="原始值先在全 1,433 件專利池內取百分位，跨產業單一基準，再聚合為 0–100 的 PSS。">Raw values are ranked inside the full 1,433-patent pool, one cross-industry benchmark, then aggregated into a 0–100 PSS.</p>
+                <p class="sig-fact__note" data-zh="在全池內取百分位，跨產業單一基準。">Percentile-ranked against the whole pool — one cross-industry benchmark.</p>
               </li>
 
               <li class="sig-fact sig-fact--out">
-                <span class="sig-fact__num">S–D</span>
-                <span class="sig-fact__label" data-zh="級 SABCD 評等">SABCD grade</span>
-                <p class="sig-fact__note" data-zh="評級是全池百分位的分級。S 為池內前 15%。">A tier is a discretisation of pool percentile. S is the top 15% of the pool.</p>
+                <span class="sig-fact__num">SABCD</span>
+                <span class="sig-fact__label" data-zh="評等">grade</span>
+                <p class="sig-fact__note" data-zh="全池百分位的分級。S 為前 15%。">A discretisation of pool percentile. S is the top 15%.</p>
               </li>
 
             </ol>
@@ -1376,13 +1436,12 @@
           </div>
 
           <!-- ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
-               REQUIRES a dark-bottomed image. signal-graident-3.png qualifies (deep
-               navy to mid blue across its bottom band, ~7.9:1 for white at the top of
-               the caption); every pale gradient in that folder (-1, -2, -6, -7) drops
-               it to 2.6–3.0:1. Do not swap the image without re-measuring. The scrim
-               ramp is the audited .offer-card one, not a flat black/70. ── -->
+               REQUIRES a dark-bottomed image, and the crop has to keep it dark:
+               signal-cool.jpg runs near-white at the top to deep navy at the foot, and
+               object-position:center bottom is what puts that foot behind the caption.
+               See the CSS — the anchor is not optional. ── -->
           <div class="sig-trade" data-reveal>
-            <img src="/assets/imagery/signal/signal-graident-3.png" alt="" loading="lazy" decoding="async" width="1920" height="1080" />
+            <img src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
             <div class="sig-trade__caption">
               <p class="sig-trade__body" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade: real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
             </div>
@@ -1529,7 +1588,7 @@
               </div>
               <div class="field">
                 <label for="retrieve-code" data-zh="Registration code">Registration code</label>
-                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="E240710TWN31346058015" />
+                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
               </div>
               <button type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
             </div>
@@ -1537,10 +1596,12 @@
         </div>
 
         <!-- The sample codes used to print here. Pulled from the page 2026-08-13, kept
-             here because they are still the only way to exercise the two F-STATUS
-             outcomes on a site with no backend:
-               in production  E240710TWN31346058015   → SIG-BX-20260810-004, Landscape
-               complete       E240628TWN20871445093   → SIG-B-20260805-001, Full Report
+             here because they are still the only way to exercise the F-STATUS outcomes
+             on a site with no backend. One per report tier, plus one still in production:
+               complete        K7P2-9XQR-4M   → SIG-A-20260812-002,  Score Report
+               complete        R4TX-8HJW-2N   → SIG-B-20260805-001,  Full Report
+               complete        M9VD-3KPY-7B   → SIG-BX-20260810-004, Landscape Report
+               in production   H3WN-6QFT-8C   → SIG-A-20260817-001,  Score Report
              Any email; the match is case-insensitive and ignores spaces and hyphens.
              Their vertical space is held by .contact-panel's margin-bottom below, so
              removing them did not resize the card. -->
@@ -1582,15 +1643,68 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
                         <span data-zh="尾款後解鎖">Unlocks with the balance</span>
                       </span>
-                      <img src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="2272" height="3024" />
+                      <img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" />
                     </div>
-                    <p class="sig-rt__pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
+                    <p class="sig-rt__pagemeta" id="rt-pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
                   </div>
 
+                  <!-- One outline per tier, all three in the markup rather than injected.
+                       site.js collects its i18n elements ONCE at init, so anything added
+                       later is invisible to the language switcher — a built list would
+                       render correctly and then refuse to translate. Static markup keeps
+                       every string on the normal data-zh path; the JS only flips `hidden`.
+                       Tiers map to the order number's TIER field (PRD §8.8.0c): A / B / BX. -->
                   <div class="sig-rt__outline">
                     <h4 data-zh="報告涵蓋範圍（免費預覽）">What the report covers — free preview</h4>
-                    <!-- Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
-                    <ol class="sig-rt__chapters">
+
+                    <!-- A · Score. Items 1–2 are byte-identical to the Full Report's below,
+                         on purpose: the two tiers share a spine and diverge after it, so
+                         anyone comparing the two codes reads the ladder directly. -->
+                    <ol class="sig-rt__chapters" data-tier="A" hidden>
+                      <li>
+                        <span data-zh="專利基本資料">Patent facts &amp; family</span>
+                        <span class="sig-rt__chnote" data-zh="專利號、國家、專利權人、主 IPC、申請日、公告日、法律狀態、請求項數、家族國家">Number, jurisdiction, owner, IPC, dates, claims, family</span>
+                      </li>
+                      <li>
+                        <span data-zh="PSS 總覽">PSS overview</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                      </li>
+                      <li>
+                        <span data-zh="八大支柱概覽">Eight pillars at a glance</span>
+                        <span class="sig-rt__chnote" data-zh="P1–P8 各支柱分數與強度條，附一行評語">P1–P8 scored, with a one-line read on each</span>
+                      </li>
+                      <li>
+                        <span data-zh="白話綜合評估">Plain-language assessment</span>
+                        <span class="sig-rt__chnote" data-zh="3–5 句白話說明主要強項與需關注的風險">Three to five sentences on the strengths and the risks to watch</span>
+                      </li>
+                    </ol>
+
+                    <!-- BX · Landscape. Carries a grade as well as the ten matches, so it
+                         opens on the same PSS overview the other two tiers do — item 1 here
+                         is byte-identical to item 2 of Score and Full. The four items match
+                         the contents printed on its own cover render; if one changes, change
+                         both or the free preview stops describing the thing it previews. -->
+                    <ol class="sig-rt__chapters" data-tier="BX" hidden>
+                      <li>
+                        <span data-zh="PSS 總覽">PSS overview</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                      </li>
+                      <li>
+                        <span data-zh="最相近的十件專利">The ten closest patents</span>
+                        <span class="sig-rt__chnote" data-zh="每件的專利號、標題、專利權人、主 IPC 與申請年">Number, title, owner, IPC and filing year for each</span>
+                      </li>
+                      <li>
+                        <span data-zh="為何相符">Why each one matches</span>
+                        <span class="sig-rt__chnote" data-zh="每件的相似度分數與比對原因">A similarity score and the reason it was retrieved</span>
+                      </li>
+                      <li>
+                        <span data-zh="技術聚落">The technology cluster</span>
+                        <span class="sig-rt__chnote" data-zh="十件的共同點、技術聚落與分歧處">Where the ten group together, and where they diverge</span>
+                      </li>
+                    </ol>
+
+                    <!-- B · Full. Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
+                    <ol class="sig-rt__chapters" data-tier="B">
                       <li>
                         <span data-zh="專利基本資料">Patent facts &amp; family</span>
                         <span class="sig-rt__chnote" data-zh="專利號、國家、專利權人、主 IPC、申請日、公告日、法律狀態、請求項數、家族國家">Number, jurisdiction, owner, IPC, dates, claims, family</span>
@@ -1651,7 +1765,8 @@
         </div>
         <div class="sig-xpanel__body">
           <p data-zh-html data-zh="以下是分數報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Score Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-a.png" alt="Sample Score Report — score, SABCD grade, percentile, rank, and 8-pillar radar" loading="lazy" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Score Report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Score Report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
@@ -1668,7 +1783,8 @@
         </div>
         <div class="sig-xpanel__body">
           <p data-zh-html data-zh="以下是完整報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Full Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-pro-report-compact-b.png" alt="Sample Full Report — facts grid, metric cards, and 8-pillar radar" loading="lazy" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Full Report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Full Report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
@@ -1681,19 +1797,12 @@
         <div class="sig-xpanel__head">
           <span class="sig-xcard__kind" data-zh="廣度解讀">Wide read</span>
           <h2 id="sig-panel-c-title" data-zh="市場地景報告">Landscape Report</h2>
-          <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得。此報告不評級你自己的專利。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search. Your own patent is not graded here.</p>
+          <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得，並附上你自己專利的 SABCD 等級。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search, alongside your own patent's SABCD grade.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下為 top-10 相似清單的樣張。<span class='sig-mockflag'>示意</span> 完整版面待新穎向量比對 API 串接。">A sample of the top-10 similarity list. <span class="sig-mockflag">mock</span> Full layout pending Innovue's vector-comparison API.</p>
-          <ul class="sig-xsimlist">
-            <li><span data-zh="US9876543 — 無人機降落控制">US9876543 — UAV landing control</span><span class="sig-score">0.94</span></li>
-            <li><span data-zh="US9123456 — 定域到懸浮過渡">US9123456 — hover-to-perch transition</span><span class="sig-score">0.91</span></li>
-            <li><span data-zh="EP3211222 — 重新試飛機制">EP3211222 — re-attempt flight logic</span><span class="sig-score">0.88</span></li>
-            <li><span data-zh="US8765432 — 多模態感測一致性">US8765432 — multimodal sensing coherence</span><span class="sig-score">0.85</span></li>
-            <li><span data-zh="US8123901 — 自主返航路徑規劃">US8123901 — autonomous return-path planning</span><span class="sig-score">0.82</span></li>
-            <li><span data-zh="WO2019123456 — 風擾下姿態穩定">WO2019123456 — attitude hold under gust</span><span class="sig-score">0.80</span></li>
-            <li style="color:var(--text-tertiary)"><span data-zh="…其餘 4 件，各附相似原因">…4 more, each with its reason for matching</span><span class="sig-score">—</span></li>
-          </ul>
+          <p data-zh-html data-zh="以下是市場地景報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎向量比對 API 串接。">Here's what a Landscape Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's vector-comparison API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Landscape Report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Landscape Report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
@@ -1917,11 +2026,12 @@
     // Seconds of shader time per real second. The homepage's 0.003/frame at 60Hz
     // is 0.18/s — matched here so the two heroes move at the same rate.
     const RATE = 0.18;
-    // Frozen clock for the reduced-motion still. NOT arbitrary: π/2 puts sin() at
-    // its maximum at x=0, which drops the band lowest at frame centre and lifts it
-    // symmetrically toward both edges. Picking a round number instead lands the
-    // crest wherever it happens to fall — the first attempt here ran it straight
-    // through the headline.
+    // Fallback frozen clock for the reduced-motion still, used only if the CTA
+    // cannot be measured. π/2 puts sin() at its maximum at x=0, which drops the band
+    // lowest at frame centre and lifts it symmetrically toward both edges — safe,
+    // because a round number instead lands the crest wherever it happens to fall
+    // (the first attempt here ran it straight through the headline). When the CTA
+    // IS measurable, staticPhase() below picks a better frame — see it for why.
     const STATIC_T = 1.5708;
 
     try {
@@ -1997,18 +2107,18 @@
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
         time:       { value: 0.0 },
         xScale:     { value: 1.0 },
-        // Amplitude and offset are a pair. The band is deliberately lifted so its
-        // convergence runs BEHIND the CTA row rather than below it, so the old
-        // "must clear the copy at every phase" constraint no longer holds — the
-        // amplitude is pulled in instead so the crest stays out of the paragraph.
-        // Reach is (yOffset ± yScale) = -0.18 … -0.54; the CTA row spans about
-        // p.y -0.32 … -0.44 and the paragraph bottom sits at about -0.25.
+        // Amplitude of the sweep, in shader units. Held as a constant; the CENTRE
+        // it sweeps around is measured, not constant — see bandOffset() below.
         yScale:     { value: 0.18 },
         // Wider than the homepage's 0.05. Compressing the strands (see the shader)
         // costs their brightness separation, so the split has to carry the depth
         // geometrically instead — at 0.05 the three merged into one band.
         distortion: { value: 0.11 },
-        yOffset:    { value: -0.36 },  // negative = below centre. See yScale above.
+        // Overwritten by resize() before the first frame. -0.36 is the value the
+        // measurement lands on at the reference viewport, kept as the no-element
+        // fallback so a missing .pillar-actions degrades to the old composition
+        // rather than to 0 (which would run the band through the headline).
+        yOffset:    { value: -0.36 },
       };
 
       const position = [
@@ -2027,6 +2137,52 @@
       });
       scene.add(new THREE.Mesh(geometry, material));
 
+      // Where the band's centre sits, measured off the CTA row rather than pinned.
+      //
+      // yOffset lives in shader space, which is normalised to min(w, h). The CTA row
+      // does not: it is a roughly fixed ~400px content stack centred in a 100dvh hero,
+      // so as the viewport gets taller the row rises in normalised terms while a
+      // constant yOffset stays put. The two only agree at one viewport — which is why
+      // a hardcoded -0.36 read as sitting behind the buttons on a laptop and below
+      // them on a tall display. Measuring the row is the fix, and it is the same move
+      // the intake card makes with its height: restate the formula, don't sample it.
+      //
+      // The anchor is the CTA row's TOP edge, not its midline: on the midline the core
+      // runs through the middle of the buttons and the glow sits low in the frame. On
+      // the top edge the buttons still fall inside the bright part of the glow, but the
+      // core reads as riding along them and the whole band lifts by half a button.
+      //
+      // The maths: the shader builds p.y as (2 * gl_FragCoord.y - h) / min(w, h), and
+      // styles.css stretches the canvas to the mount (width/height 100% !important).
+      // So a fraction f down the MOUNT is (1 - f) * h up the BUFFER, and the band
+      // centre for that fraction is h * (1 - 2f) / min(w, h). Note this takes the same
+      // w/h resize() computes — on coarse pointers h is the locked tall buffer, not
+      // clientHeight, and mixing the two puts the band in the wrong place on mobile.
+      const ctaEl = document.querySelector('.hero .pillar-actions');
+      const bandOffset = (w, h) => {
+        if (!ctaEl || !mount.clientHeight) return -0.36;   // see the uniform's comment
+        const heroBox = mount.getBoundingClientRect();
+        const ctaBox  = ctaEl.getBoundingClientRect();
+        const f = (ctaBox.top - heroBox.top) / mount.clientHeight;
+        return (h * (1 - 2 * f)) / Math.min(w, h);
+      };
+
+      // Which frame the reduced-motion still freezes on. The band's height at any x is
+      // yOffset - sin(p.x + time) * yScale, so the phase that puts it exactly ON the
+      // measured anchor at the CTA's own x is the one where that sine is zero there.
+      // Of the two such phases per cycle we take `π - p.x`, not `-p.x`: both cross the
+      // CTA dead-on, but this one tilts the band DOWN toward the left — the copy
+      // column — and lifts it on the empty right half, where there is nothing to
+      // cross. `-p.x` mirrors that and pushes the crest into the paragraph instead.
+      const staticPhase = (w, h) => {
+        if (!ctaEl || !mount.clientWidth) return STATIC_T;
+        const heroBox = mount.getBoundingClientRect();
+        const ctaBox  = ctaEl.getBoundingClientRect();
+        const fx = ((ctaBox.left + ctaBox.right) / 2 - heroBox.left) / mount.clientWidth;
+        const pxCta = (w * (2 * fx - 1)) / Math.min(w, h);
+        return Math.PI - pxCta;
+      };
+
       // resolution stays in CSS px while setPixelRatio drives the device-px draw
       // buffer — that reproduces the homepage's line scale on retina. On coarse
       // pointers react to WIDTH only and lock the buffer to the tallest reachable
@@ -2042,18 +2198,32 @@
           : mount.clientHeight;
         renderer.setSize(w, h, false);
         uniforms.resolution.value = [w, h];
-        if (reduce) renderer.render(scene, camera);   // no loop to pick the size up
+        uniforms.yOffset.value = bandOffset(w, h);
+        // Both the band's centre and the still's phase are measured, so the still has
+        // to be re-derived on resize too, not just re-rendered at the new size.
+        if (reduce) {
+          uniforms.time.value = staticPhase(w, h);
+          renderer.render(scene, camera);            // no loop to pick the size up
+        }
       };
       resize(true);
       new ResizeObserver(() => resize(false)).observe(mount);
+      // The observer watches the MOUNT, and the mount is 100dvh — it does not change
+      // when Urbanist swaps in. The copy block does: the paragraph re-wraps and the CTA
+      // row moves, which moves the thing yOffset is derived from. Without this the band
+      // stays anchored to the fallback-font layout it was measured against.
+      if (document.fonts?.ready) document.fonts.ready.then(() => resize(true));
 
-      if (reduce) {
-        uniforms.time.value = STATIC_T;
-        renderer.render(scene, camera);
-      } else {
+      // resize(true) has already set time + rendered for the reduced-motion still, so
+      // there is nothing left to do on that branch — re-assigning STATIC_T here would
+      // clobber the measured phase it just derived.
+      if (!reduce) {
+        // Start ON the phase the still would freeze, so the band is across the CTA row
+        // at first paint and drifts from there, rather than arriving mid-sweep.
+        const phase0 = staticPhase(mount.clientWidth, mount.clientHeight);
         const start = performance.now();
         const animate = () => {
-          uniforms.time.value = ((performance.now() - start) / 1000) * RATE;
+          uniforms.time.value = phase0 + ((performance.now() - start) / 1000) * RATE;
           renderer.render(scene, camera);
           requestAnimationFrame(animate);
         };
@@ -2141,18 +2311,59 @@
     const steps   = [...document.querySelectorAll('#rt-status li')];
     const heading = document.getElementById('retrieve-result-heading');
 
-    // Keyed by code. `en`/`zh` pairs stay parallel to the data-zh convention the rest
-    // of the page uses, since the language switcher only rewrites markup it can see.
+    // Keyed by registration code. `en`/`zh` pairs stay parallel to the data-zh
+    // convention the rest of the page uses, since the language switcher only rewrites
+    // markup it can see.
+    //
+    // Codes follow PRD §8.8.0c: an opaque random base32 access token, 8–12 characters,
+    // deliberately NOT derivable from the order number (訂單編號 = internal traceability,
+    // registration code = external access token, kept unrelated to defeat enumeration).
+    // Confusable glyphs 0/O/1/I/L are excluded, which is why none appear below. The
+    // submit handler strips spaces and hyphens, so the grouping is presentation only.
+    //
+    // `tier` selects both the outline list and the thumbnail; it matches the TIER field
+    // of the order number above it (A / B / BX), so the two can never drift apart.
     const ORDERS = {
-      'E240710TWN31346058015': {
-        order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 1, done: false,
+      'K7P29XQR4M': {
+        order: 'SIG-A-20260812-002', date: '2026-08-12', step: 2, done: true, tier: 'A',
+        kind: { en: 'Score Report', zh: '分數報告' }
+      },
+      'R4TX8HJW2N': {
+        order: 'SIG-B-20260805-001', date: '2026-08-05', step: 2, done: true, tier: 'B',
+        kind: { en: 'Full Report', zh: '完整報告' }
+      },
+      'M9VD3KPY7B': {
+        order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 2, done: true, tier: 'BX',
         kind: { en: 'Landscape Report', zh: '市場地景報告' }
       },
-      'E240628TWN20871445093': {
-        order: 'SIG-B-20260805-001', date: '2026-08-05', step: 2, done: true,
-        kind: { en: 'Full Report', zh: '完整報告' }
+      // Still mid-production: the state a customer meets right after paying the deposit.
+      // AC-1 gives status only — no outline, no preview, no balance CTA.
+      'H3WN6QFT8C': {
+        order: 'SIG-A-20260817-001', date: '2026-08-17', step: 1, done: false, tier: 'A',
+        kind: { en: 'Score Report', zh: '分數報告' }
       }
     };
+
+    // Per-tier preview: which first page to blur, and how the deliverable is counted.
+    // "chapters" only for B — that is what PRD §8.6.1 calls them (七章節); the other two
+    // are sections, and saying chapters everywhere would overstate the shorter tiers.
+    // The thumbnail is the COVER SHEET, not the graded interior page. The interior page
+    // carried a radar / bar band / ladder that told the three tiers apart through the
+    // blur; a cover has none of that, so the outline beside it is what identifies the
+    // tier now. Deliberate trade, not an oversight — see DESIGN.md.
+    const TIERS = {
+      A:  { img: 'signal-report-cover-score.png',
+            meta: { en: '4 sections · watermarked PDF',  zh: '4 節 · 含浮水印 PDF' } },
+      B:  { img: 'signal-report-cover-full.png',
+            meta: { en: '7 chapters · watermarked PDF',  zh: '7 章 · 含浮水印 PDF' } },
+      BX: { img: 'signal-report-cover-landscape.png',
+            meta: { en: '4 sections · watermarked PDF',  zh: '4 節 · 含浮水印 PDF' } }
+    };
+    const MOCK = { en: 'mock', zh: '示意' };
+
+    const outlines = [...document.querySelectorAll('.sig-rt__chapters[data-tier]')];
+    const pageImg  = document.getElementById('rt-page-img');
+    const pageMeta = document.getElementById('rt-pagemeta');
 
     const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
 
@@ -2174,6 +2385,18 @@
       const kindEl = document.getElementById('rt-kind');
       kindEl.textContent = isZh() ? hit.kind.zh : hit.kind.en;
       kindEl.setAttribute('data-zh', hit.kind.zh);   // survives a later language switch
+
+      // Preview swaps with the tier. Both elements exist in the markup at init, so the
+      // language switcher already tracks them — setting data-zh alongside the visible
+      // text is what keeps a later swap correct, same trick as kindEl above.
+      const tier = TIERS[hit.tier];
+      if (tier) {
+        outlines.forEach(ol => { ol.hidden = ol.dataset.tier !== hit.tier; });
+        pageImg.src = '/assets/imagery/signal-reports/' + tier.img;
+        const flag = c => `<span class="sig-mockflag">${c}</span>`;
+        pageMeta.innerHTML     = `${isZh() ? tier.meta.zh : tier.meta.en} ${flag(isZh() ? MOCK.zh : MOCK.en)}`;
+        pageMeta.dataset.zh    = `${tier.meta.zh} ${flag(MOCK.zh)}`;
+      }
 
       // step = index of the CURRENT stage; everything before it is done.
       steps.forEach((li, i) => {

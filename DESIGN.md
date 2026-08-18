@@ -368,6 +368,27 @@ never overlap.
   primary CTA, then the mobile hamburger (`.topnav-mobile-trigger`, shown at narrow
   widths). The mobile drawer (`.mobile-drawer` + `.mobile-overlay`) mirrors the nav.
 
+**Contact-chrome routing rule** (2026-08-18). Three links per page carry a contact
+intent — the topnav CTA, the mobile-drawer CTA, and the search-modal "Contact" entry —
+and all three follow one rule:
+
+> **If the page has its own `.contact` `#contact` section, all three point at `#contact`
+> on that page. If it does not, all three point at `/#contact` on the homepage.**
+
+Never a cross-page link to a *different* page's `#contact`, and never a same-page
+`#contact` on a page that has no such anchor. Both failure modes were live before this
+rule was written: `methodology.html` pointed at `/product/signal/#contact`, an anchor
+that does not exist, so it silently landed at the top of the Signal page; `badge.html`,
+`about/`, `patents/` and `reports/` each sent their search-modal link off their own page
+despite carrying the form themselves.
+
+**Signal (`product/signal/index.html`) is the only page in the `does not` branch.** Its
+equivalent slot is `#intake`, a transactional order form that asks which report you want
+and takes a card deposit, so it cannot answer a general enquiry. Its two "Start an
+evaluation" CTAs stay on `#intake` — that is the order action, and keeping the two
+distinct is the point. Add a `.contact` section to that page and all three links move
+back to same-page `#contact`.
+
 `main` reserves `padding-top` for the fixed 64px nav; `scroll-padding-top:80px` keeps
 anchored jumps clear of it.
 
@@ -1077,6 +1098,102 @@ for free (各章節將涵蓋內容之全貌) and never its content. The page moc
 chapter list beside it is the accessible equivalent and carries the actual scope, in both
 languages. Chapter names are PRD §8.6.1 verbatim.
 
+### The preview is per-tier (2026-08-18)
+
+Signal sells three tiers, so the preview shows what each one actually contains. `ORDERS` in
+the page's retrieve script carries a `tier` (`A` / `B` / `BX`, matching the order number's
+TIER field per PRD §8.8.0c), and `TIERS` maps that to a thumbnail and a page-count label.
+Four things worth knowing before editing it:
+
+- **`.sig-rt__preview` is `260px 1fr`, not `200px 1fr`.** The page is the artefact being
+  bought; at 200 it read as a chip beside the outline. 260×346 against a 564px text column
+  still keeps every chapter scope-line on one line at 1440.
+- **All three outlines live in the markup, hidden, and the JS only flips `hidden`.** They are
+  *not* injected. `site.js` collects its i18n elements once at init, so an injected list
+  renders correctly and then refuses to translate. The same reason drives the
+  `pageMeta.dataset.zh` write beside the visible text — test the language swap **after** a
+  lookup, which is where this breaks.
+- **Each tier's outline must match the contents printed on its own cover render.** The
+  outline is a description of the report; if they drift, the free preview stops describing
+  the thing it previews.
+- **The covers must stay structurally distinguishable through the blur.** Source of truth is
+  [assets/product-shots/signal/signal-report-covers.html](assets/product-shots/signal/signal-report-covers.html),
+  rendered to `assets/imagery/signal-reports/signal-report-p1-*.png` at 1136×1512. Form is a
+  credit-rating action: masthead, the finding as a sentence, a summary box, issuer facts,
+  metric readouts, the tier's own chapter block, contents, basis of rating.
+
+  **The masthead, facts grid, percentile arc, rank histogram, PSS meter and radar are ported
+  from the June Pro Report** (`brand/catalog/signal-reports-preview.html`, whose page-1
+  grammar is the older `.r-titlebar` / `.r-cover` / `.r-metricstrip` stack now surviving
+  there only as dead CSS). They are rebuilt on hairlines rather than in rounded card boxes;
+  the stacked 14px-radius containers are what made that page read as a dashboard. Charts
+  stay **monochrome** per `design-tokens.md` §7.2 — colour never encodes score.
+
+  **The Innovue wordmark in the masthead is the SVG, never text.** An earlier revision set
+  the string `INNOVUE` in letterspaced Urbanist; a text substitute for a partner wordmark is
+  a brand-identity defect (`visual-guide.md` owns Innovue attribution). A 404 on that `<img>`
+  renders its `alt` and silently reproduces the bug, so check the rendered PNG, not the DOM.
+
+  **The grade is a letter, not a tile, and its colour is the SABCD ramp.** No fill: the cell
+  sits on the page ground and the letter alone carries the grade, with its two small labels
+  in the same colour. Two filled treatments were tried and both failed — a cream panel made
+  the grade something you read *around*, and a solid `#252525` panel was the heaviest shape
+  in the blurred retrieve thumbnail.
+
+  Because the ground is light, the ramp takes its **light-surface** value: `--score-s`
+  `#8B6914` for the tier-S sample, 5.09:1 on white. Not the `#D4A017` dark-surface value,
+  which only applies on a dark ground; getting that backwards is the likely mistake. The
+  colour is the tier and nothing else, so a grade-A report renders `--score-a` `#047857`,
+  B `#0369A1`, C `#6D28D9`, D `#C2410C`. The June sample is green purely because it is an A.
+  Never substitute a decorative gold.
+
+  **All three tiers carry a letter grade, the same subject, the same facts and the same
+  metric row, so none of those can carry the difference between them.** The tier's chapter
+  block does:
+
+  | Tier | Chapter block | Blurred silhouette |
+  | --- | --- | --- |
+  | Score `A` | 8-pillar radar, paired with the rationale | soft circular mass, sparse page |
+  | Full `B` | 8 pillar bars + top strengths / risks | hard dark band across the middle |
+  | Landscape `BX` | 10 descending similarity rows | stepped ladder, right-hand bar column |
+
+  Score gets the radar and Full does not, because that is what their chapters are: Score ch.3
+  is "Eight pillars at a glance", Full ch.3 is "Eight pillars, all 50 indicators". At-a-glance
+  is a radar; the drill-down is per-pillar values. Giving both a radar was the first attempt
+  and made the two thumbnails near-identical. For the same reason the facts grid appears on
+  Score and Full but not Landscape — those two open on "Patent facts & family" and Landscape
+  opens on "PSS overview".
+
+  Change a cover and re-run the blur test at 260px with `blur(4px)`. If the three are not
+  tellable apart, the thumbnail has stopped carrying information and is decoration.
+
+  **Sample data is the canonical record, not invented.** Facts, pillar values and the top
+  indicator / risk rows come from `REPORTS['macrosilicon-s']` in the preview file, i.e. the
+  same fictional patent the June render documents. The one deliberate divergence is the pool
+  size: the covers say 1,433, matching the rest of this site, where the preview file uses its
+  own 183-patent industry cohort.
+
+  The sheet is a fixed-height flex column, so every block in it is `flex:none`. Without that
+  a long page silently *compresses* its children instead of overflowing — which cropped the
+  Landscape grade cell in half. Note that `.contents` carries `margin-top:auto`, which
+  absorbs all remaining slack and pins every total to exactly 1512: to read the real natural
+  height, zero that margin first, then sum `.sheet`'s children. Current headroom is Score 9px,
+  Full 42px, Landscape 35px. A headline breaking to a third line costs ~50px and is the single
+  most expensive thing that can happen to these sheets.
+
+- **One asset set serves both surfaces.** The same three renders are the blurred retrieve
+  thumbnail *and* the full-size sample behind "See a sample report" (`#sig-xoverlay`
+  panels A / B / C). `.sig-xreport` is deliberately **unblurred** — the inverse of
+  `.sig-rt__page img`: the sample is readable, the report you have bought but not yet paid
+  the balance on is not. Preserve that inverse.
+
+  Before this, the overlay showed `signal-pro-report-compact-a/-b.png`, which are SABCD
+  *grade* variants of one report type rather than three report types, so it sold "Score vs
+  Full" with two images differing only by letter. Panel C had no render at all and carried a
+  hand-authored `<ul class="sig-xsimlist">` on an unrelated fictional patent. Both are gone;
+  `.sig-xsimlist` / `.sig-score` were removed with it. All five `signal-pro-report-compact-*`
+  PNGs are now unreferenced — kept on disk as valid grade specimens, live on no page.
+
 **The hero** (2026-08-11) runs **the homepage's own shifting-lines shader**, recoloured to a
 single blue hue and positioned so the band runs behind the CTA row. It uses the **shared
 `.hero-shader` carrier**
@@ -1097,16 +1214,33 @@ Stripe-style mesh gradient over a rotated still. Four things to know:
 - **Each strand is compressed to 0..1 before tinting.** The raw `1/abs()` glow is unbounded;
   summing three of them clipped every channel at the crest and the core came out white,
   which defeats a single-hue palette. `g/(1+g)` first keeps the sum in range.
-- **`yScale` and `yOffset` are a pair, and they encode a composition decision.** The band is
-  positioned so its convergence runs **behind the CTA row**, not below it: `yOffset -0.36`,
-  `yScale 0.18`, so the reach is `p.y -0.18 … -0.54` against a CTA row spanning about
-  `-0.32 … -0.44`. The amplitude is deliberately small — at the top of that range the crest
-  grazes the last paragraph lines, and anything wider pushes it further into them. That is
-  also why the scrim's bottom lift reaches 56%. Change one of the two and you have to
-  re-check the other **across phases**, not in whatever single frame is on screen; the crest
-  travels, so a frame that looks clear proves nothing. For the same reason `STATIC_T` is
-  `π/2` — it puts the still's crest lowest at frame centre rather than wherever it lands.
-  `distortion` is `0.11`, wider than the homepage's `0.05`, because compression costs the
+- **`yOffset` is measured off the CTA row, not a constant** (2026-08-17). The band's centre
+  rides **the top edge of the CTA row**, and `bandOffset(w, h)` derives it from
+  `.pillar-actions`' own `top` on every resize. The top edge rather than the midline: on
+  the midline the core runs through the middle of the buttons and the band sits low in the
+  frame; on the top edge the buttons still fall inside the bright part of the glow but the
+  whole band lifts by half a button. It has to be derived: `yOffset` lives in
+  shader space, normalised to `min(w, h)`, while the CTA row is a roughly fixed ~400 px
+  content stack centred in a `100dvh` hero — so the two only agree at one viewport. The
+  constant this replaced (`-0.36`) sat on the row's top edge at 1440×900, drifted *below*
+  the buttons at 1440×1080, and fell outside the row entirely at 1280×800. `-0.36` survives
+  as the fallback when `.pillar-actions` can't be found. The maths: the canvas is stretched
+  to the mount, so a fraction `f` down the mount is `h * (1 - 2f) / min(w, h)` in shader
+  space — and it must use the same `w`/`h` `resize()` computes, because on coarse pointers
+  `h` is the locked tall buffer, not `clientHeight`.
+- **`yScale 0.18` stays a tuned constant** — the sweep around that centre. The crest reaches
+  `centre + 0.18`, which still grazes the last paragraph lines, and anything wider pushes it
+  further in; that is why the scrim's bottom lift reaches 56%. Change it and re-check
+  **across phases**, not in whatever single frame is on screen — the crest travels, so a
+  frame that looks clear proves nothing.
+- **The reduced-motion still is derived too.** `staticPhase(w, h)` freezes the clock at
+  `π - p.x` of the CTA's own centre, the phase where the band sits exactly on the measured
+  anchor *at the buttons*. Of the two phases per cycle that do that, this is the one that
+  tilts the band down toward the copy column and lifts it over the empty right half; `-p.x`
+  mirrors it and pushes the crest into the paragraph. The animated path starts on the same
+  phase, so first paint has the band across the CTA rather than arriving mid-sweep.
+  `STATIC_T = π/2` remains only as the unmeasurable-CTA fallback.
+- `distortion` is `0.11`, wider than the homepage's `0.05`, because compression costs the
   strands their brightness separation so the split has to carry depth geometrically.
 - **Two fixes the homepage copy still needs.** This one drives `time` from
   `performance.now()` (the homepage advances it per frame, so it runs at double speed on a
@@ -1128,6 +1262,26 @@ to know before editing it:
 - **The two-stage payment structure is carried by the two chips** (`10% deposit` /
   `90% balance`) in the first and last phase. The retired timeline said it with accented
   nodes; don't quietly drop the chips.
+- **The ledger's labels sit beside the numerals and are deliberately not column-aligned**
+  (2026-08-17). Aligning them needs a shared numeral track — `min-width:5ch` or subgrid,
+  either works — but the values run from one mono glyph (`8`) to five (`0–100`, `SABCD`),
+  so a shared track strands `8` ~90 px from its own label and the pair stops reading as a
+  phrase. Right-aligning inside that track closes the gap but unmoors the numeral from the
+  note beneath, which starts at the cell edge. Per-`<li>` `max-content` keeps every pair
+  tight; the notes' common left edge is what carries the column. The notes are one line of
+  copy each on purpose — everything they used to restate (`1,433`, `PSS`, `0–100`) is
+  already on the page, and the freed height is what pays for the numerals' size.
+- **The ledger notes and the phase descriptions take `text-wrap: balance`, not `pretty`.**
+  `pretty` only guards the last line against an orphan, which left the ledger notes at
+  44/25 characters; `balance` evens them (worst spread now 8, most 0–4), and it is what
+  makes four notes in a 2×2 read as one block rather than four ragged ones. The rest of
+  the page's running copy stays `pretty` — balancing is for short blocks that stack.
+- **The trade card's image is `signal-cool.jpg` anchored `center bottom`.** The card is
+  ~3.3:1 against a 1.55:1 image, so `cover` shows barely half its height: centred, that
+  half is the pale-to-mid band and the white caption fails; anchored to the bottom it is
+  the navy foot. Measured worst-case caption contrast is 12.5:1 at 1440 and 9.6:1 at 390.
+  `transform-origin` matches the anchor so the reveal/hover scale doesn't slide paler
+  pixels up under the caption. **Re-measure on any image or anchor change.**
 
 The in-page anchors `#reports` and `#intake` are link targets from
 `methodology.html` — don't rename them without fixing that page's `.loop-ctas`.

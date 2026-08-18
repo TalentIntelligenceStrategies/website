@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Signal report cover — variant A, ink on paper</title>
+<!--
+  VARIANT A · ink on paper, rule-led. One of two cover-sheet directions for review.
+  Sibling: signal-report-cover-variant-b.html (centred lockup, classical).
+  Whichever wins folds into signal-report-covers.html as page 1 of each tier.
+
+  The cover carries NO letter grade. That is deliberate: the grade is the finding, and
+  the finding belongs on the page that shows its working, not on the wrapper.
+
+  Same 1136×1512 canvas, same tokens, same fonts and the same dark masthead / colophon
+  bands as the interior pages, so the cover reads as the first page of one document
+  rather than a separate object.
+
+  LOCKUP. Submark · divider · Innovue wordmark, the letterhead register. This departs
+  from visual-guide.md:40, which assigns report covers the Primary Logo under the First
+  Touchpoint Rule. Decided deliberately: a rating action is a document with a masthead,
+  not a title slide. If that decision stands, visual-guide.md:219 ("define report /
+  client-PDF cover treatments") should be written up to say so, or the next person will
+  read :40 and "correct" this back.
+
+  THE MARKS ARE SVGs, NEVER TEXT. A 404 renders the alt string and silently reproduces
+  the wordmark-as-text defect this project already fixed once. Check the rendered PNG.
+
+  REPORT TYPE BREAKS TO TWO LINES ON PURPOSE. At 260px behind blur(4px) a cover has no
+  grade, no radar and no ladder to tell the tiers apart — the only honest differentiator
+  left is the width of the first word. Score / Full / Landscape differ enough on two
+  lines that the blurred masses are not identical. On one line they would be.
+-->
+<style>
+  @font-face{font-family:"Urbanist";src:url("/designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:block;}
+  @font-face{font-family:"Inconsolata";src:url("/designs/assets/fonts/Inconsolata/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype-variations");font-weight:200 900;font-style:normal;font-display:block;}
+
+  /* Mirrors assets/styles.css §tokens → brand/design-tokens.md §7.4. No invented values. */
+  :root{
+    --ink:#252525;        /* --text-primary    */
+    --ink-2:#474747;      /* --text-secondary  */
+    --ink-3:#8A8F98;      /* --text-tertiary   */
+    --rule:#E8E8E8;       /* --border-secondary */
+    --rule-3:#D5D5D5;     /* --border-tertiary  */
+    --paper:#FFFFFF;      /* --surface-page     */
+    --band:#252525;       /* --surface-inverse  */
+    --sans:'Urbanist', system-ui, sans-serif;
+    --mono:'Inconsolata', ui-monospace, monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#5a5f66; font-family:var(--sans); font-kerning:normal;
+        -webkit-font-smoothing:antialiased; display:flex; flex-direction:column;
+        align-items:center; gap:36px; padding:36px 0; }
+
+  /* px throughout, not rem: this is a fixed print canvas rasterised at a known size,
+     not a document a reader can zoom or restyle. */
+  .page{ width:1136px; height:1512px; background:var(--paper); color:var(--ink);
+         display:flex; flex-direction:column; overflow:hidden; }
+
+  /* ── masthead / colophon ── the interior pages' band, unchanged, so the cover and
+     the pages behind it share one identity. visual-guide.md:275-279 governs the
+     construction: divider ~80% of submark height, clear space each side at least the
+     submark height, Innovue balanced by optical weight, submark never below 24px. ── */
+  .band{ background:var(--band); color:#fff; flex:none;
+         display:grid; grid-template-columns:1fr auto; align-items:center; gap:16px;
+         padding:14px 46px;
+         font-size:11px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; }
+  .lockup{ display:flex; align-items:center; gap:14px; justify-self:start; }
+  .l-tis{ height:22px; width:auto; display:block; }
+  .l-div{ width:1px; height:22px; background:rgba(255,255,255,0.32); }
+  .l-innovue{ height:30px; width:auto; display:block; }
+  .band-r{ justify-self:end; color:rgba(255,255,255,0.72); }
+  .band-r b{ color:#fff; font-weight:600; }
+
+  .sheet{ flex:1; min-height:0; display:flex; flex-direction:column; padding:0 46px 0; }
+
+  /* auto here and auto on .foot-group split the page's free space into two equal gaps,
+     one above the title and one below the subject. With a single auto it all collected
+     into one hole in the middle of the sheet, which reads as a mistake rather than air. */
+  .kicker{ margin-top:auto; font-family:var(--mono); font-size:11px; letter-spacing:0.17em;
+           color:var(--ink-3); text-transform:uppercase; }
+
+  /* The dominant mass. 96px is impeccable's display ceiling and the right call here:
+     the cover has four elements, so the type has to carry the page on its own. */
+  .type{ margin-top:26px; font-size:96px; line-height:0.98; font-weight:600;
+         letter-spacing:-0.035em; }
+  .type span{ display:block; }
+  /* "Report" is the constant across all three tiers; the first word is the whole of the
+     difference. Sizing them equally made Score and Full identical in width, because both
+     were bounded by "Report" rather than by their own word, so the blurred thumbnails
+     collapsed to the same mass. At 96/52 the distinguishing word governs the block and
+     the three read as different widths. It is also the truer hierarchy. */
+  .type .word-2{ margin-top:2px; font-size:52px; line-height:1.05; font-weight:500;
+                 letter-spacing:-0.02em; color:var(--ink-2); }
+
+  /* The rule runs the full measure while the text stops at 62ch. Held to the text width
+     it stopped mid-page and left the right half unanchored; run full, it is the one
+     horizontal that ties the composition together. */
+  .subject{ margin-top:44px; padding-top:26px; border-top:1px solid var(--rule); }
+  .subject > *{ max-width:62ch; }
+  .subj-no{ font-family:var(--mono); font-size:15px; font-weight:600; letter-spacing:0.02em; }
+  .subj-t{ margin-top:10px; font-size:21px; line-height:1.35; font-weight:500;
+           letter-spacing:-0.01em; text-wrap:balance; }
+  .subj-o{ margin-top:10px; font-size:15px; color:var(--ink-2); }
+
+  /* margin-top:auto drops the whole foot group to the baseline of the sheet, so the
+     cover's air sits in one deliberate block between the subject and the metadata
+     rather than leaking evenly into every gap. */
+  .foot-group{ margin-top:auto; padding-bottom:34px; }
+
+  .meta{ display:grid; grid-template-columns:repeat(3, max-content); gap:0 72px;
+         padding-bottom:20px; border-bottom:1px solid var(--rule); }
+  /* brand-changelog.md:43 — mono is numbers and number-prefixed IDs only. The value
+     SIG-A-20260812-002 takes Inconsolata; the word ORDER does not. */
+  .meta dt{ font-size:9.5px; font-weight:600; letter-spacing:0.16em; color:var(--ink-3);
+            text-transform:uppercase; }
+  .meta dd{ margin-top:8px; font-family:var(--mono); font-size:14px; font-weight:600;
+            font-variant-numeric:tabular-nums; }
+  .meta dd small{ font-family:var(--sans); font-size:12.5px; font-weight:500;
+                  color:var(--ink-3); letter-spacing:0; }
+
+  .notice{ margin-top:18px; font-size:11.5px; line-height:1.55; color:var(--ink-3);
+           max-width:78ch; }
+  .notice b{ color:var(--ink-2); font-weight:600; }
+
+  .colophon{ background:var(--band); color:rgba(255,255,255,0.72); flex:none;
+             display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:16px;
+             padding:12px 46px;
+             font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; }
+  .colophon .l-tis{ height:18px; }
+  .colophon .l-div{ height:18px; }
+  .colophon .l-innovue{ height:24px; }
+  .colophon-r{ justify-self:end; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ A · SCORE ═══════════ -->
+<div class="page" id="cover-score">
+  <div class="band">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r">Issued <b>2026-08-12</b></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating</span>
+    <h1 class="type"><span>Score</span><span class="word-2">Report</span></h1>
+
+    <div class="subject">
+      <div class="subj-no">US9876543</div>
+      <div class="subj-t">Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes</div>
+      <div class="subj-o">Macrosilicon Manufacturing Corp.</div>
+    </div>
+
+    <div class="foot-group">
+      <dl class="meta">
+        <div><dt>Order</dt><dd>SIG-A-20260812-002</dd></div>
+        <div><dt>Contents</dt><dd>4 <small>sections</small></dd></div>
+        <div><dt>Reference pool</dt><dd>1,433 <small>patents</small></dd></div>
+      </dl>
+      <p class="notice"><b>Confidential.</b> Every copy is watermarked to the recipient who retrieved it. Scored by the TIS PSS engine on Innovue data; AI-assisted analysis, not legal or investment advice.</p>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="colophon-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+<!-- ═══════════ B · FULL ═══════════ -->
+<div class="page" id="cover-full">
+  <div class="band">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r">Issued <b>2026-08-05</b></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating</span>
+    <h1 class="type"><span>Full</span><span class="word-2">Report</span></h1>
+
+    <div class="subject">
+      <div class="subj-no">US9876543</div>
+      <div class="subj-t">Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes</div>
+      <div class="subj-o">Macrosilicon Manufacturing Corp.</div>
+    </div>
+
+    <div class="foot-group">
+      <dl class="meta">
+        <div><dt>Order</dt><dd>SIG-B-20260805-001</dd></div>
+        <div><dt>Contents</dt><dd>7 <small>chapters</small></dd></div>
+        <div><dt>Reference pool</dt><dd>1,433 <small>patents</small></dd></div>
+      </dl>
+      <p class="notice"><b>Confidential.</b> Every copy is watermarked to the recipient who retrieved it. Scored by the TIS PSS engine on Innovue data; AI-assisted analysis, not legal or investment advice.</p>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="colophon-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+<!-- ═══════════ BX · LANDSCAPE ═══════════ -->
+<div class="page" id="cover-landscape">
+  <div class="band">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="band-r">Issued <b>2026-08-10</b></span>
+  </div>
+
+  <div class="sheet">
+    <span class="kicker">Patent Strength Rating · Market Landscape</span>
+    <h1 class="type"><span>Landscape</span><span class="word-2">Report</span></h1>
+
+    <div class="subject">
+      <div class="subj-no">US9876543</div>
+      <div class="subj-t">Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes</div>
+      <div class="subj-o">Macrosilicon Manufacturing Corp.</div>
+    </div>
+
+    <div class="foot-group">
+      <dl class="meta">
+        <div><dt>Order</dt><dd>SIG-BX-20260810-004</dd></div>
+        <div><dt>Contents</dt><dd>4 <small>sections</small></dd></div>
+        <div><dt>Matches returned</dt><dd>10 <small>patents</small></dd></div>
+      </dl>
+      <p class="notice"><b>Confidential.</b> Every copy is watermarked to the recipient who retrieved it. Matches retrieved by vector search against Innovue's corpus; AI-assisted analysis, not legal or investment advice.</p>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span class="lockup">
+      <img class="l-tis" src="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" alt="TIS" />
+      <span class="l-div"></span>
+      <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
+    </span>
+    <span class="colophon-r">© 2026 Talent Intelligence Strategies</span>
+  </div>
+</div>
+
+</body>
+</html>
