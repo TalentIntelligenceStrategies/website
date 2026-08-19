@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-20 02:06 +0800** · Signal: added an unlinked noindex cover-directions review page under documents/, with nine stills of the A/B/C variant covers.
 - **2026-08-19 11:24 +0800** · Signal: renamed the three reports to Snapshot / Study / Survey (特寫 / 景深 / 廣角), reworked the card eyebrows and section dek, re-rendered all six cover and page-one PNGs.
 - **2026-08-18 08:17 +0800** · Signal: grade cell is now a tier-coloured letter with no fill; cover sheets added in front of the report pages, centred-classical variant wired into the retrieve preview and sample overlay.
 - **2026-08-18 06:43 +0800** · Signal: rebuilt the three report covers on the June Pro Report's masthead, facts grid, metric readouts and radar, with a black SABCD grade tile; the sample-report overlay now shows them too.

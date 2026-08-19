@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════════════
+  TIS · Signal report — cover directions A / B / C
+  ════════════════════════════════════════════════════════════════════════
+  Standalone review page for the three Signal report COVER SHEET directions.
+  Unlinked from every nav and marked noindex: the URL is how it is shared, the
+  same arrangement as platform-copy-review.html and licensing-copy-review.html.
+
+  WHAT IS BEING DECIDED. Three cover treatments exist as render sources in
+  assets/product-shots/signal/ — variant-a (ink on paper, rule-led), variant-b
+  (centred classical) and variant-c (bottom-anchored). Variant B is the one
+  wired into the retrieval module on product/signal/index.html today; A and C
+  are built and waiting on a call. This page puts all three across all three
+  report tiers so they can be compared in one view.
+
+  ── THE STILLS ARE RENDERS, NOT THE SOURCE ─────────────────────────────
+  The nine sheets are PNGs under assets/imagery/signal-reports/cover-variants/,
+  rendered from the variant HTML on 2026-08-19 at the true 1136×1512 canvas.
+  They are review-only and deliberately kept out of the flat signal-reports/
+  folder, which holds the covers the product page actually serves.
+
+  A still goes stale the moment a variant source changes. To re-render, serve
+  the repo root (python3 -m http.server 8000) and screenshot each cover at
+  canvas size. Each variant file stacks all three tiers as #cover-score /
+  #cover-full / #cover-landscape, so the target has to be isolated first —
+  scrolling to a fragment leaves headless Chrome painting the body background
+  instead of the page. Use a wrapper served from the same root that iframes the
+  variant at 1136×1512 and injects, on load,
+      body{padding:0;gap:0} .page{display:none} #<target>{display:flex}
+  then capture it:
+      Chrome --headless --window-size=1136,1512 --force-device-scale-factor=1 \
+             --virtual-time-budget=7000 --screenshot=variant-a-score.png "<wrapper URL>"
+
+  ── WHY THE PAGE HAS THE CONTROLS IT HAS ───────────────────────────────
+  The retrieval module shows the cover at 260px behind blur(4px), locked until
+  the balance is paid. A cover carries no grade, no radar and no pillar ladder,
+  so the width of the first word — Snapshot / Study / Survey — is the only
+  honest tier differentiator left. The width buttons and the blur toggle exist
+  to reproduce that condition; judging these sheets at full size only is how a
+  cover that fails at 260px gets picked.
+
+  ── CSS ────────────────────────────────────────────────────────────────
+  Page-local <style> per DESIGN.md §0.3: genuinely one-off. This is a review
+  tool, not a marketing page — it carries no site chrome, loads no styles.css,
+  and nothing in it is reusable elsewhere. Its two siblings in documents/ are
+  built the same way. Tokens below are the site's own names and values so the
+  page still reads as TIS; light-only, like the sibling tools.
+
+  EN only. Nothing here is customer-facing, so there is no data-zh pass.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Signal report — cover directions · TIS</title>
+<link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" />
+
+<style>
+/* ───────── Fonts ───────── */
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:400;font-display:swap;src:url('/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf') format('truetype');}
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:500;font-display:swap;src:url('/designs/assets/fonts/Urbanist/static/Urbanist-Medium.ttf') format('truetype');}
+@font-face{font-family:'Urbanist';font-style:normal;font-weight:600;font-display:swap;src:url('/designs/assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf') format('truetype');}
+@font-face{font-family:'Inconsolata';font-style:normal;font-weight:400;font-display:swap;src:url('/designs/assets/fonts/Inconsolata/static/Inconsolata-Regular.ttf') format('truetype');}
+@font-face{font-family:'Inconsolata';font-style:normal;font-weight:600;font-display:swap;src:url('/designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf') format('truetype');}
+
+/* ───────── Tokens ───────── */
+:root{
+  --text-primary:#252525;--text-secondary:#5a5a5a;--text-tertiary:#8a8a8a;
+  --border:#EEEEEE;--border-strong:#e0e0e0;
+  --surface-page:#FFFFFF;--surface-2:#FAFAFA;--surface-3:#F3F3F3;
+  --surface-page-translucent:rgba(255,255,255,.82);
+  --inverse:#252525;--text-inverse:#FFFFFF;
+  --shadow-low:0 2px 4px rgba(0,0,0,.06);
+  --shadow-med:0 4px 24px rgba(0,0,0,.08);
+  --font-sans:'Urbanist',system-ui,sans-serif;
+  --font-mono:'Inconsolata',ui-monospace,monospace;
+  /* Sheet width in unitless px so the same value drives the cell box. */
+  --w:340;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:var(--font-sans);color:var(--text-primary);background:var(--surface-2);
+  line-height:1.55;font-size:15.5px;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1320px;margin:0 auto;padding:52px 32px 110px;}
+
+/* ───────── Masthead ───────── */
+.top{display:flex;flex-direction:column;gap:13px;padding-bottom:24px;border-bottom:1px solid var(--border-strong);}
+.eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-tertiary);}
+h1{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1.05;text-wrap:balance;}
+.top p{max-width:64ch;color:var(--text-secondary);}
+
+/* ───────── Control strip ───────── */
+.strip{
+  position:sticky;top:0;z-index:20;margin:0 -32px 0;padding:13px 32px;
+  background:var(--surface-page-translucent);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-strong);
+  display:flex;gap:28px;align-items:center;flex-wrap:wrap;
+}
+.grp{display:flex;gap:10px;align-items:center;}
+.grp .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-tertiary);}
+.seg{display:flex;border:1px solid var(--border-strong);border-radius:2px;overflow:hidden;background:var(--surface-page);}
+.seg button{font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1;padding:8px 13px;border:0;border-right:1px solid var(--border);background:transparent;color:var(--text-secondary);cursor:pointer;}
+.seg button:last-child{border-right:0;}
+.seg button[aria-pressed="true"]{background:var(--inverse);color:var(--text-inverse);}
+.tog{font-family:var(--font-sans);font-size:13px;font-weight:500;line-height:1;padding:9px 14px;border:1px solid var(--border-strong);border-radius:2px;background:var(--surface-page);color:var(--text-secondary);cursor:pointer;}
+.tog[aria-pressed="true"]{background:var(--inverse);border-color:var(--inverse);color:var(--text-inverse);}
+button:focus-visible,.sheet:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px;}
+
+/* ───────── Prose ───────── */
+.note{margin:26px 0 4px;max-width:76ch;color:var(--text-secondary);}
+h2{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 15px;padding-bottom:11px;border-bottom:1px solid var(--border-strong);}
+.block{padding:44px 0 0;}
+
+/* ───────── Variant registers ───────── */
+.reg{padding:36px 0 4px;border-bottom:1px solid var(--border);}
+.reg:last-of-type{border-bottom:0;}
+.reg .head{display:flex;align-items:baseline;gap:15px;flex-wrap:wrap;margin-bottom:5px;}
+.letter{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--text-tertiary);}
+.reg h3{font-size:23px;font-weight:600;letter-spacing:-.01em;}
+.tag{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:2px;background:var(--inverse);color:var(--text-inverse);}
+.tag--off{background:transparent;color:var(--text-tertiary);border:1px solid var(--border-strong);}
+.why{max-width:76ch;color:var(--text-secondary);font-size:14.5px;}
+.src{font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);margin-top:6px;}
+
+/* ───────── Sheets ───────── */
+.sheets{display:flex;gap:26px;flex-wrap:wrap;margin-top:20px;}
+figure{width:calc(var(--w) * 1px);}
+.sheet{display:block;width:100%;padding:0;border:1px solid var(--border-strong);background:var(--surface-page);box-shadow:var(--shadow-low),var(--shadow-med);cursor:zoom-in;transition:transform .16s cubic-bezier(0.16,1,0.3,1);}
+.sheet img{display:block;width:100%;height:auto;}
+.sheet:hover{transform:translateY(-2px);}
+body[data-blur="on"] .sheet img{filter:blur(4px);}
+figcaption{margin-top:12px;display:flex;flex-direction:column;gap:2px;}
+figcaption .tier{font-weight:600;font-size:14.5px;}
+figcaption .kind{font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary);letter-spacing:.04em;}
+figure.small{width:calc(var(--w) * 0.72px);}
+
+/* ───────── Fixtures table ───────── */
+.scroller{overflow-x:auto;margin-top:20px;}
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:14px;}
+th{text-align:left;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-tertiary);padding:0 18px 10px 0;border-bottom:1px solid var(--border-strong);}
+td{padding:12px 18px;border-bottom:1px solid var(--border);vertical-align:top;font-variant-numeric:tabular-nums;padding-left:0;}
+td.code{font-family:var(--font-mono);font-weight:600;letter-spacing:.06em;}
+td .ord{font-family:var(--font-mono);font-size:13px;color:var(--text-secondary);}
+.state{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-tertiary);}
+
+.foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--border-strong);display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--text-tertiary);}
+
+/* ───────── Zoom ───────── */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;}
+dialog::backdrop{background:rgba(20,20,20,.84);}
+dialog img{display:block;width:min(94vw,1136px);height:auto;background:var(--surface-page);box-shadow:0 30px 90px rgba(0,0,0,.5);}
+dialog form{position:fixed;top:18px;right:22px;}
+dialog button{font-family:var(--font-sans);font-size:13px;font-weight:500;padding:9px 15px;cursor:pointer;border:1px solid rgba(255,255,255,.35);border-radius:2px;background:rgba(255,255,255,.1);color:#fff;}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+@media (max-width:640px){.wrap{padding:34px 18px 80px;}h1{font-size:30px;}.strip{margin:0 -18px;padding:12px 18px;}}
+</style>
+</head>
+<body data-blur="off">
+
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">Patent Intelligence · report cover sheet</span>
+    <h1>Signal cover directions</h1>
+    <p>Three cover treatments for the Signal report, each across all three report tiers.
+    Variant B is wired into the retrieval module today; A and C are built and waiting on a
+    decision. Click any sheet to see it full size.</p>
+  </header>
+
+  <div class="strip">
+    <div class="grp">
+      <span class="lbl">Sheet width</span>
+      <div class="seg" id="widths">
+        <button type="button" data-w="260">260</button>
+        <button type="button" data-w="340" aria-pressed="true">340</button>
+        <button type="button" data-w="480">480</button>
+        <button type="button" data-w="640">640</button>
+      </div>
+    </div>
+    <div class="grp">
+      <span class="lbl">Condition</span>
+      <button type="button" class="tog" id="blur" aria-pressed="false">Blur 4px, as the module shows it</button>
+    </div>
+  </div>
+
+  <p class="note">The retrieval screen shows the cover at 260&nbsp;px behind a 4&nbsp;px blur,
+  locked until the balance is paid. A cover carries no grade, no radar and no pillar ladder, so
+  the width of the first word — Snapshot, Study, Survey — is the only thing left that tells the
+  tiers apart. Set the width to 260, turn the blur on, and judge them there first.</p>
+
+  <div class="reg">
+    <div class="head">
+      <span class="letter">A</span>
+      <h3>Ink on paper, rule-led</h3>
+      <span class="tag tag--off">Alternative</span>
+    </div>
+    <p class="why">Keeps the interior pages' dark masthead and colophon, so the cover reads as
+    page one of one continuous document. The title sits in the upper middle and the order facts
+    are pinned to the foot, with the page's slack split into two equal fields rather than
+    collecting in one hole in the middle.</p>
+    <p class="src">assets/product-shots/signal/signal-report-cover-variant-a.html</p>
+    <div class="sheets">
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-a-score.png" data-cap="Variant A · Snapshot">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-a-score.png" alt="Variant A cover, Snapshot tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">A · Snapshot</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-a-full.png" data-cap="Variant A · Study">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-a-full.png" alt="Variant A cover, Study tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">B · Study</span><span class="kind">7 chapters · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-a-landscape.png" data-cap="Variant A · Survey">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-a-landscape.png" alt="Variant A cover, Survey tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">BX · Survey</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="reg">
+    <div class="head">
+      <span class="letter">B</span>
+      <h3>Centred classical</h3>
+      <span class="tag">Wired in</span>
+    </div>
+    <p class="why">Drops both bands and goes white to the edge, with the lockup set large and
+    centred on the axis — the bound-report convention, where the cover is its own surface and the
+    document proper starts behind it. Centring is the whole argument for this direction, so it is
+    applied without exception; one left-aligned element would read as a mistake.</p>
+    <p class="src">assets/product-shots/signal/signal-report-cover-variant-b.html · rendered to the covers the product page serves</p>
+    <div class="sheets">
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-b-score.png" data-cap="Variant B · Snapshot">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-b-score.png" alt="Variant B cover, Snapshot tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">A · Snapshot</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-b-full.png" data-cap="Variant B · Study">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-b-full.png" alt="Variant B cover, Study tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">B · Study</span><span class="kind">7 chapters · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-b-landscape.png" data-cap="Variant B · Survey">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-b-landscape.png" alt="Variant B cover, Survey tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">BX · Survey</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="reg">
+    <div class="head">
+      <span class="letter">C</span>
+      <h3>Bottom-anchored</h3>
+      <span class="tag tag--off">Alternative</span>
+    </div>
+    <p class="why">Groups the whole lot — kicker, report type, subject, order facts — as one block
+    at the foot, under a single open field. A cover whose title sits low reads as a monograph
+    rather than a form, and grouping the metadata with the type gives the page one deliberate
+    opening instead of content, hole, content. The bands are kept, so it bookends dark to dark
+    like the interior pages.</p>
+    <p class="src">assets/product-shots/signal/signal-report-cover-variant-c.html</p>
+    <div class="sheets">
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-c-score.png" data-cap="Variant C · Snapshot">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-c-score.png" alt="Variant C cover, Snapshot tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">A · Snapshot</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-c-full.png" data-cap="Variant C · Study">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-c-full.png" alt="Variant C cover, Study tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">B · Study</span><span class="kind">7 chapters · watermarked PDF</span></figcaption>
+      </figure>
+      <figure>
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/cover-variants/variant-c-landscape.png" data-cap="Variant C · Survey">
+          <img src="/assets/imagery/signal-reports/cover-variants/variant-c-landscape.png" alt="Variant C cover, Survey tier" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">BX · Survey</span><span class="kind">4 sections · watermarked PDF</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Where the cover appears</h2>
+    <p class="note" style="margin-top:0">The retrieval form on the Signal page takes an email and
+    a registration code and returns the order's status. Once an order is complete, the blurred
+    cover and a free outline appear beside the status track. The four codes below are the demo
+    fixtures that page ships with — it has no backend, so they are the only way to reach each
+    state.</p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Order</th><th>Report</th><th>Contents</th><th>State</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="code">K7P2-9XQR-4M</td><td><span class="ord">SIG-A-20260812-002</span></td><td>A · Snapshot</td><td>4 sections</td><td><span class="state">Complete</span></td></tr>
+          <tr><td class="code">R4TX-8HJW-2N</td><td><span class="ord">SIG-B-20260805-001</span></td><td>B · Study</td><td>7 chapters</td><td><span class="state">Complete</span></td></tr>
+          <tr><td class="code">M9VD-3KPY-7B</td><td><span class="ord">SIG-BX-20260810-004</span></td><td>BX · Survey</td><td>4 sections</td><td><span class="state">Complete</span></td></tr>
+          <tr><td class="code">H3WN-6QFT-8C</td><td><span class="ord">SIG-A-20260817-001</span></td><td>A · Snapshot</td><td>—</td><td><span class="state">In production · status only</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>What the cover replaced</h2>
+    <p class="note" style="margin-top:0">The blurred thumbnail used to show the report's first
+    interior page. Each tier carried different artwork there — a radar, a band of pillar bars, a
+    ladder of the closest patents — and those shapes survived the blur, which is how the tiers
+    read apart at 260&nbsp;px. The covers give that up in exchange for looking like a document
+    rather than a dashboard; the outline printed beside the thumbnail now carries the tier.</p>
+    <div class="sheets">
+      <figure class="small">
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/signal-report-p1-score.png" data-cap="Interior page one · Snapshot">
+          <img src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Snapshot interior page one, radar" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">A · Snapshot</span><span class="kind">Radar</span></figcaption>
+      </figure>
+      <figure class="small">
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/signal-report-p1-full.png" data-cap="Interior page one · Study">
+          <img src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Study interior page one, eight pillar bars" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">B · Study</span><span class="kind">Eight pillar bars</span></figcaption>
+      </figure>
+      <figure class="small">
+        <button type="button" class="sheet" data-full="/assets/imagery/signal-reports/signal-report-p1-landscape.png" data-cap="Interior page one · Survey">
+          <img src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Survey interior page one, closest-patent ladder" width="1136" height="1512" loading="lazy" decoding="async" />
+        </button>
+        <figcaption><span class="tier">BX · Survey</span><span class="kind">Closest-patent ladder</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Stills rendered from source at 1136 × 1512 on 2026-08-19.</span>
+    <span>Source: assets/product-shots/signal/</span>
+    <span>Internal review — not linked from the site.</span>
+  </div>
+</div>
+
+<dialog id="zoom">
+  <form method="dialog"><button type="submit">Close</button></form>
+  <img id="zoom-img" alt="" />
+</dialog>
+
+<script>
+(() => {
+  const widths = document.getElementById('widths');
+  widths.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-w]');
+    if (!b) return;
+    widths.querySelectorAll('button').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    document.documentElement.style.setProperty('--w', b.dataset.w);
+  });
+
+  const blur = document.getElementById('blur');
+  blur.addEventListener('click', () => {
+    const on = blur.getAttribute('aria-pressed') !== 'true';
+    blur.setAttribute('aria-pressed', String(on));
+    document.body.dataset.blur = on ? 'on' : 'off';
+  });
+
+  // Zoom always shows the sheet unblurred: the blur is the module's condition, not a
+  // property of the artwork, so inspecting one should never inherit it.
+  const dlg = document.getElementById('zoom');
+  const zimg = document.getElementById('zoom-img');
+  document.querySelectorAll('.sheet').forEach(btn => {
+    btn.addEventListener('click', () => {
+      zimg.src = btn.dataset.full;
+      zimg.alt = btn.dataset.cap;
+      dlg.showModal();
+    });
+  });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+})();
+</script>
+
+</body>
+</html>
