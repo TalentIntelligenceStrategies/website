@@ -244,7 +244,8 @@ Use the tokens, never a literal stack:
 >
 > Mixed content splits: `Save 10%` leads with a word, so it is sans. `NT$8,990` is
 > sans-free — mono. When an eyebrow carries words rather than numerals, use
-> `.offer-card-eyebrow--text`.
+> `.offer-card-eyebrow--text` — as the Signal report cards do (`The grade` / `The
+> evidence` / `The field`).
 >
 > This rule is upstream in [`design-tokens-snapshot.md`](designs/design-tokens-snapshot.md) §3.
 > It was violated for a long time because that file's own §7.2 defined `copy-mono-*`
@@ -1153,15 +1154,15 @@ Four things worth knowing before editing it:
 
   | Tier | Chapter block | Blurred silhouette |
   | --- | --- | --- |
-  | Score `A` | 8-pillar radar, paired with the rationale | soft circular mass, sparse page |
-  | Full `B` | 8 pillar bars + top strengths / risks | hard dark band across the middle |
-  | Landscape `BX` | 10 descending similarity rows | stepped ladder, right-hand bar column |
+  | Snapshot `A` | 8-pillar radar, paired with the rationale | soft circular mass, sparse page |
+  | Study `B` | 8 pillar bars + top strengths / risks | hard dark band across the middle |
+  | Survey `BX` | 10 descending similarity rows | stepped ladder, right-hand bar column |
 
-  Score gets the radar and Full does not, because that is what their chapters are: Score ch.3
-  is "Eight pillars at a glance", Full ch.3 is "Eight pillars, all 50 indicators". At-a-glance
+  Snapshot gets the radar and Study does not, because that is what their chapters are:
+  Snapshot ch.3 is "Eight pillars at a glance", Study ch.3 is "Eight pillars, all 50 indicators". At-a-glance
   is a radar; the drill-down is per-pillar values. Giving both a radar was the first attempt
   and made the two thumbnails near-identical. For the same reason the facts grid appears on
-  Score and Full but not Landscape — those two open on "Patent facts & family" and Landscape
+  Snapshot and Study but not Survey — those two open on "Patent facts & family" and Survey
   opens on "PSS overview".
 
   Change a cover and re-run the blur test at 260px with `blur(4px)`. If the three are not
@@ -1175,10 +1176,10 @@ Four things worth knowing before editing it:
 
   The sheet is a fixed-height flex column, so every block in it is `flex:none`. Without that
   a long page silently *compresses* its children instead of overflowing — which cropped the
-  Landscape grade cell in half. Note that `.contents` carries `margin-top:auto`, which
+  Survey grade cell in half. Note that `.contents` carries `margin-top:auto`, which
   absorbs all remaining slack and pins every total to exactly 1512: to read the real natural
-  height, zero that margin first, then sum `.sheet`'s children. Current headroom is Score 9px,
-  Full 42px, Landscape 35px. A headline breaking to a third line costs ~50px and is the single
+  height, zero that margin first, then sum `.sheet`'s children. Current headroom is Snapshot 9px,
+  Study 42px, Survey 35px. A headline breaking to a third line costs ~50px and is the single
   most expensive thing that can happen to these sheets.
 
 - **One asset set serves both surfaces.** The same three renders are the blurred retrieve
@@ -1188,8 +1189,8 @@ Four things worth knowing before editing it:
   the balance on is not. Preserve that inverse.
 
   Before this, the overlay showed `signal-pro-report-compact-a/-b.png`, which are SABCD
-  *grade* variants of one report type rather than three report types, so it sold "Score vs
-  Full" with two images differing only by letter. Panel C had no render at all and carried a
+  *grade* variants of one report type rather than three report types, so it sold the first
+  two tiers with two images differing only by letter. Panel C had no render at all and carried a
   hand-authored `<ul class="sig-xsimlist">` on an unrelated fictional patent. Both are gone;
   `.sig-xsimlist` / `.sig-score` were removed with it. All five `signal-pro-report-compact-*`
   PNGs are now unreferenced — kept on disk as valid grade specimens, live on no page.

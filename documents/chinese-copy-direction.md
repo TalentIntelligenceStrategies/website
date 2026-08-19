@@ -466,7 +466,7 @@ Irene's rationale (not recommended):
 
 Irene's rationale (not recommended):
 - Targets the "fear of misinvesting — rather miss 10 than misinvest 1" VC mindset. Positions the product as a "minesweeper / warning system."
-- 「風險雷達」 anchors product value in "error-prevention and demining." Through the Full Report's four-scenario weight stability (licensing / litigation / investment / portfolio), it scans whether a patent will face litigation or invalidation — minimizing investment risk.
+- 「風險雷達」 anchors product value in "error-prevention and demining." Through the Study's four-scenario weight stability (licensing / litigation / investment / portfolio), it scans whether a patent will face litigation or invalidation — minimizing investment risk.
 - Product feel: similar to Bloomberg Risk or Moody's risk indicators — top-tier financial-risk-control product feel.
 
 ### Option 2 (Recommended by Irene): 泰然專利強度評級系統

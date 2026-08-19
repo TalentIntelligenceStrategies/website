@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-19 11:24 +0800** · Signal: renamed the three reports to Snapshot / Study / Survey (特寫 / 景深 / 廣角), reworked the card eyebrows and section dek, re-rendered all six cover and page-one PNGs.
 - **2026-08-18 08:17 +0800** · Signal: grade cell is now a tier-coloured letter with no fill; cover sheets added in front of the report pages, centred-classical variant wired into the retrieve preview and sample overlay.
 - **2026-08-18 06:43 +0800** · Signal: rebuilt the three report covers on the June Pro Report's masthead, facts grid, metric readouts and radar, with a black SABCD grade tile; the sample-report overlay now shows them too.
 - **2026-08-18 00:56 +0800** · Signal: PSS ledger labels beside larger numerals with tightened balanced notes, trade card on signal-cool.jpg, hero band derived from the CTA row's top edge; retrieve preview now per-tier with three rating-action cover renders; contact chrome across all 8 pages routes to the page's own form, or the homepage's when it has none.

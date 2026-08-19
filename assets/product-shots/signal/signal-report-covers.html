@@ -26,17 +26,17 @@
   THE ONE HARD CONSTRAINT. These are shown at 260px behind a 4px blur. All three tiers
   carry the same grade, subject, facts grid and metric row, so the difference lives in
   the chapter block and the contents length:
-      Score      radar                 → circular mass, short list
-      Full       eight pillar bars     → even bar band, long list
-      Landscape  ten stepped bars      → descending ladder, short list
-  Score gets the radar and Full does not, because that is what their chapters are:
-  Score ch.3 is "Eight pillars at a glance", Full ch.3 is "Eight pillars, all 50
+      Snapshot   radar                 → circular mass, short list
+      Study      eight pillar bars     → even bar band, long list
+      Survey     ten stepped bars      → descending ladder, short list
+  Snapshot gets the radar and Study does not, because that is what their chapters are:
+  Snapshot ch.3 is "Eight pillars at a glance", Study ch.3 is "Eight pillars, all 50
   indicators". At-a-glance is a radar; the drill-down is per-pillar values. Giving both
   a radar was the first draft, and it made the two thumbnails near-identical.
   Change a cover and re-run the blur test, or the thumbnail stops distinguishing tiers.
 
   HEIGHT. .page is a fixed 1512px flex column, so a sheet that runs long silently
-  COMPRESSES its children instead of overflowing — that clipped the Landscape grade cell
+  COMPRESSES its children instead of overflowing — that clipped the Survey grade cell
   in half once. Every sheet block carries flex:none so overflow stays visible. Measure
   scrollHeight vs clientHeight; do not eyeball it.
 -->
@@ -132,9 +132,9 @@
   /* ── issuer facts ── ported from .r-issuer. June stacks these 2×5, which costs ~240px
      of a 1512px sheet; the 5×2 arrangement is June's own .r-issuer-band variant and
      uses the width this page has anyway. ────────────────────────── */
-  /* Appears on Score and Full, not Landscape — those two open on "Patent facts & family"
-     and Landscape opens on "PSS overview". The block sits where the report has the
-     chapter, which is also what makes room for Landscape's ten-row ladder. */
+  /* Appears on Snapshot and Study, not Survey — those two open on "Patent facts & family"
+     and Survey opens on "PSS overview". The block sits where the report has the
+     chapter, which is also what makes room for Survey's ten-row ladder. */
   .facts{ margin-top:18px; padding-top:16px; border-top:1px solid var(--rule);
           display:grid; grid-template-columns:repeat(5, 1fr); gap:14px 24px; }
   .fact dt{ font-size:9px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
@@ -180,7 +180,7 @@
               border:1px solid var(--rule-3); border-radius:3px; overflow:hidden; }
   .meter-fill{ position:absolute; top:0; bottom:0; left:0; background:var(--ink); }
   .meter-tick{ position:absolute; top:-3px; bottom:-3px; left:50%; width:1px; background:var(--rule-3); }
-  /* Landscape's meter runs 0.00–1.00 cosine, so its reference is the 0.70 retrieval floor,
+  /* Survey's meter runs 0.00–1.00 cosine, so its reference is the 0.70 retrieval floor,
      not the midpoint. */
   .meter-tick--70{ left:70%; }
   .meter-scale{ display:flex; justify-content:space-between; font-family:var(--mono);
@@ -193,15 +193,15 @@
   .texture-h span{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase; }
   .texture-h em{ font-family:var(--mono); font-style:normal; font-size:11px; color:var(--ink-3); }
 
-  /* Score — the eight pillars at a glance. Ported from .r-radar-svg; monochrome by
+  /* Snapshot — the eight pillars at a glance. Ported from .r-radar-svg; monochrome by
      design-tokens.md §7.2, which keeps the radar off the tier ramp even when the grade
      chip is coloured. Markup is generated statically so the render needs no JS. */
-  /* Score and Full pair their chapter visual with the rating rationale instead of stacking
+  /* Snapshot and Study pair their chapter visual with the rating rationale instead of stacking
      the two full-width. Two problems solved at once: the visual gets a sane aspect (the
      radar was stranded in ~250px of dead gutter; the eight pillars, given all 1044px,
      became 117px-wide solid slabs rather than bars), and the rationale stops costing a
      block of its own, which is where the slack above CONTENTS was coming from.
-     Landscape keeps the full width — a ten-row ladder needs it. */
+     Survey keeps the full width — a ten-row ladder needs it. */
   .texture--split{ display:grid; grid-template-columns:1fr 360px; column-gap:44px; row-gap:12px;
                    align-items:center; }
   .texture--split .texture-h{ grid-column:1 / -1; margin-bottom:0; }
@@ -221,7 +221,7 @@
   .radar .label-score{ font-family:var(--sans); font-size:11px; font-weight:600; fill:var(--ink-3); }
   .radar .ring-label{ font-family:var(--mono); font-size:9px; fill:var(--ink-4); letter-spacing:0.06em; }
 
-  /* Full — eight pillars, even band */
+  /* Study — eight pillars, even band */
   .pillars{ display:grid; grid-template-columns:repeat(8,1fr); gap:12px; }
   .pil{ display:flex; flex-direction:column; gap:8px; }
   .pil-t{ display:flex; align-items:baseline; justify-content:space-between; }
@@ -240,11 +240,11 @@
                  background:rgba(255,255,255,0.45); }
   .pil-n{ font-size:9.5px; line-height:1.25; color:var(--ink-3); }
 
-  /* Full only — a four-row cut of chapters 4 and 5. Codes, names and percentiles are the
+  /* Study only — a four-row cut of chapters 4 and 5. Codes, names and percentiles are the
      `drivers` and `sensitivities` arrays of REPORTS['macrosilicon-s'] in
      signal-reports-preview.html, i.e. the canonical record for this sample patent, not
-     invented figures. It also gives Full a text-dense lower half, which is what separates
-     its thumbnail from Score's once both carry the same header and metric row. */
+     invented figures. It also gives Study a text-dense lower half, which is what separates
+     its thumbnail from Snapshot's once both carry the same header and metric row. */
   .drivers{ margin-top:16px; padding-top:12px; border-top:1px solid var(--rule);
             display:grid; grid-template-columns:1fr 1fr; column-gap:44px; }
   .drv h3{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
@@ -255,7 +255,7 @@
   .drv-n{ font-size:12.5px; font-weight:500; }
   .drv-v{ font-family:var(--mono); font-size:12px; font-weight:600; }
 
-  /* Landscape — ten matches, descending ladder */
+  /* Survey — ten matches, descending ladder */
   .ladder{ display:flex; flex-direction:column; }
   /* 5px, not the 9.5 the other rhythms use: ten rows plus a rationale and a four-item
      contents makes this the densest of the three covers, and it now carries the facts
@@ -318,7 +318,7 @@
 </head>
 <body>
 
-<!-- ═════════════ A · SCORE — radar ═════════════ -->
+<!-- ═════════════ A · SNAPSHOT — radar ═════════════ -->
 <div class="page" id="p-score">
   <div class="band">
     <span class="band-l">
@@ -326,7 +326,7 @@
       <span class="band-div"></span>
       <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
     </span>
-    <span class="band-r"><b>Score Report</b> <span>Issued 2026-08-12</span></span>
+    <span class="band-r"><b>Snapshot Report</b> <span>Issued 2026-08-12</span></span>
   </div>
 
   <div class="sheet">
@@ -489,7 +489,7 @@
   </div>
 </div>
 
-<!-- ═════════════ B · FULL — eight even pillar bars ═════════════ -->
+<!-- ═════════════ B · STUDY — eight even pillar bars ═════════════ -->
 <div class="page" id="p-full">
   <div class="band">
     <span class="band-l">
@@ -497,7 +497,7 @@
       <span class="band-div"></span>
       <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
     </span>
-    <span class="band-r"><b>Full Report</b> <span>Issued 2026-08-05</span></span>
+    <span class="band-r"><b>Study Report</b> <span>Issued 2026-08-05</span></span>
   </div>
 
   <div class="sheet">
@@ -638,7 +638,7 @@
   </div>
 </div>
 
-<!-- ═════════════ BX · LANDSCAPE — ten descending bars ═════════════ -->
+<!-- ═════════════ BX · SURVEY — ten descending bars ═════════════ -->
 <div class="page" id="p-landscape">
   <div class="band">
     <span class="band-l">
@@ -646,11 +646,11 @@
       <span class="band-div"></span>
       <img class="l-innovue" src="/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng.svg" alt="Innovue" />
     </span>
-    <span class="band-r"><b>Landscape Report</b> <span>Issued 2026-08-10</span></span>
+    <span class="band-r"><b>Survey Report</b> <span>Issued 2026-08-10</span></span>
   </div>
 
   <div class="sheet">
-    <span class="kicker">Patent Strength Rating · Market Landscape</span>
+    <span class="kicker">Patent Strength Rating · Market Comparison</span>
     <h1 class="headline">Rated S, with the ten closest patents on the market.</h1>
     <p class="subject"><b>US9876543</b> &nbsp;·&nbsp; Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes &nbsp;·&nbsp; Macrosilicon Manufacturing Corp.</p>
 
@@ -724,7 +724,7 @@
     </div>
 
     <div class="rationale">
-      <h2>Landscape rationale</h2>
+      <h2>Survey rationale</h2>
       <div>
         <p>Ten matches returned above the <b>0.70</b> similarity floor, clustered on in-line
         metrology feedback for advanced-node etch. The three closest all claim per-die correction,

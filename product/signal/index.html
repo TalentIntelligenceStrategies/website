@@ -155,7 +155,7 @@
      styles.css, so the mono base wins and the modifier never applies. These eyebrows
      are words, and the matching overlay label (.sig-xpanel__head .sig-xcard__kind
      above) already forces sans — restate it here so card and panel agree. Sentence
-     case, not caps: these read as a plain three-word system (fast / deep / wide), and
+     case, not caps: these read as plain noun phrases (the grade / the evidence / the field), and
      uppercasing them turns a phrase into a label. Tracking eases off to suit. */
   .offer-card[data-report] .offer-card-eyebrow--text{
     font-family:var(--font-sans);
@@ -1225,13 +1225,13 @@
   <section class="section offerings" id="reports" aria-labelledby="reports-heading">
     <div class="container">
       <h2 id="reports-heading" class="h-section" data-reveal data-zh="三種報告。">Three reports.</h2>
-      <p class="section-dek" data-reveal data-zh="一個分數、一份完整解讀，或你專利周邊的市場——依你的決策需求選擇。">A score, a full read, or the market around you — pick what your decision needs.</p>
+      <p class="section-dek" data-reveal data-zh="同一件專利，三種視角——數字本身、數字背後、數字周圍。">One patent, three frames — the number, what’s behind it, what’s around it.</p>
       <div class="offerings-grid">
 
         <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="快速解讀">Fast read</span>
-            <span class="offer-card-title" data-zh="分數報告">Score Report</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
+            <span class="offer-card-title" data-zh="特寫">Snapshot</span>
             <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1,433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1,433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1241,9 +1241,9 @@
 
         <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="深度解讀">Deep read</span>
-            <span class="offer-card-title" data-zh="完整報告">Full Report</span>
-            <span class="offer-card-desc" data-zh="含分數報告全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Score Report, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
+            <span class="offer-card-title" data-zh="景深">Study</span>
+            <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -1252,8 +1252,8 @@
 
         <button type="button" class="offer-card offer-card--sigC" data-report="c" aria-expanded="false" aria-controls="sig-panel-c">
           <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="廣度解讀">Wide read</span>
-            <span class="offer-card-title" data-zh="市場地景報告">Landscape Report</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
+            <span class="offer-card-title" data-zh="廣角">Survey</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可——連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1495,17 +1495,17 @@
             <!-- Report choice is gated by the input type above (PRD v0.7 F-ROUTE /
                  §8.2.1): a full PSS ranking needs a published patent's citation,
                  family and legal record, so a pending draft or a bare idea can only
-                 take Landscape Report. The note carries the rule in copy — it is the
+                 take Survey. The note carries the rule in copy — it is the
                  contract; the disabling below is the convenience. It appears only when
                  the rule actually bites, so the default state pays nothing for it. -->
             <fieldset class="contact-topics" aria-describedby="intake-gate-note">
               <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="分數報告">Score Report</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="完整報告">Full Report</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="市場地景報告">Landscape Report</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫">Snapshot</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深">Study</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角">Survey</span></label>
               </div>
-              <p class="sig-callout" id="intake-gate-note" hidden data-zh="分數報告與完整報告需要已公開專利；草稿或想法走市場地景報告。">Score Report and Full Report need a published patent. A draft or an idea takes the Landscape Report.</p>
+              <p class="sig-callout" id="intake-gate-note" hidden data-zh="特寫與景深需要已公開專利；草稿或想法走廣角。">Snapshot and Study need a published patent. A draft or an idea takes Survey.</p>
             </fieldset>
 
             <!-- One input per type (PRD v0.7 §8.2.1 + build handoff §2): a patent number
@@ -1598,10 +1598,10 @@
         <!-- The sample codes used to print here. Pulled from the page 2026-08-13, kept
              here because they are still the only way to exercise the F-STATUS outcomes
              on a site with no backend. One per report tier, plus one still in production:
-               complete        K7P2-9XQR-4M   → SIG-A-20260812-002,  Score Report
-               complete        R4TX-8HJW-2N   → SIG-B-20260805-001,  Full Report
-               complete        M9VD-3KPY-7B   → SIG-BX-20260810-004, Landscape Report
-               in production   H3WN-6QFT-8C   → SIG-A-20260817-001,  Score Report
+               complete        K7P2-9XQR-4M   → SIG-A-20260812-002,  Snapshot
+               complete        R4TX-8HJW-2N   → SIG-B-20260805-001,  Study
+               complete        M9VD-3KPY-7B   → SIG-BX-20260810-004, Survey
+               in production   H3WN-6QFT-8C   → SIG-A-20260817-001,  Snapshot
              Any email; the match is case-insensitive and ignores spaces and hyphens.
              Their vertical space is held by .contact-panel's margin-bottom below, so
              removing them did not resize the card. -->
@@ -1614,7 +1614,7 @@
             <div class="sig-rt__panel" role="status" aria-live="polite">
 
               <div class="sig-rt__order">
-                <h3 tabindex="-1" id="retrieve-result-heading"><span class="sig-rt__no" id="rt-order">SIG-B-20260805-001</span> · <span id="rt-kind" data-zh="完整報告">Full Report</span></h3>
+                <h3 tabindex="-1" id="retrieve-result-heading"><span class="sig-rt__no" id="rt-order">SIG-B-20260805-001</span> · <span id="rt-kind" data-zh="景深">Study</span></h3>
                 <p><span data-zh="送出日">Submitted</span> <span id="rt-date">2026-08-05</span></p>
               </div>
 
@@ -1657,7 +1657,7 @@
                   <div class="sig-rt__outline">
                     <h4 data-zh="報告涵蓋範圍（免費預覽）">What the report covers — free preview</h4>
 
-                    <!-- A · Score. Items 1–2 are byte-identical to the Full Report's below,
+                    <!-- A · Snapshot. Items 1–2 are byte-identical to the Study's below,
                          on purpose: the two tiers share a spine and diverge after it, so
                          anyone comparing the two codes reads the ladder directly. -->
                     <ol class="sig-rt__chapters" data-tier="A" hidden>
@@ -1679,9 +1679,9 @@
                       </li>
                     </ol>
 
-                    <!-- BX · Landscape. Carries a grade as well as the ten matches, so it
+                    <!-- BX · Survey. Carries a grade as well as the ten matches, so it
                          opens on the same PSS overview the other two tiers do — item 1 here
-                         is byte-identical to item 2 of Score and Full. The four items match
+                         is byte-identical to item 2 of Snapshot and Study. The four items match
                          the contents printed on its own cover render; if one changes, change
                          both or the free preview stops describing the thing it previews. -->
                     <ol class="sig-rt__chapters" data-tier="BX" hidden>
@@ -1703,7 +1703,7 @@
                       </li>
                     </ol>
 
-                    <!-- B · Full. Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
+                    <!-- B · Study. Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
                     <ol class="sig-rt__chapters" data-tier="B">
                       <li>
                         <span data-zh="專利基本資料">Patent facts &amp; family</span>
@@ -1753,56 +1753,56 @@
   <div class="sig-xoverlay" id="sig-xoverlay" data-open="false">
     <div class="sig-xbackdrop" id="sig-xbackdrop" aria-hidden="true"></div>
 
-    <!-- Panel A · Short -->
+    <!-- Panel A · Snapshot -->
     <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xpanel__media"><img src="/assets/imagery/signal/short_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="快速解讀">Fast read</span>
-          <h2 id="sig-panel-a-title" data-zh="分數報告">Score Report</h2>
+          <span class="sig-xcard__kind" data-zh="評等">The grade</span>
+          <h2 id="sig-panel-a-title" data-zh="特寫">Snapshot</h2>
           <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是分數報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Score Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Score Report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Score Report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
+          <p data-zh-html data-zh="以下是特寫的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Snapshot looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
 
-    <!-- Panel B · Long -->
+    <!-- Panel B · Study -->
     <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xpanel__media"><img src="/assets/imagery/signal/long_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="深度解讀">Deep read</span>
-          <h2 id="sig-panel-b-title" data-zh="完整報告">Full Report</h2>
+          <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
+          <h2 id="sig-panel-b-title" data-zh="景深">Study</h2>
           <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是完整報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Full Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Full Report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Full Report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
+          <p data-zh-html data-zh="以下是景深的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Study looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
 
-    <!-- Panel C · Advanced -->
+    <!-- Panel C · Survey -->
     <div class="sig-xpanel" id="sig-panel-c" role="dialog" aria-modal="true" aria-labelledby="sig-panel-c-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xpanel__media"><img src="/assets/imagery/signal/advance_report.jpg" alt="" /></div>
         <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="廣度解讀">Wide read</span>
-          <h2 id="sig-panel-c-title" data-zh="市場地景報告">Landscape Report</h2>
+          <span class="sig-xcard__kind" data-zh="場域">The field</span>
+          <h2 id="sig-panel-c-title" data-zh="廣角">Survey</h2>
           <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得，並附上你自己專利的 SABCD 等級。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search, alongside your own patent's SABCD grade.</p>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是市場地景報告的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎向量比對 API 串接。">Here's what a Landscape Report looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's vector-comparison API is connected.</p>
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Landscape Report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Landscape Report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
+          <p data-zh-html data-zh="以下是廣角的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎向量比對 API 串接。">Here's what a Survey looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's vector-comparison API is connected.</p>
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" />
+          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
         </div>
       </div>
     </div>
@@ -2243,11 +2243,11 @@
      the chips, once by picking a field. Only the matching one stays.
 
      (2) Which reports are offered. A full PSS ranking needs a published patent's
-     citation, family and legal record, so Score Report and Full Report (marked
+     citation, family and legal record, so Snapshot and Study (marked
      data-requires="granted") are offered only for a granted / published patent;
-     pending drafts and bare ideas leave Landscape Report. The radio values
+     pending drafts and bare ideas leave Survey. The radio values
      (a-short / b-long / b-advanced) intentionally keep the PRD's A / B / BX tier
-     codes — only the visible labels were renamed.
+     codes and outlive every renaming of the visible labels — this is the third set.
 
      Progressive enhancement: with no JS, all three inputs stay visible and every
      report stays selectable, so nothing is unreachable — an invalid pair is then
@@ -2326,21 +2326,21 @@
     const ORDERS = {
       'K7P29XQR4M': {
         order: 'SIG-A-20260812-002', date: '2026-08-12', step: 2, done: true, tier: 'A',
-        kind: { en: 'Score Report', zh: '分數報告' }
+        kind: { en: 'Snapshot', zh: '特寫' }
       },
       'R4TX8HJW2N': {
         order: 'SIG-B-20260805-001', date: '2026-08-05', step: 2, done: true, tier: 'B',
-        kind: { en: 'Full Report', zh: '完整報告' }
+        kind: { en: 'Study', zh: '景深' }
       },
       'M9VD3KPY7B': {
         order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 2, done: true, tier: 'BX',
-        kind: { en: 'Landscape Report', zh: '市場地景報告' }
+        kind: { en: 'Survey', zh: '廣角' }
       },
       // Still mid-production: the state a customer meets right after paying the deposit.
       // AC-1 gives status only — no outline, no preview, no balance CTA.
       'H3WN6QFT8C': {
         order: 'SIG-A-20260817-001', date: '2026-08-17', step: 1, done: false, tier: 'A',
-        kind: { en: 'Score Report', zh: '分數報告' }
+        kind: { en: 'Snapshot', zh: '特寫' }
       }
     };
 
