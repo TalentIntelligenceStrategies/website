@@ -1866,15 +1866,18 @@ main { padding-top: 64px; }
   color: var(--text-secondary);
 }
 
-/* On image-backed grounds. --surface-inverse-translucent (10% white) is far too
-   weak over licensing-warm-v2.png, which is bright warm orange — white ink on
-   it lands near 1.5:1. A transparency of #000 is the escalation DESIGN.md §1.3
-   sanctions on image-backed surfaces, and it measures ~12:1. */
+/* On image-backed grounds. This one modifier has to survive two opposite
+   grounds: the nav dropdown art is bright warm orange, the offerings tile sits
+   on #0E0E0E. --surface-inverse-translucent (10% white) vanishes on the first;
+   a dark transparency vanishes on the second. An opaque light chip with dark
+   ink is the only fill that reads on both, and it keeps the same
+   light-fill/dark-ink logic as the base variant instead of inverting it.
+   Measured ~12.8:1 over the orange, ~11.6:1 over the near-black.
+   The literals are the DESIGN.md §1.3 allowance for image-backed surfaces:
+   the chip must not flip with the theme, because the ground under it doesn't. */
 .status-flag--on-image {
-  background: rgba(0, 0, 0, 0.58);
-  color: #FFFFFF;
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.92);
+  color: #252525;
 }
 
 /* Nav dropdown + mobile drawer. The name row has no spare width — "Licensing
@@ -4458,8 +4461,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    just lands at 0.60. --img-rot and both scales are never referenced here, so
    the entry rotation, the hover scale and the reduced-motion branch below all
    compose unchanged. The tile is still a live link, so hover keeps its lift. */
-.offer-card--soon::before        { filter: grayscale(0.55) brightness(0.78); }
-.offer-card--soon.is-in::before  { opacity: 0.60; }
+.offer-card--soon::before        { filter: grayscale(0.7) brightness(0.72); }
+.offer-card--soon.is-in::before  { opacity: 0.5; }
 .offer-card--soon .offer-card-desc { color: rgba(255, 255, 255, 0.70); }
 .offer-card--soon .offer-card-more { color: rgba(255, 255, 255, 0.82); }
 
