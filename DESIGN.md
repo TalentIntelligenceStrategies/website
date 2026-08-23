@@ -291,7 +291,7 @@ tracking per the existing TC handling. `text-wrap: balance` on headings, `pretty
 
 | Class | Size | Weight | Tracking | Notes |
 | --- | --- | --- | --- | --- |
-| `.status-flag` | 12px | 600 | 0.06em, uppercase | `--font-sans`. **Not** `.sig-mockflag`'s mono: it reads as words, so the §2 box rule applies. Ink `--text-secondary`, never `--text-tertiary` (3.1:1 on `--surface-tertiary`, fails AA). |
+| `.status-flag` | 12px | 600 | 0.01em, sentence case | `--font-sans`. **Not** `.sig-mockflag`'s mono: it reads as words, so the §2 box rule applies. Sentence case, not the `label-12` role's uppercase: "Coming soon" is a short phrase, not a metadata label, and caps made it shout. Tracking is 0.01em because caps tracking reads loose unshifted. Ink `--text-secondary`, never `--text-tertiary` (3.1:1 on `--surface-tertiary`, fails AA). |
 | `.veil__title` | `clamp(28px, 3.4vw, 40px)` | 600 | −0.02em | Deliberately under `.pillar-title`'s hero scale. A page state is a quiet statement, not a claim. |
 | `.veil__body` | 16px | — | — | `line-height 1.6`, `max-width: min(52ch, 100%)`. The `min()` matters: bare `52ch` is ~416px and overflows a 390px viewport. |
 
@@ -1532,10 +1532,26 @@ light-fill/dark-ink logic as the base variant instead of inverting it. Its liter
 the §1.3 image-backed allowance: the chip must not flip with the theme, because the
 ground under it doesn't.
 
-**Placement differs by host, on purpose.** On the two image-backed media boxes it is
-absolutely positioned in the top-right corner, because the name row has no spare width
-("Licensing Platform" at 18px plus the flag overflows a 260px card). Everywhere else it
-is inline after the label.
+**Shape: a 6px rounded rectangle, not a pill.** 6px is the base material preset and
+matches `.product-card-media` / `.mobile-sub-media` exactly. It is deliberately *less*
+round than `.offer-card`'s 18px: an inset badge should be squarer than its host, and in
+any case 18px on a ~20px-tall chip is clamped to half the height and renders as a pill,
+which is the shape being avoided. Sentence case, not the `label-12` role's uppercase —
+"Coming soon" is a short phrase, not a metadata label.
+
+**Placement is the top-right corner on every card-shaped host**, and inline after the
+label on the two text-row hosts (footer, search modal). The corner is not a preference on
+the media boxes: the name row has no spare width, since "Licensing Platform" at 18px plus
+the flag overflows a 260px card.
+
+**The corner insets differ, and the reason is a CSS subtlety worth writing down.** An
+absolutely positioned child resolves against its positioned ancestor's *padding box*, and
+these cards have **no border**, so the padding box is the card's outer rectangle —
+`padding` does **not** push the chip inward. `top/right: 0` therefore lands it on the
+card's corner, colliding with the 18px radius and getting clipped by `overflow: hidden`.
+Hence 20px on `.offer-card` (clears the radius, reads as a badge against copy that sits
+at 28px, and lands exactly on `--compact`'s 20px content margin) and 8px on the two
+6px-radius media boxes.
 
 ### 17.10 Lifting the veil
 

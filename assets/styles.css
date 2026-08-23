@@ -1858,9 +1858,14 @@ main { padding-top: 64px; }
   display: inline-flex; align-items: center;
   font-family: var(--font-sans);
   font-size: 12px; font-weight: 600; line-height: 1.2;
-  letter-spacing: 0.06em; text-transform: uppercase;
+  letter-spacing: 0.01em;
   padding: 3px 9px;
-  border-radius: 9999px;
+  /* Rounded rectangle, not a pill. 6px is the base material preset and matches
+     .product-card-media / .mobile-sub-media exactly. Deliberately smaller than
+     .offer-card's 18px: an inset badge should be less round than its host, and
+     18px on a ~24px-tall chip clamps to half the height and renders as a pill
+     anyway, which is the shape we are moving away from. */
+  border-radius: 6px;
   white-space: nowrap; flex-shrink: 0;
   background: var(--surface-tertiary);
   color: var(--text-secondary);
@@ -1893,9 +1898,17 @@ main { padding-top: 64px; }
    the label. */
 .footer-col a:has(> .status-flag) { flex-wrap: wrap; }
 
-/* Offerings tile + About compact tile. .offer-card-body is a flex column, so
-   the flag must not stretch to full width. */
-.offer-card-body > .status-flag { align-self: flex-start; }
+/* Offerings tile + About compact tile. Top-right corner rather than inline in
+   the body, matching the nav dropdown.
+
+   20px, not 0. The containing block is .offer-card's padding box, and the card
+   has no border, so the padding box IS its outer rectangle: padding does not
+   offset an absolutely positioned child. At 0/0 the chip collides with the
+   18px corner radius and gets clipped by overflow:hidden. 20px clears that
+   radius, reads as a corner badge rather than a content element on the full
+   tile (whose copy sits at 28px), and lands exactly on the content margin of
+   --compact (20px padding). */
+.offer-card-body > .status-flag { position: absolute; top: 20px; right: 20px; z-index: 1; }
 
 /* ─── Live ticker (shared between brokerage banner and any future use) ─── */
 .ticker-pulse {
