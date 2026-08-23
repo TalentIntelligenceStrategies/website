@@ -1844,6 +1844,56 @@ main { padding-top: 64px; }
 .tier-chip--c { color: var(--score-c); background: var(--score-c-bg); }
 .tier-chip--d { color: var(--score-d); background: var(--score-d-bg); }
 
+/* ─── Status flag — "Coming soon" / "即將推出" ───
+   A small non-interactive marker on a link whose destination is not open yet.
+   The state is carried in WORDS, never by dimming alone (DESIGN.md §14): the
+   flag is real text inside the link, so the accessible name reads
+   "Licensing Platform Coming soon" and no sr-only copy is needed.
+
+   Sans, not mono. It reads as words, so DESIGN.md §2 applies — which is why it
+   does not inherit .sig-mockflag, whose geometry is otherwise identical.
+   Ink is --text-secondary, not --text-tertiary: #8A8F98 on --surface-tertiary
+   measures ~3.1:1 and fails AA, and that token is declared UI-only. */
+.status-flag {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-sans);
+  font-size: 12px; font-weight: 600; line-height: 1.2;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  white-space: nowrap; flex-shrink: 0;
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
+}
+
+/* On image-backed grounds. --surface-inverse-translucent (10% white) is far too
+   weak over licensing-warm-v2.png, which is bright warm orange — white ink on
+   it lands near 1.5:1. A transparency of #000 is the escalation DESIGN.md §1.3
+   sanctions on image-backed surfaces, and it measures ~12:1. */
+.status-flag--on-image {
+  background: rgba(0, 0, 0, 0.58);
+  color: #FFFFFF;
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+}
+
+/* Nav dropdown + mobile drawer. The name row has no spare width — "Licensing
+   Platform" at 18px plus the flag overflows a 260px card — so the flag goes in
+   the corner of the media box, clear of the name. Both media boxes are already
+   position: relative. */
+.product-card-media > .status-flag,
+.mobile-sub-media > .status-flag { position: absolute; top: 8px; right: 8px; z-index: 1; }
+
+/* Footer Products column. .footer-col a is inline-flex/gap 8px, so the flag
+   needs no margin; wrapping is allowed only on the row that has one, so a
+   narrow 2-column footer drops the flag below the label instead of squeezing
+   the label. */
+.footer-col a:has(> .status-flag) { flex-wrap: wrap; }
+
+/* Offerings tile + About compact tile. .offer-card-body is a flex column, so
+   the flag must not stretch to full width. */
+.offer-card-body > .status-flag { align-self: flex-start; }
+
 /* ─── Live ticker (shared between brokerage banner and any future use) ─── */
 .ticker-pulse {
   width: 7px; height: 7px;
@@ -3537,6 +3587,104 @@ svg.is-primed polyline {
 }
 
 /* ═════════════════════════════════════════════════════════════════════
+   Page state — the veil            (DESIGN.md §17)
+   For a product that is not open yet. The page stays in the document as
+   texture and the veil covers it. Switched on with
+   <body data-veil="coming-soon"> plus a .veil div immediately before <main>.
+
+   CSS-only by contract: the veil has to land on first paint with JS
+   disabled, so nothing here depends on a script. The centred column
+   composes designs/components-snapshot.md §Empty state (page-level).
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* Scroll lock. Root-level overflow is what iOS Safari honours for the document
+   scroller; the body rule is the fallback, not the primary. Both are
+   declarative at parse time, so unlike a JS lock there is no before-state to
+   shift from and CLS is 0 by construction. scrollbar-gutter keeps the fixed
+   topnav's geometry identical to the unveiled pages on platforms where
+   scrollbars take up space. */
+html:has(body[data-veil]) { overflow: hidden; scrollbar-gutter: stable; }
+body[data-veil] { overflow: hidden; height: 100dvh; }
+
+/* z-index 95 is the only free band. It covers everything inside <main> — the
+   licensing page lifts its announce bar to 90 — while leaving every chrome
+   overlay above it: .topnav 100, .mobile-drawer 700, .search-modal 900,
+   #lang-overlay 999, .mkt-overlay 1000. The nav staying usable is deliberate:
+   a sealed page with no nav traps the visitor, and the language toggle lives
+   there, so covering it would leave a ZH reader stuck in English.
+
+   backdrop-filter here, never filter on <main>. A filter on main would make it
+   a containing block for fixed descendants and a new stacking context, which
+   breaks the licensing page's position:sticky .lic-stage, and it would
+   rasterise a ~15,000px document instead of one viewport. */
+.veil {
+  position: fixed; inset: 0; z-index: 95;
+  display: grid;
+  grid-template-rows: 1fr auto 1.15fr;  /* optical lift: more room below than above */
+  justify-items: center;
+  padding: 88px 24px 24px;              /* clears the 64px fixed topnav */
+  background: var(--surface-page-translucent);
+  -webkit-backdrop-filter: blur(28px) saturate(0.6);
+          backdrop-filter: blur(28px) saturate(0.6);
+}
+
+/* Honest fallback: with no backdrop-filter the 0.70 wash alone leaves large
+   type legible, so go fully opaque instead. Invisible beats half-readable. */
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .veil { background: var(--surface-page); }
+}
+
+/* No card. The veil is already a frosted surface, so a bordered panel on top of
+   it is glass on glass — and a --border-primary hairline is invisible against a
+   0.70 white wash anyway. §Empty state's page-level variant carries no card
+   either. This element exists to cap the measure and to be a focus target. */
+.veil__card {
+  grid-row: 2;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  max-width: 46ch;
+}
+.veil__card:focus { outline: none; }   /* programmatic target, not a control */
+.veil__card:focus-visible {
+  outline: 2px solid var(--border-focus); outline-offset: 12px; border-radius: 4px;
+}
+
+.veil__title {
+  margin: 20px 0 0;
+  font-size: clamp(28px, 3.4vw, 40px);  /* under .pillar-title's hero scale — a quiet state, not a claim */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+.veil__body {
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.veil__actions { margin-top: 28px; }
+
+/* No accent colour. The licensing accent is warm orange and the hero blurring
+   through the glass is already warm orange, so the colour arrives from the page
+   itself rather than from a painted element (DESIGN.md §11.4 caps accent under
+   15% of the surface).
+
+   The veil never animates. An entrance transition would be exactly the flash
+   the markup position is arranged to prevent, so there is nothing for
+   prefers-reduced-motion to branch on here. Do not add one. */
+
+/* Freeze anything still running behind the glass: a live keyframe under a
+   backdrop-filter forces a full-viewport re-blur every frame. paused rather
+   than none so mid-keyframe state holds as texture. <footer> sits outside
+   <main> now, so this reaches only the covered content. */
+body[data-veil] main *,
+body[data-veil] main *::before,
+body[data-veil] main *::after { animation-play-state: paused !important; }
+
+/* ═════════════════════════════════════════════════════════════════════
    Product deep-dive pages (/product/signal/, /product/licensing/)
    Shared layout — added 2026-05-18 for multi-page restructure
    ═════════════════════════════════════════════════════════════════════ */
@@ -4295,6 +4443,25 @@ svg.is-primed polyline {
 .offer-card--reports::before   { background-image: url('/assets/imagery/coremap/reports.jpg'); }
 .offer-card--licensing::before { background-image: url('/assets/imagery/coremap/licensing.jpg'); }
 .offer-card--owned::before     { background-image: url('/assets/imagery/coremap/owned.jpg'); }
+
+/* De-emphasis while a product is not open yet (DESIGN.md §17). Paired with a
+   .status-flag in the body, so the dim is never the only signal.
+
+   The dim lands on the IMAGE layer only, never on .offer-card or ::after.
+   That is deliberate and slightly counter-intuitive: dropping the image's
+   opacity lets more of the #0E0E0E base through, so the ground DARKENS and
+   contrast on the white copy goes up, not down. Putting opacity or filter on
+   the card itself would dim the copy along with the photo and break the floor.
+
+   Overriding only the .is-in opacity value keeps the existing
+   `transition: opacity 700ms var(--ease-card)`, so the reveal still runs and
+   just lands at 0.60. --img-rot and both scales are never referenced here, so
+   the entry rotation, the hover scale and the reduced-motion branch below all
+   compose unchanged. The tile is still a live link, so hover keeps its lift. */
+.offer-card--soon::before        { filter: grayscale(0.55) brightness(0.78); }
+.offer-card--soon.is-in::before  { opacity: 0.60; }
+.offer-card--soon .offer-card-desc { color: rgba(255, 255, 255, 0.70); }
+.offer-card--soon .offer-card-more { color: rgba(255, 255, 255, 0.82); }
 
 /* Fixed-dark legibility scrim so the white copy always reads (theme-independent). */
 .offer-card::after {
