@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-24 03:09 +0800** · Signal: dropped the VC label — proof dek now reads 投資人 / "investors", intake and retrieve email placeholders use you@fund.com.
 - **2026-08-24 02:23 +0800** · Licensing Platform presented as coming soon: hard veil on both licensing pages, markers on 32 entry points, tile de-emphasised, noindex, signup CTAs routed to contact.
 - **2026-08-20 02:06 +0800** · Signal: added an unlinked noindex cover-directions review page under documents/, with nine stills of the A/B/C variant covers.
 - **2026-08-19 11:24 +0800** · Signal: renamed the three reports to Snapshot / Study / Survey (特寫 / 景深 / 廣角), reworked the card eyebrows and section dek, re-rendered all six cover and page-one PNGs.
