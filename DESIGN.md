@@ -547,23 +547,6 @@ Cards only where a card is the true affordance. **No nested cards.**
 
 ---
 
-### 7.1 `.offer-card--soon` — de-emphasis for a product that is not open
-
-Dims the **`::before` image layer only**. Never `opacity`/`filter` on `.offer-card`,
-never `::after`, never a transform — each of those dims the copy with the photo.
-
-Counter-intuitive and load-bearing: dropping the image opacity lets more of the
-`#0E0E0E` base through, so the ground *darkens* and copy contrast goes **up**.
-`.offer-card-desc` measures 10.0:1 against ~6.9:1 undimmed.
-
-Overriding only the `.is-in` opacity *value* preserves the existing
-`transition: opacity 700ms var(--ease-card)`, so the reveal still runs and lands at 0.5.
-`--img-rot` and both scales are untouched, so entry rotation, hover scale and the
-reduced-motion branch all compose unchanged. The tile stays a live link, so hover keeps
-its lift. Always paired with a `.status-flag`, so the dim is never the only signal.
-
----
-
 ## 8. Footer
 
 `.footer`: background `--surface-secondary`, `padding-block:68px`. `.footer-grid` =
@@ -830,9 +813,9 @@ The one real finding was `.eyebrow` at 3.25:1 — see §2.
 **Page-state veil (§17).** `inert aria-hidden="true"` on `<main>`, `<footer>` and
 `.footer-baseline`; skip link retargeted to `#veil-card`; nav left reachable so the page
 is not a dead end and the language toggle still works. Measured on rendered pixels:
-`.status-flag` 8.9:1 base and 16.3:1 `--on-image` in light, 9.8:1 and 16.3:1 in dark;
-de-emphasised tile copy 10.0:1. Dimming and blur are never the only signal — the state is
-in words in every one of the six marker contexts.
+`.status-flag` 8.9:1 base and 16.3:1 `--on-image` in light, 9.8:1 and 16.3:1 in dark.
+The state is carried in words in every one of the six marker contexts, so nothing depends
+on a visual-only cue.
 
 **`</main>` now closes above `<footer>` on all 8 pages** (§8). `role="contentinfo"` nested
 inside `main` was never exposed as a landmark; this was a live defect on every page,
@@ -1565,8 +1548,8 @@ at 28px, and lands exactly on `--compact`'s 20px content margin) and 8px on the 
 8. Re-point the three CTAs at `license.tisglobalinc.com/welcome` (the original hrefs are
    recorded in an HTML comment beside each one) and restore their labels.
 9. Contact chrome back to same-page `#contact` (§4).
-10. Drop `.offer-card--soon` and the `.status-flag` from all 32 chrome instances and both
-    tiles; restore the tile desc and CTA copy.
+10. Drop the `.status-flag` from all 32 chrome instances and both tiles; restore the
+    tile desc and CTA copy.
 11. Revisit the announce bars on both pages, and `PRODUCT.md`'s success criterion.
 12. Bump `styles.css?v=`.
 

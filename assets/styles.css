@@ -4460,24 +4460,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .offer-card--licensing::before { background-image: url('/assets/imagery/coremap/licensing.jpg'); }
 .offer-card--owned::before     { background-image: url('/assets/imagery/coremap/owned.jpg'); }
 
-/* De-emphasis while a product is not open yet (DESIGN.md §17). Paired with a
-   .status-flag in the body, so the dim is never the only signal.
-
-   The dim lands on the IMAGE layer only, never on .offer-card or ::after.
-   That is deliberate and slightly counter-intuitive: dropping the image's
-   opacity lets more of the #0E0E0E base through, so the ground DARKENS and
-   contrast on the white copy goes up, not down. Putting opacity or filter on
-   the card itself would dim the copy along with the photo and break the floor.
-
-   Overriding only the .is-in opacity value keeps the existing
-   `transition: opacity 700ms var(--ease-card)`, so the reveal still runs and
-   just lands at 0.60. --img-rot and both scales are never referenced here, so
-   the entry rotation, the hover scale and the reduced-motion branch below all
-   compose unchanged. The tile is still a live link, so hover keeps its lift. */
-.offer-card--soon::before        { filter: grayscale(0.7) brightness(0.72); }
-.offer-card--soon.is-in::before  { opacity: 0.5; }
-.offer-card--soon .offer-card-desc { color: rgba(255, 255, 255, 0.70); }
-.offer-card--soon .offer-card-more { color: rgba(255, 255, 255, 0.82); }
 
 /* Fixed-dark legibility scrim so the white copy always reads (theme-independent). */
 .offer-card::after {
