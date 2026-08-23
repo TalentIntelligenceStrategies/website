@@ -122,7 +122,7 @@
   // below never touches iframe src, so broadcast the active language into them via
   // postMessage — they flip in place, no reload. Re-sent on each frame's `load`
   // too, since they're lazy-loaded and may not exist yet when applyLang first runs.
-  const showcaseFrames = document.querySelectorAll('.lic-frame iframe, .hero-dash iframe');
+  const showcaseFrames = document.querySelectorAll('.lic-frame iframe[src], .hero-dash iframe[src]');
   let currentLang = 'en';
   const postLang = (frame, lang) => {
     try { frame.contentWindow?.postMessage({ type: 'tis-lang', lang }, location.origin); }
@@ -786,7 +786,7 @@
   const mkt = document.getElementById('mkt-overlay');
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
-  if (mkt && mktCard && mktForm) {
+  if (mkt && mktCard && mktForm && !document.body.dataset.veil) {
     addHoneypot(mktForm);
     const TTL_MS = 30 * 24 * 60 * 60 * 1000;
     const DELAY_MS = 45000;

@@ -30,8 +30,16 @@ distrusts hype. Reads bilingually (EN / 中文 toggle).
 
 ## Product Purpose
 
+> **Veiled since 2026-08-23.** TIS has shifted focus away from the Licensing Platform,
+> so this page is covered by a coming-soon veil and the product is no longer sold from
+> the site. See DESIGN.md §17 for the mechanism and §16.1 for the revert list. The
+> purpose below is the intent to restore when the veil lifts, not what the page does now.
+
 Convert that one anxiety into the calm of someone who already has coverage. The page
-sells a *deliverable* — a 30-patent, SABCD-graded, institution-licensed bundle activating
-the week you subscribe — not a tool. Success = 王董 reaches
-`license.tisglobalinc.com/welcome` — where all three of this page's signup CTAs land —
-believing TIS is the composed, methodical, honest party in a market full of fear-selling.
+sells a *deliverable* — a 30-patent, SABCD-graded, institution-licensed bundle — not a
+tool. Success **was** 王董 reaching `license.tisglobalinc.com/welcome`, where all three
+signup CTAs landed, believing TIS is the composed, methodical, honest party in a market
+full of fear-selling.
+
+While veiled, the only success is that 王董 understands the product is not open yet and
+still reaches the contact form, so the interest is captured rather than lost.

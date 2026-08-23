@@ -287,6 +287,16 @@ tracking per the existing TC handling. `text-wrap: balance` on headings, `pretty
 
 ---
 
+### 2.1 Status flag and veil type
+
+| Class | Size | Weight | Tracking | Notes |
+| --- | --- | --- | --- | --- |
+| `.status-flag` | 12px | 600 | 0.06em, uppercase | `--font-sans`. **Not** `.sig-mockflag`'s mono: it reads as words, so the §2 box rule applies. Ink `--text-secondary`, never `--text-tertiary` (3.1:1 on `--surface-tertiary`, fails AA). |
+| `.veil__title` | `clamp(28px, 3.4vw, 40px)` | 600 | −0.02em | Deliberately under `.pillar-title`'s hero scale. A page state is a quiet statement, not a claim. |
+| `.veil__body` | 16px | — | — | `line-height 1.6`, `max-width: min(52ch, 100%)`. The `min()` matters: bare `52ch` is ~416px and overflows a 390px viewport. |
+
+---
+
 ## 3. Spacing, container & rhythm
 
 **Container:** `max-width:1440px; margin:0 auto; padding-inline:32px` → `20px` under
@@ -383,7 +393,13 @@ that does not exist, so it silently landed at the top of the Signal page; `badge
 `about/`, `patents/` and `reports/` each sent their search-modal link off their own page
 despite carrying the form themselves.
 
-**Signal (`product/signal/index.html`) is the only page in the `does not` branch.** Its
+**A veiled page counts as being in the `does not` branch** (§17). Its own `#contact`
+section is inside an `inert` `<main>` and the page cannot scroll, so a same-page
+`#contact` is unreachable twice over. All three links go to `/#contact`. This applies to
+`product/licensing/index.html` and `product/licensing/badge.html` while the veil is up,
+and reverts with it.
+
+**Signal (`product/signal/index.html`) is the only unveiled page in the `does not` branch.** Its
 equivalent slot is `#intake`, a transactional order form that asks which report you want
 and takes a card deposit, so it cannot answer a general enquiry. Its two "Start an
 evaluation" CTAs stay on `#intake` — that is the order action, and keeping the two
@@ -531,6 +547,23 @@ Cards only where a card is the true affordance. **No nested cards.**
 
 ---
 
+### 7.1 `.offer-card--soon` — de-emphasis for a product that is not open
+
+Dims the **`::before` image layer only**. Never `opacity`/`filter` on `.offer-card`,
+never `::after`, never a transform — each of those dims the copy with the photo.
+
+Counter-intuitive and load-bearing: dropping the image opacity lets more of the
+`#0E0E0E` base through, so the ground *darkens* and copy contrast goes **up**.
+`.offer-card-desc` measures 10.0:1 against ~6.9:1 undimmed.
+
+Overriding only the `.is-in` opacity *value* preserves the existing
+`transition: opacity 700ms var(--ease-card)`, so the reveal still runs and lands at 0.5.
+`--img-rot` and both scales are untouched, so entry rotation, hover scale and the
+reduced-motion branch all compose unchanged. The tile stays a live link, so hover keeps
+its lift. Always paired with a `.status-flag`, so the dim is never the only signal.
+
+---
+
 ## 8. Footer
 
 `.footer`: background `--surface-secondary`, `padding-block:68px`. `.footer-grid` =
@@ -543,6 +576,18 @@ with 15px Lucide icons. A `.footer-baseline` band carries the centered
 
 Attribution phrasing for the Innovue lockup is owned by
 [visual-guide-snapshot.md](designs/visual-guide-snapshot.md), not by this file.
+
+---
+
+**`</main>` closes above `<footer>`** (2026-08-23). It used to close below it, which
+meant `role="contentinfo"` was nested inside `main` and was never exposed as a landmark
+on any page. Fixed on all 8 pages at once so the skeletons stay identical. The
+`.footer-baseline` copyright row moved out with it.
+
+The Products column's Licensing row carries a `.status-flag` (§17). `.footer-col a` is
+`inline-flex` with `gap: 8px`, so the flag needs no margin; only the row that has one
+gets `flex-wrap: wrap`, so a narrow 2-column footer drops the flag below the label
+instead of squeezing it.
 
 ---
 
@@ -624,6 +669,14 @@ behind a never-firing transition, and never gated invisible on JS failure.
 
 ---
 
+**One carve-out (2026-08-23).** §17's veil is content *deliberately* covered, and it is
+the one case that works **because** it needs no JS rather than despite it. It never
+animates, and everything inside a veiled `<main>` gets
+`animation-play-state: paused` — a live keyframe under a `backdrop-filter` forces a
+full-viewport re-blur every frame.
+
+---
+
 ## 11. Page rhythm & weight (buildable rules)
 
 How the page *feels*, expressed as rules a new page must follow — not prose to admire:
@@ -683,6 +736,14 @@ Run this when composing a new page so it stays consistent with the homepage:
     visible focus.
 12. **Verify locally**: `python3 -m http.server 8000` (root-relative paths need a server),
     check at 390 / 768 / 1280 / 1440, light + dark, EN + ZH.
+
+---
+
+13. **If the page carries a state veil (§17)**, six things follow: `data-veil` on
+    `<body>`; the `.veil` div immediately before `<main>`; `inert aria-hidden="true"` on
+    `<main>`, `<footer>` and `.footer-baseline`; skip-link retargeted to `#veil-card`;
+    all three contact-chrome links pointed at `/#contact` (§4); and a
+    `robots` `noindex` meta. Bump the `styles.css?v=` query in the same commit.
 
 ---
 
@@ -763,6 +824,19 @@ assumed to be:
 There is **no eyebrow on any hero**. `.pillar-eyebrow` (16px/600) exists only on the
 licensing and signal heroes and is forced to `#fff` there; the homepage hero has none.
 The one real finding was `.eyebrow` at 3.25:1 — see §2.
+
+---
+
+**Page-state veil (§17).** `inert aria-hidden="true"` on `<main>`, `<footer>` and
+`.footer-baseline`; skip link retargeted to `#veil-card`; nav left reachable so the page
+is not a dead end and the language toggle still works. Measured on rendered pixels:
+`.status-flag` 8.9:1 base and 16.3:1 `--on-image` in light, 9.8:1 and 16.3:1 in dark;
+de-emphasised tile copy 10.0:1. Dimming and blur are never the only signal — the state is
+in words in every one of the six marker contexts.
+
+**`</main>` now closes above `<footer>` on all 8 pages** (§8). `role="contentinfo"` nested
+inside `main` was never exposed as a landmark; this was a live defect on every page,
+unrelated to the veil.
 
 ---
 
@@ -997,6 +1071,30 @@ keep the 3-CDN fallback chain and a reduced-motion branch. One deliberate hero e
 **Voice.** Anchor numbers verbatim. Credit Innovue once near the top, in the phrasing
 `visual-guide-snapshot.md` approves. No em dashes in *new* copy; existing verbatim copy is
 preserved as-is.
+
+#### Veiled — coming soon (2026-08-23)
+
+TIS shifted focus away from the Licensing Platform. This page and `badge.html` are covered
+by the §17 veil: the narrative below the veil is intact and unedited except for the three
+CTAs and the announce bar, so lifting the veil restores a working page rather than
+requiring a rewrite. `noindex, follow` on both — `follow` so link equity keeps flowing to
+`/` and `/product/signal/` and re-indexing after the revert is fast.
+
+The three `license.tisglobalinc.com/welcome` CTAs now point at `/#contact` and read "Talk
+to us". They stay real anchors on purpose: a veil is presentation, not access control, so
+the markup has to be correct on its own merits. Removing `href` would make them
+unfocusable and unannounced; reusing `.btn:disabled` would conflate "product unavailable"
+with "form in flight". The original hrefs are in an HTML comment beside each.
+
+`NT$3,390` is gone. It lived only in this page's announce bar and contradicted the
+picker's own `NT$8,490` floor, so it was **removed rather than corrected** — re-asserting a
+live price on a page that is no longer selling would be worse. The dead
+`data-target="licensing-signup"` went with it, as did the duplicate `sr-only` `<h1>` that
+disagreed with the visible one.
+
+Revert list: §17.10.
+
+---
 
 ### 16.2 Signal — `product/signal/index.html`
 
@@ -1286,3 +1384,178 @@ to know before editing it:
 
 The in-page anchors `#reports` and `#intake` are link targets from
 `methodology.html` — don't rename them without fixing that page's `.loop-ctas`.
+
+---
+
+## 17. Page state — the veil
+
+For a product that exists but is not open yet. The page stays in the document as
+*texture*; a fixed full-viewport layer covers it. Live on
+`product/licensing/index.html` and `product/licensing/badge.html` since 2026-08-23.
+
+### 17.1 The contract
+
+**CSS-only.** No script creates, positions or activates the veil. Verified by stripping
+all five `<script>` tags from the page and re-rendering: identical output. This is the
+one case in this codebase where content is deliberately covered, and it is the reason
+§10's rule ("content is never gated invisible on JS failure") has a carve-out here: the
+veil works *because* it needs no JS, not despite it.
+
+**The veil never animates.** An entrance transition would be exactly the flash the
+markup position is arranged to prevent, so there is nothing for
+`prefers-reduced-motion` to branch on. Do not add one.
+
+### 17.2 Why `backdrop-filter` on the veil, not `filter` on `<main>`
+
+Three reasons, all load-bearing:
+
+1. A `filter` on `<main>` makes it a containing block for `position: fixed` descendants
+   and a new stacking context. The licensing page has `position: sticky` +
+   `isolation: isolate` + a `z-index: -1` child on `.lic-stage`; an ancestor filter is
+   precisely what breaks that class of layout.
+2. `filter` rasterises and blurs the whole ~15,000px document. `backdrop-filter` on a
+   fixed layer samples one viewport. On a page nobody can scroll, only one of those is
+   defensible.
+3. No `scale(1.06)` edge hack needed. `.sig-rt__page` needs it because a `filter` on a
+   bounded element leaves a soft transparent edge at its own frame; a fixed layer flush
+   with the viewport has no visible frame.
+
+Values: `blur(28px) saturate(0.6)` over `--surface-page-translucent`. The floor is
+whatever makes body text unreadable at 1440 *and* 390 in both themes — verify by
+zooming a crop, not by eye at 100%.
+
+**`@supports not (backdrop-filter)` → fully opaque `--surface-page`.** Without it the
+0.70 wash alone leaves large type legible. This branch must be *tested*, not assumed:
+temporarily flip the condition to `@supports (display: block)` and confirm the texture
+region samples to a single flat colour.
+
+### 17.3 z-index 95
+
+The only free band. `.topnav` is 100 and every chrome overlay is above it; the licensing
+page lifts its own announce bar to 90. So 95 covers everything inside `<main>` while
+leaving nav, drawer, search, `#lang-overlay` and the mkt popup reachable.
+
+**The nav is deliberately not covered.** It is the only way off a sealed page, and the
+language toggle lives there, so covering it would strand a ZH reader in English. The
+`#lang-overlay` shimmer (z-999) correctly plays over the veil, and the language swap
+still works while `<main>` is `inert` because `swapText` writes `textContent` regardless.
+
+### 17.4 Markup position and the flash
+
+The `.veil` div goes **immediately before `<main>`**. The stylesheet is a synchronous
+`<link>`, so no frame paints before the rules exist; the only remaining vector is HTML
+streaming. `<main>` begins at byte 92,518 of 180,041 on the licensing page, so every
+paintable content byte arrives after the veil. Everything preceding it is chrome that is
+`opacity: 0` at rest. It also yields the right tab order for free:
+skip-link → nav → veil CTA.
+
+### 17.5 Scroll lock
+
+```css
+html:has(body[data-veil]) { overflow: hidden; scrollbar-gutter: stable; }
+body[data-veil]           { overflow: hidden; height: 100dvh; }
+```
+
+Root-level `overflow` is what iOS Safari honours for the document scroller; the `body`
+rule is the fallback, not the primary. Both are declarative at parse time, so unlike a JS
+lock there is no before-state and **CLS is 0 by construction**. `scrollbar-gutter` is not
+about CLS: without it, navigating from an unveiled page jumps the fixed topnav's right
+cluster ~15px on platforms where scrollbars take space.
+
+### 17.6 A11y contract
+
+| Element | Attributes |
+| --- | --- |
+| `<main>`, `<footer>`, `.footer-baseline` | `inert aria-hidden="true"` |
+| `.veil__card` | `id="veil-card" tabindex="-1"` — programmatic target, **not** `0` |
+| skip link | `href="#veil-card"` — `#main` lands focus unpredictably inside an inert subtree |
+| `.veil` | nothing. Not a dialog; `role="dialog"`/`aria-modal` would imply dismissibility |
+
+All three landmarks are inerted, not just `<main>`. The footer sits outside `<main>` since
+2026-08-23, and leaving it live would put focusable links off-screen behind an opaque
+layer — focus you cannot see is worse than focus you cannot reach. (Terms / Privacy /
+Disclosures are all `href="#"` placeholders, so nothing reachable is lost.)
+
+`inert` is a content attribute, so it holds with JS disabled. `aria-hidden` is
+belt-and-braces and is safe *only because* `inert` guarantees nothing inside can hold
+focus.
+
+### 17.7 What must be neutralised behind the glass
+
+Not for the veil's sake:
+
+- **Six showcase `<iframe>`s** and **six `.lic-still` `<img>`s**: `src` → `data-src`.
+  `inert`'s propagation into a nested browsing context is engine-dependent, so the frames
+  are the one thing it may not seal. `loading="lazy"` does **not** save you here — the
+  stills were measured fetching 1.3 MB on a page nobody can scroll.
+- **Five inline scripts** get `if (document.body.dataset.veil) return;` — the hero
+  marquee, the bundle picker, the how-it-works rail, the how-it-works carousel and the
+  GSAP scrub module. The last one otherwise `import()`s a whole bundle.
+- **`animation-play-state: paused`** on everything inside `main`. A live keyframe under a
+  `backdrop-filter` forces a full-viewport re-blur every frame. `paused`, not `none`, so
+  mid-keyframe state holds as texture.
+- **`site.js`**: the mkt popup is gated on `!data-veil` (z-1000, it would fire *above* the
+  veil after 45s), and `postLang` selects `iframe[src]` so it stops posting into
+  `about:blank`.
+
+Verify with the server access log: zero requests to `product-shots/` or
+`assets/build/gsap.js`.
+
+### 17.8 The cache-bust hazard
+
+**The one thing that can actually hurt.** Ship `data-veil` to a visitor holding a cached
+`styles.css?v=12` and the veil markup lands with no veil CSS: the card renders as a plain
+block at the top of the document and `<main>` is invisible to assistive tech but fully
+visible and scrollable to everyone else.
+
+Bump the query to a **never-requested** value in the *same commit* as the flip. A URL no
+client has cached always fetches fresh; and stale HTML has no `data-veil`, so it renders
+the old page correctly. All 8 pages were normalised to `?v=17` (they had been bare,
+`?v=12`, `?v=13` and `?v=16`) so this cannot drift again silently.
+
+### 17.9 The marker
+
+`.status-flag` / `.status-flag--on-image`. One component, two modifiers, six contexts:
+nav dropdown, mobile drawer, search modal, footer, offerings tile, About compact tile.
+
+Named "flag" not "chip" to avoid colliding with the brand's product-side §Status chip
+(license Active/Expiring/Lapsed). No value modifier — the value is the text, which is the
+a11y contract: the marker is real text inside the link, so the accessible name becomes
+"Licensing Platform Coming soon" and no `sr-only` copy is needed.
+
+**`--on-image` is an opaque light chip with dark ink, and that is not a style
+preference.** It has to survive two opposite grounds: the nav dropdown art is bright warm
+orange, the offerings tile is `#0E0E0E`. A 10% white fill vanishes on the first; a dark
+transparency vanishes on the second (tried, measured, rejected). An opaque light chip
+reads on both — 12.8:1 over the orange, 11.6:1 over the near-black — and keeps the same
+light-fill/dark-ink logic as the base variant instead of inverting it. Its literals are
+the §1.3 image-backed allowance: the chip must not flip with the theme, because the
+ground under it doesn't.
+
+**Placement differs by host, on purpose.** On the two image-backed media boxes it is
+absolutely positioned in the top-right corner, because the name row has no spare width
+("Licensing Platform" at 18px plus the flag overflows a 260px card). Everywhere else it
+is inline after the label.
+
+### 17.10 Lifting the veil
+
+1. Drop `data-veil` from `<body>` on both pages.
+2. Delete the `.veil` block from both pages.
+3. Remove `inert aria-hidden="true"` from `<main>`, `<footer>`, `.footer-baseline`.
+4. Skip link back to `#main`.
+5. `data-src` → `src` on 6 iframes and 6 `.lic-still` images.
+6. Remove the five `if (document.body.dataset.veil) return;` guards.
+7. Remove the `robots` `noindex` meta from both pages; restore `<title>` / OG / Twitter.
+8. Re-point the three CTAs at `license.tisglobalinc.com/welcome` (the original hrefs are
+   recorded in an HTML comment beside each one) and restore their labels.
+9. Contact chrome back to same-page `#contact` (§4).
+10. Drop `.offer-card--soon` and the `.status-flag` from all 32 chrome instances and both
+    tiles; restore the tile desc and CTA copy.
+11. Revisit the announce bars on both pages, and `PRODUCT.md`'s success criterion.
+12. Bump `styles.css?v=`.
+
+Not on the revert list, because they were defects independent of the pivot: the
+`</main>` hoist, the 40 redundant `.search-link` `data-zh` attributes, the removed
+duplicate `sr-only` `<h1>`, the `badge.html` `[PAGE SCAFFOLDING]` line, the three
+untranslated `badge.html` strings, the retired `ticker-pulse--warning`, and the
+`noindex` on the 10 render sources under `assets/product-shots/licensing/`.

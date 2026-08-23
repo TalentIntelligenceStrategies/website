@@ -3,26 +3,27 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How to use the Badge — Licensing — TIS</title>
-<meta name="description" content="The DLC license badge — how to display it on booth signage, proposals, website footer, packaging. Verify in 2 seconds. Display anywhere." />
+<title>Verified License Badge (coming soon) — TIS</title>
+<meta name="robots" content="noindex, follow" />
+<meta name="description" content="The TIS Verified License Badge is issued with a Licensing Platform subscription, which is not open yet." />
 <link rel="canonical" href="https://tisglobalinc.com/product/licensing/badge.html" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/product/licensing/badge.html" />
-<meta property="og:title" content="How to use the Badge — Licensing — TIS" />
-<meta property="og:description" content="The DLC license badge — how to display it on booth signage, proposals, website footer, packaging." />
+<meta property="og:title" content="Verified License Badge (coming soon) — TIS" />
+<meta property="og:description" content="The TIS Verified License Badge is issued with a Licensing Platform subscription, which is not open yet." />
 <meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="TIS Licensing — Badge how-to" />
+<meta property="og:image:alt" content="TIS Verified License Badge. Coming soon." />
 <meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="How to use the Badge — Licensing — TIS" />
-<meta name="twitter:description" content="The DLC license badge — how to display it on booth signage, proposals, website footer, packaging." />
+<meta name="twitter:title" content="Verified License Badge (coming soon) — TIS" />
+<meta name="twitter:description" content="The TIS Verified License Badge is issued with a Licensing Platform subscription, which is not open yet." />
 <meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
-<meta name="twitter:image:alt" content="TIS Licensing — Badge how-to" />
+<meta name="twitter:image:alt" content="TIS Verified License Badge. Coming soon." />
 
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
@@ -51,9 +52,9 @@
 </script>
 </head>
 
-<body>
+<body data-veil="coming-soon">
 
-<a href="#main" class="skip-link">Skip to content</a>
+<a href="#veil-card" class="skip-link">Skip to content</a>
 
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
@@ -124,7 +125,7 @@
         </svg>
       </button>
 
-      <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
@@ -175,7 +176,7 @@
     <a href="/about/"    data-zh="關於">About</a>
   </nav>
   <div class="mobile-auth">
-    <a href="#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>
 
@@ -212,7 +213,7 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="#contact" class="search-link">
+    <a href="/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -220,7 +221,31 @@
   </div>
 </div>
 
-<main id="main" data-pillar="licensing">
+  <!-- ── Page state: coming soon  (DESIGN.md §17) ──
+       Covers the page while the product is not open. CSS-only by contract: no
+       script creates, positions or activates this, so it lands on first paint
+       with JS disabled. It sits immediately before <main> so that no byte of
+       page content can paint above it during HTML streaming.
+
+       <main>, <footer> and .footer-baseline are inert + aria-hidden. The topnav
+       is deliberately NOT covered: it is the only way off a sealed page, and
+       the language toggle lives there, so hiding it would strand a ZH reader
+       in English.
+
+       To lift the veil: drop data-veil from <body>, delete this block, and
+       remove inert/aria-hidden from main, footer and .footer-baseline. -->
+  <div class="veil">
+    <div class="veil__card" id="veil-card" tabindex="-1">
+      <span class="status-flag" data-zh="即將推出">Coming soon</span>
+      <h1 class="veil__title" data-zh="授權認證標章">Verified License Badge</h1>
+      <p class="veil__body" data-zh="隨泰然專利防護網訂閱一併核發，目前尚未開放。若買方要求提供專利佈局證明，歡迎與我們聯絡。">Issued with a Licensing Platform subscription, so it is not available yet. Talk to us if a buyer needs proof of cover.</p>
+      <div class="veil__actions">
+        <a class="btn btn-primary btn-lg" href="/#contact" data-zh="與我們聯絡">Talk to us</a>
+      </div>
+    </div>
+  </div>
+
+<main id="main" data-pillar="licensing" inert aria-hidden="true">
 
   <!-- Hero — one-slide variant, warm gradient for the Licensing pillar.
        Page scaffolding only — body sections to be filled in a later content pass. -->
@@ -236,7 +261,6 @@
           <span data-zh="專利標章加持用法">How to use the Badge.</span>
         </h1>
         <p class="pillar-sub" data-zh="2 秒線上驗證，自由印製。DLC 標章把授權變成可被看見的證明。">Verify in 2 seconds. Display anywhere. The DLC badge turns a license into proof.</p>
-        <p class="pillar-sub"><strong>[PAGE SCAFFOLDING | COPY NOT WORKED ON]</strong></p>
         <div class="pillar-actions">
           <a href="/product/licensing/" class="btn btn-secondary" data-zh="回到專利防護網">Back to Licensing</a>
         </div>
@@ -339,7 +363,7 @@
         <div class="feature-row__copy">
           <p class="feature-row__num">Issue</p>
           <h2 class="feature-row__title" id="badge-issue-title">Your badge goes live, in your name</h2>
-          <p>Credential and badge issue together — embedded license number and QR code.</p>
+          <p data-zh="憑證與標章一併核發，內嵌授權編號與 QR 碼。">Credential and badge issue together, with an embedded license number and QR code.</p>
         </div>
         <div class="feature-row__visual">
           <div class="placeholder-frame placeholder-frame--compact">
@@ -424,14 +448,14 @@
         <div class="feature-row__copy">
           <p class="feature-row__num">Verify</p>
           <h2 class="feature-row__title" id="badge-verify-title">A buyer verifies it in two seconds</h2>
-          <p>They scan the QR code; the license confirms online, on the spot.</p>
+          <p data-zh="對方掃描 QR 碼，授權即時線上確認。">They scan the QR code; the license confirms online, on the spot.</p>
         </div>
         <div class="feature-row__visual">
           <div class="placeholder-frame placeholder-frame--compact">
             <div class="placeholder-body">
               <div class="placeholder-glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7M17 21h-3"/></svg></div>
               <p class="placeholder-label">Verify in 2 seconds</p>
-              <p class="placeholder-meta">image — scan QR → license confirms online</p>
+              <p class="placeholder-meta" data-zh="圖片 — 掃描 QR 碼，線上確認授權">image — scan QR → license confirms online</p>
             </div>
           </div>
         </div>
@@ -526,7 +550,7 @@
 
 </main>
 
-  <footer class="footer" role="contentinfo">
+  <footer class="footer" role="contentinfo" inert aria-hidden="true">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-identity">
@@ -593,7 +617,7 @@
     </div>
   </footer>
 
-  <div class="footer-baseline">
+  <div class="footer-baseline" inert aria-hidden="true">
     <div class="container">
       <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
     </div>

@@ -3,26 +3,27 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Licensing Platform — TIS</title>
-<meta name="description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours." />
+<title>Licensing Platform (coming soon) — TIS</title>
+<meta name="robots" content="noindex, follow" />
+<meta name="description" content="The TIS Licensing Platform is not open yet. Thirty-patent bundles per jurisdiction and industry, for exporters who need patent cover." />
 <link rel="canonical" href="https://tisglobalinc.com/product/licensing/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/product/licensing/" />
-<meta property="og:title" content="Licensing Platform — TIS" />
-<meta property="og:description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours." />
+<meta property="og:title" content="Licensing Platform (coming soon) — TIS" />
+<meta property="og:description" content="The TIS Licensing Platform is not open yet. Thirty-patent bundles per jurisdiction and industry, for exporters who need patent cover." />
 <meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="TIS Licensing Platform — Non-exclusive patent bundles" />
+<meta property="og:image:alt" content="TIS Licensing Platform. Coming soon." />
 <meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Licensing Platform — TIS" />
-<meta name="twitter:description" content="Subscribe to a 30-patent bundle, curated per jurisdiction × industry. Activate Freedom to Operate in hours." />
+<meta name="twitter:title" content="Licensing Platform (coming soon) — TIS" />
+<meta name="twitter:description" content="The TIS Licensing Platform is not open yet. Thirty-patent bundles per jurisdiction and industry, for exporters who need patent cover." />
 <meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
-<meta name="twitter:image:alt" content="TIS Licensing Platform — Non-exclusive patent bundles" />
+<meta name="twitter:image:alt" content="TIS Licensing Platform. Coming soon." />
 
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
@@ -1697,9 +1698,9 @@ a, button, .howit-card, .acc-trigger, .btn {
 </style>
 </head>
 
-<body data-page="licensing">
+<body data-page="licensing" data-veil="coming-soon">
 
-<a href="#main" class="skip-link">Skip to content</a>
+<a href="#veil-card" class="skip-link">Skip to content</a>
 
 <!-- ╔═════════════════════════════════════════════════════════════════════╗
      ║ Top nav — duplicated from homepage. Reports/Press/About anchor to  ║
@@ -1775,7 +1776,7 @@ a, button, .howit-card, .acc-trigger, .btn {
         </svg>
       </button>
 
-      <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
@@ -1827,7 +1828,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     <a href="/about/"    data-zh="關於">About</a>
   </nav>
   <div class="mobile-auth">
-    <a href="#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>
 
@@ -1865,7 +1866,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="#contact" class="search-link">
+    <a href="/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -1936,15 +1937,37 @@ a, button, .howit-card, .acc-trigger, .btn {
   </div>
 </div>
 
-<main id="main" data-pillar="licensing">
+  <!-- ── Page state: coming soon  (DESIGN.md §17) ──
+       Covers the page while the product is not open. CSS-only by contract: no
+       script creates, positions or activates this, so it lands on first paint
+       with JS disabled. It sits immediately before <main> so that no byte of
+       page content can paint above it during HTML streaming.
 
-  <h1 class="sr-only" data-zh="泰然專利防護網 — 30 件 SABCD 評等專利組合，當週上線">TIS Licensing — 30-patent shield, active the week you subscribe</h1>
+       <main>, <footer> and .footer-baseline are inert + aria-hidden. The topnav
+       is deliberately NOT covered: it is the only way off a sealed page, and
+       the language toggle lives there, so hiding it would strand a ZH reader
+       in English.
+
+       To lift the veil: drop data-veil from <body>, delete this block, and
+       remove inert/aria-hidden from main, footer and .footer-baseline. -->
+  <div class="veil">
+    <div class="veil__card" id="veil-card" tabindex="-1">
+      <span class="status-flag" data-zh="即將推出">Coming soon</span>
+      <h1 class="veil__title" data-zh="泰然專利防護網">Licensing Platform</h1>
+      <p class="veil__body" data-zh="目前暫不開放訂閱，我們正在擴充專利組合。請告訴我們您出口的產品與市場，開放時會主動與您聯繫。">New subscriptions are closed while we build out the coverage. Tell us what you export and we will follow up.</p>
+      <div class="veil__actions">
+        <a class="btn btn-primary btn-lg" href="/#contact" data-zh="與我們聯絡">Talk to us</a>
+      </div>
+    </div>
+  </div>
+
+<main id="main" data-pillar="licensing" inert aria-hidden="true">
+
 
   <!-- §Announcement banner — TIS-system chrome (identical across all surfaces). -->
-  <div class="announce" data-announce-id="2026-q2-licensing-pricing" role="region" aria-label="Site announcement">
+  <div class="announce" data-announce-id="2026-q3-licensing-soon-page" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
-      <span class="announce-msg" data-zh="30 件專利組合，每月 NT$3,390 起。">30-patent bundles starting at NT$3,390/month.</span>
-      <a class="announce-link" href="#pricing" data-zh="查看定價 →">View pricing →</a>
+      <span class="announce-msg" data-zh="泰然專利防護網即將推出。">The TIS Licensing Platform is coming soon.</span>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -1979,7 +2002,8 @@ a, button, .howit-card, .acc-trigger, .btn {
           <span data-zh="戴上授權認證標章立刻從被動防禦轉為主動佈局。">With a Verified License Badge, passive defense becomes active position.</span>
         </p>
         <div class="pillar-actions">
-          <a href="https://license.tisglobalinc.com/welcome" class="btn btn-primary btn-lg" data-zh="試跑專利包">Build your bundle</a>
+          <!-- was: href="https://license.tisglobalinc.com/welcome" (app not linked while the product is not open) -->
+          <a href="/#contact" class="btn btn-primary btn-lg" data-zh="與我們聯絡">Talk to us</a>
           <a href="#contact" class="btn btn-secondary" data-zh="聯絡業務">Talk to sales</a>
         </div>
 
@@ -2024,6 +2048,8 @@ a, button, .howit-card, .acc-trigger, .btn {
      it replaces. Data is fake / illustrative — every patent number, title and
      owner is a plausible-looking placeholder. */
   (function () {
+    // Not built while the page is veiled (DESIGN.md §17).
+    if (document.body.dataset.veil) return;
     var IND_ICON = {
       "Semiconductors":'<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>',
       "Network & Comms":'<path d="M4 10a7.31 7.31 0 0 0 10 10Z"/><path d="m9 15 3-3"/><path d="M17 13a6 6 0 0 0-6-6"/><path d="M21 13A10 10 0 0 0 11 3"/>',
@@ -2233,8 +2259,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-showcase-step1.html" title="Licensing Platform — Step 1: pick your jurisdiction and industry" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." width="1300" height="820" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-showcase-step1.html" title="Licensing Platform — Step 1: pick your jurisdiction and industry" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." width="1300" height="820" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2257,8 +2283,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-showcase.html" title="Licensing Platform — Step 2: AI Smart-pick builds your bundle" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." width="1300" height="820" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-showcase.html" title="Licensing Platform — Step 2: AI Smart-pick builds your bundle" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." width="1300" height="820" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2277,8 +2303,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-swap-showcase.html" title="Licensing Platform — Step 3: swap any same-tier patent" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." width="1300" height="820" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-swap-showcase.html" title="Licensing Platform — Step 3: swap any same-tier patent" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." width="1300" height="820" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2301,8 +2327,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-confirm-showcase.html" title="Licensing Platform — Step 4: confirm the plan and the price" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step4.png" alt="Licensing Platform, Step 4 — confirm your plan and see the price." width="1300" height="863" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-confirm-showcase.html" title="Licensing Platform — Step 4: confirm the plan and the price" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step4.png" alt="Licensing Platform, Step 4 — confirm your plan and see the price." width="1300" height="863" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2325,8 +2351,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-contract-showcase.html" title="Licensing Platform — Step 5: sign a real, institution-backed contract" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step5.png" alt="Licensing Platform, Step 5 — e-sign a real, institution-backed licence contract." width="1300" height="1234" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-contract-showcase.html" title="Licensing Platform — Step 5: sign a real, institution-backed contract" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step5.png" alt="Licensing Platform, Step 5 — e-sign a real, institution-backed licence contract." width="1300" height="1234" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2353,8 +2379,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </aside>
           </div>
           <div class="lic-frame">
-            <iframe src="/assets/product-shots/licensing/licensing-dlc-showcase.html" title="Licensing Platform — Step 6: your licence, live — Digital Licence Credential" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <img class="lic-still" src="/assets/product-shots/licensing/mobile/step6.png" alt="Licensing Platform, Step 6 — your live Digital Licence Credential." width="1300" height="930" loading="lazy" decoding="async">
+            <iframe data-src="/assets/product-shots/licensing/licensing-dlc-showcase.html" title="Licensing Platform — Step 6: your licence, live — Digital Licence Credential" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+            <img class="lic-still" data-src="/assets/product-shots/licensing/mobile/step6.png" alt="Licensing Platform, Step 6 — your live Digital Licence Credential." width="1300" height="930" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -2363,7 +2389,8 @@ a, button, .howit-card, .acc-trigger, .btn {
              advances left→right toward the button as you scroll the 6 steps. -->
         <div class="lic-footer">
           <span class="lic-progress-track" aria-hidden="true"><span class="lic-progress-fill"></span></span>
-          <a href="https://license.tisglobalinc.com/welcome" class="btn btn-primary btn-lg lic-cta" data-zh="試跑專利包">Build a bundle</a>
+          <!-- was: href="https://license.tisglobalinc.com/welcome" -->
+          <a href="/#contact" class="btn btn-primary btn-lg lic-cta" data-zh="與我們聯絡">Talk to us</a>
         </div>
 
       </div>
@@ -2479,7 +2506,8 @@ a, button, .howit-card, .acc-trigger, .btn {
             </div>
 
             <div class="pcard-left-foot">
-              <a href="https://license.tisglobalinc.com/welcome" class="btn btn-primary btn-lg pcard-cta" data-target="licensing-signup" data-zh="訂閱">Subscribe</a>
+              <!-- was: href="https://license.tisglobalinc.com/welcome", data-target="licensing-signup" (dead attr, removed) -->
+              <a href="/#contact" class="btn btn-primary btn-lg pcard-cta" data-zh="與我們聯絡">Talk to us</a>
             </div>
           </div>
 
@@ -2703,7 +2731,7 @@ a, button, .howit-card, .acc-trigger, .btn {
        ║ Duplicated from homepage; in-page anchors prefixed with / for subpages║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
 
-  <footer class="footer" role="contentinfo">
+  <footer class="footer" role="contentinfo" inert aria-hidden="true">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-identity">
@@ -2770,7 +2798,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     </div>
   </footer>
 
-  <div class="footer-baseline">
+  <div class="footer-baseline" inert aria-hidden="true">
     <div class="container">
       <p class="footer-copy">© 2026 Talent Intelligence Strategies</p>
     </div>
@@ -2788,6 +2816,8 @@ a, button, .howit-card, .acc-trigger, .btn {
   // control; it drives the per-month price, savings badge, and term line.
   // Price is duration-only (jurisdiction/industry don't affect it).
   document.addEventListener('DOMContentLoaded', () => {
+    // Not built while the page is veiled (DESIGN.md §17).
+    if (document.body.dataset.veil) return;
     const root = document.querySelector('[data-bundle-picker]');
     if (!root) return;
 
@@ -2840,6 +2870,8 @@ a, button, .howit-card, .acc-trigger, .btn {
   // How it works — horizontal scroll rail.
   // Arrow controls paginate by 1 card width; arrows disable at the rail ends.
   document.addEventListener('DOMContentLoaded', () => {
+    // Not built while the page is veiled (DESIGN.md §17).
+    if (document.body.dataset.veil) return;
     const rail = document.querySelector('[data-howit-rail]');
     if (!rail) return;
     const prev = document.querySelector('[data-howit-prev]');
@@ -2870,6 +2902,8 @@ a, button, .howit-card, .acc-trigger, .btn {
   // Manual only: advance on click (pill or step visual). The 7s auto-cycle was
   // removed. prefers-reduced-motion still skips the entrance animation.
   document.addEventListener('DOMContentLoaded', () => {
+    // Not built while the page is veiled (DESIGN.md §17).
+    if (document.body.dataset.veil) return;
     const root = document.querySelector('[data-hiw-carousel]');
     if (!root) return;
 
@@ -2924,6 +2958,8 @@ a, button, .howit-card, .acc-trigger, .btn {
      reduced-motion, or GSAP load failure. -->
 <script type="module">
 (async () => {
+  // Not built while the page is veiled (DESIGN.md §17).
+  if (document.body.dataset.veil) return;
   const section = document.querySelector('.lic-showcase');
   const stage = section && section.querySelector('.lic-stage');
   if (!stage) return;

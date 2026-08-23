@@ -3645,7 +3645,7 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
   grid-row: 2;
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
-  max-width: 46ch;
+  max-width: min(52ch, 100%);   /* 52ch alone is ~416px and overflows a 390px viewport */
 }
 .veil__card:focus { outline: none; }   /* programmatic target, not a control */
 .veil__card:focus-visible {
