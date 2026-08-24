@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-25 03:53 +0800** · Signal intake panel names the seller: full legal entity, registered address and UBN, for payment-gateway verification.
+- **2026-08-25 03:45 +0800** · Signal report samples get document chrome: filename bar, page count, recessed stage, captioned sheets.
 - **2026-08-25 03:11 +0800** · Signal: priced the three reports, rebuilt the sample panels to carry the offer and a CTA, enlarged the intake deposit.
 - **2026-08-25 03:11 +0800** · Announce bar: sequenced the message fade, rotation now honours a reduced-motion change at runtime, bar shown on Signal.
 - **2026-08-25 00:43 +0800** · Published the registered address and UBN in the contact panel on seven pages, and priced the three evaluation reports for payment-gateway review.

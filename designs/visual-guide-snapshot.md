@@ -436,8 +436,14 @@ Until each row is spec'd, defer to: §Logo Usage (variants, minimum sizes, no re
 
 | Form | Chinese | English | Use |
 |---|---|---|---|
-| Full legal name | 泰然策略解密股份有限公司 | Talent Intelligence Strategies Global Inc. | Legal documents only |
+| Full legal name | 泰然策略解密股份有限公司 | Talent Intelligence Strategies Global Inc. | Legal documents, and the seller-identity block published for payment-gateway verification |
 | Trade name | 泰然策略解密 | — | Formal trade documents |
 | Logo mark | 泰然策略 | — | On-mark only |
 | Verbal shorthand | 泰然 | Talent Intelligence Strategies | First reference, formal docs, footer |
 | Acronym | — | TIS | Primary short-form across all English touchpoints |
+
+**On the seller-identity block.** A payment gateway matches the name it is shown against the
+name on the UBN's registration, so that one surface takes the full legal name even though it
+sits on a marketing page. Using the verbal shorthand there would state a name the registration
+does not carry. This is the only public surface that takes the full form; everywhere else the
+shorthand still applies, footer included.

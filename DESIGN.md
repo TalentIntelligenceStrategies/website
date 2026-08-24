@@ -1307,6 +1307,58 @@ renders to find it. `.sig-xpanel__media` and `.sig-xpanel__head` are retired.
 > pre-existing X button fails the same way, so a panel that will not close in a headless
 > harness is the harness, not the page. Test open/close by hand in a real browser.
 
+### The samples read as a document (2026-08-25)
+
+`.sig-xpanel__body` was two bare `<img>` at `border-radius:12px` with a 1px
+`border-primary` hairline. White renders on the white panel ground gave the paper no
+visible edge at all, and the cover sheet — 90% margin by design — read as the panel
+dissolving into void before the reader reached anything. Radius 12 plus a hairline is
+card chrome, and paper is not a card. It is now `.sig-doc`: a bar, a stage, captioned
+sheets, and a closing line.
+
+- **The bar states the artefact once** — a lucide `file-text` glyph, the filename in
+  Inconsolata, and `N pages · N sections · watermarked` pushed right. The length is what
+  was missing where it mattered: the retrieve widget below it has published
+  "4 sections / 7 chapters" since 2026-08-18 (`TIERS`), while the panel a buyer actually
+  opens said nothing at all, so all three tiers read as two images each and the 24-page
+  Study looked no heavier than the 8-page Snapshot. Page totals are **8 / 24 / 12**;
+  section counts stay 4 / 7 / 4 and `chapters` / `章` stays exclusive to Study, per the
+  distinction already drawn in the `TIERS` comment.
+- **The bar is deliberately NOT `position: sticky`.** Pinned to `top:0` of
+  `.sig-xpanel__scroll` it passes under `.sig-xclose` (absolute, top/right 14px, 40px
+  square, `z-index:3`) and the close button parks on the page count — the one string the
+  component exists to show. Captions carry continuous orientation instead, which is the
+  better answer regardless. Don't "fix" this later.
+- **`.sig-doc__stage` uses `--surface-recessed`**, the token documented as the tray a
+  card sits *in*. It is the darkest neutral tray token available; `surface-tertiary` and
+  `surface-quaternary` are both lighter and leave the paper edgeless again. The sheets
+  stay `#FFFFFF` in both themes, because paper does not invert.
+- **`.sig-xreport` was restyled in place, not replaced** — radius 12 to 2, hairline
+  swapped for `shadow-medium`. It is still deliberately unblurred, the inverse of
+  `.sig-rt__page img`. Preserve that inverse.
+- **Nothing in the component goes below `--text-secondary`.** `--text-tertiary` is
+  **2.68:1** on `--surface-recessed` and **3.11:1** on `--surface-secondary` in the light
+  theme — both under the 4.5:1 floor, and every string here is 12–14px. `--text-secondary`
+  is 8.90:1 on the bar and 7.67:1 on the stage. `.sig-rt__pagemeta` below *does* set
+  tertiary at 12px; that is the mistake not to copy.
+- **The closing line is a boundary statement, not a contents list.** A list was built
+  here first and thrown away: every page-1 render already prints its own `CONTENTS` block,
+  numerals and page numbers included, so a list under the sheet restated what the reader
+  had just looked at. It also sidesteps the arithmetic — "the remaining 6 pages" invites
+  the question of whether the cover counts as page 1, which nothing on this site answers.
+  Naming what is shown and what is delivered avoids it. This revives
+  `.sig-xpanel__body p`, dead since the panel disclaimers were removed; it is not those
+  disclaimers returning, since it states what you get rather than flagging a mock.
+- **Every new string is static markup with `data-zh`.** Nothing is injected, for the same
+  reason the per-tier outlines are not: `site.js` collects its i18n elements once at init.
+
+> **Verifying:** open/close still resolves through a Web Animations `onfinish`, so the
+> headless caveat above still applies — a panel that will not close in a harness is the
+> harness. Opening *does* work headlessly under `--force-prefers-reduced-motion`, which is
+> enough to check the static composition. Note also that **dark mode does not ship** —
+> `site.js` parks it and nothing sets `data-theme`; the component is token-only, so it
+> follows whenever dark is restored, but it cannot be verified today.
+
 ### The preview is per-tier (2026-08-18)
 
 Signal sells three tiers, so the preview shows what each one actually contains. `ORDERS` in

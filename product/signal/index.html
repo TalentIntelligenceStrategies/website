@@ -64,7 +64,7 @@
      spine, the nodes and ~190 lines of geometry are gone.)
 
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
-     Audited 2026-08-25: 96 classes, of which 74 are sig-* page-namespaced and 22 are
+     Audited 2026-08-25: 106 classes, of which 84 are sig-* page-namespaced and 22 are
      shared classes reached through a scoped or descendant selector, or as modifiers on
      shared components ([data-page="signal"] .hero, .sig-phases .btn,
      .topic-chip:has(input:disabled), .contact-form .field[hidden],
@@ -72,6 +72,16 @@
      .offer-card--sig*, .offer-card-eyebrow--text). Two are applied at runtime rather
      than in the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
      Zero dead rules.
+
+     (98 earlier on 2026-08-25, before the report panels' samples were given document
+      chrome. .sig-xpanel__body was two bare <img>; it is now .sig-doc — a bar stating
+      filename, page count and watermark, a --surface-recessed stage the sheets sit in,
+      a caption under each sheet, and a closing line naming the boundary between the
+      sample and the deliverable. Eight classes: .sig-doc, __bar, __name, __meta,
+      __stage, __rest, .sig-sheet, .sig-sheet__cap. .sig-xreport was restyled in place,
+      not replaced. This also revived .sig-xpanel__body p, which had been dead since the
+      panel disclaimers were removed and made the "zero dead rules" claim below untrue
+      for one rule; the closing line uses it, so the claim holds again.
 
      (88 before 2026-08-25. The report panels' banner was rebuilt to carry the whole
       offer — .sig-xbanner and its three composition variants, .sig-xprice, .sig-xcta —
@@ -950,6 +960,22 @@
      reads as "a number goes here" rather than as a value of its own. */
   .contact-meta dd.sig-due--empty{ color:rgba(255,255,255,0.40); }
 
+  /* Seller identity under the amount. Fine print by construction: it is the answer to
+     a question nobody asked until they were about to pay, so it sits below the figure,
+     behind a hairline, at label size. The hairline is the whole hierarchy here — without
+     it the block reads as a second value of equal weight to the amount.
+     The dd is a flex column so the three lines stack on tight leading rather than running
+     together; the name takes more weight so the entity reads first. */
+  .sig-seller{ padding-top:clamp(12px,1.6vw,16px); border-top:1px solid rgba(255,255,255,0.22); }
+  /* The "Sold by" dt is .sr-only (styles.css) rather than deleted: the <dl> keeps valid
+     dt/dd semantics and a screen reader still announces who the seller is, while sighted
+     readers get name, address and UBN as plain fine print. On a single-vendor page a
+     visible "Sold by" is marketplace grammar — it implies there is another seller — and
+     the block already reads as registration detail without being labelled. */
+  .sig-seller dd{ display:flex; flex-direction:column; gap:2px;
+    font-size:12.5px; font-weight:400; line-height:1.45; color:rgba(255,255,255,0.72); }
+  .sig-seller__name{ font-weight:600; color:rgba(255,255,255,0.92); }
+
   /* ── The panel banner ────────────────────────────────────────────────────────
      Was a 200px decorative image strip with the title block stacked underneath it. It
      now carries the whole offer — eyebrow, name, lede, price, CTA — so the space does
@@ -1018,9 +1044,96 @@
   .sig-xpanel__body p{ font-size:14px; line-height:1.55; color:var(--text-secondary); margin:0; }
   .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
     color:var(--text-tertiary); font-family:'Inconsolata', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+  /* ── The sample reads as a document, not as two loose images ──────────────
+     .sig-xpanel__body was two bare <img> at radius 12 with a hairline. White
+     renders on the white panel ground gave the paper no visible edge at all, and
+     the cover — 90% margin by design — read as the panel dissolving into void
+     before the reader reached anything. Radius 12 plus a hairline is card chrome,
+     and paper is not a card.
+
+     Three moves, all of them about telling the reader what they are holding:
+
+     · .sig-doc__bar states the artefact once — filename, length, watermark. The
+       length is what was missing where it mattered: the retrieve widget below has
+       published "4 sections / 7 chapters" since 2026-08-18 (see TIERS), while the
+       panel a buyer actually opens said nothing, so all three tiers read as two
+       images each and the 24-page Study looked no heavier than the 8-page Snapshot.
+     · .sig-doc__stage gives the paper an edge to sit against. This is what
+       --surface-recessed is for. The sheets stay #FFFFFF in both themes, because
+       paper does not invert.
+     · .sig-sheet__cap states position under each sheet, so orientation travels with
+       the content instead of sitting in one place at the top.
+
+     The bar is deliberately NOT position:sticky. Pinned to top:0 of
+     .sig-xpanel__scroll it passes under .sig-xclose (absolute, top/right 14px, 40px
+     square, z-index 3) and the close button parks on the page count — the one string
+     this component exists to show. The captions carry continuous orientation
+     instead, which is the better answer regardless.
+
+     No overflow:hidden on .sig-doc: the bar and the stage carry the frame's corner
+     radii themselves, inset 1px for the border. */
+  .sig-doc{ border:1px solid var(--border-tertiary); border-radius:12px;
+    background:var(--surface-page); box-shadow:var(--shadow-low); }
+
+  .sig-doc__bar{ display:flex; align-items:center; gap:10px; padding:11px 14px;
+    background:var(--surface-secondary); border-bottom:1px solid var(--border-primary);
+    border-radius:11px 11px 0 0; }
+  /* lucide file-text, matching the 24px stroke icons the rest of the page already
+     uses (.pillar-eyebrow-ico, .sig-rt__lock) and the lucide-react set the build
+     layer depends on. One icon set, not two. */
+  .sig-doc__bar svg{ flex:none; width:16px; height:16px; stroke:var(--text-secondary);
+    stroke-width:1.75; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  /* Mono because it is a literal filename, the same reason the order codes and
+     .sig-mockflag are mono. Truncates rather than wraps — the count to its right is
+     the half that carries meaning. */
+  .sig-doc__name{ font-family:'Inconsolata', ui-monospace, monospace; font-size:12.5px;
+    line-height:1.4; color:var(--text-secondary);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  /* Nothing in this component goes below --text-secondary. --text-tertiary is 2.68:1
+     on --surface-recessed and 3.11:1 on --surface-secondary in the light theme; every
+     string here is 12–14px, and the page count is the whole point of the block, so it
+     cannot be the faintest thing in it. --text-secondary is 8.90:1 on the bar and
+     7.67:1 on the stage. (.sig-rt__pagemeta below does use tertiary at 12px and is
+     the mistake not to copy.) */
+  .sig-doc__meta{ margin-left:auto; flex:none; font-size:12.5px; line-height:1.4;
+    color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+  .sig-doc__meta strong{ font-weight:600; color:var(--text-primary); }
+
+  .sig-doc__stage{ display:flex; flex-direction:column; gap:clamp(16px,1.8vw,22px);
+    padding:clamp(16px,1.8vw,22px); background:var(--surface-recessed);
+    border-radius:0 0 11px 11px; }
+  .sig-sheet{ margin:0; }
   /* Deliberately unblurred — the inverse of .sig-rt__page img above. The sample is
      readable; the report you have bought but not yet paid the balance on is not. */
-  .sig-xreport{ width:100%; height:auto; border-radius:12px; border:1px solid var(--border-primary); }
+  .sig-xreport{ display:block; width:100%; height:auto; border-radius:2px;
+    box-shadow:var(--shadow-medium); }
+  .sig-sheet__cap{ margin-top:11px; font-size:12.5px; line-height:1.5;
+    color:var(--text-secondary); }
+  .sig-sheet__cap strong{ font-weight:600; color:var(--text-primary);
+    font-variant-numeric:tabular-nums; }
+
+  /* The end of the stack — one line stating the boundary, not a contents list. A
+     list was built here first and thrown away: every page-1 render already prints its
+     own CONTENTS block, numerals and page numbers included, so a list under the sheet
+     restated what the reader had just looked at. What the sheet cannot say is where
+     the sample stops and the deliverable starts, so that is all this says. It also
+     sidesteps the arithmetic — "the remaining 6 pages" invites the question of whether
+     the cover counts as page 1, which nothing on this site answers. Naming what is
+     shown and what is delivered avoids it and is more useful anyway.
+
+     Revives .sig-xpanel__body p, dead since the three panel disclaimers were removed
+     on 2026-08-25. This is not those disclaimers returning: it states what you get,
+     not that the artwork is a mock. */
+  .sig-doc__rest{ padding-top:clamp(14px,1.6vw,18px); border-top:1px solid var(--border-tertiary); }
+
+  /* Phone: the bar's two halves stop fitting on one row well before 760, and the
+     count is the half that has to survive. It takes the second line at full width;
+     the filename keeps the first. */
+  @media (max-width: 560px){
+    .sig-doc__bar{ flex-wrap:wrap; row-gap:4px; }
+    .sig-doc__name{ flex:1 1 auto; }
+    .sig-doc__meta{ flex:1 0 100%; margin-left:26px; }
+  }
   .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
     display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
     color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
@@ -1601,6 +1714,25 @@
               <dt data-zh="今日應付（10%）">Amount due today (10%)</dt>
               <dd id="intake-deposit" class="sig-due sig-due--empty" data-zh-html data-zh="選擇報告後顯示">Select a report</dd>
             </div>
+            <!-- Seller identity. Published here rather than in the footer because this is
+                 the only page that sells and the only one with no contact panel, and a
+                 payment gateway checking a priced product wants the seller named beside
+                 the price. It joins the SAME dl as the amount on purpose: the two are one
+                 pair of transaction facts — what you pay, and who you are paying — and the
+                 dl already carries .contact-overlay-meta::before, the plinth that holds
+                 contrast over the bright arm of reports.jpg. A sibling below the dl would
+                 sit outside that scrim.
+                 The full legal name, not the shorthand: a gateway matches the name it is
+                 shown against the UBN's registration. See visual-guide.md §Name Usage,
+                 which was widened for exactly this surface. -->
+            <div class="contact-meta contact-meta--wide sig-seller">
+              <dt class="sr-only" data-zh="銷售方">Sold by</dt>
+              <dd>
+                <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies Global Inc.</span>
+                <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
+                <span><span data-zh="統一編號">UBN</span> 60331107</span>
+              </dd>
+            </div>
           </dl>
         </aside>
 
@@ -1900,8 +2032,26 @@
           </div>
         </div>
         <div class="sig-xpanel__body">
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
+          <div class="sig-doc">
+            <div class="sig-doc__bar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+              <span class="sig-doc__name">TIS_Snapshot_Report_US9876543.pdf</span>
+              <span class="sig-doc__meta" data-zh-html data-zh="<strong>8 頁</strong> · 4 節 · 含浮水印"><strong>8 pages</strong> · 4 sections · watermarked</span>
+            </div>
+            <div class="sig-doc__stage">
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
+              </figure>
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
+              </figure>
+              <div class="sig-doc__rest">
+                <p data-zh="此處為封面與第 1 頁。完整 8 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 8 pages arrive as a watermarked PDF.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1925,8 +2075,26 @@
           </div>
         </div>
         <div class="sig-xpanel__body">
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
+          <div class="sig-doc">
+            <div class="sig-doc__bar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+              <span class="sig-doc__name">TIS_Study_Report_US9876543.pdf</span>
+              <span class="sig-doc__meta" data-zh-html data-zh="<strong>24 頁</strong> · 7 章 · 含浮水印"><strong>24 pages</strong> · 7 chapters · watermarked</span>
+            </div>
+            <div class="sig-doc__stage">
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
+              </figure>
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
+              </figure>
+              <div class="sig-doc__rest">
+                <p data-zh="此處為封面與第 1 頁。完整 24 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 24 pages arrive as a watermarked PDF.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1950,8 +2118,26 @@
           </div>
         </div>
         <div class="sig-xpanel__body">
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" />
-          <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
+          <div class="sig-doc">
+            <div class="sig-doc__bar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+              <span class="sig-doc__name">TIS_Survey_Report_US9876543.pdf</span>
+              <span class="sig-doc__meta" data-zh-html data-zh="<strong>12 頁</strong> · 4 節 · 含浮水印"><strong>12 pages</strong> · 4 sections · watermarked</span>
+            </div>
+            <div class="sig-doc__stage">
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
+              </figure>
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 12 頁</strong> · 等級，以及依相似度排序的十件最相近專利"><strong>Page 1 of 12</strong> · the grade, and the ten closest patents ranked by similarity</figcaption>
+              </figure>
+              <div class="sig-doc__rest">
+                <p data-zh="此處為封面與第 1 頁。完整 12 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 12 pages arrive as a watermarked PDF.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
