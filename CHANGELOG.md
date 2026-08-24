@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-25 06:05 +0800** · Terms, Privacy and Disclosures now open as a shared modal from every footer; six bilingual fragments behind them.
 - **2026-08-25 03:53 +0800** · Signal intake panel names the seller: full legal entity, registered address and UBN, for payment-gateway verification.
 - **2026-08-25 03:45 +0800** · Signal report samples get document chrome: filename bar, page count, recessed stage, captioned sheets.
 - **2026-08-25 03:11 +0800** · Signal: priced the three reports, rebuilt the sample panels to carry the offer and a CTA, enlarged the intake deposit.

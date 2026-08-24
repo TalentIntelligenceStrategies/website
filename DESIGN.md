@@ -1063,6 +1063,45 @@ second page needing it: promote it to a real `styles.css` component and delete t
 
 ---
 
+## 15.6 The legal modal — the site's first shared dialog
+
+Terms / Privacy / Disclosures open from the footer of all 8 pages. `.lgl-overlay` /
+`.lgl-dialog` in `styles.css` is the **first implementation of `components.md` §Modal** on
+this site — before it, there were six bespoke overlays (`.search-modal`, `.mobile-drawer`,
+`.mkt-overlay`, `.pat-modal`, `.sig-xpanel`, `#lang-overlay`) and no shared dialog at all.
+It is `xl` 800, per spec.
+
+- **Shell never scrolls; `.lgl-body` does.** `display:flex; flex-direction:column;
+  overflow:hidden` on the dialog, one scrolling child with `min-height:0`, and the close
+  button on the *shell* so it stays pinned. Copied from `.sig-xpanel`, the only shipped shell
+  that got this right. `.pat-modal` scrolls its whole shell, which is why its close button
+  disappears on long content — not the model.
+- **`min-height: 0` on the body is load-bearing.** Flex children floor at min-content, so
+  without it the shell overflows instead of the body scrolling.
+- **`inert` + `aria-hidden` on `<main>` / `.footer` / `.footer-baseline` while open**, per
+  §17.6. `aria-modal` alone is a promise the DOM doesn't keep; `inert` is what actually stops
+  focus reaching the page behind. None of the six older overlays does this.
+- **z-index 1100, deviating from the spec's 700.** The registry tops out at `.mkt-overlay`
+  1000, and that newsletter popup fires on its own 45s timer — at 700 a marketing card would
+  land on top of Terms mid-read. `site.js` also defers the mkt trigger while `body.lgl-lock`
+  is set, re-arming rather than dropping it.
+- **Content is fetched, one fragment per language** — `/legal/{doc}.{en|zh}.html`, six files.
+  Not `data-zh` attributes: `site.js` collects its i18n nodes **once at init**, so injected
+  content renders correctly and then refuses to translate on the next toggle. Per-language
+  fragments sidestep that entirely; a toggle while open re-fetches via the `MutationObserver`
+  on `documentElement[lang]`. **Test the language swap with the modal open** — that is where
+  this breaks if anyone "simplifies" it back to one fragment.
+- **The footer links keep a real `href`** to their fragment, so with JS off, for a crawler, or
+  for a payment-gateway reviewer, they still resolve. JS intercepts and opens the dialog.
+- **Prose is styled by element under `.lgl-body`,** not by class, so the six content files
+  stay plain semantic HTML that someone can edit after a lawyer marks them up.
+
+The two `href="#"` Privacy links inside the newsletter popup fine print (`index.html`,
+`product/licensing/index.html`) are deliberately **not** wired — that would open a modal
+inside a modal.
+
+---
+
 ## 16. Per-page notes
 
 Everything above is site-wide. This section holds what is genuinely scoped to one page.

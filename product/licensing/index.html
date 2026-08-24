@@ -2798,13 +2798,13 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="footer-col">
             <h4 data-zh="法律">Legal</h4>
             <ul>
-              <li><a href="#">
+              <li><a href="/legal/terms.en.html" data-legal="terms">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
                 <span data-zh="服務條款">Terms</span></a></li>
-              <li><a href="#">
+              <li><a href="/legal/privacy.en.html" data-legal="privacy">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
                 <span data-zh="隱私政策">Privacy</span></a></li>
-              <li><a href="#">
+              <li><a href="/legal/disclosures.en.html" data-legal="disclosures">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
                 <span data-zh="揭露聲明">Disclosures</span></a></li>
             </ul>
@@ -2820,6 +2820,19 @@ a, button, .howit-card, .acc-trigger, .btn {
     </div>
   </div>
 
+
+
+<!-- Legal modal — components.md §Modal (xl 800). One shell per page; the three
+     documents are fetched from /legal/ on open. See site.js "Legal modal". -->
+<div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+  <div class="lgl-dialog">
+    <button type="button" class="lgl-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="lgl-head"><h2 id="legal-title"></h2></div>
+    <div class="lgl-body" tabindex="0"></div>
+  </div>
+</div>
 
 <!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
 <div id="lang-overlay" aria-hidden="true">

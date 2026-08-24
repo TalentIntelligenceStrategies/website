@@ -813,6 +813,10 @@
 
     function openPopup() {
       if (opened || isSuppressed()) return;
+      // Never over an open legal dialog. This popup runs on a 45s timer of its own,
+      // so without this it lands on top of Terms mid-read. Re-arm rather than drop
+      // the trigger, so the visitor still sees it once they close the dialog.
+      if (document.body.classList.contains('lgl-lock')) { timer = setTimeout(openPopup, 20000); return; }
       opened = true;
       clearTimeout(timer);
       window.removeEventListener('scroll', onScroll);
@@ -888,6 +892,121 @@
       timer = setTimeout(openPopup, DELAY_MS);
       window.addEventListener('scroll', onScroll, { passive: true });
     }
+  }
+
+  // ──────────────── Legal modal — components.md §Modal (xl 800) ────────────────
+  // Terms / Privacy / Disclosures, opened from the footer of every page. The copy
+  // lives in /legal/*.html fragments, ONE PER LANGUAGE, fetched on first open.
+  //
+  // Per-language files rather than data-zh inside the markup, and that is not a
+  // preference: the language switcher above collects its i18n nodes ONCE at init
+  // (see i18nEls), so anything injected later renders correctly and then refuses to
+  // translate on the next toggle. Fetching the language-matched fragment sidesteps
+  // that system entirely and halves each payload. The trade is that a toggle while
+  // open must re-fetch — handled below.
+  //
+  // The footer links keep a real href to the fragment, so with JS off, or for a
+  // crawler or a payment-gateway reviewer, they still resolve to readable content.
+  const lglOverlay = document.getElementById('legal-overlay');
+  if (lglOverlay) {
+    const lglDialog  = lglOverlay.querySelector('.lgl-dialog');
+    const lglTitle   = lglOverlay.querySelector('.lgl-head h2');
+    const lglBody    = lglOverlay.querySelector('.lgl-body');
+    const lglClose   = lglOverlay.querySelector('.lgl-close');
+    const cache = new Map();
+    let lglLast = null, lglDoc = null;
+
+    const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
+    const TITLES = {
+      terms:       { en: 'Terms of Service', zh: '服務條款' },
+      privacy:     { en: 'Privacy Policy',   zh: '隱私政策' },
+      disclosures: { en: 'Disclosures',      zh: '揭露聲明' }
+    };
+    // Everything inside <main>/<footer> goes inert while the dialog is open — the
+    // house idiom from DESIGN.md §17.6. aria-modal alone is a promise the DOM does
+    // not keep; inert is what actually stops focus reaching the page behind, and it
+    // is a content attribute, so it holds without JS once set.
+    const landmarks = () => [
+      document.querySelector('main'),
+      document.querySelector('.footer'),
+      document.querySelector('.footer-baseline')
+    ].filter(Boolean);
+
+    async function render(doc) {
+      const lang = isZh() ? 'zh' : 'en';
+      const key = doc + '.' + lang;
+      lglTitle.textContent = isZh() ? TITLES[doc].zh : TITLES[doc].en;
+      if (cache.has(key)) { lglBody.innerHTML = cache.get(key); lglBody.scrollTop = 0; return; }
+      lglBody.innerHTML = '<p class="lgl-loading">' + (isZh() ? '載入中…' : 'Loading…') + '</p>';
+      try {
+        const res = await fetch('/legal/' + key + '.html', { cache: 'no-cache' });
+        if (!res.ok) throw new Error(res.status);
+        const html = await res.text();
+        cache.set(key, html);
+        lglBody.innerHTML = html;
+      } catch (err) {
+        // Give the reader the working URL rather than a dead end.
+        lglBody.innerHTML = '<p class="lgl-loading">' + (isZh()
+          ? '無法載入。請前往 <a href="/legal/' + key + '.html">' + key + '.html</a>。'
+          : 'Could not load. Open <a href="/legal/' + key + '.html">' + key + '.html</a> instead.') + '</p>';
+      }
+      lglBody.scrollTop = 0;
+    }
+
+    const lglFocusables = () => [...lglDialog.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')]
+      .filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
+
+    function lglOpen(doc, trigger) {
+      lglDoc = doc;
+      lglLast = trigger || document.activeElement;
+      // Compensate for the scrollbar the lock removes, or the fixed topnav jumps.
+      const sb = window.innerWidth - document.documentElement.clientWidth;
+      if (sb > 0) document.body.style.paddingRight = sb + 'px';
+      document.body.classList.add('lgl-lock');
+      landmarks().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
+      lglOverlay.dataset.open = 'true';
+      render(doc);
+      lglClose.focus({ preventScroll: true });
+    }
+
+    function lglCloseFn() {
+      if (lglOverlay.dataset.open !== 'true') return;
+      lglOverlay.dataset.open = 'false';
+      document.body.classList.remove('lgl-lock');
+      document.body.style.paddingRight = '';
+      landmarks().forEach(el => { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); });
+      lglDoc = null;
+      if (lglLast && lglLast.focus) lglLast.focus({ preventScroll: true });
+      lglLast = null;
+    }
+
+    // One delegated listener for all 24 footer links across the 8 pages.
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('[data-legal]');
+      if (!link) return;
+      e.preventDefault();
+      lglOpen(link.dataset.legal, link);
+    });
+    lglClose.addEventListener('click', lglCloseFn);
+    lglOverlay.addEventListener('click', (e) => { if (e.target === lglOverlay) lglCloseFn(); });
+    document.addEventListener('keydown', (e) => {
+      if (lglOverlay.dataset.open !== 'true') return;
+      if (e.key === 'Escape') { e.preventDefault(); lglCloseFn(); return; }
+      if (e.key === 'Tab') {
+        const f = lglFocusables();
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    // A language toggle while open swaps the whole document, and relabels the close
+    // button — neither is reachable by the i18n pass, since this content was injected.
+    new MutationObserver(() => {
+      lglClose.setAttribute('aria-label', isZh() ? '關閉' : 'Close');
+      if (lglDoc) render(lglDoc);
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    lglClose.setAttribute('aria-label', isZh() ? '關閉' : 'Close');
   }
 })();
 

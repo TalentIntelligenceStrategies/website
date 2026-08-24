@@ -442,8 +442,13 @@ Until each row is spec'd, defer to: §Logo Usage (variants, minimum sizes, no re
 | Verbal shorthand | 泰然 | Talent Intelligence Strategies | First reference, formal docs, footer |
 | Acronym | — | TIS | Primary short-form across all English touchpoints |
 
-**On the seller-identity block.** A payment gateway matches the name it is shown against the
-name on the UBN's registration, so that one surface takes the full legal name even though it
-sits on a marketing page. Using the verbal shorthand there would state a name the registration
-does not carry. This is the only public surface that takes the full form; everywhere else the
-shorthand still applies, footer included.
+**Where the full legal name is used publicly.** Two surfaces, both for the same reason — a
+reader is being asked to identify the legal person they are dealing with:
+
+1. **The seller-identity block** on the Signal intake panel. A payment gateway matches the
+   name it is shown against the name on the UBN's registration; the verbal shorthand would
+   state a name the registration does not carry.
+2. **Terms of Service, Privacy Policy and Disclosures.** These are legal documents by
+   definition, and each opens by naming the contracting entity.
+
+Everywhere else the shorthand still applies, footer included.

@@ -3546,6 +3546,160 @@ svg.is-primed polyline {
   border: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   LEGAL MODAL — components.md §Modal, `xl` 800, first implementation on this site
+
+   §Modal has been specced since the component system was written and was never
+   built here: the site carries six bespoke overlays (.search-modal, .mobile-drawer,
+   .mkt-overlay, .pat-modal, .sig-xpanel, #lang-overlay) and no shared dialog at all.
+   Terms / Privacy / Disclosures open from the footer of all 8 pages, so by DESIGN.md
+   §0.3 this is reusable by definition and belongs here rather than in 8 page-local
+   <style> blocks.
+
+   Geometry follows .sig-xpanel, the only shipped shell that handles long text
+   correctly: flex column + overflow:hidden on the shell, a single scrolling child,
+   and the close button on the SHELL rather than inside the scroller so it stays
+   pinned. .pat-modal scrolls its whole shell, which is why its close button
+   disappears on long content — not a model to copy.
+
+   z-index deviates from the spec's 700 on purpose. The registry above tops out at
+   .mkt-overlay 1000, and that newsletter popup fires on its own 45s timer, so a
+   legal dialog at 700 would be covered by an unrelated marketing card mid-read.
+   1100 puts it above everything; site.js also suppresses the mkt timer while open.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.lgl-overlay {
+  position: fixed; inset: 0;
+  z-index: 1100;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 40px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  animation: lgl-overlay-in 150ms linear;
+}
+.lgl-overlay[data-open="true"] { display: flex; }
+@keyframes lgl-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+
+.lgl-dialog {
+  position: relative;
+  display: flex; flex-direction: column;
+  overflow: hidden;                      /* the shell never scrolls; .lgl-body does */
+  width: min(800px, calc(100% - 40px));  /* §Modal xl, responsive floor per spec */
+  max-height: calc(100dvh - 80px);       /* dvh, not vh: mobile toolbars must not eat the close button */
+  background: var(--surface-page);
+  border-radius: 16px;
+  box-shadow: var(--shadow-high);
+  animation: lgl-dialog-in 150ms cubic-bezier(0.2, 1, 0.3, 1);
+}
+@keyframes lgl-dialog-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Header — holds the title and stays put while the body scrolls under it. */
+.lgl-head {
+  flex: none;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border-primary);
+  padding-right: 64px;                   /* clear of the close button's 32px + 16px inset */
+}
+.lgl-head h2 {
+  margin: 0;
+  font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3;
+  color: var(--text-primary);
+}
+.lgl-head p {
+  margin: 4px 0 0;
+  font-size: 14px; line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.lgl-body {
+  flex: 1 1 auto;
+  min-height: 0;                         /* flex children floor at min-content without this, so the shell overflows instead of the body scrolling */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px;
+  overscroll-behavior: contain;          /* stop the page behind scrolling once this hits its end */
+}
+
+/* Close — on the shell, outside .lgl-body, so long content scrolls beneath it. */
+.lgl-close {
+  position: absolute; top: 16px; right: 16px; z-index: 2;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 140ms ease-out, color 140ms ease-out;
+}
+.lgl-close:hover { background: var(--surface-tertiary); color: var(--text-primary); }
+.lgl-close:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.lgl-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; }
+
+/* ── Legal prose ─────────────────────────────────────────────────────────────
+   Scoped to .lgl-body so the fragments can be plain semantic HTML with no classes.
+   That keeps the six content files editable by someone who is not reading this
+   stylesheet, which matters when the edits come back from a lawyer. */
+.lgl-body h3 {
+  margin: 28px 0 8px;
+  font-size: 15px; font-weight: 700; letter-spacing: 0;
+  color: var(--text-primary);
+}
+.lgl-body h3:first-child { margin-top: 0; }
+.lgl-body p, .lgl-body li {
+  font-size: 14px; line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+.lgl-body ul { margin: 0 0 10px; padding-left: 20px; }
+.lgl-body li { margin-bottom: 6px; }
+.lgl-body strong { color: var(--text-primary); font-weight: 600; }
+.lgl-body a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
+.lgl-body dl { margin: 0 0 10px; }
+.lgl-body dt { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-top: 10px; }
+.lgl-body dd { font-size: 14px; line-height: 1.65; color: var(--text-secondary); margin: 2px 0 0; }
+
+/* Effective / updated line. Dates are ISO per brand-voice.md §6. */
+.lgl-meta {
+  font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  margin: 0 0 20px;
+}
+
+/* Review notice. Deliberately loud: these drafts have not been through counsel,
+   and a reader deciding whether to rely on them needs to know that first. */
+.lgl-notice {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-secondary);
+  border-radius: 8px;
+  background: var(--surface-secondary);
+  font-size: 13px; line-height: 1.55;
+  color: var(--text-secondary);
+}
+.lgl-notice strong { display: block; margin-bottom: 2px; color: var(--text-primary); }
+
+.lgl-loading { font-size: 14px; color: var(--text-tertiary); margin: 0; }
+
+/* Scroll lock. site.js also pads for the scrollbar width so the fixed topnav
+   does not jump on platforms where scrollbars take space. */
+body.lgl-lock { overflow: hidden; }
+
+@media (max-width: 520px) {
+  .lgl-overlay { padding: 16px 12px; }
+  .lgl-dialog { max-height: calc(100dvh - 32px); }
+  .lgl-body { padding: 20px 18px; }
+  .lgl-head { padding: 18px 20px 14px; padding-right: 60px; }
+}
+
+/* Spec: motion respects reduced-motion — opacity only, no translate. */
+@media (prefers-reduced-motion: reduce) {
+  .lgl-dialog { animation: lgl-overlay-in 120ms linear; }
+}
+
 /* ───────── IP intelligence drop popup — components.md §IP intelligence drop popup (variant F · top hero band) ───────── */
 .mkt-overlay {
   position: fixed; inset: 0;
@@ -3771,7 +3925,7 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
 /* z-index 95 is the only free band. It covers everything inside <main> — the
    licensing page lifts its announce bar to 90 — while leaving every chrome
    overlay above it: .topnav 100, .mobile-drawer 700, .search-modal 900,
-   #lang-overlay 999, .mkt-overlay 1000. The nav staying usable is deliberate:
+   #lang-overlay 999, .mkt-overlay 1000, .lgl-overlay 1100. The nav staying usable is deliberate:
    a sealed page with no nav traps the visitor, and the language toggle lives
    there, so covering it would leave a ZH reader stuck in English.
 
