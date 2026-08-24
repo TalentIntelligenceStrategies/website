@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=17">
+<link rel="stylesheet" href="/assets/styles.css?v=18">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -281,10 +281,20 @@
 <main id="main">
 
   <!-- §Announcement banner — silver (TIS-overall). Session-dismissed by data-announce-id. -->
-  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-licensing-bundles" role="region" aria-label="Site announcement">
-    <span class="announce-cluster">
-      <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
-      <a class="announce-link" href="/product/licensing/" data-zh="了解詳情 →">See what&#39;s coming →</a>
+  <!-- Two pre-launch notices sharing one bar. Both items are always in the DOM and
+       in the accessibility tree, so a screen reader gets both regardless of which
+       one is visible; the rotation is purely visual. Under prefers-reduced-motion
+       the rotator un-stacks and shows both at once instead of cycling. -->
+  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement">
+    <span class="announce-rotator">
+      <span class="announce-item is-active">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="泰然專利強度評級系統：即將開放訂購">Patent Evaluation: ordering opens soon</span>
+      </span>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -808,7 +818,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=6" defer></script>
+<script src="/assets/site.js?v=7" defer></script>
 
 <!-- Shifting-lines hero shader. ESM module → three.js core from esm.sh (no build
      step, no React). Renders a single full-screen quad with a tiny fragment

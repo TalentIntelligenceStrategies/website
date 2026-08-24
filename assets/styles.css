@@ -903,6 +903,27 @@ main { padding-top: 64px; }
   display: flex; align-items: center; gap: 10px;
   min-width: 0;
 }
+/* Rotator — both items occupy the same grid cell and cross-fade. The cell sizes
+   to the wider message, so the bar never resizes as it cycles. */
+.announce-rotator { display: grid; min-width: 0; }
+.announce-item {
+  grid-area: 1 / 1;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-width: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 460ms var(--ease-card);
+}
+.announce-item.is-active { opacity: 1; pointer-events: auto; }
+
+/* Reduced motion: do not cycle at all. Un-stack into a row and show both at once,
+   so the second message is never something you have to wait for. The rotator JS
+   checks the same query and never starts its timer. */
+@media (prefers-reduced-motion: reduce) {
+  .announce-rotator { display: flex; flex-wrap: wrap; align-items: center;
+                      justify-content: center; column-gap: 22px; row-gap: 2px; }
+  .announce-item { opacity: 1; pointer-events: auto; transition: none; }
+  .ticker-pulse::before { animation: none; }
+}
 .announce-msg {
   font-size: 14px; font-weight: 500; color: var(--text-inverse);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -925,7 +946,9 @@ main { padding-top: 64px; }
    .is-dismissing still collapses from it. */
 @media (max-width: 880px) {
   .announce { max-height: 140px; }
-  .announce-cluster { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
+  .announce-cluster,
+  .announce-rotator { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
+  .announce-item { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   .announce-msg { white-space: normal; overflow: visible; text-overflow: clip; text-align: center; }
 }
 
@@ -1940,6 +1963,16 @@ main { padding-top: 64px; }
 /* Amber variant — "Coming soon" / pre-launch state. */
 .ticker-pulse--warning,
 .ticker-pulse--warning::before { background: var(--signal-warning); }
+/* Blue variant — Patent Evaluation pre-launch, pairing with the cool pillar.
+   Pinned literals rather than --surface-accent-signal, because that token
+   LIGHTENS in dark theme (#0EA5E9 -> #38BDF8) while the announce bar INVERTS to
+   near-white, so the tokenised dot would wash out exactly where it needs to
+   darken. #0EA5E9 reads on the black bar; #0A72B0 is 5.19:1 on the inverted one.
+   Same reasoning as DESIGN.md §1.3 for surfaces that do not follow the theme. */
+.ticker-pulse--signal,
+.ticker-pulse--signal::before { background: #0EA5E9; }
+[data-theme="dark"] .announce .ticker-pulse--signal,
+[data-theme="dark"] .announce .ticker-pulse--signal::before { background: #0A72B0; }
 @keyframes ticker-pulse {
   0%   { transform: scale(1);   opacity: 0.6; }
   100% { transform: scale(2.6); opacity: 0; }

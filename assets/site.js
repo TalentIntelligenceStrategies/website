@@ -903,6 +903,30 @@
     try { dismissed = sessionStorage.getItem(key) === '1'; } catch (_) {}
     if (dismissed) { bar.hidden = true; return; }
 
+    // Rotator — cross-fade between the bar's announcement items.
+    // Both items are always in the DOM and in the a11y tree, so nothing depends
+    // on catching the right moment; this only drives which one is painted.
+    // Skipped entirely under reduced motion, where CSS shows both side by side.
+    const items = [...bar.querySelectorAll('.announce-item')];
+    if (items.length > 1 && !reduceMotion.matches) {
+      let i = 0, timer = null;
+      const advance = () => {
+        items[i].classList.remove('is-active');
+        i = (i + 1) % items.length;
+        items[i].classList.add('is-active');
+      };
+      const start = () => { if (!timer) timer = setInterval(advance, 6000); };
+      const stop  = () => { clearInterval(timer); timer = null; };
+      // Pause while a pointer is over the bar or focus is inside it, so a slow
+      // reader is never fighting the timer. The close button is the WCAG 2.2.2
+      // "hide" mechanism for anyone who wants it gone outright.
+      bar.addEventListener('mouseenter', stop);
+      bar.addEventListener('mouseleave', start);
+      bar.addEventListener('focusin', stop);
+      bar.addEventListener('focusout', start);
+      start();
+    }
+
     const close = bar.querySelector('.announce-close');
     if (!close) return;
     close.addEventListener('click', () => {
