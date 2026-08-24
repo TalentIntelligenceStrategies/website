@@ -910,10 +910,24 @@ main { padding-top: 64px; }
   grid-area: 1 / 1;
   display: flex; align-items: center; justify-content: center; gap: 10px;
   min-width: 0;
-  opacity: 0; pointer-events: none;
-  transition: opacity 460ms var(--ease-card);
+  /* Sequenced, deliberately not a crossfade. The outgoing message leaves
+     completely before the incoming one starts, so the two never overlap and
+     there is no double-exposure frame to mask.
+
+     out 260ms ease-in, then a 40ms beat of empty bar, then in 340ms ease-out.
+     ease-in on the exit is intentional and is the one place it belongs: the
+     line lingers a moment, then accelerates away. The old curve,
+     cubic-bezier(0.16,1,0.3,1), spent ~90% of its opacity change in the first
+     quarter and then crawled, which is what read as a snap. */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease-in;
 }
-.announce-item.is-active { opacity: 1; pointer-events: auto; }
+.announce-item.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 340ms ease-out 300ms;
+}
 
 /* Reduced motion: do not cycle at all. Un-stack into a row and show both at once,
    so the second message is never something you have to wait for. The rotator JS
@@ -1004,7 +1018,8 @@ main { padding-top: 64px; }
   min-height: calc(100dvh - 64px);
   padding-block: 0;
 }
-[data-page="home"] .announce {
+[data-page="home"] .announce,
+[data-page="signal"] .announce {
   position: absolute;
   top: 64px;        /* sit just below the fixed nav */
   left: 0;
@@ -4612,25 +4627,53 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25;
   color: #FFFFFF; margin: 0;
 }
-/* Price tag — sits under the title so the card reads name → price → what you get.
-   Pure white is the sanctioned literal on this always-dark image-backed surface
-   (DESIGN.md §1.3).
+/* ─── Price on a report card ──────────────────────────────────────────────────
+   A composed numeral: small currency symbol at the cap line, large value, sitting
+   between the report's name and its description. Chosen over a corner chip and a
+   footer-row price after building all three on the live page and comparing them.
 
    SANS, not mono, and that is deliberate. design-tokens.md:59 puts prices in
    Inconsolata, and .pcard-amt on the licensing page does exactly that at 46–58px,
-   where the monospace comma cell reads as an intentional display treatment. At 22px
-   it does not: Inconsolata gives "," a full character cell, so US$1,500 renders as
-   "US$1 , 500" with the separator floating loose. Compared side by side, sans with
+   where the monospace comma cell reads as an intentional display treatment. At card
+   scale it does not: Inconsolata gives "," a full character cell, so $1,500 renders as
+   "$1 , 500" with the separator floating loose. Compared side by side, sans with
    tabular-nums is the only one of four candidates that reads as a price. This also
-   matches brand/components.md §Stat strip, which already specs a value as sans +
-   tnum — so the system already holds both treatments; this picks the one that
-   belongs at label scale. tnum keeps the three cards' digits on a shared rhythm. */
+   matches brand/components.md §Stat strip, which already specs a value as sans + tnum.
+   tnum keeps the three cards' digits on a shared rhythm.
+
+   Splitting the symbol off is what dropping the "US" prefix bought: `US$750` set at two
+   sizes would break across a meaningless seam, where `$` + `750` splits exactly where
+   the eye already splits it.
+
+   Pure white is the sanctioned literal on this always-dark image-backed surface
+   (DESIGN.md §1.3). The price sits inside the card's bottom-up scrim, which is why it
+   needs no ground of its own — a treatment in the card's TOP corner did, because the
+   scrim is ~0 up there and bare white measured 2.05:1 against the Study card's art. ── */
 .offer-card-price {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;
+  font-size: clamp(30px, 2.8vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
   color: #FFFFFF;
 }
+/* The symbol takes no colour of its own, so it reads as part of the number rather than
+   a dimmed prefix attached to a bright one; size, weight and position carry the
+   hierarchy instead of tone. Raised to the numerals' cap line, not their baseline:
+   compared against three other lockups, baseline-aligned reads as a shrunken prefix and
+   a half-raise looks unresolved. `vertical-align` is in em of the UNIT's own size, so
+   the raise scales with the clamp for free. Carries the ZH `NT$` through the same
+   class. */
+.offer-card-price__unit {
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0;
+  vertical-align: 0.95em;
+  margin-right: 0.06em;
+}
+
 .offer-card-desc {
   font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.82);
   min-height: 4.5em;               /* reserve 3 lines (3 × 1.5lh) so shorter tiles (Owned) align */

@@ -33,7 +33,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=17">
+<link rel="stylesheet" href="/assets/styles.css?v=18">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -64,14 +64,25 @@
      spine, the nodes and ~190 lines of geometry are gone.)
 
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
-     Audited 2026-08-13: 88 classes, of which 67 are sig-* page-namespaced, 6 are
-     modifiers on shared components (contact-card--sig-*, offer-card--sig*,
-     offer-card-eyebrow--text), and the remaining 15 are shared classes reached
-     through a scoped or descendant selector ([data-page="signal"] .hero,
-     .sig-phases .btn, .topic-chip:has(input:disabled), .contact-form .field[hidden],
-     .contact-card--sig-intake .contact-panel). Two are applied at runtime rather than
-     in the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
+     Audited 2026-08-25: 96 classes, of which 74 are sig-* page-namespaced and 22 are
+     shared classes reached through a scoped or descendant selector, or as modifiers on
+     shared components ([data-page="signal"] .hero, .sig-phases .btn,
+     .topic-chip:has(input:disabled), .contact-form .field[hidden],
+     .contact-card--sig-intake .contact-panel, .contact-meta dd.sig-due,
+     .offer-card--sig*, .offer-card-eyebrow--text). Two are applied at runtime rather
+     than in the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
      Zero dead rules.
+
+     (88 before 2026-08-25. The report panels' banner was rebuilt to carry the whole
+      offer — .sig-xbanner and its three composition variants, .sig-xprice, .sig-xcta —
+      which retired .sig-xpanel__media and .sig-xpanel__head; the intake overlay's
+      deposit figure added .sig-due. .sig-mockflag stays: the three panel disclaimers
+      that used it are gone, but the retrieve preview still flags its placeholder data.
+      Re-audited twice the same day as the banner comparison narrowed: --split and
+      --strip lost to --bleed and were deleted; --bar and --lead replaced them as
+      variations ON --bleed; then --bar won and everything folded into a bare
+      .sig-xbanner, since a modifier with nothing left to distinguish it is noise.
+      99 → 96, zero dead throughout.)
 
      (63 before 2026-08-13, over two rebuilds of the two contact cards.
       Intake added .sig-seg / .sig-seg__opt / .sig-notes and reached four shared classes
@@ -153,7 +164,7 @@
   /* The shared .offer-card-eyebrow--text modifier (Urbanist for word eyebrows, per
      its own comment) is declared BEFORE .offer-card-eyebrow at equal specificity in
      styles.css, so the mono base wins and the modifier never applies. These eyebrows
-     are words, and the matching overlay label (.sig-xpanel__head .sig-xcard__kind
+     are words, and the matching overlay label (.sig-xbanner .sig-xcard__kind
      above) already forces sans — restate it here so card and panel agree. Sentence
      case, not caps: these read as plain noun phrases (the grade / the evidence / the field), and
      uppercasing them turns a phrase into a label. Tracking eases off to suit. */
@@ -922,14 +933,87 @@
     border-radius:18px; box-shadow:var(--shadow-high); transform-origin:top left; }
   .sig-xpanel[hidden]{ display:none; }
   .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
-  .sig-xpanel__media{ height:200px; overflow:hidden; }
-  .sig-xpanel__media img{ width:100%; height:100%; object-fit:cover; object-position:center; }
-  .sig-xpanel__head{ padding:clamp(24px,3vw,36px) clamp(24px,3vw,36px) 0; display:flex; flex-direction:column; gap:8px; }
-  /* Sentence case here too, matching the card eyebrow it morphs out of. */
-  .sig-xpanel__head .sig-xcard__kind{ font-family:var(--font-sans);
-    font-size:12px; font-weight:600; letter-spacing:0.04em; color:var(--sig-blue-deep); }
-  .sig-xpanel__head h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:0; color:var(--text-primary); }
-  .sig-xpanel__lede{ font-size:16px; line-height:1.55; color:var(--text-secondary); margin:0; max-width:56ch; }
+  /* Deposit figure in the intake overlay. Same composed numeral as the report cards
+     and the panel banners, so the amount you will be charged is set at the same scale
+     as the price that produced it. White on the card's own dark ground.
+     The empty state is a sentence, not a number, so it drops back to the .contact-meta
+     dd size — a 36px "Select a report" reads as a headline. The block keeps its slot
+     either way; only the type size changes. */
+  /* Qualified with .contact-meta dd on purpose. The shared component sets
+     `.contact-meta dd { font-size:15px }` — specificity (0,1,1) — so a bare `.sig-due`
+     at (0,1,0) loses no matter what order it appears in, and the figure silently stayed
+     at label size. Matching the element+class shape is what makes the clamp apply. */
+  .contact-meta dd.sig-due{ font-family:var(--font-sans); font-size:clamp(30px,2.8vw,40px); font-weight:700;
+    letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; color:#FFFFFF; }
+  .sig-due__unit{ font-size:0.42em; font-weight:500; letter-spacing:0; vertical-align:0.95em; margin-right:0.06em; }
+  /* The placeholder keeps the numeral's size and drops only in tone, so the block
+     reads as "a number goes here" rather than as a value of its own. */
+  .contact-meta dd.sig-due--empty{ color:rgba(255,255,255,0.40); }
+
+  /* ── The panel banner ────────────────────────────────────────────────────────
+     Was a 200px decorative image strip with the title block stacked underneath it. It
+     now carries the whole offer — eyebrow, name, lede, price, CTA — so the space does
+     work instead of just setting a mood, and the buy decision is reachable without
+     scrolling past two full-page report renders to find it.
+
+     One composition, arrived at by building three and comparing them live, twice:
+     copy over a full-bleed image under its own scrim, with the buy block held in the
+     bottom-right corner — price stacked over the CTA, both right-aligned, sharing the
+     baseline of the copy block opposite. The copy reads left to right and stops; the
+     price and the action wait at the end of that line rather than interrupting it.
+     Keeps the band shorter than a full-width rail would, because the buy block sits
+     beside the copy instead of under it.
+
+     Two things this needs, both learned the hard way:
+     · Its OWN scrim. The card's lives on .offer-card::after and does not come along in
+       the FLIP, so without this the copy sits on unmodified photo.
+     · A light CTA. .btn-primary is a black fill that disappears into a dark image.
+
+     .sig-xclose is untouched by any of it: it stays position:absolute top/right 14px on
+     .sig-xpanel, above this at z-index 3, and carries its own surface + border so it
+     reads on image or on page ground. ── */
+  .sig-xbanner{ position:relative; height:clamp(250px,30vw,310px); overflow:hidden; color:#FFFFFF; }
+  .sig-xbanner__img{ position:absolute; inset:0; display:block; width:100%; height:100%;
+    object-fit:cover; object-position:center; }
+  .sig-xbanner::after{ content:""; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.62) 46%, rgba(0,0,0,0.20) 78%, rgba(0,0,0,0.10) 100%); }
+  /* Row, bottom-aligned: copy on the left, the buy block held in the right corner.
+     align-items:flex-end is what seats them on a shared baseline — the copy block is
+     three or four lines tall and the buy block two, so anything else leaves the price
+     floating mid-air beside the lede. */
+  .sig-xbanner__inner{ position:absolute; inset:0; z-index:1;
+    padding:clamp(20px,3vw,30px) clamp(24px,3vw,36px);
+    display:flex; align-items:flex-end; justify-content:space-between; gap:clamp(16px,3vw,32px); }
+  .sig-xbanner__copy{ display:flex; flex-direction:column; gap:8px; max-width:52ch; }
+  .sig-xbanner__buy{ display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
+  .sig-xcta{ flex:none; white-space:nowrap; background:#FFFFFF; color:#252525; }
+  .sig-xcta:hover{ background:rgba(255,255,255,0.86); }
+
+  /* Price in the panel — the same composed numeral as the report cards. */
+  .sig-xprice{ font-family:var(--font-sans); font-size:clamp(26px,2.8vw,36px); font-weight:700;
+    letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; color:inherit; }
+  .sig-xprice__unit{ font-size:0.42em; font-weight:500; letter-spacing:0; vertical-align:0.95em; margin-right:0.06em; }
+
+  /* Type for the copy block. Sentence case on the eyebrow, matching the card eyebrow it
+     morphs out of. All three sit on the scrimmed photo, so all three are light. */
+  .sig-xbanner .sig-xcard__kind{ font-family:var(--font-sans);
+    font-size:12px; font-weight:600; letter-spacing:0.04em; color:rgba(255,255,255,0.78); }
+  .sig-xbanner h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em;
+    line-height:1.15; margin:0; color:#FFFFFF; }
+  .sig-xpanel__lede{ font-size:16px; line-height:1.55; color:rgba(255,255,255,0.86); margin:0; max-width:56ch; }
+
+  /* At phone width the band stops being a fixed height and grows with its content —
+     a fixed box holding a three-line lede plus the buy block leaves nothing for the
+     picture, and the picture is the reason the band exists. */
+  @media (max-width: 760px){
+    .sig-xbanner{ height:auto; }
+    /* The row becomes a stack: side by side at phone width the copy gets ~20 characters
+       of measure. The buy block flips back to a row so the price and CTA sit together
+       rather than stacking into a tall column of their own. */
+    .sig-xbanner__inner{ position:relative; min-height:280px;
+      flex-direction:column; align-items:flex-start; justify-content:flex-end; }
+    .sig-xbanner__buy{ flex-direction:row; align-items:center; }
+  }
   .sig-xpanel__body{ padding:clamp(20px,2.4vw,28px) clamp(24px,3vw,36px) clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:16px; }
   .sig-xpanel__body p{ font-size:14px; line-height:1.55; color:var(--text-secondary); margin:0; }
   .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
@@ -944,7 +1028,7 @@
   .sig-xclose svg{ width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; transform:rotate(45deg); }
   .offer-card[data-report]:focus-visible{ outline:2px solid var(--sig-blue); outline-offset:3px; }
   body.sig-xlock{ overflow:hidden; }
-  @media (max-width: 760px){ .sig-xpanel__media{ height:150px; } }
+
   @media (prefers-reduced-motion: reduce){
     .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
   }
@@ -1191,6 +1275,22 @@
 
 <main id="main">
 
+  <!-- §Announcement banner — TIS-system chrome (identical across all surfaces).
+       Single message, no rotator: this page is one someone is already reading,
+       so rotating copy under them would be intrusive rather than informative.
+       Blue dot, pairing with the cool pillar, same as the homepage's Patent
+       Evaluation notice. The copy states the pre-launch position, which is also
+       what explains why prices are visible on a page you cannot yet buy from. -->
+  <div class="announce" data-announce-id="2026-q3-signal-preorder" role="region" aria-label="Site announcement">
+    <span class="announce-cluster">
+      <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+      <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 已核准專利、審查中的申請案，或只是一個想法，50 項指標的深度">Orders open soon: TIS Patent Evaluation — a granted patent, a pending draft, or just an idea, 50 indicators deep</span>
+    </span>
+    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
   <!-- ── 1 · Hero — homepage .hero foreground + shifting-lines shader ── -->
   <section class="hero" data-active-pillar="signal" aria-label="Hero">
     <!-- Shifting-lines shader, the homepage's, recoloured to one blue hue and
@@ -1231,17 +1331,25 @@
       <p class="section-dek" data-reveal data-zh="同一件專利，三種視角——數字本身、數字背後、數字周圍。">One patent, three frames — the number, what’s behind it, what’s around it.</p>
       <div class="offerings-grid">
 
-        <!-- Prices are placeholder list prices, published so the products carry a
-             visible price tag for payment-gateway verification. EN shows USD, ZH shows
-             the TWD list price — the currency swaps with the language via data-zh, the
-             same mechanism every other string on the page uses. The ladder is ascending
-             in DOM order, so the cards need no reordering. Keep these three in step with
-             the intake chips below and with the deposit line on the intake card. -->
+        <!-- All three cards carry the same price treatment: .offer-card-price, a composed
+             numeral (small currency symbol at the cap line + large value) sitting between
+             the name and the description. Chosen over a corner chip and a footer-row price
+             after building all three and comparing them live.
+             data-zh-html, not data-zh: the ZH string carries the unit <span>, and a plain
+             data-zh swap writes textContent and would destroy it on the first EN→ZH toggle.
+             EN drops the "US" prefix — a bare $ carries it. ZH keeps NT$: in Taiwan a bare
+             $ reads as NTD, so dropping it would make the two currencies indistinguishable.
+             Prices are placeholder list prices, published so the products carry a visible
+             price tag for payment-gateway verification. EN shows USD, ZH shows the TWD
+             list price — the currency swaps with the language via data-zh, the same
+             mechanism every other string on the page uses. The ladder is ascending in DOM
+             order, so the cards need no reordering. Keep these three in step with the
+             intake chips below and with the deposit line on the intake card. -->
         <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
-            <span class="offer-card-title" data-zh="特寫">Snapshot</span>
-            <span class="offer-card-price" data-zh="NT$24,000">US$750</span>
+            <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
+            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>24,000"><span class="offer-card-price__unit">$</span>750</span>
             <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1,433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1,433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1252,8 +1360,8 @@
         <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
-            <span class="offer-card-title" data-zh="景深">Study</span>
-            <span class="offer-card-price" data-zh="NT$48,000">US$1,500</span>
+            <span class="offer-card-title" data-zh="景深報告">Study Report</span>
+            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>48,000"><span class="offer-card-price__unit">$</span>1,500</span>
             <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1264,8 +1372,8 @@
         <button type="button" class="offer-card offer-card--sigC" data-report="c" aria-expanded="false" aria-controls="sig-panel-c">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
-            <span class="offer-card-title" data-zh="廣角">Survey</span>
-            <span class="offer-card-price" data-zh="NT$80,000">US$2,500</span>
+            <span class="offer-card-title" data-zh="廣角報告">Survey Report</span>
+            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>80,000"><span class="offer-card-price__unit">$</span>2,500</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可——連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1480,19 +1588,18 @@
           <!-- Same dl the homepage card carries under "Get in touch.", one item instead
                of two: the only thing worth stating at the foot is what leaves your card
                today. The rest of the payment flow is below the fold of this column. -->
+          <!-- One block, not two. "Pay today / 10% deposit" and "Amount due / $150" were
+               two pairs saying one thing, and the percentage was the loud half while the
+               figure — the number that actually leaves the card — was set at label size.
+               Folded into a single item whose label carries the terms and whose value is
+               the amount, at the same scale as the price on the report cards.
+               Filled by the gate script at the foot of the page. data-zh-html, because
+               the filled state carries a unit <span>; the script writes data-zh beside
+               the visible text so a later language swap still resolves. -->
           <dl class="contact-overlay-meta">
-            <div class="contact-meta">
-              <dt data-zh="今日支付">Pay today</dt>
-              <dd data-zh="10% 訂金">10% deposit</dd>
-            </div>
-            <!-- The amount, not just the percentage. "10% deposit" three times over
-                 never named a figure, which is the one thing a buyer — and a payment
-                 gateway reviewing the product — actually needs. Filled by the gate
-                 script at the foot of the page, which writes data-zh alongside the
-                 visible text so a later language swap still resolves. -->
-            <div class="contact-meta">
-              <dt data-zh="應付金額">Amount due</dt>
-              <dd id="intake-deposit" data-zh="選擇報告後顯示">Select a report</dd>
+            <div class="contact-meta contact-meta--wide">
+              <dt data-zh="今日應付（10%）">Amount due today (10%)</dt>
+              <dd id="intake-deposit" class="sig-due sig-due--empty" data-zh-html data-zh="選擇報告後顯示">Select a report</dd>
             </div>
           </dl>
         </aside>
@@ -1522,9 +1629,9 @@
             <fieldset class="contact-topics" aria-describedby="intake-gate-note">
               <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫">Snapshot</span><span class="topic-chip__price" data-zh="NT$24,000">US$750</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深">Study</span><span class="topic-chip__price" data-zh="NT$48,000">US$1,500</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角">Survey</span><span class="topic-chip__price" data-zh="NT$80,000">US$2,500</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫報告">Snapshot Report</span><span class="topic-chip__price" data-zh="NT$24,000">$750</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深報告">Study Report</span><span class="topic-chip__price" data-zh="NT$48,000">$1,500</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角報告">Survey Report</span><span class="topic-chip__price" data-zh="NT$80,000">$2,500</span></label>
               </div>
               <p class="sig-callout" id="intake-gate-note" hidden data-zh="特寫與景深需要已公開專利；草稿或想法走廣角。">Snapshot and Study need a published patent. A draft or an idea takes Survey.</p>
             </fieldset>
@@ -1778,14 +1885,21 @@
     <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/short_report.jpg" alt="" /></div>
-        <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="評等">The grade</span>
-          <h2 id="sig-panel-a-title" data-zh="特寫">Snapshot</h2>
-          <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
+        <div class="sig-xbanner">
+          <img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" />
+          <div class="sig-xbanner__inner">
+            <div class="sig-xbanner__copy">
+              <span class="sig-xcard__kind" data-zh="評等">The grade</span>
+              <h2 id="sig-panel-a-title" data-zh="特寫報告">Snapshot Report</h2>
+              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
+            </div>
+            <div class="sig-xbanner__buy">
+              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>24,000"><span class="sig-xprice__unit">$</span>750</span>
+              <button type="button" class="btn btn-primary sig-xcta" data-report="a-short" data-zh="選擇此報告">Choose this report</button>
+            </div>
+          </div>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是特寫的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Snapshot looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
         </div>
@@ -1796,14 +1910,21 @@
     <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/long_report.jpg" alt="" /></div>
-        <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
-          <h2 id="sig-panel-b-title" data-zh="景深">Study</h2>
-          <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
+        <div class="sig-xbanner">
+          <img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" />
+          <div class="sig-xbanner__inner">
+            <div class="sig-xbanner__copy">
+              <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
+              <h2 id="sig-panel-b-title" data-zh="景深報告">Study Report</h2>
+              <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
+            </div>
+            <div class="sig-xbanner__buy">
+              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>48,000"><span class="sig-xprice__unit">$</span>1,500</span>
+              <button type="button" class="btn btn-primary sig-xcta" data-report="b-long" data-zh="選擇此報告">Choose this report</button>
+            </div>
+          </div>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是景深的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎 PSS API 串接。">Here's what a Study looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's PSS API is connected.</p>
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
         </div>
@@ -1814,14 +1935,21 @@
     <div class="sig-xpanel" id="sig-panel-c" role="dialog" aria-modal="true" aria-labelledby="sig-panel-c-title" hidden>
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
-        <div class="sig-xpanel__media"><img src="/assets/imagery/signal/advance_report.jpg" alt="" /></div>
-        <div class="sig-xpanel__head">
-          <span class="sig-xcard__kind" data-zh="場域">The field</span>
-          <h2 id="sig-panel-c-title" data-zh="廣角">Survey</h2>
-          <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得，並附上你自己專利的 SABCD 等級。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search, alongside your own patent's SABCD grade.</p>
+        <div class="sig-xbanner">
+          <img class="sig-xbanner__img" src="/assets/imagery/signal/advance_report.jpg" alt="" />
+          <div class="sig-xbanner__inner">
+            <div class="sig-xbanner__copy">
+              <span class="sig-xcard__kind" data-zh="場域">The field</span>
+              <h2 id="sig-panel-c-title" data-zh="廣角報告">Survey Report</h2>
+              <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得，並附上你自己專利的 SABCD 等級。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search, alongside your own patent's SABCD grade.</p>
+            </div>
+            <div class="sig-xbanner__buy">
+              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>80,000"><span class="sig-xprice__unit">$</span>2,500</span>
+              <button type="button" class="btn btn-primary sig-xcta" data-report="b-advanced" data-zh="選擇此報告">Choose this report</button>
+            </div>
+          </div>
         </div>
         <div class="sig-xpanel__body">
-          <p data-zh-html data-zh="以下是廣角的樣張。<span class='sig-mockflag'>示意</span> 實際數據待新穎向量比對 API 串接。">Here's what a Survey looks like. <span class="sig-mockflag">mock</span> Sample figures until Innovue's vector-comparison API is connected.</p>
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" />
           <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
         </div>
@@ -1911,7 +2039,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=6" defer></script>
+<script src="/assets/site.js?v=7" defer></script>
 
 <!-- Expandable report sample cards — vanilla FLIP morph (Web Animations API),
      ported from v0.7. The report cards (.offer-card[data-report]) are the triggers;
@@ -1966,7 +2094,7 @@
       const btn = activePanel.querySelector('.sig-xclose');
       (btn || activePanel).focus({ preventScroll:true });
     }
-    function close(){
+    function close(after){
       if (!activePanel || animating) return;
       const panel = activePanel, card = activeCard;
       const done = () => {
@@ -1979,6 +2107,9 @@
         activeCard = activePanel = null;
         (lastFocus || card)?.focus({ preventScroll:true });
         lastFocus = null;
+        // Runs after the morph has landed and the scroll lock is off — a scroll issued
+        // while body.sig-xlock is still set goes nowhere.
+        if (typeof after === 'function') after();
       };
       backdrop.animate([{opacity:1},{opacity:0}], {duration: reduce()?100:220, easing:'ease-in', fill:'forwards'});
       if (reduce()){ panel.animate([{opacity:1},{opacity:0}], {duration:100, fill:'forwards'}).onfinish = done; return; }
@@ -1996,9 +2127,45 @@
       a.onfinish = () => { animating = false; done(); };
     }
 
+    // The panel's CTA is a request for THAT report: land the reader in the intake form
+    // with the choice already made rather than making them find and re-pick it.
+    //
+    // Split in two on purpose. The SELECTION happens synchronously on click, so the form
+    // is correct the instant the button is pressed; only the SCROLL waits for the close
+    // to finish, because a scroll issued while body.sig-xlock is still set is swallowed.
+    // If the morph's finish callback were ever missed, the reader still arrives at a form
+    // with the right report chosen — the failure mode is a missing scroll, not a lie
+    // about what they picked.
+    //
+    // The gate is handled deliberately: a gated report cannot be selected while the input
+    // type excludes it, so the type moves back to `granted` first. Without that, pressing
+    // "Choose this report" for Snapshot or Study while the form sat on "Just an idea"
+    // would appear to do nothing at all.
+    function selectReport(value){
+      const form = document.getElementById('intake-form');
+      const radio = form && form.querySelector('input[name="report"][value="' + value + '"]');
+      if (!radio) return false;
+      if (radio.dataset.requires === 'granted'){
+        const g = form.querySelector('input[name="input-type"][value="granted"]');
+        if (g && !g.checked){ g.checked = true; g.dispatchEvent(new Event('change', { bubbles:true })); }
+      }
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change', { bubbles:true }));   // drives the deposit figure
+      return radio;
+    }
+    function revealIntake(radio){
+      document.getElementById('intake')
+        ?.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block:'start' });
+      if (radio) radio.focus({ preventScroll:true });
+    }
+
     cards.forEach(c => c.addEventListener('click', () => open(c)));
-    backdrop.addEventListener('click', close);
-    overlay.querySelectorAll('.sig-xclose').forEach(b => b.addEventListener('click', close));
+    backdrop.addEventListener('click', () => close());
+    overlay.querySelectorAll('.sig-xclose').forEach(b => b.addEventListener('click', () => close()));
+    overlay.querySelectorAll('.sig-xcta').forEach(b => b.addEventListener('click', () => {
+      const radio = selectReport(b.dataset.report);
+      close(() => revealIntake(radio));
+    }));
     document.addEventListener('keydown', e => {
       if (!activePanel) return;
       if (e.key === 'Escape'){ e.preventDefault(); close(); return; }
@@ -2292,12 +2459,16 @@
     // document. Keyed by the radio's own value so the map cannot drift from the markup.
     const reports = [...form.querySelectorAll('input[name="report"]')];
     const dueEl = document.getElementById('intake-deposit');
+    const U = (unit, value) => '<span class="sig-due__unit">' + unit + '</span>' + value;
     const DEPOSITS = {
-      'a-short':    { en: 'US$75',  zh: 'NT$2,400' },
-      'b-long':     { en: 'US$150', zh: 'NT$4,800' },
-      'b-advanced': { en: 'US$250', zh: 'NT$8,000' }
+      'a-short':    { en: U('$','75'),  zh: U('NT$','2,400') },
+      'b-long':     { en: U('$','150'), zh: U('NT$','4,800') },
+      'b-advanced': { en: U('$','250'), zh: U('NT$','8,000') }
     };
-    const NO_REPORT = { en: 'Select a report', zh: '選擇報告後顯示' };
+    // A dash, not a sentence: it holds the exact size and position of the figure it
+    // becomes, so nothing shifts when a price arrives. The eyebrow already says what
+    // the slot is, so the placeholder does not have to explain itself.
+    const NO_REPORT = { en: '—', zh: '—' };
 
     const sync = () => {
       const chosen = inputTypes.find(r => r.checked);
@@ -2327,9 +2498,13 @@
         const picked = reports.find(r => r.checked && !r.disabled);
         const due = (picked && DEPOSITS[picked.value]) || NO_REPORT;
         const zh = document.documentElement.getAttribute('lang') === 'zh-Hant';
-        dueEl.textContent = zh ? due.zh : due.en;
+        // innerHTML, not textContent: the filled state is a composed numeral. The empty
+        // state is a plain sentence, and .sig-due--empty drops it back to label size so
+        // "Select a report" is not set at 36px.
+        dueEl.innerHTML = zh ? due.zh : due.en;
         dueEl.dataset.zh = due.zh;
         if ('en' in dueEl.dataset) dueEl.dataset.en = due.en;
+        dueEl.classList.toggle('sig-due--empty', !picked);
       }
     };
 

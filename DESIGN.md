@@ -524,16 +524,31 @@ lifted on hover. The scrim is theme-independent so copy reads in both themes.
 **Shared scrim** (offer + report):
 `linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%)`.
 
-**Price tag** (`.offer-card-price`, between title and desc — only the Signal report cards
-carry it): Urbanist 22 / 700 / -0.02em, `font-variant-numeric: tabular-nums`, `#FFFFFF`.
-**Sans, not mono, and that is deliberate.** `design-tokens.md` §Typography assigns prices to
-Inconsolata, and `.pcard-amt` on the licensing page honours that at 46–58px, where the
-monospace comma cell reads as a display treatment. At 22px it does not — Inconsolata gives
-`,` a full character cell, so `US$1,500` renders as `US$1 , 500`. Measured against four
-candidates, sans + `tnum` is the only one that reads as a price at this scale, and it matches
-`brand/components.md` §Stat strip, which already specs a value as sans + `tnum`. The token
-doc's rule stands for display numerals; this is the label-scale case. `.topic-chip__price`
-(12 / 600, `--text-tertiary`, inverting on the checked fill) follows the same reasoning.
+**Price** (`.offer-card-price`, between title and desc — only the Signal report cards carry
+it): a **composed numeral**, Urbanist `clamp(30px, 2.8vw, 40px)` / 700 / -0.03em, `tnum`,
+`#FFFFFF`, with the currency symbol in a nested `.offer-card-price__unit` at `0.42em` / 500,
+no colour of its own, raised `vertical-align: 0.95em` to sit at the numerals' cap line.
+
+- **Sans, not mono.** `design-tokens.md` §Typography assigns prices to Inconsolata, and
+  `.pcard-amt` on the licensing page honours that at 46–58px, where the monospace comma cell
+  reads as a display treatment. At card scale it does not — Inconsolata gives `,` a full
+  character cell, so `$1,500` renders as `$1 , 500`. Measured against four candidates, sans +
+  `tnum` is the only one that reads as a price here, and it matches `brand/components.md`
+  §Stat strip, which already specs a value as sans + `tnum`.
+- **The split needs a bare `$`.** `US$750` set at two sizes breaks across a meaningless seam;
+  `$` + `750` splits where the eye already splits it. EN therefore carries a bare `$`. **ZH
+  keeps `NT$`** — in Taiwan a bare `$` reads as NTD, and dropping it would make the two
+  currencies indistinguishable.
+- **`data-zh-html`, not `data-zh`.** The ZH string carries the unit `<span>`; a plain
+  `data-zh` swap writes `textContent` and destroys it on the first EN→ZH toggle. Verified
+  across three toggles.
+- **Chosen over two alternatives**, both built and compared on the live page: a chip in the
+  card's top-right corner, and a price in the CTA row under a hairline. The corner chip
+  needed a ground of its own — the card scrim ramps bottom-up and is ~0 at the top, where
+  bare white measured 2.05:1 against the Study card's art. The composed numeral sits inside
+  the scrim and needs none.
+- `.topic-chip__price` (12 / 600, `--text-tertiary`, inverting on the checked fill) stays a
+  plain inline string: a composed numeral at that size is fiddly, not expressive.
 
 | Card | Base | Min-height | Radius | Pad | Image layer | Hover |
 |---|---|---|---|---|---|---|
@@ -611,8 +626,27 @@ instead of squeezing it.
   things this needs: `isolation: isolate` on the block, so its `::before` at `z-index:-1`
   paints above `.contact-overlay::after`; and a lead-in that **finishes above the first
   label** rather than starting there — at `-30px` the ramp was still climbing under the
-  13px `dt`s, which is why the brightest pixel in that row sat at its top edge. If rows
-  are ever added or removed here, re-measure; the row positions move with the count.
+  13px `dt`s, which is why the brightest pixel in that row sat at its top edge.
+  **The plinth is still load-bearing after the re-order below**: the four items now sit
+  on three rows instead of the original two, so the block is shorter and lower than the
+  first version and measures 18.5:1 worst-case for values and 7.5:1 for the 13px labels.
+  Disable the plinth and Office hours falls straight back to 1.65:1 — the wave crest is
+  still exactly there. If rows are added or removed, re-measure; positions move with the
+  count.
+- **Contact meta rows** — `.contact-overlay-meta` is `grid-template-columns: auto auto 1fr`.
+  The third track carries no content; it exists to absorb slack. The two full-width rows
+  (Office hours, Address) span `1 / -1`, and a spanning item contributes its width to
+  every track it crosses, so with a bare `auto auto` the 62-character address inflated
+  both real columns and pushed the UBN out to ~65% of the panel with nothing above it to
+  align to. Sending the slack to a `1fr` third track leaves the two auto tracks sized by
+  their own content, so the UBN sits just past the email. Row order is Office hours,
+  Address, then Email + UBN paired — DOM order matches visual order, so the screen-reader
+  pass matches the page. **Office hours holds one line at every width the card is still
+  two-column (≥881px), in both languages**; the CJK string is the wider of the two, so
+  test that one. `column-gap` is `clamp(28px, 3.4vw, 48px)` rather than a flat 48px: at
+  881px the overlay's content box is ~307px, and two fixed gutters left the email's
+  column too narrow, so `word-break: break-all` split `contact@tisglobalinc.com` across
+  two lines.
 - **Dot-cloud bleed** — `.about-card` dot PNGs (`/assets/imagery/home/*-dots.png`) bleed
   off the right on a pure-black field, masked left with a `linear-gradient(90deg, #000
   0%, #000 18%, transparent 62%)` so the text half stays clean.
@@ -1150,13 +1184,25 @@ it bites.
 
 Order is **input type → report → the input → email**: both selections resolve as one block
 before any data entry starts, which is also the heading's order ("Choose a report, upload
-your input"). The overlay carries **two** `.contact-meta` pairs at the foot, left-aligned
-in the shared component's first two grid columns — no override. `Pay today / 10% deposit`
-names the *term*; `Amount due / US$150` names the *figure*, written by the gate script at
-the foot of the page from the selected report's price. It writes `data-zh` beside the
-visible text, because `site.js` collects its i18n nodes once at init — a JS-updated node
-without it renders correctly and then refuses to translate. Test the language swap **after**
-picking a report, which is where that breaks.
+your input"). The overlay carries **one** `.contact-meta` pair at the foot: label
+`Amount due today (10%)`, value the deposit figure, written by the gate script at the foot
+of the page from the selected report's price. It was two pairs (`Pay today / 10% deposit`
+plus `Amount due / $150`) and they said one thing between them, with the percentage set
+loud and the figure — the number that actually leaves the card — set at label size.
+
+- The value uses `.sig-due`, the same composed numeral and the same `clamp(30px, 2.8vw,
+  40px)` as `.offer-card-price`, so the amount charged is set at the scale of the price
+  that produced it. **It must be written `.contact-meta dd.sig-due`**: the shared
+  component's `.contact-meta dd` is specificity (0,1,1), so a bare `.sig-due` at (0,1,0)
+  loses in every source order and the figure silently stays at 15px.
+- The empty state (`.sig-due--empty`) is an em dash at the **same 40px**, dimmed to 40%
+  white. It keeps the slot's exact size and position, so nothing shifts when a price
+  arrives, and the eyebrow already says what the slot is. It was "Select a report" at label
+  size, which read as though the figure had never been enlarged at all.
+- `data-zh-html`, not `data-zh`: the filled state carries a unit `<span>`. The script
+  writes `data-zh` beside the visible text, because `site.js` collects its i18n nodes once
+  at init — a JS-updated node without it renders correctly and then refuses to translate.
+  Test the language swap **after** picking a report, which is where that breaks.
 
 **The intake card holds the homepage card's exact height, at every width and in every input
 state.** It is not a pinned pixel table — the homepage's own height is
@@ -1217,6 +1263,49 @@ The free preview is **blurred on purpose**: PRD §8.8.0b AC-3 gives away the rep
 for free (各章節將涵蓋內容之全貌) and never its content. The page mock stays unreadable; the
 chapter list beside it is the accessible equivalent and carries the actual scope, in both
 languages. Chapter names are PRD §8.6.1 verbatim.
+
+### The report panels carry the offer (2026-08-25)
+
+`.sig-xpanel`'s banner was a 200px decorative image strip (`.sig-xpanel__media`) with the
+title block stacked underneath. It now carries the whole offer — eyebrow, name, lede, price
+and a CTA — so the buy decision is reachable without scrolling past two full-page report
+renders to find it. `.sig-xpanel__media` and `.sig-xpanel__head` are retired.
+
+- **One composition, `.sig-xbanner`, on all three panels.** Arrived at by building three
+  and comparing them live, twice: first over a split-column and a strip-plus-card layout,
+  then over a full-width buy rail and a price-leads-the-name variant. The winner is folded
+  into the bare class — a modifier with nothing left to distinguish it is noise.
+- **Copy left, buy block bottom-right.** `.sig-xbanner__inner` is a row with
+  `align-items: flex-end`, so the copy column and the buy column sit on a shared baseline;
+  the price stacks over the CTA, both right-aligned. That alignment is load-bearing — the
+  copy runs three or four lines and the buy block two, so anything else leaves the price
+  floating mid-air beside the lede. The copy reads left to right and stops, and the price
+  and the action wait at the end of that line instead of interrupting it. Band is
+  `clamp(250px, 30vw, 310px)`; a full-width rail under the copy needed ~40px more.
+- **`.sig-xclose` is untouched by any of it.** It stays `position:absolute` top/right 14px on
+  `.sig-xpanel` at `z-index:3`, and carries its own surface plus border so it reads on image
+  or on page ground.
+- **It needs its own scrim and a light CTA.** The card's scrim lives on `.offer-card::after`
+  and does not come along in the FLIP, so without one the copy sits on unmodified photo; and
+  `.btn-primary` is a black fill that disappears into a dark image.
+  (While the variants coexisted, the shared type rules had to sit *above* them: `.sig-xbanner
+  h2` and `.sig-xbanner--bleed h2` had identical specificity, so source order alone decided
+  them, and with the shared block last the title rendered dark-on-dark. Folding to one class
+  removed the hazard.)
+- **The CTA is split in two on purpose.** The *selection* happens synchronously on click, so
+  the form is correct the instant the button is pressed; only the *scroll* waits for the
+  close to finish, because a scroll issued while `body.sig-xlock` is still set is swallowed.
+  If the morph's finish callback were ever missed, the reader still lands on a form with the
+  right report chosen. It also clears the input-type gate first — otherwise pressing
+  "Choose this report" for Snapshot or Study while the form sat on "Just an idea" would
+  appear to do nothing.
+- **The three "Here's what a X looks like… mock …" disclaimers are gone.** `.sig-mockflag`
+  stays live: the retrieve preview still flags its placeholder data.
+
+> **Verifying the panels headlessly:** `close()` resolves through a Web Animations
+> `onfinish`, and that callback **does not fire under `--virtual-time-budget`** — the
+> pre-existing X button fails the same way, so a panel that will not close in a headless
+> harness is the harness, not the page. Test open/close by hand in a real browser.
 
 ### The preview is per-tier (2026-08-18)
 

@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-25 03:11 +0800** · Signal: priced the three reports, rebuilt the sample panels to carry the offer and a CTA, enlarged the intake deposit.
+- **2026-08-25 03:11 +0800** · Announce bar: sequenced the message fade, rotation now honours a reduced-motion change at runtime, bar shown on Signal.
 - **2026-08-25 00:43 +0800** · Published the registered address and UBN in the contact panel on seven pages, and priced the three evaluation reports for payment-gateway review.
 - **2026-08-24 03:09 +0800** · Signal: dropped the VC label — proof dek now reads 投資人 / "investors", intake and retrieve email placeholders use you@fund.com.
 - **2026-08-24 02:23 +0800** · Licensing Platform presented as coming soon: hard veil on both licensing pages, markers on 32 entry points, tile de-emphasised, noindex, signup CTAs routed to contact.

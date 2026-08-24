@@ -908,7 +908,7 @@
     // on catching the right moment; this only drives which one is painted.
     // Skipped entirely under reduced motion, where CSS shows both side by side.
     const items = [...bar.querySelectorAll('.announce-item')];
-    if (items.length > 1 && !reduceMotion.matches) {
+    if (items.length > 1) {
       let i = 0, timer = null;
       const advance = () => {
         items[i].classList.remove('is-active');
@@ -917,14 +917,25 @@
       };
       const start = () => { if (!timer) timer = setInterval(advance, 6000); };
       const stop  = () => { clearInterval(timer); timer = null; };
+      const rotating = () => !reduceMotion.matches;
+      const sync = () => {
+        if (rotating()) { start(); return; }
+        // Not rotating (reduced motion): park on the first item, so if the
+        // preference is switched back the cycle resumes from the top rather
+        // than mid-swap.
+        stop();
+        i = 0;
+        items.forEach((el, n) => el.classList.toggle('is-active', n === 0));
+      };
       // Pause while a pointer is over the bar or focus is inside it, so a slow
       // reader is never fighting the timer. The close button is the WCAG 2.2.2
       // "hide" mechanism for anyone who wants it gone outright.
       bar.addEventListener('mouseenter', stop);
-      bar.addEventListener('mouseleave', start);
+      bar.addEventListener('mouseleave', () => { if (rotating()) start(); });
       bar.addEventListener('focusin', stop);
-      bar.addEventListener('focusout', start);
-      start();
+      bar.addEventListener('focusout', () => { if (rotating()) start(); });
+      reduceMotion.addEventListener('change', sync);
+      sync();
     }
 
     const close = bar.querySelector('.announce-close');
