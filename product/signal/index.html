@@ -1231,10 +1231,17 @@
       <p class="section-dek" data-reveal data-zh="同一件專利，三種視角——數字本身、數字背後、數字周圍。">One patent, three frames — the number, what’s behind it, what’s around it.</p>
       <div class="offerings-grid">
 
+        <!-- Prices are placeholder list prices, published so the products carry a
+             visible price tag for payment-gateway verification. EN shows USD, ZH shows
+             the TWD list price — the currency swaps with the language via data-zh, the
+             same mechanism every other string on the page uses. The ladder is ascending
+             in DOM order, so the cards need no reordering. Keep these three in step with
+             the intake chips below and with the deposit line on the intake card. -->
         <button type="button" class="offer-card offer-card--sigA" data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
             <span class="offer-card-title" data-zh="特寫">Snapshot</span>
+            <span class="offer-card-price" data-zh="NT$24,000">US$750</span>
             <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1,433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1,433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1246,6 +1253,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
             <span class="offer-card-title" data-zh="景深">Study</span>
+            <span class="offer-card-price" data-zh="NT$48,000">US$1,500</span>
             <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1257,6 +1265,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
             <span class="offer-card-title" data-zh="廣角">Survey</span>
+            <span class="offer-card-price" data-zh="NT$80,000">US$2,500</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可——連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1476,6 +1485,15 @@
               <dt data-zh="今日支付">Pay today</dt>
               <dd data-zh="10% 訂金">10% deposit</dd>
             </div>
+            <!-- The amount, not just the percentage. "10% deposit" three times over
+                 never named a figure, which is the one thing a buyer — and a payment
+                 gateway reviewing the product — actually needs. Filled by the gate
+                 script at the foot of the page, which writes data-zh alongside the
+                 visible text so a later language swap still resolves. -->
+            <div class="contact-meta">
+              <dt data-zh="應付金額">Amount due</dt>
+              <dd id="intake-deposit" data-zh="選擇報告後顯示">Select a report</dd>
+            </div>
           </dl>
         </aside>
 
@@ -1504,9 +1522,9 @@
             <fieldset class="contact-topics" aria-describedby="intake-gate-note">
               <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫">Snapshot</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深">Study</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角">Survey</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫">Snapshot</span><span class="topic-chip__price" data-zh="NT$24,000">US$750</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深">Study</span><span class="topic-chip__price" data-zh="NT$48,000">US$1,500</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角">Survey</span><span class="topic-chip__price" data-zh="NT$80,000">US$2,500</span></label>
               </div>
               <p class="sig-callout" id="intake-gate-note" hidden data-zh="特寫與景深需要已公開專利；草稿或想法走廣角。">Snapshot and Study need a published patent. A draft or an idea takes Survey.</p>
             </fieldset>
@@ -2269,6 +2287,18 @@
     const note = form.querySelector('#intake-gate-note');
     if (!inputTypes.length) return;
 
+    // Deposit due — 10% of each report's list price, in the language's own currency.
+    // The <dd> lives in the overlay ASIDE, not in the form, so it is queried off the
+    // document. Keyed by the radio's own value so the map cannot drift from the markup.
+    const reports = [...form.querySelectorAll('input[name="report"]')];
+    const dueEl = document.getElementById('intake-deposit');
+    const DEPOSITS = {
+      'a-short':    { en: 'US$75',  zh: 'NT$2,400' },
+      'b-long':     { en: 'US$150', zh: 'NT$4,800' },
+      'b-advanced': { en: 'US$250', zh: 'NT$8,000' }
+    };
+    const NO_REPORT = { en: 'Select a report', zh: '選擇報告後顯示' };
+
     const sync = () => {
       const chosen = inputTypes.find(r => r.checked);
       // Markup checks `granted`, so `chosen` is only ever null if that attribute is
@@ -2288,9 +2318,23 @@
       });
 
       if (note) note.hidden = allow;
+
+      // Runs last, so a report cleared by the gate above resets the figure rather than
+      // leaving a deposit standing against no selection. data-zh is written beside the
+      // visible text because site.js collects its i18n nodes once at init — without it
+      // the number renders correctly and then refuses to translate on the next swap.
+      if (dueEl) {
+        const picked = reports.find(r => r.checked && !r.disabled);
+        const due = (picked && DEPOSITS[picked.value]) || NO_REPORT;
+        const zh = document.documentElement.getAttribute('lang') === 'zh-Hant';
+        dueEl.textContent = zh ? due.zh : due.en;
+        dueEl.dataset.zh = due.zh;
+        if ('en' in dueEl.dataset) dueEl.dataset.en = due.en;
+      }
     };
 
     inputTypes.forEach(radio => radio.addEventListener('change', sync));
+    reports.forEach(radio => radio.addEventListener('change', sync));
     sync();
   })();
 </script>

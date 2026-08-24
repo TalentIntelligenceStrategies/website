@@ -281,9 +281,9 @@
 <main id="main">
 
   <!-- §Announcement banner — silver (TIS-overall). Session-dismissed by data-announce-id. -->
-  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-licensing-soon" role="region" aria-label="Site announcement">
+  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-licensing-bundles" role="region" aria-label="Site announcement">
     <span class="announce-cluster">
-      <span class="announce-msg" data-zh="即將推出：泰然專利防護網。">Coming soon: the TIS Licensing Platform.</span>
+      <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
       <a class="announce-link" href="/product/licensing/" data-zh="了解詳情 →">See what&#39;s coming →</a>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement">
@@ -632,14 +632,30 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh="從一件專利到整個專利組合，告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
+          <!-- DOM order IS the visual order, so the screen-reader pass matches the
+               page: two full-width rows, then Email and the UBN paired on the last.
+               Office hours and the address are single long strings that break badly in
+               a half-width column, so each takes a row of its own (.contact-meta--wide).
+               Email and the UBN are both short, so they share one.
+               The address and UBN are published for payment-gateway verification — the
+               site named neither a street address nor an entity number before this. The
+               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
           <dl class="contact-overlay-meta">
+            <div class="contact-meta contact-meta--wide">
+              <dt data-zh="服務時間">Office hours</dt>
+              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+            </div>
+            <div class="contact-meta contact-meta--wide">
+              <dt data-zh="地址">Address</dt>
+              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+            </div>
             <div class="contact-meta">
               <dt data-zh="電子郵件">Email</dt>
               <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
             </div>
             <div class="contact-meta">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+              <dt data-zh="統一編號">UBN</dt>
+              <dd class="contact-meta__num">60331107</dd>
             </div>
           </dl>
         </aside>

@@ -428,6 +428,15 @@ min-height:calc(100dvh - 64px); padding-block:0` — the hero owns the first scr
 the nav. On home the announce bar is lifted out of flow and absolutely overlaid at
 `top:64px` (`z-index:90`) so it scrolls away with the page while only the nav pins.
 
+**The announce bar is one nowrap line at desktop widths and wraps at ≤880px.**
+`.announce-msg` is `nowrap` + `text-overflow: ellipsis`, which silently cuts a long
+message mid-word on a phone — and the tail of the string is usually the part carrying the
+substance. The `≤880px` branch switches it to `white-space: normal`, lets
+`.announce-cluster` wrap so the CTA drops to its own line, and raises `max-height` to
+140px to clear three lines. `.is-dismissing` still collapses from whatever that height is.
+Keep messages short anyway: the desktop line has room for roughly 75 characters beside
+the CTA before it would need the wrap.
+
 **Z-stack (bottom → top):**
 
 1. **`.hero::before` (z1)** — bloom + 32px ruled grid from `--hero-bp-bloom`.
@@ -515,6 +524,17 @@ lifted on hover. The scrim is theme-independent so copy reads in both themes.
 **Shared scrim** (offer + report):
 `linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%)`.
 
+**Price tag** (`.offer-card-price`, between title and desc — only the Signal report cards
+carry it): Urbanist 22 / 700 / -0.02em, `font-variant-numeric: tabular-nums`, `#FFFFFF`.
+**Sans, not mono, and that is deliberate.** `design-tokens.md` §Typography assigns prices to
+Inconsolata, and `.pcard-amt` on the licensing page honours that at 46–58px, where the
+monospace comma cell reads as a display treatment. At 22px it does not — Inconsolata gives
+`,` a full character cell, so `US$1,500` renders as `US$1 , 500`. Measured against four
+candidates, sans + `tnum` is the only one that reads as a price at this scale, and it matches
+`brand/components.md` §Stat strip, which already specs a value as sans + `tnum`. The token
+doc's rule stands for display numerals; this is the label-scale case. `.topic-chip__price`
+(12 / 600, `--text-tertiary`, inverting on the checked fill) follows the same reasoning.
+
 | Card | Base | Min-height | Radius | Pad | Image layer | Hover |
 |---|---|---|---|---|---|---|
 | `.offer-card` | `#0E0E0E` + `--shadow-medium` | `clamp(340px,42vw,432px)` | 18px | 28px | CSS `::before` bg photo (`/assets/imagery/coremap/*.jpg`), per-card `--img-rot` (reports flipped 180°), z −2 | `translateY(-2px)` + `--shadow-high`, image 1→1.06, arrow `translateX(4px)` |
@@ -579,7 +599,20 @@ instead of squeezing it.
 - **Behind components** — the signature move: images sit *under* a bottom-up black
   scrim so white copy reads. Offer/contact cards use CSS `background-image` on `::before`;
   report/press cards use a real `<img>`. Per-card rotation via `--img-rot` (reports 180°).
-  Contact left panel: `venture.jpg` under a top+bottom scrim (`rgba(0,0,0,0.45…0.55)`).
+  Contact left panel: `venture.jpg` under a top+bottom scrim (`rgba(0,0,0,0.45…0.55)`),
+  **plus a second scrim scoped to the meta block** (`.contact-overlay-meta::before`,
+  0→0.90 by 21%, bleeding to the padding-box edges). That block grew from two rows to
+  four when the address and UBN were published, and because the overlay is
+  `justify-content: space-between` a taller block grows *upward* — carrying the original
+  Email / Office hours rows off the image's dark foot and onto the bright crest of the
+  particle wave. Measured on rendered pixels: white fell from 21:1 to 2.08:1 there. The
+  fix is local because the alternative — pulling the shared ramp up hard enough (~0.45
+  alpha at 67% down) — flattens the swirl across the band where it actually reads. Two
+  things this needs: `isolation: isolate` on the block, so its `::before` at `z-index:-1`
+  paints above `.contact-overlay::after`; and a lead-in that **finishes above the first
+  label** rather than starting there — at `-30px` the ramp was still climbing under the
+  13px `dt`s, which is why the brightest pixel in that row sat at its top edge. If rows
+  are ever added or removed here, re-measure; the row positions move with the count.
 - **Dot-cloud bleed** — `.about-card` dot PNGs (`/assets/imagery/home/*-dots.png`) bleed
   off the right on a pure-black field, masked left with a `linear-gradient(90deg, #000
   0%, #000 18%, transparent 62%)` so the text half stays clean.
@@ -1117,8 +1150,13 @@ it bites.
 
 Order is **input type → report → the input → email**: both selections resolve as one block
 before any data entry starts, which is also the heading's order ("Choose a report, upload
-your input"). The overlay carries a single `.contact-meta` pair (`Pay today / 10% deposit`)
-at the foot, left-aligned in the shared component's first grid column — no override.
+your input"). The overlay carries **two** `.contact-meta` pairs at the foot, left-aligned
+in the shared component's first two grid columns — no override. `Pay today / 10% deposit`
+names the *term*; `Amount due / US$150` names the *figure*, written by the gate script at
+the foot of the page from the selected report's price. It writes `data-zh` beside the
+visible text, because `site.js` collects its i18n nodes once at init — a JS-updated node
+without it renders correctly and then refuses to translate. Test the language swap **after**
+picking a report, which is where that breaks.
 
 **The intake card holds the homepage card's exact height, at every width and in every input
 state.** It is not a pinned pixel table — the homepage's own height is

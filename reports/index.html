@@ -418,14 +418,30 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh="從一件專利到整個專利組合，告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
+          <!-- DOM order IS the visual order, so the screen-reader pass matches the
+               page: two full-width rows, then Email and the UBN paired on the last.
+               Office hours and the address are single long strings that break badly in
+               a half-width column, so each takes a row of its own (.contact-meta--wide).
+               Email and the UBN are both short, so they share one.
+               The address and UBN are published for payment-gateway verification — the
+               site named neither a street address nor an entity number before this. The
+               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
           <dl class="contact-overlay-meta">
+            <div class="contact-meta contact-meta--wide">
+              <dt data-zh="服務時間">Office hours</dt>
+              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+            </div>
+            <div class="contact-meta contact-meta--wide">
+              <dt data-zh="地址">Address</dt>
+              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+            </div>
             <div class="contact-meta">
               <dt data-zh="電子郵件">Email</dt>
               <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
             </div>
             <div class="contact-meta">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+              <dt data-zh="統一編號">UBN</dt>
+              <dd class="contact-meta__num">60331107</dd>
             </div>
           </dl>
         </aside>

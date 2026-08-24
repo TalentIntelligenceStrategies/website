@@ -918,6 +918,17 @@ main { padding-top: 64px; }
   border: none; background: transparent; border-radius: 6px; cursor: pointer;
   color: var(--text-inverse); opacity: 0.75;
 }
+/* Below the nav breakpoint the message wraps instead of ellipsing. The bar is a
+   single nowrap line at desktop widths, but the full string is 74 characters and
+   was being cut mid-word on a phone, which loses the part that carries the
+   substance (the jurisdictions). max-height rises to clear three wrapped lines;
+   .is-dismissing still collapses from it. */
+@media (max-width: 880px) {
+  .announce { max-height: 140px; }
+  .announce-cluster { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
+  .announce-msg { white-space: normal; overflow: visible; text-overflow: clip; text-align: center; }
+}
+
 .announce-close:hover {
   background: var(--surface-inverse-translucent);
   opacity: 1;
@@ -2991,7 +3002,11 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   content: ""; position: absolute; inset: 0; z-index: -2;
   background: url('/assets/imagery/coremap/venture.jpg') center / cover no-repeat, #000;
 }
-/* Gentle top/bottom scrim keeps the white heading + meta legible over the sphere. */
+/* Gentle top/bottom scrim keeps the white heading + meta legible over the sphere.
+   Unchanged from the two-row era on purpose: the meta block now carries its own
+   scrim (see .contact-overlay-meta::before). Pulling this ramp up instead was the
+   first attempt and it is the wrong tool — reaching 4.5:1 under the meta needed
+   ~0.45 alpha at 67% down, which flattens the swirl exactly where it reads. */
 .contact-overlay::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg,
@@ -3026,13 +3041,74 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    a ch measure here would drift with viewport and re-wrap every "Get in touch."
    lead on the seven other pages that share this component. */
 .contact-overlay-top .contact-lead { max-width: 15.483rem; }
+/* Three tracks for two columns of content. The third is a slack absorber, and it is
+   what makes the layout hold: the two full-width rows (office hours, address) span
+   1 / -1, and a spanning item contributes its width to every track it crosses. With
+   only `auto auto`, the 62-character address inflated both real columns and shoved
+   the UBN out to ~65% with nothing above it to align to. Sending the slack to a `1fr`
+   third track leaves the auto tracks sized by their own content, so the UBN sits just
+   past the email — the same rhythm the two-column row had before this re-order, and
+   content-driven rather than an arbitrary fraction. */
 .contact-overlay-meta {
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 20px 48px;
+  grid-template-columns: auto auto 1fr;
+  row-gap: 20px;
+  /* The gutter has to give at the narrow end. At 881px — the tightest the card is still
+     two-column — the overlay's content box is ~307px, and two fixed 48px gutters plus
+     the email and the UBN need ~336px. The email's column lost the difference, and
+     `word-break: break-all` on .contact-meta a then split contact@tisglobalinc.com
+     across two lines. Reclaiming ~40px of gutter there keeps it whole; 48px is back by
+     the time there is room for it. */
+  column-gap: clamp(28px, 3.4vw, 48px);
   margin: 0;
+  position: relative;
+  isolation: isolate;          /* so ::before paints above .contact-overlay::after */
+}
+/* Scrim under the meta block only.
+   Why it exists: this list grew from two rows to four (email, office hours, address,
+   UBN), and a taller block does not extend downward — the overlay is
+   justify-content:space-between, so it grows UPWARD, carrying the two original rows
+   off the dark foot of venture.jpg and onto the bright crest of the particle wave.
+   Measured: white on the Office hours row fell from 21:1 to 2.08:1. The new rows were
+   never the problem; the rows that were already there were.
+   Why here and not on ::after: a full-overlay ramp strong enough to fix it (~0.45 at
+   67% down) darkens the sphere across its whole readable band. This darkens only the
+   strip that actually carries text, bleeding to the padding box edges so it reads as
+   the card's own foot rather than a floating panel. */
+.contact-overlay-meta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  /* out to the overlay's padding edges — same clamp as .contact-overlay padding */
+  left: calc(-1 * clamp(32px, 4vw, 56px));
+  right: calc(-1 * clamp(32px, 4vw, 56px));
+  bottom: calc(-1 * clamp(32px, 4vw, 56px));
+  /* The lead-in has to FINISH above the first label, not start there. At -30px the
+     ramp was still climbing where the 13px `Email` / `Office hours` labels sit, which
+     is why the brightest pixel in that row was at its top edge. -72px puts the whole
+     fade in the gap above the block and reaches full strength at 21% — the block's
+     own top edge — so every row sits on a settled ground. */
+  top: -72px;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0) 0%, rgba(0,0,0,0.90) 21%, rgba(0,0,0,0.93) 100%);
 }
 .contact-meta { display: flex; flex-direction: column; gap: 6px; }
+/* Office hours and the address are each one long unbreakable-feeling string; in a
+   half-width column they shatter into ragged lines, so each takes a full row. Office
+   hours holds ONE line at every width the card is two-column (>=881px) — verified on
+   rendered pixels in both languages, where the CJK string is the wider of the two.
+   Below 520px the grid is one column and this is a no-op. */
+.contact-meta--wide { grid-column: 1 / -1; }
+/* Urbanist, not Inconsolata. design-tokens.md:59 reserves mono for numerals, but this
+   number sits beside the email address as one pair, and switching typeface mid-row made
+   the UBN read as a different KIND of thing — a code to copy rather than a fact about
+   the company. `tnum` keeps the eight digits on an even rhythm without leaving the
+   family; a hair of tracking stops the unseparated run from reading as one blob. */
+.contact-meta__num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
 .contact-meta dt {
   font-family: inherit;               /* Urbanist */
   font-size: 13px;
@@ -3082,6 +3158,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   .contact-email::after { transition: none; }
 }
 @media (max-width: 520px) {
+  /* One column: the pairing collapses and every row stacks, including the slack track. */
   .contact-overlay-meta { grid-template-columns: 1fr; }
 }
 
@@ -3242,6 +3319,19 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--text-inverse);
 }
 .topic-chip:focus-within { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+/* Price inside a chip — the selection moment. Sans + tnum for the same reason as
+   .offer-card-price further down (the mono comma cell breaks a separator at this
+   size); a step down in scale and one tone back so the report NAME stays the thing
+   you read first and the number is what you weigh second. Inverts with the fill. */
+.topic-chip__price {
+  margin-left: 8px;
+  font-family: var(--font-sans);
+  font-size: 12px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+.topic-chip:has(input:checked) .topic-chip__price { color: var(--text-inverse); opacity: 0.78; }
+.topic-chip:has(input:disabled) .topic-chip__price { opacity: 0.5; }
 
 .contact-actions { display: flex; padding-top: 4px; }
 .contact-actions .btn { width: 100%; }
@@ -4480,6 +4570,25 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .offer-card-title {
   font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25;
   color: #FFFFFF; margin: 0;
+}
+/* Price tag — sits under the title so the card reads name → price → what you get.
+   Pure white is the sanctioned literal on this always-dark image-backed surface
+   (DESIGN.md §1.3).
+
+   SANS, not mono, and that is deliberate. design-tokens.md:59 puts prices in
+   Inconsolata, and .pcard-amt on the licensing page does exactly that at 46–58px,
+   where the monospace comma cell reads as an intentional display treatment. At 22px
+   it does not: Inconsolata gives "," a full character cell, so US$1,500 renders as
+   "US$1 , 500" with the separator floating loose. Compared side by side, sans with
+   tabular-nums is the only one of four candidates that reads as a price. This also
+   matches brand/components.md §Stat strip, which already specs a value as sans +
+   tnum — so the system already holds both treatments; this picks the one that
+   belongs at label scale. tnum keeps the three cards' digits on a shared rhythm. */
+.offer-card-price {
+  font-family: var(--font-sans);
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #FFFFFF;
 }
 .offer-card-desc {
   font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.82);
