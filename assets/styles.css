@@ -1970,9 +1970,17 @@ main { padding-top: 64px; }
    darken. #0EA5E9 reads on the black bar; #0A72B0 is 5.19:1 on the inverted one.
    Same reasoning as DESIGN.md §1.3 for surfaces that do not follow the theme. */
 .ticker-pulse--signal,
-.ticker-pulse--signal::before { background: #0EA5E9; }
+.ticker-pulse--signal::before { background: #0284C7; }
+/* A small core glow gives the dot body against the black bar. #0EA5E9 read thin
+   and neon next to the amber's warmer core; a step deeper plus the glow reads
+   solid without changing the pulse rhythm. */
+.ticker-pulse--signal { box-shadow: 0 0 6px rgba(2, 132, 199, 0.85); }
+/* Inverted bar (dark theme): #0284C7 is only ~3.9:1 on near-white, so the dot
+   steps down to #0A72B0 (5.19:1). The glow is dropped rather than dimmed — a
+   glow only reads as a glow on a dark ground; on a light one it is a smudge. */
 [data-theme="dark"] .announce .ticker-pulse--signal,
 [data-theme="dark"] .announce .ticker-pulse--signal::before { background: #0A72B0; }
+[data-theme="dark"] .announce .ticker-pulse--signal { box-shadow: none; }
 @keyframes ticker-pulse {
   0%   { transform: scale(1);   opacity: 0.6; }
   100% { transform: scale(2.6); opacity: 0; }
