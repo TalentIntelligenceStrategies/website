@@ -1549,16 +1549,66 @@ Stripe-style mesh gradient over a rotated still. Four things to know:
 - **This page drops `.hero-grid`** (the homepage keeps it) — a square grid crossing the glow
   band reads as interference.
 
-**The proof grid** (2026-08-10) is asymmetric on purpose: a wide black PSS ledger with the
-four facts 2×2, a scrim-captioned image card below it, and a full-height
-`--surface-accent-signal-wash` panel beside both carrying the process as three phases.
-It replaced three black cards in a flex row plus a 7-beat timeline on a spine. Two things
-to know before editing it:
+**The proof grid** was recomposed on **2026-08-25**, then split. It is now **two sections**:
+the proof (stacked head + the black PSS ledger) and **How it works** (its own head + a
+three-across phase row on a white card). It replaced a two-column head over an
+asymmetric three-panel grid (wide ledger, tall wash process spanning both rows,
+scrim-captioned image card), which itself replaced three black cards in a flex row plus a
+7-beat timeline on a spine.
 
-- **The vivid `--sig-blue` lives on the black ledger and nowhere else.** It is 7.58:1 on
-  `#000` and 2.77:1 on white, which is the entire reason that panel is black. The wash
-  panel uses `--surface-accent-signal-text` (4.64:1 on the wash, 8.6:1 on its `#121D24`
-  dark-theme value).
+**There is no blue left in either section.** The `--surface-accent-signal-wash` panel, the
+phase-name accent and the chip ink all went when the process left the card; `SABCD` reads
+white like the other three facts. The ledger stays black for contrast and hierarchy, not to
+host an accent. `--sig-blue` is still live further down the page (retrieve status timeline,
+report-card focus rings), so the token is not dead.
+
+Three things drove the rebuild, and they are the constraints to preserve:
+
+- **Both section dividers sit on the same step, and that costs no CSS.** The head's `h2`
+  took the full `.h-section` display scale while its own peer twelve hundred pixels above
+  ("Three reports.", inside `.section.offerings`) took the reduced one — an accident of that
+  section borrowing `.offerings` for its card grid. The dek diverged too (58ch vs the base
+  44ch, a wider head gap, `text-wrap: balance` where its peer had none). The fix is
+  `.section-head`, whose `h2` rule already resolves to `clamp(24px,2.8vw,36px)/600/-0.015em`
+  and beats `.h-section` on both specificity (0,1,1 vs 0,1,0) and source order (4012 vs 414).
+  **Do not add a `max-width` to that dek** — inheriting `.section-dek`'s own 44ch is what
+  keeps the pair matched.
+- **`1,433` heads the ledger, not the header.** It is the denominator the `0–100` note is
+  percentile-ranked against and the pool `SABCD` discretises; both notes say so. It sat in
+  a right-hand column stacking three unrelated registers (72px numeral, 14px credit,
+  `.btn-secondary`) aligned to nothing.
+- **The four facts run as ONE row** — `50 → 8 → 0–100 → SABCD`, input to output. That
+  ordering is why the tracked-caps "THE PSS PIPELINE" kicker is gone: the row states it, and
+  the `<ol>` keeps its label as an `.sr-only <h3>` so `aria-labelledby` and the list
+  semantics survive. The row only fits because the panel is full width; at the old
+  `1.75fr` the cells were ~180px and the notes shredded. It folds to 2×2 at `1100px`.
+
+And the rest:
+
+- **The section carries exactly one Innovue credit**, corner-set on the ledger. It carried
+  three — there, in the dek, and in the Produce phase — against `brand-voice.md` §7's *"once
+  at the top, then TIS voice takes over."* It is the sanctioned credit text, **not a badge**:
+  `visual-guide.md` §Innovue Co-Branding defines two constructions (this credit, and the
+  submark│divider│logo lockup) and a bordered chip is neither. `.innovue-wordmark` only
+  swaps to its light SVG under `[data-theme="dark"]`, so the ledger pins it theme-agnostically
+  or light theme paints Innovue Blue on black.
+- **The colophon states what the reference pool is.** `legal/disclosures.en.html` declares
+  the pool is TIS-and-partner patents that TIS licenses commercially, and *"not an independent
+  third-party benchmark."* The `0–100` note therefore no longer says "benchmark" or
+  "cross-industry" — marketing copy cannot contradict the disclosure it links to.
+- **The process card is white, and its heading is a peer divider.** The card was
+  `--surface-accent-signal-wash`; it is now `--surface-elevated` with the ledger's own 20px
+  corner and a `--border-secondary` hairline, so the two blocks read as one family down the
+  page. No shadow: `body` carries a faint 32px graph-paper grid that any solid surface
+  covers, which is what makes a white card read on a white page. The heading moved out of the
+  card to a `.section-head`, matching the proof section above (head on the page ground, panel
+  beneath it).
+- **The phase name separates from its title by size and weight, not hue**, and **the chip's
+  fill is `--surface-tertiary`, not white.** White lifted the chip off the wash; on a white
+  card it would vanish. Do not "restore" it.
+- **The page now runs four matched dividers**: "Three reports.", "A patent score you can
+  trace all the way to the number.", "How it works.", "Get started." All four are
+  `.section-head`, so all four inherit the same step and the same 44ch dek.
 - **The two-stage payment structure is carried by the two chips** (`10% deposit` /
   `90% balance`) in the first and last phase. The retired timeline said it with accented
   nodes; don't quietly drop the chips.
@@ -1568,20 +1618,14 @@ to know before editing it:
   so a shared track strands `8` ~90 px from its own label and the pair stops reading as a
   phrase. Right-aligning inside that track closes the gap but unmoors the numeral from the
   note beneath, which starts at the cell edge. Per-`<li>` `max-content` keeps every pair
-  tight; the notes' common left edge is what carries the column. The notes are one line of
-  copy each on purpose — everything they used to restate (`1,433`, `PSS`, `0–100`) is
-  already on the page, and the freed height is what pays for the numerals' size.
-- **The ledger notes and the phase descriptions take `text-wrap: balance`, not `pretty`.**
-  `pretty` only guards the last line against an orphan, which left the ledger notes at
-  44/25 characters; `balance` evens them (worst spread now 8, most 0–4), and it is what
-  makes four notes in a 2×2 read as one block rather than four ragged ones. The rest of
-  the page's running copy stays `pretty` — balancing is for short blocks that stack.
-- **The trade card's image is `signal-cool.jpg` anchored `center bottom`.** The card is
-  ~3.3:1 against a 1.55:1 image, so `cover` shows barely half its height: centred, that
-  half is the pale-to-mid band and the white caption fails; anchored to the bottom it is
-  the navy foot. Measured worst-case caption contrast is 12.5:1 at 1440 and 9.6:1 at 390.
-  `transform-origin` matches the anchor so the reveal/hover scale doesn't slide paler
-  pixels up under the caption. **Re-measure on any image or anchor change.**
+  tight; the notes' common left edge is what carries the column.
+- **The ledger notes take `text-wrap: balance`, not `pretty`.** `pretty` only guards the
+  last line against an orphan, which left them at 44/25 characters; `balance` evens them.
+  The rest of the page's running copy stays `pretty`.
+- **The image card is retired.** `signal-cool.jpg` and its `center bottom` anchor, the
+  scrim ramp and the `--sig-spring` hover are all gone; the human + AI trade-off it captioned
+  now closes the process panel, where it argues rather than decorates. The image is still in
+  use on five other pages, so nothing is orphaned.
 
 The in-page anchors `#reports` and `#intake` are link targets from
 `methodology.html` — don't rename them without fixing that page's `.loop-ctas`.

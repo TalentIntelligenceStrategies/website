@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-25 09:43 +0800** · Signal proof section rebuilt: four matching dividers, 1,433 heads the ledger, How it works on its own white card, no blue left.
 - **2026-08-25 09:21 +0800** · Terms, Privacy and Disclosures rewritten in plain language; pool conflict disclosed, 24-month retention set, hedging removed.
 - **2026-08-25 06:05 +0800** · Terms, Privacy and Disclosures now open as a shared modal from every footer; six bilingual fragments behind them.
 - **2026-08-25 03:53 +0800** · Signal intake panel names the seller: full legal entity, registered address and UBN, for payment-gateway verification.

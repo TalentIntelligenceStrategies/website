@@ -64,14 +64,29 @@
      spine, the nodes and ~190 lines of geometry are gone.)
 
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
-     Audited 2026-08-25: 106 classes, of which 84 are sig-* page-namespaced and 22 are
+     Audited 2026-08-25: 102 classes, of which 78 are sig-* page-namespaced and 24 are
      shared classes reached through a scoped or descendant selector, or as modifiers on
-     shared components ([data-page="signal"] .hero, .sig-phases .btn,
+     shared components ([data-page="signal"] .hero, .sig-phases__foot .btn,
+     #intake .section-head, #intake .section-head + .contact-card,
+     .sig-ledger .arrow-link, .sig-colophon .arrow-link, .sig-ledger .innovue-wordmark,
      .topic-chip:has(input:disabled), .contact-form .field[hidden],
      .contact-card--sig-intake .contact-panel, .contact-meta dd.sig-due,
      .offer-card--sig*, .offer-card-eyebrow--text). Two are applied at runtime rather
      than in the markup — .is-revealed by site.js, .sig-xlock by this page's own script.
      Zero dead rules.
+
+     (106 earlier on 2026-08-25, before the proof section was recomposed. The head's
+      right column — a 72px pool numeral, the Innovue credit and a .btn-secondary
+      stacked with space-between — and the photographic trade card were retired, taking
+      .sig-proof__head / __claim / __aside / __cta, .sig-pool / __num / __label,
+      .sig-ledger__kicker, .sig-phases__kicker and the whole .sig-trade set with them.
+      Added: .sig-colophon, .sig-ledger__lockup / __foot, .sig-pool-line / __num /
+      __label, .sig-phases__title / __foot / __trade. --sig-spring went too — the trade
+      card's hover was its only consumer. The intake section then gained a
+      .section-head divider, peer to the two above it. Then "How it works" was lifted
+      out of its wash card into its own section with its own .section-head, retiring
+      .sig-proof__grid and .sig-phases__title, and every blue in the section went with
+      it — the wash fill, the phase-name accent and the chip ink.)
 
      (98 earlier on 2026-08-25, before the report panels' samples were given document
       chrome. .sig-xpanel__body was two bare <img>; it is now .sig-doc — a bar stating
@@ -189,146 +204,70 @@
      would run to four lines. Scoped to #reports so the homepage keeps its own. */
   @media (max-width: 1280px){ #reports .offerings-grid{ grid-template-columns:1fr; } }
 
-  /* ── Proof + process — 2-col header, then an asymmetric three-panel grid ────────
-     Reference grammar → vanilla: unequal panel weights instead of a row of equals.
-     One wide black panel (how the score decomposes — the section's actual proof), one
-     tall cool-wash panel (how you buy), one photographic panel (the trade-off). The
-     black panel keeps the radius / fill / hairline of the shared .about-card register
-     so it still reads as the same family as the homepage dark cards.
+  /* ── Proof + process — a stacked head, then two full-width panels ──────────────
+     What this replaced (2026-08-25): a two-column header whose right column stacked a
+     72px pool numeral, a 14px Innovue credit and a .btn-secondary with space-between,
+     over an asymmetric three-panel grid — wide black ledger, tall wash process
+     spanning both rows, photographic trade card.
 
-     What this replaced: three black cards in a flex row, which read as one heavy slab
-     and spent the page's only vivid accent in two places. Three distinct weights fix
-     both, and --sig-blue now has exactly one home. ── */
-  .sig-proof{
-    /* framer spring(stiffness:250, damping:20) → ζ≈0.63, ~400ms settle with a
-       small overshoot. A back-out bezier is the closest CSS gets. */
-    --sig-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
+     Three things drove the rebuild.
 
-  /* Header — claim + argument left, denominator + credit + methodology exit right.
-     The h2 and the dek belong in one column because the dek is the claim's argument,
-     not a parallel one; the right column then carries what the reader acts on (the
-     pool figure, who powers it, where to go next).
+     1. The header's h2 took the full .h-section display step while its own peer
+        ("Three reports.", inside .section.offerings twelve hundred pixels above) took
+        the reduced one. Two sibling dividers read as different levels of the
+        hierarchy — an accident of one section borrowing .offerings for its card grid,
+        never a decision. The dek diverged too: 58ch against the base 44ch, a wider
+        head gap, and text-wrap:balance where its peer had none.
+     2. The right column stacked three unrelated registers aligned to nothing.
+     3. 1,433 sat in that column while the ledger's own notes described it twice: it is
+        the denominator 0–100 is percentile-ranked against, and the pool SABCD
+        discretises. It belongs in the ledger.
 
-     `stretch`, not `start`: the two columns share a row box sized by the taller
-     (left) one, so the aside's space-between can push the CTA row onto the dek's
-     bottom edge. The gap still applies as a MINIMUM, so if the right column ever
-     outgrows the left the row just grows instead of the two colliding. */
-  .sig-proof__head{
-    display:grid;
-    grid-template-columns:minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap:clamp(24px, 3vw, 48px);
-    align-items:stretch;
-  }
-  .sig-proof__claim{
-    display:flex; flex-direction:column; align-items:flex-start;
-    /* h2 → dek, so it tracks .section-dek's own 16px rhythm rather than the wider
-       gap the numeral wanted when it sat here. */
-    gap:clamp(16px, 1.6vw, 20px);
-  }
-  .sig-proof__head .h-section{ margin:0; text-wrap:balance; }
-  .sig-proof__aside{
-    display:flex; flex-direction:column; align-items:flex-start;
-    justify-content:space-between;
-    gap:clamp(28px, 3vw, 40px);
-  }
-  /* .section-dek ships margin-top:16px + max-width:44ch — neither applies when it
-     sits directly under the h2 as this column's argument. `balance` rather than
-     `pretty`: this paragraph is short enough to set as even lines, and it has to
-     work in both EN and ZH. A hard <br> cannot — the language swapper writes
-     textContent and would strip it. */
-  .sig-proof__claim .section-dek{ margin:0; max-width:58ch; text-wrap:balance; }
+     Now: .section-head carries the pair — its h2 rule already resolves to
+     clamp(24px,2.8vw,36px)/600/-0.015em/1.15 and outranks .h-section on BOTH
+     specificity (0,1,1 vs 0,1,0) and source order (styles.css 4012 vs 414), and the
+     dek inherits .section-dek's own 44ch, so matching the peer costs no CSS at all.
+     Do not add a max-width here; that is what broke the match.
 
-  /* Pool — display numeral with its label set beside it on two lines. Sized to
-     answer the two-line h2 across the gutter; at 36px it read as a caption on a
-     column that had nothing else holding the top.
+     The pool figure heads the ledger and the four facts run as ONE row —
+     50 → 8 → 0–100 → SABCD, input to output. That row is why the tracked-caps
+     "THE PSS PIPELINE" kicker is gone: the ordering states it, and the <ol> keeps its
+     label as an .sr-only <h3> so aria-labelledby and the list semantics survive.
 
-     `last baseline` puts the label's SECOND line on the numeral's baseline, so the
-     two share one floor rather than one ceiling. Plain `baseline` would align the
-     label's FIRST line and hang the second below the digits. flex-end is the
-     fallback for engines without last-baseline (bottom edges instead of baselines,
-     ~2px off) — declaration order matters, keep it above.
+     The trade card is retired and its human + AI line closes the process it actually
+     describes. --sig-spring went with it — that card's hover was its only consumer. ── */
 
-     Theme tokens only: neither --sig-blue (2.77:1 on white) nor --sig-blue-deep
-     (3.29:1 on the dark-theme page) clears AA for a numeral, so it takes
-     --text-primary. */
-  .sig-pool{
-    display:flex; flex-wrap:wrap; margin:0;
-    align-items:flex-end;
-    align-items:last baseline;
-    gap:clamp(12px, 1.2vw, 16px);
+  /* Head — claim + dek left, the pool colophon right. .section-head is a flex row with
+     align-items:end and flex-wrap, so the colophon seats on the dek's floor for free
+     and drops below it when the row runs out of room. */
+  .sig-colophon{
+    flex:0 1 clamp(280px, 32%, 400px);
+    border-left:1px solid var(--border-secondary);
+    padding-left:clamp(20px, 2vw, 32px);
+    display:flex; flex-direction:column; gap:16px; align-items:flex-start;
   }
-  .sig-pool__num{
-    font-family:var(--font-mono);
-    font-size:clamp(44px, 5vw, 72px);
-    /* 600, not 700 — Inconsolata ships 400/500/600 only, so 700 is synthetic bold,
-       and at this size the smearing is obvious. -0.02em rather than the -0.01em of
-       design-tokens.md num-mono-40: this runs well past that role's size, and
-       tracking has to tighten as the display scale climbs. */
-    font-weight:600;
-    line-height:1;
-    letter-spacing:-0.02em;
-    color:var(--text-primary);
-    font-variant-numeric:tabular-nums;
-    /* Reserve the full 4-digit box so the count-up cannot shove the label sideways.
-       tabular-nums fixes digit WIDTH, not digit COUNT — 0→1→14→143→1433 still grows
-       the box without this. 1ch is one Inconsolata digit, so it scales with the clamp. */
-    min-width:4ch;
-  }
-  /* max-width forces the two lines and `balance` evens them, which survives the
-     language swap where a <br> would not. ZH is compact enough to set on one line;
-     that is fine — the baseline still lands where the numeral's does. */
-  .sig-pool__label{
-    font-size:14px; line-height:1.4; color:var(--text-secondary);
-    max-width:17ch; text-wrap:balance;
-  }
-
-  /* Credit + exit. "Powered by Innovue" in the lockup register, left of the CTA —
-     visual-guide.md §Innovue Co-Branding. .innovue-wordmark is shared with /about/
-     and lives in styles.css; it sizes in em, so it tracks the 14px credit text. */
-  .sig-proof__cta{
-    display:flex; align-items:center; flex-wrap:wrap;
-    gap:clamp(16px, 2vw, 28px);
-  }
-  .sig-credit{
+  /* States what the reference pool actually is. The wording tracks
+     legal/disclosures.en.html §"A rating is a position, not a verdict", but the link
+     goes to the methodology page, not the disclosures modal. The section claims a score
+     you can trace to the number, which is hollow if the denominator is vague, so naming
+     it is the claim's evidence, not a caveat. */
+  .sig-colophon p{
     margin:0;
-    display:inline-flex; align-items:baseline; gap:0.4em;
-    font-size:14px; line-height:1;
+    font-size:15px; line-height:1.55;
     color:var(--text-secondary);
+    text-wrap:pretty;
   }
 
-  /* ── The grid. Asymmetric on purpose. The ledger is the proof, so it takes the wide
-     column; the process runs down the narrow one and spans both rows so the two
-     columns bottom out together; the trade card closes the wide column. ── */
-  .sig-proof__grid{
-    margin-top:var(--space-head-gap);
-    display:grid;
-    grid-template-columns:minmax(0, 1.75fr) minmax(0, 1fr);
-    gap:clamp(16px, 1.6vw, 24px);
-  }
-  .sig-ledger{ grid-column:1; grid-row:1; }
-  .sig-trade { grid-column:1; grid-row:2; }
-  .sig-phases{ grid-column:2; grid-row:1 / span 2; }
-
-  /* ── Panel 1 · the PSS ledger — four facts on black, 2×2. Mono tabular numerals are
-     legitimate: the content literally is scoring metadata, not decoration.
-
-     Label sits BESIDE the numeral, note full-width beneath both. That reads as one
-     phrase ("50 traceable indicators") rather than a numeral with a caption under it,
-     and it uses the horizontal room this wide panel actually has — which is what pays
-     for the numerals being as large as they are.
-
-     The label column is NOT aligned across the four facts, and that is the decision,
-     not an oversight. Aligning it needs a shared numeral track (min-width:5ch, or
-     subgrid — both work), but the widest values are five mono glyphs and the narrowest
-     is one, so a shared track strands "8" ~90px from its own label and the pair stops
-     reading as a phrase. Right-aligning the numeral inside that track closes the gap
-     but then unmoors the numeral from the note beneath it, which starts at the cell
-     edge. Each fact is its own unit here; the notes' common left edge is what carries
-     the column, and per-<li> max-content keeps every pair tight. ── */
+  /* ── The PSS ledger ─────────────────────────────────────────────────────────────
+     Mono tabular numerals are legitimate: the content literally is scoring metadata.
+     Labels sit BESIDE their numerals and are deliberately NOT aligned to a common
+     column across the four — the widest value is five mono glyphs and the narrowest
+     one, so a shared track strands "8" ~90px from its own label and the pair stops
+     reading as a phrase. The notes' common left edge carries the column instead. ── */
   .sig-ledger{
+    position:relative;                         /* carries the corner-set credit */
     background:#000;                           /* matches .about-card / .partner-band */
-    border:1px solid rgba(255,255,255,0.08);   /* same hairline as .about-card */
+    border:1px solid rgba(255,255,255,0.08);
     border-radius:20px;
     padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
     color:#fff;
@@ -338,28 +277,91 @@
      card is all type, so lift the edge. */
   [data-theme="dark"] .sig-ledger{ border-color:rgba(255,255,255,0.16); }
 
-  .sig-ledger__kicker{
-    margin:0 0 clamp(22px, 2.2vw, 30px);
-    font-family:var(--font-sans);
-    font-size:12px;
+  /* "Powered by Innovue" — the credit text verbatim, no variations
+     (visual-guide-snapshot.md §Innovue Co-Branding). Corner-set, and deliberately NOT
+     a bordered chip: that spec defines exactly two constructions, this credit and the
+     submark|divider|logo lockup, and a badge is neither. Absolute so it can never push
+     the pool figure off the panel's top edge.
+     This is the section's ONLY Innovue credit. It carried three — here, in the dek,
+     and in the Produce phase — against brand-voice §7's "once at the top, then TIS
+     voice takes over." */
+  .sig-credit{
+    position:absolute;
+    top:clamp(26px, 2.6vw, 40px);
+    right:clamp(24px, 2.6vw, 36px);
+    margin:0;
+    display:inline-flex; align-items:baseline; gap:0.4em;
+    /* 17px, up 30% from 13px. .innovue-wordmark is sized in em (0.72em tall,
+       5.27em wide), so the mark scales with the text and needs no separate rule. */
+    font-size:17px; line-height:1;
+    color:rgba(255,255,255,0.62);              /* 8.1:1 on #000 */
+  }
+  /* .innovue-wordmark only swaps to its light SVG under [data-theme="dark"], so on this
+     #000 card in LIGHT theme it would paint Innovue Blue on black. Pin it theme-agnostically;
+     the dark rule's brightness(1.6) is tuned for the page ground, not for #000. */
+  .sig-ledger .innovue-wordmark{
+    background-image:url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
+  }
+  [data-theme="dark"] .sig-ledger .innovue-wordmark{ filter:none; }
+
+  /* Equal air on both sides of the hairline — it read as crowding the figure above it
+     when the padding was 20–26 against a 24–32 margin. padding-right keeps the two-line
+     pool label clear of the corner credit at every width. */
+  .sig-ledger__lockup{
+    padding-bottom:clamp(26px, 2.6vw, 34px);
+    margin-bottom:clamp(26px, 2.6vw, 34px);
+    /* Reserve for the corner credit, which at 17px measures ~178px ("Powered by" +
+       0.4em + a 5.27em mark). The old 150px floor was sized for the 13px credit and
+       the label collided with the mark between ~640 and 880. */
+    padding-right:clamp(196px, 19vw, 280px);
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  /* `last baseline` puts a wrapped label's SECOND line on the numeral's baseline, so the
+     two share one floor. flex-end is the fallback for engines without it — declaration
+     order matters, keep it above. */
+  .sig-pool-line{
+    display:flex; margin:0;
+    align-items:flex-end;
+    align-items:last baseline;
+    flex-wrap:wrap;
+    gap:12px 14px;
+  }
+  .sig-pool-line__num{
+    font-family:var(--font-mono);
+    /* Above .sig-fact__num's clamp(32px,3.2vw,46px) on purpose: this figure heads the
+       panel and the four facts sit under it, so it has to out-scale them, not tie. */
+    font-size:clamp(38px, 3.8vw, 54px);
+    /* 600, not 700 — Inconsolata ships 400/500/600 only, so 700 is synthetic bold and
+       at this size the smearing shows. */
     font-weight:600;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:rgba(255,255,255,0.46);              /* 5.0:1 on #000 */
+    line-height:1;
+    letter-spacing:-0.02em;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+    /* Reserve the full 4-digit box so the count-up cannot shove the label sideways.
+       tabular-nums fixes digit WIDTH, not digit COUNT. */
+    min-width:4ch;
+  }
+  /* The break after "patents" is a hard <br>, not a measure — the two halves name
+     two different things (whose patents / what they are) and should not re-flow.
+     It needs data-zh-html on the span or site.js strips it at first paint. The
+     max-width is only a guard against a third line if the copy grows. */
+  .sig-pool-line__label{
+    font-size:14px; line-height:1.35;
+    color:rgba(255,255,255,0.72);
+    max-width:30ch;
   }
 
+  /* One row, left to right: 50 → 8 → 0–100 → SABCD is the pipeline, input to output.
+     Only possible because the panel is full width now; in the old 1.75fr column four
+     cells were ~180px and the notes shredded. */
   .sig-facts{
     list-style:none; margin:0; padding:0;
     display:grid;
-    grid-template-columns:repeat(2, minmax(0, 1fr));
+    grid-template-columns:repeat(4, minmax(0, 1fr));
     column-gap:clamp(24px, 3vw, 52px);
     row-gap:clamp(24px, 2.6vw, 34px);
   }
-  /* `last baseline`, not plain `baseline`: a label that wraps to two lines should
-     straddle the numeral, not hang below it — plain baseline aligns the FIRST line and
-     drops the second past the digits. `end` is the fallback for engines without
-     last-baseline, so declaration order matters; keep it above. (Same progressive pair
-     as .sig-pool, which wants the identical behaviour for the identical reason.) */
   .sig-fact{
     display:grid;
     grid-template-columns:max-content minmax(0, 1fr);
@@ -371,31 +373,24 @@
   .sig-fact__num{
     font-family:var(--font-mono);
     font-size:clamp(32px, 3.2vw, 46px);
-    font-weight:600;                           /* matches .sig-pool__num — see note there */
+    font-weight:600;
     line-height:1;
     letter-spacing:-0.01em;
     color:#fff;
     font-variant-numeric:tabular-nums;
   }
-  /* Terminal fact = the grade, the output, and the one place the vivid accent lives.
-     --sig-blue is 7.58:1 on #000; it must never migrate off this black card (2.77:1
-     on white). */
-  .sig-fact--out .sig-fact__num{ color:var(--sig-blue); }
+  /* SABCD reads white like the other three. It was the page's one vivid --sig-blue;
+     as the terminal fact its POSITION already marks it as the output, so the colour was
+     doing a second job the ordering had covered. --sig-blue stays live elsewhere on this
+     page (the retrieve status timeline, report-card focus rings). */
+  .sig-fact--out .sig-fact__num{ color:#fff; }
   .sig-fact__label{
     font-size:14px; line-height:1.35;
     color:rgba(255,255,255,0.72);
   }
-  /* Full cell width, starting at the numeral's left edge — no measure cap. The notes
-     are one line of copy each now, and a 40ch cap (the cell is ~50ch at this size)
-     forced a second line back onto every one of them, which is the space this layout
-     was rewritten to recover. The cell itself is the measure.
-
-     `balance`, not `pretty`. These run exactly two lines, and `pretty` only guards the
-     last line against an orphan — it leaves the first line full and the second short
-     (44/25 characters on the 50-fact). `balance` evens both, which is what makes four
-     notes stacked 2×2 read as one block rather than four ragged ones. Safe at this
-     length: engines cap balancing at a handful of lines and fall back to normal
-     wrapping beyond it, so a longer translation degrades rather than breaks. */
+  /* Full cell width from the numeral's left edge — the cell is the measure. `balance`,
+     not `pretty`: these run two lines and pretty only guards the last against an orphan,
+     leaving the first full and the second short. */
   .sig-fact__note{
     grid-column:1 / -1;
     margin:0;
@@ -404,55 +399,67 @@
     color:rgba(255,255,255,0.58);              /* 6.1:1 on #000 */
     text-wrap:balance;
   }
+  .sig-ledger__foot{
+    display:flex; justify-content:flex-end;
+    margin-top:clamp(26px, 2.6vw, 34px);
+  }
 
-  /* ── Panel 2 · the process, compressed to its three phases ─────────────────────
-     Was seven beats on a continuous spine with node geometry derived from four
-     custom properties. Three hairline-separated phases need no track to read as
-     ordered, so the spine, the nodes and the visible ordinals are all gone — which
-     also removes a contrast problem, since --text-tertiary is only 2.66:1 on this
-     wash and a decorative ordinal is still text.
+  /* ── The process, three phases across ───────────────────────────────────────────
+     No longer a card. It was a --surface-accent-signal-wash panel beside the ledger;
+     out of the panel it is page content with its own section head, so the block carries
+     no background, border, radius or padding of its own — the hairlines between phases
+     are the only structure it needs.
 
-     The wash is why the panel is not black: three black cards was the old failure.
-     --surface-accent-signal-text is 4.64:1 on --surface-accent-signal-wash in light
-     and 8.6:1 on its #121D24 dark-theme value, so the accent is AA in both without
-     the vivid --sig-blue, which stays on the ledger. ── */
+     No blue anywhere in it either. The phase name took --surface-accent-signal-text to
+     separate it from the title; size and weight do that job now, so the pair runs
+     secondary over primary ink. Chip ink follows.
+
+     The card is light grey. body carries a faint 32px graph-paper grid that solid
+     surfaces cover, so the fill both defines the card and quiets the ground under it;
+     the hairline and the 20px corner are the ledger's own, so the two blocks sit in the
+     same family down the page. The section head stays OUTSIDE the card, matching the
+     proof section above (head on the page ground, panel beneath it).
+
+     The payment chip tracks the card, and it has now flipped twice: white on the old
+     wash, --surface-tertiary for the brief white-card version, white again here. The
+     rule behind it is the only thing worth remembering — the chip fill must never equal
+     the card fill, or the pill disappears.
+
+     role="list" on the <ol> is REQUIRED: list-style:none makes WebKit strip list
+     semantics, and with no visible ordinals the role is the only channel left carrying
+     sequence. Phase names are <h4> under the section's own <h2>. ── */
+
   .sig-phases{
-    display:flex; flex-direction:column;
-    background:var(--surface-accent-signal-wash);
+    background:var(--surface-tertiary);
     border:1px solid var(--border-secondary);
     border-radius:20px;
     padding:clamp(26px, 2.6vw, 38px) clamp(22px, 2.2vw, 32px);
   }
-  .sig-phases__kicker{
-    margin:0 0 clamp(18px, 1.8vw, 24px);
-    font-family:var(--font-sans);
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--text-secondary);               /* 8.3:1 on the wash */
+
+  /* A row cannot develop the vertical slack the old spanning column did. The negative
+     margin pulls each rule into the middle of the gap rather than hard against its
+     own column's text. */
+  .sig-phases__list{
+    list-style:none; margin:0; padding:0;
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:clamp(24px, 3vw, 44px);
   }
-  /* The list absorbs free space so the CTA sits at the panel's foot whenever the
-     opposite column is the taller one. */
-  .sig-phases__list{ list-style:none; margin:0; padding:0; flex:1 1 auto; }
-
-  .sig-phase{ padding:clamp(18px, 1.8vw, 22px) 0; }
-  .sig-phase:first-child{ padding-top:0; }
-  .sig-phase:last-child{ padding-bottom:0; }
-  .sig-phase + .sig-phase{ border-top:1px solid var(--border-tertiary); }
-
-  /* Phase name — sentence case, not another tracked uppercase label. This page already
-     carries two of those and a third at the same register would stop grouping and
-     start scaffolding. Colour separates it from the title instead of tracking. */
+  .sig-phase{ padding:0; }
+  .sig-phase + .sig-phase{
+    border-left:1px solid var(--border-tertiary);
+    padding-left:clamp(24px, 3vw, 44px);
+    margin-left:calc(-1 * clamp(24px, 3vw, 44px) / 2);
+  }
+  /* Phase name — sentence case. Size and weight separate it from the title beneath,
+     not hue: it sits 3.5px smaller over primary ink at the same weight. */
   .sig-phase__name{
     margin:0 0 6px;
     font-family:var(--font-sans);
-    font-size:13.5px;
-    font-weight:600;
-    line-height:1.3;
-    letter-spacing:0.01em;
+    font-size:13.5px; font-weight:600;
+    line-height:1.3; letter-spacing:0.01em;
     text-transform:none;
-    color:var(--surface-accent-signal-text);   /* 4.64:1 on the wash */
+    color:var(--text-secondary);               /* 9.7:1 on the page ground */
   }
   .sig-phase__title{
     margin:0 0 6px;
@@ -460,170 +467,134 @@
     font-size:17px;
     font-weight:600;
     line-height:1.35;
-    color:var(--text-primary);                 /* 13.7:1 on the wash */
+    color:var(--text-primary);                 /* 16.1:1 on the page ground */
   }
   /* Payment chip — the two-stage structure, carried by a label rather than by hue
-     (WCAG 1.4.1). White ground so the pill lifts off the wash; the accent is 5.19:1
-     on white. */
+     (WCAG 1.4.1), which is why dropping the accent costs it nothing. The fill has to
+     differ from the card's: on the --surface-tertiary card it goes back to white, where
+     --text-secondary measures 9.7:1. */
   .sig-phase__chip{
     flex:none;
     padding:2px 8px;
     border-radius:9999px;
     background:var(--surface-page);
     border:1px solid var(--border-secondary);
-    color:var(--surface-accent-signal-text);
+    color:var(--text-secondary);
     font-size:11px;
     font-weight:600;
     line-height:16px;
     letter-spacing:0.04em;
     white-space:nowrap;
   }
-  /* `balance` for the same reason as .sig-fact__note — three of these stack in one
-     panel, so an even rag on each is what makes the column read as a set. These run
-     longer (4–5 lines), which is within the range engines will balance; past their cap
-     they fall back to normal wrapping, which is the old behaviour, not a break. */
+  /* `balance` for the same reason as .sig-fact__note. The measure is now the column,
+     not 46ch: three phases across at 1440 give ~420px cells, and a 46ch cap inside
+     one left a short second column against a full first. */
   .sig-phase__desc{
     margin:0;
-    max-width:46ch;
     font-size:13.5px;
     line-height:1.6;
     color:var(--text-secondary);               /* 8.3:1 on the wash */
     text-wrap:balance;
     overflow-wrap:break-word;                  /* guard: mixed-script ZH at 390px */
   }
-  .sig-phases .btn{ margin-top:clamp(24px, 2.4vw, 32px); align-self:flex-start; }
-
-  /* ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
-     REQUIRES a dark-bottomed image. signal-cool.jpg is the Signal pillar's reference
-     blue still (visual-guide-snapshot.md, and the product-card image on every page),
-     and it is already the right way up for this card: near-white at the top, deep
-     navy at the foot, which is where the caption sits.
-
-     object-position:center bottom is load-bearing, not a nicety. The card is ~3.3:1
-     against a 1.55:1 image, so `cover` shows barely half its height — centred, that
-     half is the pale-to-mid band and white type on it fails. Anchored to the bottom
-     it is the navy foot. Do not swap the image or the anchor without re-measuring.
-     The scrim ramp is the audited .offer-card one, not a flat black/70. ── */
-  .sig-trade{
-    min-height:clamp(220px, 20vw, 280px);
-    position:relative;
-    isolation:isolate;
-    overflow:hidden;
-    border-radius:20px;
-    background:#000;
-    display:flex; flex-direction:column; justify-content:flex-end;
+  .sig-phases__foot{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:clamp(24px, 3vw, 44px); flex-wrap:wrap;
+    margin-top:clamp(28px, 2.8vw, 38px);
+    padding-top:clamp(24px, 2.4vw, 30px);
+    border-top:1px solid var(--border-tertiary);
   }
-  .sig-trade img{
-    position:absolute; inset:0; z-index:-2;
-    width:100%; height:100%;
-    object-fit:cover; object-position:center bottom;
-    display:block;
-    /* Matches the anchor. With a centred origin the reveal/hover scale slides the
-       crop downward, pulling paler pixels up under the caption mid-transition; pinned
-       to the bottom edge the navy band the caption sits on simply holds still. */
-    transform-origin:center bottom;
-  }
-  .sig-trade::after{
-    content:""; position:absolute; inset:0; z-index:-1;
-    background:linear-gradient(to top,
-      rgba(0,0,0,0.88) 0%,
-      rgba(0,0,0,0.45) 45%,
-      rgba(0,0,0,0.06) 80%);
-  }
-  .sig-trade__caption{
-    position:relative;
-    padding:clamp(22px, 2.4vw, 30px);
-    display:flex; flex-direction:column; gap:8px;
-  }
-  /* No kicker here. It was invented copy, and it would have been the third tracked
-     uppercase label in this one section. The caption carries itself. */
-  .sig-trade__body{
+  /* The human + AI trade-off, retired from the image card it used to caption. It argues
+     about how the report is produced, so it closes the sequence that produces it. */
+  .sig-phases__trade{
     margin:0;
-    font-size:15px; line-height:1.5;
-    color:rgba(255,255,255,0.90);
-    max-width:52ch;
+    flex:1 1 460px; min-width:0;
+    font-size:14px; line-height:1.6;
+    color:var(--text-secondary);
+    text-wrap:pretty;
   }
-  .sig-trade__body strong{ color:#fff; font-weight:700; }
+  .sig-phases__foot .btn{ flex:0 0 auto; }
 
-  /* ── Motion. The trade card's IMAGE settles and the phases rise; the ledger does
-     not move, because a 2×2 of numerals staggering in reads as a slot machine and
-     resamples mono glyphs mid-transition. The cards are non-interactive divs, so no
-     hover-scale on the card itself — that would promise a click that isn't there.
+  /* Scoped-shared: the base .arrow-link is uppercase / 0.10em tracked / 700
+     (styles.css:2005) and only .about-card .arrow-link overrides it to sentence case.
+     Both exits here take the sentence-case register — deleting two tracked-caps kickers
+     and then reintroducing tracked caps in the links that replace them would undo the
+     point. The ledger's own colour must be white: .arrow-link ships --text-primary
+     (#252525), which on #000 is unreadable. */
+  .sig-colophon .arrow-link,
+  .sig-ledger .arrow-link{
+    text-transform:none;
+    letter-spacing:-0.005em;
+    font-size:13px;
+    font-weight:600;
+  }
+  .sig-ledger .arrow-link{ color:#fff; }
+  .sig-ledger .arrow-link:hover{ color:rgba(255,255,255,0.72); }
 
-     Every hidden base state is gated on `scripting: enabled`. DESIGN.md §14 is
-     explicit that content must never be gated invisible on JS failure: an unguarded
-     opacity:0 waiting on a JS-added class ships a blank section to anyone whose
-     script never runs. ── */
+  /* ── Motion. The phases rise; the ledger does not move, because a row of numerals
+     staggering in reads as a slot machine and resamples mono glyphs mid-transition.
+     Every hidden base state is gated on `scripting: enabled` — DESIGN.md §14 is explicit
+     that content must never be gated invisible on JS failure. ── */
   @media (scripting: enabled){
-    .sig-trade[data-reveal] img{
-      opacity:0;
-      transform:scale(1.08);
-    }
     .sig-phase[data-reveal]{
       opacity:0;
       transform:translateY(8px);
     }
   }
-  .sig-trade[data-reveal] img{
-    transition:opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
-    will-change:transform, opacity;
-  }
-  .sig-trade[data-reveal].is-revealed img{ opacity:1; transform:scale(1); }
-
-  /* No nth-child delays — the observer fires per element as each crosses the
-     threshold, so scroll cadence IS the stagger. */
+  /* No nth-child delays — the observer fires per element as each crosses the threshold,
+     so scroll cadence IS the stagger. */
   .sig-phase[data-reveal]{
     transition:opacity 380ms var(--ease-card), transform 380ms var(--ease-card);
   }
   .sig-phase[data-reveal].is-revealed{ opacity:1; transform:none; }
 
-  @media (hover: hover) and (pointer: fine){
-    .sig-trade[data-reveal].is-revealed:hover img{
-      transform:scale(1.05);
-      transition:transform 400ms var(--sig-spring);
-    }
+  /* ── Responsive. 1100 folds the fact row to 2×2 before the cells reach the width where
+     "0–100" stops fitting beside its label; 880 stacks the process and re-hangs the
+     colophon's rule as a top border; 560 un-pins the corner credit so it cannot sit on
+     top of the pool figure. All three are scale values (DESIGN.md §3.1). The old 960px
+     branch went with .sig-proof__head. ── */
+  @media (max-width: 1100px){
+    .sig-facts{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   }
-
-  /* ── Responsive — one column below 960px. Order: heading → argument → ledger →
-     trade card → process. The proof (ledger + trade) leads on a phone because the
-     section's claim is the score's traceability; the process is the longer read, and
-     it carries the CTA, so it belongs last, closest to the intake form below. ── */
-  @media (max-width: 960px){
-    .sig-proof__head{ grid-template-columns:1fr; gap:24px; }
-    .sig-proof__grid{ grid-template-columns:1fr; }
-    /* MUST reset the explicit row/column placement, or the items keep stacking into
-       the named tracks and the phases panel sits beside a 1-col grid. */
-    .sig-ledger,
-    .sig-trade,
-    .sig-phases{ grid-column:1; grid-row:auto; }
-    .sig-trade { order:1; }
-    .sig-phases{ order:2; }
+  @media (max-width: 880px){
+    .sig-colophon{
+      flex-basis:100%;
+      border-left:0;
+      border-top:1px solid var(--border-secondary);
+      padding:20px 0 0;
+    }
+    .sig-phases__list{ grid-template-columns:1fr; gap:0; }
+    .sig-phase{ padding:clamp(18px, 1.8vw, 22px) 0; }
+    .sig-phase:first-child{ padding-top:0; }
+    .sig-phase:last-child{ padding-bottom:0; }
+    .sig-phase + .sig-phase{
+      border-left:0;
+      border-top:1px solid var(--border-tertiary);
+      padding-left:0;
+      margin-left:0;
+    }
     .sig-ledger{ padding:26px 22px; }
     .sig-phases{ padding:28px 22px; }
-    /* The caption runs ~6 lines in one column, so its top reaches well into the
-       weakly-scrimmed band and over the image's bright cyan corner. Steepen the ramp:
-       the image still reads at the top edge, the copy stays ≥4.5:1. */
-    .sig-trade::after{
-      background:linear-gradient(to top,
-        rgba(0,0,0,0.92) 0%,
-        rgba(0,0,0,0.82) 55%,
-        rgba(0,0,0,0.58) 100%);
-    }
   }
   @media (max-width: 560px){
+    .sig-credit{ position:static; margin-bottom:20px; }
+    .sig-ledger__lockup{ padding-right:0; }
     .sig-facts{ grid-template-columns:1fr; row-gap:22px; }
-    .sig-fact__note{ max-width:none; }
     .sig-phase__desc{ font-size:13px; max-width:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
-    .sig-trade[data-reveal] img,
-    .sig-trade[data-reveal].is-revealed:hover img,
     .sig-phase[data-reveal],
     .sig-phase[data-reveal].is-revealed{
       opacity:1; transform:none; transition:none;
     }
   }
+
+  /* Intake's section divider. .contact has no padding of its own — .contact-card
+     carries margin-block:var(--space-section) — so the head takes that top margin and
+     the card drops its own, or the two stack into ~2x the intended gap. */
+  #intake .section-head{ margin-block-start:var(--space-section); }
+  #intake .section-head + .contact-card{ margin-block-start:0; }
 
   /* ── Contact cards — swap the overlay image for signal-toned imagery; the
      retrieve card flips so the form sits left. Everything else is the shared
@@ -1505,15 +1476,16 @@
        secondary and runs down the narrow column beside it. The human + AI caption
        card closes the wide column.
 
-       Three deliberate weights — black ink, cool wash, photographic — replacing the
-       earlier three-black-cards band. That band read as one heavy slab and sent the
-       eye down the left column and back up the right; it also spent the page's only
-       vivid accent twice.
+       One black panel, then the process on the page ground. Superseded twice: first a
+       three-black-cards band that read as one heavy slab, then black ink + cool wash +
+       photographic, which is where the --surface-accent-signal-wash card and the
+       trade-card image came from. Both are gone.
 
-       --sig-blue at full vividness now lives on the black ledger ONLY (7.58:1 there
-       against 2.77:1 on white, which is the whole reason that panel is black). The
-       wash panel takes --surface-accent-signal-text instead: 4.64:1 on
-       --surface-accent-signal-wash in light, 8.6:1 on its dark-theme value.
+       There is no blue left in this section at all (2026-08-25). The ledger stays black
+       for contrast and hierarchy, not to host an accent: SABCD reads white like the
+       other three facts, and the process runs secondary over primary ink with no wash
+       behind it. --sig-blue is still live further down the page (retrieve status
+       timeline, report-card focus rings).
 
        The two-stage payment structure is carried by the two chips inside phases 01
        and 03. The retired 7-beat timeline said it with accented nodes and a pair of
@@ -1527,67 +1499,59 @@
     <div class="container">
       <div class="sig-proof">
 
-        <!-- Header — the claim and the argument own the left column; the right
-             column carries the denominator over the credit + methodology exit.
-
-             The pool figure is a display numeral with its label set BESIDE it on two
-             lines, not stacked above a caption. Stacked, it is the hero-metric
-             template and the label reads as an afterthought; beside, the two are one
-             phrase ("1433 patents in the reference pool") and the numeral can carry
-             the weight this column needs to answer the two-line h2 across the gutter.
-
-             No comma in the numeral (data-sep="none" on the counter). The markup text
-             is the no-JS value, so it must match what the counter lands on.
-
-             data-zh must never land on .sig-pool or .sig-pool__num — the language
-             swapper writes textContent and would delete the .counter child. Only the
-             label carries data-zh; the numeral carries none. -->
-        <div class="sig-proof__head">
-          <div class="sig-proof__claim">
+        <!-- Head — the claim and its argument left, the pool colophon right.
+             The h2 carries .h-section ONLY so the shared [data-reveal] transition rules
+             in styles.css still match it; the size comes from .section-head h2, which
+             outranks .h-section on specificity and source order and already resolves to
+             the same step "Three reports." uses above. Do not add a max-width to the dek
+             either — it inherits .section-dek's 44ch, and overriding that is what made
+             the two dividers read as different levels. -->
+        <header class="section-head">
+          <div>
             <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
-
-            <p class="section-dek" data-reveal data-zh="為新創與投資人提供專利評估，建立在新穎數位的 PSS 評分引擎之上，將任何專利與 TIS 自有及夥伴專利比較排名。">Patent evaluation for startups and investors, built on Innovue's PSS scoring engine, ranking any patent against TIS's own and partner patents.</p>
+            <p class="section-dek" data-reveal data-zh="為新創與投資人而做的專利評估：你要能為那個數字辯護，而不只是引用它。">Patent evaluation for startups and investors who have to defend a number, not just quote one.</p>
           </div>
+          <!-- Names what the reference pool actually is, per legal/disclosures.en.html
+               §"A rating is a position, not a verdict". The section claims a score
+               traceable to the number,
+               which is hollow if the denominator is vague, so this is the claim's
+               evidence rather than a caveat. data-zh sits on the inner <span> of the
+               link, never on the <a>: site.js:178 calls applyLang() at first paint and
+               writes textContent, which would delete the sibling <svg>.
 
-          <div class="sig-proof__aside">
-            <p class="sig-pool">
-              <span class="sig-pool__num"><span class="counter" data-target="1433" data-sep="none">1433</span></span>
-              <span class="sig-pool__label" data-zh="件專利的參考池">patents in the reference pool</span>
-            </p>
-
-            <!-- Innovue credit in the lockup register — visual-guide.md §Innovue
-                 Co-Branding: "Powered by Innovue", no variations, carried by the
-                 mark. Left of the CTA so the credential is read before the exit.
-                 The phrase stays EN in both languages, matching the footer lockup. -->
-            <div class="sig-proof__cta">
-              <p class="sig-credit">Powered by <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></p>
-
-              <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看評分方法">See the methodology</a>
-            </div>
+               The exit goes to methodology.html#transparency-heading, NOT the disclosures
+               modal. It carries no data-legal, and it must not: site.js has a delegated
+               [data-legal] listener that preventDefault()s the click and opens the modal
+               instead of navigating. -->
+          <div class="sig-colophon">
+            <p data-zh="TIS 也對外授權池內的專利。排名是在池內的位置，不是與全世界專利相比的排名。">TIS licenses patents from this pool. A rank is a position inside it, not a rank against every patent.</p>
+            <a href="/product/signal/methodology.html#transparency-heading" class="arrow-link"><span data-zh="參考池如何組成">How the pool is composed</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
-        </div>
+        </header>
 
-        <div class="sig-proof__grid">
+          <!-- ── Panel 1 · the PSS ledger — the pool figure heads it, then the four
+               facts as one row. 1,433 is the denominator the 0–100 note and the SABCD
+               note both refer to, so it lives here rather than in the header.
 
-          <!-- ── Panel 1 · the PSS ledger — four facts on black, 2×2. Deliberately no
-               connective line and no node dots; nothing else in this section uses
-               that language now either. Mono tabular numerals are legitimate: the
-               content literally is scoring metadata, not decoration.
+               data-zh must never land on .sig-pool-line__num or any ancestor whose
+               textContent the swapper rewrites — it would delete the .counter child.
+               Only the label carries it; the numeral carries none, and the markup text
+               is the no-JS value so it must keep matching data-target.
 
-               Label beside the numeral, note full-width under both. The labels are
-               deliberately NOT aligned to a common column across the four — see the
-               CSS for why that costs more than it buys here.
-
-               The last fact is SABCD, not "S–D" with "SABCD grade" beside it: that
-               said the same thing twice. The grade names ARE the value, so they take
-               the numeral slot and the label is just what kind of thing it is.
-
-               Notes are one line of copy each, on purpose. Everything they used to
-               restate is already on the page — 1,433 in the header numeral, "PSS" in
-               the kicker above, 0–100 in its own numeral — and a fact panel that
-               explains its numbers at length stops being a fact panel. ── -->
+               The <ol>'s label is an .sr-only <h3>, not the retired tracked-caps
+               kicker: the row's own left-to-right ordering states the pipeline, and
+               aria-labelledby still needs a node to point at. ── -->
           <div class="sig-ledger">
-            <p class="sig-ledger__kicker" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</p>
+            <p class="sig-credit" data-zh-html data-zh="Powered by <span class='innovue-wordmark' role='img' aria-label='Innovue'></span>">Powered by <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></p>
+
+            <div class="sig-ledger__lockup">
+              <p class="sig-pool-line">
+                <span class="sig-pool-line__num"><span class="counter" data-target="1433" data-sep="none">1433</span></span>
+                <span class="sig-pool-line__label" data-zh-html data-zh="件 TIS 與夥伴專利，組成參考池">TIS and partner patents<br>in the reference pool</span>
+              </p>
+            </div>
+
+            <h3 class="sr-only" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</h3>
             <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
 
               <li class="sig-fact">
@@ -1602,10 +1566,14 @@
                 <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八項，各自獨立加權。">Citation, legal, technical, market and four more, independently weighted.</p>
               </li>
 
+              <!-- "benchmark" and "cross-industry" are gone from this note on purpose.
+                   legal/disclosures.en.html states the pool is "not an independent
+                   third-party benchmark", and the marketing copy cannot contradict the
+                   disclosure it links to. -->
               <li class="sig-fact">
                 <span class="sig-fact__num">0–100</span>
                 <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
-                <p class="sig-fact__note" data-zh="在全池內取百分位，跨產業單一基準。">Percentile-ranked against the whole pool — one cross-industry benchmark.</p>
+                <p class="sig-fact__note" data-zh="在參考池內的百分位。不是絕對的品質量測。">A percentile position inside the reference pool. Not an absolute measure.</p>
               </li>
 
               <li class="sig-fact sig-fact--out">
@@ -1615,24 +1583,38 @@
               </li>
 
             </ol>
+
+            <div class="sig-ledger__foot">
+              <a href="/product/signal/methodology.html" class="arrow-link"><span data-zh="看評分方法">See the methodology</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            </div>
           </div>
+      </div>
+    </div>
+  </section>
 
-          <!-- ── Panel 2 · the process, compressed to its three phases ─────────────
-               Was seven beats on a spine; the spine and its node geometry are gone.
-               Three phases hairline-separated need no track to be read as ordered,
-               and the <ol> carries the ordinality that matters.
+  <!-- ── 3b · How it works — its own section now, not a panel inside the proof grid.
+       It was a --surface-accent-signal-wash card in the right column; out of the card it
+       is page content, so it takes a .section-head like every other divider on this page
+       (36/600 heading, 44ch dek) instead of the 17px in-panel heading it used to carry.
+       The three-across phase row itself is unchanged.
 
-               role="list" is REQUIRED: list-style:none makes WebKit strip list
-               semantics, and with the visible ordinals gone the list role is the only
-               channel left carrying sequence at all. Phase names are <h3> — three
-               useful rotor entries. Beat titles are therefore <p>, not headings. ── -->
-          <div class="sig-phases">
-            <p class="sig-phases__kicker" id="sig-phases-label" data-zh="如何進行">How it works</p>
+       The two-stage payment is carried by the chips (10% / 90%) in the first and last
+       phase — the retired timeline said it with accented nodes; don't quietly drop them. -->
+  <section class="section" aria-labelledby="process-heading">
+    <div class="container">
 
-            <ol class="sig-phases__list" role="list" aria-labelledby="sig-phases-label">
+      <header class="section-head">
+        <div>
+          <h2 id="process-heading" class="h-section" data-reveal data-zh="如何進行。">How it works.</h2>
+          <p class="section-dek" data-reveal data-zh="三個步驟。付 10% 啟動，尾款在你下載時才付。">Three steps. You pay 10% to start, and the balance only when you download.</p>
+        </div>
+      </header>
+
+      <div class="sig-phases">
+        <ol class="sig-phases__list" role="list" aria-labelledby="process-heading">
 
               <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="送件">Submit</h3>
+                <h4 class="sig-phase__name" data-zh="送件">Submit</h4>
                 <p class="sig-phase__title">
                   <span data-zh="選報告，上傳資料">Pick a report, add your input</span>
                   <span class="sig-phase__chip" data-zh="訂金 10%">10% deposit</span>
@@ -1640,16 +1622,19 @@
                 <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含取件碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation email carrying a retrieval code.</p>
               </li>
 
+              <!-- Innovue removed from this description: it was the third credit in one
+                   section, against brand-voice §7. The corner credit on the ledger is
+                   the section's single attribution now. -->
               <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="產出">Produce</h3>
+                <h4 class="sig-phase__name" data-zh="產出">Produce</h4>
                 <p class="sig-phase__title">
                   <span data-zh="TIS 人工 + AI 產出報告">TIS produces your report</span>
                 </p>
-                <p class="sig-phase__desc" data-zh="串接新穎資料、跑 PSS 或向量比對，再由 AI 協作撰寫。以小時 / 日計，不是以週計。完成後 email 通知你，報告本身留在頁面上。">We pull Innovue data, run the match, and write it up with AI. Hours to days, not weeks. We email you when it is ready; the report itself stays on the site.</p>
+                <p class="sig-phase__desc" data-zh="跑 PSS 或向量比對，再由 AI 協作撰寫。以小時 / 日計，不是以週計。完成後 email 通知你，報告本身留在頁面上。">We run the scoring or the match, then write it up with AI. Hours to days, not weeks. We email you when it is ready; the report itself stays on the site.</p>
               </li>
 
               <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="取件">Retrieve</h3>
+                <h4 class="sig-phase__name" data-zh="取件">Retrieve</h4>
                 <p class="sig-phase__title">
                   <span data-zh="驗證、預覽，再下載">Verify, preview, then download</span>
                   <span class="sig-phase__chip" data-zh="尾款 90%">90% balance</span>
@@ -1659,28 +1644,13 @@
 
             </ol>
 
-            <!-- CTA closes the sequence: the reader finishes the last phase and the
-                 action is there. Copy is byte-identical to the hero's primary CTA — no
-                 new strings. On the wash ground .btn-primary needs no re-skin, so the
-                 pair of frozen ink literals this page used to carry for a white-on-black
-                 hover fill are gone from §1.3.1. (Naming them here would put them back
-                 into every hex grep, which is the trap they were listed for.) -->
-            <a href="#intake" class="btn btn-primary" data-zh="開始評估">Start an evaluation</a>
-          </div>
-
-          <!-- ── Panel 3 · the human + AI trade-off — caption over a bottom-up scrim.
-               REQUIRES a dark-bottomed image, and the crop has to keep it dark:
-               signal-cool.jpg runs near-white at the top to deep navy at the foot, and
-               object-position:center bottom is what puts that foot behind the caption.
-               See the CSS — the anchor is not optional. ── -->
-          <div class="sig-trade" data-reveal>
-            <img src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
-            <div class="sig-trade__caption">
-              <p class="sig-trade__body" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade: real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
+            <!-- The human + AI trade-off, retired from the image card it used to caption.
+                 It argues about how the report is produced, so it closes the sequence that
+                 produces it. CTA copy is byte-identical to the hero's primary CTA. -->
+            <div class="sig-phases__foot">
+              <p class="sig-phases__trade" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade: real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
+              <a href="#intake" class="btn btn-primary" data-zh="開始評估">Start an evaluation</a>
             </div>
-          </div>
-
-        </div>
       </div>
     </div>
   </section>
@@ -1688,6 +1658,23 @@
   <!-- ── 4 · Intake — homepage contact-card treatment, reports.jpg framed left ── -->
   <section class="contact" id="intake" aria-labelledby="intake-heading">
     <div class="container">
+
+      <!-- Section divider, peer to "Three reports." and the proof head above it — same
+           .section-head, so the same 36/600 step and 44ch dek without a line of CSS.
+           The card KEEPS its own h2: this names the section, that instructs the form,
+           which is how #contact works on the homepage.
+
+           aria-labelledby still points at the card's #intake-heading, not this one.
+           "Choose a report, upload your input." is the more descriptive accessible name
+           for the section, and "Get started." carries no information on its own — which
+           is also why the dek has to do the work here. -->
+      <header class="section-head">
+        <div>
+          <h2 class="h-section" data-reveal data-zh="開始吧。">Get started.</h2>
+          <p class="section-dek" data-reveal data-zh="已核准專利、申請中草稿，或僅是一個想法。三種都是有效的輸入。">A granted patent, a pending draft, or just an idea. All three are valid inputs.</p>
+        </div>
+      </header>
+
       <div class="contact-card contact-card--sig-intake">
 
         <aside class="contact-overlay">
