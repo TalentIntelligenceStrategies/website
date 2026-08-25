@@ -1091,14 +1091,42 @@ It is `xl` 800, per spec.
   fragments sidestep that entirely; a toggle while open re-fetches via the `MutationObserver`
   on `documentElement[lang]`. **Test the language swap with the modal open** — that is where
   this breaks if anyone "simplifies" it back to one fragment.
+- **Content before reveal, and that order is load-bearing.** Revealing first and filling in
+  after rendered a 144px dialog that faded in and then snapped to ~680px mid-animation —
+  measured, and the flash people reported. `lglOpen` now fills `.lgl-body` *before* setting
+  `data-open`. Three same-origin fragments (~5KB) are prefetched for the on-screen language
+  on `requestIdleCallback`, so the fill is normally synchronous; a cold cache gets 200ms to
+  land before the dialog opens on its loading state, so a slow connection never leaves the
+  click feeling dead. A language toggle while open keeps the current text on screen until the
+  other language lands (`paint(doc, keepOld)`) rather than blinking through that state.
+  `inflight` dedupes, so a click during the prefetch joins that request instead of firing a
+  second one. **`min-height: min(520px, …)` on the shell** is the backstop for anything that
+  still renders short — an error state, a fragment trimmed to nothing.
+- **`body.lgl-lock` is a motion flag, not just a scroll lock.** The overlay carries a
+  `backdrop-filter` across the whole viewport, so anything that keeps painting behind it makes
+  the compositor re-blur the entire viewport every frame — a shimmer on the dialog and input
+  latency that builds the longer it stays open. CSS motion under `main` / `.footer` is paused
+  declaratively in `styles.css`; the four WebGL heroes (`index`, `about`, `reports`,
+  `product/signal`) and the particle band in `site.js` each check `body.lgl-lock` inside their
+  own rAF loop, because a paused keyframe cannot reach a `renderer.render()` call. The two
+  wall-clock loops subtract held time so they resume on the phase they stopped on. **Verified
+  by counting `drawArrays`/`drawElements`: normal cadence → 0 while open → normal on close.**
+- **The close button carries a 44px hit target on a 32px box** — a `::before` at `inset: -6px`,
+  plus `pointer-events: none` on the glyph. The icon is stroke-only (`fill: none`), so without
+  both, a pointer inside the icon box resolves to a 2px stroke or falls through to `.lgl-head`.
 - **The footer links keep a real `href`** to their fragment, so with JS off, for a crawler, or
   for a payment-gateway reviewer, they still resolve. JS intercepts and opens the dialog.
 - **Prose is styled by element under `.lgl-body`,** not by class, so the six content files
   stay plain semantic HTML that someone can edit after a lawyer marks them up.
 
-The two `href="#"` Privacy links inside the newsletter popup fine print (`index.html`,
-`product/licensing/index.html`) are deliberately **not** wired — that would open a modal
-inside a modal.
+The two Privacy links inside the newsletter popup fine print (`index.html`,
+`product/licensing/index.html`) **are** wired, as of 2026-08-24 — a privacy link sitting
+directly under an email field has to work. They were `href="#"` because the legal dialog
+inerts only `<main>` and the footer, and the popup sits outside both, so the two overlays
+would stack. The fix is a listener on `mkt` that closes the popup on any `[data-legal]`
+click; it fires earlier in the bubble than the delegated legal handler, so the dialog opens
+on the same click. `lglCloseFn` checks `getClientRects()` before restoring focus, because by
+then the trigger is in the DOM but hidden.
 
 ---
 
@@ -1719,7 +1747,9 @@ cluster ~15px on platforms where scrollbars take space.
 All three landmarks are inerted, not just `<main>`. The footer sits outside `<main>` since
 2026-08-23, and leaving it live would put focusable links off-screen behind an opaque
 layer — focus you cannot see is worse than focus you cannot reach. (Terms / Privacy /
-Disclosures are all `href="#"` placeholders, so nothing reachable is lost.)
+Disclosures now resolve to real fragments rather than the `href="#"` placeholders this note
+originally cited, so inerting the footer does cost a veiled visitor three reachable
+documents. Accepted: they are reachable from every unveiled page.)
 
 `inert` is a content attribute, so it holds with JS disabled. `aria-hidden` is
 belt-and-braces and is safe *only because* `inert` guarantees nothing inside can hold

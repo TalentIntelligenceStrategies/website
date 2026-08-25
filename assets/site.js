@@ -836,6 +836,14 @@
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
+    // Privacy in the fine print. The legal dialog is a separate overlay and it inerts
+    // only <main> and the footer — this popup sits outside both, so the two would stack.
+    // Close this one first; the delegated [data-legal] handler then opens the dialog on
+    // the same click, because this listener is on `mkt` and fires earlier in the bubble.
+    mkt.addEventListener('click', (e) => {
+      if (e.target.closest('[data-legal]')) closePopup();
+    });
+
     function showSuccess() {
       // Drop layout-modifying class so success renders centered without the hero image.
       mktCard.classList.remove('with-hero');
@@ -913,7 +921,8 @@
     const lglTitle   = lglOverlay.querySelector('.lgl-head h2');
     const lglBody    = lglOverlay.querySelector('.lgl-body');
     const lglClose   = lglOverlay.querySelector('.lgl-close');
-    const cache = new Map();
+    const cache = new Map();      // key -> fragment html
+    const inflight = new Map();   // key -> in-flight fetch, so parallel callers share one request
     let lglLast = null, lglDoc = null;
 
     const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
@@ -932,40 +941,76 @@
       document.querySelector('.footer-baseline')
     ].filter(Boolean);
 
-    async function render(doc) {
-      const lang = isZh() ? 'zh' : 'en';
-      const key = doc + '.' + lang;
+    const keyFor = (doc) => doc + '.' + (isZh() ? 'zh' : 'en');
+    const onIdle = (fn) => (window.requestIdleCallback
+      ? window.requestIdleCallback(fn, { timeout: 2000 })
+      : setTimeout(fn, 1200));
+
+    // One request per fragment per session, deduped: the prefetch, lglOpen() and paint()
+    // all come through here, so a click that lands mid-prefetch joins that promise
+    // instead of firing a second request.
+    function load(key) {
+      if (cache.has(key)) return Promise.resolve(cache.get(key));
+      if (inflight.has(key)) return inflight.get(key);
+      const p = fetch('/legal/' + key + '.html', { cache: 'no-cache' })
+        .then(res => { if (!res.ok) throw new Error(res.status); return res.text(); })
+        .then(html => { cache.set(key, html); inflight.delete(key); return html; })
+        .catch(err => { inflight.delete(key); throw err; });
+      inflight.set(key, p);
+      return p;
+    }
+
+    // keepOld: a language toggle with the dialog open holds the text already on screen
+    // until the other language lands, so the swap is a swap rather than a blink through
+    // the loading state.
+    function paint(doc, keepOld) {
+      const key = keyFor(doc);
       lglTitle.textContent = isZh() ? TITLES[doc].zh : TITLES[doc].en;
       if (cache.has(key)) { lglBody.innerHTML = cache.get(key); lglBody.scrollTop = 0; return; }
-      lglBody.innerHTML = '<p class="lgl-loading">' + (isZh() ? '載入中…' : 'Loading…') + '</p>';
-      try {
-        const res = await fetch('/legal/' + key + '.html', { cache: 'no-cache' });
-        if (!res.ok) throw new Error(res.status);
-        const html = await res.text();
-        cache.set(key, html);
+      if (!keepOld) lglBody.innerHTML = '<p class="lgl-loading">' + (isZh() ? '載入中…' : 'Loading…') + '</p>';
+      // Superseded while in flight — another document opened, or the language changed.
+      const stale = () => lglDoc !== doc || keyFor(doc) !== key;
+      load(key).then(html => {
+        if (stale()) return;
         lglBody.innerHTML = html;
-      } catch (err) {
+        lglBody.scrollTop = 0;
+      }).catch(() => {
+        if (stale()) return;
         // Give the reader the working URL rather than a dead end.
         lglBody.innerHTML = '<p class="lgl-loading">' + (isZh()
           ? '無法載入。請前往 <a href="/legal/' + key + '.html">' + key + '.html</a>。'
           : 'Could not load. Open <a href="/legal/' + key + '.html">' + key + '.html</a> instead.') + '</p>';
-      }
-      lglBody.scrollTop = 0;
+      });
     }
+
+    // Warm the cache for the language on screen so the first open of each document is
+    // synchronous. Three same-origin fragments, ~5KB each, fetched off the critical path.
+    const prefetch = () => ['terms', 'privacy', 'disclosures'].forEach(d => load(keyFor(d)).catch(() => {}));
+    onIdle(prefetch);
 
     const lglFocusables = () => [...lglDialog.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')]
       .filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
 
-    function lglOpen(doc, trigger) {
+    // Content BEFORE reveal, and that order is the fix for a measured flash: opening
+    // first and filling in after renders a 144px dialog that fades in and then snaps to
+    // ~680px mid-animation. The prefetch above means the cache is normally warm and this
+    // is synchronous; a cold cache gets 200ms to land before the dialog opens on its
+    // loading state, so a slow connection still never leaves the click feeling dead.
+    async function lglOpen(doc, trigger) {
       lglDoc = doc;
       lglLast = trigger || document.activeElement;
+      const key = keyFor(doc);
+      if (!cache.has(key)) {
+        await Promise.race([load(key).catch(() => {}), new Promise(r => setTimeout(r, 200))]);
+        if (lglDoc !== doc) return;            // a second trigger won while this one waited
+      }
       // Compensate for the scrollbar the lock removes, or the fixed topnav jumps.
       const sb = window.innerWidth - document.documentElement.clientWidth;
       if (sb > 0) document.body.style.paddingRight = sb + 'px';
       document.body.classList.add('lgl-lock');
       landmarks().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
+      paint(doc);
       lglOverlay.dataset.open = 'true';
-      render(doc);
       lglClose.focus({ preventScroll: true });
     }
 
@@ -976,7 +1021,9 @@
       document.body.style.paddingRight = '';
       landmarks().forEach(el => { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); });
       lglDoc = null;
-      if (lglLast && lglLast.focus) lglLast.focus({ preventScroll: true });
+      // getClientRects() rather than a null check: the trigger may still be in the DOM
+      // but hidden, as the marketing popup's Privacy link is once that popup closes.
+      if (lglLast && lglLast.focus && lglLast.getClientRects().length) lglLast.focus({ preventScroll: true });
       lglLast = null;
     }
 
@@ -1004,7 +1051,8 @@
     // button — neither is reachable by the i18n pass, since this content was injected.
     new MutationObserver(() => {
       lglClose.setAttribute('aria-label', isZh() ? '關閉' : 'Close');
-      if (lglDoc) render(lglDoc);
+      if (lglDoc) paint(lglDoc, true);
+      onIdle(prefetch);            // the other language is now the one on screen
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
     lglClose.setAttribute('aria-label', isZh() ? '關閉' : 'Close');
   }
@@ -1576,6 +1624,9 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
   };
 
   const draw = (t) => {
+    // Frozen while a legal dialog is open: that overlay's backdrop-filter re-blurs the
+    // whole viewport for every frame anything behind it paints. Last frame stays put.
+    if (document.body.classList.contains('lgl-lock')) { raf = requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, w, h);
     for (const p of particles) {
       p.x += p.vx; p.y += p.vy;

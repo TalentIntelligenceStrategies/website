@@ -1978,7 +1978,7 @@ main { padding-top: 64px; }
 /* Amber variant — "Coming soon" / pre-launch state. */
 .ticker-pulse--warning,
 .ticker-pulse--warning::before { background: var(--signal-warning); }
-/* Blue variant — Patent Evaluation pre-launch, pairing with the cool pillar.
+/* Blue variant — Patent Intelligence pre-launch, pairing with the cool pillar.
    Pinned literals rather than --surface-accent-signal, because that token
    LIGHTENS in dark theme (#0EA5E9 -> #38BDF8) while the announce bar INVERTS to
    near-white, so the tokenised dot would wash out exactly where it needs to
@@ -3585,6 +3585,7 @@ svg.is-primed polyline {
   display: flex; flex-direction: column;
   overflow: hidden;                      /* the shell never scrolls; .lgl-body does */
   width: min(800px, calc(100% - 40px));  /* §Modal xl, responsive floor per spec */
+  min-height: min(520px, calc(100dvh - 80px)); /* floor: a short doc or a cold-cache load must not render as a 144px box that then snaps to full height mid-animation */
   max-height: calc(100dvh - 80px);       /* dvh, not vh: mobile toolbars must not eat the close button */
   background: var(--surface-page);
   border-radius: 16px;
@@ -3625,18 +3626,23 @@ svg.is-primed polyline {
 
 /* Close — on the shell, outside .lgl-body, so long content scrolls beneath it. */
 .lgl-close {
-  position: absolute; top: 16px; right: 16px; z-index: 2;
+  position: absolute; top: 16px; right: 16px; z-index: 3;
   width: 32px; height: 32px;
   display: grid; place-items: center;
   border: 0; border-radius: 6px;
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
+  touch-action: manipulation;             /* no 300ms tap delay on the one control that dismisses the dialog */
   transition: background 140ms ease-out, color 140ms ease-out;
 }
+/* 44px of pointer on a 32px button. The glyph is stroke-only (`fill: none`), so a
+   hit test inside the icon box resolves to a 2px stroke or falls through; the inset
+   pseudo-element gives the button one solid target at the size a finger expects. */
+.lgl-close::before { content: ""; position: absolute; inset: -6px; border-radius: 10px; }
 .lgl-close:hover { background: var(--surface-tertiary); color: var(--text-primary); }
 .lgl-close:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
-.lgl-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; }
+.lgl-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; pointer-events: none; }
 
 /* ── Legal prose ─────────────────────────────────────────────────────────────
    Scoped to .lgl-body so the fragments can be plain semantic HTML with no classes.
@@ -3669,8 +3675,9 @@ svg.is-primed polyline {
   margin: 0 0 20px;
 }
 
-/* Review notice. Deliberately loud: these drafts have not been through counsel,
-   and a reader deciding whether to rely on them needs to know that first. */
+/* Standing notice at the top of each document — currently that ordering is not open
+   yet, so a reader knows which parts describe today and which describe the service
+   when it ships. Quiet by design: it frames the document, it is not a warning. */
 .lgl-notice {
   margin: 0 0 20px;
   padding: 12px 14px;
@@ -3687,6 +3694,15 @@ svg.is-primed polyline {
 /* Scroll lock. site.js also pads for the scrollbar width so the fixed topnav
    does not jump on platforms where scrollbars take space. */
 body.lgl-lock { overflow: hidden; }
+
+/* Nothing behind the dialog should keep painting while it is open. The overlay carries
+   a backdrop-filter across the whole viewport, so every frame painted behind it makes
+   the compositor re-blur the entire viewport — which reads as a shimmer on the dialog
+   and as input latency that builds the longer it stays open. This pauses CSS motion;
+   the four WebGL heroes and the particle band check `body.lgl-lock` inside their own
+   rAF loops, because a paused keyframe cannot reach them. DESIGN.md §15.6. */
+body.lgl-lock main *,
+body.lgl-lock .footer * { animation-play-state: paused !important; }
 
 @media (max-width: 520px) {
   .lgl-overlay { padding: 16px 12px; }

@@ -9,6 +9,9 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-25 23:02 +0800** · Renamed the Signal product to Patent Intelligence across all public English copy, metadata and nav; Signal retired from public strings.
+- **2026-08-25 22:40 +0800** · Legal docs: AI framing reset to closed-database tools, watermark/encryption/24-month claims dropped; modal opens pre-filled, background motion frozen, close target widened.
+- **2026-08-25 11:18 +0800** · Legal docs: lawyer-review banner dropped, unbuilt-service claims moved to future tense, cookie section corrected, popup Privacy link wired.
 - **2026-08-25 09:43 +0800** · Signal proof section rebuilt: four matching dividers, 1,433 heads the ledger, How it works on its own white card, no blue left.
 - **2026-08-25 09:21 +0800** · Terms, Privacy and Disclosures rewritten in plain language; pool conflict disclosed, 24-month retention set, hedging removed.
 - **2026-08-25 06:05 +0800** · Terms, Privacy and Disclosures now open as a shared modal from every footer; six bilingual fragments behind them.
