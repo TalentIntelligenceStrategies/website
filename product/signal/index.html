@@ -143,31 +143,40 @@
     background:#000;
   }
 
-  /* ── Hero legibility scrim — much lighter than the versions this replaces, all
-     of which were holding copy against a backdrop that ran behind it. The lines
-     sit BELOW the copy now and the copy sits on plain black, so this only has to
-     take the top edge off the glow where it rises toward the CTA row, and seat
-     the scroll cue. Local stack: shader 2 (shared .hero-shader) · scrim 3 ·
-     content 5 (the shared .hero-inner z-index, hence no override here). ── */
+  /* ── Hero legibility scrim — a pool under the copy, not a wash over the hero.
+     The band now runs ABOVE the copy and sweeps down across it once a cycle, which
+     is the homepage's own behaviour (its core crosses its headline at four of eight
+     phases; it just ships without a scrim). This page keeps one because its copy
+     block is taller — eyebrow, two-line headline, two-line sub — so more of it is
+     inside the crest's path.
+
+     Shape follows that: an ellipse seated on the copy column instead of the old
+     full-width floor + left guard, which between them dimmed half the frame to hold
+     copy against a band that ran BELOW it. Aiming it lets the total come down —
+     nothing outside the copy's own footprint is touched, so the band keeps its full
+     brightness everywhere it is not competing with words.
+
+     Local stack: shader 2 (shared .hero-shader) · scrim 3 · content 5 (the shared
+     .hero-inner z-index, hence no override here). ── */
   [data-page="signal"] .sig-hero-scrim{
     position:absolute;
     inset:0;
     z-index:3;
     pointer-events:none;
     background:
-      /* Floor under the copy block. Reaches to 56% because the band was lifted to
-         run behind the CTA row, so at its highest phase the crest now grazes the
-         last paragraph lines — this is what keeps them readable when it does. */
+      /* Seated on the copy block: left-anchored at 22%, and vertically centred on
+         the stack. Falls off to nothing by 78% of its radius, so the right half of
+         the frame — where the band is brightest and there is nothing to read —
+         stays untouched. */
+      radial-gradient(ellipse 66% 44% at 24% 52%,
+        rgba(0,0,0,0.52) 0%,
+        rgba(0,0,0,0.30) 52%,
+        rgba(0,0,0,0.00) 78%),
+      /* Seats the scroll cue against the glow's lower falloff. This is the only part
+         of the old floor worth keeping, and it stops at 16%. */
       linear-gradient(to top,
-        rgba(0,0,0,0.42) 0%,
-        rgba(0,0,0,0.26) 22%,
-        rgba(0,0,0,0.10) 40%,
-        rgba(0,0,0,0.00) 56%),
-      /* Left guard over the copy column, where the crest is brightest. */
-      linear-gradient(to right,
-        rgba(0,0,0,0.42) 0%,
-        rgba(0,0,0,0.18) 34%,
-        rgba(0,0,0,0.00) 56%);
+        rgba(0,0,0,0.30) 0%,
+        rgba(0,0,0,0.00) 16%);
   }
 
   /* ── Report value-cards — signal-gradient image behind the shared offer-card
@@ -2376,7 +2385,9 @@
      crossfade carrier. On any failure the catch leaves #hero-shader empty → the
      black .hero shows through.
 
-     Two departures from the homepage copy, and both are deliberate:
+     The glow maths, the sweep (yScale 0.5) and the strand split (distortion 0.05) are
+     now the homepage's own values, so the two heroes read as one effect in two hues.
+     Two departures remain, and both are deliberate:
 
      1. COLOUR. The homepage splits one line into R/G/B and mutes it with a
         `saturation` uniform that blends toward the brightest channel. That is a
@@ -2384,8 +2395,9 @@
         there is no value of it that produces a blue. Here the three split strands
         are instead multiplied by three steps of a single blue and summed, so the
         hue is fixed and the split survives as depth: deep blue at the outside,
-        --sig-blue at the inside, and an additive near-white core where all three
-        converge. `saturation` is therefore gone rather than set to 0.
+        --sig-blue at the inside. `saturation` is therefore gone rather than set to 0.
+        The near-white core is not a side effect of that sum — it is `coreWhite`,
+        a dial that whitens the crest and only the crest. See the shader.
 
      2. TIME. The homepage advances `time` by a fixed amount per frame, so it runs
         at double speed on a 120Hz display. This one reads performance.now(), and
@@ -2401,11 +2413,11 @@
     // Seconds of shader time per real second. The homepage's 0.003/frame at 60Hz
     // is 0.18/s — matched here so the two heroes move at the same rate.
     const RATE = 0.18;
-    // Fallback frozen clock for the reduced-motion still, used only if the CTA
+    // Fallback frozen clock for the reduced-motion still, used only if the copy block
     // cannot be measured. π/2 puts sin() at its maximum at x=0, which drops the band
     // lowest at frame centre and lifts it symmetrically toward both edges — safe,
     // because a round number instead lands the crest wherever it happens to fall
-    // (the first attempt here ran it straight through the headline). When the CTA
+    // (the first attempt here ran it straight through the headline). When the copy
     // IS measurable, staticPhase() below picks a better frame — see it for why.
     const STATIC_T = 1.5708;
 
@@ -2431,12 +2443,20 @@
         uniform float yScale;
         uniform float distortion;
         uniform float yOffset;
+        uniform float coreWhite;   // 0 = crest stays blue · 1 = homepage-hot white core
 
         // One hue, three values. Outer strands sit deep, the inner strand carries
         // --sig-blue; summing them lifts the convergence to a near-white core.
         #define C_DEEP vec3(0.024, 0.204, 0.310)   // #06344F
         #define C_MID  vec3(0.039, 0.447, 0.690)   // #0A72B0
         #define C_SIG  vec3(0.055, 0.647, 0.914)   // #0EA5E9 = --sig-blue
+
+        // Where the crest starts and finishes turning white, measured on the summed
+        // brightness. Below CORE_LO the band is pure blue; above CORE_HI it is as
+        // white as coreWhite allows. The window is what keeps the whitening on the
+        // core instead of washing the whole glow.
+        #define CORE_LO 1.0
+        #define CORE_HI 2.5
 
         void main() {
           vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
@@ -2451,20 +2471,30 @@
           float m = p.x;
           float i = p.x * (1.0 - d);
 
-          float go = 0.04 / abs(p.y + sin((o + time) * xScale) * yScale);
-          float gm = 0.04 / abs(p.y + sin((m + time) * xScale) * yScale);
-          float gi = 0.04 / abs(p.y + sin((i + time) * xScale) * yScale);
+          // Unbounded, exactly as the homepage writes it. The 1/abs() term running
+          // past 1.0 at the crest IS the glow: it is what gives the band a blown-out
+          // core and a falloff wide enough to read as light rather than as a line.
+          // This used to be compressed to 0..1 with g/(1+g) before tinting, to keep
+          // the sum inside a single hue — but that maps 20 to 0.95, which flattens
+          // the whole bright region into one thin strand. The hue is protected by
+          // coreWhite below instead, which is a knob rather than a ceiling.
+          float go = 0.05 / abs(p.y + sin((o + time) * xScale) * yScale);
+          float gm = 0.05 / abs(p.y + sin((m + time) * xScale) * yScale);
+          float gi = 0.05 / abs(p.y + sin((i + time) * xScale) * yScale);
 
-          // Compress each strand to 0..1 BEFORE tinting. The raw 1/abs() term is
-          // unbounded, so summing three of them clipped every channel at the
-          // crest and the core came out white — which defeats the point of a
-          // single hue. Compressing first keeps the sum in range, so the crest
-          // stays the brightest blue instead of turning into no colour at all.
-          go = go / (1.0 + go);
-          gm = gm / (1.0 + gm);
-          gi = gi / (1.0 + gi);
+          vec3 col = go * C_DEEP + gm * C_MID + gi * C_SIG;
 
-          gl_FragColor = vec4(go * C_DEEP + gm * C_MID + gi * C_SIG, 1.0);
+          // Whiten the crest, and only the crest. Mixing toward vec3(v) — the
+          // brightest channel — rather than toward vec3(1.0) is the homepage's own
+          // saturation trick run backwards: it drops hue without touching
+          // brightness, so the glow keeps its full thickness while the core goes
+          // white. Gating it on a smoothstep over that same brightness is what makes
+          // it a dial: at coreWhite 0 the band blooms in pure blue, and raising it
+          // grows the hot core toward the homepage's.
+          float v = max(col.r, max(col.g, col.b));
+          col = mix(col, vec3(v), coreWhite * smoothstep(CORE_LO, CORE_HI, v));
+
+          gl_FragColor = vec4(col, 1.0);
         }
       `;
 
@@ -2482,18 +2512,25 @@
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
         time:       { value: 0.0 },
         xScale:     { value: 1.0 },
-        // Amplitude of the sweep, in shader units. Held as a constant; the CENTRE
-        // it sweeps around is measured, not constant — see bandOffset() below.
-        yScale:     { value: 0.18 },
-        // Wider than the homepage's 0.05. Compressing the strands (see the shader)
-        // costs their brightness separation, so the split has to carry the depth
-        // geometrically instead — at 0.05 the three merged into one band.
-        distortion: { value: 0.11 },
-        // Overwritten by resize() before the first frame. -0.36 is the value the
-        // measurement lands on at the reference viewport, kept as the no-element
-        // fallback so a missing .pillar-actions degrades to the old composition
-        // rather than to 0 (which would run the band through the headline).
+        // Amplitude of the sweep, the homepage's own. Held as a constant; the CENTRE
+        // it sweeps around is measured, not constant — see bandOffset() below. At
+        // 0.5 the band travels half the frame, so it crosses the top of the copy at
+        // its trough — which is what the homepage does too, and the reason the scrim
+        // still exists. The 0.18 this replaces was a flat bar, not a sweep.
+        yScale:     { value: 0.5 },
+        // The homepage's. It was 0.11 here only because compressing the strands cost
+        // them their brightness separation, so the split had to carry depth
+        // geometrically; the bloom carries it now, so the tight split comes back.
+        distortion: { value: 0.05 },
+        // Overwritten by resize() before the first frame. -0.36 is the value the OLD
+        // CTA-row measurement landed on at the reference viewport; it survives as the
+        // no-element fallback, so a missing .pillar degrades to the previous
+        // composition — band below the copy — rather than to 0, which would run the
+        // band straight through the headline.
         yOffset:    { value: -0.36 },
+        // How much of the crest goes white. 0 blooms in pure blue; 1 is as neutral as
+        // the homepage's core. Tuned by eye against index.html at 1440×900.
+        coreWhite:  { value: 0.65 },
       };
 
       const position = [
@@ -2512,20 +2549,21 @@
       });
       scene.add(new THREE.Mesh(geometry, material));
 
-      // Where the band's centre sits, measured off the CTA row rather than pinned.
+      // Where the band's centre sits, measured off the copy block rather than pinned.
       //
-      // yOffset lives in shader space, which is normalised to min(w, h). The CTA row
-      // does not: it is a roughly fixed ~400px content stack centred in a 100dvh hero,
-      // so as the viewport gets taller the row rises in normalised terms while a
-      // constant yOffset stays put. The two only agree at one viewport — which is why
-      // a hardcoded -0.36 read as sitting behind the buttons on a laptop and below
-      // them on a tall display. Measuring the row is the fix, and it is the same move
-      // the intake card makes with its height: restate the formula, don't sample it.
+      // yOffset lives in shader space, which is normalised to min(w, h). The copy does
+      // not: it is a roughly fixed ~400px content stack centred in a 100dvh hero, so as
+      // the viewport gets taller the block rises in normalised terms while a constant
+      // yOffset stays put. The two only agree at one viewport — which is why the
+      // hardcoded -0.36 this replaced sat on the CTA row at 1440×900, drifted below it
+      // at 1440×1080, and fell outside the row entirely at 1280×800. Measuring is the
+      // fix, and it is the same move the intake card makes with its height: restate the
+      // formula, don't sample it.
       //
-      // The anchor is the CTA row's TOP edge, not its midline: on the midline the core
-      // runs through the middle of the buttons and the glow sits low in the frame. On
-      // the top edge the buttons still fall inside the bright part of the glow, but the
-      // core reads as riding along them and the whole band lifts by half a button.
+      // The anchor is the TOP of the whole .pillar — eyebrow included, not the headline
+      // and not the CTA row — lifted by BAND_LIFT so the band rides above the copy the
+      // way the homepage's does. Anchoring on the block rather than on the h1 is what
+      // keeps the eyebrow out of the core when the headline re-wraps to three lines.
       //
       // The maths: the shader builds p.y as (2 * gl_FragCoord.y - h) / min(w, h), and
       // styles.css stretches the canvas to the mount (width/height 100% !important).
@@ -2533,29 +2571,45 @@
       // centre for that fraction is h * (1 - 2f) / min(w, h). Note this takes the same
       // w/h resize() computes — on coarse pointers h is the locked tall buffer, not
       // clientHeight, and mixing the two puts the band in the wrong place on mobile.
-      const ctaEl = document.querySelector('.hero .pillar-actions');
+      //
+      // BAND_LIFT is in shader units, so it is viewport-independent like the offset it
+      // adds to. 0.18 is the gap the homepage's own constant leaves between its band
+      // centre and the top of its copy at 1440×900 — matched here rather than invented.
+      const BAND_LIFT = 0.18;
+      const copyEl = document.querySelector('.hero .pillar')
+                  || document.querySelector('.hero .pillar-title');
       const bandOffset = (w, h) => {
-        if (!ctaEl || !mount.clientHeight) return -0.36;   // see the uniform's comment
+        if (!copyEl || !mount.clientHeight) return -0.36;   // see the uniform's comment
         const heroBox = mount.getBoundingClientRect();
-        const ctaBox  = ctaEl.getBoundingClientRect();
-        const f = (ctaBox.top - heroBox.top) / mount.clientHeight;
-        return (h * (1 - 2 * f)) / Math.min(w, h);
+        const copyBox = copyEl.getBoundingClientRect();
+        const f = (copyBox.top - heroBox.top) / mount.clientHeight;
+        return (h * (1 - 2 * f)) / Math.min(w, h) + BAND_LIFT;
       };
 
       // Which frame the reduced-motion still freezes on. The band's height at any x is
       // yOffset - sin(p.x + time) * yScale, so the phase that puts it exactly ON the
-      // measured anchor at the CTA's own x is the one where that sine is zero there.
-      // Of the two such phases per cycle we take `π - p.x`, not `-p.x`: both cross the
-      // CTA dead-on, but this one tilts the band DOWN toward the left — the copy
-      // column — and lifts it on the empty right half, where there is nothing to
-      // cross. `-p.x` mirrors that and pushes the crest into the paragraph instead.
+      // measured anchor at a given x is the one where that sine is zero there.
+      //
+      // Two choices, and both were got wrong once. Of the two zero phases per cycle we
+      // take `-p.x`, not `π - p.x`: this one rises over the left half and descends to
+      // the right, so the band lifts away from the copy column and crosses only the
+      // empty right side. (That is the opposite of the phase picked when the band lived
+      // UNDER the CTA row, and it flipped for the same reason — the copy is below the
+      // band now, not above it.)
+      //
+      // And the x it is anchored at is the copy block's RIGHT edge, not its centre.
+      // The band descends across the copy's own width, so the centre is not the worst
+      // case: anchoring there put the band on the anchor at mid-headline and a further
+      // ~150px down by the end of the line, which ran the core straight through the
+      // last word. The right edge is the lowest the band gets over any of the copy, so
+      // anchoring it there clears the whole block.
       const staticPhase = (w, h) => {
-        if (!ctaEl || !mount.clientWidth) return STATIC_T;
+        if (!copyEl || !mount.clientWidth) return STATIC_T;
         const heroBox = mount.getBoundingClientRect();
-        const ctaBox  = ctaEl.getBoundingClientRect();
-        const fx = ((ctaBox.left + ctaBox.right) / 2 - heroBox.left) / mount.clientWidth;
-        const pxCta = (w * (2 * fx - 1)) / Math.min(w, h);
-        return Math.PI - pxCta;
+        const copyBox = copyEl.getBoundingClientRect();
+        const fx = (copyBox.right - heroBox.left) / mount.clientWidth;
+        const pxCopy = (w * (2 * fx - 1)) / Math.min(w, h);
+        return -pxCopy;
       };
 
       // resolution stays in CSS px while setPixelRatio drives the device-px draw
@@ -2584,17 +2638,18 @@
       resize(true);
       new ResizeObserver(() => resize(false)).observe(mount);
       // The observer watches the MOUNT, and the mount is 100dvh — it does not change
-      // when Urbanist swaps in. The copy block does: the paragraph re-wraps and the CTA
-      // row moves, which moves the thing yOffset is derived from. Without this the band
-      // stays anchored to the fallback-font layout it was measured against.
+      // when Urbanist swaps in. The copy block does: the headline re-wraps and the whole
+      // stack re-centres, which moves the thing yOffset is derived from. That matters
+      // more now that the anchor IS the copy block. Without this the band stays
+      // anchored to the fallback-font layout it was measured against.
       if (document.fonts?.ready) document.fonts.ready.then(() => resize(true));
 
       // resize(true) has already set time + rendered for the reduced-motion still, so
       // there is nothing left to do on that branch — re-assigning STATIC_T here would
       // clobber the measured phase it just derived.
       if (!reduce) {
-        // Start ON the phase the still would freeze, so the band is across the CTA row
-        // at first paint and drifts from there, rather than arriving mid-sweep.
+        // Start ON the phase the still would freeze, so the band is over the copy at
+        // first paint and drifts from there, rather than arriving mid-sweep.
         const phase0 = staticPhase(mount.clientWidth, mount.clientHeight);
         const start = performance.now();
         // Held while a legal dialog is open: that overlay carries a backdrop-filter across

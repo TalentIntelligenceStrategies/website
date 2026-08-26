@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-26 13:15 +0800** · Patent Intelligence hero: shader restored to the homepage's bloom and sweep in blue, band lifted above the copy, scrim aimed at it.
 - **2026-08-25 23:02 +0800** · Renamed the Signal product to Patent Intelligence across all public English copy, metadata and nav; Signal retired from public strings.
 - **2026-08-25 22:40 +0800** · Legal docs: AI framing reset to closed-database tools, watermark/encryption/24-month claims dropped; modal opens pre-filled, background motion frozen, close target widened.
 - **2026-08-25 11:18 +0800** · Legal docs: lawyer-review banner dropped, unbuilt-service claims moved to future tense, cookie section corrected, popup Privacy link wired.

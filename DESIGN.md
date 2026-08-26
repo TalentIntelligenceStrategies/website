@@ -1522,15 +1522,19 @@ Four things worth knowing before editing it:
   `.sig-xsimlist` / `.sig-score` were removed with it. All five `signal-pro-report-compact-*`
   PNGs are now unreferenced — kept on disk as valid grade specimens, live on no page.
 
-**The hero** (2026-08-11) runs **the homepage's own shifting-lines shader**, recoloured to a
-single blue hue and positioned so the band runs behind the CTA row. It uses the **shared
-`.hero-shader` carrier**
+**The hero** (2026-08-11, reworked 2026-08-25) runs **the homepage's own shifting-lines
+shader**, recoloured to a single blue hue and positioned so the band runs **above** the copy.
+It uses the **shared `.hero-shader` carrier**
 from `styles.css` — position, `z-index:2`, the 600ms `.is-ready` crossfade — so there is no
 page-local backdrop layer at all and the only page-local hero rule left is `.sig-hero-scrim`
 (z3). Content is z5, the shared `.hero-inner` value.
 
-Everything before it is gone: a radial ring pulse, then a scanning hex-dot lattice, then a
-Stripe-style mesh gradient over a rotated still. Four things to know:
+The 2026-08-25 pass closed the gap with the homepage: the glow maths, the sweep and the
+strand split are now the homepage's own values, and the band sits above the copy rather than
+under the CTA row. What had drifted was the *bloom* — the fork read as a thin cyan line under
+a diffuse wash where the homepage reads as light. Everything before that is gone: a radial
+ring pulse, then a scanning hex-dot lattice, then a Stripe-style mesh gradient over a rotated
+still. Things to know:
 
 - **The recolour is not the `saturation` uniform.** The homepage splits one line into R/G/B
   and mutes it by blending toward the brightest channel — that is a *chroma* control, so it
@@ -1539,37 +1543,60 @@ Stripe-style mesh gradient over a rotated still. Four things to know:
   `#0EA5E9` = `--sig-blue`) and summed, so hue is fixed and the split survives as depth.
   `saturation` is deleted rather than set to 0. **These three hex literals are sanctioned
   shader-hex** — GLSL cannot read CSS custom properties (§1.3).
-- **Each strand is compressed to 0..1 before tinting.** The raw `1/abs()` glow is unbounded;
-  summing three of them clipped every channel at the crest and the core came out white,
-  which defeats a single-hue palette. `g/(1+g)` first keeps the sum in range.
-- **`yOffset` is measured off the CTA row, not a constant** (2026-08-17). The band's centre
-  rides **the top edge of the CTA row**, and `bandOffset(w, h)` derives it from
-  `.pillar-actions`' own `top` on every resize. The top edge rather than the midline: on
-  the midline the core runs through the middle of the buttons and the band sits low in the
-  frame; on the top edge the buttons still fall inside the bright part of the glow but the
-  whole band lifts by half a button. It has to be derived: `yOffset` lives in
-  shader space, normalised to `min(w, h)`, while the CTA row is a roughly fixed ~400 px
-  content stack centred in a `100dvh` hero — so the two only agree at one viewport. The
-  constant this replaced (`-0.36`) sat on the row's top edge at 1440×900, drifted *below*
-  the buttons at 1440×1080, and fell outside the row entirely at 1280×800. `-0.36` survives
-  as the fallback when `.pillar-actions` can't be found. The maths: the canvas is stretched
+- **The glow term is unbounded, exactly as the homepage writes it.** `0.05/abs(...)` running
+  past 1.0 at the crest *is* the glow: it is what gives the band a blown-out core and a
+  falloff wide enough to read as light rather than as a line. Each strand used to be
+  compressed with `g/(1+g)` before tinting, to keep the sum inside a single hue — but that
+  maps 20 to 0.95, which flattens the whole bright region into one thin strand. **Do not
+  reintroduce a ceiling here**; the hue is protected by the dial below instead.
+- **`coreWhite` is that dial** (`0.65`). It mixes the crest toward `vec3(v)` — the brightest
+  channel — not toward `vec3(1.0)`: that is the homepage's own `saturation` trick run
+  backwards, dropping hue *without* touching brightness, so the glow keeps its thickness
+  while the core goes white. A `smoothstep(CORE_LO, CORE_HI, v)` gate over that same
+  brightness is what keeps the whitening on the core instead of washing the band. At 0 the
+  band blooms in pure blue; raising it grows the hot core toward the homepage's.
+- **`yOffset` is measured off the copy block, not a constant** (2026-08-17, re-anchored
+  2026-08-25). The band's centre rides **the top of `.pillar`** — eyebrow included, not the
+  headline and not the CTA row — plus `BAND_LIFT` (`0.18`), which is the gap the homepage's
+  own constant leaves between its band centre and the top of its copy at 1440×900. Anchoring
+  on the block rather than the `h1` keeps the eyebrow out of the core when the headline
+  re-wraps. It has to be derived: `yOffset` lives in shader space, normalised to `min(w, h)`,
+  while the copy is a roughly fixed ~400 px content stack centred in a `100dvh` hero — so the
+  two only agree at one viewport. The constant this replaced (`-0.36`) sat on the CTA row at
+  1440×900, drifted *below* it at 1440×1080, and fell outside the row entirely at 1280×800;
+  it survives as the fallback when `.pillar` can't be found, degrading to the old
+  band-below-the-copy composition rather than to 0. The maths: the canvas is stretched
   to the mount, so a fraction `f` down the mount is `h * (1 - 2f) / min(w, h)` in shader
   space — and it must use the same `w`/`h` `resize()` computes, because on coarse pointers
   `h` is the locked tall buffer, not `clientHeight`.
-- **`yScale 0.18` stays a tuned constant** — the sweep around that centre. The crest reaches
-  `centre + 0.18`, which still grazes the last paragraph lines, and anything wider pushes it
-  further in; that is why the scrim's bottom lift reaches 56%. Change it and re-check
-  **across phases**, not in whatever single frame is on screen — the crest travels, so a
-  frame that looks clear proves nothing.
+- **`yScale 0.5` and `distortion 0.05` are the homepage's**, replacing a flat `0.18` / `0.11`
+  bar. `0.11` existed only because compression cost the strands their brightness separation,
+  so the split had to carry depth geometrically; the bloom carries it now. Change either and
+  re-check **across phases**, not in whatever single frame is on screen — the crest travels,
+  so a frame that looks clear proves nothing.
+- **The band crosses the copy once a cycle, and that is the homepage's behaviour too.** At
+  `yScale 0.5` the crest travels half the frame, which is wider than the headroom above the
+  copy. Rendering both shaders offline at eight phases (2026-08-25) shows the homepage's own
+  core running through its headline zone at four of them; it simply ships without a scrim.
+  Do not "fix" this by shrinking the sweep — it is the effect.
 - **The reduced-motion still is derived too.** `staticPhase(w, h)` freezes the clock at
-  `π - p.x` of the CTA's own centre, the phase where the band sits exactly on the measured
-  anchor *at the buttons*. Of the two phases per cycle that do that, this is the one that
-  tilts the band down toward the copy column and lifts it over the empty right half; `-p.x`
-  mirrors it and pushes the crest into the paragraph. The animated path starts on the same
-  phase, so first paint has the band across the CTA rather than arriving mid-sweep.
-  `STATIC_T = π/2` remains only as the unmeasurable-CTA fallback.
-- `distortion` is `0.11`, wider than the homepage's `0.05`, because compression costs the
-  strands their brightness separation so the split has to carry depth geometrically.
+  `-p.x` of the copy block's **right edge**. Two choices there, both got wrong once. `-p.x`
+  rather than `π - p.x`: this phase rises over the left half and descends to the right, so
+  the band lifts away from the copy and crosses only the empty right side — the opposite of
+  the choice made when the band lived *under* the CTA row, flipped because the copy is now
+  below the band. And the right edge rather than the centre: the band descends across the
+  copy's own width, so anchoring at the centre put it on the anchor at mid-headline and
+  ~150 px lower by the end of the line, running the core through the last word. The animated
+  path starts on the same phase, so first paint has the band over the copy rather than
+  arriving mid-sweep. `STATIC_T = π/2` remains only as the unmeasurable-copy fallback.
+- **The scrim is a pool under the copy, not a wash over the hero.** `.sig-hero-scrim` is an
+  ellipse seated on the copy column (`66% 44% at 24% 52%`, peak `0.52`) plus a `0.30` bottom
+  lift that stops at 16% to seat the scroll cue. It replaced a full-width floor reaching 56%
+  and a left guard reaching 56%, which between them dimmed half the frame to hold copy
+  against a band that ran *below* it. Aiming it let the total come down: nothing outside the
+  copy's footprint is touched, so the band keeps full brightness where there is nothing to
+  read. This page keeps a scrim where the homepage has none because its copy block is taller
+  — eyebrow, two-line headline, two-line sub — so more of it sits in the crest's path.
 - **Two fixes the homepage copy still needs.** This one drives `time` from
   `performance.now()` (the homepage advances it per frame, so it runs at double speed on a
   120Hz display) and renders a single frame under reduced motion instead of leaving a rAF
