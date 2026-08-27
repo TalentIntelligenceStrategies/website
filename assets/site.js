@@ -26,6 +26,12 @@
   const i18nPlaceholderEls = document.querySelectorAll('[data-zh-placeholder]');
   i18nPlaceholderEls.forEach(el => { el.dataset.enPlaceholder = el.placeholder; });
 
+  // Same pattern for aria-label. The attribute was already in the markup (the patents
+  // modal's close button) with nothing reading it, so that control stayed announced
+  // in English under 中文; the search close button uses it too.
+  const i18nAriaEls = document.querySelectorAll('[data-zh-aria]');
+  i18nAriaEls.forEach(el => { el.dataset.enAria = el.getAttribute('aria-label') || ''; });
+
   // ── Shimmer cube — extracted from brand/previews/loading-animation-preview.html.
   // Used as a brand-mark transition during user-triggered EN<->ZH language swaps.
   // Skipped on first paint and when prefers-reduced-motion: reduce.
@@ -151,9 +157,12 @@
     i18nPlaceholderEls.forEach(el => {
       el.placeholder = lang === 'zh' ? el.dataset.zhPlaceholder : el.dataset.enPlaceholder;
     });
-    // Re-render any state-driven labels that don't use data-zh (e.g. the
-    // inventory teaser's filter pills, which read their values from JS state).
-    if (typeof window.__inventoryTeaserRefresh === 'function') window.__inventoryTeaserRefresh();
+    i18nAriaEls.forEach(el => {
+      el.setAttribute('aria-label', lang === 'zh' ? el.dataset.zhAria : el.dataset.enAria);
+    });
+    // Search results are rendered from the JSON index, not from data-zh attributes,
+    // so the i18n pass above cannot reach them — re-render them here instead.
+    if (typeof window.__searchRefresh === 'function') window.__searchRefresh();
     // Keep the embedded step mockups in the same language (text + iframe swap in sync).
     currentLang = lang;
     showcaseFrames.forEach(frame => postLang(frame, lang));
@@ -339,16 +348,90 @@
     }
   }
 
+  // ──────────────── Overlay lock — shared by the drawer and search ────────────────
+  // Both are role="dialog" aria-modal="true", and until now neither backed that up:
+  // the page scrolled behind them and Tab walked straight out into it. This is the
+  // same idiom the legal dialog uses (DESIGN.md §17.6) — inert on the landmarks,
+  // a Tab cycle inside the panel, focus returned to the trigger — with one addition
+  // it needs and the legal dialog does not: iOS Safari ignores `overflow:hidden` on
+  // <body> for touch scrolling, so the body is pinned with position:fixed and the
+  // scroll offset is carried on `top` and restored on release. Without that, closing
+  // the drawer on an iPhone returns you to the top of the page.
+  const landmarksOf = () => [
+    document.querySelector('main'),
+    document.querySelector('.footer'),
+    document.querySelector('.footer-baseline')
+  ].filter(Boolean);
+
+  const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])';
+
+  let lockDepth = 0;
+  let lockedY = 0;
+
+  const lockPage = () => {
+    if (lockDepth++) return;
+    lockedY = window.scrollY;
+    // The scrollbar the lock removes would otherwise let the fixed topnav jump.
+    const sb = window.innerWidth - document.documentElement.clientWidth;
+    if (sb > 0) document.body.style.paddingRight = sb + 'px';
+    document.body.style.top = `-${lockedY}px`;
+    document.body.classList.add('nav-lock');
+    landmarksOf().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
+  };
+
+  const unlockPage = () => {
+    if (!lockDepth || --lockDepth) return;
+    document.body.classList.remove('nav-lock');
+    document.body.style.top = '';
+    document.body.style.paddingRight = '';
+    landmarksOf().forEach(el => { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); });
+    // `instant` because this is a restoration, not a navigation — html carries
+    // scroll-behavior:smooth, which would otherwise animate the page back.
+    window.scrollTo({ top: lockedY, behavior: 'instant' });
+  };
+
+  // Tab cycles within `panel`. Bound per-panel rather than globally so the two
+  // overlays cannot fight over the same handler.
+  const cycleFocus = (panel) => (e) => {
+    if (e.key !== 'Tab') return;
+    const f = [...panel.querySelectorAll(FOCUSABLE)].filter(el => el.getClientRects().length);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+
   // ──────────────── Mobile drawer ────────────────
   const mTrigger = document.getElementById('mobile-trigger');
   const mDrawer  = document.getElementById('mobile-drawer');
   const mOverlay = document.getElementById('mobile-overlay');
   const mClose   = document.getElementById('mobile-close');
-  const openDrawer  = () => { mDrawer.dataset.open = mOverlay.dataset.open = 'true'; mTrigger.setAttribute('aria-expanded','true'); };
-  const closeDrawer = () => { mDrawer.dataset.open = mOverlay.dataset.open = 'false'; mTrigger.setAttribute('aria-expanded','false'); };
+  const mDrawerTab = cycleFocus(mDrawer);
+  // Guarded on dataset.open: the Escape handler below is global and fires whether or
+  // not this drawer is the thing that is open, and an unbalanced close would leave
+  // the page locked.
+  const openDrawer = () => {
+    if (mDrawer.dataset.open === 'true') return;
+    mDrawer.dataset.open = mOverlay.dataset.open = 'true';
+    mTrigger.setAttribute('aria-expanded','true');
+    lockPage();
+    mDrawer.addEventListener('keydown', mDrawerTab);
+    mClose.focus({ preventScroll: true });
+  };
+  const closeDrawer = () => {
+    if (mDrawer.dataset.open !== 'true') return;
+    mDrawer.dataset.open = mOverlay.dataset.open = 'false';
+    mTrigger.setAttribute('aria-expanded','false');
+    mDrawer.removeEventListener('keydown', mDrawerTab);
+    unlockPage();
+    mTrigger.focus({ preventScroll: true });
+  };
   mTrigger.addEventListener('click', openDrawer);
   mClose.addEventListener('click', closeDrawer);
   mOverlay.addEventListener('click', closeDrawer);
+  // Release before the browser follows the link: an in-page #anchor would otherwise
+  // be scrolled to while the body is still pinned, and unlockPage would then restore
+  // the offset the anchor just replaced.
   mDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
 
@@ -357,19 +440,108 @@
   const sModal   = document.getElementById('search-modal');
   const sOverlay = document.getElementById('search-overlay');
   const sInput   = document.getElementById('search-input');
+  const sResults = sModal.querySelector('.search-results');
+  // The authored "Jump to" list is the empty-query state, kept verbatim.
+  const zeroState = sResults.innerHTML;
+  const sModalTab = cycleFocus(sModal);
   const openSearch = () => {
+    if (sModal.dataset.open === 'true') return;
     sModal.dataset.open = sOverlay.dataset.open = 'true';
     sTrigger.setAttribute('aria-expanded', 'true');
+    lockPage();
+    sModal.addEventListener('keydown', sModalTab);
     setTimeout(() => sInput.focus(), 50);
   };
   const closeSearch = () => {
+    if (sModal.dataset.open !== 'true') return;
     sModal.dataset.open = sOverlay.dataset.open = 'false';
     sTrigger.setAttribute('aria-expanded', 'false');
+    sModal.removeEventListener('keydown', sModalTab);
+    sInput.value = '';
+    sResults.innerHTML = zeroState;
+    unlockPage();
+    sTrigger.focus({ preventScroll: true });
   };
   sTrigger.addEventListener('click', (e) => { e.stopPropagation(); openSearch(); });
   sOverlay.addEventListener('click', closeSearch);
-  sModal.querySelectorAll('a').forEach(a => a.addEventListener('click', closeSearch));
+  document.getElementById('search-close')?.addEventListener('click', closeSearch);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearch(); });
+  // Delegated, because the result rows are replaced on every keystroke — binding to
+  // the static rows at init would stop closing the modal the moment they are.
+  sResults.addEventListener('click', (e) => { if (e.target.closest('a')) closeSearch(); });
+
+  // ── Query ───────────────────────────────────────────────────────────────
+  // The index is built at build time (scripts/build-search-index.mjs) and fetched on
+  // FIRST OPEN, never on page load — the cold-load budget is the point of the whole
+  // font/image pass and a search nobody has asked for yet must not spend it.
+  let idx = null, idxPending = null;
+  const loadIndex = () => {
+    if (idx) return Promise.resolve(idx);
+    if (!idxPending) {
+      idxPending = fetch('/assets/build/search-index.json')
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(j => { idx = j; return j; })
+        .catch(() => { idxPending = null; return null; });
+    }
+    return idxPending;
+  };
+
+  const zhNow = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
+
+  // CJK has no spaces, so a whitespace split would make the whole query one term.
+  // Latin runs stay whole; each Han character is its own term.
+  const terms = (q) => (q.toLowerCase().match(/[a-z0-9]+|[\u3400-\u9fff\uf900-\ufaff]/g) || []);
+
+  const score = (entry, q, ts) => {
+    const zh = zhNow();
+    const t = ((zh && entry.zt) || entry.t || '').toLowerCase();
+    const b = ((zh && entry.zb) || entry.b || '').toLowerCase();
+    if (!t) return 0;
+    const bonus = entry.page ? 8 : 0;                               // a page outranks its own sections
+    if (t.includes(q)) return 100 + bonus - Math.min(t.length, 60) / 100;
+    if (ts.every(x => t.includes(x))) return 60 + bonus;
+    if (b && ts.every(x => (t + ' ' + b).includes(x))) return 30;
+    return 0;
+  };
+
+  const ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+  const esc = (x) => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  const render = (rows) => {
+    const zh = zhNow();
+    if (!rows.length) {
+      sResults.innerHTML = '<p class="search-section-label">' +
+        (zh ? '沒有符合的結果' : 'No matches') + '</p>';
+      return;
+    }
+    sResults.innerHTML = '<p class="search-section-label">' + (zh ? '搜尋結果' : 'Results') + '</p>' +
+      rows.map(({ e, page }) => {
+        const title = esc((zh && e.zt) || e.t);
+        const meta  = esc(e.page ? (zh ? '頁面' : 'Page') : ((zh && page.zh) || page.en));
+        const flag  = page.v ? '<span class="status-flag">' + (zh ? '即將推出' : 'Coming soon') + '</span>' : '';
+        return `<a href="${esc(e.u)}" class="search-link">${ICON}<span>${title}</span>${flag}` +
+               `<span class="search-link-meta">${meta}</span></a>`;
+      }).join('');
+  };
+
+  const applySearch = async () => {
+    const q = sInput.value.trim().toLowerCase();
+    if (!q) { sResults.innerHTML = zeroState; return; }
+    const data = await loadIndex();
+    if (!data) { sResults.innerHTML = zeroState; return; }   // offline / 404 — the Jump-to list still works
+    if (sInput.value.trim().toLowerCase() !== q) return;      // superseded while fetching
+    const ts = terms(q);
+    const rows = data.e
+      .map(e => ({ e, page: data.pages[e.p], s: score(e, q, ts) }))
+      .filter(r => r.s > 0)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 12);
+    render(rows);
+  };
+
+  sInput.addEventListener('input', applySearch);
+  // A language switch must re-render whatever is on screen in the new language.
+  window.__searchRefresh = () => { if (sInput.value.trim()) applySearch(); else sResults.innerHTML = zeroState; };
 
   // ──────────────── Count-up — design-tokens.md §7.2 (count-up 1200ms linear) ────────────────
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -518,34 +690,17 @@
   }
 
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
+  // The `.acc-mark` +/− glyph and the `.howitworks` step-panel sync that used to hang
+  // off this handler are gone: no page carries either, and no `.acc-item` carries
+  // `data-step` (methodology's `data-step` lives on `.mth-stage__*`, a different
+  // component). The chevron is CSS, driven by `.is-open`.
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
       const item = trigger.closest('.acc-item');
       const group = item.parentElement;
       const wasOpen = item.classList.contains('is-open');
-      group.querySelectorAll('.acc-item').forEach(el => {
-        el.classList.remove('is-open');
-        const m = el.querySelector('.acc-mark');
-        if (m) m.textContent = '+';
-      });
-      if (!wasOpen) {
-        item.classList.add('is-open');
-        const m = item.querySelector('.acc-mark');
-        if (m) m.textContent = '−';
-      }
-      // Sync sibling step-panel if this accordion has a partner visual (e.g. /product/licensing/ How it works).
-      const stepKey = item.dataset.step;
-      if (stepKey) {
-        const howitworks = group.closest('.howitworks');
-        const visual = howitworks && howitworks.querySelector('.howitworks-visual--steps');
-        if (visual) {
-          // If we just closed the only open item, fall back to the first panel as default.
-          const activeKey = wasOpen ? (visual.querySelector('.howitworks-step-panel').dataset.step || stepKey) : stepKey;
-          visual.querySelectorAll('.howitworks-step-panel').forEach(panel => {
-            panel.classList.toggle('is-active', panel.dataset.step === activeKey);
-          });
-        }
-      }
+      group.querySelectorAll('.acc-item').forEach(el => el.classList.remove('is-open'));
+      if (!wasOpen) item.classList.add('is-open');
     });
   });
 
@@ -997,7 +1152,15 @@
       if (inflight.has(key)) return inflight.get(key);
       const p = fetch('/legal/' + key + '.html', { cache: 'no-cache' })
         .then(res => { if (!res.ok) throw new Error(res.status); return res.text(); })
-        .then(html => { cache.set(key, html); inflight.delete(key); return html; })
+        // The /legal/*.html files are full documents now, so that opening one directly —
+        // a long-press "open in new tab", or the fallback link below — renders a real
+        // page instead of unstyled text at desktop width on a phone. Only the <body>
+        // goes into the dialog. DOMParser handles a bare fragment identically, so this
+        // is safe whichever shape a file is in.
+        .then(html => {
+          const body = new DOMParser().parseFromString(html, 'text/html').body.innerHTML;
+          cache.set(key, body); inflight.delete(key); return body;
+        })
         .catch(err => { inflight.delete(key); throw err; });
       inflight.set(key, p);
       return p;
@@ -1158,260 +1321,6 @@
       bar.addEventListener('transitionend', done, { once: true });
     });
   });
-})();
-
-// ─── Patent inventory teaser ─────────────────────────────────────────
-// Bordered card with ticker rows + search input + Industry / Jurisdiction /
-// Tier filter dropdowns (AND logic with the search query). Each rendered
-// card links to /product/licensing/lobby.html. Two modes share
-// the same chrome — variant chosen by markup:
-//   • Tiered (default `.v2-section`) — 3 rows, one per tier (S / A / B).
-//   • Flat (`.v2-section.is-flat`)   — 2 rows, cards distributed by a
-//     seeded Fisher–Yates shuffle so the random split is deterministic
-//     across reloads.
-// Class names (.v2-*, .v1-fb-*, .ts-*) come from the iteration sheet that
-// produced this component. This IIFE sits at top level so it runs on any
-// page with a `.v2-section`, not just pages that have a hero slider.
-(() => {
-  const teaserSection = document.querySelector('.v2-section');
-  if (!teaserSection) return;
-
-  // Seed — 37 patents spanning all 5 tiers, two jurisdictions (US/TW),
-  // iPIC/NYCU/III assignees. Edit this list to swap displayed inventory.
-  const SEED = [
-      // Chip & semiconductor (10)
-      {id:'US10142368', title:'Thin-film capacitor electrode formation on multilayer ceramic substrate', ass:'iPIC', juris:'US', ipc:'H01G 4/30',    ind:'chip',       tier:'S'},
-      {id:'US10218547', title:'Low-loss high-frequency connector with shielded contact array for 5G',    ass:'NYCU', juris:'US', ipc:'H01R 13/02',   ind:'chip',       tier:'S'},
-      {id:'US10456789', title:'Self-aligned contact for sub-3nm gate-all-around transistors',            ass:'NYCU', juris:'US', ipc:'H01L 21/768',  ind:'chip',       tier:'S'},
-      {id:'TWI678234',  title:'Printed-circuit-board lamination with reduced thermal stress',            ass:'iPIC', juris:'TW', ipc:'H05K 3/46',    ind:'chip',       tier:'S'},
-      {id:'US10456823', title:'EMI suppression layer for high-density flexible printed circuit',         ass:'iPIC', juris:'US', ipc:'H05K 9/00',    ind:'chip',       tier:'A'},
-      {id:'US10567823', title:'High-density interposer for 2.5D advanced packaging',                     ass:'iPIC', juris:'US', ipc:'H01L 23/498',  ind:'chip',       tier:'A'},
-      {id:'TWI734512',  title:'High-aspect-ratio etch profile control for 3D NAND flash',                ass:'NYCU', juris:'TW', ipc:'H01L 21/3065', ind:'chip',       tier:'B'},
-      {id:'TWI745623',  title:'Wafer-to-wafer bonding alignment using fiducial pattern interferometry',  ass:'iPIC', juris:'TW', ipc:'H01L 21/02',   ind:'chip',       tier:'B'},
-      {id:'US11098723', title:'Coplanar-waveguide-fed patch antenna with tunable dielectric',            ass:'NYCU', juris:'US', ipc:'H01Q 9/04',    ind:'chip',       tier:'C'},
-      {id:'US11412678', title:'Solder-pad geometry for assembly yield at 0201 component pitch',          ass:'NYCU', juris:'US', ipc:'H05K 3/34',    ind:'chip',       tier:'D'},
-
-      // Integrated applications (7)
-      {id:'US10334528', title:'Vibration-damping bearing mount for industrial spindle assembly',         ass:'NYCU', juris:'US', ipc:'F16F 15/00',   ind:'integrated', tier:'S'},
-      {id:'US10723891', title:'Wearable continuous glucose monitor with optical sensing',                ass:'NYCU', juris:'US', ipc:'A61B 5/145',   ind:'integrated', tier:'S'},
-      {id:'US10487291', title:'Modular linear-motion stage with integrated load-sensing element',        ass:'III',  juris:'US', ipc:'B23Q 1/00',    ind:'integrated', tier:'A'},
-      {id:'TWI723891',  title:'Microneedle patch for transdermal vaccine delivery',                      ass:'NYCU', juris:'TW', ipc:'A61M 37/00',   ind:'integrated', tier:'A'},
-      {id:'TWI712456',  title:'Vibration-damped industrial bearing housing structure',                   ass:'III',  juris:'TW', ipc:'F16F 15/00',   ind:'integrated', tier:'A'},
-      {id:'US11034789', title:'Wearable EEG headband with dry-contact electrodes',                       ass:'III',  juris:'US', ipc:'A61B 5/291',   ind:'integrated', tier:'B'},
-      {id:'US11256812', title:'Disposable lateral-flow test with smartphone readout',                    ass:'III',  juris:'US', ipc:'G01N 33/558',  ind:'integrated', tier:'C'},
-
-      // Net-zero & carbon (5)
-      {id:'US10712389', title:'Pitch-control algorithm for variable-speed wind turbine in turbulent inflow', ass:'iPIC', juris:'US', ipc:'F03D 7/04',ind:'netzero',    tier:'S'},
-      {id:'US10876543', title:'Thermal management for grid-tied photovoltaic inverter',                  ass:'NYCU', juris:'US', ipc:'H02M 1/00',    ind:'netzero',    tier:'A'},
-      {id:'US10987234', title:'Modular battery-string control for utility-scale energy storage',         ass:'III',  juris:'US', ipc:'H02J 7/00',    ind:'netzero',    tier:'A'},
-      {id:'US11023456', title:'Grid-forming converter with virtual-inertia control for weak grids',      ass:'iPIC', juris:'US', ipc:'H02M 7/12',    ind:'netzero',    tier:'A'},
-      {id:'US11198345', title:'Yaw-bearing condition-monitoring sensor for offshore wind turbines',      ass:'NYCU', juris:'US', ipc:'F03D 17/00',   ind:'netzero',    tier:'B'},
-
-      // Multimedia & display (5)
-      {id:'US10589234', title:'Micro-LED transfer process with selective laser lift-off',                ass:'NYCU', juris:'US', ipc:'H01L 33/00',   ind:'multimedia', tier:'S'},
-      {id:'US10712567', title:'Pixel-array driver IC for high-density VR microdisplays',                 ass:'III',  juris:'US', ipc:'G09G 3/32',    ind:'multimedia', tier:'A'},
-      {id:'US10812789', title:'OLED stack with extended blue-emitter lifetime',                          ass:'iPIC', juris:'US', ipc:'H10K 50/11',   ind:'multimedia', tier:'A'},
-      {id:'TWI812456',  title:'Micro-LED interposer with active matrix driving',                         ass:'NYCU', juris:'TW', ipc:'H01L 33/62',   ind:'multimedia', tier:'A'},
-      {id:'TWI789234',  title:'Foldable OLED encapsulation with multi-layer barrier film',               ass:'III',  juris:'TW', ipc:'H10K 50/84',   ind:'multimedia', tier:'B'},
-
-      // Networking & comms (5)
-      {id:'US10678912', title:'Massive-MIMO beamforming algorithm for 5G base stations',                 ass:'III',  juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'S'},
-      {id:'US11034567', title:'WiFi-7 channel-bonding scheduler for low-latency XR',                     ass:'III',  juris:'US', ipc:'H04W 28/08',   ind:'networking', tier:'A'},
-      {id:'TWI856789',  title:'Multi-band antenna array for 5G smartphone integration',                  ass:'III',  juris:'TW', ipc:'H01Q 21/06',   ind:'networking', tier:'A'},
-      {id:'US11145789', title:'Hybrid beamforming codebook design for mmWave 5G',                        ass:'iPIC', juris:'US', ipc:'H04B 7/06',    ind:'networking', tier:'B'},
-      {id:'US11456789', title:'Reconfigurable-intelligent-surface placement optimization',               ass:'III',  juris:'US', ipc:'H04B 7/04',    ind:'networking', tier:'C'},
-
-      // Computing & AI (5)
-      {id:'US10812456', title:'On-device neural-network quantization for embedded inference',            ass:'III',  juris:'US', ipc:'G06N 3/063',   ind:'computing',  tier:'S'},
-      {id:'US10923567', title:'Federated learning protocol for cross-silo healthcare data',              ass:'NYCU', juris:'US', ipc:'G06N 20/00',   ind:'computing',  tier:'A'},
-      {id:'US11034678', title:'Adversarial-robustness training for vision-model deployment',             ass:'iPIC', juris:'US', ipc:'G06N 3/08',    ind:'computing',  tier:'A'},
-      {id:'US11145723', title:'Memory-bandwidth-aware transformer inference scheduling',                 ass:'III',  juris:'US', ipc:'G06F 9/50',    ind:'computing',  tier:'B'},
-      {id:'TWI867812',  title:'Domain-adaptation fine-tuning for industrial vision models',              ass:'III',  juris:'TW', ipc:'G06N 3/08',    ind:'computing',  tier:'B'},
-    ];
-
-    const DEST = '/product/licensing/lobby.html';
-    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    const cardHtml = (p, dup) => {
-      const tierEl  = `<span class="ts-tier ts-tier-${p.tier.toLowerCase()}">Tier ${p.tier}</span>`;
-      const jurisEl = `<span class="ts-juris ts-juris-${p.juris.toLowerCase()}">${p.juris}</span>`;
-      const hay     = `${p.id} ${p.title} ${p.ass} ${p.ipc} tier ${p.tier} ${p.juris} ${p.ind || ''}`.toLowerCase();
-      return `<a class="ts-card" href="${DEST}" tabindex="0"`
-           +   ` data-search="${esc(hay)}"`
-           +   ` data-ind="${esc(p.ind || '')}"`
-           +   ` data-juris="${esc(p.juris)}"`
-           +   ` data-tier="${esc(p.tier)}"${dup ? ' data-dup="1"' : ''}>`
-           + `<div class="ts-card-top">`
-           +   `<span class="ts-pid">${esc(p.id)}</span>`
-           +   `<div class="ts-chips">${tierEl}${jurisEl}</div>`
-           + `</div>`
-           + `<div class="ts-title">${esc(p.title)}</div>`
-           + `<div class="ts-meta">${esc(p.ass)} · ${esc(p.ipc)}</div>`
-           + `</a>`;
-    };
-
-    // Render a list of patents into a track. Cards are rendered twice so the
-    // translateX(-50%) marquee loops seamlessly; duplicates carry data-dup="1"
-    // so the unique-count math in applyFilter() divides cleanly.
-    const renderInto = (trackId, list) => {
-      const html = list.map(p => cardHtml(p, false)).join('') +
-                   list.map(p => cardHtml(p, true)).join('');
-      const track = document.getElementById(trackId);
-      if (track) track.innerHTML = html;
-    };
-
-    // Two modes share the same chrome:
-    //   • Tiered (default) — 3 rows, one per tier (S / A / B).
-    //   • Flat (`.v2-section.is-flat`) — 2 rows, cards distributed by a
-    //     seeded Fisher–Yates shuffle so the random split is deterministic
-    //     across reloads.
-    if (teaserSection.classList.contains('is-flat')) {
-      const shuffleSeeded = (arr, seed) => {
-        const a = arr.slice();
-        let s = seed >>> 0;
-        for (let i = a.length - 1; i > 0; i--) {
-          s = (s * 1664525 + 1013904223) >>> 0;
-          const j = s % (i + 1);
-          [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-      };
-      const shuffled = shuffleSeeded(SEED, 42);
-      const half     = Math.ceil(shuffled.length / 2);
-      renderInto('v2-track-flat-top',    shuffled.slice(0, half));
-      renderInto('v2-track-flat-bottom', shuffled.slice(half));
-    } else {
-      renderInto('v2-track-s', SEED.filter(p => p.tier === 'S'));
-      renderInto('v2-track-a', SEED.filter(p => p.tier === 'A'));
-      renderInto('v2-track-b', SEED.filter(p => p.tier === 'B'));
-    }
-
-    // ── Search + filter wiring ──
-    const input          = document.getElementById('v2-search');
-    const searchClearBtn = document.getElementById('v2-search-clear');
-    const filterClearBtn = document.getElementById('v2-fb-clear');
-    const status         = document.getElementById('v2-search-status');
-    const cards          = teaserSection.querySelectorAll('.ts-card');
-    const groups         = Array.from(teaserSection.querySelectorAll('.v1-fb-group'));
-
-    const state = { ind: '', juris: '', tier: '' };
-
-    const SHORT_EN = {
-      ind:   { '': 'All', chip: 'Chip', integrated: 'Integrated', netzero: 'Net-zero', multimedia: 'Multimedia', networking: 'Networking', computing: 'Computing' },
-      juris: { '': 'All', US: 'US', TW: 'TW' },
-      tier:  { '': 'All', S: 'Tier S', A: 'Tier A', B: 'Tier B', C: 'Tier C', D: 'Tier D' },
-    };
-    const SHORT_ZH = {
-      ind:   { '': '所有', chip: '晶片', integrated: '整合應用', netzero: '淨零', multimedia: '多媒體', networking: '網路', computing: '運算' },
-      juris: { '': '所有', US: '美國', TW: '台灣' },
-      tier:  { '': '所有', S: 'Tier S', A: 'Tier A', B: 'Tier B', C: 'Tier C', D: 'Tier D' },
-    };
-    const isZh = () => (document.documentElement.getAttribute('lang') || 'en').startsWith('zh');
-    const labelFor = (key, value) => (isZh() ? SHORT_ZH : SHORT_EN)[key][value] || (isZh() ? '所有' : 'All');
-
-    const closeAllMenus = () => {
-      teaserSection.querySelectorAll('.v1-fb-menu').forEach(m => { m.hidden = true; });
-      teaserSection.querySelectorAll('.v1-fb-pill').forEach(p => p.setAttribute('aria-expanded', 'false'));
-    };
-
-    const renderLabels = () => {
-      groups.forEach(group => {
-        const pill    = group.querySelector('.v1-fb-pill');
-        const valueEl = pill.querySelector('.v1-fb-value');
-        const key     = group.dataset.filterKey;
-        valueEl.textContent = labelFor(key, state[key]);
-        pill.classList.toggle('is-active', state[key] !== '');
-      });
-    };
-
-    const applyFilter = () => {
-      const q         = (input.value || '').trim().toLowerCase();
-      const hasQuery  = q !== '';
-      const hasFilter = state.ind !== '' || state.juris !== '' || state.tier !== '';
-      const hasAny    = hasQuery || hasFilter;
-
-      teaserSection.classList.toggle('is-searching', hasAny);
-      searchClearBtn.hidden   = !hasQuery;
-      filterClearBtn.disabled = !hasFilter;
-
-      let dupedMatchCount = 0;
-      cards.forEach(card => {
-        const haystack   = card.dataset.search || '';
-        const matchQuery = !hasQuery || haystack.includes(q);
-        const matchInd   = state.ind   === '' || card.dataset.ind   === state.ind;
-        const matchJur   = state.juris === '' || card.dataset.juris === state.juris;
-        const matchTier  = state.tier  === '' || card.dataset.tier  === state.tier;
-        const isMatch    = matchQuery && matchInd && matchJur && matchTier;
-        card.classList.toggle('is-match', isMatch);
-        if (isMatch) dupedMatchCount++;
-      });
-
-      renderLabels();
-
-      if (!hasAny) { status.textContent = ''; return; }
-      const unique = Math.ceil(dupedMatchCount / 2); // cards render twice
-      if (unique === 0)      status.textContent = isZh() ? '無符合' : 'No matches';
-      else if (unique === 1) status.textContent = isZh() ? '1 件符合' : '1 match';
-      else                   status.textContent = isZh() ? unique + ' 件符合' : unique + ' matches';
-    };
-
-    // Wire each dropdown
-    groups.forEach(group => {
-      const pill = group.querySelector('.v1-fb-pill');
-      const menu = group.querySelector('.v1-fb-menu');
-      const key  = group.dataset.filterKey;
-      pill.addEventListener('click', e => {
-        e.stopPropagation();
-        const wasOpen = !menu.hidden;
-        closeAllMenus();
-        menu.hidden = wasOpen;
-        pill.setAttribute('aria-expanded', String(!wasOpen));
-      });
-      menu.querySelectorAll('.v1-fb-option').forEach(opt => {
-        opt.addEventListener('click', e => {
-          e.stopPropagation();
-          state[key] = opt.dataset.value;
-          menu.querySelectorAll('.v1-fb-option').forEach(o => {
-            o.setAttribute('aria-selected', o === opt ? 'true' : 'false');
-          });
-          closeAllMenus();
-          applyFilter();
-        });
-      });
-    });
-
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.v2-section .v1-fb-group')) closeAllMenus();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeAllMenus();
-    });
-
-    filterClearBtn.addEventListener('click', () => {
-      state.ind = ''; state.juris = ''; state.tier = '';
-      groups.forEach(group => {
-        group.querySelectorAll('.v1-fb-option').forEach(o => {
-          o.setAttribute('aria-selected', o.dataset.value === '' ? 'true' : 'false');
-        });
-      });
-      applyFilter();
-    });
-
-    input.addEventListener('input', applyFilter);
-    searchClearBtn.addEventListener('click', () => {
-      input.value = '';
-      applyFilter();
-      input.focus();
-    });
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { input.value = ''; applyFilter(); input.blur(); }
-    });
-
-    // Pill labels are state-driven (not data-zh), so the page-wide language
-    // toggle needs to re-render them after swapping the `lang` attribute.
-    window.__inventoryTeaserRefresh = applyFilter;
-
-  applyFilter(); // initialize
 })();
 
 // ─── Card carousel: scroll-snap track, prev/next arrows, dot indicators ───
@@ -1579,153 +1488,6 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
 
   stages.forEach(initStage);
 })();
-
-/* ════════════════════════════════════════════════════════════════════════
-   Board of Directors showcase (/about/) — correlated hover/focus highlight.
-   The photo grid and the name list each carry [data-member] ids. Pointing at
-   or focusing any member adds .is-active to every element sharing that id and
-   .is-dimmed to all the others, so the highlight mirrors across both columns.
-   Event-delegated on the .board-roster container; no-ops on pages without it.
-   ════════════════════════════════════════════════════════════════════════ */
-(() => {
-  const board = document.querySelector('.board-roster');
-  if (!board) return;
-
-  const members = Array.from(board.querySelectorAll('[data-member]'));
-  if (!members.length) return;
-
-  const setActive = (id) => {
-    members.forEach((el) => {
-      const match = el.dataset.member === id;
-      el.classList.toggle('is-active', match);
-      el.classList.toggle('is-dimmed', id !== null && !match);
-    });
-  };
-  const clear = () => setActive(null);
-
-  // Pointer
-  board.addEventListener('pointerover', (e) => {
-    const el = e.target.closest('[data-member]');
-    if (el) setActive(el.dataset.member);
-  });
-  board.addEventListener('pointerleave', clear);
-
-  // Keyboard focus
-  board.addEventListener('focusin', (e) => {
-    const el = e.target.closest('[data-member]');
-    if (el) setActive(el.dataset.member);
-  });
-  board.addEventListener('focusout', (e) => {
-    if (!board.contains(e.relatedTarget)) clear();
-  });
-})();
-
-/* ════════════════════════════════════════════════════════════════════════
-   Partner band sparkles — silver/white drifting + twinkling particle field
-   behind the partner marquee (homepage). Vanilla canvas port of the source
-   tsParticles effect. Honors prefers-reduced-motion (no canvas), pauses the
-   RAF when the band is off-screen, and rebuilds the field on resize.
-   ════════════════════════════════════════════════════════════════════════ */
-(() => {
-  const canvas = document.querySelector('.partner-band__sparkles');
-  if (!canvas || !canvas.getContext) return;
-
-  const ctx = canvas.getContext('2d');
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-
-  let particles = [];
-  let raf = null;
-  let visible = false;
-  let w = 0, h = 0;
-
-  // Build the field — count scales with the band's area (~1 per 2200px²,
-  // matching the source's dense feel without overloading low-end devices).
-  const build = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const rect = canvas.getBoundingClientRect();
-    w = rect.width; h = rect.height;
-    if (!w || !h) return;
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const count = Math.min(420, Math.round((w * h) / 2200));
-    particles = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: 0.4 + Math.random() * 1.1,
-      baseA: 0.15 + Math.random() * 0.6,
-      // twinkle
-      phase: Math.random() * Math.PI * 2,
-      tw: 0.6 + Math.random() * 1.8,
-      // slow drift
-      vx: (Math.random() - 0.5) * 0.08,
-      vy: (Math.random() - 0.5) * 0.08,
-      // ~1 in 5 carries the silver tint, the rest pure white
-      silver: Math.random() < 0.2,
-    }));
-  };
-
-  const draw = (t) => {
-    // Frozen while a legal dialog is open: that overlay's backdrop-filter re-blurs the
-    // whole viewport for every frame anything behind it paints. Last frame stays put.
-    if (document.body.classList.contains('lgl-lock')) { raf = requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, w, h);
-    for (const p of particles) {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x += w; else if (p.x > w) p.x -= w;
-      if (p.y < 0) p.y += h; else if (p.y > h) p.y -= h;
-      const a = p.baseA * (0.55 + 0.45 * Math.sin(p.phase + t * 0.001 * p.tw));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.silver
-        ? `rgba(226,232,240,${a.toFixed(3)})`   // silver-luminous mid
-        : `rgba(255,255,255,${a.toFixed(3)})`;
-      ctx.fill();
-    }
-    raf = requestAnimationFrame(draw);
-  };
-
-  const start = () => {
-    if (raf || reduceMotion.matches || !visible) return;
-    if (!particles.length) build();
-    raf = requestAnimationFrame(draw);
-  };
-  const stop = () => {
-    if (raf) { cancelAnimationFrame(raf); raf = null; }
-    ctx.clearRect(0, 0, w, h);
-  };
-
-  // Only animate while the band is on-screen.
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver((entries) => {
-      visible = entries[0].isIntersecting;
-      visible ? start() : stop();
-    }, { threshold: 0 }).observe(canvas);
-  } else {
-    visible = true;
-    start();
-  }
-
-  // Rebuild on resize (debounced); keep animating if visible.
-  let resizeTimer = null;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      stop();
-      build();
-      start();
-    }, 200);
-  });
-
-  // Live reduced-motion toggle.
-  const onMotionChange = () => { reduceMotion.matches ? stop() : start(); };
-  reduceMotion.addEventListener
-    ? reduceMotion.addEventListener('change', onMotionChange)
-    : reduceMotion.addListener(onMotionChange);
-})();
-
-
 
 /* ══════════════════════════════════════════════════════════════════════════
    REPORT SAMPLE OVERLAY — .sig-x* FLIP morph  (Web Animations API)

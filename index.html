@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Colours the mobile browser chrome to the page ground; light page. -->
+<meta name="theme-color" content="#FFFFFF" />
 <title>The value of patents unlocked</title>
 <meta name="description" content="Patents are the most undervalued asset of our time. At the core of TIS is a patent-strength rating engine — S–D across 50 indicators, co-developed with Innovue." />
 <link rel="canonical" href="https://tisglobalinc.com/" />
@@ -27,8 +29,8 @@
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
 
-<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
 <link rel="stylesheet" href="/assets/styles.css?v=22">
 
@@ -66,7 +68,7 @@
           <div class="products-menu-grid">
             <a href="/product/licensing/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+                <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -77,7 +79,7 @@
             </a>
             <a href="/product/signal/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
@@ -144,7 +146,7 @@
     <div id="m-products-sublist" class="mobile-sublist">
       <a href="/product/licensing/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+          <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -155,7 +157,7 @@
       </a>
       <a href="/product/signal/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
@@ -182,13 +184,29 @@
       <circle cx="11" cy="11" r="8"/>
     </svg>
     <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
-    <span class="search-esc" aria-hidden="true">Esc</span>
+    <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/product/licensing/" class="search-link">
+    <a href="/product/signal/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
-      <span data-zh="產品">Products</span>
+      <span data-zh="專利情報">Patent Intelligence</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/signal/methodology.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <span data-zh="SABCD 評級方法">SABCD Methodology</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/licensing/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+      <span data-zh="專利授權平台">Licensing Platform</span>
+      <span class="status-flag" data-zh="即將推出">Coming soon</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/licensing/badge.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+      <span data-zh="授權驗證標章">Verified License Badge</span>
       <span class="status-flag" data-zh="即將推出">Coming soon</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
@@ -324,7 +342,7 @@
 
     <div class="container hero-inner">
       <div class="pillar" data-pillar="positioning">
-        <h1 class="pillar-title">
+        <h1 class="pillar-title" id="patents-are-the-most-undervalued-asset">
           <span data-zh="專利，是這個時代最被低估的資產。">Patents are the most undervalued asset of our time.</span>
         </h1>
         <p class="pillar-sub">
@@ -419,28 +437,28 @@
       <!-- Panel 1 — About TIS -->
       <article class="about-card" data-reveal>
         <div class="about-card__body">
-          <h2 class="about-card__title" data-zh-html data-zh='關於 <span class="tis-mark" role="img" aria-label="TIS"></span>'>About <span class="tis-mark" role="img" aria-label="TIS"></span></h2>
+          <h2 class="about-card__title" data-zh-html data-zh='關於 <span class="tis-mark" role="img" aria-label="TIS" id="about-2"></span>'>About <span class="tis-mark" role="img" aria-label="TIS"></span></h2>
           <p class="about-card__lead"><span data-zh="專利往往是企業最大、卻最被低估的資產。">Patents are often a company's largest, most undervalued asset.</span> <span data-zh="當它的價值能被衡量，它就能被信任、被交易、被投資。">When their value can be measured, they can be trusted, traded, and invested.</span></p>
           <p class="about-card__more">
             <a href="/about/" class="arrow-link" data-zh="了解完整故事">Read the full story</a>
           </p>
         </div>
         <figure class="about-card__media" aria-hidden="true">
-          <img src="/assets/imagery/home/about-dots.png" alt="" loading="lazy" decoding="async">
+          <picture><source type="image/webp" srcset="/assets/imagery/home/about-dots-400.webp 400w, /assets/imagery/home/about-dots-800.webp 800w, /assets/imagery/home/about-dots-1500.webp 1500w" sizes="(max-width: 640px) 348px, (max-width: 1100px) 421px, 390px"><img src="/assets/imagery/home/about-dots.png" alt="" loading="lazy" decoding="async" width="1500" height="1000"></picture>
         </figure>
       </article>
 
       <!-- Panel 2 — Partnership with Innovue -->
       <article class="about-card" data-reveal>
         <div class="about-card__body">
-          <h2 class="about-card__title" data-zh-html data-zh='<span class="innovue-wm" role="img" aria-label="Innovue"></span> 夥伴關係'><span class="innovue-wm" role="img" aria-label="Innovue"></span> Partnership</h2>
+          <h2 class="about-card__title" data-zh-html data-zh='<span class="innovue-wm" role="img" aria-label="Innovue" id="partnership"></span> 夥伴關係'><span class="innovue-wm" role="img" aria-label="Innovue"></span> Partnership</h2>
           <p class="about-card__lead" data-zh="我們與股東 Innovue 共同開發的 SABCD 評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是 Innovue 的 1.8 億件專利資料庫。">Co-developed with our shareholder Innovue, the SABCD rating engine grades every patent S to D across 50 indicators — against Innovue's 180M-patent database.</p>
           <p class="about-card__more">
             <a href="/about/" class="arrow-link" data-zh="關於這段合作">About the partnership</a>
           </p>
         </div>
         <figure class="about-card__media" aria-hidden="true">
-          <img src="/assets/imagery/home/innovue-dots.png" alt="" loading="lazy" decoding="async">
+          <picture><source type="image/webp" srcset="/assets/imagery/home/innovue-dots-400.webp 400w, /assets/imagery/home/innovue-dots-800.webp 800w, /assets/imagery/home/innovue-dots-1400.webp 1400w" sizes="(max-width: 640px) 348px, (max-width: 1100px) 421px, 390px"><img src="/assets/imagery/home/innovue-dots.png" alt="" loading="lazy" decoding="async" width="1400" height="2027"></picture>
         </figure>
       </article>
 
@@ -505,7 +523,7 @@
         <ul class="report-carousel-track">
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-1">
-              <img class="report-card-media" src="/assets/imagery/reports/drone.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/reports/drone-400.webp 400w, /assets/imagery/reports/drone-800.webp 800w, /assets/imagery/reports/drone-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/drone.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q1 2026</span>
                 <h3 id="reports-card-1" class="report-card-title" data-zh="台灣無人機專利地形分析">Taiwan Drone Patent Landscape Report</h3>
@@ -516,7 +534,7 @@
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-2">
-              <img class="report-card-media" src="/assets/imagery/reports/japan.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/reports/japan-400.webp 400w, /assets/imagery/reports/japan-800.webp 800w, /assets/imagery/reports/japan-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/japan.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q4 2025</span>
                 <h3 id="reports-card-2" class="report-card-title" data-zh="日本企業專利出清流向分析">Japanese Enterprise Patent Sell-Off Flow Report</h3>
@@ -527,7 +545,7 @@
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-3">
-              <img class="report-card-media" src="/assets/imagery/reports/taiwan.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/reports/taiwan-400.webp 400w, /assets/imagery/reports/taiwan-800.webp 800w, /assets/imagery/reports/taiwan-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/taiwan.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q3 2025</span>
                 <h3 id="reports-card-3" class="report-card-title" data-zh="台灣專利轉讓市場：買家、賣家與仲介商分析報告">Taiwan Patent Transfer Market Report</h3>
@@ -538,7 +556,7 @@
           </li>
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="reports-card-4">
-              <img class="report-card-media" src="/assets/imagery/reports/thermal.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/reports/thermal-400.webp 400w, /assets/imagery/reports/thermal-750.webp 750w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/thermal.jpg" alt="" loading="lazy" decoding="async" width="750" height="1000"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">Q2 2025</span>
                 <h3 id="reports-card-4" class="report-card-title" data-zh="能源電源管理與熱管理專利技術分析">Power & Thermal Management Patent Report</h3>
@@ -579,7 +597,7 @@
         <ul class="report-carousel-track">
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="press-card-1">
-              <img class="report-card-media" src="/assets/imagery/press/nycu.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/press/nycu-400.webp 400w, /assets/imagery/press/nycu-800.webp 800w, /assets/imagery/press/nycu-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/nycu.jpg" alt="" loading="lazy" decoding="async" width="1000" height="662"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">2026-03-26</span>
                 <h3 id="press-card-1" class="report-card-title" data-zh="陽明交大研究專利進入 TIS 授權管道。">NYCU research patents enter the TIS licensing pipeline.</h3>
@@ -591,7 +609,7 @@
 
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="press-card-2">
-              <img class="report-card-media" src="/assets/imagery/press/iii.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/press/iii-400.webp 400w, /assets/imagery/press/iii-800.webp 800w, /assets/imagery/press/iii-1600.webp 1600w, /assets/imagery/press/iii-1920.webp 1920w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/iii.jpg" alt="" loading="lazy" decoding="async" width="1920" height="1440"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">2026-01-15</span>
                 <h3 id="press-card-2" class="report-card-title" data-zh="資策會與 TIS 將數位轉型研究轉化為可授權的智財。">III and TIS turn digital-transformation research into licensable IP.</h3>
@@ -603,7 +621,7 @@
 
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="press-card-3">
-              <img class="report-card-media" src="/assets/imagery/press/itri-ipic.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/press/itri-ipic-400.webp 400w, /assets/imagery/press/itri-ipic-800.webp 800w, /assets/imagery/press/itri-ipic-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/itri-ipic.jpg" alt="" loading="lazy" decoding="async" width="1000" height="667"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">2025-11-20</span>
                 <h3 id="press-card-3" class="report-card-title" data-zh="工研院 iPIC 將工業級專利導入 TIS 授權網絡。">ITRI's iPIC brings industrial-grade patents into the TIS licensing network.</h3>
@@ -615,7 +633,7 @@
 
           <li class="report-card-cell">
             <a class="report-card" aria-labelledby="press-card-4">
-              <img class="report-card-media" src="/assets/imagery/press/innovue.jpg" alt="" loading="lazy" decoding="async">
+              <picture><source type="image/webp" srcset="/assets/imagery/press/innovue-400.webp 400w, /assets/imagery/press/innovue-800.webp 800w, /assets/imagery/press/innovue-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/innovue.jpg" alt="" loading="lazy" decoding="async" width="1000" height="562"></picture>
               <div class="report-card-body">
                 <span class="report-card-eyebrow">2025-09-04</span>
                 <h3 id="press-card-4" class="report-card-title" data-zh="TIS 與 Innovue 締結奠基合作，撐起每一項交付成果。">TIS and Innovue forge the founding partnership behind every deliverable.</h3>

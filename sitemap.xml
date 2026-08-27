@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The eight public pages. 404.html, /legal/ fragments, /documents/ and /designs/
+     are deliberately absent: the first is noindex, the second are body-only
+     fragments fetched into a dialog, and the last two are disallowed in robots.txt. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tisglobalinc.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/product/signal/</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/product/signal/methodology.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/product/licensing/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/product/licensing/badge.html</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/patents/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/reports/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tisglobalinc.com/about/</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>

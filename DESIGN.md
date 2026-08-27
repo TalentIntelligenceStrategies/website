@@ -229,7 +229,24 @@ cover it. Base body type: `16px / line-height 1.6 / letter-spacing 0.01em`, anti
 
 ## 2. Typography
 
-**Families** (all self-hosted `@font-face`, `font-display: swap`, from `/designs/assets/fonts/`):
+**Families** — all self-hosted, `font-display: swap`. The `@font-face` block in
+`styles.css` is **generated**: it sits between `/* @generated:fonts:start */` and
+`:end` sentinels and is rewritten by `npm run fonts`. Never hand-edit it.
+
+Sources live in `/designs/assets/fonts/` (TTF, read-only brand mirror); what ships is
+WOFF2 in `/assets/build/fonts/`. Latin faces are converted whole. **Noto Sans TC is
+subset to the glyphs this site actually uses and split across four `unicode-range`
+buckets**, so a page downloads only the buckets it renders — the English pages were
+otherwise pulling 6.94 MB of CJK to draw the two characters in the language toggle.
+That toggle's `中文` label is pinned to a system CJK stack for the same reason
+(`.lang-menu button[data-lang-set="zh"]`).
+
+> The subsetting is content-driven, so it can go stale. `scripts/build-fonts.mjs`
+> scans every `.html`/`.js` in the tree — including `data-zh` attributes and the
+> bilingual string pairs inside `site.js` — and **throws** if a codepoint it found is
+> missing from what it emitted. `npm run verify` runs the build, so a stale subset
+> fails before it ships.
+
 
 - **Urbanist** — primary UI/display sans; 400/500/600/700.
 - **Inconsolata** — mono; 400/500/600. **Numerals only** — see the rule below.
@@ -664,9 +681,25 @@ instead of squeezing it.
 - **Partner logos** — CSS `background-image` from `--partner-*` SVG url() tokens, treated
   `grayscale(1) invert(1) brightness(1.4)` at `opacity:0.85` on the dark band, full
   colour on hover.
-- **Lazy `<img>`** — nav/drawer product-card media set explicit `width`/`height` and use
-  `loading="lazy" decoding="async"`. Global: `img { max-width:100%; height:auto }`,
-  `object-fit:cover` on media.
+- **Every raster is a `<picture>`.** `scripts/build-images.mjs` emits WebP at 400 /
+  800 / 1600 (plus the source's native width when that is not already close to a step)
+  beside each original under `assets/imagery/`; the original stays the `<img src>`
+  fallback. `sizes` is set from the width the element actually renders at, measured at
+  390 / 768 / 1440 — not guessed. **`picture { display: contents }` is load-bearing**:
+  it keeps the `<img>` a direct flex/grid item of whatever contained it, so the wrapper
+  is a no-op for every existing rule.
+- **CSS grounds use `image-set()`** — a plain `url()` declaration first, then an
+  `image-set()` naming the WebP with the original as its typed fallback. One size per
+  background: a 1x/2x pair changes which file renders at DPR 1 and quietly softened the
+  licensing hero.
+- The build **only processes imagery something references**, and prunes any variant no
+  `srcset` or `image-set` names — otherwise it mints derivatives for orphans (it made
+  80 files, 3.2 MB, for seven unreferenced sources on its first run). Render harnesses
+  (`assets/product-shots/`, `assets/badges/`), `documents/` and the gitignored root
+  probes do not count as references.
+- **Lazy `<img>`** — `loading="lazy" decoding="async"`, and explicit `width`/`height`
+  on every image so nothing reflows as it decodes. Global:
+  `img { max-width:100%; height:auto }`, `object-fit:cover` on media.
 - **Logos** are theme + language switched via `--logo-*` / `--partner-*` url() tokens
   (dark/light × eng/ch). OG/Twitter images + favicons are declared in `<head>`.
 
@@ -772,6 +805,10 @@ How the page *feels*, expressed as rules a new page must follow — not prose to
 
 Run this when composing a new page so it stays consistent with the homepage:
 
+0. **Head**: alongside the chrome below, a page needs `<meta name="theme-color">`
+   matching its ground (`#FFFFFF`, or `#0E0E0E` on a `data-theme="dark"` page), a
+   canonical, and the OG/Twitter set. Add the page to `sitemap.xml` and to `PAGES` in
+   `scripts/build-search-index.mjs` — a page absent from that list is unsearchable.
 1. **Chrome**: copy the locked `topnav` + `footer` + the `<head>` FOUC theme/lang guard
    verbatim from an existing page (chrome is duplicated per page — no shared include).
 2. **No page-local `<style>` block** (§0.3). Compose from `styles.css`; if a rule is
@@ -788,6 +825,8 @@ Run this when composing a new page so it stays consistent with the homepage:
    (§2). Eyebrows, labels, chips, tags, column heads, and tier / jurisdiction letters
    are all sans; mono is sectional numbering, numerals, and number-prefixed IDs.
 7. **Cards**: reuse the base + image + scrim recipe (§7); don't invent a new card shell.
+   Imagery goes in as `<picture>` with a WebP `srcset` and a measured `sizes` (§9) —
+   run `npm run images`, then point the `srcset` at what it emitted.
 8. **Wire reveals**: add `[data-reveal]` to headings/deks and `.is-in` targets to image
    cards — `site.js` observers pick them up automatically.
 9. **Reduced-motion parity**: any new transition needs a `prefers-reduced-motion` branch
@@ -860,7 +899,20 @@ dossier, not the adrenaline of a SaaS hero.
   Use the `-text` accent variants for anything at body size (§1.2).
 - **Colour is never the sole signal.** Tier colours always pair with the letter token
   (S/A/B/C/D); jurisdiction colours always pair with the code.
-- **Tap targets ≥44px** (`min-height:44px` under `(pointer:coarse)` on `.btn`).
+- **Tap targets ≥44px under `(pointer: coarse)`** — a dedicated block at the very
+  **end** of `styles.css` covering `.report-dot`, `.icon-btn`,
+  `.topnav-mobile-trigger`, `.topnav-logo-link`, `.announce-close`, `.search-input`,
+  `.search-link`, `.footer-col a`, `.contact-meta a`, `.arrow-link`,
+  `.lang-menu button`, `.bp-toggle-seg` and `.footer-nl-form button`, alongside `.btn`.
+  **Keep that block last.** Several of these override an explicit `width`/`height` set
+  further down the sheet (`.footer-nl-form button` is 32×32 at its own rule) and at
+  equal specificity source order decides — moving the block up silently un-fixes
+  whatever it lands above.
+  Scoped to coarse pointers on purpose: the desktop chrome is tuned to a mouse.
+  Links **inline in a sentence** are left alone — WCAG 2.5.8 exempts them, and padding
+  them breaks the line box (the III / iPIC / NYCU links in the licensing copy).
+  `.pat-modal-close` is not in the block: `patents/index.html` already extends it with
+  a `::after` overlay, which keeps the 32px visual.
 - **Visible focus** — inherit `--border-focus`; never remove an outline without
   replacing it.
 - **`prefers-reduced-motion: reduce` honoured on every animation** (§10). Content is
@@ -908,15 +960,27 @@ changed and is not planned to. What exists now is a build layer beside it, not u
 
 ### 15.1 What the build produces
 
-`npm run build` writes four files into `assets/build/`, which the pages load with ordinary
-`<script>` / `<link>` tags:
+`npm run build` runs five steps — `tokens`, `vite build`, `fonts`, `images`, `search` —
+and writes into `assets/build/`, which the pages load with ordinary `<script>` /
+`<link>` tags:
 
-| Artifact | What it is |
-|---|---|
-| `three.js` | the hero shader's three.js, pinned 0.160.0 |
-| `gsap.js` | gsap + ScrollTrigger, pre-registered, pinned 3.12.5 |
-| `islands.js` | the React mount runtime — the 21st.dev landing zone |
-| `islands.css` | the Tailwind layer, generated from the brand tokens |
+| Artifact | What it is | Step |
+|---|---|---|
+| `three.js` | the hero shader's three.js, pinned 0.160.0 | `vite build` |
+| `gsap.js` | gsap + ScrollTrigger, pre-registered, pinned 3.12.5 | `vite build` |
+| `islands.js` | the React mount runtime — the 21st.dev landing zone | `vite build` |
+| `islands.css` | the Tailwind layer, generated from the brand tokens | `vite build` |
+| `fonts/*.woff2` | 23 subset faces + the generated `@font-face` block in `styles.css` | `npm run fonts` |
+| `search-index.json` | the search modal's index, and heading ids written back into the pages | `npm run search` |
+
+`assets/imagery/*.webp` is a sixth output, written beside the originals rather than
+into `assets/build/` — see §9.
+
+**Order matters.** `vite build` runs with `emptyOutDir: true`, so `fonts` and `search`
+run *after* it or their output is wiped. `fonts` and `search` also write back into
+`assets/styles.css` and the page HTML respectively, which is why both are idempotent
+by construction: an existing heading id is never rewritten, and the font block is
+replaced between sentinels.
 
 **The output is committed.** Pages serves this repo root in `legacy` mode, so a committed
 artifact keeps the deploy byte-for-byte as it is. The cost is that `assets/build/` can drift
@@ -1096,7 +1160,12 @@ It is `xl` 800, per spec.
   1000, and that newsletter popup fires on its own 45s timer — at 700 a marketing card would
   land on top of Terms mid-read. `site.js` also defers the mkt trigger while `body.lgl-lock`
   is set, re-arming rather than dropping it.
-- **Content is fetched, one fragment per language** — `/legal/{doc}.{en|zh}.html`, six files.
+- **Content is fetched, one document per language** — `/legal/{doc}.{en|zh}.html`, six
+  files. They are **full HTML documents**, not fragments: the footer links to them
+  directly, so a long-press "open in new tab" has to render as a readable page rather
+  than unstyled text at desktop width on a phone. `load()` parses the response and
+  injects only its `<body>`; `.lgl-page` styles the standalone view and stands down
+  when the same wrapper arrives inside the dialog.
   Not `data-zh` attributes: `site.js` collects its i18n nodes **once at init**, so injected
   content renders correctly and then refuses to translate on the next toggle. Per-language
   fragments sidestep that entirely; a toggle while open re-fetches via the `MutationObserver`
@@ -1141,7 +1210,39 @@ then the trigger is in the DOM but hidden.
 
 ---
 
+## 15.7 The shared overlay lock — nav drawer + search
+
+Both were `role="dialog" aria-modal="true"` and neither backed it up: the page scrolled
+behind them and Tab walked straight out into it. `site.js` now has one lock, used by
+both, built from the same idiom as §15.6 — `inert` + `aria-hidden` on `<main>`,
+`.footer` and `.footer-baseline`, a Tab cycle inside the panel, focus returned to the
+trigger on close — with two additions those two need.
+
+- **`body.nav-lock` is `position: fixed`, not `overflow: hidden`.** iOS Safari keeps
+  scrolling the document behind an overflow-hidden body. The scroll offset is carried
+  on `top` and restored on release; without it, closing the drawer on an iPhone
+  returns you to the top of the page.
+- **The lock is refcounted and the open/close pair is guarded on `dataset.open`.** The
+  Escape handler is global and fires whether or not that overlay is the one open, so
+  an unbalanced close would strand the page locked.
+- Drawer links call `closeDrawer` **before** the browser follows them, so an in-page
+  `#anchor` is not scrolled to while the body is still pinned.
+
+The legal dialog keeps its own `body.lgl-lock` (plain `overflow: hidden`). It has extra
+concerns this lock does not — scrollbar-width compensation, a MutationObserver for
+injected i18n — and it is verified as-is; it would benefit from the same
+`position: fixed` treatment on iOS.
+
 ## 16. Per-page notes
+
+### 404 — `404.html`
+
+GitHub Pages serves it for any unmatched path under the domain. Built from the
+`reports/` chrome with `<main>` replaced; composes `.section` / `.container` /
+`.section-head`, and the only new CSS is `.nf-list` / `.nf-actions`. It carries
+`noindex` and **no canonical** — a 404 must not claim to be a real page — and its
+`#contact` links are rewritten to `/#contact`, since it has no contact section of
+its own (the same treatment `/product/signal/` uses).
 
 Everything above is site-wide. This section holds what is genuinely scoped to one page.
 Keep additions here as subsections — do not split them into separate files.

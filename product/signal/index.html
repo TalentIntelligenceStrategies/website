@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Colours the mobile browser chrome to the page ground; light page. -->
+<meta name="theme-color" content="#FFFFFF" />
 <title>Patent Intelligence — TIS</title>
 <meta name="description" content="Know what a patent is really worth before you invest. An objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — human + AI." />
 <link rel="canonical" href="https://tisglobalinc.com/product/signal/" />
@@ -27,11 +29,11 @@
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
 
-<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 <!-- Inconsolata SemiBold carries the pool numeral, which is set inline in a sentence —
      a swap-in after first paint reflows the words around it, not just the digits. -->
-<link rel="preload" href="/designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
 <link rel="stylesheet" href="/assets/styles.css?v=22">
 
@@ -622,6 +624,8 @@
      .contact-panel is already a solid white elevated card over the image. */
   .contact-card--sig-retrieve{
     background:var(--surface-inverse) url('/assets/imagery/signal/signal-cool-rot.jpg') center/cover no-repeat;
+    background:var(--surface-inverse) image-set(url('/assets/imagery/signal/signal-cool-rot-640.webp') type('image/webp'),
+                                               url('/assets/imagery/signal/signal-cool-rot.jpg') type('image/jpeg')) center/cover no-repeat;
   }
 
   /* Intake takes the HOMEPAGE treatment instead (index.html .contact-card--venture):
@@ -1053,7 +1057,7 @@
           <div class="products-menu-grid">
             <a href="/product/licensing/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+                <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -1064,7 +1068,7 @@
             </a>
             <a href="/product/signal/" class="product-card" role="menuitem">
               <span class="product-card-media">
-                <img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
                 <span class="product-card-name">
                   <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
                   <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
@@ -1134,7 +1138,7 @@
     <div id="m-products-sublist" class="mobile-sublist">
       <a href="/product/licensing/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" />
+          <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
@@ -1145,7 +1149,7 @@
       </a>
       <a href="/product/signal/" class="mobile-sub-row">
         <span class="mobile-sub-media">
-          <img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" />
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
           <span class="mobile-sub-name">
             <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
             <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
@@ -1173,13 +1177,29 @@
       <circle cx="11" cy="11" r="8"/>
     </svg>
     <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
-    <span class="search-esc" aria-hidden="true">Esc</span>
+    <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/product/licensing/" class="search-link">
+    <a href="/product/signal/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
-      <span data-zh="產品">Products</span>
+      <span data-zh="專利情報">Patent Intelligence</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/signal/methodology.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <span data-zh="SABCD 評級方法">SABCD Methodology</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/licensing/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+      <span data-zh="專利授權平台">Licensing Platform</span>
+      <span class="status-flag" data-zh="即將推出">Coming soon</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/licensing/badge.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+      <span data-zh="授權驗證標章">Verified License Badge</span>
       <span class="status-flag" data-zh="即將推出">Coming soon</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
@@ -1244,7 +1264,7 @@
           <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
           <span data-zh="泰然專利強度評級系統">Patent Intelligence</span>
         </p>
-        <h1 class="pillar-title">
+        <h1 class="pillar-title" id="know-what-a-patent-is-really-worth">
           <span data-zh-html data-zh="在投資之前，看清一件專利<em>真正的價值</em>。">Know what a patent is <em>really worth</em> — before you invest.</span>
         </h1>
         <p class="pillar-sub" data-zh="帶著已核准專利、申請中草稿，或僅是一個想法。拿回 PSS 排名、深度報告，或市場上最相關的十件專利。">Bring a granted patent, a pending draft, or just an idea. Get back a PSS rank, a deep report, or the ten patents that matter most.</p>
@@ -1520,7 +1540,7 @@
            is also why the dek has to do the work here. -->
       <header class="section-head">
         <div>
-          <h2 class="h-section" data-reveal data-zh="開始吧。">Get started.</h2>
+          <h2 class="h-section" data-reveal data-zh="開始吧。" id="get-started">Get started.</h2>
           <p class="section-dek" data-reveal data-zh-html data-zh="已核准專利、申請中草稿，或僅是一個想法。<br>三種都是有效的輸入。">A granted patent, a pending draft, or just an idea.<br>All three are valid inputs.</p>
         </div>
       </header>
@@ -1740,7 +1760,7 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
                         <span data-zh="尾款後解鎖">Unlocks with the balance</span>
                       </span>
-                      <img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" />
+                      <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 273px, (max-width: 1100px) 273px, 273px"><img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" ></picture>
                     </div>
                     <p class="sig-rt__pagemeta" id="rt-pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
                   </div>
@@ -1855,7 +1875,7 @@
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
-          <img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" />
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/short_report-400.webp 400w, /assets/imagery/signal/short_report-800.webp 800w, /assets/imagery/signal/short_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
           <div class="sig-xbanner__inner">
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="評等">The grade</span>
@@ -1877,11 +1897,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -1898,7 +1918,7 @@
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
-          <img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" />
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/long_report-400.webp 400w, /assets/imagery/signal/long_report-800.webp 800w, /assets/imagery/signal/long_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1243"></picture>
           <div class="sig-xbanner__inner">
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
@@ -1920,11 +1940,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -1941,7 +1961,7 @@
       <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
-          <img class="sig-xbanner__img" src="/assets/imagery/signal/advance_report.jpg" alt="" />
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/advance_report-400.webp 400w, /assets/imagery/signal/advance_report-800.webp 800w, /assets/imagery/signal/advance_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/advance_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
           <div class="sig-xbanner__inner">
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="場域">The field</span>
@@ -1963,11 +1983,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" />
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 12 頁</strong> · 等級，以及依相似度排序的十件最相近專利"><strong>Page 1 of 12</strong> · the grade, and the ten closest patents ranked by similarity</figcaption>
               </figure>
               <div class="sig-doc__rest">

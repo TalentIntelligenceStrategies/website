@@ -10,14 +10,14 @@ The deployable marketing site for **Talent Intelligence Strategies** (泰然策�
 | `/product/signal/`           | [`product/signal/index.html`](product/signal/index.html) — Signal deep-dive (token-based patent valuation, comparison, reports) |
 | `/product/licensing/`        | [`product/licensing/index.html`](product/licensing/index.html) — Licensing Platform deep-dive (30-patent bundles, jurisdiction × industry) |
 
-Each page is self-contained HTML — no build step, no router. Shared chrome (top nav, footer, theme toggle, language switcher) is duplicated across all three pages; design changes there mean editing all three files.
+Each page is self-contained HTML — no router, and the pages themselves are hand-authored. There **is** a build step beside them (`npm run build`) that produces the vendored three.js / GSAP bundles, the React-island runtime, the subset WOFF2 fonts, the responsive WebP variants and the search index; see [DESIGN.md](DESIGN.md) §15. Shared chrome (top nav, footer, language switcher) is duplicated across all nine pages; a change there means editing every page file.
 
 ## Shared assets
 
 | Path                     | What it is                                               |
 | ------------------------ | -------------------------------------------------------- |
-| [`assets/styles.css`](assets/styles.css) | All CSS — tokens, components, page layouts. ~3,800 lines. Single source of truth for visual design. |
-| [`assets/site.js`](assets/site.js)       | All JS — theme toggle, language switcher, mobile drawer, search, hero slider, form handlers. ~1,280 lines. |
+| [`assets/styles.css`](assets/styles.css) | All CSS — tokens, components, page layouts. Single source of truth for visual design. Its `@font-face` block is generated between sentinels — don't hand-edit it. |
+| [`assets/site.js`](assets/site.js)       | All JS — language switcher, mobile drawer, search, carousels, form handlers. |
 | [`designs/`](designs/)   | Read-only brand snapshots + fonts, logos, icons mirrored from the brand monorepo. |
 
 **Asset paths are root-relative** — every reference uses `/assets/...` or `/designs/assets/...`. This works because GitHub Pages with a custom domain serves the repo at the domain root. Don't change to relative paths — subpages two levels deep would break.

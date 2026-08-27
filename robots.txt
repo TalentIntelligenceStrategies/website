@@ -1,0 +1,19 @@
+# tisglobalinc.com
+User-agent: *
+Allow: /
+
+# Internal working material — copy reviews, storyboards, script drafts. Served from
+# the repo root because Pages serves the whole tree, but not public-facing.
+Disallow: /documents/
+# Read-only brand mirrors: fonts, logos, snapshot .md files. Assets are referenced
+# from the pages that need them; the directory itself is not a destination.
+Disallow: /designs/
+# Build artifacts.
+Disallow: /assets/build/
+# Render harnesses used to generate product stills and badge previews — pages in
+# form only. Each also carries its own noindex, which is the signal that actually
+# keeps them out of an index; this just saves the crawl.
+Disallow: /assets/product-shots/
+Disallow: /assets/badges/
+
+Sitemap: https://tisglobalinc.com/sitemap.xml

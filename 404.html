@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Colours the mobile browser chrome to the page ground; light page. -->
 <meta name="theme-color" content="#FFFFFF" />
-<title>Reports &amp; Press — TIS</title>
-<meta name="description" content="Quarterly reads on the IP landscape, and the news behind TIS — patent landscape reports, transfer-market analysis, and partnership announcements." />
-<link rel="canonical" href="https://tisglobalinc.com/reports/" />
+<title>Page not found — TIS</title>
+<meta name="description" content="That page doesn't exist on tisglobalinc.com." />
+<meta name="robots" content="noindex" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
-<meta property="og:url" content="https://tisglobalinc.com/reports/" />
-<meta property="og:title" content="Reports &amp; Press — TIS" />
-<meta property="og:description" content="Quarterly reads on the IP landscape, and the news behind TIS — patent landscape reports, transfer-market analysis, and partnership announcements." />
+<meta property="og:url" content="https://tisglobalinc.com/" />
+<meta property="og:title" content="Page not found — TIS" />
+<meta property="og:description" content="That page doesn't exist on tisglobalinc.com." />
 <meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -21,8 +21,8 @@
 <meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Reports &amp; Press — TIS" />
-<meta name="twitter:description" content="Quarterly reads on the IP landscape, and the news behind TIS." />
+<meta name="twitter:title" content="Page not found — TIS" />
+<meta name="twitter:description" content="That page doesn't exist on tisglobalinc.com." />
 <meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
 <meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
 
@@ -135,7 +135,7 @@
         </svg>
       </button>
 
-      <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
@@ -187,7 +187,7 @@
     <a href="/about/"    data-zh="關於">About</a>
   </nav>
   <div class="mobile-auth">
-    <a href="#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>
 
@@ -241,7 +241,7 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="#contact" class="search-link">
+    <a href="/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -252,278 +252,46 @@
 <main id="main">
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  homepage hero grammar; About-style plasma shader (mono glow) ║
+       ║ 404  —  Pages serves this for any unmatched path under the domain.  ║
+       ║ Composes .section / .container / .section-head; the only new CSS is ║
+       ║ .nf-list, which has no equivalent in the sheet.                     ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" aria-label="Hero">
-    <!-- Plasma-lines WebGL shader, muted to a near-mono white glow on black and
-         slowed to match the About hero. Mounted by the inline script near
-         </body>. The black .hero background shows through if WebGL fails. -->
-    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
-    <div class="hero-grid" aria-hidden="true"></div>
-
-    <div class="container hero-inner">
-      <div class="pillar" data-pillar="positioning">
-        <h1 class="pillar-title" id="reports-press">
-          <span data-zh="報告與新聞">Reports &amp; Press</span>
-        </h1>
-        <p class="pillar-sub">
-          <span data-zh="每季解讀 IP 地形，以及 TIS 背後的動態。">Quarterly reads on the IP landscape, and the news behind TIS.</span>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Latest reports  —  Content card row                                 ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section" id="reports" aria-labelledby="reports-heading">
+  <section class="section" aria-labelledby="nf-heading">
     <div class="container">
       <header class="section-head">
         <div>
-          <h2 id="reports-heading" class="h-section" data-reveal data-zh="最新報告">Latest reports</h2>
-          <p class="section-dek" data-reveal data-zh="每季解讀 IP 地形——專利佈局如何在各產業與司法管轄區之間移動。">Quarterly reads on the IP landscape — how patent positions shift across industries and jurisdictions.</p>
-        </div>
-        <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" aria-controls="reports-carousel">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
-          </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" aria-controls="reports-carousel">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </button>
+          <p class="eyebrow" data-zh="404">404</p>
+          <h1 id="nf-heading" class="h-section" data-zh="這個頁面不存在。">This page doesn&rsquo;t exist.</h1>
+          <p class="section-dek" data-zh="連結可能已失效，或網址有誤。以下是站上實際有的內容。">The link may be out of date, or the address may have a typo. Here is what is actually on the site.</p>
         </div>
       </header>
 
-      <!-- Reports carousel — newest (left) to oldest (right).
-           Deks are drafted from the report titles; refine as reports publish. -->
-      <div class="report-carousel" id="reports-carousel">
-        <ul class="report-carousel-track">
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="reports-card-1">
-              <picture><source type="image/webp" srcset="/assets/imagery/reports/drone-400.webp 400w, /assets/imagery/reports/drone-800.webp 800w, /assets/imagery/reports/drone-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/drone.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">Q1 2026</span>
-                <h3 id="reports-card-1" class="report-card-title" data-zh="台灣無人機專利地形分析">Taiwan Drone Patent Landscape Report</h3>
-                <p class="report-card-dek" data-zh="盤點台灣無人機專利地形——飛控、動力與酬載請求項家族的持有分布，以及尚未佈局的空白地帶。">A read on Taiwan's UAV patent terrain — who holds the flight-control, propulsion, and payload claim families, and where the white space remains.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="reports-card-2">
-              <picture><source type="image/webp" srcset="/assets/imagery/reports/japan-400.webp 400w, /assets/imagery/reports/japan-800.webp 800w, /assets/imagery/reports/japan-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/japan.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">Q4 2025</span>
-                <h3 id="reports-card-2" class="report-card-title" data-zh="日本企業專利出清流向分析">Japanese Enterprise Patent Sell-Off Flow Report</h3>
-                <p class="report-card-dek" data-zh="追蹤日本企業出清專利的流向——買方、仲介，以及吸納這波釋出的司法管轄區。">Tracking the patents Japanese corporates are divesting and where they land — the acquirers, the brokers, and the jurisdictions absorbing the outflow.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="reports-card-3">
-              <picture><source type="image/webp" srcset="/assets/imagery/reports/taiwan-400.webp 400w, /assets/imagery/reports/taiwan-800.webp 800w, /assets/imagery/reports/taiwan-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/taiwan.jpg" alt="" loading="lazy" decoding="async" width="1000" height="666"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">Q3 2025</span>
-                <h3 id="reports-card-3" class="report-card-title" data-zh="台灣專利轉讓市場：買家、賣家與仲介商分析報告">Taiwan Patent Transfer Market Report</h3>
-                <p class="report-card-dek" data-zh="解構台灣專利轉讓市場的參與者——誰在買、誰在賣，以及居中促成交易的仲介商。">The players moving patents through Taiwan's assignment market — who's buying, who's selling, and the brokers sitting between them.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="reports-card-4">
-              <picture><source type="image/webp" srcset="/assets/imagery/reports/thermal-400.webp 400w, /assets/imagery/reports/thermal-750.webp 750w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/reports/thermal.jpg" alt="" loading="lazy" decoding="async" width="750" height="1000"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">Q2 2025</span>
-                <h3 id="reports-card-4" class="report-card-title" data-zh="能源電源管理與熱管理專利技術分析">Power &amp; Thermal Management Patent Report</h3>
-                <p class="report-card-dek" data-zh="能源系統中電源管理與熱管理專利的技術解讀——請求項密度集中之處，以及佈局重疊的區段。">A technology read on power-management and thermal-management patents across energy systems — where claim density concentrates and where positions overlap.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="report-dots" role="tablist" aria-label="Report slides"></div>
-    </div>
-  </section>
+      <ul class="nf-list">
+        <li>
+          <a href="/product/signal/"><span data-zh="專利情報">Patent Intelligence</span></a>
+          <span data-zh="單件專利評級、50 項指標，或完整專利地圖。">One grade, 50 indicators, or the whole landscape.</span>
+        </li>
+        <li>
+          <a href="/product/licensing/"><span data-zh="專利授權平台">Licensing Platform</span></a>
+          <span data-zh="涵蓋美國與台灣的 30 件專利防護網（即將推出）。">30-patent bundles across US and Taiwan (coming soon).</span>
+        </li>
+        <li>
+          <a href="/patents/"><span data-zh="自有專利">Owned Patents</span></a>
+          <span data-zh="我們自有的專利組合。">The portfolio we hold ourselves.</span>
+        </li>
+        <li>
+          <a href="/reports/"><span data-zh="報告與新聞">Reports &amp; Press</span></a>
+          <span data-zh="季度專利地形報告與公司消息。">Quarterly landscape reads and company news.</span>
+        </li>
+        <li>
+          <a href="/about/"><span data-zh="關於 TIS">About TIS</span></a>
+          <span data-zh="我們是誰，以及我們為何做這件事。">Who we are, and why we do this.</span>
+        </li>
+      </ul>
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Press releases  —  Content card row                                 ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section" id="press" aria-labelledby="press-heading">
-    <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="press-heading" class="h-section" data-reveal data-zh="新聞稿">Press releases</h2>
-          <p class="section-dek" data-reveal data-zh-html data-zh="公司動態、合作公告與精選媒體報導。">Company news, partnership announcements,<br>and select press coverage.</p>
-        </div>
-        <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous press releases" aria-controls="press-carousel">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
-          </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next press releases" aria-controls="press-carousel">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </header>
-
-      <!-- Press carousel — partnership announcements, oldest to newest.
-           Dates are placeholders; confirm against real announcement timeline. -->
-      <div class="report-carousel" id="press-carousel">
-        <ul class="report-carousel-track">
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="press-card-1">
-              <picture><source type="image/webp" srcset="/assets/imagery/press/nycu-400.webp 400w, /assets/imagery/press/nycu-800.webp 800w, /assets/imagery/press/nycu-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/nycu.jpg" alt="" loading="lazy" decoding="async" width="1000" height="662"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">2026-03-26</span>
-                <h3 id="press-card-1" class="report-card-title" data-zh="陽明交大研究專利進入 TIS 授權管道。">NYCU research patents enter the TIS licensing pipeline.</h3>
-                <p class="report-card-dek" data-zh="一條從陽明交大實驗室直通商業授權的管道，將校方持有的研究專利開放給 TIS 客戶。">A direct channel from the university's labs to commercial licensing, opening NYCU-held research patents to TIS clients.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="press-card-2">
-              <picture><source type="image/webp" srcset="/assets/imagery/press/iii-400.webp 400w, /assets/imagery/press/iii-800.webp 800w, /assets/imagery/press/iii-1600.webp 1600w, /assets/imagery/press/iii-1920.webp 1920w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/iii.jpg" alt="" loading="lazy" decoding="async" width="1920" height="1440"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">2026-01-15</span>
-                <h3 id="press-card-2" class="report-card-title" data-zh="資策會與 TIS 將數位轉型研究轉化為可授權的智財。">III and TIS turn digital-transformation research into licensable IP.</h3>
-                <p class="report-card-dek" data-zh="攜手將資策會的數位轉型研究，整理為台灣產業可授權、可延伸應用的智財。">Joint work to package III's digital-transformation research into IP that Taiwan's industries can license and build on.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="press-card-3">
-              <picture><source type="image/webp" srcset="/assets/imagery/press/itri-ipic-400.webp 400w, /assets/imagery/press/itri-ipic-800.webp 800w, /assets/imagery/press/itri-ipic-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/itri-ipic.jpg" alt="" loading="lazy" decoding="async" width="1000" height="667"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">2025-11-20</span>
-                <h3 id="press-card-3" class="report-card-title" data-zh="工研院 iPIC 將工業級專利導入 TIS 授權網絡。">ITRI's iPIC brings industrial-grade patents into the TIS licensing network.</h3>
-                <p class="report-card-dek" data-zh="工研院專利池為 TIS 網絡注入經產業驗證的應用型專利，擴充可供授權的組合深度。">ITRI's patent-pool arm feeds applied, industry-tested patents into the TIS network, deepening the bundles available to license.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-
-          <li class="report-card-cell">
-            <a class="report-card" aria-labelledby="press-card-4">
-              <picture><source type="image/webp" srcset="/assets/imagery/press/innovue-400.webp 400w, /assets/imagery/press/innovue-800.webp 800w, /assets/imagery/press/innovue-1000.webp 1000w" sizes="(max-width: 640px) 287px, (max-width: 1100px) 340px, 340px"><img class="report-card-media" src="/assets/imagery/press/innovue.jpg" alt="" loading="lazy" decoding="async" width="1000" height="562"></picture>
-              <div class="report-card-body">
-                <span class="report-card-eyebrow">2025-09-04</span>
-                <h3 id="press-card-4" class="report-card-title" data-zh="TIS 與 Innovue 締結奠基合作，撐起每一項交付成果。">TIS and Innovue forge the founding partnership behind every deliverable.</h3>
-                <p class="report-card-dek" data-zh="奠基的結盟——Innovue 的 IP 情報平台與專業，撐起 TIS 每一份分析與報告。">The founding alliance: Innovue's IP intelligence platform and expertise underpin every analysis and report TIS produces.</p>
-                <span class="report-card-more"><span data-zh="閱讀更多">Read more</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="report-dots" role="tablist" aria-label="Press slides"></div>
-    </div>
-  </section>
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Footer  —  components.md §Footer                                    ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="contact" id="contact" aria-labelledby="contact-heading">
-    <div class="container">
-      <div class="contact-card contact-card--venture">
-
-        <aside class="contact-overlay">
-          <div class="contact-overlay-top">
-            <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
-            <p class="contact-lead" data-zh="從一件專利到整個專利組合，告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
-          </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
-        </aside>
-
-        <div class="contact-panel">
-          <form class="contact-form" id="contact-form" novalidate>
-            <div class="contact-row">
-              <div class="field">
-                <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
-              </div>
-              <div class="field">
-                <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
-              </div>
-            </div>
-            <div class="contact-row">
-              <div class="field">
-                <label for="contact-email" data-zh="電子郵件">Email Address</label>
-                <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
-              </div>
-              <div class="field">
-                <label for="contact-phone" data-zh="電話">Phone Number</label>
-                <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+886 2 1234 5678" />
-              </div>
-            </div>
-            <div class="field">
-              <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
-            </div>
-
-            <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
-                 EN labels streamlined (Miko 2026-07-18): Licensing / Evaluation / Reports / Owned Patents / Media / Other. -->
-            <fieldset class="contact-topics">
-              <legend data-zh="諮詢類型">Inquiry type</legend>
-              <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="topic" value="licensing" /><span data-zh="專利授權">Licensing</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="evaluation" /><span data-zh="專利評估">Intelligence</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="reports" /><span data-zh="專利報告">Reports</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="owned" /><span data-zh="自有專利">Owned Patents</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="media" /><span data-zh="媒體採訪">Media</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="other" /><span data-zh="其他">Other</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field">
-              <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
-            </div>
-            <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
-            </div>
-          </form>
-
-          <div class="contact-success" id="contact-success" role="status" aria-live="polite">
-            <span class="check-pill" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-            </span>
-            <div>
-              <h3 data-zh="訊息已送出。">Message sent.</h3>
-            </div>
-          </div>
-        </div>
-
+      <div class="nf-actions">
+        <a href="/" class="btn btn-primary" data-zh="回到首頁">Back to home</a>
+        <a href="/#contact" class="btn btn-secondary" data-zh="與我們聯絡">Talk to us</a>
       </div>
     </div>
   </section>
