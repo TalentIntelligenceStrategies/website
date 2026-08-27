@@ -4,14 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SABCD Methodology — Patent Intelligence — TIS</title>
-<meta name="description" content="How the SABCD five-tier patent grade is calculated — 8 pillars, 50 indicators, the PSS scoring engine." />
+<meta name="description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
 <link rel="canonical" href="https://tisglobalinc.com/product/signal/methodology.html" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/product/signal/methodology.html" />
 <meta property="og:title" content="SABCD Methodology — Patent Intelligence — TIS" />
-<meta property="og:description" content="How the SABCD five-tier patent grade is calculated — 8 pillars, 50 indicators, the PSS scoring engine." />
+<meta property="og:description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
 <meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,7 +20,7 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="SABCD Methodology — Patent Intelligence — TIS" />
-<meta name="twitter:description" content="How the SABCD five-tier patent grade is calculated — 8 pillars, 50 indicators, the PSS scoring engine." />
+<meta name="twitter:description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
 <meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
 <meta name="twitter:image:alt" content="TIS Patent Intelligence — SABCD Methodology" />
 
@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=19">
+<link rel="stylesheet" href="/assets/styles.css?v=21">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -210,315 +210,253 @@
   </div>
 </div>
 
-<main id="main" data-pillar="signal">
-
-  <!-- Hero — one-slide variant, cool gradient for the Signal pillar.
-       Page scaffolding only — body sections to be filled in a later content pass. -->
-  <section class="hero" aria-label="SABCD Methodology hero" data-active-pillar="signal">
-    <div class="hero-warm" aria-hidden="true"></div>
-    <div class="hero-silver" aria-hidden="true"></div>
-    <div class="hero-signal" aria-hidden="true"></div>
-
-    <div class="container hero-inner">
-      <article class="pillar" data-pillar="signal">
-        <p class="pillar-eyebrow" data-zh="">Token-Based Valuation · SABCD</p>
-        <h1 class="pillar-title">
-          <span data-zh="SABCD 評級方法">SABCD Methodology.</span>
-        </h1>
-        <p class="pillar-sub" data-zh="8 大支柱 · 50 項量化指標 · 0–100 分綜合評分。">Eight pillars. Fifty indicators. One PSS score on a 0–100 scale.</p>
-        <p class="pillar-sub" data-zh="每一份 Signal 報告背後的同一套評分引擎——每根支柱量測什麼、50 項指標如何運作，以及 0–100 分的 PSS 如何在全池同儕中對應到 S–D 評級。">The same scoring engine behind every report we issue — what each pillar measures, how the 50 indicators work, and how a 0–100 PSS resolves to an S–D tier against the full reference pool.</p>
-        <div class="pillar-actions">
-          <a href="/product/signal/" class="btn btn-secondary" data-zh="回到 Signal">Back to Patent Intelligence</a>
-        </div>
-      </article>
-    </div>
-  </section>
+<main id="main">
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Companies by patent strength — the SABCD method rolled up to a      ║
-       ║ portfolio. Each gauge = mean PSS across a company's graded patents; ║
-       ║ gauge stays monochrome, the tier chip carries the grade.            ║
-       ║ Illustrative sample data (mirrors the signal-flow preview).         ║
+       ║ Masthead — this page has NO .hero, and that is deliberate.           ║
+       ║ It is a reference document consulted under scrutiny, not a claim, so ║
+       ║ the h1 sits at .h-section scale rather than .pillar-title's hero     ║
+       ║ clamp — the same reasoning DESIGN.md gives .veil__title.             ║
+       ║ The pipeline below doubles as the page's jump-nav: the table of      ║
+       ║ contents IS the diagram, so the reader sees all five stages at once  ║
+       ║ and clicks into any of them. That is also why no row carries a       ║
+       ║ numbered eyebrow — the sequence lives here, once.                    ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section" id="portfolio-signal" aria-labelledby="cscore-heading">
+  <section class="section mth-masthead" aria-labelledby="mth-title">
     <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="cscore-heading" class="h-section grad-text-silver-solid" data-zh="SABCD 評級">SABCD tiers</h2>
-          <p class="section-dek" data-zh="評級是全池百分位的分級。S 為池內前 15%——即首頁所述的「S 級（前 15%）」。">A tier is a discretisation of pool percentile. S is the top 15% of the pool — the "S (top 15%)" the homepage cites.</p>
+      <h1 class="mth-masthead__title" id="mth-title" data-reveal data-zh="評分是怎麼算出來的。">How the score is calculated.</h1>
+      <p class="mth-masthead__lede" data-reveal data-zh="50 項指標、八大支柱、一個 0–100 分的總分，以及 S 到 D 的評級。每一步都能追溯回一個可查核的數字。">50 indicators, eight pillars, one 0–100 score, and a grade from S to D. Every step traces back to a number you can check.</p>
+
+      <!-- Five stages, five anchors. Figures are mono (numerals); labels are sans
+           (they read as words — §2). Collapses to a vertical spine at 880px rather
+           than crushing five columns into a phone width. -->
+      </div>
+      <div class="mth-pipe-band">
+        <div class="container">
+          <nav class="mth-pipe" aria-label="How the score is calculated">
+        <a class="mth-pipe__step" href="#indicators">
+          <span class="mth-pipe__fig">50</span>
+          <span class="mth-pipe__label" data-zh="項指標">indicators</span>
+        </a>
+        <a class="mth-pipe__step" href="#pillars">
+          <span class="mth-pipe__fig">8</span>
+          <span class="mth-pipe__label" data-zh="大支柱">pillars</span>
+        </a>
+        <a class="mth-pipe__step" href="#pool">
+          <span class="mth-pipe__fig">1433</span>
+          <span class="mth-pipe__label" data-zh="件參考池">reference pool</span>
+        </a>
+        <a class="mth-pipe__step" href="#percentile">
+          <span class="mth-pipe__fig">0–100</span>
+          <span class="mth-pipe__label" data-zh="分池內百分位">in-pool percentile</span>
+        </a>
+        <a class="mth-pipe__step" href="#grade">
+          <span class="mth-pipe__fig">S–D</span>
+          <span class="mth-pipe__label" data-zh="評級">grade</span>
+        </a>
+      </nav>
         </div>
-      </header>
-
-      <div class="prod-ref-table-wrap">
-        <table class="prod-ref-table">
-          <thead><tr>
-            <th data-zh="評級">Tier</th>
-            <th data-zh="百分位區間">Band</th>
-            <th data-zh="代表意義">What it means</th>
-          </tr></thead>
-          <tbody>
-            <tr><td><span class="tier-chip tier-chip--s">S</span></td><td class="mono" data-zh="≥ 第 85 百分位">≥ P85</td><td data-zh="頂級戰略">Premier strategic</td></tr>
-            <tr><td><span class="tier-chip tier-chip--a">A</span></td><td class="mono" data-zh="第 65–84 百分位">P65–84</td><td data-zh="高價值核心">High-value core</td></tr>
-            <tr><td><span class="tier-chip tier-chip--b">B</span></td><td class="mono" data-zh="第 35–64 百分位">P35–64</td><td data-zh="實用技術">Practical technology</td></tr>
-            <tr><td><span class="tier-chip tier-chip--c">C</span></td><td class="mono" data-zh="第 15–34 百分位">P15–34</td><td data-zh="一般防禦">General defense</td></tr>
-            <tr><td><span class="tier-chip tier-chip--d">D</span></td><td class="mono" data-zh="< 第 15 百分位">&lt; P15</td><td data-zh="基礎布局">Foundation layout</td></tr>
-          </tbody>
-        </table>
       </div>
-
-      <p class="section-dek" data-zh="同一套評級延伸至整個專利組合——每個量規是該公司已評分專利的 PSS 平均值，彙整為單一 SABCD 等級，下方分布條顯示 S–D 的構成。">And rolled up to a portfolio — each gauge is the mean PSS across a company's graded patents, resolved to one aggregate SABCD tier. The strip below shows how it distributes across S–D.</p>
-
-      <div class="coscore-grid">
-
-        <!-- S — Macrosilicon Mfg -->
-        <article class="coscore-card">
-          <div class="cs-head">
-            <div>
-              <h3 class="cs-name">Macrosilicon Mfg</h3>
-              <div class="cs-meta"><span class="cs-juris">TW</span><span class="cs-pool" data-zh="半導體 / IC 設計">Semiconductor / IC design</span></div>
-            </div>
-            <span class="tier-chip tier-chip--s">Tier S</span>
-          </div>
-          <div class="cs-gauge">
-            <div class="r-metric-arc">
-              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="249 283"/>
-              </svg>
-              <div class="r-metric-arc-val">88<small>/100</small></div>
-            </div>
-          </div>
-          <p class="cs-strength" data-zh="強 · PSS 平均">Strong · avg PSS</p>
-          <div class="cs-dist" aria-label="Tier distribution">
-            <div class="cell"><span class="tl tl-s">S</span><span class="ct">9</span></div>
-            <div class="cell"><span class="tl tl-a">A</span><span class="ct">18</span></div>
-            <div class="cell"><span class="tl tl-b">B</span><span class="ct">11</span></div>
-            <div class="cell"><span class="tl tl-c">C</span><span class="ct">3</span></div>
-            <div class="cell"><span class="tl tl-d">D</span><span class="ct">1</span></div>
-          </div>
-          <p class="cs-desc"><strong data-zh="42 件已評分專利">42 graded patents</strong> <span data-zh="在 183 件半導體 / IC 設計池中。SEP 密集，國際家族深厚。">in the 183-patent semiconductor / IC design pool. SEP-dense, deep international families.</span></p>
-        </article>
-
-        <!-- A — Vivid Imaging -->
-        <article class="coscore-card">
-          <div class="cs-head">
-            <div>
-              <h3 class="cs-name">Vivid Imaging</h3>
-              <div class="cs-meta"><span class="cs-juris">US</span><span class="cs-pool" data-zh="影像感測器">Image sensors</span></div>
-            </div>
-            <span class="tier-chip tier-chip--a">Tier A</span>
-          </div>
-          <div class="cs-gauge">
-            <div class="r-metric-arc">
-              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="201 283"/>
-              </svg>
-              <div class="r-metric-arc-val">71<small>/100</small></div>
-            </div>
-          </div>
-          <p class="cs-strength" data-zh="中 · PSS 平均">Mid · avg PSS</p>
-          <div class="cs-dist" aria-label="Tier distribution">
-            <div class="cell"><span class="tl tl-s">S</span><span class="ct">3</span></div>
-            <div class="cell"><span class="tl tl-a">A</span><span class="ct">14</span></div>
-            <div class="cell"><span class="tl tl-b">B</span><span class="ct">13</span></div>
-            <div class="cell"><span class="tl tl-c">C</span><span class="ct">5</span></div>
-            <div class="cell"><span class="tl tl-d">D</span><span class="ct zero">1</span></div>
-          </div>
-          <p class="cs-desc"><strong data-zh="36 件已評分專利">36 graded patents</strong> <span data-zh="在 124 件影像感測器池中。被引強度高，地理布局較窄。">in the 124-patent image-sensor pool. Strong citation impact, narrower geographic reach.</span></p>
-        </article>
-
-        <!-- B — Yuan Bio Tech -->
-        <article class="coscore-card">
-          <div class="cs-head">
-            <div>
-              <h3 class="cs-name">Yuan Bio Tech</h3>
-              <div class="cs-meta"><span class="cs-juris">TW</span><span class="cs-pool" data-zh="生物科技">Biotech</span></div>
-            </div>
-            <span class="tier-chip tier-chip--b">Tier B</span>
-          </div>
-          <div class="cs-gauge">
-            <div class="r-metric-arc">
-              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="147 283"/>
-              </svg>
-              <div class="r-metric-arc-val">52<small>/100</small></div>
-            </div>
-          </div>
-          <p class="cs-strength" data-zh="中 · PSS 平均">Mid · avg PSS</p>
-          <div class="cs-dist" aria-label="Tier distribution">
-            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">1</span></div>
-            <div class="cell"><span class="tl tl-a">A</span><span class="ct">5</span></div>
-            <div class="cell"><span class="tl tl-b">B</span><span class="ct">13</span></div>
-            <div class="cell"><span class="tl tl-c">C</span><span class="ct">7</span></div>
-            <div class="cell"><span class="tl tl-d">D</span><span class="ct">2</span></div>
-          </div>
-          <p class="cs-desc"><strong data-zh="28 件已評分專利">28 graded patents</strong> <span data-zh="在 91 件生物科技池中。核心覆蓋紮實，技術活躍且可防禦。">in the 91-patent biotech pool. Solid core coverage; technically active, defensible.</span></p>
-        </article>
-
-        <!-- C — AIChip Co. -->
-        <article class="coscore-card">
-          <div class="cs-head">
-            <div>
-              <h3 class="cs-name">AIChip Co.</h3>
-              <div class="cs-meta"><span class="cs-juris">EP</span><span class="cs-pool" data-zh="AI 加速器">AI accelerators</span></div>
-            </div>
-            <span class="tier-chip tier-chip--c">Tier C</span>
-          </div>
-          <div class="cs-gauge">
-            <div class="r-metric-arc">
-              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="76 283"/>
-              </svg>
-              <div class="r-metric-arc-val">27<small>/100</small></div>
-            </div>
-          </div>
-          <p class="cs-strength" data-zh="弱 · PSS 平均">Weak · avg PSS</p>
-          <div class="cs-dist" aria-label="Tier distribution">
-            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">0</span></div>
-            <div class="cell"><span class="tl tl-a">A</span><span class="ct zero">1</span></div>
-            <div class="cell"><span class="tl tl-b">B</span><span class="ct">4</span></div>
-            <div class="cell"><span class="tl tl-c">C</span><span class="ct">10</span></div>
-            <div class="cell"><span class="tl tl-d">D</span><span class="ct">4</span></div>
-          </div>
-          <p class="cs-desc"><strong data-zh="19 件已評分專利">19 graded patents</strong> <span data-zh="在 67 件 AI 加速器池中。範圍狹窄，多為防禦性布局。">in the 67-patent AI-accelerator pool. Narrow scope; largely defensive positioning.</span></p>
-        </article>
-
-        <!-- D — Hongchen Power -->
-        <article class="coscore-card">
-          <div class="cs-head">
-            <div>
-              <h3 class="cs-name">Hongchen Power</h3>
-              <div class="cs-meta"><span class="cs-juris">CN</span><span class="cs-pool" data-zh="功率電子">Power electronics</span></div>
-            </div>
-            <span class="tier-chip tier-chip--d">Tier D</span>
-          </div>
-          <div class="cs-gauge">
-            <div class="r-metric-arc">
-              <svg class="r-metric-arc-svg" viewBox="0 0 148 148" aria-hidden="true">
-                <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-                <path class="arc-fill"  d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="31 283"/>
-              </svg>
-              <div class="r-metric-arc-val">11<small>/100</small></div>
-            </div>
-          </div>
-          <p class="cs-strength" data-zh="弱 · PSS 平均">Weak · avg PSS</p>
-          <div class="cs-dist" aria-label="Tier distribution">
-            <div class="cell"><span class="tl tl-s">S</span><span class="ct zero">0</span></div>
-            <div class="cell"><span class="tl tl-a">A</span><span class="ct zero">0</span></div>
-            <div class="cell"><span class="tl tl-b">B</span><span class="ct">2</span></div>
-            <div class="cell"><span class="tl tl-c">C</span><span class="ct">6</span></div>
-            <div class="cell"><span class="tl tl-d">D</span><span class="ct">15</span></div>
-          </div>
-          <p class="cs-desc"><strong data-zh="23 件已評分專利">23 graded patents</strong> <span data-zh="在 142 件功率電子池中。布局廣但被引低，屬老化的基礎布局。">in the 142-patent power-electronics pool. Broad but low-citation, ageing foundation layout.</span></p>
-        </article>
-
-      </div>
-    </div>
   </section>
 
-  <!-- ─── How the PSS score is built (data-sheet) ─── -->
-  <section class="section" aria-labelledby="pss-heading">
-    <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="pss-heading" class="h-section grad-text-silver-solid" data-zh="PSS 分數怎麼算出來">How the PSS score is built</h2>
-          <p class="section-dek" data-zh="每件專利依 8 大支柱、50 項指標評分。原始值先在全池內正規化，聚合為 0–100 的 PSS，再對應 SABCD 評級——百分位與池內排名，皆由同一次比較得出。">Every patent is graded on 50 indicators across 8 pillars. Raw values are normalised inside the full reference pool, aggregated into a 0–100 PSS, and mapped to a SABCD tier — percentile and rank fall out of the same comparison.</p>
-        </div>
-      </header>
-
-      <div class="prod-ref-table-wrap">
-        <div class="prod-ref-table-head">
-          <h4 data-zh="從原始值到 PSS">From raw value to PSS</h4>
-        </div>
-        <table class="prod-ref-table">
-          <thead><tr>
-            <th data-zh="步驟">Step</th>
-            <th data-zh="發生什麼">What happens</th>
-          </tr></thead>
-          <tbody>
-            <tr><td class="mono">1</td><td data-zh="為 50 項指標計算結構化訊號與 NLP 評分。">Structured signals and NLP rubric scores are computed for all 50 indicators.</td></tr>
-            <tr><td class="mono">2</td><td data-zh="每個數值對全池排名——取百分位，而非絕對值；單一跨產業基準。">Each value is ranked against the full pool — a percentile, not an absolute, on one cross-industry benchmark.</td></tr>
-            <tr><td class="mono">3</td><td data-zh="指標聚合為八大支柱，各自獨立加權。">Indicators roll up into eight pillars, each independently weighted.</td></tr>
-            <tr><td class="mono">4</td><td data-zh="綜合結果對應到 0–100 的 PSS 與一個 SABCD 評級。">The composite resolves to a 0–100 PSS and one SABCD tier.</td></tr>
-          </tbody>
-        </table>
+  <!-- ═══ 1 · Measure ═══════════════════════════════════════════════════════
+       The panel is the one place a reader can see the SHAPE of the paid
+       deliverable without getting it: the structure of an indicator row is
+       visible, the names are not. The redaction is the message, so the caption
+       has to say it is deliberate or it reads as a rendering bug.
+       Never name an individual indicator on this page — chapter 3 of the Study
+       report is what names all 50, and that is what it sells. ── -->
+  <!-- ╔═════════════════════════════════════════════════════════════════════╗
+       ║ The stage — six steps, one figure that pins and swaps.                ║
+       ║ These were six alternating .feature-row sections. They are one now,   ║
+       ║ and the six anchors moved onto the six steps: #pool is linked from    ║
+       ║ product/signal/index.html and from .sig-colophon, so it is           ║
+       ║ load-bearing and must keep resolving to a visible element.            ║
+       ║                                                                      ║
+       ║ Copy and figure are in different columns, so the reading order is six ║
+       ║ steps then six figures. That is why every <figure> is labelled by its ║
+       ║ step's own h2 — the adjacency that used to carry the association is   ║
+       ║ gone, so the association has to be stated.                           ║
+       ║                                                                      ║
+       ║ Markup default = the no-JS state: everything stacked, all six figures ║
+       ║ visible. site.js adds .is-live only when the pin will really apply.   ║
+       ╚═════════════════════════════════════════════════════════════════════╝ -->
+  <div class="mth-stage">
+    <div class="container mth-stage__grid">
+      <div class="mth-stage__steps">
+        <section class="mth-stage__step" id="indicators" data-step="0" aria-labelledby="mth-ind-title">
+          <p class="feature-row__num mth-label" data-zh="量測">Measure</p>
+          <h2 class="feature-row__title" id="mth-ind-title" data-reveal data-zh="量測什麼">What gets measured</h2>
+          <p data-zh="每件專利都會計算 50 項指標。多數由專利紀錄計算——引用、家族、請求項、日期、法律狀態。其餘由封閉資料庫的 AI 工具閱讀專利文本後評分。">50 indicators are computed for every patent. Most are calculated from the patent record: citations, family, claims, dates, legal status. The rest are graded by closed-database AI tools reading the patent text.</p>
+          <p data-zh="每一項指標都帶著三個數字：原始值、池內百分位，以及它在所屬支柱中的權重。景深報告會逐項列出全部 50 項與這三個數字。本頁不列出。">Each indicator carries three numbers: a raw value, its percentile in the pool, and its weight inside its pillar. The Study report lists all 50 with those three numbers each. This page does not.</p>
+        </section>
+        <section class="mth-stage__step" id="pillars" data-step="1" aria-labelledby="mth-pil-title">
+          <p class="feature-row__num mth-label" data-zh="歸組">Group</p>
+          <h2 class="feature-row__title" id="mth-pil-title" data-reveal data-zh-html data-zh="八大支柱，<br>50 項指標">Eight pillars,<br>50 indicators</h2>
+          <p data-zh="指標會聚合為八大支柱。每根支柱以加權平均彙整旗下指標的分數，支柱之間再各自獨立加權。">Indicators aggregate into eight pillars. Each pillar rolls up its own indicators as a weighted average, and the pillars are then weighted independently of each other.</p>
+          <p data-zh="分布並不平均，這本身就是資訊：文本品質與法律強度各有 8 項指標，網路中心性只有 4 項。">The distribution is not even, and that is itself information: Text Quality and Legal Strength carry eight indicators each, Network Centrality carries four.</p>
+        </section>
+        <section class="mth-stage__step" id="pool" data-step="2" aria-labelledby="mth-pool-title">
+          <p class="feature-row__num mth-label" data-zh="比較基準">Compare against</p>
+          <h2 class="feature-row__title" id="mth-pool-title" data-reveal data-zh="參考池是什麼">What the pool is</h2>
+          <p data-zh="分數是一個位置，所以它需要一個可以站定位置的集合。你的專利是拿來跟 1433 件由泰然與夥伴所持有的專利比較排名——這些專利我們同時也在做商業授權。">A score is a position, so it needs a set to hold a position in. Your patent is ranked against 1433 patents held by TIS and its partners, patents we also license commercially.</p>
+          <p data-zh="所以排名告訴你的是你相對於我們手上專利的位置，不是相對於全世界所有專利，也不是獨立的第三方基準。與其讓你自行假設，我們寧可講清楚。指標的原始值本身，則取自新穎的 1.8 億件專利資料庫。">So a rank tells you where you sit against our inventory, not against every patent in the world, and it is not an independent benchmark. We would rather say that plainly than have you assume otherwise. The indicator values themselves are computed from Innovue's 180M-patent database.</p>
+          <p data-zh="池子會隨著專利核准與失效重新排序。即使你的專利本身沒有任何改變，你的數字仍可能移動。">The pool re-ranks as patents are granted and lapse. Your number can move even when nothing about your patent has.</p>
+        </section>
+        <section class="mth-stage__step" id="percentile" data-step="3" aria-labelledby="mth-pct-title">
+          <p class="feature-row__num mth-label" data-zh="定位">Position</p>
+          <h2 class="feature-row__title" id="mth-pct-title" data-reveal data-zh="原始值如何變成位置">A raw value becomes a position</h2>
+          <p data-zh="每一項指標都以同一種方式正規化：把原始值拿到池內排名，取它的百分位。一件被前向引用 47 次的專利，分數不是 47，而是 47 在 1433 件之中的落點。">Every indicator is normalised the same way: rank the raw value inside the pool, take its percentile. A patent with 47 forward citations is not scored on 47. It is scored on where 47 falls among 1433.</p>
+          <p data-zh="全部只有一個基準。產業別會被記錄為描述性資訊，但不作為比較群組——半導體專利與生技專利在同一個池內排名。">There is one basis for all of it. Industry is recorded as descriptive metadata but is not a comparison cohort: a semiconductor patent and a biotech patent are ranked in the same pool.</p>
+        </section>
+        <section class="mth-stage__step" id="grade" data-step="4" aria-labelledby="mth-grade-title">
+          <p class="feature-row__num mth-label" data-zh="評級">Grade</p>
+          <h2 class="feature-row__title" id="mth-grade-title" data-reveal data-zh="百分位如何變成評級">A position becomes a letter</h2>
+          <p data-zh="加權後的支柱分數合成為一個 0–100 分的 PSS 總分，這個總分在池內的百分位再對應到五個評級之一。">The weighted pillar scores compose into one PSS on a 0–100 scale, and that score's percentile in the pool resolves to one of five grades.</p>
+          <p data-zh="占比是固定的：S 為池內前 15%，其後 A 20、B 30、C 20、D 15。實際的切分點會依參考池當下的分布校準，所以本頁列出占比，不列閾值。">The shares are fixed: S is the top 15% of the pool, then A 20, B 30, C 20, D 15. The exact cut-points are calibrated against the pool's live distribution, so this page gives the shares and not the thresholds.</p>
+        </section>
+        <section class="mth-stage__step" id="scenarios" data-step="5" aria-labelledby="mth-scen-title">
+          <h2 class="feature-row__title" id="mth-scen-title" data-reveal data-zh="同一件專利，四套權重">The same patent, weighted four ways</h2>
+          <p data-zh="支柱權重並非固定。同一組 50 項指標可以依你實際要回答的問題重新配權——授權導向、訴訟強度、投資併購、技術布局——並在每一套權重下各得一個分數。">Pillar weights are not fixed. The same 50 indicators can be reweighted for the question you are actually asking, licensing, litigation, M&amp;A, or portfolio strategy, and the patent gets a score under each.</p>
+          <p data-zh="在四套權重下都站得住的專利，強在通則；只有在訴訟強度下才突出的專利，強在特例。差距本身就是結論——這也是景深報告的第六章。">A patent that holds its position under all four is strong for a general reason. One that only scores under litigation weighting is strong for a specific one. The spread is the finding, and it is chapter six of the Study report.</p>
+        </section>
       </div>
-
-      <div class="prod-ref-table-wrap">
-        <div class="prod-ref-table-head">
-          <h4 data-zh="正規化方法">Normalization methods</h4>
-          <p data-zh="依每項指標的性質而定。">By the nature of each indicator.</p>
-        </div>
-        <table class="prod-ref-table">
-          <thead><tr>
-            <th data-zh="方法">Method</th>
-            <th data-zh="運作方式">How it works</th>
-          </tr></thead>
-          <tbody>
-            <tr><td data-zh="連續型百分位">Continuous percentile</td><td data-zh="對同儕池以排名取百分位——適用多數指標。">Ranked against the pool by tie-aware percentile — most indicators.</td></tr>
-            <tr><td data-zh="稀缺型">Scarcity</td><td data-zh="越罕見越強——如三方專利（美歐日）布局。">Rarer is stronger — e.g. triadic (US–EP–JP) filings.</td></tr>
-            <tr><td data-zh="NLP 評分標準">NLP rubric</td><td data-zh="1–10 評分標準，再做池內正規化。">A 1–10 rubric score, then normalised in-pool.</td></tr>
-            <tr><td data-zh="資格篩選">Disqualifying screen</td><td data-zh="篩選門檻而非計分——法律狀態須為有效授權。">A gate, not a score — legal status must be granted and active.</td></tr>
-          </tbody>
-        </table>
+      <div class="mth-stage__stage">
+        <figure class="mth-stage__fig" data-step="0" aria-labelledby="mth-ind-title">
+          <div class="mth-panel">
+              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
+              <div class="mth-ind" role="presentation"><div class="mth-ind__head"><span class="mth-ind__col" data-zh="指標">Indicator</span><span class="mth-ind__col mth-ind__col--num" data-zh="原始值">Raw</span><span class="mth-ind__col mth-ind__col--num" data-zh="百分位">Pctl</span><span class="mth-ind__col mth-ind__col--num" data-zh="權重">Wt</span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:72%"></span><span class="mth-ind__num">47</span><span class="mth-ind__num mth-ind__num--muted">P82</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:58%"></span><span class="mth-ind__num">12</span><span class="mth-ind__num mth-ind__num--muted">P61</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:81%"></span><span class="mth-ind__num">6</span><span class="mth-ind__num mth-ind__num--muted">P94</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:64%"></span><span class="mth-ind__num">0.71</span><span class="mth-ind__num mth-ind__num--muted">P38</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:76%"></span><span class="mth-ind__num">23</span><span class="mth-ind__num mth-ind__num--muted">P55</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__more"><span class="mth-ind__more-k" data-zh="50 項中的另外 45 項，名稱與權重已遮蔽。">45 more of the 50, names and weights redacted.</span></div></div>
+              <p class="mth-panel__cap" data-zh-html data-zh="指標名稱已刻意遮蔽。重點在結構：50 項的每一項背後都是同樣這幾個數字。 <span class='mth-note'>示意數值</span>">Indicator names are redacted on purpose. The structure is the point: the same numbers sit behind every one of the 50. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
+            </div>
+        </figure>
+        <figure class="mth-stage__fig" data-step="1" aria-labelledby="mth-pil-title">
+          <div class="mth-panel">
+              <svg class="mth-radar" viewBox="0 0 681 390" role="img" aria-label="How the 50 indicators distribute across the eight pillars: seven, eight, seven, five, eight, four, six and five">
+                <polygon class="mth-radar__ring" points="340.0,162.0 359.8,170.2 368.0,190.0 359.8,209.8 340.0,218.0 320.2,209.8 312.0,190.0 320.2,170.2"/><polygon class="mth-radar__ring" points="340.0,134.0 379.6,150.4 396.0,190.0 379.6,229.6 340.0,246.0 300.4,229.6 284.0,190.0 300.4,150.4"/><polygon class="mth-radar__ring" points="340.0,106.0 399.4,130.6 424.0,190.0 399.4,249.4 340.0,274.0 280.6,249.4 256.0,190.0 280.6,130.6"/><polygon class="mth-radar__ring" points="340.0,78.0 419.2,110.8 452.0,190.0 419.2,269.2 340.0,302.0 260.8,269.2 228.0,190.0 260.8,110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="78.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="452.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="302.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="228.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="110.8"/>
+                <polygon class="mth-radar__area" points="340.0,92.0 419.2,110.8 438.0,190.0 389.5,239.5 340.0,302.0 300.4,229.6 256.0,190.0 290.5,140.5"/>
+                <circle class="mth-radar__dot" cx="340.0" cy="92.0" r="4"/><circle class="mth-radar__dot" cx="419.2" cy="110.8" r="4"/><circle class="mth-radar__dot" cx="438.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="389.5" cy="239.5" r="4"/><circle class="mth-radar__dot" cx="340.0" cy="302.0" r="4"/><circle class="mth-radar__dot" cx="300.4" cy="229.6" r="4"/><circle class="mth-radar__dot" cx="256.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="290.5" cy="140.5" r="4"/><text class="mth-radar__lbl" x="340.0" y="50.0" text-anchor="middle" data-zh="書目計量">Citation Impact</text><text class="mth-radar__val" x="340.0" y="66.0" text-anchor="middle">P1 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="100.2" text-anchor="start" data-zh="法律強度">Legal Strength</text><text class="mth-radar__val" x="434.8" y="116.2" text-anchor="start">P2 &#183; 8</text><text class="mth-radar__lbl" x="474.0" y="195.0" text-anchor="start" data-zh="技術價值">Technical Value</text><text class="mth-radar__val" x="474.0" y="211.0" text-anchor="start">P3 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="289.8" text-anchor="start" data-zh="市場覆蓋">Market Coverage</text><text class="mth-radar__val" x="434.8" y="305.8" text-anchor="start">P4 &#183; 5</text><text class="mth-radar__lbl" x="340.0" y="341.0" text-anchor="middle" data-zh="文本品質">Text Quality</text><text class="mth-radar__val" x="340.0" y="357.0" text-anchor="middle">P5 &#183; 8</text><text class="mth-radar__lbl" x="245.2" y="289.8" text-anchor="end" data-zh="網路中心性">Network Centrality</text><text class="mth-radar__val" x="245.2" y="305.8" text-anchor="end">P6 &#183; 4</text><text class="mth-radar__lbl" x="206.0" y="195.0" text-anchor="end" data-zh="授權潛力">Licensing Potential</text><text class="mth-radar__val" x="206.0" y="211.0" text-anchor="end">P7 &#183; 6</text><text class="mth-radar__lbl" x="245.2" y="100.2" text-anchor="end" data-zh="前瞻價值">Forward-Looking Value</text><text class="mth-radar__val" x="245.2" y="116.2" text-anchor="end">P8 &#183; 5</text>
+              </svg>
+            </div>
+        </figure>
+        <figure class="mth-stage__fig" data-step="2" aria-labelledby="mth-pool-title">
+          <div class="mth-panel">
+              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
+              <div class="mth-split mth-split--pool">
+                <div class="mth-field">
+                  <div class="mth-poolhero"><span class="mth-poolhero__num">1433</span>
+                    <span class="mth-poolhero__lbl" data-zh="件專利，組成參考池">patents in the reference pool</span></div>
+                  <div class="mth-field__img" role="img" aria-label="A field of 1433 marks with one highlighted, representing one patent&#39;s place in the reference pool"></div>
+                </div>
+                <div class="mth-dist">
+                  <div class="mth-dist__lead"><span class="mth-dist__no">310</span><span class="mth-dist__den">/ 1433</span></div>
+                  <svg class="mth-hist" viewBox="0 0 278 168" role="img" aria-label="Where this patent sits in the pool&#39;s own distribution">
+                    <polygon class="mth-hist__mark" points="214.4,98.6 224.4,98.6 219.4,106.6"/>
+                    <rect class="mth-hist__bar" x="0.0" y="149.4" width="10" height="8.6" rx="2"/><rect class="mth-hist__bar" x="13.4" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="26.8" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="40.2" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="53.6" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="67.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar" x="80.4" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="93.8" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="107.2" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="120.6" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="134.0" y="30.0" width="10" height="128.0" rx="2"/><rect class="mth-hist__bar" x="147.4" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="160.8" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="174.2" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="187.6" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="201.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar mth-hist__bar--hi" x="214.4" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="227.8" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="241.2" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="254.6" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="268.0" y="149.4" width="10" height="8.6" rx="2"/>
+                  </svg>
+                  <p class="mth-dist__note" data-zh="在參考池自身分布中的位置。">Position in the pool&#39;s own distribution.</p>
+                </div>
+              </div>
+              <p class="mth-panel__cap" data-zh="1433 個標記，一個標記一件專利。最後一列沒有填滿——這是一個確切的數量，不是概數。">One mark per patent, 1433 of them. The last row is short because that is an exact count, not a round number.</p>
+            </div>
+        </figure>
+        <figure class="mth-stage__fig" data-step="3" aria-labelledby="mth-pct-title">
+          <div class="mth-panel">
+              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
+              <div class="mth-split mth-split--pct">
+                <div class="mth-arc">
+                  <svg class="mth-arc__svg" viewBox="0 0 210 210" role="img" aria-label="This indicator&#39;s percentile in the pool">
+                    <path class="mth-arc__track" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8"/>
+                    <path class="mth-arc__fill" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8" stroke-dasharray="332 405"/>
+                  </svg>
+                  <div class="mth-arc__val">P82</div>
+                  <p class="mth-arc__cap" data-zh="池內百分位">Percentile in pool</p>
+                </div>
+                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="原始值 &#183; 前向引用">Raw value &#183; forward citations</span><span class="mth-read__v">47</span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="此指標的池內排名">Rank in pool for this indicator</span><span class="mth-read__v">258 <small>/ 1433</small></span></div></div>
+              </div>
+              <p class="mth-panel__cap" data-zh-html data-zh="排名的是位置，不是絕對值。 <span class='mth-note'>示意數值</span>">What gets ranked is the position, not the absolute value. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
+            </div>
+        </figure>
+        <figure class="mth-stage__fig" data-step="4" aria-labelledby="mth-grade-title">
+          <div class="mth-panel">
+              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
+              <div class="mth-split mth-split--grade">
+                <div class="mth-seal">
+                  <p class="mth-seal__top">PSS 62.17</p>
+                  <p class="mth-seal__letter">A</p>
+                  <p class="mth-seal__foot" data-zh="高價值核心">High-value core</p>
+                </div>
+                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="池內綜合百分位">Composite percentile in pool</span><span class="mth-read__v">78.4 <small data-zh="&#183; 前 21.6%">&#183; top 21.6%</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="池內排名">Rank in pool</span><span class="mth-read__v">310 <small>/ 1433</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="本評級在池內的占比">This grade&#39;s share of the pool</span><span class="mth-read__v">20%</span></div></div>
+              </div>
+              <div class="mth-shares"><div class="mth-shares__z mth-shares__z--d"><span class="mth-shares__fill"></span><span class="mth-shares__l">D</span><span class="mth-shares__n">15%</span></div><div class="mth-shares__z mth-shares__z--c"><span class="mth-shares__fill"></span><span class="mth-shares__l">C</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--b"><span class="mth-shares__fill"></span><span class="mth-shares__l">B</span><span class="mth-shares__n">30%</span></div><div class="mth-shares__z mth-shares__z--a mth-shares__z--here"><span class="mth-shares__fill"></span><span class="mth-shares__l">A</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--s"><span class="mth-shares__fill"></span><span class="mth-shares__l">S</span><span class="mth-shares__n">15%</span></div></div>
+              <p class="mth-panel__cap" data-zh="區塊寬度就是該評級在池內的占比。低到高，由左至右。">Zone width is that grade&#39;s share of the pool, lowest to highest, left to right.</p>
+            </div>
+        </figure>
+        <figure class="mth-stage__fig" data-step="5" aria-labelledby="mth-scen-title">
+          <div class="mth-panel">
+              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
+              <ul class="mth-scen" role="list"><li class="mth-scen__row"><span class="mth-scen__name" data-zh="授權導向">Licensing</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:71.8%"></span></span><span class="mth-scen__val">71.8</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="訴訟強度">Litigation</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:52.8%"></span></span><span class="mth-scen__val">52.8</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="投資併購">M&amp;A</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:65.4%"></span></span><span class="mth-scen__val">65.4</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="技術布局">Portfolio</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:58.1%"></span></span><span class="mth-scen__val">58.1</span></li></ul>
+              <div class="mth-scen__axis"><span class="mth-scen__ticks">
+                <span class="mth-scen__tick">0</span><span class="mth-scen__tick">50</span><span class="mth-scen__tick">100</span>
+              </span></div>
+              <div class="mth-scen__spread">
+                <span class="mth-scen__name" data-zh="差距">Spread</span>
+                <span class="mth-scen__brkline"><span class="mth-scen__brk" style="left:52.8%;width:19.0%"></span></span>
+                <span class="mth-scen__val">19</span>
+              </div>
+              <p class="mth-panel__cap" data-zh-html data-zh="四套權重下的差距 19 分，就是這件專利的穩定度。 <span class='mth-note'>示意數值</span>">A 19-point spread across the four is this patent&#39;s stability read. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
+            </div>
+        </figure>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ─── Pillars & indicators (data-sheet, compact stacked) ─── -->
-  <section class="section" aria-labelledby="pillars-heading">
+  <!-- ═══ Exit · the two reports this method produces ══════════════════════
+       Replaces a generic "See a sample report" button. Only two of the three
+       reports are built on PSS: Snapshot (the grade) and Study (the grade plus
+       all 50 indicators). Survey is a vector-similarity search against a larger
+       index and never computes a PSS, so sending a reader who just learned the
+       method to a set of three misrepresents what the method produces.
+
+       Cards are <a>, not the Signal page's <button>s — there are no expand
+       panels on this page to control. Both land on #reports, where the real
+       cards open their sample panels.
+
+       Card strings are the Signal page's reviewed EN + ZH verbatim. Prices are
+       deliberately absent: price is off-topic on a methodology page, and
+       product/signal/index.html already warns that the three figures must stay
+       in step with the intake chips and the deposit line. A third copy would be
+       a third thing to keep synced. ── -->
+  <section class="section mth-exit" aria-labelledby="mth-exit-title">
     <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="pillars-heading" class="h-section grad-text-silver-solid" data-zh="八大支柱與 50 項指標">Pillars &amp; indicators</h2>
-          <p class="section-dek" data-zh="PSS 是八大支柱的加權綜合；每根支柱再拆解為 4–8 項指標，每項都可追溯到計算公式。">The PSS is a weighted composite of eight pillars; each pillar decomposes into 4–8 indicators, every one traceable to its formula.</p>
-        </div>
-      </header>
+      <h2 class="mth-exit__line" id="mth-exit-title" data-reveal data-zh="這套方法產出兩種報告。">The method produces two reports.</h2>
+      <p class="mth-exit__note" data-zh="特寫與景深都建立在這套評分之上。廣角回答的是另一個問題——市場上最相近的十件專利——不使用 PSS。">Snapshot and Study are both built on this scoring. Survey answers a different question, the ten closest patents on the market, and does not compute a PSS.</p>
 
-      <div class="prod-ref-table-wrap">
-        <div class="prod-ref-table-head">
-          <h4 data-zh="八大支柱">Eight pillars</h4>
-        </div>
-        <table class="prod-ref-table">
-          <thead><tr>
-            <th data-zh="支柱">Pillar</th>
-            <th data-zh="量測什麼">What it measures</th>
-            <th class="right" data-zh="指標數">Indicators</th>
-          </tr></thead>
-          <tbody>
-            <tr><td class="mono" data-zh="P1 · 引用影響力">P1 · Citation Impact</td><td data-zh="後續技術對它的依賴：量、速度、品質。">How much later art leans on it — volume, velocity, quality.</td><td class="right mono">7</td></tr>
-            <tr><td class="mono" data-zh="P2 · 法律強度">P2 · Legal Strength</td><td data-zh="保護範圍與存續：家族、請求項、剩餘年限。">Protection breadth and durability — family, claims, remaining life.</td><td class="right mono">8</td></tr>
-            <tr><td class="mono" data-zh="P3 · 技術價值">P3 · Technical Value</td><td data-zh="授權背後的實質：說明書深度與 NLP 評定的新穎性。">Substance behind the grant — disclosure depth and NLP-graded novelty.</td><td class="right mono">7</td></tr>
-            <tr><td class="mono" data-zh="P4 · 市場覆蓋">P4 · Market Coverage</td><td data-zh="可主張的地理範圍：GDP 加權、關鍵市場覆蓋。">Where it is enforceable — GDP-weighted, key-market footprint.</td><td class="right mono">5</td></tr>
-            <tr><td class="mono" data-zh="P5 · 文本品質">P5 · Text Quality</td><td data-zh="請求項明確性、支持度、層次——過去須資深審閱才觸及。">Claim clarity, support, hierarchy — the pillar only deep review used to reach.</td><td class="right mono">8</td></tr>
-            <tr><td class="mono" data-zh="P6 · 網路中心性">P6 · Network Centrality</td><td data-zh="引用網路中的位置：PageRank、中介、樞紐/權威。">Position in the citation graph — PageRank, betweenness, hub/authority.</td><td class="right mono">4</td></tr>
-            <tr><td class="mono" data-zh="P7 · 授權潛力">P7 · Licensing Potential</td><td data-zh="能否變現：可偵測性、迴避難度、損害賠償基礎。">Whether it can be monetised — detectability, design-around, damages basis.</td><td class="right mono">6</td></tr>
-            <tr><td class="mono" data-zh="P8 · 前瞻價值">P8 · Forward-Looking Value</td><td data-zh="未來軌跡：成熟度、引用趨勢、產業採用、延展性。">Future trajectory — maturity, citation trend, adoption, runway.</td><td class="right mono">5</td></tr>
-          </tbody>
-        </table>
+      <div class="mth-reports">
+        <a href="/product/signal/#reports" class="offer-card offer-card--snapshot">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
+            <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
+            <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1433-patent pool. Granted or published only.</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
+
+        <a href="/product/signal/#reports" class="offer-card offer-card--study">
+          <span class="offer-card-body">
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
+            <span class="offer-card-title" data-zh="景深報告">Study Report</span>
+            <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </span>
+          </span>
+        </a>
       </div>
 
-    </div>
-  </section>
-
-  <!-- ─── Transparency over precision + CTA ─── -->
-  <section class="section" aria-labelledby="transparency-heading">
-    <div class="container">
-      <header class="section-head">
-        <div>
-          <h2 id="transparency-heading" class="h-section grad-text-silver-solid" data-zh="透明優先於精準">Transparency over precision</h2>
-          <p class="section-dek" data-zh="每個分數都可追溯到公式。結構化指標揭示原始輸入；NLP 指標附帶評分標準與可稽核的推理軌跡。參考池每週重新排名——專利進池或失效時，即使本身指標未變，排名與百分位仍可能變動。">Every score traces to a formula. Structured indicators show their raw inputs; NLP indicators carry a rubric score and a reasoning trail you can audit. The pool re-ranks weekly — rank and percentile can move as patents enter or lapse, even when a patent's own indicators don't.</p>
-          <p class="section-dek" data-zh="所有指標取自新穎 1.8 億筆專利索引——涵蓋 100 多個司法管轄區，每日更新。產業別為描述性資訊，不切分比較基準——排名一律對全池。">All indicators draw from the Innovue 180M-patent index — 100+ jurisdictions, refreshed daily. Industry is descriptive metadata, not a comparison cohort — ranking is always against the full pool.</p>
-        </div>
-      </header>
-      <!-- Loop CTAs — methodology answers "how"; now route to "what you get" (#reports)
-           and "start" (#intake), both sections on the Signal page. -->
-      <div class="loop-ctas">
-        <a href="/product/signal/#reports" class="btn btn-secondary" data-zh="看一份評級報告 →">See a sample report →</a>
-        <a href="/product/signal/#intake" class="btn btn-primary" data-zh="取得你的報告 →">Get your report →</a>
+      <div class="mth-exit__actions">
+        <a href="/product/signal/#intake" class="btn btn-primary btn-lg" data-zh="開始評估">Order a report</a>
       </div>
     </div>
   </section>
@@ -717,7 +655,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=8" defer></script>
+<script src="/assets/site.js?v=9" defer></script>
 
 </body>
 </html>

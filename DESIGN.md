@@ -173,6 +173,17 @@ so photographic/black-field imagery blends seamlessly and white copy stays legib
 (`#000`, hover `#1A1A1A`), `.report-card` scrim, the announce bar, the partner band, and
 the hero's in-hero CTA re-skin (§6).
 
+**The one extension to this list has been withdrawn.** `.mth-panel` on
+`product/signal/methodology.html` was added here on 2026-08-26 as the first always-dark
+surface that is not image-backed; the methodology rebuild later the same day took the
+panels off dark entirely, onto `--surface-tertiary`. So the list is image-backed surfaces
+again, which is what it was scoped to in the first place. The reasoning that justified the
+extension still holds and is worth keeping for the next case: what governs is the second
+half of the sentence above, not the first. A surface that is dark in *both* themes needs a
+literal, because `--surface-inverse` flips to `#FAFAFA` in dark theme and would turn
+white-on-black data into black-on-white. A literal is the correct tool there; a token is
+the bug.
+
 In `styles.css` these are the **only** sanctioned raw-hex literals outside the token
 blocks. The count of unique invented hex in the stylesheet is **0**.
 
@@ -1498,8 +1509,9 @@ Four things worth knowing before editing it:
   **Sample data is the canonical record, not invented.** Facts, pillar values and the top
   indicator / risk rows come from `REPORTS['macrosilicon-s']` in the preview file, i.e. the
   same fictional patent the June render documents. The one deliberate divergence is the pool
-  size: the covers say 1,433, matching the rest of this site, where the preview file uses its
-  own 183-patent industry cohort.
+  size: the covers say 1,433 where the preview file uses its own 183-patent industry cohort.
+  Both figures are now out of step with the site, which writes the pool `1433` with no
+  separator — the covers are rendered artifacts and need a re-render to catch up.
 
   The sheet is a fixed-height flex column, so every block in it is `flex:none`. Without that
   a long page silently *compresses* its children instead of overflowing — which cropped the
@@ -1628,7 +1640,7 @@ Three things drove the rebuild, and they are the constraints to preserve:
   and beats `.h-section` on both specificity (0,1,1 vs 0,1,0) and source order (4012 vs 414).
   **Do not add a `max-width` to that dek** — inheriting `.section-dek`'s own 44ch is what
   keeps the pair matched.
-- **`1,433` heads the ledger, not the header.** It is the denominator the `0–100` note is
+- **`1433` heads the ledger, not the header.** It is the denominator the `0–100` note is
   percentile-ranked against and the pool `SABCD` discretises; both notes say so. It sat in
   a right-hand column stacking three unrelated registers (72px numeral, 14px credit,
   `.btn-secondary`) aligned to nothing.
@@ -1683,7 +1695,223 @@ And the rest:
   use on five other pages, so nothing is orphaned.
 
 The in-page anchors `#reports` and `#intake` are link targets from
-`methodology.html` — don't rename them without fixing that page's `.loop-ctas`.
+`methodology.html` — three of them now: both `.mth-reports` cards point at `#reports` and
+the exit button points at `#intake`. Don't rename either without fixing that page. The reverse dependency also exists now: `.sig-colophon`'s "How the pool is composed"
+exit points at `methodology.html#pool`, so that anchor is load-bearing (§16.3).
+
+### 16.3 Methodology — `product/signal/methodology.html`
+
+Rebuilt 2026-08-26, twice. It answers one question, *how is the score calculated*, and
+carries nothing else. Three inbound links land here: the homepage hero's primary CTA, the
+Signal page's ledger foot, and `.sig-colophon`'s "How the pool is composed" — the last two
+anchored at **`#pool`**, so that id is load-bearing.
+
+**This page has no `.hero`, and it is the only content page that doesn't.** It opens on
+`.mth-masthead`: `h1` at `.h-section` scale rather than `.pillar-title`'s hero clamp, one
+lede line, then the stage band. That scale choice is the same reasoning §2.1 gives
+`.veil__title` — a reference document consulted under scrutiny is a quiet statement, not a
+claim. Because there is no `100vh` block anywhere on the page, it is also the one page
+where a **tall-viewport screenshot is safe** (§10's verification note otherwise forbids it).
+
+#### The second rebuild: one pinned instrument, and no dark surface at all
+
+The page used to be **six alternating `.feature-row` sections**, light copy against a dark
+`#0E0E0E` `.mth-panel`, down its whole length. Both halves of that are gone.
+
+It is now **one stage**: a column of six copy steps beside a single figure card that pins
+and swaps as the reader scrolls. The forms inside the card are the reference report's own
+(`assets/imagery/signal-reports/signal-pro-report-compact-a.png`) — an arc for a
+percentile, a histogram with a marker for a rank, a radar for the pillars, a big tier
+letter in a tinted seal — and each is **composed** as figure-plus-labelled-readout rather
+than centred in a box it cannot fill. That composition is the fix for a measured defect:
+four of the six figures were intrinsically-sized objects floating in a 681×340 cell, the
+arc filling 27% of it.
+
+**The panels are no longer dark, and nothing else on the page is either.** They take
+`--surface-tertiary` `#F3F3F3` — the same token as the masthead band, so the strip at the
+top and the figure below it read as one material. §11.1's "weight comes from the panels"
+no longer describes this page: its weight is the pinned grey field plus that band. A dark
+band above the figures was built and rejected; a dark card around them was built and
+rejected. Don't reintroduce either without asking.
+
+Three consequences, all easy to get wrong:
+
+- **`.mth-panel` came back off §1.3's always-dark list.** See the note there.
+- **Every mark colour resolves a `--mth-*` custom property declared once on
+  `.mth-panel`.** Change the ground there and the marks follow. Hardcode a hex in a figure
+  rule and they don't.
+- **The accent is `--surface-accent-signal-text` (`#0A72B0`), not
+  `--surface-accent-signal`.** The vivid one is **2.66:1** on `#F3F3F3` and fails even the
+  3:1 graphical floor. For the same reason the SABCD ramp is the AA-on-white `--score-*`
+  steps, not `--score-*-vivid`. Measured against `#F3F3F3`: marks 13.81:1, captions
+  6.12:1, labels 4.80:1, accent 4.68:1, SABCD 4.58–6.40:1. Labels are the tightest, and
+  they have to clear AA on their own because a label is read, not just seen.
+
+#### The stage
+
+`.mth-pipe` is lifted **out of `.container`** into `.mth-pipe-band`, which then holds its
+own `.container`. The strip reads as one continuous measure only if it runs edge to edge,
+and a full-bleed child cannot live inside a padded, max-width, centred box: a negative
+margin only reaches the container edge, and `100vw` overflows the moment a real scrollbar
+exists. `.announce` is the site's other full-bleed in-flow band and the same shape — reuse
+that pattern, don't invent one. The band also took over the pipe's `margin-top` and
+`border-block`, because a rule sitting on the top edge of the tint reads as a seam.
+
+**The six anchors moved onto the six steps**, each of which is a real `<section>` with its
+own `aria-labelledby`, so every `h2` still sits inside a labelled region.
+
+**Copy and figure are in different columns, so the reading order is six steps then six
+figures.** This is the one thing the sticky pattern costs. Every `<figure>` is therefore
+labelled by its own step's `h2` — the adjacency that used to carry the association is gone,
+so the association is stated. All six figures stay exposed to assistive tech; opacity-0
+content still reads, and six labelled figures in order is more than a sighted reader gets,
+not less. Don't "fix" that with `visibility: hidden`.
+
+**The stage is a grid whose six figures all sit in cell `1/1`** — never a fixed height. It
+is then exactly as tall as the tallest of the six. A `height: clamp(420px, 62vh, 620px)`
+was tried and it was a measured bug: the tallest panel is 583px, so a 693px-tall viewport
+produced a 430px stage and squeezed four of the six panels past their own edges.
+
+**While pinned the card belongs to the stage, not to each figure**, and the swap is
+**sequenced, not crossfaded**. Both are one fix for one symptom — a visible flash on every
+swap — and they only work together:
+
+- A symmetric crossfade holds both figures at part opacity for the whole overlap, and no
+  two steps draw the same thing, so the reader gets a double exposure: the radar showing
+  through the arc at half strength. The incoming figure now waits 130ms for the outgoing
+  one to clear.
+- That handover passes through a moment with no figure at full opacity, so a card riding
+  on the figure would blink out with it. Moving the card to the stage also kills a second,
+  smaller pulse — two stacked opaque fills at 0.5 composite to `#F6F6F6`, not `#F3F3F3`,
+  across the card's whole area — and makes the frame stable for free, which matters because
+  the six differ by ~170px and a frame that resized on every swap would jump.
+
+**`.is-live` means *actually pinned*, not "the script ran."** `site.js` asks three media
+queries — `prefers-reduced-motion`, `(max-width: 980px)`, `(max-height: 700px)` — and
+declines to add the class if any matches. The height one is measured: the tallest card is
+583px and the pin sits 84–148px down, so under ~700px its bottom would be off-screen. It
+re-evaluates on those queries' own `change` events, **never on `resize`**, and there is no
+scroll listener anywhere — the swap is an `IntersectionObserver` with
+`rootMargin: '-45% 0px -45% 0px'` over the six steps. The CSS carries the same three
+conditions as belt and braces, and hands the card back to the panels there, because a stage
+that is no longer pinned is just a tall column and one grey box around six stacked figures
+is not the fallback anyone wants.
+
+**The markup default is the no-JS state**: everything stacked, all six figures visible.
+Nothing on this page is hidden unless the swap is genuinely running.
+
+#### `#pillars` draws the counts, and that is the point
+
+The radar plots the **eight indicator counts**, not the eight pillar scores. This is the
+one figure on the page that is not about a patent, and the distinction is load-bearing:
+
+- The eight pillar **scores** are the paid deliverable — Study chapter 3 is the eight
+  pillars in depth — so drawing them here would hand over the thing the report sells. The
+  page that preceded this one refused a radar for exactly that reason, and it was right.
+- The copy beside this panel is about **counts**: *"Text Quality and Legal Strength carry
+  eight indicators each, Network Centrality carries four."* A score radar under that
+  paragraph contradicted it.
+- Counts are **PRD §8.3 verbatim** (7 / 8 / 7 / 5 / 8 / 4 / 6 / 5, summing to 50) and the
+  shape is a property of the **method**, identical for every patent.
+
+Which is why `#pillars` alone carries **no subject strip, no illustrative flag and no
+caption** — there is nothing to flag, the axis labels are the readout, and the prose
+already states the fact. Rings are at 0.25/0.5/0.75/1.0 of an eight-indicator maximum, so
+one ring is two indicators. If you edit a count, edit the sum.
+
+#### The worked patent
+
+Five of the six panels carry a subject strip, and the repetition is what makes them read as
+one evaluation end to end rather than five unrelated diagrams. It is **`US10148981` /
+Vivid Imaging Systems**, which is not invented for this page: `US10148981` is already the
+intake placeholder at `product/signal/index.html`, and Vivid Imaging is an example company
+graded **A** in `documents/signal-prd.md`. The numbers agree with each other and with the
+PRD's own bands, which the page does not print: PSS 62.17 → composite percentile 78.4 →
+top 21.6% → rank 310 / 1433 → tier A. The four scenario scores straddle the composite, and
+their spread is exactly **19** because the caption says "a 19-point spread" in both
+languages and a number that keeps that true costs nothing.
+
+**`#indicators` has four columns: Indicator / Raw / Pctl / Wt.** `Wt` is redacted, not
+omitted — the copy says each indicator carries a weight and this page withholds it, so the
+column has to be visibly there and visibly withheld. There is deliberately **no
+"normalised" column**: raw value → in-pool percentile is the whole chain, and a number
+between them would invent a step the PRD does not have. One was briefly built (percentile
+× 0.83) and it contradicted the page's own copy, which says *three* numbers.
+
+**What this page must never publish:**
+
+- **An individual indicator name.** Chapter 3 of the Study report is the paid deliverable.
+  The page this replaced named PageRank, betweenness, hub/authority, triadic filings,
+  GDP-weighted coverage, detectability, design-around and damages basis, several of which
+  were not even in the PRD. `#indicators` shows the *shape* of an indicator row with the
+  names redacted, which is why its caption has to say the redaction is deliberate.
+- **The eight pillar scores.** New with this rebuild, and the reason `#pillars` draws
+  counts. Before it, the page published a full pillar breakdown.
+- **SABCD cut-points.** PRD §8.3 marks the percentile bands illustrative and states the
+  real split is calibrated on the live distribution (「本文件不載明最終閾值」). `.mth-shares`
+  therefore *draws* the shares (D 15 · C 20 · B 30 · A 20 · S 15) and prints no threshold.
+  The shares themselves are safe — they are the PRD's own `占比` column, and the Signal
+  page already publishes "S is the top 15%".
+- **"benchmark", "cross-industry", or 180M as the ranking basis.** The two figures have
+  different jobs: **180M** is where indicator values are computed from, **1433** is what a
+  patent is ranked *inside*. The old page fused them and contradicted
+  `legal/disclosures.en.html`, which the page links to. `#pool`'s copy is that disclosure's
+  claims, and its ZH is sourced from `legal/disclosures.zh.html` rather than translated.
+
+**The number is written `1433`, no separator, everywhere on the site.** That is how PRD
+v0.7 writes it. The Signal page's prose used to keep `1,433` while its display counter
+carried `data-sep="none"`; the split is gone. Still outstanding: the 16 occurrences in the
+rendered report-cover shots under `assets/product-shots/signal/`, which need a re-render.
+
+**The exit is the two PSS-backed reports, not a sample-report button.** Only Snapshot and
+Study are built on this scoring; Survey is a vector-similarity search against a larger
+index and computes no PSS, so a generic "see a sample" CTA pointed a reader who had just
+learned the method at a set of three. `.mth-reports` reuses the shared `.offer-card` recipe
+with `<a>` instead of the Signal page's `<button>` (no expand panels here to control) and
+**no prices** — price is off-topic on a methodology page, and `product/signal/index.html`
+already warns the three figures must stay in step with the intake chips and the deposit
+line. Its CSS is deliberately **not promoted** from the Signal page's `[data-report]` /
+`--sigA|B|C` set, even though §0.3 would normally say a two-page pattern belongs in
+`styles.css`: one of those rules resolves `--sig-blue`, a page-local variable, so promoting
+would mean rewriting a live page's focus ring and re-auditing an exception block (§16.2)
+for nothing the reader sees.
+
+**`.mth-pipe` is the table of contents and the diagram at once.** Five stages
+(`50 → 8 → 1433 → 0–100 → S–D`), each an anchor into its step. Because the sequence is
+stated there, once, **no step below carries a numbered eyebrow** — the `01 / 02 / 03`
+scaffold would be saying a second time what the masthead already says. The five pipeline
+steps take short verb labels in `.feature-row__num` (the badge.html usage), and the
+`#scenarios` coda takes **none**, because it is not stage six: it is the pipeline run again
+under different weights. Don't add one for symmetry; the asymmetry is the point.
+
+**Motion — the trap this page exposed.** `site.js` adds `.is-revealed` to *any*
+`[data-reveal]`, but the transition CSS is scoped to `.h-section` / `.section-dek` /
+`.partner-band`. A new namespaced element gets the class and no transition, so it would
+ship invisible. `.mth-exit__line[data-reveal]` carries its own rule plus a
+`prefers-reduced-motion` branch. **Any future `.mth-*` element that takes `[data-reveal]`
+needs the same.** The panels deliberately carry **none** any more: the stage owns their
+opacity and a reveal transition on the same property would fight the swap.
+
+**Retired with the first rebuild** (methodology was the sole consumer of all five):
+`.grad-text-silver-solid`, `.prod-ref-table*`, `.coscore-*` / `.cs-*`, `.r-metric-arc*`,
+`.loop-ctas`. Roughly 6.8KB of CSS. **Retired with the second:** `.mth-pillar*` (the count
+bars and their stagger reveal), `.mth-rank*`, `.mth-band*` and this page's `.tier-chip`
+usage, `.mth-panel--light`, `.mth-pool`, and the panels' `[data-reveal]` rules.
+
+**Assets.** `assets/imagery/signal-methodology/pool-1433.svg` — 1433 marks, one lit, ink
+on transparent (`#252525` at 24%, which lands 49/255 off `#F3F3F3` — the same distance the
+white version landed off `#0E0E0E`). It is a background-image on `.mth-field__img`, not an
+`<img>`, so the field scales with its column instead of sitting at its intrinsic 340px
+inside a 681px cell. Generated, not drawn: the last row is short (12 of 49) because 1433 is
+an exact count. Everything else on the page is live HTML/CSS, so it is theme-aware and
+translatable and there is nothing to re-render when a figure changes.
+
+**One note for whenever dark mode is unparked.** The collision this section used to warn
+about — dark `--surface-page` being `#0E0E0E`, the same literal the panels used — has
+dissolved, because the panels are light now. What replaces it is the mirror image:
+`--surface-tertiary` is a *light* token, so under a restored dark theme the panels and the
+band would both need to step to a dark tint rather than staying `#F3F3F3`. Nothing to do
+while `site.js` keeps dark mode parked and `data-theme="light"` is hardcoded in the markup.
 
 ---
 

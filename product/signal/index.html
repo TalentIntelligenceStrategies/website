@@ -33,7 +33,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/designs/assets/fonts/Inconsolata/static/Inconsolata-SemiBold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=19">
+<link rel="stylesheet" href="/assets/styles.css?v=21">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -228,7 +228,7 @@
         never a decision. The dek diverged too: 58ch against the base 44ch, a wider
         head gap, and text-wrap:balance where its peer had none.
      2. The right column stacked three unrelated registers aligned to nothing.
-     3. 1,433 sat in that column while the ledger's own notes described it twice: it is
+     3. 1433 sat in that column while the ledger's own notes described it twice: it is
         the denominator 0–100 is percentile-ranked against, and the pool SABCD
         discretises. It belongs in the ledger.
 
@@ -1443,7 +1443,7 @@
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
             <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
             <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>24,000"><span class="offer-card-price__unit">$</span>750</span>
-            <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1,433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1,433-patent pool. Granted or published only.</span>
+            <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -1501,9 +1501,10 @@
        PAYMENT chips; the chips now name the amounts outright. Don't drop them.
 
        Counters (1433 / 50 / 8) drive from site.js; 0–100 and SABCD are static. The
-       pool counter alone carries data-sep="none" — a separator inside a display
-       numeral this large reads as punctuation, not scale. The running prose
-       elsewhere on this page keeps "1,433". ── -->
+       pool counter carries data-sep="none" — a separator inside a display numeral
+       this large reads as punctuation, not scale. The prose used to keep "1,433";
+       it does not any more. The number is written 1433 everywhere on the site now,
+       which is also how PRD v0.7 writes it. ── -->
   <section class="section" aria-labelledby="proof-heading">
     <div class="container">
       <div class="sig-proof">
@@ -1528,18 +1529,18 @@
                link, never on the <a>: site.js:178 calls applyLang() at first paint and
                writes textContent, which would delete the sibling <svg>.
 
-               The exit goes to methodology.html#transparency-heading, NOT the disclosures
+               The exit goes to methodology.html#pool, NOT the disclosures
                modal. It carries no data-legal, and it must not: site.js has a delegated
                [data-legal] listener that preventDefault()s the click and opens the modal
                instead of navigating. -->
           <div class="sig-colophon">
             <p data-zh-html data-zh="TIS 也對外授權池內的專利。排名是<br>在池內的位置，不是與全世界專利相比的排名。">TIS licenses patents from this pool. A rank is<br>a position inside it, not a rank against every patent.</p>
-            <a href="/product/signal/methodology.html#transparency-heading" class="arrow-link"><span data-zh="參考池如何組成">How the pool is composed</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a href="/product/signal/methodology.html#pool" class="arrow-link"><span data-zh="參考池如何組成">How the pool is composed</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
           </div>
         </header>
 
           <!-- ── Panel 1 · the PSS ledger — the pool figure heads it, then the four
-               facts as one row. 1,433 is the denominator the 0–100 note and the SABCD
+               facts as one row. 1433 is the denominator the 0–100 note and the SABCD
                note both refer to, so it lives here rather than in the header.
 
                data-zh must never land on .sig-pool-line__num or any ancestor whose
@@ -1923,7 +1924,7 @@
                       </li>
                       <li>
                         <span data-zh="PSS 總覽">PSS overview</span>
-                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1433 池內排名、百分位">Score, SABCD grade, rank in the 1433-patent pool, percentile</span>
                       </li>
                       <li>
                         <span data-zh="八大支柱概覽">Eight pillars at a glance</span>
@@ -1943,7 +1944,7 @@
                     <ol class="sig-rt__chapters" data-tier="BX" hidden>
                       <li>
                         <span data-zh="PSS 總覽">PSS overview</span>
-                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1433 池內排名、百分位">Score, SABCD grade, rank in the 1433-patent pool, percentile</span>
                       </li>
                       <li>
                         <span data-zh="最相近的十件專利">The ten closest patents</span>
@@ -1967,7 +1968,7 @@
                       </li>
                       <li>
                         <span data-zh="PSS 總覽">PSS overview</span>
-                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1,433 池內排名、百分位">Score, SABCD grade, rank in the 1,433-patent pool, percentile</span>
+                        <span class="sig-rt__chnote" data-zh="PSS 總分、SABCD 等級、1433 池內排名、百分位">Score, SABCD grade, rank in the 1433-patent pool, percentile</span>
                       </li>
                       <li>
                         <span data-zh="八大支柱深度分析">Eight pillars, all 50 indicators</span>
@@ -2019,7 +2020,7 @@
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="評等">The grade</span>
               <h2 id="sig-panel-a-title" data-zh="特寫報告">Snapshot Report</h2>
-              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1,433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1,433-patent pool — at a glance.</p>
+              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
             </div>
             <div class="sig-xbanner__buy">
               <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>24,000"><span class="sig-xprice__unit">$</span>750</span>
@@ -2233,7 +2234,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=8" defer></script>
+<script src="/assets/site.js?v=9" defer></script>
 
 <!-- Expandable report sample cards — vanilla FLIP morph (Web Animations API),
      ported from v0.7. The report cards (.offer-card[data-report]) are the triggers;

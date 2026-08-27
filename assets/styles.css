@@ -195,11 +195,12 @@
   --partner-nycu:           url('/designs/assets/logos/partners/nycu/nycu_logo_dark_en.svg');
   --partner-iii:            url('/designs/assets/logos/partners/iii/logo_iii_dark_en.svg');
 
-  /* Slate primitives — consumed by the silver text-gradient utility used on the hero
-     headline (per components.md §Gradients). Not theme-scoped: light mode renders the
-     gunmetal silver-solid stops (500 → 700 → 900); dark mode swaps the hero headline to
-     the silver-luminous register (100 → 200 → 400) so the resolve still reads on
-     #0E0E0E — see the dark-mode override below the .grad-text-silver-solid rule. */
+  /* Slate primitives. Originally the stops of the silver text-gradient utility (per
+     components.md §Gradients); that utility and its flat successor
+     .grad-text-silver-solid are both retired (2026-08-26, with the methodology-page
+     rebuild that was their last consumer). Two live consumers remain, both in the hero:
+     the positioning slide's silver `em` (.pillar[data-pillar="positioning"] .pillar-title
+     em) and the in-hero .btn-secondary re-skin, light and dark. Not theme-scoped. */
   --slate-100: #F1F5F9;
   --slate-200: #E2E8F0;
   --slate-400: #94A3B8;
@@ -1465,15 +1466,6 @@ main { padding-top: 64px; }
    container's right padding edge. Falls back to in-flow centered on
    mobile (see <900px override below). */
 
-/* Silver text-gradient utility — used by hero pillar title AND many
-   non-hero section headings (reports, press, about, contact, Innovue
-   card body). Stops match design-tokens.md §Gradients silver-solid. */
-/* Silver register — flat. Was a clipped three-stop text gradient; gradients were
-   retired 2026-08-06 (design-tokens.md §7.5). Class name kept so the five live
-   call sites on product/signal/{methodology,sample-report}.html keep working. */
-.grad-text-silver-solid { color: var(--slate-700); }
-[data-theme="dark"] .grad-text-silver-solid { color: var(--slate-200); }
-
 /* Hero responsive — preserve desktop's left-aligned vibe. */
 @media (max-width: 900px) {
   .hero {
@@ -1767,15 +1759,6 @@ main { padding-top: 64px; }
 
 /* Tier "deep" colours — giant letter mark per tier (light + dark). */
 
-/* Metric cells (cohort arc, rank histogram, PSS meter). */
-
-.r-metric-arc { position: relative; width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; }
-.r-metric-arc-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.r-metric-arc-svg .arc-track { fill: none; stroke: var(--border-tertiary); stroke-width: 6; stroke-linecap: round; }
-.r-metric-arc-svg .arc-fill { fill: none; stroke: var(--text-primary); stroke-width: 6; stroke-linecap: round; }
-.r-metric-arc-val { font-family: var(--font-sans); font-feature-settings: "tnum"; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--text-primary); position: relative; z-index: 1; }
-.r-metric-arc-val small { font-size: 0.4em; font-weight: 500; color: var(--text-tertiary); margin-left: 2px; letter-spacing: 0; }
-
 /* 2×2 layout shared by the cascade cards (seal + 3 metric cells). */
 
 /* Spread-stage — absolutely positions page-cards inside the cool-light canvas. */
@@ -2028,8 +2011,8 @@ main { padding-top: 64px; }
    hairline, intro sentence right with silver text gradient. Logo
    reuses the existing --partner-innovue-color token (lang-aware
    _eng ↔ _ch, theme-agnostic Blue mark per components.md §Footer).
-   Body silver wash applied via the existing .grad-text-silver-solid
-   utility class on the <p>; light + dark variants handled there. */
+   The body's silver wash is gone with .grad-text-silver-solid (retired
+   2026-08-26); the <p> takes normal --text-secondary ink. */
 
 /* Inline Innovue wordmark — leads the 02/Source sentence as its subject (replaces
    writing the name out). Uses a tightly-cropped copy of the brand-blue wordmark
@@ -4265,56 +4248,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 
 /* Featured tier Subscribe button: warm/cool gradient fill instead of dark neutral */
 
-/* Pricing reference table (Firecrawl-style) */
-.prod-ref-table-wrap {
-  margin: 32px auto 0;
-  max-width: 920px;
-  border: 1px solid var(--border-primary);
-  border-radius: 14px;
-  /* Was overflow:hidden, which CLIPPED the rightmost column on mobile (the table's
-     min-content exceeds a phone-width wrapper). Scroll horizontally instead so no
-     data is lost; keep overflow-y hidden so the rounded corners still clip. */
-  overflow-x: auto; overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  background: var(--surface-page);
-}
-.prod-ref-table-head {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-primary);
-  background: var(--surface-secondary);
-  display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-}
-.prod-ref-table-head h4 {
-  font-family: var(--font-sans);
-  font-size: 12px; font-weight: 700;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--text-primary); margin: 0;
-}
-.prod-ref-table-head p {
-  margin: 0; font-size: 13px; color: var(--text-tertiary);
-}
-.prod-ref-table {
-  width: 100%; border-collapse: collapse;
-}
-.prod-ref-table th, .prod-ref-table td {
-  padding: 12px 20px; text-align: left;
-  font-size: 13.5px;
-  border-bottom: 1px solid var(--border-primary);
-}
-.prod-ref-table th {
-  font-family: var(--font-sans);
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--text-tertiary);
-  background: var(--surface-secondary);
-}
-.prod-ref-table th.right, .prod-ref-table td.right { text-align: right; }
-.prod-ref-table td.mono {
-  font-family: var(--prod-font-mono);
-  color: var(--text-primary); font-weight: 600;
-}
-.prod-ref-table tr:last-child td { border-bottom: 0; }
-
 /* ───── Patent card grid (Licensing live preview) ───── */
 
 /* "Detail sheet" pop-out overlay docked over the grid */
@@ -4648,82 +4581,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPANY SCORECARDS — Signal methodology page (#portfolio-signal).
-   Composes existing primitives: .r-metric-arc gauge (monochrome), .tier-chip--*
-   (carries the SABCD color), and the .section / .container grammar. New CSS here
-   is layout-only — no invented colors, all via existing tokens.
-   ═══════════════════════════════════════════════════════════════════════════ */
-.coscore-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  margin-top: 36px;
-}
-@media (max-width: 900px) { .coscore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .coscore-grid { grid-template-columns: 1fr; } }
-
-.coscore-card {
-  display: flex; flex-direction: column;
-  padding: 26px 24px 24px;
-  border-radius: 18px;
-  background: var(--surface-page);
-  border: 1px solid var(--border-primary);
-  box-shadow: var(--shadow-stacked-low);
-  transition: transform 350ms cubic-bezier(0.2,1,0.3,1), box-shadow 350ms cubic-bezier(0.2,1,0.3,1);
-}
-.coscore-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-medium); }
-
-.cs-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-.cs-name { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 0; color: var(--text-primary); }
-.cs-meta { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-.cs-juris {
-  font-family: var(--font-sans);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
-  padding: 3px 8px; border-radius: 6px;
-  background: var(--surface-tertiary); color: var(--text-secondary);
-}
-.cs-pool { font-size: 13px; color: var(--text-tertiary); line-height: 1.3; }
-
-.cs-gauge { display: flex; justify-content: center; margin: 16px 0 2px; }
-
-.cs-strength {
-  text-align: center;
-  font-family: var(--font-sans);
-  font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--text-tertiary); margin: 2px 0 18px;
-}
-
-.cs-dist { display: flex; align-items: stretch; border: 1px solid var(--border-primary); border-radius: 10px; overflow: hidden; }
-.cs-dist .cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px; border-right: 1px solid var(--border-primary); }
-.cs-dist .cell:last-child { border-right: 0; }
-.cs-dist .tl { font-family: var(--font-mono); font-size: 11px; font-weight: 700; line-height: 1; }
-.cs-dist .tl-s { color: var(--score-s); } .cs-dist .tl-a { color: var(--score-a); } .cs-dist .tl-b { color: var(--score-b); }
-.cs-dist .tl-c { color: var(--score-c); } .cs-dist .tl-d { color: var(--score-d); }
-.cs-dist .ct { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1; }
-.cs-dist .ct.zero { color: var(--text-tertiary); opacity: 0.5; }
-
-.cs-desc { font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); margin: 16px 0 0; }
-.cs-desc strong { color: var(--text-primary); font-weight: 600; }
-
-/* ============================================================
-   Loop CTA cluster — shared across Signal pages (index,
-   methodology, sample-report). Predicts the reader's next
-   question, routes there, and loops back. Tokens only.
-   ============================================================ */
-.loop-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: clamp(36px, 4vw, 52px);
-}
-.loop-ctas--single { margin-top: clamp(28px, 3vw, 40px); }
-@media (max-width: 480px) {
-  .loop-ctas { flex-direction: column; }
-  .loop-ctas .btn { width: 100%; }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
    Offerings — the four value-release lines as a static product grid.
    Simplified 2026-06-27: the scroll-scrubbed "rating-at-core" diagram (core
    engine chip + connector flows + crossfade heading + scrub motion) was archived
@@ -4903,3 +4760,807 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .mkt-form .field-row { grid-template-columns: 1fr; }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   METHODOLOGY — product/signal/methodology.html
+   Page-namespaced .mth-*. Rebuilt 2026-08-26 as ONE pinned instrument: a column
+   of six copy steps beside a single figure card that pins and swaps. See
+   DESIGN.md §16.3.
+
+   THE PANEL IS NO LONGER DARK. It was an always-dark #0E0E0E artifact surface
+   (the §1.3 .offer-card literal) for six alternating .feature-row sections. Both
+   went: the page now carries no dark surface at all, and its weight comes from
+   the pinned --surface-tertiary field plus the masthead band, which is the same
+   token. Two consequences worth stating, because they are easy to get wrong:
+
+     · Every mark colour resolves a --mth-* custom property declared once on
+       .mth-panel. Change the ground there and the marks follow; hardcode a hex
+       anywhere below and they don't.
+     · --surface-accent-signal (#0EA5E9) is 2.66:1 on #F3F3F3 and fails even the
+       3:1 graphical floor, so the accent is -signal-text (#0A72B0, 4.68:1). The
+       SABCD ramp is the AA-on-white --score-* steps, NOT --score-*-vivid.
+
+   This page also carries the site's first `position: sticky`.
+   ═══════════════════════════════════════════════════════════════════════════ */
+      .pillar-title's hero clamp: a reference document is a quiet statement. ── */
+.mth-masthead { padding-block: clamp(56px, 7vw, 96px) 0; }
+.mth-masthead__title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-wrap: balance;
+  max-width: 24ch;
+  margin: 0 0 20px;
+}
+.mth-masthead__lede {
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 450;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+  max-width: 52ch;
+  margin: 0;
+}
+
+/* ── Pipeline — the table of contents IS the diagram. Five anchors, five
+      stages, so the reader sees the whole mechanism before reading any of it.
+      This is why no row below carries a numbered eyebrow. ── */
+/* No margin-top and no border-block of its own: .mth-pipe-band carries both,
+   because a rule sitting on the top edge of the tint reads as a seam. */
+.mth-pipe {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.mth-pipe__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 20px 20px 0;
+  text-decoration: none;
+}
+.mth-pipe__step + .mth-pipe__step { padding-left: 20px; }
+.mth-pipe__step + .mth-pipe__step::before {
+  content: "";
+  position: absolute;
+  inset-block: 16px;
+  left: 0;
+  width: 1px;
+  background: var(--border-tertiary);
+}
+.mth-pipe__fig {
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text-primary);
+}
+.mth-pipe__label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+@media (hover: hover) and (pointer: fine) {
+  .mth-pipe__step:hover .mth-pipe__label { color: var(--text-primary); }
+}
+@media (max-width: 880px) {
+  .mth-pipe { grid-template-columns: 1fr; }
+  .mth-pipe__step,
+  .mth-pipe__step + .mth-pipe__step {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 14px;
+    padding: 13px 0 13px 18px;
+  }
+  .mth-pipe__step::before,
+  .mth-pipe__step + .mth-pipe__step::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 1px;
+    background: var(--border-tertiary);
+  }
+  .mth-pipe__fig { font-size: 20px; min-width: 5ch; }
+}
+
+/* ── Stage labels. .feature-row__num's pillar-tinted variants
+      ([data-pillar="signal"|"licensing"]) are accent-coloured; this page carries no
+      data-pillar, so the label would inherit --text-primary and shout over the heading
+      it labels. Secondary ink is the deliberate hierarchy. ── */
+.mth-label {
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+}
+
+
+/* ── The stage band. .mth-pipe is the table of contents and the diagram at once,
+      and it reads as one continuous measure only if it runs edge to edge — five
+      columns inside a padded, max-width, centred .container read as a box. So the
+      nav is lifted out into this wrapper, which then holds its own .container for
+      the inner content. Same shape as .announce, the site's other full-bleed
+      in-flow band; a negative margin would only reach the container edge and
+      100vw overflows the moment a real scrollbar exists.
+
+      The band states its own top and bottom rules. .mth-pipe used to carry them,
+      but --border-primary (#EEEEEE) does not survive the #F3F3F3 tint — which is
+      also why the step dividers below step down to --border-tertiary. ── */
+.mth-pipe-band {
+  background: var(--surface-tertiary);
+  border-block: 1px solid var(--border-tertiary);
+  margin-top: clamp(32px, 3.5vw, 48px);
+  padding-block: clamp(10px, 1.4vw, 20px);
+}
+
+/* ── The artifact panel and its palette ─────────────────────────────────────
+      One ground, one token block. The alphas are NOT a mirror of the dark ones
+      they replaced: a light mark on a dark field reads as luminous and carries
+      further than an equally thin dark mark on a light one — white at .13 on
+      #0E0E0E lands 31/255 off its ground, ink at .11 on #F3F3F3 only 23/255. So
+      track sits at .14 (29/255), which is what keeps #indicators' redaction bars
+      — the message of that panel, not decoration — as present as they were.
+
+      --mth-mute and --mth-dim are measured against #F3F3F3, not #FFFFFF:
+      6.12:1 and 4.80:1. Dim is the label colour and labels are read, not just
+      seen, so it has to clear AA on its own. ── */
+.mth-panel {
+  --mth-ink:    var(--text-primary);
+  --mth-mark:   rgba(37, 37, 37, 0.86);
+  --mth-track:  rgba(37, 37, 37, 0.14);
+  --mth-rule:   rgba(37, 37, 37, 0.12);
+  --mth-mute:   rgba(37, 37, 37, 0.74);
+  --mth-dim:    rgba(37, 37, 37, 0.66);
+  --mth-accent: var(--surface-accent-signal-text);
+  --mth-flagbg: rgba(37, 37, 37, 0.07);
+  --mth-t-s: var(--score-s);
+  --mth-t-a: var(--score-a);
+  --mth-t-b: var(--score-b);
+  --mth-t-c: var(--score-c);
+  --mth-t-d: var(--score-d);
+
+  background: var(--surface-tertiary);
+  color: var(--mth-ink);
+  border-radius: 8px;
+  padding: clamp(24px, 2.6vw, 40px);
+  display: flex;
+  flex-direction: column;
+  /* space-between, not center: the figure sits at the top and the caption at the
+     foot. Centring turns every bit of slack into symmetric dead margin, which is
+     the "figure floating in the middle of a box" read this rebuild fixed. */
+  justify-content: space-between;
+  gap: clamp(20px, 2vw, 28px);
+  min-height: 340px;
+}
+.mth-panel__cap {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--mth-mute);
+  margin: 0;
+}
+
+/* Illustrative-data flag. Unflagged numbers read as a real result, which is why
+   every panel carrying invented values wears one. Mirrors the Signal page's own
+   mock flag. #pillars is the one panel without it — its figure is the method's
+   own shape, identical for every patent, so there is nothing to flag. */
+.mth-note {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 2px 6px;
+  margin-left: 4px;
+  border-radius: 3px;
+  background: var(--mth-flagbg);
+  color: var(--mth-dim);
+}
+
+/* ── Subject strip. Five of the six panels carry it, and the repetition is what
+      makes them read as one evaluation end to end rather than five unrelated
+      diagrams. #pillars is the exception, deliberately: see .mth-radar. ── */
+.mth-subj {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--mth-rule);
+}
+.mth-subj__no  { font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; color: var(--mth-ink); }
+.mth-subj__own { font-family: var(--font-sans); font-size: 12.5px; color: var(--mth-dim); }
+
+/* ── Shared readout — the labelled numbers that belong to the figure beside
+      them. This is the piece that turns a 210px-wide arc into a full-width
+      panel: figure on the left, its metadata on the right, which is the
+      reference report's own seal-plus-metadata layout. ── */
+.mth-read { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.mth-read__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--mth-rule);
+}
+.mth-read__row:first-child { border-top: 0; padding-top: 0; }
+.mth-read__row:last-child  { padding-bottom: 0; }
+.mth-read__k {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--mth-dim);
+}
+.mth-read__v {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--mth-ink);
+  white-space: nowrap;
+}
+.mth-read__v small { font-size: 0.66em; font-weight: 500; color: var(--mth-mute); }
+
+/* Two-column composition: figure | readout. */
+.mth-split { display: grid; align-items: center; gap: clamp(24px, 3vw, 44px); }
+.mth-split--pct   { grid-template-columns: 210px 1fr; }
+.mth-split--grade { grid-template-columns: 268px 1fr; }
+.mth-split--pool  { grid-template-columns: 1.18fr 1fr; align-items: start; }
+@media (max-width: 1100px) {
+  .mth-split--pct, .mth-split--grade { grid-template-columns: 180px 1fr; gap: 24px; }
+}
+@media (max-width: 860px) {
+  .mth-split { grid-template-columns: 1fr !important; gap: 24px; }
+  .mth-split--pool { gap: 28px; }
+}
+
+/* ── 1 · #indicators — the shape of the deliverable, names withheld ─────────
+      Four columns and an explicit truncation row, so five rows read as a window
+      onto 50 rather than as the whole thing. Redaction width varies per row so
+      it reads as text of differing length rather than a repeating bar.
+
+      Wt is redacted, not omitted: the copy says each indicator carries a weight
+      and this page does not give it, so the column has to be visibly there and
+      visibly withheld. There is no "normalised" column — the chain is raw value
+      → in-pool percentile, and a fourth number between them would be inventing
+      a step the PRD does not have. ── */
+.mth-ind { display: flex; flex-direction: column; }
+.mth-ind__head,
+.mth-ind__row {
+  display: grid;
+  grid-template-columns: 1fr 5ch 5ch 4ch;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 24px);
+}
+.mth-ind__head { padding-bottom: 10px; }
+.mth-ind__col {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mth-dim);
+}
+.mth-ind__col--num { text-align: right; }
+.mth-ind__row {
+  padding: 14px 0;
+  border-top: 1px solid var(--mth-rule);
+}
+.mth-ind__redact {
+  height: 10px;
+  border-radius: 2px;
+  background: var(--mth-track);
+}
+.mth-ind__redact--wt { width: 100%; }
+.mth-ind__num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--mth-ink);
+}
+.mth-ind__num--muted { color: var(--mth-mute); }
+.mth-ind__more {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--mth-rule);
+}
+.mth-ind__more-k {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mth-dim);
+}
+
+/* ── 2 · #pillars — the radar plots the eight INDICATOR COUNTS, not scores ──
+      This is the one figure on the page that is not about a patent, and the
+      distinction is load-bearing. The eight pillar scores ARE the paid
+      deliverable (Study chapter 3 is the eight pillars in depth), so drawing
+      them here would give away the thing the report sells — and the copy beside
+      this panel is about counts, not scores: "Text Quality and Legal Strength
+      carry eight indicators each, Network Centrality carries four."
+
+      Counts are PRD §8.3 verbatim and sum to 50. Because the shape is a property
+      of the METHOD it is identical for every patent, which is why this panel
+      alone carries no .mth-subj strip and no .mth-note flag. The axis labels are
+      the readout, so there is no second column beside it.
+
+      Axis labels are --font-sans: they read as words (§2). Only the count is
+      mono. ── */
+.mth-radar { display: block; width: 100%; height: auto; }
+.mth-radar__ring,
+.mth-radar__spoke { fill: none; stroke: var(--mth-rule); stroke-width: 1; }
+.mth-radar__area {
+  fill: var(--mth-track);
+  stroke: var(--mth-ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.mth-radar__dot { fill: var(--mth-ink); }
+.mth-radar__lbl { font-family: var(--font-sans); font-size: 15px; font-weight: 600; fill: var(--mth-ink); }
+.mth-radar__val { font-family: var(--font-mono); font-size: 12px; fill: var(--mth-dim); }
+
+/* ── 3 · #pool — the population, then the position inside it ────────────────
+      The mark field and the histogram are the same statement at two
+      resolutions, which is why they compose rather than alternate. ── */
+.mth-field { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.mth-poolhero { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.mth-poolhero__num {
+  font-family: var(--font-mono);
+  font-size: clamp(38px, 3.8vw, 52px);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--mth-ink);
+  font-variant-numeric: tabular-nums;
+}
+.mth-poolhero__lbl { font-family: var(--font-sans); font-size: 13px; color: var(--mth-mute); max-width: 17ch; }
+/* A background-image, not an <img>, so the field scales with its column instead
+   of sitting at its intrinsic 340px inside a 681px box. */
+.mth-field__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 340 / 207;
+  background: url('/assets/imagery/signal-methodology/pool-1433.svg') left top / 100% auto no-repeat;
+}
+.mth-dist { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.mth-dist__lead { display: flex; align-items: baseline; gap: 8px; }
+.mth-dist__no {
+  font-family: var(--font-mono);
+  font-size: clamp(30px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--mth-ink);
+  font-variant-numeric: tabular-nums;
+}
+.mth-dist__den { font-family: var(--font-mono); font-size: 15px; color: var(--mth-mute); }
+.mth-dist__note {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--mth-dim);
+  margin: 0;
+}
+.mth-hist { display: block; width: 100%; height: auto; }
+.mth-hist__bar { fill: var(--mth-track); }
+.mth-hist__bar--hi { fill: var(--mth-ink); }
+.mth-hist__mark { fill: var(--mth-accent); }
+
+/* ── 4 · #percentile — arc + readout ───────────────────────────────────────
+      The arc shows the MECHANISM's own output: one indicator's percentile. The
+      composite 78.4 is a different quantity and belongs to #grade; printing both
+      here said the same thing twice and blurred which number was which. ── */
+.mth-arc {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.mth-arc__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mth-arc__track { fill: none; stroke: var(--mth-track); stroke-width: 7; stroke-linecap: round; }
+.mth-arc__fill  { fill: none; stroke: var(--mth-ink);   stroke-width: 7; stroke-linecap: round; }
+.mth-arc__val {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--mth-ink);
+  font-variant-numeric: tabular-nums;
+}
+.mth-arc__cap {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--mth-dim);
+  margin: 8px 0 0;
+  max-width: 14ch;
+}
+@media (max-width: 1100px) {
+  .mth-arc { width: 180px; height: 180px; }
+  .mth-arc__val { font-size: 38px; }
+}
+
+/* ── 5 · #grade — seal + readout + the five shares ──────────────────────────
+      The seal is self-contained: --score-a on --score-a-bg, an ink-on-tint pair
+      that reads correctly without help from the panel. .tier-chip used to do
+      this job in a five-zone band and could not, because it has no dark variant
+      — which was the whole reason #grade was once the page's only light panel.
+      The five-tier structure survives below the seal as a proportional strip.
+
+      Zone width is the share, and the shares are the PRD's own 占比 column
+      (15/20/30/20/15). No cut-points: PRD §8.3 marks the percentile bands
+      illustrative and says the real split is calibrated on the live
+      distribution (「本文件不載明最終閾值」).
+
+      Colour encodes the tier and the letter is always beside it, so colour is
+      never the sole signal (§11.5) — which also means the ramp's failed CVD
+      separation cannot mislead anyone here. Letters are --font-sans: S/A/B/C/D
+      read as words, not numerals. ── */
+.mth-seal {
+  border-radius: 12px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  background: var(--score-a-bg);
+  border: 1px solid var(--score-a);
+}
+.mth-seal__top {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: var(--score-a);
+}
+.mth-seal__letter {
+  font-family: var(--font-sans);
+  font-size: 118px;
+  font-weight: 700;
+  line-height: 0.88;
+  margin: 4px 0 6px;
+  color: var(--score-a);
+}
+.mth-seal__foot {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--score-a);
+}
+.mth-shares { display: grid; grid-template-columns: 15fr 20fr 30fr 20fr 15fr; gap: 3px; }
+.mth-shares__z { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.mth-shares__fill { height: 6px; border-radius: 3px; }
+.mth-shares__z--s .mth-shares__fill { background: var(--mth-t-s); }
+.mth-shares__z--a .mth-shares__fill { background: var(--mth-t-a); }
+.mth-shares__z--b .mth-shares__fill { background: var(--mth-t-b); }
+.mth-shares__z--c .mth-shares__fill { background: var(--mth-t-c); }
+.mth-shares__z--d .mth-shares__fill { background: var(--mth-t-d); }
+.mth-shares__l {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--mth-ink);
+}
+/* The dot marks the worked patent's own tier. A second signal beside the letter,
+   never colour alone. */
+.mth-shares__z--here .mth-shares__l::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: 2px;
+  background: var(--mth-ink);
+}
+.mth-shares__n {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--mth-dim);
+}
+@media (max-width: 560px) {
+  .mth-shares { grid-template-columns: 1fr; gap: 9px; }
+  .mth-shares__z { flex-direction: row; align-items: center; gap: 10px; }
+  .mth-shares__fill { width: 36px; flex-shrink: 0; }
+}
+
+/* ── 6 · #scenarios — four bars, a real axis, and the spread ────────────────
+      Bars rather than markers on a hairline: four markers on four tracks was
+      164px of content in a 340px box. The axis and the spread bracket are what
+      fill the height, and the spread is the panel's actual finding.
+
+      The bars do NOT animate their length. A bar whose width transitions from
+      zero renders a false value on every intermediate frame — it says 12, then
+      31, then 55, and only the last one is true. ── */
+.mth-scen { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.mth-scen__row { display: grid; grid-template-columns: 11ch 1fr 5ch; align-items: center; gap: 14px; }
+.mth-scen__name { font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; color: var(--mth-ink); }
+.mth-scen__track {
+  position: relative;
+  height: 14px;
+  background: var(--mth-track);
+  border-radius: 0 4px 4px 0;
+}
+.mth-scen__fill { display: block; height: 100%; background: var(--mth-mark); border-radius: 0 4px 4px 0; }
+.mth-scen__val {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--mth-ink);
+}
+.mth-scen__axis {
+  display: grid;
+  grid-template-columns: 11ch 1fr 5ch;
+  gap: 14px;
+  margin-top: 2px;
+  padding-top: 9px;
+  border-top: 1px solid var(--mth-rule);
+}
+.mth-scen__ticks { grid-column: 2; display: flex; justify-content: space-between; }
+.mth-scen__tick {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--mth-dim);
+}
+.mth-scen__spread { display: grid; grid-template-columns: 11ch 1fr 5ch; align-items: center; gap: 14px; }
+.mth-scen__spread .mth-scen__name { color: var(--mth-mute); }
+.mth-scen__brkline { position: relative; height: 14px; }
+.mth-scen__brk {
+  position: absolute;
+  top: 50%;
+  height: 9px;
+  transform: translateY(-50%);
+  border-left: 2px solid var(--mth-accent);
+  border-right: 2px solid var(--mth-accent);
+  background: linear-gradient(var(--mth-accent), var(--mth-accent)) center / 100% 2px no-repeat;
+}
+@media (max-width: 560px) {
+  .mth-scen__row, .mth-scen__axis, .mth-scen__spread { grid-template-columns: 9ch 1fr 4ch; gap: 10px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE STAGE — six copy steps beside one figure that pins and swaps
+
+   The six sections that used to alternate down the page are now one section with
+   two columns: the steps scroll, the figure pins. Each step keeps its own
+   <section> and its own anchor id, and #pool in particular is linked from
+   product/signal/index.html and from .sig-colophon.
+
+   The DEFAULT markup state is the no-JS state: steps and figures simply stack
+   and every figure is visible. .is-live is additive, site.js adds it only when
+   the pin will genuinely apply, and the three media conditions below undo it if
+   it ever survives into a state where it should not. Nothing here hides content
+   unless the swap is actually running.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mth-stage { margin-block: clamp(40px, 4.5vw, 72px); padding-block: clamp(48px, 5vw, 80px); }
+.mth-stage__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: clamp(32px, 4vw, 72px);
+  align-items: start;
+}
+/* scroll-margin-top is not just nav clearance here — it decides WHICH FIGURE the
+   pinned card shows after a hash jump, and the pipe nav links to all six steps.
+   The observer band is the middle 10% of the viewport (rootMargin -45%/-45%), so
+   it has to land inside the step that was jumped to. With html's
+   scroll-padding-top: 80px alone the band's bottom edge fell 4px past the end of
+   the shortest step and #indicators matched TWO of them, making the figure a coin
+   flip.
+   A fixed offset only fixes one viewport height, because the band scales with the
+   viewport and the steps do not. This one is proportional: it makes the total jump
+   offset 30vh, which parks the band at a constant 15–25% of the viewport into the
+   step — inside all six at every height. The max() is the floor for viewports too
+   short for the arithmetic to make sense, where the stage does not pin anyway. */
+.mth-stage__step {
+  padding-block: clamp(36px, 9vh, 104px);
+  scroll-margin-top: max(40px, calc(30vh - 80px));
+}
+.mth-stage__step:first-child { padding-top: 0; }
+.mth-stage__step:last-child  { padding-bottom: 0; }
+/* <figure> elements, so the UA margin has to go. */
+.mth-stage__fig { margin: 0; min-width: 0; }
+.mth-stage__fig + .mth-stage__fig { margin-top: clamp(32px, 4vw, 56px); }
+
+/* A grid whose six figures all sit in cell 1/1 — NOT a fixed height with six
+   absolutely-positioned children. The stage is then exactly as tall as the
+   tallest of the six and no taller. A `height: clamp(420px, 62vh, 620px)` was
+   tried and it was a measured bug, not a style choice: the tallest panel is
+   583px, so a 693px-tall viewport produced a 430px stage and squeezed four of
+   the six panels, overflowing their own card. */
+.mth-stage__stage.is-live {
+  position: sticky;
+  top: clamp(84px, 13vh, 148px);
+  display: grid;
+  /* While pinned the CARD belongs to the stage, not to each figure. Two
+     independent reasons, both about the swap:
+       · the sequenced fade below passes through a moment with no figure at full
+         opacity, and a card riding on the figure would blink out with it;
+       · two stacked figures each carrying an opaque fill composite LIGHTER than
+         either alone mid-fade — #F3F3F3 at .5 over #F3F3F3 at .5 over white is
+         246, not 243. Small, but it is the card's whole area pulsing.
+     It also makes the frame stable for free: the six differ by ~170px and a
+     frame that resized on every swap would visibly jump. */
+  background: var(--surface-tertiary);
+  border-radius: 8px;
+  padding: clamp(24px, 2.6vw, 40px);
+}
+.mth-stage__stage.is-live .mth-stage__fig {
+  grid-area: 1 / 1;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  /* Outgoing: clears first, and fast. */
+  transition: opacity 130ms var(--ease-out);
+}
+/* Sequenced, not crossfaded. A symmetric crossfade holds BOTH figures at part
+   opacity for the whole overlap, and no two steps draw the same thing, so what
+   the reader gets is a double exposure — the radar showing through the arc at
+   half strength. The incoming figure therefore waits for the outgoing one to
+   finish, which is only safe because the card no longer travels with it. */
+.mth-stage__stage.is-live .mth-stage__fig.is-on {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 180ms var(--ease-out) 130ms;
+}
+/* The panel fills the stage so its content centres in that stable box —
+   deliberate symmetric air, and the one case on this page where centring is the
+   right answer rather than the defect. */
+.mth-stage__stage.is-live .mth-panel {
+  background: none;
+  padding: 0;
+  min-height: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+/* One fallback, three reasons to take it. The max-height is the measured one:
+   the tallest card is 583px and the pin sits 84–148px down, so a viewport under
+   ~680px would pin a card whose bottom is off-screen. Stacking is the honest
+   answer there, and it is the same stack the no-JS path renders.
+
+   site.js declines to add .is-live in all three conditions, so these rules are
+   the resize frame before its re-check lands rather than the normal path.
+   `display: block` is what undoes the grid — grid-area on a non-grid child is
+   inert, so the figures need no reset of their own. */
+@media (prefers-reduced-motion: reduce), (max-width: 980px), (max-height: 700px) {
+  .mth-stage__stage.is-live {
+    position: static;
+    display: block;
+    background: none;
+    padding: 0;
+  }
+  .mth-stage__stage.is-live .mth-stage__fig { opacity: 1; pointer-events: auto; }
+  .mth-stage__stage.is-live .mth-stage__fig + .mth-stage__fig { margin-top: clamp(32px, 4vw, 56px); }
+  /* The card goes back to the panels: a stage that is no longer pinned is just a
+     tall column, and one grey box wrapping six stacked figures is not it. */
+  .mth-stage__stage.is-live .mth-panel {
+    background: var(--surface-tertiary);
+    padding: clamp(24px, 2.6vw, 40px);
+    min-height: 340px;
+    flex: 0 1 auto;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 980px) {
+  .mth-stage__grid { grid-template-columns: 1fr; gap: 32px; }
+}
+/* ── Exit · the two PSS-backed reports ────────────────────────────────────
+   Reuses the shared .offer-card recipe. The [data-report] / --sigA|B|C rules on
+   product/signal/index.html do the same job, but they live in that page's inline
+   block and one of them resolves --sig-blue, a page-local variable — promoting the
+   set would mean rewriting a live page's focus ring and re-auditing an exception
+   block (§16.2) for no visible gain. So these are separate rules with their own
+   modifier names, and the two duplicated background-image URLs are an intentional
+   second use rather than drift.
+   No JS needed: site.js queries .offer-card globally, so .is-in and its stagger
+   arrive for free. ── */
+.mth-reports {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 1.6vw, 24px);
+  margin-bottom: clamp(28px, 3vw, 40px);
+}
+/* The shared card is sized for a 3-up offerings band; at 2-up in an exit block that
+   clamp is far too tall. */
+.mth-reports .offer-card {
+  min-height: clamp(280px, 30vw, 340px);
+  text-align: left;
+}
+.mth-reports .offer-card::before { background-position: center; }
+/* The shared .offer-card-desc reserves three lines (min-height:4.5em) for the
+   homepage tiles; these run to two, same as the Signal page's own override. */
+.mth-reports .offer-card-desc { min-height: 3em; }
+.mth-reports .offer-card--snapshot::before { background-image: url('/assets/imagery/signal/short_report.jpg'); }
+.mth-reports .offer-card--study::before    { background-image: url('/assets/imagery/signal/long_report.jpg'); }
+/* .offer-card-eyebrow--text is declared BEFORE .offer-card-eyebrow at equal
+   specificity, so the mono base wins and the modifier is dead. Restate it scoped,
+   matching the Signal page's own workaround so both pages' cards agree. These are
+   noun phrases, not labels, so no caps. */
+.mth-reports .offer-card-eyebrow--text {
+  font-family: var(--font-sans);
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 768px) {
+  .mth-reports { grid-template-columns: 1fr; }
+}
+
+/* ── Exit pair ── */
+.mth-exit__line {
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  text-wrap: balance;
+  max-width: 34ch;
+  margin: 0 0 24px;
+}
+.mth-exit__note {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+  max-width: 62ch;
+  margin: 0 0 var(--space-head-gap);
+}
+.mth-exit__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+@media (max-width: 480px) {
+  .mth-exit__actions { flex-direction: column; }
+  .mth-exit__actions .btn { width: 100%; }
+}
+
+/* ── Reveals. site.js adds .is-revealed to ANY [data-reveal], but the shared
+      transition CSS is scoped to .h-section / .section-dek / .partner-band, so a
+      namespaced element gets the class and no transition and would ship
+      invisible. Any future .mth-* element taking [data-reveal] needs its own
+      rule and its own reduced-motion branch, same as these two.
+
+      The PANELS deliberately carry no [data-reveal] any more: the stage owns
+      their opacity, and a reveal transition on the same property would fight the
+      swap. ── */
+.mth-exit__line[data-reveal] { opacity: 0; transform: translateY(10px); }
+.mth-exit__line[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms var(--ease-card), transform 450ms var(--ease-card);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mth-exit__line[data-reveal] { opacity: 1; transform: none; }
+  .mth-exit__line[data-reveal].is-revealed { transition: none; }
+}

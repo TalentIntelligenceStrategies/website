@@ -23,3 +23,10 @@ skills-lock.json
 .section-probe.html
 .wave-probe.html
 .veil-probe.html
+
+# Transient harnesses the verification probes write into the repo root and delete
+# again. Listed so an interrupted run cannot leave one behind to be committed:
+# Pages serves this directory, so a stray probe file would be public.
+.probe-run.html
+.rwd.html
+.shot.html

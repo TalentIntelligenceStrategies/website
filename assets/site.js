@@ -376,7 +376,7 @@
   const counters = document.querySelectorAll('.counter');
   const COUNT_MS = 1200;
 
-  // Thousands separators by default (e.g. 1,433). data-sep="none" opts a counter
+  // Thousands separators by default (e.g. 1,234). data-sep="none" opts a counter
   // out — for figures that read as an unformatted quantity rather than a
   // presented number (the Signal pool numeral set inline in a sentence).
   const fmt = (n, el) => el.dataset.sep === 'none' ? String(n) : n.toLocaleString('en-US');
@@ -472,6 +472,49 @@
       }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
       reportCarousels.forEach(el => reportObserver.observe(el));
     }
+  }
+
+  // ──────────────── Methodology stage — the figure pins and swaps (DESIGN.md §16.3) ────────────────
+  // Guarded so it no-ops on every page but product/signal/methodology.html.
+  //
+  // .is-live means ACTUALLY PINNED, not "the script ran". The stage only pins above
+  // 980px wide and only on a viewport tall enough to hold the card (the tallest of
+  // the six is 583px and the pin sits 84–148px down, so under ~700px its bottom
+  // would be off-screen). Asking the media queries here rather than leaving CSS to
+  // undo a live stage keeps one source of truth — and stops the card, which while
+  // pinned belongs to the stage, from wrapping all six stacked figures.
+  //
+  // The markup's default is the no-JS state: steps and figures stacked, every figure
+  // visible. Going live is purely additive.
+  const mthStage = document.querySelector('.mth-stage__stage');
+  if (mthStage && 'IntersectionObserver' in window) {
+    const mthMQ = ['(prefers-reduced-motion: reduce)', '(max-width: 980px)', '(max-height: 700px)']
+      .map(q => matchMedia(q));
+    const mthPinnable = () => !mthMQ.some(m => m.matches);
+    const mthFigs  = [...mthStage.querySelectorAll('.mth-stage__fig')];
+    const mthSteps = [...document.querySelectorAll('.mth-stage__step')];
+    let mthObs = null;
+
+    const mthSync = () => {
+      if (mthObs) { mthObs.disconnect(); mthObs = null; }
+      if (!mthPinnable()) {
+        mthStage.classList.remove('is-live');
+        mthFigs.forEach(f => f.classList.remove('is-on'));
+        return;
+      }
+      mthStage.classList.add('is-live');
+      const show = n => mthFigs.forEach((f, i) => f.classList.toggle('is-on', i === n));
+      show(0);
+      // IntersectionObserver, never a scroll listener: no per-frame work, no jank.
+      mthObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if (entry.isIntersecting) show(+entry.target.dataset.step); });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      mthSteps.forEach(el => mthObs.observe(el));
+    };
+
+    // Re-evaluate on the media queries themselves, not on resize.
+    mthMQ.forEach(m => m.addEventListener('change', mthSync));
+    mthSync();
   }
 
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
