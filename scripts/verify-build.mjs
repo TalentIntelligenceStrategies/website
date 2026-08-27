@@ -8,7 +8,7 @@
  * Run: npm run verify
  */
 import { execSync } from 'node:child_process';
-import { readdirSync, readFileSync, existsSync, rmSync, cpSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, rmSync, cpSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,9 +18,13 @@ const BUILD = join(ROOT, 'assets/build');
 const TMP = join(ROOT, '.vite/verify-build');
 
 const hash = (p) => createHash('sha256').update(readFileSync(p)).digest('hex').slice(0, 16);
-const snap = (dir) => Object.fromEntries(
-  existsSync(dir) ? readdirSync(dir).sort().map((f) => [f, hash(join(dir, f))]) : []
-);
+// Recursive: assets/build/ gained a fonts/ subdirectory, and a flat readdir would
+// try to hash the directory itself.
+const list = (dir, prefix = '') => (existsSync(dir) ? readdirSync(dir).sort() : []).flatMap((f) => {
+  const p = join(dir, f);
+  return statSync(p).isDirectory() ? list(p, `${prefix}${f}/`) : [[`${prefix}${f}`, hash(p)]];
+});
+const snap = (dir) => Object.fromEntries(list(dir));
 
 if (!existsSync(BUILD)) {
   console.error('assets/build/ is missing — run `npm run build`.');
