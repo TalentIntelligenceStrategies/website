@@ -48,7 +48,7 @@ dead CSS accumulate unaudited, and the correlation is not subtle:
 | | inline `<style>` blocks | outcome |
 |---|---|---|
 | `index.html`, `product/signal/methodology.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
-| `product/signal/index.html` | 1 | audited exception — 67 classes, zero dead rules (see §16.2) |
+| `product/signal/index.html` | 1 | audited exception — 76 classes, zero dead rules (see §16.2) |
 | `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
 
 The `product/signal/index.html` row is the one sanctioned exception, and it earned that
@@ -1230,12 +1230,23 @@ Signal accent = `--surface-accent-signal` (dark surfaces only) /
 `--surface-accent-signal-text` (body copy on white) / `--surface-accent-signal-wash`.
 
 The page carries **one inline `<style>` block, and it is a sanctioned §0.3 exception —
-not drift.** The header comment above the block records the audit: 88 classes, of which 67
-are `sig-*` page-namespaced, 6 are modifiers on shared components, and 15 are shared classes
-reached through a scoped or descendant selector (`[data-page="signal"] .hero`,
-`.sig-phases .btn`, `.contact-form .field[hidden]`). Zero dead rules. Nothing in it is
+not drift.** The header comment above the block records the audit: 76 classes, of which 52
+are `sig-*` page-namespaced and 24 are shared classes reached through a scoped or descendant
+selector, or as modifiers on shared components (`[data-page="signal"] .hero`,
+`.sig-phases__foot .btn`, `.contact-form .field[hidden]`). One is applied at runtime rather
+than in the markup — `.is-revealed`, by `site.js`. Zero dead rules. What is left is not
 reusable enough to earn a place in the shared stylesheet; promoting it would repeat the
 dead-CSS problem rather than fix it.
+
+**It was 102 until 2026-08-27, and the 26 that left are the shape of the rule.** The report
+sample overlay (`.sig-x*` / `.sig-doc` / `.sig-sheet`) moved to `styles.css`, and its FLIP
+driver to `site.js`, the moment `methodology.html` started opening the same panels — a
+one-page pattern earns the exception, a two-page pattern does not. The trigger cards stayed:
+`.offer-card[data-report]:focus-visible` resolves `--sig-blue`, declared in this block, and
+methodology's cards take the shared `.offer-card:focus-visible` instead. Watch for the
+neighbours that were interleaved in that line range and are **not** part of the dialog —
+`.sig-due`, `.sig-seller`, `.sig-mockflag` all belong to the intake form and the retrieve
+widget and all stayed.
 
 **The condition attached to the exception: if you change that block, re-run the dead-class
 check and update the audit line in its header comment.** An unaudited block loses the
@@ -1343,6 +1354,11 @@ chapter list beside it is the accessible equivalent and carries the actual scope
 languages. Chapter names are PRD §8.6.1 verbatim.
 
 ### The report panels carry the offer (2026-08-25)
+
+> The `.sig-x*` CSS described in this subsection and the next lives in **`styles.css`** as of
+> 2026-08-27, not in this page's inline block — `methodology.html` opens the same panels. The
+> composition notes below still hold; only the address changed. Methodology's copies drop
+> `.sig-xprice` and swap the CTA for an `<a>` (see §17).
 
 `.sig-xpanel`'s banner was a 200px decorative image strip (`.sig-xpanel__media`) with the
 title block stacked underneath. It now carries the whole offer — eyebrow, name, lede, price
@@ -1867,14 +1883,29 @@ rendered report-cover shots under `assets/product-shots/signal/`, which need a r
 Study are built on this scoring; Survey is a vector-similarity search against a larger
 index and computes no PSS, so a generic "see a sample" CTA pointed a reader who had just
 learned the method at a set of three. `.mth-reports` reuses the shared `.offer-card` recipe
-with `<a>` instead of the Signal page's `<button>` (no expand panels here to control) and
-**no prices** — price is off-topic on a methodology page, and `product/signal/index.html`
-already warns the three figures must stay in step with the intake chips and the deposit
-line. Its CSS is deliberately **not promoted** from the Signal page's `[data-report]` /
-`--sigA|B|C` set, even though §0.3 would normally say a two-page pattern belongs in
-`styles.css`: one of those rules resolves `--sig-blue`, a page-local variable, so promoting
-would mean rewriting a live page's focus ring and re-auditing an exception block (§16.2)
-for nothing the reader sees.
+with **no prices** — price is off-topic on a methodology page, and `product/signal/index.html`
+already warns the three figures must stay in step with the intake chips and the deposit line.
+
+**The cards open the sample in place (2026-08-27).** They were `<a href>` for one release,
+and the label lied: *both* pointed at `/product/signal/#reports`, so "See sample report"
+opened no sample and dropped the reader on a band of three cards to re-find the one they
+had already picked. They are now `<button data-report aria-controls>` triggers for the same
+FLIP-morph dialog the Signal page uses, and that dialog moved to `styles.css` + `site.js` to
+serve both — the two-page rule in §0.3, applied. Two panels, not three; Survey stays
+excluded, matching the copy directly above the cards.
+
+The panels drop `.sig-xprice`, so the no-prices rule holds inside the dialog too, and their
+CTA is an `<a href="/product/signal/?report=…#intake">` rather than the Signal page's
+`<button>`, because there is no intake form on this page to fill. `site.js` binds its
+select-and-scroll handler to `button.sig-xcta` specifically so it does not swallow that
+navigation, and reads `?report=` on arrival to pre-select the chip and drive the deposit
+figure. **That reader is why the block lives in `site.js` and not inline on the Signal
+page** — deferred, it runs after that page's inline intake script has bound its listeners;
+fired earlier the radio would be checked and the deposit would stay on "Select a report".
+
+The trigger rules are still **not promoted** from the Signal page's `[data-report]` /
+`--sigA|B|C` set: one resolves `--sig-blue`, a page-local variable. `.mth-reports` carries
+its own scoped equivalents and takes the shared `.offer-card:focus-visible`.
 
 **`.mth-pipe` is the table of contents and the diagram at once.** Five stages
 (`50 → 8 → 1433 → 0–100 → S–D`), each an anchor into its step. Because the sequence is

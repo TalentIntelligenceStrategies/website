@@ -3529,6 +3529,209 @@ svg.is-primed polyline {
   border: 0;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REPORT SAMPLE OVERLAY — .sig-x* / .sig-doc / .sig-sheet
+
+   The FLIP-morph dialog that a report card opens to show the sample renders
+   (cover + page 1). Shared by BOTH Signal pages: product/signal/index.html
+   (three panels, priced, CTA selects in the intake form) and
+   product/signal/methodology.html (two panels, no price, CTA links to intake).
+   Promoted out of the Signal page's inline block on 2026-08-27 when the second
+   page started using it — §0.3, a two-page pattern belongs here.
+
+   What did NOT come with it, and why it looks like a partial move:
+   · .offer-card[data-report] / --sigA|B|C — the trigger cards, not the dialog.
+     The focus ring resolves --sig-blue, a Signal-page-local variable, and
+     methodology has its own scoped equivalents under .mth-reports below.
+   · .sig-due / .sig-seller / .sig-mockflag — intake-form and retrieve-widget
+     rules that happened to sit inside the same line range upstream.
+
+   Driven by the .sig-x* block in site.js, which early-returns when
+   #sig-xoverlay is absent, so the other six pages pay nothing for either.
+   Geometry is the model the LEGAL MODAL below follows: flex column +
+   overflow:hidden on the shell, a single scrolling child, close button on the
+   SHELL so it stays pinned. z-index 1000, level with .mkt-overlay.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.sig-xoverlay{ position:fixed; inset:0; z-index:1000; display:none; padding:16px; }
+.sig-xoverlay[data-open="true"]{ display:grid; place-items:center; }
+.sig-xbackdrop{ position:fixed; inset:0; z-index:0; background:rgba(6,12,32,.55);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); opacity:0; }
+.sig-xpanel{ position:relative; z-index:1; width:min(850px, 100%); max-height:min(92svh, 940px);
+  display:flex; flex-direction:column; overflow:hidden; background:var(--surface-page);
+  border-radius:18px; box-shadow:var(--shadow-high); transform-origin:top left; }
+.sig-xpanel[hidden]{ display:none; }
+.sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
+
+/* ── The panel banner ────────────────────────────────────────────────────────
+   Was a 200px decorative image strip with the title block stacked underneath it. It
+   now carries the whole offer — eyebrow, name, lede, price, CTA — so the space does
+   work instead of just setting a mood, and the buy decision is reachable without
+   scrolling past two full-page report renders to find it.
+
+   One composition, arrived at by building three and comparing them live, twice:
+   copy over a full-bleed image under its own scrim, with the buy block held in the
+   bottom-right corner — price stacked over the CTA, both right-aligned, sharing the
+   baseline of the copy block opposite. The copy reads left to right and stops; the
+   price and the action wait at the end of that line rather than interrupting it.
+   Keeps the band shorter than a full-width rail would, because the buy block sits
+   beside the copy instead of under it.
+
+   Two things this needs, both learned the hard way:
+   · Its OWN scrim. The card's lives on .offer-card::after and does not come along in
+     the FLIP, so without this the copy sits on unmodified photo.
+   · A light CTA. .btn-primary is a black fill that disappears into a dark image.
+
+   .sig-xclose is untouched by any of it: it stays position:absolute top/right 14px on
+   .sig-xpanel, above this at z-index 3, and carries its own surface + border so it
+   reads on image or on page ground. ── */
+.sig-xbanner{ position:relative; height:clamp(250px,30vw,310px); overflow:hidden; color:#FFFFFF; }
+.sig-xbanner__img{ position:absolute; inset:0; display:block; width:100%; height:100%;
+  object-fit:cover; object-position:center; }
+.sig-xbanner::after{ content:""; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.62) 46%, rgba(0,0,0,0.20) 78%, rgba(0,0,0,0.10) 100%); }
+/* Row, bottom-aligned: copy on the left, the buy block held in the right corner.
+   align-items:flex-end is what seats them on a shared baseline — the copy block is
+   three or four lines tall and the buy block two, so anything else leaves the price
+   floating mid-air beside the lede. */
+.sig-xbanner__inner{ position:absolute; inset:0; z-index:1;
+  padding:clamp(20px,3vw,30px) clamp(24px,3vw,36px);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:clamp(16px,3vw,32px); }
+.sig-xbanner__copy{ display:flex; flex-direction:column; gap:8px; max-width:52ch; }
+.sig-xbanner__buy{ display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
+.sig-xcta{ flex:none; white-space:nowrap; background:#FFFFFF; color:#252525; }
+.sig-xcta:hover{ background:rgba(255,255,255,0.86); }
+
+/* Price in the panel — the same composed numeral as the report cards. */
+.sig-xprice{ font-family:var(--font-sans); font-size:clamp(26px,2.8vw,36px); font-weight:700;
+  letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; color:inherit; }
+.sig-xprice__unit{ font-size:0.42em; font-weight:500; letter-spacing:0; vertical-align:0.95em; margin-right:0.06em; }
+
+/* Type for the copy block. Sentence case on the eyebrow, matching the card eyebrow it
+   morphs out of. All three sit on the scrimmed photo, so all three are light. */
+.sig-xbanner .sig-xcard__kind{ font-family:var(--font-sans);
+  font-size:12px; font-weight:600; letter-spacing:0.04em; color:rgba(255,255,255,0.78); }
+.sig-xbanner h2{ font-size:clamp(24px,2.4vw,32px); font-weight:600; letter-spacing:-0.02em;
+  line-height:1.15; margin:0; color:#FFFFFF; }
+.sig-xpanel__lede{ font-size:16px; line-height:1.55; color:rgba(255,255,255,0.86); margin:0; max-width:56ch; }
+
+/* At phone width the band stops being a fixed height and grows with its content —
+   a fixed box holding a three-line lede plus the buy block leaves nothing for the
+   picture, and the picture is the reason the band exists. */
+@media (max-width: 760px){
+  .sig-xbanner{ height:auto; }
+  /* The row becomes a stack: side by side at phone width the copy gets ~20 characters
+     of measure. The buy block flips back to a row so the price and CTA sit together
+     rather than stacking into a tall column of their own. */
+  .sig-xbanner__inner{ position:relative; min-height:280px;
+    flex-direction:column; align-items:flex-start; justify-content:flex-end; }
+  .sig-xbanner__buy{ flex-direction:row; align-items:center; }
+}
+.sig-xpanel__body{ padding:clamp(20px,2.4vw,28px) clamp(24px,3vw,36px) clamp(28px,3vw,40px); display:flex; flex-direction:column; gap:16px; }
+.sig-xpanel__body p{ font-size:14px; line-height:1.55; color:var(--text-secondary); margin:0; }
+
+/* ── The sample reads as a document, not as two loose images ──────────────
+   .sig-xpanel__body was two bare <img> at radius 12 with a hairline. White
+   renders on the white panel ground gave the paper no visible edge at all, and
+   the cover — 90% margin by design — read as the panel dissolving into void
+   before the reader reached anything. Radius 12 plus a hairline is card chrome,
+   and paper is not a card.
+
+   Three moves, all of them about telling the reader what they are holding:
+
+   · .sig-doc__bar states the artefact once — filename, length, watermark. The
+     length is what was missing where it mattered: the retrieve widget below has
+     published "4 sections / 7 chapters" since 2026-08-18 (see TIERS), while the
+     panel a buyer actually opens said nothing, so all three tiers read as two
+     images each and the 24-page Study looked no heavier than the 8-page Snapshot.
+   · .sig-doc__stage gives the paper an edge to sit against. This is what
+     --surface-recessed is for. The sheets stay #FFFFFF in both themes, because
+     paper does not invert.
+   · .sig-sheet__cap states position under each sheet, so orientation travels with
+     the content instead of sitting in one place at the top.
+
+   The bar is deliberately NOT position:sticky. Pinned to top:0 of
+   .sig-xpanel__scroll it passes under .sig-xclose (absolute, top/right 14px, 40px
+   square, z-index 3) and the close button parks on the page count — the one string
+   this component exists to show. The captions carry continuous orientation
+   instead, which is the better answer regardless.
+
+   No overflow:hidden on .sig-doc: the bar and the stage carry the frame's corner
+   radii themselves, inset 1px for the border. */
+.sig-doc{ border:1px solid var(--border-tertiary); border-radius:12px;
+  background:var(--surface-page); box-shadow:var(--shadow-low); }
+
+.sig-doc__bar{ display:flex; align-items:center; gap:10px; padding:11px 14px;
+  background:var(--surface-secondary); border-bottom:1px solid var(--border-primary);
+  border-radius:11px 11px 0 0; }
+/* lucide file-text, matching the 24px stroke icons the rest of the page already
+   uses (.pillar-eyebrow-ico, .sig-rt__lock) and the lucide-react set the build
+   layer depends on. One icon set, not two. */
+.sig-doc__bar svg{ flex:none; width:16px; height:16px; stroke:var(--text-secondary);
+  stroke-width:1.75; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+/* Mono because it is a literal filename, the same reason the order codes and
+   the Signal page's .sig-mockflag are mono. Truncates rather than wraps — the count to its right is
+   the half that carries meaning. */
+.sig-doc__name{ font-family:'Inconsolata', ui-monospace, monospace; font-size:12.5px;
+  line-height:1.4; color:var(--text-secondary);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+/* Nothing in this component goes below --text-secondary. --text-tertiary is 2.68:1
+   on --surface-recessed and 3.11:1 on --surface-secondary in the light theme; every
+   string here is 12–14px, and the page count is the whole point of the block, so it
+   cannot be the faintest thing in it. --text-secondary is 8.90:1 on the bar and
+   7.67:1 on the stage. (.sig-rt__pagemeta below does use tertiary at 12px and is
+   the mistake not to copy.) */
+.sig-doc__meta{ margin-left:auto; flex:none; font-size:12.5px; line-height:1.4;
+  color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+.sig-doc__meta strong{ font-weight:600; color:var(--text-primary); }
+
+.sig-doc__stage{ display:flex; flex-direction:column; gap:clamp(16px,1.8vw,22px);
+  padding:clamp(16px,1.8vw,22px); background:var(--surface-recessed);
+  border-radius:0 0 11px 11px; }
+.sig-sheet{ margin:0; }
+/* Deliberately unblurred — the inverse of .sig-rt__page img above. The sample is
+   readable; the report you have bought but not yet paid the balance on is not. */
+.sig-xreport{ display:block; width:100%; height:auto; border-radius:2px;
+  box-shadow:var(--shadow-medium); }
+.sig-sheet__cap{ margin-top:11px; font-size:12.5px; line-height:1.5;
+  color:var(--text-secondary); }
+.sig-sheet__cap strong{ font-weight:600; color:var(--text-primary);
+  font-variant-numeric:tabular-nums; }
+
+/* The end of the stack — one line stating the boundary, not a contents list. A
+   list was built here first and thrown away: every page-1 render already prints its
+   own CONTENTS block, numerals and page numbers included, so a list under the sheet
+   restated what the reader had just looked at. What the sheet cannot say is where
+   the sample stops and the deliverable starts, so that is all this says. It also
+   sidesteps the arithmetic — "the remaining 6 pages" invites the question of whether
+   the cover counts as page 1, which nothing on this site answers. Naming what is
+   shown and what is delivered avoids it and is more useful anyway.
+
+   Revives .sig-xpanel__body p, dead since the three panel disclaimers were removed
+   on 2026-08-25. This is not those disclaimers returning: it states what you get,
+   not that the artwork is a mock. */
+.sig-doc__rest{ padding-top:clamp(14px,1.6vw,18px); border-top:1px solid var(--border-tertiary); }
+
+/* Phone: the bar's two halves stop fitting on one row well before 760, and the
+   count is the half that has to survive. It takes the second line at full width;
+   the filename keeps the first. */
+@media (max-width: 560px){
+  .sig-doc__bar{ flex-wrap:wrap; row-gap:4px; }
+  .sig-doc__name{ flex:1 1 auto; }
+  .sig-doc__meta{ flex:1 0 100%; margin-left:26px; }
+}
+.sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
+  display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
+  color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
+.sig-xclose:hover{ background:var(--surface-tertiary); }
+.sig-xclose svg{ width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; transform:rotate(45deg); }
+
+body.sig-xlock{ overflow:hidden; }
+
+@media (prefers-reduced-motion: reduce){
+  .sig-xbackdrop, .sig-xpanel{ transition:none !important; }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    LEGAL MODAL — components.md §Modal, `xl` 800, first implementation on this site
 
@@ -5480,15 +5683,19 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .mth-stage__grid { grid-template-columns: 1fr; gap: 32px; }
 }
 /* ── Exit · the two PSS-backed reports ────────────────────────────────────
-   Reuses the shared .offer-card recipe. The [data-report] / --sigA|B|C rules on
-   product/signal/index.html do the same job, but they live in that page's inline
-   block and one of them resolves --sig-blue, a page-local variable — promoting the
-   set would mean rewriting a live page's focus ring and re-auditing an exception
-   block (§16.2) for no visible gain. So these are separate rules with their own
-   modifier names, and the two duplicated background-image URLs are an intentional
-   second use rather than drift.
-   No JS needed: site.js queries .offer-card globally, so .is-in and its stagger
-   arrive for free. ── */
+   Reuses the shared .offer-card recipe. The cards are <button>s carrying
+   [data-report] + [aria-controls], and they open the REPORT SAMPLE OVERLAY above
+   — the same dialog the Signal page opens, which is why that set is up there now
+   rather than in the Signal page's inline block.
+
+   These trigger rules stayed separate even so. The Signal page's equivalents are
+   [data-report]-scoped and one of them resolves --sig-blue, a variable declared in
+   that page's own block; these are .mth-reports-scoped and take the shared
+   .offer-card:focus-visible instead. The two duplicated background-image URLs are
+   an intentional second use rather than drift.
+
+   site.js queries .offer-card globally, so .is-in and its stagger arrive for free;
+   the overlay block there binds the click. ── */
 .mth-reports {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

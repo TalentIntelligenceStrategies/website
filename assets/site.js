@@ -1726,6 +1726,178 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
 })();
 
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REPORT SAMPLE OVERLAY — .sig-x* FLIP morph  (Web Animations API)
+
+   The report cards (.offer-card[data-report]) are the triggers; each opens its
+   #sig-panel-* dialog with a measure→invert→play FLIP. Shared by both Signal
+   pages — product/signal/index.html (three panels) and .../methodology.html
+   (two). Early-returns without #sig-xoverlay, so the other six pages skip it.
+
+   Lived inline on the Signal page until 2026-08-27, when methodology.html
+   started opening the same panels. CSS is in styles.css under the matching
+   header. The load-order note at the foot is load-bearing — read it before
+   moving this back inline.
+   ══════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const overlay = document.getElementById('sig-xoverlay');
+  if (!overlay) return;
+  const backdrop = document.getElementById('sig-xbackdrop');
+  const cards = [...document.querySelectorAll('.offer-card[data-report]')];
+  const EASE = 'cubic-bezier(0.16,1,0.3,1)';
+  let activeCard = null, activePanel = null, lastFocus = null, animating = false;
+  const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const focusables = el => [...el.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])')]
+    .filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
+
+  function open(card){
+    if (animating || activePanel) return;
+    const panel = document.getElementById(card.getAttribute('aria-controls'));
+    if (!panel) return;
+    activeCard = card; activePanel = panel; lastFocus = card;
+    card.setAttribute('aria-expanded', 'true');
+
+    const sb = window.innerWidth - document.documentElement.clientWidth;
+    if (sb > 0) document.body.style.paddingRight = sb + 'px';
+    document.body.classList.add('sig-xlock');
+
+    overlay.dataset.open = 'true';
+    panel.hidden = false;
+    backdrop.animate([{opacity:0},{opacity:1}], {duration: reduce()?120:260, easing:'ease-out', fill:'forwards'});
+
+    if (reduce()){
+      panel.animate([{opacity:0},{opacity:1}], {duration:120, fill:'forwards'}).onfinish = finishOpen;
+      return;
+    }
+    animating = true;
+    const first = card.getBoundingClientRect();
+    const last = panel.getBoundingClientRect();
+    const sx = first.width / last.width, sy = first.height / last.height;
+    const tx = first.left - last.left, ty = first.top - last.top;
+    const a = panel.animate(
+      [{ transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`, opacity:.55 },
+       { transform:'translate(0,0) scale(1)', opacity:1 }],
+      { duration:440, easing:EASE, fill:'both' });
+    const body = panel.querySelector('.sig-xpanel__body');
+    if (body) body.animate([{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],
+      { duration:320, delay:130, easing:'ease-out', fill:'both' });
+    a.onfinish = () => { a.cancel(); animating = false; finishOpen(); };
+  }
+  function finishOpen(){
+    if (!activePanel) return;
+    const btn = activePanel.querySelector('.sig-xclose');
+    (btn || activePanel).focus({ preventScroll:true });
+  }
+  function close(after){
+    if (!activePanel || animating) return;
+    const panel = activePanel, card = activeCard;
+    const done = () => {
+      panel.hidden = true;
+      overlay.dataset.open = 'false';
+      document.body.classList.remove('sig-xlock');
+      document.body.style.paddingRight = '';
+      if (card) card.setAttribute('aria-expanded', 'false');
+      panel.getAnimations().forEach(a => a.cancel());
+      activeCard = activePanel = null;
+      (lastFocus || card)?.focus({ preventScroll:true });
+      lastFocus = null;
+      // Runs after the morph has landed and the scroll lock is off — a scroll issued
+      // while body.sig-xlock is still set goes nowhere.
+      if (typeof after === 'function') after();
+    };
+    backdrop.animate([{opacity:1},{opacity:0}], {duration: reduce()?100:220, easing:'ease-in', fill:'forwards'});
+    if (reduce()){ panel.animate([{opacity:1},{opacity:0}], {duration:100, fill:'forwards'}).onfinish = done; return; }
+    animating = true;
+    const first = panel.getBoundingClientRect();
+    const target = card.getBoundingClientRect();
+    const sx = target.width / first.width, sy = target.height / first.height;
+    const tx = target.left - first.left, ty = target.top - first.top;
+    const body = panel.querySelector('.sig-xpanel__body');
+    if (body) body.getAnimations().forEach(a => a.cancel());
+    const a = panel.animate(
+      [{ transform:'translate(0,0) scale(1)', opacity:1 },
+       { transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`, opacity:.4 }],
+      { duration:360, easing:EASE, fill:'forwards' });
+    a.onfinish = () => { animating = false; done(); };
+  }
+
+  // The panel's CTA is a request for THAT report: land the reader in the intake form
+  // with the choice already made rather than making them find and re-pick it.
+  //
+  // Split in two on purpose. The SELECTION happens synchronously on click, so the form
+  // is correct the instant the button is pressed; only the SCROLL waits for the close
+  // to finish, because a scroll issued while body.sig-xlock is still set is swallowed.
+  // If the morph's finish callback were ever missed, the reader still arrives at a form
+  // with the right report chosen — the failure mode is a missing scroll, not a lie
+  // about what they picked.
+  //
+  // The gate is handled deliberately: a gated report cannot be selected while the input
+  // type excludes it, so the type moves back to `granted` first. Without that, pressing
+  // "Choose this report" for Snapshot or Study while the form sat on "Just an idea"
+  // would appear to do nothing at all.
+  function selectReport(value){
+    const form = document.getElementById('intake-form');
+    const radio = form && form.querySelector('input[name="report"][value="' + value + '"]');
+    if (!radio) return false;
+    if (radio.dataset.requires === 'granted'){
+      const g = form.querySelector('input[name="input-type"][value="granted"]');
+      if (g && !g.checked){ g.checked = true; g.dispatchEvent(new Event('change', { bubbles:true })); }
+    }
+    radio.checked = true;
+    radio.dispatchEvent(new Event('change', { bubbles:true }));   // drives the deposit figure
+    return radio;
+  }
+  function revealIntake(radio){
+    document.getElementById('intake')
+      ?.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block:'start' });
+    if (radio) radio.focus({ preventScroll:true });
+  }
+
+  cards.forEach(c => c.addEventListener('click', () => open(c)));
+  backdrop.addEventListener('click', () => close());
+  overlay.querySelectorAll('.sig-xclose').forEach(b => b.addEventListener('click', () => close()));
+  // BUTTON CTAs only. On methodology.html the panel CTA is an <a> pointing at
+  // /product/signal/?report=…#intake, because that page has no intake form to fill —
+  // it has to navigate. Binding this handler to it would swallow the click.
+  overlay.querySelectorAll('button.sig-xcta').forEach(b => b.addEventListener('click', () => {
+    const radio = selectReport(b.dataset.report);
+    close(() => revealIntake(radio));
+  }));
+  document.addEventListener('keydown', e => {
+    if (!activePanel) return;
+    if (e.key === 'Escape'){ e.preventDefault(); close(); return; }
+    if (e.key === 'Tab'){
+      const f = focusables(activePanel);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  });
+  const relabel = () => overlay.querySelectorAll('.sig-xclose').forEach(b =>
+    b.setAttribute('aria-label', document.documentElement.getAttribute('lang') === 'zh-Hant' ? '關閉' : 'Close'));
+  relabel();
+  new MutationObserver(relabel).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+
+  // Arriving from methodology.html's panel CTA: /product/signal/?report=a-short#intake.
+  // The browser handles the scroll to #intake; this only pre-selects the report, reusing
+  // the same selectReport() the in-page CTAs call, gate handling included.
+  //
+  // This is the reason the block lives in site.js rather than inline on the Signal page.
+  // site.js is deferred, so it runs AFTER that page's inline intake script has bound its
+  // change listeners. Fired from the old inline position — above that script — the radio
+  // would be checked and the deposit figure would stay on "Select a report".
+  //
+  // The query is then dropped from the URL: it describes an arrival, not a page state, and
+  // leaving it in makes a shared or refreshed link re-assert a choice the reader may have
+  // since changed.
+  const wanted = new URLSearchParams(location.search).get('report');
+  if (wanted && selectReport(wanted)) {
+    history.replaceState(null, '', location.pathname + location.hash);
+  }
+})();
+
 /* ══════════════════════════════════════════════════════════════════════════
    FRONT DESK — Google Apps Script backend
 

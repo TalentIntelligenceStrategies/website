@@ -30,7 +30,7 @@
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Regular.ttf" as="font" type="font/ttf" crossorigin />
 <link rel="preload" href="/designs/assets/fonts/Urbanist/static/Urbanist-Bold.ttf" as="font" type="font/ttf" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=21">
+<link rel="stylesheet" href="/assets/styles.css?v=22">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -417,9 +417,13 @@
        index and never computes a PSS, so sending a reader who just learned the
        method to a set of three misrepresents what the method produces.
 
-       Cards are <a>, not the Signal page's <button>s — there are no expand
-       panels on this page to control. Both land on #reports, where the real
-       cards open their sample panels.
+       Cards are <button>s opening the sample panels in place, the same affordance
+       the Signal page's cards carry — see the overlay at the foot of this page.
+       They were <a href="/product/signal/#reports"> until 2026-08-27, and BOTH
+       pointed at that one href: the label said "See sample report" and neither card
+       opened a sample. It dropped the reader on a band of three cards, having just
+       been told the method produces two, and made them re-find and re-click the one
+       they had already chosen.
 
        Card strings are the Signal page's reviewed EN + ZH verbatim. Prices are
        deliberately absent: price is off-topic on a methodology page, and
@@ -432,7 +436,8 @@
       <p class="mth-exit__note" data-zh="特寫與景深都建立在這套評分之上。廣角回答的是另一個問題——市場上最相近的十件專利——不使用 PSS。">Snapshot and Study are both built on this scoring. Survey answers a different question, the ten closest patents on the market, and does not compute a PSS.</p>
 
       <div class="mth-reports">
-        <a href="/product/signal/#reports" class="offer-card offer-card--snapshot">
+        <button type="button" class="offer-card offer-card--snapshot"
+                data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
             <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
@@ -441,9 +446,10 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
           </span>
-        </a>
+        </button>
 
-        <a href="/product/signal/#reports" class="offer-card offer-card--study">
+        <button type="button" class="offer-card offer-card--study"
+                data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
             <span class="offer-card-title" data-zh="景深報告">Study Report</span>
@@ -452,7 +458,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
           </span>
-        </a>
+        </button>
       </div>
 
       <div class="mth-exit__actions">
@@ -562,6 +568,114 @@
     </div>
   </section>
 
+  <!-- ── Report sample overlay — the same FLIP-morph panels the Signal page opens,
+       minus Survey and minus the prices.
+
+       Two panels, because the section above is the two PSS-backed reports; a Survey
+       panel here would contradict the copy that just excluded it.
+
+       No .sig-xprice: the no-prices rule for this page (see the section comment above)
+       applies inside the panel as much as on the card. That leaves .sig-xbanner__buy
+       holding one child, which it handles at both breakpoints — column on desktop, row
+       under 760 — so no CSS accommodation was needed.
+
+       The CTA is an <a>, not the Signal page's <button>: there is no intake form on this
+       page to fill, so it navigates and hands the choice over in the query string. The
+       site.js handler is bound to button.sig-xcta specifically so it does not swallow it.
+
+       Strings are the Signal page's reviewed EN + ZH verbatim, same as the cards.
+       "Order this report / 訂購此報告" is the one string that is not: "Choose this
+       report" describes selecting in place, which is not what this does. ── -->
+  <div class="sig-xoverlay" id="sig-xoverlay" data-open="false">
+    <div class="sig-xbackdrop" id="sig-xbackdrop" aria-hidden="true"></div>
+
+    <!-- Panel A · Snapshot -->
+    <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
+      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <div class="sig-xpanel__scroll">
+        <div class="sig-xbanner">
+          <img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" />
+          <div class="sig-xbanner__inner">
+            <div class="sig-xbanner__copy">
+              <span class="sig-xcard__kind" data-zh="評等">The grade</span>
+              <h2 id="sig-panel-a-title" data-zh="特寫報告">Snapshot Report</h2>
+              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
+            </div>
+            <div class="sig-xbanner__buy">
+              <a class="btn btn-primary sig-xcta" href="/product/signal/?report=a-short#intake" data-zh="訂購此報告">Order this report</a>
+            </div>
+          </div>
+        </div>
+        <div class="sig-xpanel__body">
+          <div class="sig-doc">
+            <div class="sig-doc__bar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+              <span class="sig-doc__name">TIS_Snapshot_Report_US9876543.pdf</span>
+              <span class="sig-doc__meta" data-zh-html data-zh="<strong>8 頁</strong> · 4 節 · 含浮水印"><strong>8 pages</strong> · 4 sections · watermarked</span>
+            </div>
+            <div class="sig-doc__stage">
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
+              </figure>
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
+              </figure>
+              <div class="sig-doc__rest">
+                <p data-zh="此處為封面與第 1 頁。完整 8 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 8 pages arrive as a watermarked PDF.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Panel B · Study -->
+    <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
+      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <div class="sig-xpanel__scroll">
+        <div class="sig-xbanner">
+          <img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" />
+          <div class="sig-xbanner__inner">
+            <div class="sig-xbanner__copy">
+              <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
+              <h2 id="sig-panel-b-title" data-zh="景深報告">Study Report</h2>
+              <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
+            </div>
+            <div class="sig-xbanner__buy">
+              <a class="btn btn-primary sig-xcta" href="/product/signal/?report=b-long#intake" data-zh="訂購此報告">Order this report</a>
+            </div>
+          </div>
+        </div>
+        <div class="sig-xpanel__body">
+          <div class="sig-doc">
+            <div class="sig-doc__bar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+              <span class="sig-doc__name">TIS_Study_Report_US9876543.pdf</span>
+              <span class="sig-doc__meta" data-zh-html data-zh="<strong>24 頁</strong> · 7 章 · 含浮水印"><strong>24 pages</strong> · 7 chapters · watermarked</span>
+            </div>
+            <div class="sig-doc__stage">
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
+              </figure>
+              <figure class="sig-sheet">
+                <img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" />
+                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
+              </figure>
+              <div class="sig-doc__rest">
+                <p data-zh="此處為封面與第 1 頁。完整 24 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 24 pages arrive as a watermarked PDF.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </main>
 
   <footer class="footer" role="contentinfo">
@@ -655,7 +769,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=9" defer></script>
+<script src="/assets/site.js?v=10" defer></script>
 
 </body>
 </html>
