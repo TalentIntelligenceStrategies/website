@@ -495,8 +495,12 @@
     flex:none;
     padding:2px 8px;
     border-radius:9999px;
+    /* Fill stays --surface-page: this chip sits on a --surface-tertiary card, so
+       white is already the direction that separates it (1.13:1) and darkening it
+       would drop that to 1.09. The hairline is what was missing — --border-secondary
+       reads 1.10:1 against the card, --border-tertiary 1.32. */
     background:var(--surface-page);
-    border:1px solid var(--border-secondary);
+    border:1px solid var(--border-tertiary);
     color:var(--text-secondary);
     font-size:11px;
     font-weight:600;
@@ -1281,7 +1285,7 @@
   <section class="section offerings" id="reports" aria-labelledby="reports-heading">
     <div class="container">
       <h2 id="reports-heading" class="h-section" data-reveal data-zh="三種報告。">Three reports.</h2>
-      <p class="section-dek" data-reveal data-zh-html data-zh="同一件專利，三種視角——<br>數字本身、數字背後、數字周圍。">One patent, three different frames —<br>the number, what’s behind it, what’s around it.</p>
+      <p class="section-dek" data-reveal data-zh-html data-zh="同一件專利，三種視角 — <br>數字本身、數字背後、數字周圍。">One patent, three different frames —<br>the number, what’s behind it, what’s around it.</p>
       <div class="offerings-grid">
 
         <!-- All three cards carry the same price treatment: .offer-card-price, a composed
@@ -1327,7 +1331,7 @@
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
             <span class="offer-card-title" data-zh="廣角報告">Survey Report</span>
             <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>80,000"><span class="offer-card-price__unit">$</span>2,500</span>
-            <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可——連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
+            <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可 — 連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
@@ -1553,7 +1557,7 @@
             <!-- The lead used to restate the whole 10% / 90% / registration-code flow.
                  The how-it-works panel above and the email note below both already carry
                  it, so it says what comes back instead — the one thing neither does. -->
-            <p class="contact-lead" data-zh="客觀分數、深度報告，或所處的競爭地景——由人工 + AI 產出。">An objective score, a deep report, or the competitive landscape it lands in — human + AI.</p>
+            <p class="contact-lead" data-zh="客觀分數、深度報告，或所處的競爭地景 — 由人工 + AI 產出。">An objective score, a deep report, or the competitive landscape it lands in — human + AI.</p>
           </div>
           <!-- Same dl the homepage card carries under "Get in touch.", one item instead
                of two: the only thing worth stating at the foot is what leaves your card
@@ -1880,7 +1884,7 @@
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="評等">The grade</span>
               <h2 id="sig-panel-a-title" data-zh="特寫報告">Snapshot Report</h2>
-              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名——一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
+              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名 — 一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
             </div>
             <div class="sig-xbanner__buy">
               <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>24,000"><span class="sig-xprice__unit">$</span>750</span>
@@ -1923,7 +1927,7 @@
             <div class="sig-xbanner__copy">
               <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
               <h2 id="sig-panel-b-title" data-zh="景深報告">Study Report</h2>
-              <p class="sig-xpanel__lede" data-zh="完整七章報告——專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
+              <p class="sig-xpanel__lede" data-zh="完整七章報告 — 專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
             </div>
             <div class="sig-xbanner__buy">
               <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>48,000"><span class="sig-xprice__unit">$</span>1,500</span>

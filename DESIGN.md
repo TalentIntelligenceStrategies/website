@@ -277,6 +277,13 @@ Use the tokens, never a literal stack:
 | `--font-sans` | `'Urbanist','Inter','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif` |
 | `--font-mono` | `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace` |
 
+### Dashes
+
+Chinese copy uses **one em dash with a space either side** — `同產業 — 專利強度`, not
+the CJK convention of two unspaced dashes. This is a deliberate house choice, matching
+the English half of each bilingual pair; the site was mixed (34 double, 5 single) until
+2026-08-28. En dashes in ranges are untouched: `S–D`, `2026-04-01 – 2027-03-31`.
+
 > ### Mono is never used on text.
 >
 > **Inconsolata is reserved for sectional numbering** — the `01` / `02` / `03` that
@@ -1022,6 +1029,27 @@ inside `main` was never exposed as a landmark; this was a live defect on every p
 unrelated to the veil.
 
 ---
+
+## 14.1 Status chips — the container has to read, not just the type
+
+`.status-flag` and `.sig-phase__chip` both passed text contrast comfortably (8.37:1
+and 9.29:1) while reading as "too light", because the failure was never the type — it
+was the **container**. `.status-flag`'s `--surface-tertiary` fill against the `#FAFAFA`
+footer is 1.06:1, so the badge body was invisible and only the words showed.
+
+- **Fill is `--surface-recessed`, edge is a `--border-tertiary` hairline.** No light
+  fill in the ramp clears ~1.2:1 against all three grounds a flat chip lands on
+  (`#FFFFFF`, `#FAFAFA`, the veil's 70% white). The hairline sits at 1.32–1.47:1 on
+  every one of them, and that is what makes the shape resolve. Fill sets the mood;
+  the edge does the work.
+- **The hairline is `box-shadow: inset`, not `border`.** A border would add 2px to the
+  box and reflow the row it sits in. Verified: chip geometry unchanged at 89×20.
+- **`--sig-phase__chip` keeps its white fill.** It sits on a `--surface-tertiary` card,
+  so white is already the direction that separates it (1.13:1); darkening it would drop
+  that to 1.09. Only its hairline moved, `--border-secondary` → `--border-tertiary`.
+- **`.status-flag--on-image` is exempt** and explicitly resets `box-shadow: none`. At
+  92% white over photography the fill already separates, and an edge would fight the
+  image.
 
 ## 15. The build layer and the React island boundary
 
