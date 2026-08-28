@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-28 11:05 +0800** · Added the Chinese copy audit review page — 33 findings over two passes across zh-TW correctness, grammar and terminology; no copy changed.
+- **2026-08-28 09:50 +0800** · Chinese line breaking: zh-scoped `text-wrap: balance`, four hard breaks, six copy trims; 13 orphan tails gone.
 - **2026-08-28 08:40 +0800** · Added Lenis smooth scroll site-wide at lerp 0.13, scoped away from the capital site.
 - **2026-08-28 07:46 +0800** · Real search over a build-time index; ~400 lines of dead JS and 55 dead CSS rules removed; DESIGN.md resynced.
 - **2026-08-28 05:37 +0800** · Mobile audit fixes: WOFF2 font subsetting, responsive WebP imagery, dialog scroll-lock and focus-trap, touch targets, 404/robots/sitemap.

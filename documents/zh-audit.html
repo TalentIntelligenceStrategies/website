@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════════════
+  TIS · Chinese copy audit — zh-TW correctness, grammar, glossary
+  ════════════════════════════════════════════════════════════════════════
+  Findings only. No copy was changed. Every proposal below needs Irene's
+  sign-off before it ships — per SKILL.md Step 5, this review is not that
+  review.
+
+  Rubric: .claude/skills/tis-copy — references/zh-tw.md in full, plus
+  grammar/typos and the §5 EN↔ZH glossary. Deliberately NOT run:
+  detection.md §1 say-it-out-loud, §2b structural tells, §3 translation
+  voice, and the swap test.
+
+  Scope: the 9 shipping pages under website/. 1,203 data-zh strings.
+  Not audited: capital/ (separate repo), legal/*.zh.html (legal register),
+  brand/*.md (locked).
+
+  Decisions save to this browser's localStorage. There is no Sheet endpoint
+  wired up — use "Copy decisions" to send them back.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TIS · Chinese copy audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#252525; --ink-2:#5b5b5b; --ink-3:#8a8a8a;
+    --line:#e4e4e4; --line-2:#efefef; --bg:#fbfbfb; --card:#fff;
+    --fix:#b42318; --fix-bg:#fef3f2; --pass:#067647; --pass-bg:#ecfdf3;
+    --warn:#b54708; --warn-bg:#fffaeb; --accent:#252525;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:Urbanist,'Noto Sans TC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:15px; line-height:1.55; letter-spacing:-0.005em;
+  }
+  .zh{font-family:'Noto Sans TC',Urbanist,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 120px}
+
+  header.top{padding:56px 0 28px;border-bottom:1px solid var(--line)}
+  h1{font-size:30px;font-weight:700;letter-spacing:-0.02em;margin:0 0 8px}
+  .sub{color:var(--ink-2);font-size:15px;max-width:66ch;margin:0 0 20px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12.5px;color:var(--ink-3)}
+  .meta b{color:var(--ink);font-weight:600}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:24px 0 0}
+  .stat{background:var(--card);padding:14px 16px}
+  .stat .n{font-size:24px;font-weight:700;letter-spacing:-0.02em;line-height:1.1}
+  .stat .l{font-size:11.5px;color:var(--ink-3);margin-top:3px;letter-spacing:0.01em}
+
+  .note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--ink);
+    border-radius:8px;padding:14px 18px;margin:24px 0 0;font-size:13.5px;color:var(--ink-2)}
+  .note b{color:var(--ink)}
+
+  h2.sec{font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ink-3);margin:52px 0 4px;padding-top:20px;border-top:1px solid var(--line)}
+  .secdek{color:var(--ink-2);font-size:14px;margin:0 0 18px;max-width:74ch}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;margin:0 0 12px}
+  .card.done{opacity:.55}
+  .chead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-weight:700;
+    background:var(--ink);color:#fff;border-radius:4px;padding:3px 7px;letter-spacing:0.02em;flex:0 0 auto}
+  .title{font-weight:600;font-size:15.5px;flex:1 1 260px;min-width:0}
+  .sev{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;
+    border-radius:20px;padding:3px 10px;flex:0 0 auto}
+  .sev.defect{background:var(--fix-bg);color:var(--fix)}
+  .sev.flag{background:var(--warn-bg);color:var(--warn)}
+  .sev.info{background:#f2f4f7;color:var(--ink-2)}
+
+  .rule{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
+  .rule code{background:var(--line-2);border-radius:3px;padding:1px 5px;font-size:11.5px}
+
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+  @media(max-width:720px){.pair{grid-template-columns:1fr}}
+  .box{border:1px solid var(--line);border-radius:7px;padding:10px 12px;background:#fdfdfd;min-width:0}
+  .box .lbl{font-size:10.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:5px}
+  .box .val{font-size:15px;line-height:1.75;word-break:break-word}
+  .box.now{border-color:#f4d7d4;background:var(--fix-bg)}
+  .box.new{border-color:#c7e9d6;background:var(--pass-bg)}
+  mark{background:#ffe08a;color:inherit;border-radius:2px;padding:0 2px;font-weight:600}
+  .box.new mark{background:#a9e8c4}
+
+  .locs{margin:12px 0 0;font-size:12.5px;color:var(--ink-2)}
+  .locs .lt{font-size:10.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:5px}
+  .locs ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:5px}
+  .locs li{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+    background:var(--line-2);border-radius:4px;padding:2px 7px;color:var(--ink-2)}
+  .locs .more{background:transparent;color:var(--ink-3)}
+
+  .acts{display:flex;align-items:center;gap:8px;margin:16px 0 0;flex-wrap:wrap}
+  button.t{font-family:inherit;font-size:13px;font-weight:600;border-radius:6px;
+    border:1px solid var(--line);background:#fff;color:var(--ink-2);padding:6px 14px;cursor:pointer}
+  button.t:hover{border-color:var(--ink-3)}
+  button.t[aria-pressed="true"].fix{background:var(--fix-bg);border-color:var(--fix);color:var(--fix)}
+  button.t[aria-pressed="true"].pass{background:var(--pass-bg);border-color:var(--pass);color:var(--pass)}
+  textarea{font-family:inherit;font-size:13.5px;width:100%;border:1px solid var(--line);
+    border-radius:6px;padding:9px 11px;resize:vertical;min-height:38px;margin-top:10px;color:var(--ink)}
+  textarea:focus{outline:2px solid var(--ink);outline-offset:-1px;border-color:transparent}
+
+  .bar{position:sticky;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;
+    gap:16px;flex-wrap:wrap;font-size:13px;z-index:10}
+  .bar .grow{flex:1}
+  .bar b{font-weight:700}
+  button.primary{font-family:inherit;font-size:13px;font-weight:600;border-radius:6px;
+    border:1px solid var(--ink);background:var(--ink);color:#fff;padding:7px 16px;cursor:pointer}
+  button.ghost{font-family:inherit;font-size:13px;font-weight:600;border-radius:6px;
+    border:1px solid var(--line);background:#fff;color:var(--ink-2);padding:7px 16px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <h1>Chinese copy audit</h1>
+  <p class="sub">Findings only — <b>no copy was changed.</b> Every proposal here needs Irene's sign-off
+  before it ships. Run against the <code>tis-copy</code> skill: <code>zh-tw.md</code> in full, plus
+  grammar/typos and the §5 glossary.</p>
+  <div class="meta">
+    <span><b>Scope</b> 9 shipping pages under <code>website/</code></span>
+    <span><b>Corpus</b> 1,203 <code>data-zh</code> strings + 22 <code>site.js</code> literals</span>
+    <span><b>Two passes</b> pass 2 added the veiled pages + translation voice</span>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="note">
+    <b>What the mechanical layer found: almost nothing.</b> Zero Simplified characters, zero half-width
+    punctuation between CJK, zero half-width parentheses, zero straight quotes, zero ASCII ellipses, and
+    only two AI-slop hits site-wide. The Chinese here is in good shape — the findings below are
+    concentrated in terminology drift and a handful of specific strings.
+  </div>
+  <div class="note">
+    <b>Pass 2 — translation voice came back clean.</b> <code>detection.md</code> §3 was run over all 200
+    prose strings. The eight symptoms produced no findings: zero nominalisation or 進行／實現 padding, zero
+    filing-cabinet connectors, zero measure-word drift. The five 被 pile-ups it flagged are the locked
+    positioning triad 被看見・被衡量・被釋放 and deliberate echoes of it — the brand's own construction, not
+    translated English. This is consistent with the ZH being authored from a Chinese strategy deck rather
+    than translated from the EN.<br><br>
+    Pass 2 also read the two <b>veiled</b> pages (<code>licensing/index.html</code>,
+    <code>badge.html</code>) that pass 1 deprioritised, and they hold most of the new findings —
+    C7 through C13 and D4 are all from there.
+  </div>
+  <div class="note">
+    <b>Deliberately excluded.</b> 「五十項指標」/「一億八千萬」/「第三大」 mirror the locked profile copy in
+    <code>positioning.md</code> §4; <code>brand-voice.md</code>:170-186 instructs <i>"do not 'fix' the site
+    copy that mirrors it."</i> Also not flagged: 「八大支柱」 vs 「8 大支柱」 (explicitly unadjudicated),
+    專利流氓／專利蟑螂 (describe adversaries, not TIS), and the approved Taiwanese slang 加持／智財防彈衣.
+  </div>
+</header>
+
+<div id="app"></div>
+</div>
+
+<div class="bar">
+  <span class="grow"><b id="cnt">0</b> of <b id="tot">0</b> reviewed · <span id="fixn">0</span> fix ·
+    <span id="passn">0</span> pass</span>
+  <button class="ghost" id="reset">Reset</button>
+  <button class="primary" id="copy">Copy decisions</button>
+</div>
+
+<script>
+const SECTIONS = [
+ { id:'A', name:'zh-TW correctness',
+   dek:'Objective. Every item is checkable against references/zh-tw.md — a failure is a rewrite, not a discussion.' },
+ { id:'B', name:'Grammar',
+   dek:'Sentences that do not parse, or parse the wrong way. The narrowest and most defensible category here.' },
+ { id:'C', name:'Terminology & consistency',
+   dek:'The same concept rendered two ways. SKILL.md Step 1 exists for exactly this — grep every page before changing a shared string.' },
+ { id:'D', name:'Voice',
+   dek:'brand-voice.md §3 anti-hype and §4 phrase discipline. Three hits only.' },
+ { id:'E', name:'Noted, not in scope',
+   dek:'Real, but outside what this pass agreed to cover. Listed so the next pass has a head start.' },
+];
+
+const F = [
+// ── A ──────────────────────────────────────────────────────────────────
+{ s:'A', id:'A1', sev:'defect', title:'Nav product description — missing space and wrong measure word',
+  rule:'zh-tw.md §3 calls CJK↔Latin spacing "load-bearing" · §4 and brand-voice.md:154 adjudicate 項 not 個 · brand-voice.md:129 already names 50 個指標 as live drift',
+  now:'比對同產業專利，針對「量」「質」兼備的<mark>50 個</mark>指標，有理有據地為專利作專業評級。',
+  neu:'比對同產業專利，針對「量」「質」兼備的<mark> 50 項</mark>指標，有理有據地為專利作專業評級。',
+  locs:['index.html:88','index.html:166','404.html:104','404.html:182','patents:542','patents:620','about:252','about:330','badge.html:96','badge.html:173','licensing:1747','licensing:1825','signal:1077','signal:1158','methodology:85','methodology:162','reports:104','reports:182'],
+  extra:'One string, 18 occurrences — the Products dropdown and the mobile drawer on all 9 pages. Highest-value single fix in the audit.' },
+
+{ s:'A', id:'A2', sev:'defect', title:'布局 → 佈局 (Taiwan form)',
+  rule:'zh-tw.md §1 Taiwan vocabulary. The site already uses 佈局 twelve times — these four are the outliers.',
+  now:'…專利強度、周邊<mark>布局</mark>，以及團隊可據以行動的結論。',
+  neu:'…專利強度、周邊<mark>佈局</mark>，以及團隊可據以行動的結論。',
+  locs:['index.html:385','signal:1847','methodology:338','methodology:415'],
+  extra:'佈局 ×12 vs 布局 ×4 across the site.' },
+
+{ s:'A', id:'A3', sev:'defect', title:'標杆 → 標竿 (Taiwan form)',
+  rule:'zh-tw.md §1. 標杆 is the PRC form; Taiwan writes 標竿 (as in 標竿學習, benchmarking). The site has zero other instances of either.',
+  now:'我們的目標，是讓它成為市場公認的專利品質<mark>標杆</mark>。',
+  neu:'我們的目標，是讓它成為市場公認的專利品質<mark>標竿</mark>。',
+  locs:['about/index.html:442'] },
+
+{ s:'A', id:'A4', sev:'defect', title:'占比 → 佔比 (Taiwan form)',
+  rule:'zh-tw.md §1. Same class as 布局／佈局.',
+  now:'<mark>占比</mark>是固定的：S 為池內前 15%，其後 A 20、B 30、C 20、D 15。',
+  neu:'<mark>佔比</mark>是固定的：S 為池內前 15%，其後 A 20、B 30、C 20、D 15。',
+  locs:['methodology:334','methodology:406','methodology:409'] },
+
+{ s:'A', id:'A5', sev:'defect', title:'ASCII hyphen used as a dash between Chinese',
+  rule:'zh-tw.md §2 — "Em-dash is —— (doubled), full-width. Not --, not a single —." An ASCII hyphen-minus is further off still, and it carries spaces around it.',
+  now:'Innovue 專屬資料庫所收錄的專利數<mark> - </mark>每日與官方同步更新資料，全球第三大完整專利資料庫…',
+  neu:'Innovue 專屬資料庫所收錄的專利數<mark>——</mark>每日與官方同步更新資料，全球第三大完整專利資料庫…',
+  locs:['about/index.html:515'] },
+
+{ s:'A', id:'A6', sev:'defect', title:'Space after 。 before an inline note badge',
+  rule:'DESIGN.md §0.4 — "No space after 。、，、、." The full-width glyph carries its own trailing space.',
+  now:'…重點在結構：50 項的每一項背後都是同樣這幾個數字。<mark>␠</mark>&lt;span class="mth-note"&gt;示意數值&lt;/span&gt;',
+  neu:'…重點在結構：50 項的每一項背後都是同樣這幾個數字。&lt;span class="mth-note"&gt;示意數值&lt;/span&gt;',
+  locs:['methodology:347','methodology:394','methodology:424'],
+  extra:'If the badge needs visual separation, that is a CSS margin, not a character.' },
+
+{ s:'A', id:'A7', sev:'flag', title:'Single — where zh-tw.md requires ——',
+  rule:'zh-tw.md §2 requires the doubled full-width ——. But CHANGELOG.md:356 records deliberately collapsing ——→— once already, and four of these six use — as a label→value separator, which is not the job the Chinese 破折號 does.',
+  now:'即將推出：泰然專利防護網<mark> — </mark>30 件專利組合，涵蓋美國與台灣',
+  neu:'— your ruling. Separator use may be correct as-is; the running-prose —— elsewhere on the site is already doubled.',
+  locs:['index.html:310','index.html:314','signal:1240','patents:741','badge.html:476'],
+  extra:'Flagged, not proposed — you asked to rule on these yourself.' },
+
+{ s:'A', id:'A8', sev:'flag', title:'… where zh-tw.md requires ⋯⋯',
+  rule:'zh-tw.md §2 — "Ellipsis is ⋯⋯, not ...". These are single-character … in UI placeholders and pending states, where … is near-universal convention.',
+  now:'請選擇<mark>…</mark>　·　傳送中<mark>…</mark>　·　載入中<mark>…</mark>',
+  neu:'Low confidence — UI placeholder convention may reasonably override the prose rule.',
+  locs:['index.html:254','licensing:1913','site.js:971','site.js:1329'] },
+
+{ s:'A', id:'A9', sev:'defect', title:'Space after 。／， between two adjacent spans in one block',
+  rule:'DESIGN.md §0.4 — the full-width glyph carries its own trailing space. Two data-zh spans inside one &lt;p&gt; or &lt;h2&gt; are separated by a newline in the source, which renders as a space. EN needs that space between sentences; ZH does not.',
+  now:'…2 種專利包選法，5 類專利評級，<mark>␠</mark>戴上授權認證標章立刻從被動防禦轉為主動佈局。',
+  neu:'Merge the two spans into one <code>data-zh</code> on the parent — the same fix applied to the About card on index.html.',
+  locs:['index.html:292','licensing:1951','licensing:2019','licensing:2201'],
+  extra:'Found only in pass 2: the pass-1 sweep looked inside single data-zh values and structurally could not see a defect that lives between two of them. licensing:2201 is an &lt;h2&gt;, so the gap shows at headline size.' },
+
+// ── B ──────────────────────────────────────────────────────────────────
+{ s:'B', id:'B1', sev:'defect', title:'「最難被流動」 is ungrammatical',
+  rule:'流動 is intransitive — it describes something that flows, and cannot take the 被 passive. The parallel construction works for 被看懂 and then breaks on the second element.',
+  now:'專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、<mark>最難被流動</mark>的一項。',
+  neu:'專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、<mark>最難變現</mark>的一項。',
+  locs:['about/index.html:434'],
+  extra:'Alternatives: 最難流動的一項 · 流動性最差的一項. 變現 ("convert to cash") tracks the EN "least liquid" most closely and keeps the 最難 parallel intact.' },
+
+{ s:'B', id:'B2', sev:'defect', title:'A question is turned into an answer',
+  rule:'把 X 變成 Y requires X to become Y. Here X is the question 「一件專利值多少」 and Y is 一個可信的答案 — a question does not become an answer. The EN says "a credible question to answer," which is a different claim.',
+  now:'這一切的起點，是<mark>把「一件專利值多少」變成一個可信的答案</mark>。',
+  neu:'這一切的起點，是<mark>為「一件專利值多少」找出一個可信的答案</mark>。',
+  locs:['about/index.html:442'] },
+
+{ s:'B', id:'B3', sev:'flag', title:'「品質量測」 garden-paths',
+  rule:'品質 + 量測, but it reads first as 品 + 質量測 — and 質量 is the PRC form of 品質, which is exactly the confusion zh-tw.md §1 is guarding against.',
+  now:'在參考池內的百分位。不是絕對的<mark>品質量測</mark>。',
+  neu:'在參考池內的百分位。不是絕對的<mark>品質衡量</mark>。',
+  locs:['signal:1446'] },
+
+{ s:'B', id:'B4', sev:'flag', title:'「沒有符合的結果」 — 符合 with no object',
+  rule:'符合 is transitive and normally takes what is being matched (符合條件). Standing alone before 的結果 it reads incomplete.',
+  now:'<mark>沒有符合的結果</mark>',
+  neu:'<mark>找不到相符的結果</mark>',
+  locs:['assets/site.js:665'],
+  extra:'Search empty state. One of the 22 site.js literals no copy-audit doc has ever covered.' },
+
+{ s:'B', id:'B5', sev:'defect', title:'Announce message ends mid-phrase',
+  rule:'The string stops at 「的深度」 with no terminal punctuation and no completing noun. The parallel string on the homepage (index.html:314) is complete.',
+  now:'即將開放訂購：泰然專利強度評級系統 — 已核准專利、審查中的申請案，或只是一個想法，<mark>50 項指標的深度</mark>',
+  neu:'即將開放訂購：泰然專利強度評級系統 — 已核准專利、審查中的申請案，或只是一個想法，<mark>50 項指標的深度分析</mark>',
+  locs:['signal:1240'],
+  extra:'Compare index.html:314 — 「…單件評級、50 項指標，或完整專利地圖」. Consider matching that instead.' },
+
+// ── C ──────────────────────────────────────────────────────────────────
+{ s:'C', id:'C1', sev:'defect', title:'「評等」 is neither 評級 nor 等級',
+  rule:'zh-tw.md §5 fixes rating→評級 and grade→等級, and warns "don\'t let them collide." 評等 is a third form. The same page uses 「SABCD 等級」 at :1306.',
+  now:'<mark>評等</mark>',
+  neu:'<mark>等級</mark>  (if it labels the SABCD grade) — or 評級 (if it labels the rating action)',
+  locs:['signal:1303','signal:1451','signal:1881'],
+  extra:'Needs one decision on which sense the label carries, then apply consistently.' },
+
+{ s:'C', id:'C2', sev:'defect', title:'registration code / confirmation email left in English, while the same page translates them',
+  rule:'SKILL.md Step 1 — one concept, one rendering. This page ships both.',
+  now:'點 <mark>confirmation email</mark> 中的連結，或輸入 <mark>registration code</mark>，即可驗證身分…',
+  neu:'點<mark>確認信</mark>中的連結，或輸入<mark>取件碼</mark>，即可驗證身分…',
+  locs:['signal:1652','signal:1676','signal:1695','signal:1696','signal:1727'],
+  extra:'signal:1492 already writes 「你會收到一封含取件碼的確認信」. Five other strings keep the English — including signal:1676, 「你會收到含 registration code 的 confirmation email。」, which is the same sentence as :1492 with both terms swapped to English. Either convention is defensible; shipping both is not.' },
+
+{ s:'C', id:'C3', sev:'flag', title:'網絡 vs 網路',
+  rule:'zh-tw.md §1 maps 网络→網路. But 授權網絡 here means a partner network, not the internet, and methodology:315 correctly uses 網路 for the technical 網路中心性.',
+  now:'工研院 iPIC 將工業級專利導入 TIS 授權<mark>網絡</mark>。',
+  neu:'工研院 iPIC 將工業級專利導入 TIS 授權<mark>網路</mark>。 — or keep 網絡 and record the carve-out',
+  locs:['index.html:631','index.html:632','reports:403','reports:404'],
+  extra:'網絡 ×4 vs 網路 ×2. Judgment call: both are defensible in Taiwanese technical register, but the site should pick one.' },
+
+{ s:'C', id:'C4', sev:'defect', title:'「S–D」 breaks the grade-scale anchor',
+  rule:'brand-voice.md §5.1 fixes the ZH grade scale as 「S 到 D」, and §5 requires anchors render verbatim — "do not paraphrase". The site uses S 到 D four times and S–D once.',
+  now:'以 50 項指標為每件專利評出 <mark>S–D</mark> 等級並對標同產業——…',
+  neu:'以 50 項指標為每件專利評出 <mark>S 到 D</mark> 等級並對標同產業——…',
+  locs:['index.html:385'] },
+
+{ s:'C', id:'C5', sev:'flag', title:'Same English, two Chinese renderings — 13 pairs',
+  rule:'SKILL.md Step 1: "The same EN must not pair with two different ZH renderings across pages." Several are product names.',
+  now:'Verified License Badge → 授權<mark>認證</mark>標章 ／ 授權<mark>驗證</mark>標章<br>Patent Intelligence → <mark>專利情報</mark> ／ <mark>泰然專利強度評級系統</mark><br>Licensing Platform → <mark>專利授權平台</mark> ／ <mark>泰然專利防護網</mark>',
+  neu:'Needs a ruling, not a fix — brand-voice.md locks no ZH for "Verified License Badge" or "Owned Patents" (GAP-8, GAP-9).',
+  locs:['404:225','about:373','index:209','patents:663','index:193','index:203','search-index.mjs:36-43'],
+  extra:'The nav and page body use the locked product names; the search index uses literal translations. The search-index titles are hand-authored in build-search-index.mjs:36-43 and are not in any data-zh.' },
+
+{ s:'C', id:'C6', sev:'flag', title:'「新穎」 for Innovue is unadjudicated — and collides with 新穎性',
+  rule:'zh-tw.md §5 lists Innovue as unadjudicated: the site ships both 新穎 and Latin Innovue, and visual-guide.md fixes only the credit line. "Flag the mismatch, don\'t silently convert."',
+  now:'指標的原始值本身，則取自<mark>新穎</mark>的 1.8 億件專利資料庫。',
+  neu:'Flag only. Note that 新穎 also means "novel" — 新穎性 is the patent-law term for novelty, so 「新穎的…專利資料庫」 can read as "the novel patent database".',
+  locs:['signal:1745','methodology:321'],
+  extra:'The ambiguity is specific to patent copy, which makes it worth a ruling rather than leaving it to drift.' },
+
+{ s:'C', id:'C7', sev:'defect', title:'ITRI is 創智 on one page and 工研院 on another',
+  rule:'Same institution, two Chinese names, split cleanly by file. Already logged in licensing-copy-comparison.md — "ZH lists 創智 (=iPIC, matches the partner strip), EN says ITRI. One is wrong."',
+  now:'licensing → <mark>創智</mark>、資策會、陽明交大以貴公司名義開立…<br>index / reports → <mark>工研院</mark> iPIC 將工業級專利導入 TIS 授權網絡。',
+  neu:'Pick one. Note this is entangled with an open sign-off gate — chinese-copy-direction.md:78 lists 三家機構 disclosure scope as blocking, pending legal + Innovue clearance.',
+  locs:['licensing:2159','licensing:2604','index.html:631','index.html:632','reports:403','reports:404'],
+  extra:'創智 ×2 vs 工研院 ×4. The partner strip logo and the badge arc may each imply a different answer — check those before ruling.' },
+
+{ s:'C', id:'C8', sev:'defect', title:'非獨家 vs 非專屬 for "non-exclusive"',
+  rule:'zh-tw.md §5 fixes non-exclusive license → 非專屬授權. The licensing page uses 非專屬 three times and 非獨家 once.',
+  now:'…以貴公司名義開立 30 件合法<mark>非獨家</mark>專利。',
+  neu:'…以貴公司名義開立 30 件合法<mark>非專屬</mark>專利。',
+  locs:['licensing:2159'] },
+
+{ s:'C', id:'C9', sev:'flag', title:'專利流氓 vs 專利蟑螂 — same concept, same page',
+  rule:'Both are sanctioned (they describe adversaries, not TIS), but the page uses both for the same actor, and pairs them with different nouns — 好下手的目標 vs 好下手的對象.',
+  now:'<mark>專利流氓</mark>（NPE）只挑好下手的<mark>目標</mark>。 ／ <mark>專利蟑螂</mark>只挑好下手的<mark>對象</mark>。',
+  neu:'Pick one term and one noun. 專利蟑螂 leads 2:1 on this page and is the form the homepage uses.',
+  locs:['licensing:2165','licensing:2387','licensing:2624'] },
+
+{ s:'C', id:'C10', sev:'defect', title:'QR Code vs QR 碼',
+  rule:'Split cleanly by file — the licensing page writes QR Code, the badge page writes QR 碼. The two pages describe the same scan.',
+  now:'licensing → 內嵌授權編號與 <mark>QR Code</mark><br>badge → 憑證與標章一併核發，內嵌授權編號與 <mark>QR 碼</mark>',
+  neu:'Pick one. QR 碼 keeps the CJK register; QR Code matches how the term is usually written in Taiwanese product copy.',
+  locs:['licensing:2177','licensing:2442','licensing:2478','badge:384','badge:469','badge:476'] },
+
+{ s:'C', id:'C11', sev:'defect', title:'DLC — a retired term still shipping in Chinese',
+  rule:'brand-changelog.md:24 records "Replaced \'DLC\' / \'Digital License Credential\' with the canonical Verified License Badge." The English retired; the Chinese did not.',
+  now:'交付含公證電子簽章的<mark>數位授權憑證（DLC）</mark>… ／ <mark>DLC 標章</mark>把授權變成可被看見的證明。',
+  neu:'Resolve alongside C5 — "Verified License Badge" has no locked ZH (GAP-8), so this needs the same single ruling.',
+  locs:['licensing:2171','licensing:2540','badge:281'] },
+
+{ s:'C', id:'C12', sev:'flag', title:'FTO ships bare, with no Chinese gloss',
+  rule:'zh-tw.md §5 gives 自由實施（FTO）分析 — and warns it is NOT 迴避設計, which is design-around. The page ships just "FTO 報告".',
+  now:'上傳你的產品說明書或 <mark>FTO</mark> 報告。',
+  neu:'上傳你的產品說明書或<mark>自由實施（FTO）</mark>報告。',
+  locs:['licensing:2614'],
+  extra:'This page\'s own strategy doc argues against bare jargon — chinese-copy-direction.md:144 lists "用 SME 沒有的詞彙 — FTO / claim / family / PCT / SABCD. 90% of SMEs have never heard these."' },
+
+{ s:'C', id:'C13', sev:'flag', title:'Term ladder does not match the §5 anchor',
+  rule:'brand-voice.md §5 anchor 7 fixes the term ladder as 3 個月 / 1 年 / 3 年. The licensing page ships 3 / 6 / 12 / 24 個月.',
+  now:'…<mark>3 / 6 / 12 / 24 個月</mark>彈性期別，2 年方案最高 88 折。',
+  neu:'Either the product changed and the anchor is stale, or the page drifted. §5 says anchors render verbatim — so this needs reconciling at the anchor, not on the page.',
+  locs:['licensing:2183','licensing:2644'] },
+
+// ── D ──────────────────────────────────────────────────────────────────
+{ s:'D', id:'D1', sev:'defect', title:'「最佳夥伴」 — unverifiable superlative',
+  rule:'brand-voice.md §3 — "no superlatives that aren\'t measurable"; §4 bans the world-class / best-in-class family. §3 also requires every claim carry a number, counterparty, jurisdiction, or framework output.',
+  now:'專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，<mark>全球專利佈局的最佳夥伴</mark>。',
+  neu:'專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓。',
+  locs:['about/index.html:520'],
+  extra:'The sentence already carries its anchor (100 個國家 + the named jurisdictions). The superlative adds nothing and is the only unbacked claim of its kind on the site. Also note 全球 appears twice in one sentence.' },
+
+{ s:'D', id:'D2', sev:'flag', title:'「完全自有」 — 完全 is doing no work',
+  rule:'detection.md §2c — kill crutch words. 自有 already means owned outright; 完全 inflates it. Independently flagged in voice-state-audit.md:185 as "genuinely one to fix."',
+  now:'泰然<mark>完全</mark>自有的專利——一個持續成長、以防禦為本的組合…',
+  neu:'泰然自有的專利——一個持續成長、以防禦為本的組合…',
+  locs:['patents/index.html:716'] },
+
+{ s:'D', id:'D3', sev:'flag', title:'「立志」 is personal-ambition register',
+  rule:'brand-voice.md §2 — composed, institutional. 立志 is what a person resolves to do; 致力於 is the standard corporate register.',
+  now:'…並<mark>立志</mark>建立一套讓專利價值被公正衡量的標準。',
+  neu:'…並<mark>致力</mark>建立一套讓專利價值被公正衡量的標準。',
+  locs:['about/index.html:438'] },
+
+{ s:'D', id:'D4', sev:'defect', title:'Three address registers in use — 你 ／ 您 ／ 貴公司',
+  rule:'brand-voice.md §2 — composed and consistent. The licensing page addresses the reader three different ways, sometimes in adjacent cards.',
+  now:'<mark>貴公司</mark>名義開立 30 件…　·　越貼近<mark>您</mark>實際的海外風險　·　他們自然跳過<mark>你</mark>',
+  neu:'Pick one register for the surface. 你 is the majority form on this page (17) and matches the direct, punchy A-angle voice; 貴公司 is the formal counterweight.',
+  locs:['licensing:2159','licensing:2227','licensing:2441','licensing:1975','licensing:2274','licensing:2275','licensing:2165','licensing:2204','licensing:2267'],
+  extra:'On product/licensing/index.html alone: 你 ×17, 您 ×5, 貴公司 ×3. Site-wide 你 ×30 vs 您 ×17. The mix is heaviest where the page switches between selling to a founder and selling to a company.' },
+
+// ── E ──────────────────────────────────────────────────────────────────
+{ s:'E', id:'E1', sev:'info', title:'Calqued verb — the one translation-voice hit on the site',
+  rule:'detection.md:101 lists this exact line as its worked example of a calqued verb, with the fix. Pass 2 ran §3 over all 200 prose strings; this is the only hit.',
+  now:'即使你的專利本身沒有任何改變，你的數字仍可能<mark>移動</mark>。',
+  neu:'即使你的專利本身沒有任何改變，你的數字仍可能<mark>變動</mark>。',
+  locs:['methodology:322'],
+  extra:'Listed under "noted" rather than as a defect because the skill\'s own reference already uses this line as an illustration — worth confirming it was not left deliberately.' },
+
+{ s:'E', id:'E2', sev:'info', title:'site.js status messages — inconsistent terminal punctuation',
+  rule:'Same family of toasts, some end in 。 and some do not.',
+  now:'訂閱成功，感謝您  ·  訂閱失敗，請再試一次   <span style="color:#8a8a8a">(no 。)</span><br>已加入訂閱名單。  ·  請填寫姓名。   <span style="color:#8a8a8a">(with 。)</span>',
+  neu:'Pick one convention across all eight status strings in site.js.',
+  locs:['site.js:1060','site.js:1079','site.js:1211','site.js:997-999'] },
+];
+
+const KEY='tis-zh-audit-v1';
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ state={}; }
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
+
+const esc = s => String(s).replace(/&(?!(amp|lt|gt|quot|#\d+);)/g,'&amp;');
+
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML = SECTIONS.map(sec=>{
+    const items = F.filter(f=>f.s===sec.id);
+    if(!items.length) return '';
+    return `<h2 class="sec">${sec.id} · ${sec.name} <span style="color:var(--line);font-weight:400">—</span>
+      <span style="color:var(--ink-2);font-weight:600;text-transform:none;letter-spacing:0">${items.length}</span></h2>
+      <p class="secdek">${sec.dek}</p>` + items.map(card).join('');
+  }).join('');
+  bindAll(); tally();
+}
+
+function card(f){
+  const st = state[f.id] || {};
+  const locs = f.locs.map(l=>`<li class="${l.startsWith('+')?'more':''}">${l}</li>`).join('');
+  return `<div class="card ${st.v?'done':''}" data-id="${f.id}">
+    <div class="chead">
+      <span class="id">${f.id}</span>
+      <span class="title">${f.title}</span>
+      <span class="sev ${f.sev}">${f.sev==='defect'?'defect':f.sev==='flag'?'judgment':'noted'}</span>
+    </div>
+    <p class="rule">${f.rule}</p>
+    <div class="pair">
+      <div class="box now"><div class="lbl">Current</div><div class="val zh">${esc(f.now)}</div></div>
+      <div class="box new"><div class="lbl">Proposed</div><div class="val zh">${esc(f.neu)}</div></div>
+    </div>
+    ${f.extra?`<p class="rule" style="margin-top:12px">${f.extra}</p>`:''}
+    <div class="locs"><div class="lt">${f.locs.length} location${f.locs.length>1?'s':''}</div><ul>${locs}</ul></div>
+    <div class="acts">
+      <button class="t fix"  aria-pressed="${st.v==='fix'}"  data-v="fix">✗ Fix</button>
+      <button class="t pass" aria-pressed="${st.v==='pass'}" data-v="pass">✓ Pass</button>
+    </div>
+    <textarea placeholder="Note or a different rewrite…">${st.n?esc(st.n):''}</textarea>
+  </div>`;
+}
+
+function bindAll(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const id=c.dataset.id;
+    c.querySelectorAll('button.t').forEach(b=>b.onclick=()=>{
+      const cur=(state[id]||{}).v;
+      state[id]=Object.assign({},state[id],{v: cur===b.dataset.v ? null : b.dataset.v});
+      save(); render();
+    });
+    c.querySelector('textarea').oninput=e=>{
+      state[id]=Object.assign({},state[id],{n:e.target.value}); save(); tally();
+    };
+  });
+}
+
+function tally(){
+  const vals=Object.values(state);
+  const fix=vals.filter(v=>v&&v.v==='fix').length;
+  const pass=vals.filter(v=>v&&v.v==='pass').length;
+  document.getElementById('cnt').textContent=fix+pass;
+  document.getElementById('tot').textContent=F.length;
+  document.getElementById('fixn').textContent=fix;
+  document.getElementById('passn').textContent=pass;
+}
+
+document.getElementById('stats').innerHTML = [
+  ['1,203','strings audited'],
+  [String(F.filter(f=>f.sev==='defect').length),'defects'],
+  [String(F.filter(f=>f.sev==='flag').length),'judgment calls'],
+  ['18','locations, one string'],
+  ['0','Simplified chars'],
+  ['2','AI-slop hits'],
+].map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+document.getElementById('reset').onclick=()=>{
+  if(confirm('Clear all decisions on this browser?')){ state={}; save(); render(); }
+};
+document.getElementById('copy').onclick=()=>{
+  const lines=['TIS Chinese copy audit — decisions',''];
+  SECTIONS.forEach(sec=>{
+    const items=F.filter(f=>f.s===sec.id&&state[f.id]&&(state[f.id].v||state[f.id].n));
+    if(!items.length) return;
+    lines.push(`## ${sec.id} · ${sec.name}`);
+    items.forEach(f=>{
+      const st=state[f.id];
+      lines.push(`- [${st.v?st.v.toUpperCase():'—'}] ${f.id} ${f.title}`);
+      lines.push(`      ${f.locs.length} location(s): ${f.locs.join(', ')}`);
+      if(st.n) lines.push(`      note: ${st.n}`);
+    });
+    lines.push('');
+  });
+  const out=lines.join('\n');
+  navigator.clipboard.writeText(out).then(
+    ()=>{ const b=document.getElementById('copy'); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy decisions',1400); },
+    ()=>{ prompt('Copy manually:', out); }
+  );
+};
+
+render();
+</script>
+</body>
+</html>
