@@ -337,7 +337,8 @@ shipped strings rather than read off the spec:
 - **`balance` does not cross `display: -webkit-box`.** It cannot reach a line-clamped
   element such as `.report-card-dek`, and if it could it would hurt: balance narrows every
   line, so a clamped block would show *fewer* characters before the ellipsis. Fit those by
-  copy length.
+  copy length — at the desktop clamp of 2 lines, which is the tighter of the two (§7
+  relaxes it to 3 at ≤640px).
 
 **Chinese does not drop the negative tracking yet.** `.pillar-title` ships `-0.02em` in both
 languages and no `zh-Hant` override exists in `styles.css`. Pending, not shipped — and not
@@ -445,6 +446,29 @@ never overlap.
   primary CTA, then the mobile hamburger (`.topnav-mobile-trigger`, shown at narrow
   widths). The mobile drawer (`.mobile-drawer` + `.mobile-overlay`) mirrors the nav.
 
+**The drawer carries the language switch, and the Products group opens by default**
+(2026-08-27). Two facts drove both:
+
+- The topnav globe is *behind* the drawer once it slides in, so on a phone the language
+  switch was unreachable while the menu was open. `.mobile-lang` is a segmented pair in
+  the drawer footer above the CTA, using the same `[data-lang-set]` hook as the topnav
+  menu — `langButtons` in `site.js` is queried document-wide, not scoped to `#lang-wrap`,
+  so one `applyLang` call keeps both sets' `aria-checked` in sync. Choosing a language
+  from the drawer also closes it: the swap plays a full-screen shimmer and two stacked
+  overlays read as a fight. There is **no theme toggle** anywhere in the UI — dark theme
+  is styled but never switchable — so the footer holds language only.
+- Collapsed, the drawer was four links over **503px of empty white** on a 844px phone
+  (60% of the panel). Expanded it is four links plus two 88px-media product cards.
+
+**The expanded default is measured, not assumed.** The markup ships
+`aria-expanded="true"` + `data-open="true"`; `fitProductsDefault()` runs on every
+`openDrawer()`, and if `.mobile-list` now overflows its own box it puts the group back.
+That matters on short viewports — at 375x667 the expanded sublist pushes the last two nav
+rows under the fold, and hidden navigation is a worse fault than empty space. Verified at
+390x844, 375x667 (falls back to collapsed), 430x932 and 412x915: no drawer scrolls and
+every nav row is visible. A reader who toggles the group sets `data-userToggled` and is
+never overridden again.
+
 **Contact-chrome routing rule** (2026-08-18). Three links per page carry a contact
 intent — the topnav CTA, the mobile-drawer CTA, and the search-modal "Contact" entry —
 and all three follow one rule:
@@ -493,6 +517,16 @@ the shader.
 min-height:calc(100dvh - 64px); padding-block:0` — the hero owns the first screen minus
 the nav. On home the announce bar is lifted out of flow and absolutely overlaid at
 `top:64px` (`z-index:90`) so it scrolls away with the page while only the nav pins.
+
+**Mobile floor** (2026-08-27): at `≤640px` the container is `height:auto;
+min-height:340px`, down from `460px`. `height:auto` is the half that does the work — the
+base rule sets `height: clamp(460px,56vw,580px)`, so lowering `min-height` alone changes
+nothing. 460px was holding one to three lines of type on `/about/`, `/reports/` and
+`/patents/`, leaving 184–216px of empty grid above the heading and pushing the first real
+section off an 844px phone. 340px is a floor, not a height: `badge.html` still sizes to
+its taller content (601px), and `/patents/` settles at 380px on its three-line dek. Home
+and signal are unaffected — both override with their own full-viewport heroes, and
+licensing's `[data-page="licensing"] .hero` already sets `height:auto` itself.
 
 **The announce bar is one nowrap line at desktop widths and wraps at ≤880px.**
 `.announce-msg` is `nowrap` + `text-overflow: ellipsis`, which silently cuts a long
@@ -558,6 +592,23 @@ scale(0.95) }`. Touch: `min-height:44px` under `(pointer:coarse)`.
 
 > **`.btn-ghost` no longer exists** in `styles.css` — it survives only in a
 > product-shot showcase file with its own CSS. Don't cite it as a site variant.
+
+**A stacked hero pair comes back one width** (2026-08-27). `.pillar-actions` is
+`flex-wrap: wrap`, so once the pair wraps each button keeps its own text width — 220px
+over 122px on home, 167px over 213px on signal. Two differently-sized pills in a column
+read as a mistake, and the fill/outline pair already carries the hierarchy. At `≤480px`
+the container becomes `flex-direction: column; align-items: stretch`.
+
+- They equalise to **the wider of the two** (220px home, 213px signal), not to the full
+  column: `.pillar-actions` is shrink-to-fit, so `stretch` matches them to their own
+  widest rather than going full-bleed.
+- Scoped to `[data-page="home"]` and `[data-page="signal"]` — the only two with a stack
+  to fix. Licensing's pair (119 + 139) still shares a row at 320px and `badge.html` has a
+  single button; forcing a column there would only grow an already-tall hero.
+- **480px, not each page's own wrap point** (home ≤390, signal ≤430 in EN), so the two
+  languages keep the same shape — the ZH labels are shorter and would otherwise sit in a
+  row while EN stacked at the same width. The cost is one pair, home at 431–480px, that
+  stacks while it would still have fit across.
 
 **In-hero re-skin** (over the black shader):
 - `.hero .btn-primary` → glass-on-dark: `rgba(0,0,0,0.45)` + blur + `1.25px
@@ -625,6 +676,14 @@ no colour of its own, raised `vertical-align: 0.95em` to sit at the numerals' ca
 
 > **`.content-card` no longer exists** — removed in the dead-rule purge. The visible
 > cards are offer / report / about / patent.
+
+**`.report-card-dek` clamps to 2 lines, and to 3 at `≤640px`** (2026-08-27). Two lines is
+a *grid* constraint — it keeps the 284px desktop tiles even. Once the cards stack there is
+no row to align to, and the clamp was cutting **every** Chinese dek (3 lines wanted) and
+most English ones (up to 5). Three lines clears ZH completely and takes EN most of the
+way. The third line is free: `.report-card` is a fixed 420px, so the dek grows into slack
+that was already inside the card and page height does not move — only the hero change
+shows up in `docH`. `-webkit-line-clamp` **and** `line-clamp` both need overriding.
 
 **Image reveal** (offer + report): image enters at `scale(1.08)` + `opacity:0`, settles
 to `scale(1)` over **700ms `--ease-card`** when `.is-in` lands; hover then zooms to

@@ -155,11 +155,11 @@
     </button>
   </div>
   <nav class="mobile-list" aria-label="Primary mobile">
-    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
+    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
-    <div id="m-products-sublist" class="mobile-sublist">
+    <div id="m-products-sublist" class="mobile-sublist" data-open="true">
       <a href="/product/licensing/" class="mobile-sub-row">
         <span class="mobile-sub-media">
           <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
@@ -187,6 +187,14 @@
     <a href="/about/"    data-zh="關於">About</a>
   </nav>
   <div class="mobile-auth">
+    <!-- Language sits in the drawer footer because the topnav globe is hidden
+         behind the drawer once it is open, leaving the switch unreachable on a
+         phone. Same hook the topnav menu uses, so site.js picks these up and
+         keeps aria-checked in sync across both. -->
+    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+      <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
+      <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
+    </div>
     <a href="#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
   </div>
 </aside>

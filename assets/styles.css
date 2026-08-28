@@ -1060,9 +1060,37 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .mobile-auth {
   border-top: 1px solid var(--border-primary);
   padding: 20px;
-  display: flex; gap: 12px;
+  display: flex; flex-direction: column; gap: 12px;
 }
 .mobile-auth .btn { flex: 1; }
+/* Language segment — the drawer's only reason to hold a control. The topnav
+   globe is covered once the drawer slides in, so on a phone the switch was
+   unreachable while the menu was open. Segmented rather than a second dropdown:
+   two options do not earn a menu, and a menu inside a drawer is a second layer
+   of overlay to trap focus in. */
+.mobile-lang {
+  display: flex; gap: 4px;
+  padding: 4px;
+  background: var(--surface-recessed);
+  border-radius: 10px;
+}
+.mobile-lang button {
+  flex: 1;
+  min-height: 36px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 0; border-radius: 7px;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+.mobile-lang button[aria-checked="true"] {
+  color: var(--text-primary);
+  background: var(--surface-page);
+  box-shadow: var(--shadow-low);
+}
 
 /* ───────── Main offset for fixed nav ───────── */
 main { padding-top: 64px; }
@@ -1465,6 +1493,30 @@ main { padding-top: 64px; }
   justify-content: flex-start;
   margin-top: 12px;
 }
+/* Once these wrap they are stacked, and `wrap` leaves each at its own text
+   width — 220px over 122px on the homepage, 167px over 213px on signal. Two
+   differently-sized pills in a column read as a mistake rather than a
+   hierarchy, and the fill/outline pair already carries the hierarchy. Column
+   + stretch instead of wrap, so the stack is one width.
+
+   Scoped to the two pages that have a stack to fix. Licensing's pair
+   (119px + 139px) still shares a row at 320px and badge.html has a single
+   button, so forcing a column there would only grow a hero that is already
+   tall. If those labels ever lengthen, add the page here rather than widening
+   the selector.
+
+   480px rather than each page's own wrap point (home ≤390, signal ≤430 in EN)
+   so the two languages keep the same shape: the ZH labels are shorter and would
+   otherwise sit in a row while EN stacked at the same width. The cost is one
+   pair — home, 431-480px — that stacks while it would still have fit across.
+
+   The buttons equalise to the wider of the two (220px on home, 213px on
+   signal), not to the full column: .pillar-actions is shrink-to-fit, so
+   `stretch` matches them to their own widest rather than going full-bleed. */
+@media (max-width: 480px) {
+  [data-page="home"] .pillar-actions,
+  [data-page="signal"] .pillar-actions { flex-direction: column; align-items: stretch; }
+}
 
 /* Hero secondary CTA — one flat treatment for every surface. Was a per-pillar
    gradient fill (warm / cool tritone / slate); the accents can't carry button
@@ -1652,7 +1704,14 @@ main { padding-top: 64px; }
   
 }
 @media (max-width: 640px) {
-  .hero { min-height: 460px; }
+  /* 460px was holding one to three lines of type on /about/, /reports/ and
+     /patents/, which put 184-216px of empty grid above the heading and pushed
+     the first real section off a 844px phone screen. `height: auto` is the half
+     that matters: the base rule sets height: clamp(460px, 56vw, 580px), so
+     lowering min-height alone would have changed nothing. 340px is the floor,
+     not the height — badge.html's taller hero still sizes to its content.
+     Home and signal override this with their own full-viewport heroes. */
+  .hero { height: auto; min-height: 340px; }
   [data-page="home"] .hero { min-height: calc(100dvh - 64px); }
 }
 /* Narrow phone — drop the pillar's 32px left offset since the container
@@ -2376,6 +2435,14 @@ main { padding-top: 64px; }
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+/* Two lines is a grid constraint: it keeps the 284px desktop tiles even. Once
+   the cards stack there is no row to align to, and the clamp was cutting every
+   Chinese dek (3 lines wanted) and most English ones (up to 5). Three lines
+   clears ZH completely and takes EN most of the way, without letting the
+   longest card run away from the rest. */
+@media (max-width: 640px) {
+  .report-card-dek { -webkit-line-clamp: 3; line-clamp: 3; }
 }
 .report-card-more {
   display: inline-flex; align-items: center; gap: 8px;

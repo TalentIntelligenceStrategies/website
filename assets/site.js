@@ -150,7 +150,10 @@
   // ──────────────── Language ────────────────
   const langWrap = document.getElementById('lang-wrap');
   const langTrigger = document.getElementById('lang-trigger');
-  const langButtons = langWrap.querySelectorAll('[data-lang-set]');
+  // Document-wide, not langWrap-scoped: the mobile drawer footer carries a second
+  // pair of these (the topnav globe is covered once the drawer is open), and both
+  // sets have to stay aria-checked in sync off one applyLang call.
+  const langButtons = document.querySelectorAll('[data-lang-set]');
 
   // Capture each translatable element's source-of-truth EN copy on init so the
   // swap is reversible. Elements opting into `data-zh-html` carry inline markup
@@ -367,6 +370,10 @@
   langButtons.forEach(b => b.addEventListener('click', () => {
     applyLang(b.dataset.langSet, { animate: true });
     closeLangMenu();
+    // The swap plays a full-screen shimmer; leaving the drawer open on top of it
+    // reads as two overlays fighting. closeDrawer is declared further down the
+    // same scope — this runs on click, long after that line has executed.
+    if (typeof closeDrawer === 'function') closeDrawer();
   }));
 
   document.addEventListener('click', closeLangMenu);
@@ -477,6 +484,7 @@
 
   // ──────────────── Mobile drawer accordion — Products ────────────────
   const mProductsRow = document.querySelector('.mobile-list .mobile-row-dropdown');
+  let fitProductsDefault = () => {};
   if (mProductsRow) {
     const sublistId = mProductsRow.getAttribute('aria-controls');
     const mSublist  = sublistId ? document.getElementById(sublistId) : null;
@@ -486,7 +494,27 @@
         mProductsRow.setAttribute('aria-expanded', String(!open));
         if (open) delete mSublist.dataset.open;
         else mSublist.dataset.open = 'true';
+        // Once the reader has an opinion, stop imposing one.
+        mProductsRow.dataset.userToggled = 'true';
       });
+
+      // The markup ships expanded: collapsed, the drawer was 503px of empty white
+      // below four links on a 844px phone. But the two product cards are 308px, so
+      // on a shorter viewport (SE-class, 667px) expanding pushes the last nav rows
+      // under the fold — hidden navigation is a worse fault than empty space.
+      // Measure rather than guess a breakpoint: expand, and if the list now
+      // overflows its own box, put it back. Runs per open, so rotating the phone
+      // re-decides, and never overrides a reader who has toggled it themselves.
+      fitProductsDefault = () => {
+        const mList = mProductsRow.closest('.mobile-list');
+        if (!mList || mProductsRow.dataset.userToggled === 'true') return;
+        mProductsRow.setAttribute('aria-expanded', 'true');
+        mSublist.dataset.open = 'true';
+        if (mList.scrollHeight > mList.clientHeight + 1) {
+          mProductsRow.setAttribute('aria-expanded', 'false');
+          delete mSublist.dataset.open;
+        }
+      };
     }
   }
 
@@ -565,6 +593,9 @@
   // the page locked.
   const openDrawer = () => {
     if (mDrawer.dataset.open === 'true') return;
+    // Decide the Products default against this viewport before the panel slides
+    // in — the drawer is laid out off-canvas, so the measurement is valid here.
+    fitProductsDefault();
     mDrawer.dataset.open = mOverlay.dataset.open = 'true';
     mTrigger.setAttribute('aria-expanded','true');
     lockPage();
