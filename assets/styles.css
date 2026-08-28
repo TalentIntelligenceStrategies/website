@@ -4993,8 +4993,19 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 
    This page also carries the site's first `position: sticky`.
    ═══════════════════════════════════════════════════════════════════════════ */
-      .pillar-title's hero clamp: a reference document is a quiet statement. ── */
-.mth-masthead { padding-block: clamp(56px, 7vw, 96px) 0; }
+/* ───────── Methodology masthead ─────────
+   Deliberately under .pillar-title's hero clamp: a reference document is a quiet
+   statement.
+
+   There was a `.mth-masthead { padding-block: clamp(56px, 7vw, 96px) 0 }` here,
+   and it never once applied. This comment lost its opening line in bc9dc33, which
+   left a stray close-delimiter; CSS error recovery read the remainder as one
+   malformed selector and swallowed the rule as its block. The masthead has always
+   rendered on the generic .section padding instead — so that IS the design that
+   was drawn, reviewed and signed off, and reviving a rule nobody has ever seen the
+   effect of would be a layout change, not a repair. Comment fixed 2026-08-28 and
+   the dead rule removed with it. If the masthead ever wants its own rhythm, that
+   is a design decision to take deliberately, on purpose, here. ── */
 .mth-masthead__title {
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 700;

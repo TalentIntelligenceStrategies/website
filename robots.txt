@@ -8,8 +8,10 @@ Disallow: /documents/
 # Read-only brand mirrors: fonts, logos, snapshot .md files. Assets are referenced
 # from the pages that need them; the directory itself is not a destination.
 Disallow: /designs/
-# Build artifacts.
-Disallow: /assets/build/
+# assets/build/ is deliberately NOT disallowed. It holds the stylesheet and the
+# script every page loads, and Google renders pages to index them — blocking those
+# would have it index the site unstyled. Build artifacts carry no indexable content
+# of their own, so there is nothing to gain by hiding them.
 # Render harnesses used to generate product stills and badge previews — pages in
 # form only. Each also carries its own noindex, which is the signal that actually
 # keeps them out of an index; this just saves the crawl.
