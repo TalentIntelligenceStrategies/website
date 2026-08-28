@@ -1167,9 +1167,16 @@ main { padding-top: 64px; }
    single nowrap line at desktop widths, but the full string is 74 characters and
    was being cut mid-word on a phone, which loses the part that carries the
    substance (the jurisdictions). max-height rises to clear three wrapped lines;
-   .is-dismissing still collapses from it. */
+   .is-dismissing still collapses from it.
+
+   160px, not 140px (2026-08-28): under `prefers-reduced-motion` the rotator
+   un-stacks and shows BOTH messages at once, which at 390px wants 146px. The
+   old cap did not cut any text — it ate 6px of the 10px bottom padding, leaving
+   the last line 4px off the edge. The bar is `position: absolute` over the hero
+   on both pages that carry it, so a taller cap costs no layout; it only stops
+   the squeeze. */
 @media (max-width: 880px) {
-  .announce { max-height: 140px; }
+  .announce { max-height: 160px; }
   .announce-cluster,
   .announce-rotator { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   .announce-item { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
@@ -1184,6 +1191,13 @@ main { padding-top: 64px; }
 @media (max-width: 640px) {
   .announce { padding-inline: 48px; }
   .announce-close { right: 14px; }
+  /* The dot is `display:flex; gap:10px` beside its message, which works while the
+     message is one line. At phone widths the message wraps to two or three, the
+     item wraps with it, and the dot lands centred on a row of its own above the
+     text — a stray mark rather than a bullet, costing ~16px to say nothing. It is
+     aria-hidden decoration, so dropping it below 640px loses no information.
+     Scoped to `.announce` in case the class is ever reused elsewhere. */
+  .announce .ticker-pulse { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .announce { transition: opacity 120ms linear; }
@@ -5160,6 +5174,14 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   border-radius: 3px;
   background: var(--mth-flagbg);
   color: var(--mth-dim);
+}
+/* The chart caption is the only other sub-11px prose on the site. It is a flag
+   (uppercase, tracked, on its own ground) so it can carry a smaller size than
+   body copy, but 10.5px on a phone is under the legibility floor. `nowrap` means
+   the bump widens it rather than wrapping it: 139px -> 157px, and the page grows
+   1px. (2026-08-28) */
+@media (max-width: 640px) {
+  .mth-note { font-size: 12px; }
 }
 
 /* ── Subject strip. Five of the six panels carry it, and the repetition is what

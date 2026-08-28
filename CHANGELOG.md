@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-28 14:27 +0800** · Announce bar keeps its padding under Reduce Motion and drops the orphaned pulse dot on phones; the two sub-11px labels rise to 12px.
 - **2026-08-28 13:50 +0800** · Mobile pass: drawer opens Products and holds the language switch, short heroes drop to 340px, stacked hero CTAs match width, card deks gain a third line.
 - **2026-08-28 12:18 +0800** · Chinese em dashes normalised to a spaced single; status chips get a recessed fill and a real hairline so the badge shape reads.
 - **2026-08-28 11:58 +0800** · Lightened the Lenis scroll a notch — lerp 0.13 to 0.18, settling in ~0.27s instead of ~0.38s.

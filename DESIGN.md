@@ -528,14 +528,38 @@ its taller content (601px), and `/patents/` settles at 380px on its three-line d
 and signal are unaffected — both override with their own full-viewport heroes, and
 licensing's `[data-page="licensing"] .hero` already sets `height:auto` itself.
 
+**The announce bar costs no layout.** On both pages that carry it, `.announce` is
+`position: absolute; top: 64px; z-index: 90` over the hero — removing it moves nothing
+(`h1` top and `scrollHeight` are identical with and without). It covers the hero's empty
+upper region, not content, so its height on a phone is a coverage question rather than a
+displacement one. Don't cite its height as first-screen cost.
+
 **The announce bar is one nowrap line at desktop widths and wraps at ≤880px.**
 `.announce-msg` is `nowrap` + `text-overflow: ellipsis`, which silently cuts a long
 message mid-word on a phone — and the tail of the string is usually the part carrying the
 substance. The `≤880px` branch switches it to `white-space: normal`, lets
 `.announce-cluster` wrap so the CTA drops to its own line, and raises `max-height` to
-140px to clear three lines. `.is-dismissing` still collapses from whatever that height is.
-Keep messages short anyway: the desktop line has room for roughly 75 characters beside
+**160px** to clear three lines. `.is-dismissing` still collapses from whatever that height
+is. Keep messages short anyway: the desktop line has room for roughly 75 characters beside
 the CTA before it would need the wrap.
+
+**160px, raised from 140px** (2026-08-28). Under `prefers-reduced-motion` the rotator
+un-stacks and shows both messages at once (see the `.announce-rotator` override), which in
+EN at 390px wants 146px. The old cap cut no text — it ate 6px of the 10px bottom padding
+and left the last line 4px off the edge. Since the bar is out of flow, a taller cap costs
+nothing.
+
+**`.ticker-pulse` is hidden below 640px.** `.announce-item` is `display:flex; gap:10px`,
+which puts the dot beside a one-line message. At phone widths the message wraps to two or
+three lines, the item wraps with it, and the dot lands centred on a row of its own above
+the text — a stray mark rather than a bullet, in **both** motion modes. It is `aria-hidden`
+decoration, so dropping it loses no information and takes 9px off the bar in single-message
+mode, 18px in reduced motion. Measured at 390px:
+
+| | EN | ZH |
+|---|---|---|
+| normal motion | 96 → **87px** | 74 → **65px** |
+| reduced motion | 140 (6px squeezed) → **134px** | 130 → **112px** |
 
 **Z-stack (bottom → top):**
 
@@ -1109,6 +1133,28 @@ footer is 1.06:1, so the badge body was invisible and only the words showed.
 - **`.status-flag--on-image` is exempt** and explicitly resets `box-shadow: none`. At
   92% white over photography the fill already separates, and an edge would fight the
   image.
+
+## 14.2 The type floor is 11px, and 12px on a phone
+
+Nothing in `<main>` renders below **11px** at any width, and below 640px nothing renders
+below **12px**. Two rules carry the phone floor (2026-08-28):
+
+| Rule | Where | Desktop | ≤640px |
+|---|---|---|---|
+| `.board-member__role` | `about/index.html` page block | 10px | **12px** |
+| `.mth-note` | `styles.css` | 10.5px | **12px** |
+
+Both were the only sub-11px **prose** on the site — a person's job title beside their name,
+and a chart caption. Uppercase at 0.16em / 0.08em tracking, which buys a smaller size than
+body copy but not 10px on a phone (≈1.7mm of cap height). Verified: no role rewraps at
+12px, the two-line one stays two lines, `/about/` grows 13px and methodology 1px.
+
+**The ~70 elements at exactly 11px are deliberate and stay.** Those are chips, axis labels
+and card metadata — `.pat-domain` / `.pat-sub` (56 across 28 patent cards), the methodology
+diagram labels, `.sig-phase__chip`, `.pcard-save`, `.lic-no`, `.placeholder-meta`. 11px is a
+defensible label size, and raising it would reflow the patent grid and the charts: a design
+change, not a legibility fix. SVG text inside diagrams is furniture and is excluded from the
+floor entirely.
 
 ## 15. The build layer and the React island boundary
 

@@ -204,6 +204,16 @@
     .about-ways__grid { grid-template-columns: 1fr; }
     .stats-2up { flex-direction: column; }
   }
+  /* 10px is the smallest type on the site and this is the only place it carries
+     prose — a person's job title beside their name, uppercase at 0.16em, in
+     --text-tertiary. Held at 10px on desktop where the reader is further from
+     nothing and the 132px card is a deliberate tight column; raised on a phone,
+     where 10px uppercase is roughly 1.7mm of cap height. Measured: no role
+     rewraps at 12px (the two-line one stays two lines) and the section grows
+     13px. (2026-08-28) */
+  @media (max-width: 640px) {
+    .board-member__role { font-size: 12px; }
+  }
 </style>
 </head>
 
