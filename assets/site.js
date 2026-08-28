@@ -5,6 +5,146 @@
 (() => {
   const root = document.documentElement;
 
+  // ──────────────── Lenis smooth scroll ────────────────
+  // Transport, not animation: Lenis writes the REAL scroll position every frame
+  // (`wrapper.scrollTo({behavior:'instant'})`) rather than transforming content, so
+  // position:sticky, position:fixed, IntersectionObserver, find-in-page and keyboard
+  // scroll all behave natively. The CSS half is in styles.css under the same heading.
+  //
+  // `lerp: 0.13` settles in ~0.38s — enough to take the staircase off a wheel tick,
+  // not enough to drift past where you stopped. The community default of 0.05 is
+  // ~1.0s and reads as an effect; this is meant to read as weight.
+  //
+  // Two things deliberately NOT set:
+  //   · no `duration`/`easing`. Contrary to the README, those OVERRIDE `lerp`, and
+  //     time-based easing animates every wheel tick over a fixed wall clock — that is
+  //     what produces the sluggish feel on a long flick. (`lerp: 0` is not "fall back
+  //     to duration" either; it is falsy, meaning no smoothing at all.)
+  //   · no `wheelMultiplier`/`touchMultiplier` change. Altering scroll DISTANCE per
+  //     gesture is what users actually experience as broken; smoothing its arrival is
+  //     not. `syncTouch` stays off for the same reason — native mobile momentum is
+  //     better than anything synthesized, and disorientation complaints concentrate
+  //     there.
+  //
+  // `respectReducedMotion` defaults to true and is read per-scroll rather than through
+  // a listener, so an OS preference change applies live without a reload. This is the
+  // one motion effect on the site with no hand-written @media fallback — DESIGN.md §10.
+
+  // capital.tisglobalinc.com loads THIS FILE cross-origin from the main domain
+  // (capital/index.html:1285), so anything unconditional here ships there too.
+  // Comparing the script's own origin to the page's keeps Lenis on this site without
+  // hardcoding a hostname, and auto-excludes any future hot-linker. Has to be read
+  // synchronously — document.currentScript is null once we are inside a callback.
+  const OWN_ORIGIN = (() => {
+    const src = document.currentScript && document.currentScript.src;
+    try { return !!src && new URL(src).origin === location.origin; } catch (_) { return false; }
+  })();
+
+  // VERTICALLY scrolling nested areas Lenis must not hijack. The `prevent` predicate
+  // rather than `data-lenis-prevent` attributes because the chrome is duplicated across
+  // 9 pages — markup would mean 9 edits and a standing drift risk. Not
+  // `allowNestedScroll: true` either: that walks the composed path on every scroll event.
+  //
+  // HORIZONTAL tracks (.report-carousel-track, .pat-marquee) are deliberately NOT here.
+  // They need no protection — `gestureOrientation` defaults to 'vertical', so Lenis never
+  // consumes a horizontal gesture and those tracks keep scrolling natively. Worse, listing
+  // them actively hurts: `prevent` is per-node and blocks BOTH axes, so an ordinary
+  // vertical wheel with the cursor over the carousel fell through to native scroll and
+  // jumped the full 400px in one frame instead of easing. Measured, not assumed.
+  //
+  // This is also why Lenis's lack of scroll-snap support is moot here: every
+  // scroll-snap-type on the site sits on one of those horizontal tracks, never on the
+  // root scroller.
+  const NESTED_SCROLLERS = [
+    '.mobile-list',           // mobile drawer
+    '.search-results',        // search modal
+    '.sig-xpanel__scroll',    // Signal report panel
+    '.lgl-body',              // legal dialog
+    '.brand-select-menu',     // custom select — the one that opens with NO page lock
+  ].join(',');
+
+  let lenis = null;
+
+  // Four independent overlays lock the body (drawer/search, legal dialog, newsletter
+  // popup, Signal panel). They cannot each own Lenis's run state — nesting two would
+  // let the first to close start scrolling under the second — so they share a depth.
+  let scrollPauseDepth = 0;
+  const pauseScroll  = () => { if (scrollPauseDepth++ === 0) lenis && lenis.stop(); };
+  const resumeScroll = () => { if (scrollPauseDepth > 0 && --scrollPauseDepth === 0) lenis && lenis.start(); };
+
+  // NO `offset` is passed to scrollTo() below, and that is deliberate — do not "fix" it.
+  // Given an ELEMENT target, Lenis already reads the target's scroll-margin-top and the
+  // scroller's scroll-padding-top and subtracts both itself (lenis 1.3.26, dist/lenis.mjs
+  // :783-786). Passing the usual `offset: -80` to clear the fixed topnav — which is what
+  // most Lenis guidance tells you to do — double-counts it. Measured on methodology.html:
+  // every pipe-nav jump landed 285px (= 80 pad + 205 margin) short, which showed the
+  // WRONG figure in the pinned card for all five links.
+  //
+  // So styles.css stays the single source of truth for anchor offsets, including
+  // .mth-stage__step's proportional `max(40px, calc(30vh - 80px))`. An `offset` here
+  // would silently override that arithmetic at every viewport height.
+
+  // The licensing page drives lenis.raf from gsap.ticker so its ScrollTrigger scrub
+  // stays in step, which means the internal loop has to go. `raf()` re-arms itself from
+  // `options.autoRaf` every frame, so flipping the flag is enough; cancelling the
+  // pending frame just avoids a single double-step on handover.
+  const takeOverRaf = () => {
+    if (!lenis) return null;
+    lenis.options.autoRaf = false;
+    if (lenis._rafId) cancelAnimationFrame(lenis._rafId);
+    return lenis;
+  };
+
+  async function initLenis() {
+    if (!OWN_ORIGIN) return null;                 // capital.tisglobalinc.com
+    if (document.body.dataset.veil) return null;  // DESIGN.md §17 — deliberately covered
+    try {
+      const { default: Lenis } = await import('/assets/build/lenis.js');
+      lenis = new Lenis({
+        lerp: 0.13,
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 1,
+        touchMultiplier: 1,
+        anchors: false,       // handled per-target below
+        autoRaf: true,
+        prevent: (node) => !!(node && node.matches && node.matches(NESTED_SCROLLERS)),
+      });
+      // An overlay may have opened while the module was still loading.
+      if (scrollPauseDepth > 0) lenis.stop();
+      return lenis;
+    } catch (_) {
+      // Native scroll and the base `scroll-behavior: smooth` rule remain: the .lenis
+      // class is never added, so the entire CSS block stays inert. Nothing to undo.
+      return null;
+    }
+  }
+
+  // A promise rather than the instance: the import is async, and the licensing page's
+  // inline module runs immediately after this file. It awaits this.
+  const lenisReady = initLenis();
+  window.__tisLenis = lenisReady;
+  window.__tisLenisTakeOverRaf = takeOverRaf;
+
+  // Same-page anchors — the skip link, the ~15 #contact links, #intake, and the six
+  // methodology pipe-nav targets. Lenis swallows these clicks by default, and its own
+  // `anchors` option cannot express the per-target offset above.
+  document.addEventListener('click', (e) => {
+    if (!lenis || e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    const href = a.getAttribute('href');
+    if (!href || href.charAt(0) !== '#' || href === '#') return;
+    let el = null;
+    try { el = document.getElementById(decodeURIComponent(href.slice(1))); } catch (_) { return; }
+    if (!el) return;
+    e.preventDefault();
+    lenis.scrollTo(el);
+    if (location.hash !== href) history.pushState(null, '', href);
+  });
+
+
   // ──────────────── Language ────────────────
   const langWrap = document.getElementById('lang-wrap');
   const langTrigger = document.getElementById('lang-trigger');
@@ -376,6 +516,7 @@
     if (sb > 0) document.body.style.paddingRight = sb + 'px';
     document.body.style.top = `-${lockedY}px`;
     document.body.classList.add('nav-lock');
+    pauseScroll();
     landmarksOf().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
   };
 
@@ -386,8 +527,18 @@
     document.body.style.paddingRight = '';
     landmarksOf().forEach(el => { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); });
     // `instant` because this is a restoration, not a navigation — html carries
-    // scroll-behavior:smooth, which would otherwise animate the page back.
-    window.scrollTo({ top: lockedY, behavior: 'instant' });
+    // scroll-behavior:smooth, which would otherwise animate the page back. Under Lenis
+    // the same reasoning holds, plus two extra steps: position:fixed collapsed the
+    // document while locked, so the cached scroll limit is stale, and the scroll has to
+    // be issued with `force` because the instance is still stopped at this point.
+    if (lenis) {
+      lenis.resize();
+      lenis.scrollTo(lockedY, { immediate: true, force: true });
+      resumeScroll();
+    } else {
+      window.scrollTo({ top: lockedY, behavior: 'instant' });
+      resumeScroll();
+    }
   };
 
   // Tab cycles within `panel`. Bound per-panel rather than globally so the two
@@ -1022,6 +1173,7 @@
       mkt.classList.add('is-open');
       mkt.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      pauseScroll();
       markMktSeen();
       const email = mktCard.querySelector('input[type="email"]');
       if (email) setTimeout(() => email.focus(), 50);
@@ -1031,6 +1183,7 @@
       mkt.classList.remove('is-open');
       mkt.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      resumeScroll();
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
@@ -1214,6 +1367,7 @@
       const sb = window.innerWidth - document.documentElement.clientWidth;
       if (sb > 0) document.body.style.paddingRight = sb + 'px';
       document.body.classList.add('lgl-lock');
+      pauseScroll();
       landmarks().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
       paint(doc);
       lglOverlay.dataset.open = 'true';
@@ -1224,6 +1378,7 @@
       if (lglOverlay.dataset.open !== 'true') return;
       lglOverlay.dataset.open = 'false';
       document.body.classList.remove('lgl-lock');
+      resumeScroll();
       document.body.style.paddingRight = '';
       landmarks().forEach(el => { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); });
       lglDoc = null;
@@ -1523,6 +1678,7 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     const sb = window.innerWidth - document.documentElement.clientWidth;
     if (sb > 0) document.body.style.paddingRight = sb + 'px';
     document.body.classList.add('sig-xlock');
+    pauseScroll();
 
     overlay.dataset.open = 'true';
     panel.hidden = false;
@@ -1558,6 +1714,7 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
       panel.hidden = true;
       overlay.dataset.open = 'false';
       document.body.classList.remove('sig-xlock');
+      resumeScroll();
       document.body.style.paddingRight = '';
       if (card) card.setAttribute('aria-expanded', 'false');
       panel.getAnimations().forEach(a => a.cancel());
@@ -1611,8 +1768,13 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     return radio;
   }
   function revealIntake(radio){
-    document.getElementById('intake')
-      ?.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block:'start' });
+    const el = document.getElementById('intake');
+    // Lenis reproduces the native hash-jump offset on its own (see the anchor block
+    // above) and handles reduced motion itself with a hard jump cut, so there is no
+    // offset and no reduce() branch here. The scrollIntoView fallback stays for when
+    // the module did not load.
+    if (el && lenis) lenis.scrollTo(el);
+    else if (el) el.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block:'start' });
     if (radio) radio.focus({ preventScroll:true });
   }
 

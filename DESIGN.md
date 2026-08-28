@@ -721,7 +721,46 @@ each is allowed and that each has a fallback.
 | GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
 
 Prefer the observer. Reach for GSAP only when a timeline genuinely needs scrub-linked
-sequencing, and never introduce a fourth library.
+sequencing, and do not add a fourth *animation* library.
+
+**Lenis (`lenis@1.3.26`) is the one addition to that list, and it is not an animation
+technique — it is scroll transport.** It replaces how the page scrolls; it animates
+nothing. Where the three techniques above decide what moves, Lenis only decides how the
+scroll position gets from A to B, so it composes with all of them rather than competing.
+
+| | |
+|---|---|
+| **Where** | site-wide, from `assets/site.js`; `/assets/build/lenis.js` (~5.7 KB gzipped) |
+| **Feel** | `lerp: 0.13` — ~0.38s to settle. Restrained on purpose; the community default of `0.05` is ~1.0s and reads as an effect rather than as weight. |
+| **Fallback** | library-handled reduced motion (below), plus native scroll if the module fails to load — the `.lenis` class is never added, so every Lenis CSS rule stays inert |
+
+Three rules that are load-bearing, each of which was a measured bug before it was a rule:
+
+- **Never pass an `offset` to `lenis.scrollTo()` for an element target.** Lenis already
+  subtracts the target's `scroll-margin-top` and the scroller's `scroll-padding-top`
+  itself. Adding the usual `offset: -80` to clear the fixed topnav double-counts it —
+  every methodology pipe-nav jump landed 285px short and showed the wrong figure in the
+  pinned card. `styles.css` stays the single source of truth for anchor offsets.
+- **Never add a horizontal track to the `prevent` list.** `gestureOrientation` is
+  `vertical`, so Lenis never touches a horizontal gesture and those tracks already work.
+  `prevent` is per-node and blocks *both* axes, so listing the reports carousel made an
+  ordinary vertical wheel over it jump 400px natively instead of easing.
+- **Nothing Lenis touches may be unconditional in `assets/site.js` or `styles.css`.**
+  `capital.tisglobalinc.com` hot-links both files from this domain. Init is gated on the
+  script's own origin and every CSS rule is `.lenis`-scoped, which keeps that site on
+  native scroll.
+
+**Reduced motion is the one effect here without a hand-written `@media` fallback, and
+that is correct** — `respectReducedMotion` defaults to `true` and Lenis reads the query
+*per scroll* rather than through a listener, so the preference applies live without a
+reload: user scroll goes 1:1, programmatic scroll becomes a jump cut. Do not wrap it in a
+`matchMedia` branch. (The licensing page's separate `isStatic()` guard is unrelated — that
+governs the ScrollTrigger scrub, not scroll transport.)
+
+On the licensing page the two must be wired together or the pin and the scrub drift apart
+by a frame: `lenis.on('scroll', ScrollTrigger.update)`, `lenis.raf` driven from
+`gsap.ticker`, and `lagSmoothing(0)`. That page is veiled today, so the handshake is
+dormant until the veil lifts.
 
 - **`[data-reveal]`** (headings, deks, about cards, partner band): fade + 10px rise →
   `.is-revealed` transitions `opacity/transform` over **450ms `--ease-card`**; the dek

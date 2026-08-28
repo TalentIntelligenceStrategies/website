@@ -33,7 +33,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/styles.css?v=22">
+<link rel="stylesheet" href="/assets/styles.css?v=23">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -2857,7 +2857,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/site.js?v=10" defer></script>
+<script src="/assets/site.js?v=11" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.
@@ -3252,8 +3252,30 @@ a, button, .howit-card, .acc-trigger, .btn {
     panels.forEach(p => { p.style.opacity = ''; p.style.pointerEvents = ''; setScroll(p, 0); });
   }
 
+  // Lenis writes the real scroll position every frame. ScrollTrigger has to be updated
+  // from that write, and lenis.raf has to run on gsap's ticker instead of its own RAF,
+  // or the sticky pin and the scrub drift apart by a frame and the step crossfades
+  // stutter. Done once, and only once GSAP is actually loaded.
+  //
+  // Handing the loop over is safe even if the scrub is later killed (reduced motion,
+  // narrow viewport): gsap.ticker keeps running independently of ScrollTrigger, so
+  // Lenis keeps being driven. If Lenis never came up, this is a no-op and ScrollTrigger
+  // runs against native scroll exactly as before.
+  let lenisRef = null;
+  async function wireLenis(){
+    if (lenisRef) return;
+    const l = await (window.__tisLenis || Promise.resolve(null));
+    if (!l || typeof window.__tisLenisTakeOverRaf !== 'function') return;
+    window.__tisLenisTakeOverRaf();
+    l.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => l.raf(t * 1000));   // gsap ticker is seconds, lenis.raf is ms
+    gsap.ticker.lagSmoothing(0);
+    lenisRef = l;
+  }
+
   async function enableScrub(){
     if (!(await loadGsap())) return;
+    await wireLenis();
     killScrub();
     trigger = ScrollTrigger.create({
       trigger: stage,
@@ -3275,6 +3297,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     clearTimeout(rt);
     rt = setTimeout(() => {
       applyFit();
+      if (lenisRef) lenisRef.resize();
       if (ScrollTrigger) ScrollTrigger.refresh();
     }, 150);
   });

@@ -9,8 +9,8 @@ HTML/CSS/JS, no router, no database.** Each page is self-contained HTML; shared 
 chrome change means editing every page file.
 
 There **is** a build step now, but it does not build the site. `npm run build` produces
-four files into `assets/build/` — a local three.js, a local gsap, and the React-island
-runtime plus its token-generated Tailwind layer. The 11 pages stay hand-authored and load
+five files into `assets/build/` — a local three.js, a local gsap, a local lenis, and the
+React-island runtime plus its token-generated Tailwind layer. The 11 pages stay hand-authored and load
 those with ordinary tags. See [DESIGN.md](DESIGN.md) §15.
 
 > The real constraint, replacing "no build step": **output must be static files servable

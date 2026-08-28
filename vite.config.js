@@ -2,13 +2,15 @@
  * Build layer for tisglobalinc.com.
  *
  * THIS DOES NOT BUILD THE SITE. The 11 pages stay hand-authored static HTML served
- * from the repo root by GitHub Pages, exactly as before. Vite builds three things
+ * from the repo root by GitHub Pages, exactly as before. Vite builds four things
  * into `assets/build/`, which the pages load with ordinary <script>/<link> tags:
  *
  *   1. vendor/three.js  — the hero shader's dependency, previously imported live
  *      from esm.sh with no alternate source.
  *   2. vendor/gsap.js   — same, for the licensing page's ScrollTrigger timeline.
- *   3. islands.js + islands.css — the React mount point for 21st.dev components,
+ *   3. vendor/lenis.js  — the site-wide smooth-scroll transport, loaded lazily by
+ *      assets/site.js. Same reason as the two above: pinned, same-origin, no CDN.
+ *   4. islands.js + islands.css — the React mount point for 21st.dev components,
  *      plus the Tailwind layer generated from the brand tokens.
  *
  * Output is committed. That is deliberate: Pages serves the repo root in `legacy`
@@ -41,13 +43,14 @@ export default defineConfig({
         islands: resolve(import.meta.dirname, 'src/islands/index.jsx'),
         three: resolve(import.meta.dirname, 'src/vendor/three.js'),
         gsap: resolve(import.meta.dirname, 'src/vendor/gsap.js'),
+        lenis: resolve(import.meta.dirname, 'src/vendor/lenis.js'),
       },
       output: {
         format: 'es',
         entryFileNames: '[name].js',
         chunkFileNames: 'chunk-[name].js',
         assetFileNames: '[name][extname]',
-        // Keep three and gsap as self-contained bundles rather than letting
+        // Keep three, gsap and lenis as self-contained bundles rather than letting
         // Rollup hoist their internals into a shared chunk — each page loads
         // only the one it needs.
         manualChunks: undefined,
