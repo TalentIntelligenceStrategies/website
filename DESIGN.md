@@ -75,6 +75,24 @@ Never invent Chinese — EN is the visible fallback where ZH is pending.
 > claimed CSS for them. There is none, in `styles.css` or in any page. Where EN and ZH
 > need different line breaks in the same heading, solve it in `data-zh-html`.
 
+**Chinese line breaks.** Chinese has no word spaces, so the breaker may break between any
+two Han characters and will happily strand a two-character tail on a line of its own. The
+default is `text-wrap: balance` under `[lang="zh-Hant"]` (`styles.css` §Chinese line
+breaking) — it works on CJK, and it is scoped so the EN measure never moves. Reach for a
+hard `<br>` in `data-zh` (with `data-zh-html`) only where balance splits a bound compound,
+which is mostly short headings: on a ~13-character title balance buys evenness at the cost
+of cutting 熱管理 or 組合 in half. A `<br>` is cut for one measure, so guard it with a media
+query at whatever width its box stops being that measure — see `.report-card-title`. In
+running prose a split compound is ordinary Chinese typesetting; the orphan is the defect.
+
+**No space after `。`、`，`、`、`.** The full-width glyph carries its own trailing space, so an
+ASCII space after it renders as a visible hole. This bites when one `<p>` holds two
+`data-zh` spans separated by a literal space — EN needs that space between sentences and ZH
+does not. Put the whole ZH string in one `data-zh` on the parent instead. `build-search-index.mjs`
+enforces the same rule on the index (`cjkTighten`), since `strip()` turns every `<br>` into a
+space. Latin↔CJK spacing is deliberate and is left alone. This closes the open question at
+`documents/chinese-copy-direction.md:1201`.
+
 > **Known upstream drift (do not inherit).** The jurisdiction ramp in
 > `brand/design-tokens.md` has moved ahead of the shipped CSS (brand = US/TW/EU/JP/**CH**
 > with teal EU; `styles.css` still ships US/TW/EU/JP/**KR** with slate EU, `--juris-*`
@@ -302,8 +320,21 @@ Use the tokens, never a literal stack:
 > `styles.css` purge. `.h-section` is the top of the scale. Don't reintroduce it.
 
 Head pattern within a section: **heading (`.h-section` or `.section-head h2`) → dek
-(`.section-dek`, ~44ch)**, with an optional `.eyebrow` above. Chinese drops the negative
-tracking per the existing TC handling. `text-wrap: balance` on headings, `pretty` on prose.
+(`.section-dek`, ~44ch)**, with an optional `.eyebrow` above. `text-wrap: balance` on
+headings, `pretty` on prose — **in English.** Two corrections for Chinese, both measured on
+shipped strings rather than read off the spec:
+
+- **`pretty` is Latin-only.** On six ZH blocks at their real widths it rendered
+  byte-identical to `normal`: it tunes only the last line's break, and a Han run offers it
+  no orphan to act on. `balance` is the only lever that does anything in Chinese — see §0.4.
+- **`balance` does not cross `display: -webkit-box`.** It cannot reach a line-clamped
+  element such as `.report-card-dek`, and if it could it would hurt: balance narrows every
+  line, so a clamped block would show *fewer* characters before the ellipsis. Fit those by
+  copy length.
+
+**Chinese does not drop the negative tracking yet.** `.pillar-title` ships `-0.02em` in both
+languages and no `zh-Hant` override exists in `styles.css`. Pending, not shipped — and not
+free, because adding it re-measures every balanced ZH block.
 
 > **The eyebrow is optional, and today it is unused.** `.section-head` ships `h2` + dek
 > on every live page; the count of standalone `.eyebrow` elements site-wide is **0**.

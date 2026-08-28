@@ -423,8 +423,37 @@ picture { display: contents; }
   --logo-secondary:         url('/designs/assets/logos/tis/tis_secondarylogo_light_ch.svg');
 }
 
-/* Language-conditional visibility — for hero titles where EN and ZH need
-   different line-break positions inside the same h2. */
+/* ───────── Chinese line breaking ─────────
+   Chinese has no word spaces, so the breaker may break between any two Han characters.
+   In a narrow measure that reliably strands a two- or three-character tail on a line of
+   its own — 13 of the homepage's 25 multi-line ZH blocks did it (「資產。」「護城河。」
+   「庫。」). English gets its breaks free from word spaces; Chinese has to be told.
+
+   `text-wrap: balance` is the fix and it does work on CJK — it keeps the line count and
+   evens the widths. Two limits, both measured on these strings at their shipped widths
+   rather than taken from the spec:
+
+     · `pretty` is inert on CJK. Six cases, every one byte-identical to `normal` — it
+       only tunes the last line's break and a Han run gives it no orphan to act on. The
+       "pretty on prose" half of DESIGN.md §2 buys nothing here; don't add it back.
+     · `balance` does not cross `display: -webkit-box`, so it cannot reach
+       .report-card-dek (line-clamped at :2318). And where it did reach it would hurt:
+       balance narrows every line, so a clamped dek would show fewer characters before
+       the ellipsis. That one is held to two lines by copy length instead.
+
+   Scoped to [lang="zh-Hant"] (set on <html> by applyLang, site.js) because the EN copy
+   was written to its full measure and must not move.
+
+   .report-card-title and .contact-lead are deliberately absent. On a ~13-character
+   heading, balance buys evenness by splitting bound compounds — 熱管理, 進入, 組合 —
+   which reads worse than the orphan it removes. Measured on the eight report titles it
+   fixes one and breaks three. Those two carry a hard <br> in data-zh instead. */
+[lang="zh-Hant"] .pillar-title,
+[lang="zh-Hant"] .section-dek,
+[lang="zh-Hant"] .offer-card-desc,
+[lang="zh-Hant"] .about-card__lead {
+  text-wrap: balance;
+}
 
 /* Center text within the JS-locked EN min-width footprint so the shorter CH form
    sits centered in its EN-sized box. .topnav-cta inherits centering from .btn. */
@@ -2314,6 +2343,16 @@ main { padding-top: 64px; }
   line-height: 1.25;
   color: #FFFFFF;
   margin: 0;
+}
+/* Three ZH titles carry a hard <br> in their data-zh (index.html + reports/index.html,
+   via data-zh-html) because balance splits 賣家 / 熱管理 / 授權 mid-compound here.
+   Those breaks are cut for 284px, which is only what the box is while .report-card-cell
+   is `flex: 0 0 340px`. Below 481px the cell goes percentage (see :2276) and the measure
+   becomes viewport-driven — ~305px at 480, ~231px at 390, ~174px at 320 — so the longer
+   segment starts wrapping and re-creates the orphan the break was placed to remove.
+   Drop the forced break there and let natural wrap carry that tier. */
+@media (max-width: 480px) {
+  [lang="zh-Hant"] .report-card-title br { display: none; }
 }
 .report-card-dek {
   font-size: 15px;

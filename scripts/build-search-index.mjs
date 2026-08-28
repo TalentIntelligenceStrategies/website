@@ -69,15 +69,25 @@ const slugify = (s, i) => {
   return base || `section-${i}`;
 };
 
+/* `strip` turns every tag into a space, which is right for English — a <br> there stands
+   in for the space between two sentences. In Chinese it is wrong: 。 and 、 carry their
+   own trailing space and a line break between two Han characters means nothing at all, so
+   a ZH `data-zh` carrying <br> came out of the index with a visible hole in it
+   ("選報告類型， 上傳資料。" is in the shipped index today). Collapse whitespace that sits
+   between two CJK/full-width characters. Latin↔CJK spacing is deliberate and is left
+   alone, which is why this tests both sides rather than just the left. */
+const CJK = '\\u2E80-\\u9FFF\\uF900-\\uFAFF\\uFF00-\\uFFEF';
+const cjkTighten = (s) => s.replace(new RegExp(`([${CJK}])\\s+(?=[${CJK}])`, 'g'), '$1');
+
 /* The Chinese string for an element. Usually its own data-zh — in either quote
    style — but on several headings the translation sits on a child <span> instead
    (`<h1><span data-zh="…">…</span></h1>`), so fall back to joining the children's. */
 const DATA_ZH = /\bdata-zh=(?:"([^"]*)"|'([^']*)')/;
 const zhOf = (attrs, inner) => {
   const own = DATA_ZH.exec(attrs);
-  if (own) return strip(own[1] ?? own[2]);
+  if (own) return cjkTighten(strip(own[1] ?? own[2]));
   const parts = [...inner.matchAll(new RegExp(DATA_ZH.source, 'g'))].map((m) => strip(m[1] ?? m[2]));
-  return parts.join(' ').trim();
+  return cjkTighten(parts.join(' ').trim());
 };
 
 const entries = [];
