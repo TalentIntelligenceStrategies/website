@@ -2151,19 +2151,11 @@
     const STATIC_T = 1.5708;
 
     try {
-      let THREE;
-      try {
-        THREE = await import('/assets/build/three.js');
-      } catch {
-        THREE = await import('https://esm.sh/three@0.160.0');
-      }
+      // assets/build/hero-shader.js — the fullscreen-quad runner that replaced three.js.
+      // The vertex shader and the quad live in there; only the fragment stage is
+      // per-hero.
+      const { createHeroShader } = await import('/assets/build/hero-shader.js');
 
-      const vertexShader = `
-        attribute vec3 position;
-        void main() {
-          gl_Position = vec4(position, 1.0);
-        }
-      `;
       const fragmentShader = `
         precision highp float;
         uniform vec2  resolution;
@@ -2227,16 +2219,6 @@
         }
       `;
 
-      const canvas = document.createElement('canvas');
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setClearColor(new THREE.Color(0x000000));
-      mount.appendChild(canvas);
-      mount.classList.add('is-ready');   // styles.css crossfades the shader in
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1);
-
       const uniforms = {
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
         time:       { value: 0.0 },
@@ -2262,21 +2244,10 @@
         coreWhite:  { value: 0.65 },
       };
 
-      const position = [
-        -1.0, -1.0, 0.0,
-         1.0, -1.0, 0.0,
-        -1.0,  1.0, 0.0,
-         1.0, -1.0, 0.0,
-        -1.0,  1.0, 0.0,
-         1.0,  1.0, 0.0,
-      ];
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(position), 3));
-
-      const material = new THREE.RawShaderMaterial({
-        vertexShader, fragmentShader, uniforms, side: THREE.DoubleSide,
-      });
-      scene.add(new THREE.Mesh(geometry, material));
+      const renderer = createHeroShader(mount, fragmentShader, uniforms);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      mount.appendChild(renderer.canvas);
+      mount.classList.add('is-ready');   // styles.css crossfades the shader in
 
       // Where the band's centre sits, measured off the copy block rather than pinned.
       //
@@ -2354,14 +2325,14 @@
         const h = coarse
           ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
           : mount.clientHeight;
-        renderer.setSize(w, h, false);
+        renderer.setSize(w, h);
         uniforms.resolution.value = [w, h];
         uniforms.yOffset.value = bandOffset(w, h);
         // Both the band's centre and the still's phase are measured, so the still has
         // to be re-derived on resize too, not just re-rendered at the new size.
         if (reduce) {
           uniforms.time.value = staticPhase(w, h);
-          renderer.render(scene, camera);            // no loop to pick the size up
+          renderer.render();            // no loop to pick the size up
         }
       };
       resize(true);
@@ -2392,7 +2363,7 @@
           } else {
             if (heldAt) { held += performance.now() - heldAt; heldAt = 0; }
             uniforms.time.value = phase0 + ((performance.now() - start - held) / 1000) * RATE;
-            renderer.render(scene, camera);
+            renderer.render();
           }
           requestAnimationFrame(animate);
         };

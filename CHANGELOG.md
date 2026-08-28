@@ -5,6 +5,7 @@ Deploy-relevant changes to the rendered TIS marketing site (`index.html`, `asset
 Format: one short entry per editing session, newest on top.
 
 ```
+- **2026-08-28 15:12 +0800** · Replaced the heroes' vendored three.js with a 1.7 KB fullscreen-quad shader runner; renders verified byte-identical.
 - **YYYY-MM-DD HH:MM +08:00** · one short sentence (~20 words max) describing what changed.
 ```
 
