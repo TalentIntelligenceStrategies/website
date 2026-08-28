@@ -90,8 +90,17 @@ The snapshots are `design-tokens-snapshot.md`, `primitives-snapshot.md`,
 ```
 python3 -m http.server 8000     # preview — root-relative paths need a server
 npm run build                   # regenerate tailwind.config.js + assets/build/
-npm run verify                   # fail if committed assets/build/ has drifted from src/
+npm run verify                  # fail if committed assets/build/ has drifted from src/
 ```
+
+**A pre-commit hook guards the minified twins.** Editing `assets/styles.css` or
+`assets/site.js` and committing without rebuilding is a *silent* failure — the pages load
+`assets/build/`, so the site would keep serving the old copy with no error. The hook
+([.githooks/pre-commit](.githooks/pre-commit)) rebuilds the twins and blocks the commit if
+they moved, telling you what to stage. It costs ~0s on a normal commit and runs the full
+`npm run verify` (~13s) only when `src/`, `scripts/`, `vite.config.js` or `package.json` is
+staged. It installs itself via the `prepare` script on `npm install`; `git commit --no-verify`
+bypasses it.
 
 Then open <http://localhost:8000/>. A plain file-open won't work.
 

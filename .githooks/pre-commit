@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Guard the minified twins.
+#
+# Since 2026-08-28 the pages load assets/build/styles.css and assets/build/site.js,
+# not the authored assets/styles.css and assets/site.js. That means editing a source
+# and committing without rebuilding is a SILENT failure: the site keeps serving the
+# old twin, nothing errors, and the change simply never appears. This hook exists to
+# make that impossible to do by accident.
+#
+# Two tiers, because a hook people disable is worth nothing:
+#
+#   fast  (~0s, always)  — regenerate the twins and fail if they moved. This is the
+#                          exact footgun above, and `npm run min` is instant.
+#   full  (~13s, rare)   — `npm run verify` rebuilds everything and diffs, but only
+#                          when something that feeds the vendor bundles or the
+#                          generators is staged. Those files change a few times a year.
+#
+# Deliberately NOT covered by the slow tier: .html and assets/imagery/ changes, which
+# affect search-index.json and the WebP variants. Both fail soft — a missing variant
+# falls back to the <img src>, a stale index just misses a new heading — and putting
+# 13s on every content commit is how a hook gets bypassed. Run `npm run build` before
+# a release and those are current too.
+#
+# Bypass for a genuine emergency: git commit --no-verify
+#
+# Installed by the `prepare` script in package.json (git config core.hooksPath .githooks).
+
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+staged() { git diff --cached --name-only --diff-filter=ACMR; }
+
+# ── Fast tier ────────────────────────────────────────────────────────────────
+if staged | grep -qE '^assets/(styles\.css|site\.js)$'; then
+  npm run --silent min >/dev/null 2>&1 || {
+    echo "pre-commit: npm run min failed. Fix the build, or commit with --no-verify." >&2
+    exit 1
+  }
+  drifted=$(git diff --name-only -- assets/build/styles.css assets/build/site.js)
+  if [ -n "$drifted" ]; then
+    echo >&2
+    echo "pre-commit: the minified twins were stale and have been rebuilt:" >&2
+    echo "$drifted" | sed 's/^/  /' >&2
+    echo >&2
+    echo "The pages load these, not the files you edited — committing without them" >&2
+    echo "would have shipped nothing. Stage them and commit again:" >&2
+    echo >&2
+    echo "  git add $drifted" >&2
+    echo >&2
+    exit 1
+  fi
+fi
+
+# ── Slow tier ────────────────────────────────────────────────────────────────
+if staged | grep -qE '^(src/|scripts/|vite\.config\.js$|package(-lock)?\.json$)'; then
+  echo "pre-commit: build inputs changed — verifying assets/build/ (~13s)…"
+  npm run --silent verify || {
+    echo >&2
+    echo "pre-commit: assets/build/ does not match its sources. Run 'npm run build'," >&2
+    echo "stage the rebuilt artifacts, and commit again." >&2
+    exit 1
+  }
+fi
+
+exit 0

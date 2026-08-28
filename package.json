@@ -13,7 +13,8 @@
     "dev": "vite build --watch",
     "serve": "python3 -m http.server 8000",
     "verify": "node scripts/verify-build.mjs",
-    "min": "node scripts/build-min.mjs"
+    "min": "node scripts/build-min.mjs",
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
