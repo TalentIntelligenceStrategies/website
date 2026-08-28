@@ -10,7 +10,7 @@ The deployable marketing site for **Talent Intelligence Strategies** (泰然策�
 | `/product/signal/`           | [`product/signal/index.html`](product/signal/index.html) — Signal deep-dive (token-based patent valuation, comparison, reports) |
 | `/product/licensing/`        | [`product/licensing/index.html`](product/licensing/index.html) — Licensing Platform deep-dive (30-patent bundles, jurisdiction × industry) |
 
-Each page is self-contained HTML — no router, and the pages themselves are hand-authored. There **is** a build step beside them (`npm run build`) that produces the vendored three.js / GSAP bundles, the React-island runtime, the subset WOFF2 fonts, the responsive WebP variants and the search index; see [DESIGN.md](DESIGN.md) §15. Shared chrome (top nav, footer, language switcher) is duplicated across all nine pages; a change there means editing every page file.
+Each page is self-contained HTML — no router, and the pages themselves are hand-authored. There **is** a build step beside them (`npm run build`) that produces minified twins of `styles.css` and `site.js` (the files the pages actually load), the hero shader runner, the vendored GSAP and Lenis bundles, the subset WOFF2 fonts, the responsive WebP variants and the search index; see [DESIGN.md](DESIGN.md) §15. Edit `assets/styles.css` and `assets/site.js` — never the generated twins under `assets/build/`. Shared chrome (top nav, footer, language switcher) is duplicated across all nine pages; a change there means editing every page file.
 
 ## Shared assets
 
@@ -26,7 +26,7 @@ A small inline `<script>` block lives at the top of each page's `<head>` to read
 
 ## Form capture — "Front Desk"
 
-The contact form, the footer newsletter and the IP-drop popup post to a Google Apps Script Web App that appends to a Google Sheet named **TIS Front Desk**, owned by `contact@tisglobalinc.com`. One endpoint serves all three; the server routes on a `form` key in the payload and creates each tab, with its header row, on first submission — **adding a form later needs no server change.**
+The contact form, the footer newsletter and the IP-drop popup post to a Google Apps Script Web App ([its source and setup runbook](documents/front-desk-apps-script.md), moved out of `site.js` on 2026-08-28) that appends to a Google Sheet named **TIS Front Desk**, owned by `contact@tisglobalinc.com`. One endpoint serves all three; the server routes on a `form` key in the payload and creates each tab, with its header row, on first submission — **adding a form later needs no server change.**
 
 The Apps Script source and the full deploy walkthrough live in a block comment at the **foot of [`assets/site.js`](assets/site.js)**. The endpoint itself is the `FRONT_DESK_ENDPOINT` constant near the capture module in the same file.
 

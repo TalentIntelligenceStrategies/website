@@ -8,10 +8,16 @@ HTML/CSS/JS, no router, no database.** Each page is self-contained HTML; shared 
 (top nav, footer, theme toggle, language switcher) is duplicated across pages, so a
 chrome change means editing every page file.
 
-There **is** a build step now, but it does not build the site. `npm run build` produces
-five files into `assets/build/` — a local three.js, a local gsap, a local lenis, and the
-React-island runtime plus its token-generated Tailwind layer. The 11 pages stay hand-authored and load
-those with ordinary tags. See [DESIGN.md](DESIGN.md) §15.
+There **is** a build step now, but it does not build the site. `npm run build` writes into
+`assets/build/`: **minified twins of `styles.css` and `site.js`** (what the pages actually
+load), the hero shader runner, a local gsap, a local lenis, subset fonts, responsive WebP and
+the search index. The pages stay hand-authored and load those with ordinary tags.
+See [DESIGN.md](DESIGN.md) §15.
+
+> **Edit `assets/styles.css` and `assets/site.js`, never the twins in `assets/build/`.** The
+> authored files are the source; the twins are generated on every build and `npm run verify`
+> fails if they have drifted. The comments in the sources are the documentation — they are
+> stripped on the way out, not written out of the repo.
 
 > The real constraint, replacing "no build step": **output must be static files servable
 > from the root of `main` by GitHub Pages.**
@@ -38,8 +44,8 @@ levels deep would break.
 | [index.html](index.html) | Homepage |
 | [product/licensing/index.html](product/licensing/index.html) | Licensing Platform deep-dive |
 | [product/signal/index.html](product/signal/index.html) | Signal deep-dive (= "Patent Intelligence SaaS" internally) |
-| [assets/styles.css](assets/styles.css) | All CSS — tokens, components, page layouts |
-| [assets/site.js](assets/site.js) | All JS — theme toggle, language switcher, drawer, search, slider, forms |
+| [assets/styles.css](assets/styles.css) | All CSS — tokens, components, page layouts. **Authored here; served minified from `assets/build/styles.css`.** |
+| [assets/site.js](assets/site.js) | All JS — theme toggle, language switcher, drawer, search, slider, forms. **Same: served from `assets/build/site.js`.** |
 | [DESIGN.md](DESIGN.md) | **The design authority for this repo** — layout, spacing, type hierarchy, chrome, cards, CTA, motion, page rhythm, principles, a11y, per-page notes |
 | [PRODUCT.md](PRODUCT.md) | Product register for the licensing page (surface, user, purpose). Not a design authority. |
 | [designs/](designs/) | **Read-only** brand snapshots + fonts/logos/icons mirrored from the brand monorepo |
@@ -72,8 +78,10 @@ The snapshots are `design-tokens-snapshot.md`, `primitives-snapshot.md`,
   ships** — fix the doc. It is the implemented truth; DESIGN.md is the
   page-authoring reference.
 - **No page-local `<style>` blocks.** Compose from `styles.css`. Inline blocks
-  are where drift and dead CSS accumulate — the two pages that had them carried
-  59% and 29% dead CSS. DESIGN.md §0.3 has the rule and the one exception.
+  are where drift and dead CSS accumulates, and they are invisible to the minifier
+  that now handles `styles.css`. The "59% / 29% dead CSS" figures this line used to
+  quote were re-measured on 2026-08-28 and are long fixed — DESIGN.md §0.3 carries
+  the current numbers, the rule, and the one sanctioned exception.
 - `documents/` is copy and script material. It has never been a design
   authority; don't treat a doc in there as one.
 

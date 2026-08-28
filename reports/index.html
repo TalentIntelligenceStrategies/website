@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Colours the mobile browser chrome to the page ground; light page. -->
 <meta name="theme-color" content="#FFFFFF" />
-<title>Reports &amp; Press — TIS</title>
+<title data-zh-title="報告與新聞 — TIS">Reports &amp; Press — TIS</title>
 <meta name="description" content="Quarterly reads on the IP landscape, and the news behind TIS — patent landscape reports, transfer-market analysis, and partnership announcements." />
 <link rel="canonical" href="https://tisglobalinc.com/reports/" />
 
@@ -19,6 +19,10 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="TIS — Talent Intelligence Strategies" />
 <meta property="og:locale" content="en_US" />
+<!-- The page is bilingual on one URL: EN is the DOM text, 中文 lives in data-zh and
+     swaps client-side. Crawlers and unfurlers read the served HTML, so they only ever
+     see EN — this is the one honest signal available without separate /zh/ URLs. -->
+<meta property="og:locale:alternate" content="zh_TW" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Reports &amp; Press — TIS" />
@@ -207,7 +211,7 @@
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
@@ -561,7 +565,7 @@
 
         <div class="footer-cols">
           <div class="footer-col">
-            <h4 data-zh="產品">Products</h4>
+            <h2 data-zh="產品">Products</h2>
             <ul>
               <li><a href="/product/licensing/">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
@@ -573,7 +577,7 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4 data-zh="公司">Company</h4>
+            <h2 data-zh="公司">Company</h2>
             <ul>
               <li><a href="/patents/">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2v5a1 1 0 001 1h5"/><path d="M14.692 22H18a2 2 0 002-2V8a2.4 2.4 0 00-.706-1.706l-3.588-3.588A2.4 2.4 0 0014 2H6a2 2 0 00-2 2v3.804"/><path d="M2.264 13.752 7 16.5l4.737-2.748"/><path d="M2.995 13.014A2 2 0 002 14.744v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0012 18.26v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z"/><path d="M7 16.5V22"/></svg>
@@ -587,7 +591,7 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4 data-zh="法律">Legal</h4>
+            <h2 data-zh="法律">Legal</h2>
             <ul>
               <li><a href="/legal/terms.en.html" data-legal="terms">
                 <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>

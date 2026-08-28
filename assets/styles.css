@@ -2626,7 +2626,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   .footer-cols { grid-template-columns: 1fr 1fr; }
 }
 .footer-col { min-width: 0; }   /* let wide items (contact email) sit inside their track, not blow it out */
-.footer-col h4 {
+.footer-col h2 {
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 600;
@@ -3816,12 +3816,12 @@ body.sig-xlock{ overflow:hidden; }
    Scoped to .lgl-body so the fragments can be plain semantic HTML with no classes.
    That keeps the six content files editable by someone who is not reading this
    stylesheet, which matters when the edits come back from a lawyer. */
-.lgl-body h3 {
+.lgl-body h2 {
   margin: 28px 0 8px;
   font-size: 15px; font-weight: 700; letter-spacing: 0;
   color: var(--text-primary);
 }
-.lgl-body h3:first-child { margin-top: 0; }
+.lgl-body h2:first-child { margin-top: 0; }
 .lgl-body p, .lgl-body li {
   font-size: 14px; line-height: 1.65;
   color: var(--text-secondary);

@@ -175,6 +175,10 @@
   // modal's close button) with nothing reading it, so that control stayed announced
   // in English under 中文; the search close button uses it too.
   const i18nAriaEls = document.querySelectorAll('[data-zh-aria]');
+
+  // <title data-zh-title="…">. Captured like the rest so the swap is reversible.
+  const titleEl = document.querySelector('title[data-zh-title]');
+  if (titleEl) titleEl.dataset.enTitle = document.title;
   i18nAriaEls.forEach(el => { el.dataset.enAria = el.getAttribute('aria-label') || ''; });
 
   // ── Shimmer cube — extracted from brand/previews/loading-animation-preview.html.
@@ -305,6 +309,16 @@
     i18nAriaEls.forEach(el => {
       el.setAttribute('aria-label', lang === 'zh' ? el.dataset.zhAria : el.dataset.enAria);
     });
+    // The tab and the bookmark. Until 2026-08-28 the whole page swapped to 中文 while its
+    // title stayed English, so a reader with several TIS tabs open picked between them in a
+    // language they had just switched away from.
+    // This is the ONLY metadata worth swapping at runtime. og:title and og:description are
+    // deliberately left alone: no unfurler executes JS, so every crawler and every link
+    // preview reads the served EN regardless. Rewriting them here would look like i18n and
+    // do nothing. Real per-language metadata needs separate /zh/ URLs — see DESIGN.md.
+    if (titleEl && titleEl.dataset.zhTitle) {
+      document.title = lang === 'zh' ? titleEl.dataset.zhTitle : titleEl.dataset.enTitle;
+    }
     // Search results are rendered from the JSON index, not from data-zh attributes,
     // so the i18n pass above cannot reach them — re-render them here instead.
     if (typeof window.__searchRefresh === 'function') window.__searchRefresh();

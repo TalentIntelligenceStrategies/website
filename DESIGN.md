@@ -45,15 +45,27 @@ stylesheet disagree, the stylesheet is what ships — fix the document.
 New pages compose from `styles.css`. A page-local `<style>` block is where drift and
 dead CSS accumulate unaudited, and the correlation is not subtle:
 
-| | inline `<style>` blocks | outcome |
-|---|---|---|
-| `index.html`, `product/signal/methodology.html` | 0 | 0 gradients, 0 mono violations, 0 raw hex |
-| `product/signal/index.html` | 1 | audited exception — 76 classes, zero dead rules (see §16.2) |
-| `product/licensing/index.html` | 2 | 114 hex literals; **59%** of its inline CSS was dead |
+**Re-measured 2026-08-28.** The numbers this table used to carry described a state that had
+since been fixed, which made the rule read as an open wound rather than a settled one:
 
-The `product/signal/index.html` row is the one sanctioned exception, and it earned that
-standing by audit, not by age — the page it replaced carried the same single block with
-**29% of its inline CSS dead**.
+| | inline `<style>` blocks | selectors | unmatched | raw hex |
+|---|---|---|---|---|
+| `index.html`, `product/signal/methodology.html` | 0 | — | — | — |
+| `product/signal/index.html` | 1 | 144 | **0** | 12 |
+| `product/licensing/index.html` | 2 | 268 | 19 (mostly built dynamically) | 6 |
+| `patents/index.html` | 2 | 71 | 15 | 19 |
+| `about/index.html` | 1 | 47 | 3 | 0 |
+| `404.html`, `reports/index.html`, `product/licensing/badge.html` | 1 each | 1–3 | 0–1 | 0 |
+
+The licensing row previously read *"114 hex literals; 59% of its inline CSS was dead."* It is
+now 6 and roughly 7%. The pages were cleaned up; the table was not. `product/signal/index.html`
+remains the sanctioned exception and has held zero dead rules across two audits.
+
+Still true, and the reason the rule stands: page-local CSS is **149 KB across the tree**, none
+of it cached between pages and none of it reachable by the minifier that now handles
+`styles.css` (§15). `product/signal/index.html` and `product/licensing/index.html` would each
+shed ~25 KB gzip if their blocks moved into the build layer. That is a real, measured prize and
+it is deliberately **not** taken yet — it would revise the sanctioned-exception rule above.
 
 The mechanism: 21st.dev components arrive as React + Tailwind and get hand-transliterated,
 so each one is re-derived in a different idiom instead of reusing the one that exists.
@@ -572,8 +584,9 @@ mode, 18px in reduced motion. Measured at 390px:
    ruled-grid `::before` (`rgba(37,37,37,0.020)`, white at `0.025` in dark) and, on
    product pages, the full-bleed static hero image.
 3. **`.hero-shader#hero-shader` (z2)** — the **shifting-lines WebGL fragment shader**
-   (RGB chromatic sine lines on black), `three.js@0.160.0` imported from `esm.sh` as an
-   inline ESM module in `index.html` (`SPEED=0.003`, DPR capped at 2, `RawShaderMaterial`).
+   (RGB chromatic sine lines on black), run by `/assets/build/hero-shader.js` from an
+   inline ESM module in `index.html` (`SPEED=0.003`, DPR capped at 2). Until 2026-08-28 the
+   runner was a vendored `three.js@0.160.0` — see §15.1.
    It mounts a `<canvas>`, adds `.is-ready` to crossfade in over **600ms**. On any
    failure the black `.hero` shows through. (Ignore stale "sphere" comments in the CSS —
    the ShaderGradient sphere is gone.)
@@ -838,7 +851,8 @@ each is allowed and that each has a fallback.
 | Technique | Where | Fallback |
 |---|---|---|
 | `IntersectionObserver` + CSS transitions (`site.js`) | every page — the default | `prefers-reduced-motion` shows the resolved state |
-| GLSL / WebGL via `three.js@0.160.0` (esm.sh) | hero backdrops only (`index.html`, `about/`) | DPR capped at 2; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
+| GLSL / WebGL via `assets/build/hero-shader.js` | hero backdrops (`index.html`, `about/`, `product/signal/`) | DPR capped at 2 — **except `about/`, which is uncapped**; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
+| GLSL / WebGL, inline raw context | `404.html`, `reports/` | never used three.js; own uniform conventions and quad topology, deliberately not folded into the shared runner |
 | GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
 
 Prefer the observer. Reach for GSAP only when a timeline genuinely needs scrub-linked
@@ -1163,18 +1177,70 @@ changed and is not planned to. What exists now is a build layer beside it, not u
 
 ### 15.1 What the build produces
 
-`npm run build` runs five steps — `tokens`, `vite build`, `fonts`, `images`, `search` —
+`npm run build` runs six steps — `tokens`, `vite build`, `fonts`, `min`, `images`, `search` —
 and writes into `assets/build/`, which the pages load with ordinary `<script>` /
 `<link>` tags:
 
 | Artifact | What it is | Step |
 |---|---|---|
-| `three.js` | the hero shader's three.js, pinned 0.160.0 | `vite build` |
+| `styles.css` | **minified twin of `assets/styles.css`** — what every page actually loads | `npm run min` |
+| `site.js` | **minified twin of `assets/site.js`** — likewise | `npm run min` |
+| `hero-shader.js` | the fullscreen-quad shader runner the heroes use | `vite build` |
 | `gsap.js` | gsap + ScrollTrigger, pre-registered, pinned 3.12.5 | `vite build` |
-| `islands.js` | the React mount runtime — the 21st.dev landing zone | `vite build` |
-| `islands.css` | the Tailwind layer, generated from the brand tokens | `vite build` |
+| `lenis.js` | the smooth-scroll transport, pinned 1.3.26, loaded lazily by `site.js` | `vite build` |
 | `fonts/*.woff2` | 23 subset faces + the generated `@font-face` block in `styles.css` | `npm run fonts` |
 | `search-index.json` | the search modal's index, and heading ids written back into the pages | `npm run search` |
+
+**The two minified twins are the ones to understand** (added 2026-08-28). `assets/styles.css`
+is 40% comments and `assets/site.js` is 53% — together about 67 KB gzip of design
+documentation that every visitor downloaded on every page. The comments are why this document
+stays honest and they are not going anywhere; they simply have no business in the payload.
+`scripts/build-min.mjs` strips them with esbuild and the pages point at the result.
+
+Two rules that hold this together:
+
+- **The authored file is still the source of truth.** Edit `assets/styles.css`, never
+  `assets/build/styles.css`. The rule that "where DESIGN.md and the stylesheet disagree, the
+  stylesheet is what ships" now means the *authored* stylesheet — the twin is a derivative,
+  like any other build artifact.
+- **CSS is minified with no `target`,** so esbuild rewrites no syntax. `styles.css` carries
+  `:has()`, `@supports`, `dvh`, `clamp()` and `::-webkit` rules that a lowering pass would be
+  free to transform. Whitespace and comments only.
+
+`min` runs *after* `fonts`, because `fonts` writes the `@font-face` block into the source
+stylesheet — invert them and the twin ships a stale block.
+
+`robots.txt` no longer disallows `/assets/build/`. It did when the directory held only fonts
+and vendor bundles; now it holds the stylesheet and the script every page loads, and Google
+renders pages to index them.
+
+**three.js is gone** (2026-08-28). `index.html`, `about/index.html` and
+`product/signal/index.html` each imported a 447 KB / 112 KB gzip build of it to compile two
+shader strings and draw six vertices — nine symbols and four renderer methods out of a
+scene-graph library. `src/hero-shader.js` is that subset at 1.7 KB. See its header for why
+the port reproduces `WebGLRenderer`'s semantics exactly rather than approximately; all three
+heroes were verified byte-identical before and after. `404.html` and `reports/index.html`
+keep their own inline raw-WebGL heroes — they never had the dependency, and they use
+different uniform conventions and quad topology, so folding them in would add risk for no
+transfer win.
+
+**The React island entry is gone too.** `islands.js`, `islands.css` and
+`chunk-PricingSection.js` — 182 KB — were built, committed and served for months with no page
+referencing any of them. `src/islands/README.md` documents how to switch it back on when a
+page actually mounts one.
+
+### 15.1.1 Two things measured and deliberately left alone
+
+Recording these so the next sweep does not re-derive them:
+
+- **`about/`'s hero runs at uncapped `devicePixelRatio`** where `index.html` and
+  `product/signal/` cap at 2. It looks like an oversight and may be one, but capping it
+  changes what a 3× phone renders — a visual decision, not part of retiring a dependency.
+- **`patents/index.html` builds its blueprint SVGs at parse time, ungated.** Measured at
+  ~2 ms for 56 SVGs. Gating it behind `IntersectionObserver` would save that and cost the
+  marquee its animation phase — `.pat-track` animates `translateX(0 → -50%)` on a 60 s
+  `linear infinite` clock that starts at load, so content arriving late would appear
+  mid-cycle. Not worth 2 ms.
 
 `assets/imagery/*.webp` is a sixth output, written beside the originals rather than
 into `assets/build/` — see §9.
