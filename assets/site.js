@@ -11,9 +11,11 @@
   // position:sticky, position:fixed, IntersectionObserver, find-in-page and keyboard
   // scroll all behave natively. The CSS half is in styles.css under the same heading.
   //
-  // `lerp: 0.13` settles in ~0.38s — enough to take the staircase off a wheel tick,
-  // not enough to drift past where you stopped. The community default of 0.05 is
-  // ~1.0s and reads as an effect; this is meant to read as weight.
+  // `lerp: 0.18` settles in ~0.27s — just enough to take the staircase off a wheel
+  // tick, and short enough that most people would not name it as an effect. Started
+  // at 0.13 (~0.38s) and lightened a notch; the community default of 0.05 is ~1.0s
+  // and is firmly in glide territory. Settle time is roughly 3/(lerp*60) seconds, so
+  // raising this number makes the page LIGHTER, not heavier.
   //
   // Two things deliberately NOT set:
   //   · no `duration`/`easing`. Contrary to the README, those OVERRIDE `lerp`, and
@@ -101,7 +103,7 @@
     try {
       const { default: Lenis } = await import('/assets/build/lenis.js');
       lenis = new Lenis({
-        lerp: 0.13,
+        lerp: 0.18,
         smoothWheel: true,
         syncTouch: false,
         wheelMultiplier: 1,

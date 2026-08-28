@@ -762,7 +762,7 @@ scroll position gets from A to B, so it composes with all of them rather than co
 | | |
 |---|---|
 | **Where** | site-wide, from `assets/site.js`; `/assets/build/lenis.js` (~5.7 KB gzipped) |
-| **Feel** | `lerp: 0.13` — ~0.38s to settle. Restrained on purpose; the community default of `0.05` is ~1.0s and reads as an effect rather than as weight. |
+| **Feel** | `lerp: 0.18` — ~0.27s to settle. Restrained on purpose; the community default of `0.05` is ~1.0s and reads as an effect rather than as weight. Settle time is ~`3/(lerp*60)` seconds, so a **higher** number is lighter. |
 | **Fallback** | library-handled reduced motion (below), plus native scroll if the module fails to load — the `.lenis` class is never added, so every Lenis CSS rule stays inert |
 
 Three rules that are load-bearing, each of which was a measured bug before it was a rule:

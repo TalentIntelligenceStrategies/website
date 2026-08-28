@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-28 11:58 +0800** · Lightened the Lenis scroll a notch — lerp 0.13 to 0.18, settling in ~0.27s instead of ~0.38s.
 - **2026-08-28 11:05 +0800** · Added the Chinese copy audit review page — 33 findings over two passes across zh-TW correctness, grammar and terminology; no copy changed.
 - **2026-08-28 09:50 +0800** · Chinese line breaking: zh-scoped `text-wrap: balance`, four hard breaks, six copy trims; 13 orphan tails gone.
 - **2026-08-28 08:40 +0800** · Added Lenis smooth scroll site-wide at lerp 0.13, scoped away from the capital site.
