@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-29 13:35 +0800** · Patent-bank numbers redacted to pending, lamp hero scaled to phone widths, methodology paired text with its figure, signal CTA unified.
 - **2026-08-29 13:16 +0800** · Mobile pass: partner-strip touch spasm, stale contact-panel radius, split email, ticker size and speed, and three per-frame scroll costs.
 - **2026-08-29 12:01 +0800** · Contact card: the meta plinth stopped painting over the form panel, and the phone reflow it came from now covers all eight pages instead of three.
 - **2026-08-29 09:21 +0800** · Focus ring made visible on the black surfaces it was invisible on, pricing toggle and language switcher given honest roles, and the accessible-name layer translated.

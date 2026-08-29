@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=28">
+<link rel="stylesheet" href="/assets/build/styles.css?v=30">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -58,6 +58,23 @@
      from y+100px — same timing (0.3s delay, 0.8s, ease-in-out). Animations run
      once on load (the hero is above the fold, so whileInView === on-load here). */
   .pat-lamp {
+    /* Every horizontal dimension in the lamp derives from these three. They were
+       fixed rem until 2026-08-29, which broke the hero on phones two ways: the
+       30rem (480px) bright bar was WIDER than a 390px viewport, so it hard-cut at
+       both screen edges instead of reading as a discrete line; and because each
+       beam is anchored by its inner edge at 50%, its conic apex sat 15rem out —
+       off-screen on a phone — leaving only the sharp flank of each cone, which met
+       its mirror at the 50% seam as a hard vertical line through the headline.
+
+       min() rather than a media query: 30rem / 0.70 = 686px, so at any viewport
+       ≥686px all three resolve to exactly the previous values and desktop is
+       untouched. Below that the whole construction scales together — the apexes
+       come back on-screen and the bar keeps a black margin either side. No
+       breakpoint to cross, and nothing for a cascade check to miss (the checker
+       does not read page-local blocks). */
+    --lamp-w:      min(30rem, 70vw);
+    --lamp-halo-w: min(28rem, 65vw);
+    --lamp-glow-w: min(16rem, 37vw);
     position: relative;
     flex-direction: column;
     justify-content: center;
@@ -91,7 +108,7 @@
     position: absolute;
     top: auto; bottom: auto; left: auto; right: auto;
     height: 14rem;
-    width: 30rem;
+    width: var(--lamp-w);
     overflow: visible;
     will-change: width, opacity;
     animation: lamp-beam 0.8s cubic-bezier(0.42, 0, 0.58, 1) 0.3s both;
@@ -108,12 +125,12 @@
     background-image: conic-gradient(from 70deg at center top, rgba(255,255,255,0.95), transparent 50%, transparent);
   }
   .lamp-beam--left::before {  /* bottom fade */
-    width: 100%; height: 10rem; left: 0;
+    width: 100%; height: calc(var(--lamp-w) / 3); left: 0;
     -webkit-mask-image: linear-gradient(to top, white, transparent);
             mask-image: linear-gradient(to top, white, transparent);
   }
   .lamp-beam--left::after {   /* left fade */
-    width: 10rem; height: 100%; left: 0;
+    width: calc(var(--lamp-w) / 3); height: 100%; left: 0;
     -webkit-mask-image: linear-gradient(to right, white, transparent);
             mask-image: linear-gradient(to right, white, transparent);
   }
@@ -122,12 +139,12 @@
     background-image: conic-gradient(from 290deg at center top, transparent, transparent 50%, rgba(255,255,255,0.95));
   }
   .lamp-beam--right::before { /* right fade */
-    width: 10rem; height: 100%; right: 0;
+    width: calc(var(--lamp-w) / 3); height: 100%; right: 0;
     -webkit-mask-image: linear-gradient(to left, white, transparent);
             mask-image: linear-gradient(to left, white, transparent);
   }
   .lamp-beam--right::after {  /* bottom fade */
-    width: 100%; height: 10rem; right: 0;
+    width: 100%; height: calc(var(--lamp-w) / 3); right: 0;
     -webkit-mask-image: linear-gradient(to top, white, transparent);
             mask-image: linear-gradient(to top, white, transparent);
   }
@@ -145,7 +162,7 @@
   }
   .lamp-halo {  /* wide soft silver bloom */
     position: absolute; z-index: 50;
-    height: 9rem; width: 28rem;
+    height: 9rem; width: var(--lamp-halo-w);
     transform: translateY(-50%);
     border-radius: 9999px;
     background: rgba(255,255,255,0.5);
@@ -154,7 +171,7 @@
   .lamp-glow {  /* tighter, brighter core — animates width like the source.
                    opacity 0.6 = the glowing bar dimmed ~40% per request. */
     position: absolute; z-index: 30;
-    height: 9rem; width: 16rem;
+    height: 9rem; width: var(--lamp-glow-w);
     transform: translateY(-6rem);
     border-radius: 9999px;
     background: #E6E8EC;
@@ -165,7 +182,7 @@
   }
   .lamp-line {  /* the bright resolve line — dimmed ~40% (opacity 0.6) */
     position: absolute; z-index: 50;
-    height: 2px; width: 30rem;
+    height: 2px; width: var(--lamp-w);
     transform: translateY(-7rem);
     background: #F2F3F5;
     opacity: 0.6;
@@ -211,9 +228,13 @@
     width: auto;
   }
 
-  @keyframes lamp-beam { from { opacity: 0.5; width: 15rem; } to { opacity: 1; width: 30rem; } }
-  @keyframes lamp-line { from { width: 15rem; } to { width: 30rem; } }
-  @keyframes lamp-glow { from { width: 8rem; }  to { width: 16rem; } }
+  /* These must resolve the same variables as the rules above. `animation: … both`
+     retains the `to` frame after the run, so a hardcoded width here would win over
+     the declared one and quietly restore the 480px overflow. The from-widths were
+     half the to-widths, so the ratio is kept as * 0.5. */
+  @keyframes lamp-beam { from { opacity: 0.5; width: calc(var(--lamp-w) * 0.5); } to { opacity: 1; width: var(--lamp-w); } }
+  @keyframes lamp-line { from { width: calc(var(--lamp-w) * 0.5); } to { width: var(--lamp-w); } }
+  @keyframes lamp-glow { from { width: calc(var(--lamp-glow-w) * 0.5); }  to { width: var(--lamp-glow-w); } }
   @keyframes lamp-title {
     from { opacity: 0.5; transform: translateY(0.75rem) translateY(100px); }
     to   { opacity: 1;   transform: translateY(0.75rem) translateY(0); }
@@ -252,9 +273,34 @@
   }
   [data-theme="light"] .contact-success .check-pill { background: var(--success-bg); color: var(--success-fg); }
 
+  /* The contact card is a hardcoded #000 (styles.css) and its left panel is
+     venture.jpg — a near-pure-black photo — under a scrim. On every other page
+     that card sits on a light ground and reads as an object; here the page is
+     also #000, so three blacks stack and the "Get in touch." half dissolves into
+     the field with no edge at all. Lift the card one step and give it a hairline,
+     reusing this page's own raised-dark-panel vocabulary (.pat-modal below). */
+  [data-page="patents"] .contact-card {
+    background: #0A0A0A;
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  /* Below 880px the meta block carries its own #000 and would sit DARKER than the
+     lifted card. Scoped to the same width because above 881px it is transparent
+     over the photo and relies on its ::before plinth for contrast. */
+  @media (max-width: 880px) {
+    [data-page="patents"] .contact-overlay-meta { background: #0A0A0A; }
+  }
+
   /* Faint 32px ruled grid behind all content, fixed to the viewport so it reads
      as one continuous blueprint field down the page (sections are transparent;
-     the white cards and the opaque hero sit on top of it). */
+     the white cards and the opaque hero sit on top of it).
+
+     This page invented the fixed-pseudo-element form, and on 2026-08-29 the site-wide
+     grid moved onto the same shape (styles.css §body::before) to get off
+     `background-attachment: fixed`. So this is now a THEME OVERRIDE, not a lone
+     implementation: it re-declares the shared layer white-on-dark instead of
+     dark-on-light for this dark page. `background` is the shorthand, so it resets
+     background-image and the two cannot double-paint. Keep the position/inset/z-index
+     in sync with the shared rule if that ever changes. */
   body::before {
     content: "";
     position: fixed;
@@ -396,9 +442,25 @@
   .pat-cta:hover { background: rgba(0,0,0,0.11); border-color: rgba(0,0,0,0.42); }
   .pat-cta svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+  /* Legal fine print under the marquee. Right-aligned against the rail it
+     qualifies. Deliberately NOT italic: only Urbanist uprights (400/500/600/700)
+     are subset into assets/build/fonts, so font-style:italic would synthesize a
+     mechanical oblique — the site un-italicises <em> elsewhere for the same
+     reason. The fine-print read comes from size + letterspacing instead.
+     --text-secondary, not --text-tertiary: the token notes reserve tertiary for
+     UI/decorative use and point 12px prose at secondary, and a disclaimer set too
+     faint defeats its own purpose. */
   .pat-note {
-    margin: 16px 0 0;
-    font-size: 12px; color: var(--text-tertiary);
+    margin: 16px 0 0 auto;
+    max-width: 62ch;
+    text-align: right;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+  }
+  /* Ragged-left across three wrapped lines reads as a mistake on a phone. */
+  @media (max-width: 560px) {
+    .pat-note { text-align: left; margin-inline: 0; }
   }
 
   /* ───────── Detail modal (centered, ink) ───────── */
@@ -754,7 +816,7 @@
       <div class="pat-marquee pat-marquee--rev" aria-label="More representative owned patents" data-zh-aria="更多代表性自有專利">
         <div class="pat-track pat-track--rev" id="pat-track-2"></div>
       </div>
-      <p class="pat-note" data-reveal data-zh="示意圖 — 代表申請中與已核准的專利組合，非個別權利主張。">Illustrative — representative of the filing portfolio, not a claim to specific granted rights.</p>
+      <p class="pat-note" data-zh="僅為示意 — 裝飾性圖面，非已公開專利。申請案進行中。">Illustrative only — decorative drawings, not published patents. Filings in progress.</p>
     </div>
   </section>
 
@@ -952,7 +1014,9 @@
     <span class="pat-modal-domain" id="pat-modal-domain"></span>
     <p class="pat-modal-abstract" id="pat-modal-abstract"></p>
     <div class="pat-modal-chips" id="pat-modal-chips"></div>
-    <p class="pat-modal-assignee"><span data-zh="專利權人">Assignee</span> · <strong>TIS</strong></p>
+    <!-- Not "Assignee": that names the holder of a GRANTED right, and none of these
+         are granted or published yet. -->
+    <p class="pat-modal-assignee"><span data-zh="申請人">Filed by</span> · <strong>TIS</strong> · <span data-zh="尚未公開">pending publication</span></p>
   </div>
 </div>
 
@@ -973,7 +1037,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=16" defer></script>
+<script src="/assets/build/site.js?v=17" defer></script>
 
 <!-- ───────── Owned-patents blueprint marquee ─────────
      Generates ink patent-drawing cards and duplicates the set once for a
@@ -1154,40 +1218,48 @@
 
   function pad(n, len){ return String(n).padStart(len, '0'); }
 
-  // ── MOCK DATA — replace with the real portfolio before relying on these numbers. ──
+  // ── ILLUSTRATIVE DATA — nothing here is a published record. ──
+  // The `tw` field deliberately carries no number. It held plausible grant-format
+  // strings (TWI######B) until 2026-08-29, rendered in the card badge, the blueprint
+  // title block and the modal beside an "Assignee · TIS" line — which asserts a
+  // granted right TIS does not hold, over numbers that may well belong to somebody
+  // else. TIS's filings are in progress and unpublished, so the field states that
+  // instead. Keep it short: drawTitleBlock() sets it at 7px inside a 100px box.
+  // If real published numbers ever land here, revisit .pat-note and the modal's
+  // "Filed by · pending publication" line at the same time.
   const INVENTORS = ['K. CHEN, R. PARK', 'M. WONG', 'T. TANAKA', 'L. MORENO', 'D. KAUR, N. ABE', 'A. NAGY', 'J. LIN, H. PATEL'];
   const PATENTS = [
-    { tw: 'TWI812345B', name: 'Multi-rotor attitude stabilization system', domain: 'Flight control', juris: 'TW · Taiwan', ipc: 'G05D 1/08', draw: drawControlLoop,
+    { tw: 'TW · Pending', name: 'Multi-rotor attitude stabilization system', domain: 'Flight control', juris: 'TW · Taiwan', ipc: 'G05D 1/08', draw: drawControlLoop,
       abstract: 'Holds a multi-rotor level under gusts by fusing inertial rate measurements with rotor-speed feedback in a closed control loop.' },
-    { tw: 'TWI806927B', name: 'LiDAR–vision fusion for obstacle avoidance', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01S 17/933', draw: drawAntenna,
+    { tw: 'TW · Pending', name: 'LiDAR–vision fusion for obstacle avoidance', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01S 17/933', draw: drawAntenna,
       abstract: 'Fuses LiDAR range returns with a camera stream to detect and route around obstacles along the flight path in real time.' },
-    { tw: 'TWI821540B', name: 'Foldable coaxial rotor assembly', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 27/10', draw: drawLinkage,
+    { tw: 'TW · Pending', name: 'Foldable coaxial rotor assembly', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 27/10', draw: drawLinkage,
       abstract: 'A rotor head whose blades fold along the boom for transport and lock into a coaxial arrangement for flight.' },
-    { tw: 'TWI799316B', name: 'BVLOS command-link redundancy module', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H04B 7/185', draw: drawGearTrain,
+    { tw: 'TW · Pending', name: 'BVLOS command-link redundancy module', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H04B 7/185', draw: drawGearTrain,
       abstract: 'Keeps the command link alive beyond visual line of sight by failing over across redundant radio paths.' },
-    { tw: 'TWI834072B', name: 'Three-axis gimbal vibration-isolation mount', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 47/08', draw: drawCam,
+    { tw: 'TW · Pending', name: 'Three-axis gimbal vibration-isolation mount', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 47/08', draw: drawCam,
       abstract: 'Isolates a three-axis camera gimbal from airframe vibration to keep imaging stable throughout flight.' },
-    { tw: 'TWI817665B', name: 'VTOL fixed-wing transition mechanism', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 29/00', draw: drawTruss,
+    { tw: 'TW · Pending', name: 'VTOL fixed-wing transition mechanism', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 29/00', draw: drawTruss,
       abstract: 'Rotates the lift rotors between vertical and cruise orientation, enabling vertical takeoff and fixed-wing flight.' },
-    { tw: 'TWI828491B', name: 'Swarm formation-keeping controller', domain: 'Autonomy & swarm', juris: 'TW · Taiwan', ipc: 'G05D 1/10', draw: drawCylinder,
+    { tw: 'TW · Pending', name: 'Swarm formation-keeping controller', domain: 'Autonomy & swarm', juris: 'TW · Taiwan', ipc: 'G05D 1/10', draw: drawCylinder,
       abstract: 'Keeps a swarm in formation by sharing relative-position estimates between neighbouring aircraft.' },
   ];
 
   // Second row — a different set of representative owned patents.
   const PATENTS_2 = [
-    { tw: 'TWI840115B', name: 'Adaptive battery thermal-management loop', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'H01M 10/63', draw: drawControlLoop,
+    { tw: 'TW · Pending', name: 'Adaptive battery thermal-management loop', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'H01M 10/63', draw: drawControlLoop,
       abstract: 'Regulates pack temperature in flight by modulating coolant flow against a predicted discharge-rate curve.' },
-    { tw: 'TWI835603B', name: 'Phased-array telemetry antenna', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H01Q 3/26', draw: drawAntenna,
+    { tw: 'TW · Pending', name: 'Phased-array telemetry antenna', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H01Q 3/26', draw: drawAntenna,
       abstract: 'Steers a telemetry beam electronically to hold the ground link while the airframe manoeuvres.' },
-    { tw: 'TWI829744B', name: 'Quick-release payload mounting linkage', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 1/12', draw: drawLinkage,
+    { tw: 'TW · Pending', name: 'Quick-release payload mounting linkage', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 1/12', draw: drawLinkage,
       abstract: 'Latches and releases interchangeable payloads through a single-motion linkage without tools.' },
-    { tw: 'TWI823918B', name: 'Variable-pitch propeller gear drive', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 11/30', draw: drawGearTrain,
+    { tw: 'TW · Pending', name: 'Variable-pitch propeller gear drive', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 11/30', draw: drawGearTrain,
       abstract: 'Adjusts blade pitch through a compact gear train to trade thrust for efficiency across flight phases.' },
-    { tw: 'TWI842260B', name: 'Optical-flow landing-guidance sensor', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01C 21/16', draw: drawCam,
+    { tw: 'TW · Pending', name: 'Optical-flow landing-guidance sensor', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01C 21/16', draw: drawCam,
       abstract: 'Estimates descent velocity from ground optical flow to guide precise autonomous landings.' },
-    { tw: 'TWI838072B', name: 'Modular tail-boom structural joint', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 1/26', draw: drawTruss,
+    { tw: 'TW · Pending', name: 'Modular tail-boom structural joint', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 1/26', draw: drawTruss,
       abstract: 'Joins interchangeable tail booms to the fuselage through a preloaded structural interface.' },
-    { tw: 'TWI831559B', name: 'Fuel-cell hybrid range extender', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'B64D 27/24', draw: drawCylinder,
+    { tw: 'TW · Pending', name: 'Fuel-cell hybrid range extender', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'B64D 27/24', draw: drawCylinder,
       abstract: 'Extends endurance by pairing a hydrogen fuel-cell stack with the battery bus under a shared controller.' },
   ];
 

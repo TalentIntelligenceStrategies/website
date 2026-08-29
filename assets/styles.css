@@ -82,7 +82,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-03.woff2') format('woff2');
-  unicode-range: U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F-9080,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9322,U+9328,U+932F,U+9375,U+9396,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+9918,U+9996,U+99AC,U+99D5,U+9A57,U+9A5F,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
+  unicode-range: U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F-9080,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9322,U+9328,U+932F,U+9375,U+9396,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+98FE,U+9918,U+9996,U+99AC,U+99D5,U+9A57,U+9A5F,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
 }
 /* @generated:fonts:end */
 
@@ -409,16 +409,7 @@ html.lenis body { height: auto; }
 }
 
 body {
-  /* Faint 32px graph-paper grid behind the whole page — dark lines on the white
-     page (mirrors the hero's white-on-black grid, same spacing/faintness).
-     background-attachment: fixed pins it to the viewport so it reads as a steady
-     underlay; transparent sections show it, solid sections (cards, footer, the
-     black hero) cover it. */
   background-color: var(--surface-page);
-  background-image:
-    repeating-linear-gradient(0deg,  rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px),
-    repeating-linear-gradient(90deg, rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px);
-  background-attachment: fixed;
   color: var(--text-primary);
   /* Urbanist always carries Latin glyphs (consistent metrics across lang toggle);
      Noto Sans TC / PingFang TC sit in the fallback chain for CJK code points only,
@@ -430,6 +421,43 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 250ms cubic-bezier(0.2,1,0.3,1), color 250ms cubic-bezier(0.2,1,0.3,1);
+}
+
+/* Faint 32px graph-paper grid behind the whole page — dark lines on the white page
+   (mirrors the hero's white-on-black grid, same spacing/faintness). Pinned to the
+   viewport so it reads as a steady underlay; transparent sections show it, solid
+   sections (cards, footer, the black hero) cover it.
+
+   A FIXED PSEUDO-ELEMENT, not `background-attachment: fixed` on body, which is what
+   this was until 2026-08-29. That property is the single most expensive thing this
+   stylesheet was doing on a phone: a fixed background cannot ride the scrolling layer,
+   so the browser leaves the fast compositor path and REPAINTS THE WHOLE VIEWPORT ON THE
+   MAIN THREAD EVERY SCROLL FRAME -- and the repaint here is two procedural
+   repeating-linear-gradients, not a cached tile, for lines at 0.024 alpha that are
+   nearly invisible on a phone. A `position: fixed` element gets its own compositor
+   layer instead and is not repainted at all while scrolling.
+
+   The look is identical: same gradients, same 32px pitch, still pinned to the viewport.
+
+   z-index: -1 sits above the body background-color (which propagates to the canvas)
+   and below every element in flow, so the layering is what it was. This works only
+   while `body` creates no stacking context -- do not add transform, filter, opacity,
+   isolation or will-change to it.
+
+   Two pages speak to this rule and both still work:
+     · patents/ re-declares it white-on-dark for its dark theme (it had this exact
+       pseudo-element first; the site-wide rule is modelled on it).
+     · product/licensing/ opts out with `body::before { content: none }`, which is what
+       its old `background-image: none` on body became. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(37,37,37,0.024) 0, rgba(37,37,37,0.024) 1px, transparent 1px, transparent 32px);
 }
 
 a { color: inherit; text-decoration: none; }
@@ -1140,7 +1168,13 @@ main { padding-top: 64px; }
        SQUASHED width, which lands mid-message and reads as a jump rather than a loop.
        flex: 0 0 auto lets the track keep its true content width and overflow. */
     flex: 0 0 auto;
-    animation: announce-scroll 42s linear infinite;
+    /* 52s, from 42s (2026-08-29). The ask was "about 30% slower", but the duration is
+       not the only term: the track is `width: max-content`, so dropping .announce-msg
+       from 14px to 12px below shortens the travel by ~14% and slows the strip by that
+       much on its own. A literal 42 x 1.3 = 55s would have compounded to ~40%. 52s
+       lands the intended ~30% AT THE NEW TYPE SIZE. Re-derive this if either the type
+       size or the message set changes -- the two are coupled. */
+    animation: announce-scroll 52s linear infinite;
   }
   .announce-item {
     /* The rotator's crossfade states do not apply in ticker mode — every item is
@@ -1153,7 +1187,12 @@ main { padding-top: 64px; }
     padding-inline: 24px;
   }
   .announce-item--dup { display: flex; }
-  .announce-msg { white-space: nowrap; overflow: visible; text-overflow: clip; }
+  /* 12px, down from the base 14px (2026-08-29). At 390px the 14px line was the loudest
+     thing on the first screen, competing with the h1 two rows below it. 12px is the
+     phone type floor (DESIGN.md 14.2) and this is chrome, not prose, so the floor is
+     the right place to sit. Shortening the track is also half of the speed change --
+     see the duration note above. */
+  .announce-msg { font-size: 12px; white-space: nowrap; overflow: visible; text-overflow: clip; }
   /* The dot comes back. It was display:none below 640px only because, in the wrapping
      branch, it landed alone on its own row — a problem the single line removes. */
   .announce .ticker-pulse { display: inline-block; }
@@ -1721,18 +1760,11 @@ main { padding-top: 64px; }
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* CTAs → dark-ink primary + white secondary (same as licensing; secondary hover
-   nudged to a cool tint). */
-[data-page="signal"] .hero .btn-primary {
-  background: var(--surface-inverse);
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-  color: #fff; -webkit-text-fill-color: #fff;
-  border: none;
-}
-[data-page="signal"] .hero .btn-primary:hover {
-  background: var(--surface-inverse-hover-lift);
-  border: none;
-}
+/* Secondary CTA → white (same as licensing; hover nudged to a cool tint).
+   The primary CTA deliberately has NO page override: it inherits `.hero .btn-primary`
+   above — the translucent black-glass fill + light hairline the homepage hero uses.
+   A solid dark-ink override lived here until 2026-08-29 and read as a flat black slab
+   against the blue shader at every width; removing it re-unifies the two heroes. */
 /* .pillar[data-pillar="signal"] added to beat the (0,4,0) signal-gradient secondary
    rule above (.hero .pillar[data-pillar="signal"] .btn-secondary). */
 [data-page="signal"] .hero .pillar[data-pillar="signal"] .btn-secondary,
@@ -2345,7 +2377,12 @@ main { padding-top: 64px; }
   .partner-marquee {
     overflow-x: auto;
     overflow-y: hidden;
-    touch-action: pan-x;
+    /* pan-x AND pan-y (2026-08-29). `pan-x` alone told the browser this element only
+       handles horizontal gestures, which also meant a finger landing anywhere on the
+       1936px logo row could not scroll the PAGE -- the band was a dead zone you had to
+       swipe around. pan-y costs nothing here: the element is overflow-y: hidden, so
+       there is no vertical scroll of its own for the page to compete with. */
+    touch-action: pan-x pan-y;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -3417,14 +3454,25 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
     padding: 28px 24px;
     min-height: 0;
   }
-  /* Two even columns, not the base `auto auto 1fr`. That third track is a slack
-     absorber for the desktop composition, where the two --wide rows span 1 / -1 and
-     inflate the auto tracks; down here the block has its own flat ground and no photo
-     to align against, so the slack track just strands ~39px (an 11px column plus its
-     gutter) and squeezes the UBN into 61px. Even halves give Email and UBN 141px each. */
+  /* ONE column, not the base `auto auto 1fr` and not the two even halves this was
+     until 2026-08-29.
+
+     The base's third track is a slack absorber for the desktop composition, where the
+     two --wide rows span 1 / -1 and inflate the auto tracks; down here the block has
+     its own flat ground and no photo to align against, so it just strands ~39px and
+     squeezes the UBN. Even halves fixed that and gave Email and UBN 141px each -- but
+     141px is not enough for the email. `contact@tisglobalinc.com` sets at ~180px, and
+     .contact-meta a carries `word-break: break-all`, so rather than overflowing it
+     split into `contact@tisglobalin` / `c.com`. The base rule above already carries a
+     comment about repairing this same break at 881px by reclaiming gutter; the mobile
+     branch reintroduced it 20px lower down.
+
+     Going 1-up costs exactly one grid row, not the height the retired <=520px collapse
+     used to cost: Office hours and Address are already --wide, so this shared Email|UBN
+     row was the entire 2-up saving. `grid-column: 1 / -1` on --wide still resolves to
+     the single column, so those two rows are unaffected. */
   .contact-overlay-meta {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 20px;
+    grid-template-columns: 1fr;
   }
 }
 .contact-meta { display: flex; flex-direction: column; gap: 6px; }
@@ -3491,12 +3539,16 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   .contact-meta a::after,
   .contact-email::after { transition: none; }
 }
-/* The <=520px 1-up collapse was retired 2026-08-29. The meta is 2-up on phones now
-   (see the <=880px block) and it sits under the form on its own flat ground rather
-   than inside the intro column, so it has the full card width to work with. Going
-   1-up again would give back most of the height that move reclaimed. Verified at
-   320px in both languages, including the 66-character address and the break-all
-   email. */
+/* The meta is 1-up on phones (see the <=880px block). It sits under the form on its
+   own flat ground rather than inside the intro column, so it has the full card width
+   to work with.
+
+   This went 2-up when the <=520px collapse was retired on 2026-08-29, on the reasoning
+   that 1-up "would give back most of the height that move reclaimed". That was
+   overstated -- Office hours and Address were already --wide, so the only row 2-up
+   ever saved was Email|UBN, one row. It went back to 1-up the same day because 141px
+   could not hold the email. Verified at 320px in both languages, including the
+   66-character address. */
 
 /* Right form panel — white card, 18px radius, floating within the image. */
 .contact-panel {
@@ -3509,7 +3561,23 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   box-shadow: var(--shadow-high);
 }
 @media (max-width: 880px) {
-  .contact-panel { align-self: stretch; margin: 0; border-radius: 0 0 18px 18px; }
+  /* Square, all four corners (2026-08-29). This was `0 0 18px 18px` from 2026-07-19,
+     when the panel was the LAST child of .contact-card and its bottom edge WAS the
+     card's bottom edge. The 2026-08-28 reflow gave .contact-overlay-meta `order: 3`,
+     which put a square-cornered #000 block below the panel -- so the rounded bottom
+     corners started curving away from a seam in the MIDDLE of the card, with the
+     card's own #000 filling the two notches and box-shadow: var(--shadow-high) firing
+     into them, which is what made it read as a shadowed step rather than a seam.
+
+     The card is `overflow: hidden` with its own 18px radius, so it clips the outer
+     corners; the panel only ever needs to butt flush into its neighbours.
+
+     Same trap as .contact-overlay-meta::before below: a radius, like a pseudo-element's
+     offsets, is keyed to WHERE ITS HOST SITS IN THE DOM. Reordering children
+     invalidates every corner that was rounded because it touched an edge, and
+     check-cascade-order.mjs cannot see it -- the declaration is live and winning, it
+     just describes a shape that moved. */
+  .contact-panel { align-self: stretch; margin: 0; border-radius: 0; }
 }
 .contact-form {
   display: flex; flex-direction: column; gap: 18px;
@@ -3845,6 +3913,15 @@ svg.is-primed polyline {
    Both languages carry their own breaks in the same span, which is why that span
    needs `data-zh-html` — ZH takes FEWER breaks than EN because Han characters are
    denser: 3 lines EN, 2 lines ZH. Do not "match" them.
+
+   TRAP: `display: none` removes the ELEMENT, and an element contributes no
+   whitespace — so a break written as `the<br class="br-sm">most` welds into
+   "themost" above the breakpoint. Always leave a real space before the tag in
+   Latin-script copy. (The homepage headline shipped without them and read
+   "Patents are themost undervaluedasset of our time." on desktop until
+   2026-08-29.) This is also why the utility is Latin-script-only: the ZH half of
+   the same span must NOT take those spaces, because Han characters set without
+   inter-word gaps and the space would open a visible hole on phones.
 
    640px, matching the .hero mobile-floor branch and the container's own phone step.
    scripts/build-search-index.mjs strips the tag to a space and then collapses it
@@ -6105,8 +6182,49 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
     justify-content: space-between;
   }
 }
+/* ── Mobile · interleave each step with ITS OWN figure ────────────────────
+   The stage is two sibling wrappers — .mth-stage__steps (6 <section>s) and
+   .mth-stage__stage (6 <figure>s). Collapsing to one column stacks the two
+   WRAPPERS, so the page read as six texts and then six figures, with every
+   figure a full screen away from the copy it illustrates.
+
+   `display: contents` on both wrappers promotes all twelve children to direct
+   grid items of .mth-stage__grid, after which `order` can interleave them —
+   `order` only sorts siblings within one formatting context, so without this
+   promotion it cannot reach across the wrapper boundary. Both wrappers are
+   presentational divs with no rules of their own, so nothing is lost.
+
+   The DOM is deliberately NOT restructured: above 980px .mth-stage__stage must
+   stay one sticky element holding all six figures in a single grid-area, which
+   is what the scroll-pin swaps between. Below 980px that pin is fully off
+   (site.js strips .is-live and disconnects the observer), so this is a pure
+   presentational reorder over a static stack.
+
+   Screen-reader order still follows the DOM — six steps, then six figures,
+   unchanged from before. Each <figure> already carries aria-labelledby pointing
+   at its own step's <h2>, authored precisely because that adjacency is absent. */
 @media (max-width: 980px) {
-  .mth-stage__grid { grid-template-columns: 1fr; gap: 32px; }
+  .mth-stage__grid { grid-template-columns: 1fr; gap: 0; }
+  .mth-stage__steps,
+  .mth-stage__stage { display: contents; }
+
+  .mth-stage__step[data-step="0"] { order: 1; }  .mth-stage__fig[data-step="0"] { order: 2; }
+  .mth-stage__step[data-step="1"] { order: 3; }  .mth-stage__fig[data-step="1"] { order: 4; }
+  .mth-stage__step[data-step="2"] { order: 5; }  .mth-stage__fig[data-step="2"] { order: 6; }
+  .mth-stage__step[data-step="3"] { order: 7; }  .mth-stage__fig[data-step="3"] { order: 8; }
+  .mth-stage__step[data-step="4"] { order: 9; }  .mth-stage__fig[data-step="4"] { order: 10; }
+  .mth-stage__step[data-step="5"] { order: 11; } .mth-stage__fig[data-step="5"] { order: 12; }
+
+  /* Tight pair, clear gap between pairs — the grouping is what carries the
+     text↔figure association now that they are adjacent again. The base rule's
+     padding-block exists to give the desktop observer a band to fire in; with no
+     observer here it is just dead space between a step and its own figure. */
+  .mth-stage__step { padding-block: 0; margin-top: 48px; }
+  .mth-stage__step:first-child { margin-top: 0; }
+  .mth-stage__fig { margin-top: 16px; }
+  /* The (0,2,0) sibling rule still matches — display:contents does not change DOM
+     siblinghood — and would otherwise reopen a 32-56px gap at a text→figure seam. */
+  .mth-stage__fig + .mth-stage__fig { margin-top: 16px; }
 }
 /* ── Exit · the two PSS-backed reports ────────────────────────────────────
    Reuses the shared .offer-card recipe. The cards are <button>s carrying
