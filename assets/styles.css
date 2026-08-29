@@ -1201,10 +1201,17 @@ main { padding-top: 64px; }
        same box, -3.13%, i.e. 50.4s at 20.6 px/s. Font-size did not move; tracking did most
        of it.
 
+       50s -> 58s: .announce-msg went 12px -> 14px once the font-boosting fix exposed 12px
+       as genuinely too small (see that rule's note). The half-track grew 1037.5 -> 1189.5px,
+       +14.7%, which at 50s would have run the strip at 23.8 px/s -- a visible 15% speed-up
+       nobody asked for. 1189.5 / 20.6 = 57.7s. This is the direction that catches people
+       out: BIGGER type means a LONGER track, so the duration goes UP to keep the same
+       apparent speed.
+
        Re-derive whenever the type, the spacing or the message set changes:
          rot = document.querySelector('.announce-rotator')
          (rot.scrollWidth / 2) / 20.6   // seconds */
-    animation: announce-scroll 50s linear infinite;
+    animation: announce-scroll 58s linear infinite;
   }
   .announce-item {
     /* The rotator's crossfade states do not apply in ticker mode — every item is
@@ -1218,32 +1225,37 @@ main { padding-top: 64px; }
     gap: 8px;                        /* from the base 10px — scales with the smaller type */
   }
   .announce-item--dup { display: flex; }
-  /* 12px, down from the base 14px (2026-08-29). At 390px the 14px line was the loudest
-     thing on the first screen, competing with the h1 two rows below it. 12px is the
-     phone type floor (DESIGN.md 14.2) and this is chrome, not prose, so the floor is
-     the right place to sit. Shortening the track is also half of the speed change --
-     see the duration note above.
+  /* 14px (2026-08-29), matching the base desktop size -- declared explicitly rather
+     than left to inherit, because the duration note above is derived from it and a
+     silent inherit would hide that coupling from the next edit.
 
-     The four properties below are the 2026-08-29 follow-up: 12px still read large, and
-     the size ramp has nowhere left to go (12px is the floor here AND in
-     design-tokens.md 7.2). The cause was never the size -- this rule set no
-     line-height and no letter-spacing, so a 12px chrome string inherited BODY's prose
-     values, 1.6 and 0.01em, at weight 500 in full white on black. 1.6 puts a 12px line
-     in a 19.2px box; 1.2 is what every brand small-chrome role uses (label-13,
-     label-12). Together these compress the line by close to a full size step without
-     touching the floor.
+     History, because the middle step is misleading on its own: this went 14 -> 12px
+     earlier the same day on a report that the phone line read too large, then back to
+     14px once the real cause was found. It was never the CSS size. iOS Safari and
+     Chrome Android FONT-BOOST text inside a block wider than the viewport, and
+     text-size-adjust was unset (see the html rule at the top of this file), so the
+     authored 12px was rendering larger than the 17px hero sub beside it on a real
+     phone. Pinning text-size-adjust to 100% fixed the inflation and exposed 12px as
+     genuinely too small. Do not "fix" a reported size problem here by changing px
+     until the value has been confirmed ON A DEVICE -- desktop Chrome cannot reproduce
+     font boosting, not even under CDP iPhone emulation.
+
+     The other four properties are the part that survived, and they are what keeps a
+     14px bar quiet. This rule set no line-height and no letter-spacing, so the string
+     inherited BODY's prose values -- 1.6 and 0.01em -- at weight 500 in full white on
+     black. 1.6 puts a 14px line in a 22.4px box; 1.2 is what every brand small-chrome
+     role uses (label-13, label-12).
 
      `opacity`, NOT `rgba(255,255,255,0.82)`. This bar INVERTS in dark theme -- the
      background becomes --surface-inverse (#FAFAFA) and --text-inverse becomes #252525
      -- so a hardcoded white would be white-on-near-white. The site's other 0.82 white
-     literals all sit on surfaces that do not invert. Contrast after: 11.5:1 light,
-     ~9.5:1 dark.
+     literals all sit on surfaces that do not invert.
 
      400, NOT 450. Urbanist ships as four STATIC faces (400/500/600/700), so a declared
      450 matches down to 400 for Latin -- while ZH falls through to NotoSansTC-var
      (400 700) and renders a true 450. 400 keeps both languages at one weight. */
   .announce-msg {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: 0;

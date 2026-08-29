@@ -674,7 +674,7 @@ removing or reordering a message means doing it in both halves. Two consequences
 - `.announce-msg` stays `nowrap`, so the bar is **44px at every width below 881px**
   instead of up to 160px. On the Signal page, whose string is 113 characters, that
   branch cost three lines of the first screen — and six under reduced motion.
-- **12px and 50s below 881px, from 14px and 42s** (2026-08-29). At 390px the 14px line
+- **14px and 58s below 881px** (2026-08-29). This setting went 14 → 12 → 14 in one day; the middle step is misleading on its own. At 390px the 14px line
   was the loudest thing on the first screen, competing with the `h1` two rows under it;
   12px is the phone type floor (§14.2), and the bar is chrome rather than prose, so the
   floor is where it belongs.
@@ -707,6 +707,24 @@ removing or reordering a message means doing it in both halves. Two consequences
   52s → **50s** follows from the same coupling: tracking, gap and dot took the half-track
   from **1071px to 1037.5px** at 390px on the same box (−3.13%), i.e. 50.4s at 20.6 px/s.
   Font-size did not move; tracking did most of it.
+- **The 12px step was a misdiagnosis, and the real bug was `text-size-adjust`** (2026-08-29).
+  The phone line reporting as "too large" was never the CSS size. **iOS Safari and Chrome
+  Android font-boost text inside a block wider than the viewport**, and `text-size-adjust`
+  had never been set on this site, so it defaulted to `auto`. `.announce-rotator` is
+  `width: max-content` and measures **2075px inside a 390px viewport (5.3×)** — a textbook
+  trigger. The hero sub beside it sits in a 350px block, narrower than the viewport, so it
+  was never boosted and rendered its true 17px. That asymmetry is why the *smaller* element
+  looked *bigger*. Fixed with `html { -webkit-text-size-adjust: 100%; text-size-adjust: 100% }`
+  (`100%`, not `none`, which would kill pinch-zoom text scaling). With the inflation gone,
+  12px read genuinely too small and the size went back to **14px**.
+  **This class of bug is invisible off-device.** Desktop Chrome does not implement mobile
+  text autosizing — not even under CDP `Emulation.setDeviceMetricsOverride` with
+  `mobile: true` — so every computed-style probe returns the authored size. Never settle a
+  reported size complaint here from a headless measurement; confirm on a real phone.
+- **50s → 58s**, the same coupling running the other way. 12 → 14px grew the half-track
+  **1037.5px → 1189.5px (+14.7%)**, which at 50s would have run the strip at 23.8 px/s.
+  1189.5 / 20.6 = 57.7s. **Bigger type means a longer track, so the duration goes UP** to
+  hold the same apparent speed — the direction that catches people out.
 - `.ticker-pulse` **comes back** below 640px. It was hidden there only because the
   wrapping branch stranded it alone on a row above the text.
 - `.announce-item` is pinned `flex: 0 0 auto` so the track keeps its true content width;

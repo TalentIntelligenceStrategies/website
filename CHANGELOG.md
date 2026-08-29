@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-29 17:04 +0800** · Pinned text-size-adjust so phones stop inflating the ticker, then took it back to 14px and the scroll to 58s.
+- **2026-08-29 16:41 +0800** · About bento's type cell moved to true black, matching what the three image cells actually render.
 - **2026-08-29 16:11 +0800** · Mobile ticker quietened via leading, tracking, weight and alpha rather than size, and the home hero sub now balances its line break.
 - **2026-08-29 14:59 +0800** · Audit fixes: Reduce-Motion TypeError, frozen marquee, keyboard-dead partner links, latched popup trigger, shader phase jump, methodology pairing on wide screens.
 - **2026-08-29 13:35 +0800** · Patent-bank numbers redacted to pending, lamp hero scaled to phone widths, methodology paired text with its figure, signal CTA unified.
