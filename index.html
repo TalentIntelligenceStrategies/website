@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -56,13 +56,13 @@
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -102,7 +102,7 @@
     <div class="topnav-controls">
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -116,7 +116,7 @@
       </div>
 
       <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -126,7 +126,7 @@
       <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -135,14 +135,14 @@
 
 <!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -179,7 +179,7 @@
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -189,7 +189,7 @@
 
 <!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -249,7 +249,7 @@
 <div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mkt-headline">
   <div class="mkt-card with-hero" id="mkt-card">
     <div class="mkt-img" aria-hidden="true"></div>
-    <button class="mkt-close" type="button" aria-label="Close" data-mkt-close>
+    <button class="mkt-close" type="button" aria-label="Close" data-zh-aria="關閉" data-mkt-close>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="mkt-band">
@@ -294,7 +294,7 @@
         </div>
         <div class="field">
           <span class="lbl" data-zh="工作信箱">Work email</span>
-          <input class="input" type="email" name="email" required placeholder="you@company.com" aria-label="Work email" />
+          <input class="input" type="email" name="email" required placeholder="you@company.com" aria-label="Work email" data-zh-aria="公司電子郵件" />
         </div>
       </form>
     </div>
@@ -315,7 +315,7 @@
        in the accessibility tree, so a screen reader gets both regardless of which
        one is visible; the rotation is purely visual. Under prefers-reduced-motion
        the rotator un-stacks and shows both at once instead of cycling. -->
-  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement">
+  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement" data-zh-aria="網站公告">
     <span class="announce-rotator">
       <span class="announce-item is-active">
         <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
@@ -325,8 +325,19 @@
         <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
         <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
       </span>
+      <!-- Ticker loop duplicate (<=880px only). Must stay an EXACT copy of the two
+           items above — the track translates -50%, which is only seamless while the
+           second half matches the first. aria-hidden so each message is announced once. -->
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
+      </span>
     </span>
-    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+    <button type="button" class="announce-close" aria-label="Dismiss announcement" data-zh-aria="關閉公告">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
@@ -339,7 +350,11 @@
        ║ Backdrops kept as a static layered background; silver (TIS-overall) ║
        ║ shown via .hero[data-active-pillar="positioning"].                  ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" data-active-pillar="positioning" aria-label="Hero">
+  <!-- Named by its own heading, not aria-label="Hero". "Hero" is layout jargon: a
+       screen reader announced the page's largest landmark as "Hero, region". Pointing at
+       the headline names it in whichever language is live, with no data-zh-aria to keep
+       in sync — the same trick the carousel dots use. -->
+  <section class="hero" data-active-pillar="positioning" aria-labelledby="patents-are-the-most-undervalued-asset">
     <!-- Gradient + 32px-grid backdrops (warm / silver / cool). Silver fades in
          for positioning; warm + signal stay dormant until the motion hero. -->
     <div class="hero-warm" aria-hidden="true"></div>
@@ -355,7 +370,7 @@
     <div class="container hero-inner">
       <div class="pillar" data-pillar="positioning">
         <h1 class="pillar-title" id="patents-are-the-most-undervalued-asset">
-          <span data-zh="專利，是這個時代最被低估的資產。">Patents are the most undervalued asset of our time.</span>
+          <span data-zh-html data-zh="專利，是這個時代<br class='br-sm'>最被低估的資產。">Patents are the<br class="br-sm">most undervalued<br class="br-sm">asset of our time.</span>
         </h1>
         <p class="pillar-sub">
           <span data-zh="我們讓它的價值，被看見、被衡量、被釋放。">We make their value seen, measured, and unlocked.</span>
@@ -449,7 +464,12 @@
       <!-- Panel 1 — About TIS -->
       <article class="about-card" data-reveal>
         <div class="about-card__body">
-          <h2 class="about-card__title" data-zh-html data-zh='關於 <span class="tis-mark" role="img" aria-label="TIS" id="about-2"></span>'>About <span class="tis-mark" role="img" aria-label="TIS"></span></h2>
+          <!-- The mark's aria-label is written into each language's own markup, NOT via
+               data-zh-aria. data-zh-html replaces this heading's innerHTML on swap, so the
+               span the i18n pass captured at init is destroyed on the first toggle and a
+               twin attribute on it could never fire. Anything inside a data-zh payload has
+               to arrive already translated. -->
+          <h2 class="about-card__title" data-zh-html data-zh='關於 <span class="tis-mark" role="img" aria-label="泰然策略解密" id="about-2"></span>'>About <span class="tis-mark" role="img" aria-label="TIS"></span></h2>
           <!-- One data-zh on the <p>, not one per sentence: the two spans were joined by a
                literal space, which EN needs between sentences and ZH does not — 。 carries its
                own trailing space, so it rendered as a visible gap and stranded 當 on its own
@@ -496,9 +516,9 @@
             <div class="partner-marquee__track">
               <!-- SET A — the real anchors -->
               <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-label="Innovue" target="_blank" rel="noopener noreferrer"></a>
-              <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-              <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-              <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-label="iPIC" data-zh-aria="創智" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.iii.org.tw/en" class="partner partner--iii"     aria-label="III — Institute for Information Industry" data-zh-aria="資策會 — 財團法人資訊工業策進會" target="_blank" rel="noopener noreferrer"></a>
+              <a href="https://www.nycu.edu.tw/"  class="partner partner--nycu"    aria-label="NYCU — National Yang Ming Chiao Tung University" data-zh-aria="陽明交大 — 國立陽明交通大學" target="_blank" rel="noopener noreferrer"></a>
               <!-- SET B — duplicate for seamless loop; hidden from SR + keyboard -->
               <a href="https://www.innovue.ltd/"  class="partner partner--innovue" aria-hidden="true" tabindex="-1"></a>
               <a href="https://www.ipic.tw/"      class="partner partner--ipic"    aria-hidden="true" tabindex="-1"></a>
@@ -524,10 +544,10 @@
           <p class="section-dek" data-reveal data-zh="每季解讀 IP 地形 — 專利佈局如何在各產業與司法管轄區之間移動。">Quarterly reads on the IP landscape — how patent positions shift across industries and jurisdictions.</p>
         </div>
         <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" aria-controls="reports-carousel">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" data-zh-aria="上一份報告" aria-controls="reports-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
           </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" aria-controls="reports-carousel">
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" data-zh-aria="下一份報告" aria-controls="reports-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -583,7 +603,7 @@
           </li>
         </ul>
       </div>
-      <div class="report-dots" role="tablist" aria-label="Report slides"></div>
+      <div class="report-dots" role="group" aria-label="Report slides" data-zh-aria="報告輪播"></div>
     </div>
   </section>
 
@@ -598,10 +618,10 @@
           <p class="section-dek" data-reveal data-zh-html data-zh="公司動態、合作公告與精選媒體報導。">Company news, partnership announcements,<br>and select press coverage.</p>
         </div>
         <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous press releases" aria-controls="press-carousel">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous press releases" data-zh-aria="上一則新聞" aria-controls="press-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
           </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next press releases" aria-controls="press-carousel">
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next press releases" data-zh-aria="下一則新聞" aria-controls="press-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -660,7 +680,7 @@
           </li>
         </ul>
       </div>
-      <div class="report-dots" role="tablist" aria-label="Press slides"></div>
+      <div class="report-dots" role="group" aria-label="Press slides" data-zh-aria="新聞輪播"></div>
     </div>
   </section>
 
@@ -676,44 +696,45 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
         </aside>
+
+        <!-- DOM order IS the visual order, so the screen-reader pass matches the
+             page: two full-width rows, then Email and the UBN paired on the last.
+             Office hours and the address are single long strings that break badly in
+             a half-width column, so each takes a row of its own (.contact-meta--wide).
+             Email and the UBN are both short, so they share one.
+             The address and UBN are published for payment-gateway verification — the
+             site named neither a street address nor an entity number before this. The
+             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="服務時間">Office hours</dt>
+            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+          </div>
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="地址">Address</dt>
+            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="電子郵件">Email</dt>
+            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="統一編號">UBN</dt>
+            <dd class="contact-meta__num">60331107</dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="contact-form" novalidate>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
                 <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
               </div>
             </div>
             <div class="contact-row">
@@ -728,7 +749,7 @@
             </div>
             <div class="field">
               <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
             </div>
 
             <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
@@ -747,7 +768,7 @@
 
             <div class="field">
               <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…" data-zh-placeholder="簡述你的需求…"></textarea>
             </div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
@@ -780,8 +801,8 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -851,7 +872,7 @@
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -864,7 +885,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 
 <!-- Shifting-lines hero shader. Renders a single full-screen quad with a tiny
      fragment shader (RGB chromatic lines on black), scoped to #hero-shader. Far
@@ -874,7 +895,7 @@
   (async () => {
     const mount = document.getElementById('hero-shader');
     if (!mount) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Animation speed — original snippet used 0.01 per frame; slowed here.
     const SPEED = 0.003;
@@ -888,6 +909,7 @@
       const fragmentShader = `
         precision highp float;
         uniform vec2 resolution;
+        uniform float dprScale;   // buffer pixel ratio / REF_DPR
         uniform float time;
         uniform float xScale;
         uniform float yScale;
@@ -896,7 +918,11 @@
         uniform float saturation;   // 0 = white/grey glow, 1 = full RGB
 
         void main() {
-          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          // gl_FragCoord is DEVICE px, resolution is CSS px. Normalise onto the
+          // reference ratio's grid first, or the whole coordinate space scales with
+          // the screen. See the REF_DPR block below.
+          vec2 frag = gl_FragCoord.xy / dprScale;
+          vec2 p = (frag * 2.0 - resolution) / min(resolution.x, resolution.y);
           // Lift the convergence band upward (positive yOffset = higher on screen).
           p.y -= yOffset;
 
@@ -923,18 +949,20 @@
 
       const uniforms = {
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        dprScale:   { value: 1.0 },   // set in resize(), which knows the ratio
         time:       { value: 0.0 },
         xScale:     { value: 1.0 },
         yScale:     { value: 0.5 },
         distortion: { value: 0.05 },
-        yOffset:    { value: 0.48 },   // >0 shifts the glowing lines up. Nudge DOWN one "stop" = -0.10 (was 0.58 → 0.48 to clear the hero text); nudge UP = +0.10.
+        yOffset:    { value: 0.0 },    // computed by bandOffset() below — never hand-tune this. See BAND_F.
         saturation: { value: 1.0 },    // 0 = white glow, 1 = full RGB; lower = more muted
       };
 
       const renderer = createHeroShader(mount, fragmentShader, uniforms);
       // Cap DPR at 2 — a full-screen fragment shader at 3× on retina phones is a real
       // GPU/battery/thermal cost for no visible gain (matches reports/index.html).
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(dpr);
       mount.appendChild(renderer.canvas);
       mount.classList.add('is-ready');   // styles.css crossfades the shader in
 
@@ -948,6 +976,49 @@
       // and lock the draw buffer to the tallest height the hero can reach, so a
       // shrinking/growing toolbar never re-lays-out the shader. hero overflow:hidden
       // clips any excess. On desktop, keep normal responsive resizing.
+      // ─── Where the convergence band sits ──────────────────────────────────
+      // BAND_F is the band's position as a fraction of the hero's DISPLAYED height:
+      // 0 = top edge, 1 = bottom edge. 0.63 runs it through the CTA row, below the
+      // headline and dek.
+      //
+      // This replaces a hand-tuned `yOffset: 0.48`, which was not a stable position.
+      // Two things made the same constant land somewhere different on every device:
+      //
+      //   1. DEVICE PIXEL RATIO. `resolution` is passed in CSS px (deliberately — it
+      //      reproduces the original snippet's line scale) while `gl_FragCoord` is in
+      //      DEVICE px. So the p.y that a given yOffset selects moves with dpr. At
+      //      dpr 1 the old 0.48 put the band at 0.39 of the hero — straight through
+      //      the headline and dek, which is the bug this fixes. At dpr 2 the same
+      //      constant put it at 0.70, below the CTAs. Both shipped.
+      //   2. THE NORMALISING AXIS FLIPS. p is divided by min(resolution), which is the
+      //      HEIGHT on a landscape desktop hero and the WIDTH on a portrait phone one.
+      //      So p.y spans ±1 on desktop and ±2.16 on a phone, and one unit of yOffset
+      //      means a different number of pixels on each.
+      //
+      // Solving p.y == yOffset for the band's row, converting device px → CSS px, and
+      // asking for it to land at BAND_F of the box gives the line below. The box height
+      // cancels out, so the coarse-pointer tall-buffer trick above (which deliberately
+      // over-sizes the draw buffer to kill the URL-bar resize flash) no longer skews the
+      // band — it is accounted for by using resH rather than the box height.
+      //
+      // Desktop at dpr 2 resolves to yOffset 0.48 exactly — the value tuned by eye on a
+      // retina screen — so the retina desktop hero is unchanged to the pixel.
+      //
+      // 2026-08-29: point 1 above was only half-fixed. Compensating yOffset put the band
+      // in the right PLACE at every ratio, but p.x still scaled with dpr, so the wave's
+      // frequency and — because the r/g/b split is p.x * (1 +/- d) — its CHROMA changed
+      // with the screen. Measured at 390x780: a near-white sweep at dpr 1 against a full
+      // rainbow prism at dpr 2, mean difference 16.26/255 with the centroids only 0.021
+      // apart. Same picture, wrong colour.
+      //
+      // Normalising the fragment coord (see dprScale in the shader) fixes the scale, the
+      // frequency and the chroma together, and makes the dpr term here unnecessary:
+      // REF_DPR 2 IS the retina grid this was tuned on, so 0.48 still falls out exactly.
+      const REF_DPR = 2;
+      const BAND_F = 0.63;
+      const bandOffset = (resW, resH) =>
+        resH * (2 * REF_DPR * (1 - BAND_F) - 1) / Math.min(resW, resH);
+
       const coarse = window.matchMedia('(pointer: coarse)').matches;
       let lastW = -1;
       const resize = (force) => {
@@ -957,8 +1028,14 @@
         const h = coarse
           ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
           : mount.clientHeight;
+        // Re-read the ratio: it changes when a window moves between a Retina and a
+        // non-Retina display, with no reload.
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.setPixelRatio(d);
         renderer.setSize(w, h);
         uniforms.resolution.value = [w, h];
+        uniforms.dprScale.value = d / REF_DPR;
+        uniforms.yOffset.value = bandOffset(w, h);   // depends on the resolution just set
       };
       resize(true);
       new ResizeObserver(() => resize(false)).observe(mount);
@@ -975,6 +1052,13 @@
       };
       if (reduce) renderer.render();   // render one static frame
       animate();
+
+      // The preference was read once at load, so toggling it at the OS level did
+      // nothing until a reload — unlike the announce rotator, which re-syncs. Track it.
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+        reduce = e.matches;
+        if (reduce) renderer.render();
+      });
     } catch (err) {
       console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
       // #hero-shader stays empty → the black hero background shows through.

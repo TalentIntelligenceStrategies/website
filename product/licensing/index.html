@@ -37,7 +37,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -1227,9 +1227,6 @@ a, button, .howit-card, .acc-trigger, .btn {
    its own section below (see .lic-showcase). The announce bar is lifted out of
    flow so it overlays the hero instead of pushing it past the fold. */
 [data-page="licensing"] .hero { min-height: calc(100dvh - 64px); height: auto; }
-[data-page="licensing"] .announce {
-  position: absolute; top: 64px; left: 0; right: 0; z-index: 90;
-}
 .hero.hero--showcase .pillar { max-width: min(1160px, 92vw); }
 .hero.hero--showcase .pillar-title { width: 100%; }
 .hero.hero--showcase .pillar-sub { width: 100%; max-width: 60ch; }
@@ -1715,13 +1712,13 @@ a, button, .howit-card, .acc-trigger, .btn {
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -1761,7 +1758,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     <div class="topnav-controls">
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -1775,7 +1772,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       </div>
 
       <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -1785,7 +1782,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -1794,14 +1791,14 @@ a, button, .howit-card, .acc-trigger, .btn {
 
 <!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -1838,7 +1835,7 @@ a, button, .howit-card, .acc-trigger, .btn {
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -1848,7 +1845,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 
 <!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -1908,7 +1905,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 <div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mkt-headline">
   <div class="mkt-card with-hero" id="mkt-card">
     <div class="mkt-img" aria-hidden="true"></div>
-    <button class="mkt-close" type="button" aria-label="Close" data-mkt-close>
+    <button class="mkt-close" type="button" aria-label="Close" data-zh-aria="關閉" data-mkt-close>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="mkt-band">
@@ -1953,7 +1950,7 @@ a, button, .howit-card, .acc-trigger, .btn {
         </div>
         <div class="field">
           <span class="lbl" data-zh="工作信箱">Work email</span>
-          <input class="input" type="email" name="email" required placeholder="you@company.com" aria-label="Work email" />
+          <input class="input" type="email" name="email" required placeholder="you@company.com" aria-label="Work email" data-zh-aria="公司電子郵件" />
         </div>
       </form>
     </div>
@@ -2001,11 +1998,29 @@ a, button, .howit-card, .acc-trigger, .btn {
 
 
   <!-- §Announcement banner — TIS-system chrome (identical across all surfaces). -->
-  <div class="announce" data-announce-id="2026-q3-licensing-soon-page" role="region" aria-label="Site announcement">
-    <span class="announce-cluster">
-      <span class="announce-msg" data-zh="泰然專利防護網即將推出。">The TIS Licensing Platform is coming soon.</span>
+  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement" data-zh-aria="網站公告">
+    <span class="announce-rotator">
+      <span class="announce-item is-active">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
+      </span>
+      <!-- Ticker loop duplicate (<=880px only). Must stay an EXACT copy of the two
+           items above — the track translates -50%, which is only seamless while the
+           second half matches the first. aria-hidden so each message is announced once. -->
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
+      </span>
     </span>
-    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+    <button type="button" class="announce-close" aria-label="Dismiss announcement" data-zh-aria="關閉公告">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
@@ -2013,7 +2028,11 @@ a, button, .howit-card, .acc-trigger, .btn {
   <!-- ─── 1. Hero (Stripe 2-col — text left + product visual right) ─── -->
   <!-- Hero — homepage chrome (gradient backdrop + 32px grid + .pillar layout),
        single-slide, warm gradient for the Licensing pillar. -->
-  <section class="hero hero--showcase" aria-label="Licensing hero" data-active-pillar="licensing">
+  <!-- Named by its own heading, not aria-label="Hero". "Hero" is layout jargon: a
+       screen reader announced the page's largest landmark as "Hero, region". Pointing at
+       the headline names it in whichever language is live, with no data-zh-aria to keep
+       in sync — the same trick the carousel dots use. -->
+  <section class="hero hero--showcase" aria-labelledby="lic-hero-title" data-active-pillar="licensing">
     <div class="hero-warm" aria-hidden="true"></div>
     <div class="hero-silver" aria-hidden="true"></div>
     <div class="hero-signal" aria-hidden="true"></div>
@@ -2029,7 +2048,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
           <span data-zh="泰然專利防護網">Licensing Platform</span>
         </p>
-        <h2 class="pillar-title">
+        <h2 class="pillar-title" id="lic-hero-title">
           <span data-zh="出口買專利險，">Patent insurance for your exports.</span><br>
           <em data-zh="30 件專利包輕裝上陣。">Thirty patents, none of the overhead.</em>
         </h2>
@@ -2049,9 +2068,9 @@ a, button, .howit-card, .acc-trigger, .btn {
         <div class="lic-hero-trust">
           <p class="lic-hero-trust__label" data-zh="專利授權自權威機構">Licensed from established institutions</p>
           <div class="lic-hero-trust__logos">
-            <a href="https://www.ipic.tw/"      class="partner partner--ipic" aria-label="iPIC" target="_blank" rel="noopener noreferrer"></a>
-            <a href="https://www.iii.org.tw/en"  class="partner partner--iii"  aria-label="III — Institute for Information Industry" target="_blank" rel="noopener noreferrer"></a>
-            <a href="https://www.nycu.edu.tw/"   class="partner partner--nycu" aria-label="NYCU — National Yang Ming Chiao Tung University" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.ipic.tw/"      class="partner partner--ipic" aria-label="iPIC" data-zh-aria="創智" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.iii.org.tw/en"  class="partner partner--iii"  aria-label="III — Institute for Information Industry" data-zh-aria="資策會 — 財團法人資訊工業策進會" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://www.nycu.edu.tw/"   class="partner partner--nycu" aria-label="NYCU — National Yang Ming Chiao Tung University" data-zh-aria="陽明交大 — 國立陽明交通大學" target="_blank" rel="noopener noreferrer"></a>
           </div>
         </div>
       </article>
@@ -2161,7 +2180,7 @@ a, button, .howit-card, .acc-trigger, .btn {
        monochrome 3×2 grid directly under the hero. Copy (EN+ZH) preserved verbatim from
        the original cards. Card 3 also appears in How-it-works Step 6, and card 6's OpEx
        framing in Pricing — kept here as the top-of-page "what you get" overview. -->
-  <section class="section deliverables" aria-label="What a licensing bundle delivers">
+  <section class="section deliverables" aria-label="What a licensing bundle delivers" data-zh-aria="專利防護網提供的內容">
     <div class="container">
       <div class="deliv-grid">
 
@@ -2258,7 +2277,7 @@ a, button, .howit-card, .acc-trigger, .btn {
        §showcase script before </body>). Extend to 5 steps by adding .lic-panel
        blocks (data-panel="3"…) — the script picks them up automatically. Side
        copy is placeholder scaffold — EN, meant to be rewritten in place. -->
-  <section class="lic-showcase" aria-label="How the licensing platform works">
+  <section class="lic-showcase" aria-label="How the licensing platform works" data-zh-aria="泰然專利防護網的運作方式">
     <div class="lic-stage">
       <div class="lic-stage-bg" aria-hidden="true"></div>
       <div class="lic-stage-deck">
@@ -2296,7 +2315,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-showcase-step1.html" title="Licensing Platform — Step 1: pick your jurisdiction and industry" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step1-400.webp 400w, /assets/imagery/licensing-mobile/step1-800.webp 800w, /assets/imagery/licensing-mobile/step1-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." width="1300" height="820" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step1-400.webp 400w, /assets/imagery/licensing-mobile/step1-800.webp 800w, /assets/imagery/licensing-mobile/step1-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step1.png" alt="Licensing Platform, Step 1 — pick your export jurisdiction and industry." data-zh-alt="泰然專利防護網，步驟 1 — 選擇你的出口法域與產業。" width="1300" height="820" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2320,7 +2339,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-showcase.html" title="Licensing Platform — Step 2: AI Smart-pick builds your bundle" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step2-400.webp 400w, /assets/imagery/licensing-mobile/step2-800.webp 800w, /assets/imagery/licensing-mobile/step2-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." width="1300" height="820" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step2-400.webp 400w, /assets/imagery/licensing-mobile/step2-800.webp 800w, /assets/imagery/licensing-mobile/step2-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step2.png" alt="Licensing Platform, Step 2 — AI Smart-pick assembles your 30-patent SABCD bundle." data-zh-alt="泰然專利防護網，步驟 2 — AI 智慧選件為你組成 30 件 SABCD 專利組合。" width="1300" height="820" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2340,7 +2359,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-swap-showcase.html" title="Licensing Platform — Step 3: swap any same-tier patent" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step3-400.webp 400w, /assets/imagery/licensing-mobile/step3-800.webp 800w, /assets/imagery/licensing-mobile/step3-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." width="1300" height="820" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step3-400.webp 400w, /assets/imagery/licensing-mobile/step3-800.webp 800w, /assets/imagery/licensing-mobile/step3-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step3.png" alt="Licensing Platform, Step 3 — swap any pick for a same-tier alternate." data-zh-alt="泰然專利防護網，步驟 3 — 任一件都可換成同評級的替代專利。" width="1300" height="820" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2364,7 +2383,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-confirm-showcase.html" title="Licensing Platform — Step 4: confirm the plan and the price" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step4-400.webp 400w, /assets/imagery/licensing-mobile/step4-800.webp 800w, /assets/imagery/licensing-mobile/step4-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step4.png" alt="Licensing Platform, Step 4 — confirm your plan and see the price." width="1300" height="863" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step4-400.webp 400w, /assets/imagery/licensing-mobile/step4-800.webp 800w, /assets/imagery/licensing-mobile/step4-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step4.png" alt="Licensing Platform, Step 4 — confirm your plan and see the price." data-zh-alt="泰然專利防護網，步驟 4 — 確認方案並查看價格。" width="1300" height="863" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2388,7 +2407,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-contract-showcase.html" title="Licensing Platform — Step 5: sign a real, institution-backed contract" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step5-400.webp 400w, /assets/imagery/licensing-mobile/step5-800.webp 800w, /assets/imagery/licensing-mobile/step5-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step5.png" alt="Licensing Platform, Step 5 — e-sign a real, institution-backed licence contract." width="1300" height="1234" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step5-400.webp 400w, /assets/imagery/licensing-mobile/step5-800.webp 800w, /assets/imagery/licensing-mobile/step5-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step5.png" alt="Licensing Platform, Step 5 — e-sign a real, institution-backed licence contract." data-zh-alt="泰然專利防護網，步驟 5 — 線上簽署具機構背書的正式授權合約。" width="1300" height="1234" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2416,7 +2435,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           </div>
           <div class="lic-frame">
             <iframe data-src="/assets/product-shots/licensing/licensing-dlc-showcase.html" title="Licensing Platform — Step 6: your licence, live — Digital Licence Credential" loading="lazy" scrolling="no" tabindex="-1"></iframe>
-            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step6-400.webp 400w, /assets/imagery/licensing-mobile/step6-800.webp 800w, /assets/imagery/licensing-mobile/step6-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step6.png" alt="Licensing Platform, Step 6 — your live Digital Licence Credential." width="1300" height="930" loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" data-srcset="/assets/imagery/licensing-mobile/step6-400.webp 400w, /assets/imagery/licensing-mobile/step6-800.webp 800w, /assets/imagery/licensing-mobile/step6-1300.webp 1300w" sizes="(max-width: 768px) 100vw, 768px"><img class="lic-still" data-src="/assets/imagery/licensing-mobile/step6.png" alt="Licensing Platform, Step 6 — your live Digital Licence Credential." data-zh-alt="泰然專利防護網，步驟 6 — 你已生效的數位授權憑證。" width="1300" height="930" loading="lazy" decoding="async"></picture>
           </div>
         </div>
 
@@ -2440,7 +2459,7 @@ a, button, .howit-card, .acc-trigger, .btn {
        ZH condensed from chinese-copy-direction.md §5/§10 verbatim — flag for Miko ZH-lock
        (§10 markers were already [ZH NEEDED]). Echoes deliverable card 3 + the how-it-works
        accordion; reconcile when those are revised. -->
-  <section class="section walkaway" aria-label="What you walk away with">
+  <section class="section walkaway" aria-label="What you walk away with" data-zh-aria="你將取得的成果">
     <div class="container">
       <h2 class="walkaway-head" data-zh="你拿到的是這些。">What you walk away with.</h2>
       <p class="walkaway-sub" data-zh="從被動防禦轉為主動佈局。">Passive defense to active position.</p>
@@ -2516,11 +2535,18 @@ a, button, .howit-card, .acc-trigger, .btn {
            Price by term: 3mo NT$9,990 · 6mo 9,490 · 12mo 8,990 (default) · 24mo 8,490. -->
       <div class="pricing-head" data-reveal>
         <h2 id="lic-pricing-heading" class="bp-section-heading" data-zh="依期間定價。">Price by term.</h2>
-        <div class="bp-toggle" role="tablist" aria-label="Subscription term">
-          <button type="button" class="bp-toggle-seg" data-bp-term="3" role="tab" aria-selected="false" data-zh="3 個月">3 months</button>
-          <button type="button" class="bp-toggle-seg" data-bp-term="6" role="tab" aria-selected="false" data-zh="6 個月">6 months</button>
-          <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" role="tab" aria-selected="true" data-zh="12 個月">12 months</button>
-          <button type="button" class="bp-toggle-seg" data-bp-term="24" role="tab" aria-selected="false" data-zh="24 個月">24 months</button>
+        <!-- role="group" + aria-pressed, NOT a radiogroup. It was one for a release, and
+             `radiogroup` asserts the APG radio contract: one tab stop, arrow keys to move
+             between options. This page implements neither, so a screen-reader user was told
+             "radio group, 1 of 4", pressed an arrow key and got nothing. Four toggle buttons
+             is what this actually is, and aria-pressed on a <button> promises no key
+             handling. The drawer's .mobile-lang IS a genuine radio group and keeps its roles
+             — see the roving-radiogroup helper in site.js; don't unify the two. -->
+        <div class="bp-toggle" role="group" aria-label="Subscription term" data-zh-aria="訂閱期間">
+          <button type="button" class="bp-toggle-seg" data-bp-term="3" aria-pressed="false" data-zh="3 個月">3 months</button>
+          <button type="button" class="bp-toggle-seg" data-bp-term="6" aria-pressed="false" data-zh="6 個月">6 months</button>
+          <button type="button" class="bp-toggle-seg is-active" data-bp-term="12" aria-pressed="true" data-zh="12 個月">12 months</button>
+          <button type="button" class="bp-toggle-seg" data-bp-term="24" aria-pressed="false" data-zh="24 個月">24 months</button>
         </div>
       </div>
 
@@ -2685,44 +2711,45 @@ a, button, .howit-card, .acc-trigger, .btn {
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
         </aside>
+
+        <!-- DOM order IS the visual order, so the screen-reader pass matches the
+             page: two full-width rows, then Email and the UBN paired on the last.
+             Office hours and the address are single long strings that break badly in
+             a half-width column, so each takes a row of its own (.contact-meta--wide).
+             Email and the UBN are both short, so they share one.
+             The address and UBN are published for payment-gateway verification — the
+             site named neither a street address nor an entity number before this. The
+             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="服務時間">Office hours</dt>
+            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+          </div>
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="地址">Address</dt>
+            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="電子郵件">Email</dt>
+            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="統一編號">UBN</dt>
+            <dd class="contact-meta__num">60331107</dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="contact-form" novalidate>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
                 <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
               </div>
             </div>
             <div class="contact-row">
@@ -2737,7 +2764,7 @@ a, button, .howit-card, .acc-trigger, .btn {
             </div>
             <div class="field">
               <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
             </div>
 
             <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
@@ -2756,7 +2783,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 
             <div class="field">
               <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…" data-zh-placeholder="簡述你的需求…"></textarea>
             </div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
@@ -2790,8 +2817,8 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -2862,7 +2889,7 @@ a, button, .howit-card, .acc-trigger, .btn {
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -2875,7 +2902,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.
@@ -2920,10 +2947,13 @@ a, button, .howit-card, .acc-trigger, .btn {
         const btn = e.target.closest('[data-bp-term]');
         if (!btn) return;
         state.term = btn.getAttribute('data-bp-term');
+        // aria-pressed. Not aria-selected (only meaningful on a tab, option or
+        // gridcell) and no longer aria-checked (that needs role="radio", which needs
+        // the arrow-key pattern this control does not have — see the markup comment).
         toggleEl.querySelectorAll('.bp-toggle-seg').forEach(seg => {
           const on = seg === btn;
           seg.classList.toggle('is-active', on);
-          seg.setAttribute('aria-selected', on ? 'true' : 'false');
+          seg.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         render();
       });

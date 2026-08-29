@@ -289,6 +289,30 @@ Use the tokens, never a literal stack:
 | `--font-sans` | `'Urbanist','Inter','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif` |
 | `--font-mono` | `'Inconsolata',ui-monospace,SFMono-Regular,Menlo,monospace` |
 
+**The hero floor is 34px, and it is a measured value, not a preference** (2026-08-29).
+It was 40px, which `5vw` pinned flat from 800px down, and the phone hero read as a
+shrunk desktop one. 34 is the largest size at which the hero's three hard mobile line
+breaks clear a 320px viewport **in both languages**: the binding lines render 262px
+(EN "most undervalued") and 266px (ZH 最被低估的資產。) against a 280px measure. 36px
+fits EN by a single pixel and **overflows the ZH half at 282px**, so 36 is not
+available. It also has to stay above `.h-section`'s 32px mobile step, which it does.
+Only the floor moved — `5vw` still governs 680–1200px and the 60px ceiling is unchanged,
+so every width above 680px renders exactly as before.
+
+`line-height` steps 1.05 → **1.1 at ≤640px**: 1.05 is a display leading tuned for a one-
+or two-line desktop hero, and three lines of 34px type at 1.05 set as a slab.
+
+**`.br-sm` — a line break that exists only on phones.** The site's first responsive-break
+utility. `display:none` by default, `inline` at ≤640px; the break comes from the element,
+not its display value. Authored for the homepage hero, whose desktop headline should wrap
+naturally across its 60px measure while the phone headline takes three specific lines.
+
+> The two languages carry **different** break counts in the same span — 3 lines EN, 2
+> lines ZH, because Han characters are denser. Do not "match" them. That is also why the
+> span needs `data-zh-html`. `scripts/build-search-index.mjs` strips the tag to a space
+> and then collapses it between two Han characters, so neither index entry gains a hole
+> — verified against the shipped index.
+
 ### Dashes
 
 Chinese copy uses **one em dash with a space either side** — `同產業 — 專利強度`, not
@@ -323,7 +347,7 @@ the English half of each bilingual pair; the site was mixed (34 double, 5 single
 |---|---|---|---|---|---|---|
 | Section (full) | `.h-section` | `clamp(32px,4vw,48px)` | 700 | 1.1 | −0.02em | the display step on this site |
 | Section (reduced) | `.offerings .h-section`, `.about-intro .h-section` | `clamp(24px,2.8vw,36px)` | 600 | 1.15 | −0.015em | offerings/about adopt the smaller "Latest reports" hierarchy |
-| Hero title | `.pillar-title` | `clamp(40px,5vw,60px)` | 600 | 1.05 | −0.02em | white in hero; `em` = **flat accent**, see §5 |
+| Hero title | `.pillar-title` | `clamp(34px,5vw,60px)` | 600 | 1.05 (1.1 ≤640) | −0.02em | white in hero; `em` = **flat accent**, see §5. Floor 34, see below |
 | Hero eyebrow | `.pillar-eyebrow` | 16px | 600 | — | 0.02em | `--text-primary`; overridden to `#fff` on the licensing/signal heroes; `:empty` collapses in ZH |
 | Hero sub | `.pillar-sub` | `clamp(17px,1.5vw,20px)` | 450 | 1.4 | −0.01em | `max-width:52ch`; white 82% in hero |
 | Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, `--text-secondary`, `margin 0 0 16px`. See the note below — no live page uses it |
@@ -441,6 +465,42 @@ never overlap.
 
 ---
 
+### 3.2 A media query only overrides what is already above it
+
+`assets/styles.css` interleaves media queries with the base rules they override, and almost
+every rule in it is a single class — (0,1,0). When two declarations tie on specificity, the
+later one wins. So **a `@media` block written above its component silently loses every
+property that component's base rule also declares.** Nothing errors. The page just keeps
+rendering the desktop value.
+
+This has bitten four times during one pass and six more times in the pass after it. The
+2026-08-29 count when the check was first run: **10 dead declarations across 4 rules**,
+including six of a mobile contact reflow that had shipped a week earlier and been reviewed
+by eye (§16.4).
+
+**The rule: put a mobile override below the rule it overrides, not next to the component it
+belongs to.** Where that reads oddly, leave a comment saying why it is where it is — several
+already do.
+
+Two things that make this hard to catch by eye, both worth knowing:
+
+- **Partial failure looks like success.** A block's declarations are judged independently.
+  In §16.4, `order` applied (no base rule declares `order`) while `gap`, `padding`,
+  `justify-content` and `min-height` all died. The reflow visibly reordered, so it read as
+  working.
+- **The competitor can be another media query.** One of the ten was a `(max-width: 880px)`
+  block losing to a *second* `(max-width: 880px)` block 38 lines further down. A check that
+  only compares against unconditional rules will not see it.
+
+`npm run verify` now runs [scripts/check-cascade-order.mjs](scripts/check-cascade-order.mjs)
+first and fails on this. It reports the selector, the properties that never apply, and the
+line that beats them. It deliberately permits one case: **re-declaring a property inside the
+same rule block**, which is the progressive-enhancement fallback idiom (a plain `url()`
+followed by `image-set()`), where the later one winning is the whole point.
+
+Fix by moving the block. Not with `!important`, and not by lengthening the selector — both
+make the next edit harder and neither leaves a trace of why.
+
 ## 4. Nav (topnav)
 
 `.topnav`: `position:fixed; z-index:100; height:64px`, background
@@ -520,6 +580,34 @@ means editing every page file.
 
 Full-viewport on the homepage; a layered z-stack over a WebGL shader on a black field.
 
+**The hero shader's band position is a screen fraction, not a raw `yOffset`**
+(2026-08-29, homepage). It was a hand-tuned `yOffset: 0.48`, and that constant did not
+describe a stable position — it landed somewhere different on every device, for two
+compounding reasons:
+
+1. **Device pixel ratio.** `resolution` is passed in **CSS px** (deliberately — it
+   reproduces the original snippet's line scale) while `gl_FragCoord` is in **device px**.
+   So the `p.y` a given `yOffset` selects moves with `dpr`. Measured on the homepage at
+   390×844: at dpr 1 the band sat at **0.39** of the hero — straight through the headline
+   and dek, which is exactly the reported "it runs through the subtext" — and at dpr 2 at
+   **0.70**, below the CTAs. Both shipped.
+2. **The normalising axis flips.** `p` is divided by `min(resolution)`, which is the
+   **height** on a landscape desktop hero and the **width** on a portrait phone one. `p.y`
+   spans ±1 on desktop and ±2.16 on a phone, so one unit of `yOffset` is a different number
+   of pixels on each.
+
+`BAND_F` is now the band's position as a fraction of the hero's **displayed** height, and
+`yOffset` is derived: `resH * (2 * dpr * (1 - BAND_F) - 1) / min(resW, resH)`. The box
+height cancels out, so the coarse-pointer tall-buffer trick (which over-sizes the draw
+buffer to kill the URL-bar resize flash, and stretches ~8% vertically as a result) no
+longer skews it. **`BAND_F = 0.63` runs the band through the CTA row**, and on desktop at
+dpr 2 it resolves to `yOffset` 0.480 — the value tuned by eye on a retina screen — so the
+retina desktop hero is unchanged to the pixel. After the change the three pixel ratios
+agree within 0.03, against a 0.31 spread before.
+
+> The other three WebGL heroes (`/about/`, `/reports/`, `product/signal/`) still carry the
+> raw-constant form and the same dpr dependency. Only the homepage was in scope here.
+
 **Container** (`.hero`): base `height: clamp(460px,56vw,580px)`, `overflow:hidden`,
 flex-centered, `background:#000`. That black is **load-bearing** — it is the fallback if
 WebGL or esm.sh fail and the canvas never mounts. Nothing opaque may sit between it and
@@ -546,7 +634,28 @@ licensing's `[data-page="licensing"] .hero` already sets `height:auto` itself.
 upper region, not content, so its height on a phone is a coverage question rather than a
 displacement one. Don't cite its height as first-screen cost.
 
-**The announce bar is one nowrap line at desktop widths and wraps at ≤880px.**
+**Below 881px the bar is a TICKER, not a wrapping rotator** (2026-08-29). The paragraph
+below describes the branch it replaced; it is kept because the reasoning explains why the
+ticker exists. `.announce-rotator` becomes a flex track at `width: max-content` holding
+the item set **twice**, translating `-50%` — the `.partner-marquee__track` idiom. That
+`-50%` is only correct while the duplicate set matches the original **exactly**: adding,
+removing or reordering a message means doing it in both halves. Two consequences:
+
+- `.announce-msg` stays `nowrap`, so the bar is **44px at every width below 881px**
+  instead of up to 160px. On the Signal page, whose string is 113 characters, that
+  branch cost three lines of the first screen — and six under reduced motion.
+- `.ticker-pulse` **comes back** below 640px. It was hidden there only because the
+  wrapping branch stranded it alone on a row above the text.
+- `.announce-item` is pinned `flex: 0 0 auto` so the track keeps its true content width;
+  `.announce` is a flex container and would otherwise shrink it, making `-50%` a
+  percentage of a squashed width — a visible jump rather than a loop. The reduced-motion
+  branch must undo that (`flex: 0 1 auto` + `min-width: 0`) or `white-space: normal` has
+  nothing to wrap into.
+
+All three bars — home, signal, licensing — now carry the **same two announcements** in the
+same order (licensing, then patent intelligence) under one shared `data-announce-id`.
+
+**Historic — the branch the ticker replaced.** One nowrap line at desktop widths, wrapping at ≤880px.
 `.announce-msg` is `nowrap` + `text-overflow: ellipsis`, which silently cuts a long
 message mid-word on a phone — and the tail of the string is usually the part carrying the
 substance. The `≤880px` branch switches it to `white-space: normal`, lets
@@ -708,7 +817,7 @@ no colour of its own, raised `vertical-align: 0.95em` to sit at the numerals' ca
 |---|---|---|---|---|---|---|
 | `.offer-card` | `#0E0E0E` + `--shadow-medium` | `clamp(340px,42vw,432px)` | 18px | 28px | CSS `::before` bg photo (`/assets/imagery/coremap/*.jpg`), per-card `--img-rot` (reports flipped 180°), z −2 | `translateY(-2px)` + `--shadow-high`, image 1→1.06, arrow `translateX(4px)` |
 | `.report-card` | `--bg-placeholder-radials` + `--surface-tertiary`, `--shadow-stacked-low` | 420px | 18px | 28px | real `<img.report-card-media>` (`object-fit:cover`, z −2) | `translateY(-6px)` (transition 350ms), image 1→1.06 |
-| `.about-card` | `#000` + `1px rgba(255,255,255,0.08)` | `clamp(192px,18vw,232px)` | 20px | body `clamp(24px,2.6vw,40px)` | dot-cloud PNG bleeds right, masked left; text `max-width:56%` | `translateY(-2px)`, border → `rgba(255,255,255,0.16)` |
+| `.about-card` | `#000` + `1px rgba(255,255,255,0.08)` | `clamp(192px,18vw,232px)`; **`clamp(340px,42vw,432px)` ≤560px** | 20px | body `clamp(24px,2.6vw,40px)` | dot-cloud PNG bleeds right, masked left; text `max-width:56%` (58% ≤880) | `translateY(-2px)`, border → `rgba(255,255,255,0.16)` |
 | `.patent-card` | `--surface-recessed` tray (radius 18, pad 5) holding a white `.scard-core` (radius 13, pad 15) | — | 18 / 13 | 5 / 15 | none — data card (tier chip + jurisdiction chip + mono patent number) | `translateY(-3px)`, 3-layer shadow step-up, 700ms |
 
 > **`.content-card` no longer exists** — removed in the dead-rule purge. The visible
@@ -753,6 +862,53 @@ success swap), the co-branded **TIS × Innovue** lockup (32px TIS submark + 1px�
 divider + Innovue wordmark 103×36), and three link columns (Products / Company / Legal)
 with 15px Lucide icons. A `.footer-baseline` band carries the centered
 "© 2026 Talent Intelligence Strategies" over an inset hairline.
+
+**At ≤560px the two `.about-card`s adopt the `.offer-card` recipe** (2026-08-29), and the
+reason is worth stating because it looked like a centring bug and was not. `innovue-dots.png`
+is 1400×2027 — **0.691 portrait, the same aspect as all three `.offer-card` sources**
+(1400×2026). The image was never the variable; the box was. `.about-card`'s
+`min-height: clamp(192px,18vw,232px)` made the media box ~**1.82:1 landscape** at 390px, and
+`object-fit: cover; object-position: center` then discarded ~**62%** of a portrait subject.
+The three offering cards put an identical aspect into a ~**1.03:1** box and lose ~33%.
+
+So on phones the about cards take the offering card's `min-height`, its full-bleed
+`inset: 0` media, its bottom-up scrim and `justify-content: flex-end`. The cards grow
+192px → ~340px, which is the point: they now read as siblings of the three cards directly
+above them on the same page. `opacity: 0.5` on the media is gone with it — it existed only
+because the 62% crop was unusable at full strength.
+
+Two related fixes in the same pass: `.about-card__body` goes `62% → 58%` at ≤880px (it and
+the 58%-wide media summed to **120%**, so text overran the image's left edge across that
+whole band, masked only by the 90° gradient), and `will-change` is released on
+`.is-revealed` instead of being left set forever on two images for an animation that fires
+once.
+
+## 8. Footer — mobile
+
+**At ≤560px Products spans the full row** (2026-08-29): `.footer-col:first-child
+{ grid-column: 1 / -1 }`, so its "Coming soon" status flag sits beside the label instead of
+wrapping under it, and Company + Legal pair below. This also fills the cell Legal used to
+leave empty when three columns wrapped 2 + 1. CSS-only — which matters, because the footer
+markup is hand-copied into **9 files**.
+
+**Spacing tightens at ≤560px, links do not** (2026-08-29). Measured at 390px the footer was
+**700px — 83% of a phone viewport**, identically on all 9 pages, which made it the single most
+repeated block on the site. Almost all of it was gaps: `padding-block: 68px` that never shrank
+(136px), a 40px `.footer-grid` gap under the brand lockup, and an 11px `.footer-col ul` gap on
+top of link rows already 44px tall from the `(pointer: coarse)` floor — 55px per link.
+
+| | Desktop | ≤560px |
+|---|---|---|
+| `.footer` `padding-block` | 68px | **40px** |
+| `.footer-grid` `gap` | 48px 56px | **24px** |
+| `.footer-col ul` `gap` | 11px | **6px** |
+| `.footer-col h2` `margin-bottom` | 16px | **10px** |
+| `.footer-col a` `min-height` | 44px | **44px — unchanged** |
+
+**700px → 601px.** Every link stays. The 44px floor stays and is why the list gap can give:
+it already provides the separation the 11px was doing. The remaining 601px is mostly that
+floor — eight links × 44px is 352px of it — so this is close to the end of what spacing can
+buy without touching targets.
 
 Attribution phrasing for the Innovue lockup is owned by
 [visual-guide-snapshot.md](designs/visual-guide-snapshot.md), not by this file.
@@ -907,9 +1063,26 @@ dormant until the veil lifts.
   (`-2/-6px`) with a shadow step-up and image zoom to 1.06; nav links darken to
   `#000`; arrows translate; `.arrow-link`/`.contact-email`/`.contact-meta a` share a
   left-origin 1px underline wipe (`scaleX(0)→1`, 280ms `--ease-out`).
-- **Partner marquee**: `@keyframes partner-scroll` translateX `0→-50%` over **45s
-  linear infinite**, duplicated set for a seamless loop,
-  `animation-play-state:paused` on hover, progressive-blur edge fades.
+- **Partner marquee**: `@keyframes partner-scroll` translateX `0→-50%` over **34s
+  linear infinite** (was 45s until 2026-08-29 — ~22 → ~29 px/s over the ~992px
+  half-track), duplicated set for a seamless loop, `animation-play-state:paused` on
+  hover, progressive-blur edge fades.
+  **On coarse pointers the keyframe is off and `site.js` drives `scrollLeft` instead.**
+  A transform and a native scroller cannot share an element — the transform moves content
+  the scroll container knows nothing about — and `overflow: hidden` meant the logos could
+  not be dragged at all on a phone, while `:hover` (the only pause) is unreliable and
+  sticky on iOS. Three things that are easy to get wrong there:
+    · Position is accumulated as a **float**, not read back from `scrollLeft`. At 29px/s
+      and 60fps each step is ~0.48px and reading it back quantises that away — the strip
+      advanced ~2px in 1.6s instead of ~46px.
+    · The edge fades become a `mask-image`. The two `.partner-marquee__blur` elements are
+      `position: absolute` inside what is now a scroll container, so they scroll away with
+      the logos; a mask applies to the element's own box.
+    · The four real marks are `target="_blank"` anchors, so a capture-phase `click`
+      handler suppresses the click when the pointer moved >8px, or a swipe navigates.
+  `data-partner-marquee` was a **dead hook** with zero references until this; it is the
+  driver's selector now. Reduced motion still reflows the track to a static wrapping row,
+  and both the scroller and the mask stand down there.
 - **Crossfades**: hero backdrops 480ms, shader 600ms, theme swap 250ms, buttons ~100ms.
 - **Counters**: `.counter[data-target]` count-up via `counterObserver` (`threshold:0.3`),
   driven entirely from `site.js` — there is no `.counter` CSS rule. Live on `/about/`
@@ -1127,6 +1300,192 @@ unrelated to the veil.
 
 ---
 
+## 13.4 Hero shaders: normalise the fragment coord, or the picture changes per device
+
+**2026-08-29.** Every hero shader on the site computes
+
+```glsl
+vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+```
+
+`gl_FragCoord` is in **device** pixels. `resolution` is set from `clientWidth/clientHeight`,
+which is **CSS** pixels. Divide one by the other and the whole coordinate space scales with
+the pixel ratio — so the composition, not just its sharpness, depends on the visitor's screen.
+
+On the About hero this was live. Measured DPR 1 vs DPR 3 with `time` frozen: **mean difference
+50/255, max 249**, luminance centroid **0.508 → 0.732** of the hero height. Three different
+pictures — band through the wordmark at 1×, sweeping below the copy at 2×, a thin multi-strand
+ribbon on the bottom edge at 3× (the sine wave's visible period compresses with DPR too, so the
+strand count changes as well).
+
+**The fix is to normalise the fragment coord onto a reference grid before using it:**
+
+```glsl
+vec2 frag = gl_FragCoord.xy / dprScale;   // dprScale = bufferPixelRatio / REF_DPR
+vec2 p = (frag * 2.0 - resolution) / min(resolution.x, resolution.y);
+```
+
+`REF_DPR` then *names* the composition, and each value reproduces exactly what that DPR class
+saw before — **no re-tuning of `yOffset`, `xScale`, `yScale` or the glow falloff**, because
+normalising leaves every constant meaning what it meant on that grid. About ships `REF_DPR = 2`,
+the Retina-laptop framing: copy on clean black with the band sweeping beneath it. Verified after:
+DPR 1 vs 2 vs 3 differ by **mean 0.08/255**, and 2 vs 3 are byte-identical.
+
+Two things this settles:
+
+- **Capping `setPixelRatio` is not a fix for it.** It picks one of the pictures for phones and
+  leaves a 1× monitor on a different one. About's old comment called capping "a visual decision"
+  — it was reading the symptom. Once the coord is normalised, capping is purely a battery
+  decision, and About now caps at 2 like the other two heroes: 780×680 instead of 1170×1020 is
+  **2.25× less fragment work per frame** on the device with the smallest battery.
+- **`resize()` has to re-read the ratio.** Moving a window between a Retina and a non-Retina
+  display changes `devicePixelRatio` with no reload, and `dprScale` has to follow it.
+
+**All four `createHeroShader` heroes now normalise.** About was fixed first; sweeping the other
+pages for the same fingerprint found it live on the two most important ones:
+
+| Hero | Before | Now |
+|---|---|---|
+| `about/index.html` | mean 50/255, centroid 0.508 → 0.732 | **0.08**, centroid 0.692 fixed |
+| `index.html` | mean 16.26/255, centroid 0.550 → 0.529 | **0.03**, centroid 0.529 fixed |
+| `product/signal/index.html` | mean 12.64/255, centroid 0.408 → 0.506 | **0.03**, centroid 0.506 fixed |
+| `reports/index.html` | already correct | 0.48, centroid 0.469 fixed |
+
+All at `REF_DPR = 2`, which preserves what each was tuned against and repairs the 1× case:
+
+- **The homepage's `BAND_F` was only a half-fix.** It compensated `yOffset` for DPR, so the band
+  landed in the right *place* at every ratio — the centroids were only 0.021 apart. But `p.x`
+  still scaled, and since the chromatic split is `p.x * (1 ± d)`, the **colour** changed with the
+  screen: a near-white sweep at 1× against a full rainbow prism at 2×. Same picture, wrong hue.
+  `BAND_F` no longer needs its `dpr` term — `REF_DPR = 2` *is* the retina grid it was tuned on,
+  so `yOffset` still resolves to 0.48 exactly.
+- **Signal was degenerate at 1×.** Its `bandOffset()` and `staticPhase()` measure the copy block
+  in CSS px while `p` came from device px, so the band only landed where they aimed it at one
+  ratio. At 1× it sat in the top-right corner above the eyebrow and left the hero all but empty;
+  at 2× it swept through the dek and CTAs as intended. Neither function needed changing — they
+  were already written for the 2× grid.
+
+**`reports/index.html` and `404.html` never had this bug**, and are the pattern to copy: they
+manage their own canvas and pass `iResolution` in **device** pixels, matching `gl_FragCoord`,
+capping DPR at 2 themselves. If a hero can be written that way, prefer it — `dprScale` is the
+retrofit for heroes whose constants were already tuned against the mismatched space.
+
+## 14.0.0 Safe-area insets: deliberately not adopted
+
+**Checked 2026-08-29 and left alone.** The viewport meta is
+`width=device-width, initial-scale=1` on all 15 pages, and there are **zero** uses of
+`env(safe-area-inset-*)` anywhere in `styles.css`.
+
+That combination is the safe one. Without `viewport-fit=cover` the browser letterboxes the
+safe area itself, so **nothing is hidden under a notch or a home indicator** — the page simply
+does not extend into those regions, and a notched phone in landscape shows bars either side.
+
+The dangerous combination is `viewport-fit=cover` *without* insets, which is what actually
+puts text under the notch. So this is not a half-finished job to complete casually: adopting
+`cover` means adding insets to the fixed topnav, the announce bar, the drawer and every
+overlay in the same change, and verifying it on a real notched device in **both**
+orientations. Landscape is the case that gets missed — the notch moves to the side and
+`safe-area-inset-left/right` start to matter.
+
+Until someone does that with a device in hand, the letterbox is the intended behaviour.
+
+## 14.0.05 The focus ring is a double ring, because the site has two grounds
+
+**2026-08-29.** `:focus-visible` was `outline: 1px solid var(--border-focus)`. That token is
+`#252525`, `[data-theme="light"]` is hardcoded in the markup and dark mode is parked, so
+`#252525` is the *only* value that has ever shipped. Measured against the surfaces this site
+actually puts controls on:
+
+| Ring | Ground | Contrast | WCAG 1.4.11 (3:1) |
+| --- | --- | --- | --- |
+| `#252525` | `#000` — `.announce`, the nine heroes, `.contact-overlay` | **1.37:1** | fail |
+| `#252525` | `#0E0E0E` — `.offer-card` and the dark literals | **1.26:1** | fail |
+| `#252525` | `#FAFAFA` — `--surface-page` | 14.69:1 | pass |
+
+Not dim — invisible. The announce bar's close button, every hero CTA and the three homepage
+offer-card links had no visible focus indicator at all, and `.offer-card:focus-visible` was
+drawing a deliberate 2px ring nobody could see.
+
+**The fix is a ring that cannot lose, not a list of dark surfaces to keep up to date.**
+`--border-focus` and `--text-inverse` are declared as a **pair** in both theme blocks
+(`#252525`/`#FFFFFF` light, `#FAFAFA`/`#252525` dark), so they are always exact opposites and
+one of the two always clears 3:1 against whatever is behind the control:
+
+```css
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--text-inverse);
+}
+```
+
+Geometry: the halo spreads 0→2px from the border box, the outline sits 2→4px out. Contiguous,
+each half 2px, which is also the width floor (up from 1px). No new token, and it inverts with
+the theme for free whenever dark mode is unparked. **Verified rendered**: on `.announce-close`
+the halo measures 21.00:1 against `#000`; on `a.offer-card`, 19.30:1 against `#0E0E0E`.
+
+Two rules re-declare it and both are annotated in place:
+
+- **`.offer-card:focus-visible`** must restate the halo. `.offer-card:hover` sets its own
+  `box-shadow` at equal specificity, so a card that is hovered *and* keyboard-focused would
+  otherwise drop the white half — the only half that shows on a dark image-backed card.
+- **`.veil__card:focus-visible`** sets `box-shadow: none`. Its 12px `outline-offset` is
+  deliberate, and a 2px halo hugging the card 10px inside the outline reads as an artifact
+  rather than one indicator. The veil is a light wash, so the outline carries it alone.
+
+**Three rules use `outline: none` with a `border-color` substitute** — `.footer-nl-form input`,
+`.mkt-form .input`, `.brand-select-trigger`. All three sit on `--surface-page`, where
+`--border-focus` measures 14.69:1, so they pass. Left alone deliberately; if any of them ever
+moves onto a dark ground it needs the ring back, not a darker border.
+
+## 14.0.1 Disclosure controls say so, and closed panels leave the tree
+
+**2026-08-29.** `.acc-trigger` announced nothing at all — no `aria-expanded`, so a screen
+reader met five identical buttons with no indication that any had opened. And `.acc-content`
+collapses with `grid-template-rows: 0fr` + `overflow: hidden`, which hides it visually but
+leaves every answer **in the accessibility tree and any link inside it in the tab order** —
+so all five answers were being read out regardless of state.
+
+The shared handler in `site.js` now sets `aria-expanded` on the trigger, generates an id for
+the panel and points `aria-controls` at it, and sets `panel.inert` on every closed item. One
+handler, so it covers every accordion on the site; today that is the five FAQ items on
+`product/licensing/index.html`. State is synced on init as well as on click, because the
+first item ships `.is-open` in the markup.
+
+`inert` rather than `hidden`: `hidden` would fight the `0fr → 1fr` transition, and `inert`
+removes focusability and the a11y tree entry without touching rendering.
+
+## 14.0.2 Two segmented controls, two different answers
+
+**2026-08-29.** The pricing toggle and the drawer language switcher look identical — a row of
+segments, one active — and they take **opposite** fixes. Don't unify them.
+
+`.bp-toggle` (`product/licensing/index.html`) shipped `role="radiogroup"` with four
+`role="radio"` buttons. `radiogroup` asserts the ARIA APG radio contract: **one** tab stop, and
+arrow keys to move between options. The page implemented neither, so a screen-reader user was
+told "radio group, 1 of 4", pressed an arrow key and got nothing. It is now
+`role="group"` + `aria-pressed` — four toggle buttons, which is what a price-term selector
+actually is, and `aria-pressed` on a `<button>` promises no key handling. Deleting the roles
+is cheaper than servicing them.
+
+> Its predecessor was worse: `role="tablist"`/`role="tab"` with **zero** `tabpanel`s and zero
+> `aria-controls` anywhere on the page.
+
+`.mobile-lang` is the opposite call. It **is** a genuine radio group, and its own sibling
+proves it — the topnav `.lang-menu` is `role="menu"` with `role="menuitemradio"` buttons, which
+is correct ARIA and also uses `aria-checked`. Downgrading the drawer would split a pair that
+`site.js` deliberately keeps in sync off one `applyLang` call. So it **keeps** its roles and
+gained the missing behaviour instead: a roving-tabindex helper in `site.js`, bound generically
+to `[role="radiogroup"]` rather than to `.mobile-lang`.
+
+The helper never writes state. Arrow keys call `.click()` and let whatever already owns the
+group do the work; `aria-checked` is **observed** via `MutationObserver`, not assumed, so the
+tab stop follows a change the helper did not make. Verified: exactly one tab stop, it rides the
+checked option, and Left/Right/Up/Down move and wrap.
+
+**The rule:** adopt `role="radio"` only where you will service the arrow keys. Otherwise
+`role="group"` + `aria-pressed`.
+
 ## 14.1 Status chips — the container has to read, not just the type
 
 `.status-flag` and `.sig-phase__chip` both passed text contrast comfortably (8.37:1
@@ -1147,6 +1506,43 @@ footer is 1.06:1, so the badge body was invisible and only the words showed.
 - **`.status-flag--on-image` is exempt** and explicitly resets `box-shadow: none`. At
   92% white over photography the fill already separates, and an edge would fight the
   image.
+
+## 14.1.1 Carousel dots — the gap is 4px, and the old comment was wrong
+
+`.report-dots` sits at `gap: 4px` on coarse pointers (2026-08-29), down from 16px. The
+16px carried a warning that "two 24px-wide targets would overlap by 16px and the wrong dot
+would win". That was true of an **invisible `::after` overlay**, which is the shape the
+rule originally had. It is not true of what ships: the **button** is the 24×44 box and the
+pill is its `::after`, so the boxes are the flex items and cannot overlap at any gap ≥ 0.
+
+Pitch goes 40px → 28px and the visible gap between two resting pills 32px → 20px, with the
+WCAG 2.5.8 floor untouched. **Do not reduce `.report-dot`'s `width` below 24px** — that is
+the floor the block exists to enforce, and below 640px these dots are the only way to move
+the carousel, because `.report-nav` is `display: none`.
+
+Applies to all four dot rows on the site (two on `index.html`, two on `reports/index.html`).
+There is no separate press page; `#press` is a section on those two.
+
+**They are pagination, not tabs** (2026-08-29). The wrapper was `role="tablist"` and each dot
+`role="tab"`, with **zero `tabpanel`s and zero `aria-controls` anywhere on either page** — so a
+screen reader announced "tab 1 of 4" and then had nowhere to send you. Now:
+
+| Was | Is |
+|---|---|
+| `role="tablist"` on `.report-dots` | `role="group"` (keeps its `aria-label`) |
+| `role="tab"` on each dot | no role — a plain `<button>` |
+| `aria-selected="true"` | `aria-current="true"` |
+| `aria-label="Go to report N"` | `aria-labelledby` → the card's own `<h3>` |
+
+The name change matters twice over. "Go to report N" was also announcing on the **Press**
+carousel, and a written label would have needed its own `data-zh-aria` to survive the language
+toggle. Pointing at the heading borrows a node that already swaps, so each dot is named with the
+card's real title in whichever language is active, with no new i18n plumbing.
+
+`.report-dot[aria-current="true"]` is now the styling hook — three selectors in `styles.css`
+moved with it. The same correction applies to `.bp-toggle` on the licensing page, which was a
+`tablist` of four subscription terms with no panels: it is a `radiogroup` of `radio`s with
+`aria-checked`, matching the `.mobile-lang` switcher that already shipped that way.
 
 ## 14.2 The type floor is 11px, and 12px on a phone
 
@@ -1188,7 +1584,7 @@ and writes into `assets/build/`, which the pages load with ordinary `<script>` /
 | `hero-shader.js` | the fullscreen-quad shader runner the heroes use | `vite build` |
 | `gsap.js` | gsap + ScrollTrigger, pre-registered, pinned 3.12.5 | `vite build` |
 | `lenis.js` | the smooth-scroll transport, pinned 1.3.26, loaded lazily by `site.js` | `vite build` |
-| `fonts/*.woff2` | 23 subset faces + the generated `@font-face` block in `styles.css` | `npm run fonts` |
+| `fonts/*.woff2` | 11 subset faces + the generated `@font-face` block in `styles.css` | `npm run fonts` |
 | `search-index.json` | the search modal's index, and heading ids written back into the pages | `npm run search` |
 
 **The two minified twins are the ones to understand** (added 2026-08-28). `assets/styles.css`
@@ -1228,6 +1624,39 @@ transfer win.
 `chunk-PricingSection.js` — 182 KB — were built, committed and served for months with no page
 referencing any of them. `src/islands/README.md` documents how to switch it back on when a
 page actually mounts one.
+
+### 15.1.0 The CJK face is one variable font, not four static ones
+
+**2026-08-29.** Noto Sans TC used to ship as four static weights (400 / 500 / 600 / 700), each
+subset and split into the same four `unicode-range` buckets — **16 files and 681 KB over the
+wire on a Chinese page, 49% of it.** It is now one variable file carrying the whole wght axis,
+split into the same four buckets: **4 files and 318 KB.**
+
+| | Static | Variable |
+|---|---|---|
+| Files | 16 | **4** |
+| Over the wire (ZH page) | 681.2 KB | **318.2 KB** |
+| Weights covered | 400, 500, 600, 700 | **400–700 continuous** |
+| `@font-face` `font-weight` | a single number | **`400 700`** (a range) |
+
+A **364 KB saving with no visual change**, verified by rasterising 專利組合 at 64px and
+measuring ink: 400 → 700 gains 41.2% coverage, monotonically. It is also more correct than
+what it replaced — `font-weight: 450` appears on the site and used to snap to a static face;
+it now renders as a true 450.
+
+This was chosen over the other way to halve the number, which was **dropping weights**.
+Measured across the seven Chinese pages, weight 500 carried 864 characters and weight 700
+carried 618, together 15% of the text for 340 KB — so collapsing 500 → 400 and 700 → 600
+would have saved about the same. It would also have flattened the Chinese type hierarchy to
+two weights while Latin kept four. The variable font gives the bytes back without the
+trade.
+
+Second-order win: removing 12 `@font-face` blocks took their `unicode-range` declarations
+with them, and **`assets/build/styles.css` fell from 139 KB to 117 KB** on every page in
+both languages.
+
+Latin stays static. Urbanist and Inconsolata are ~15 KB and ~27 KB per weight and are
+format-converted whole, not subset — there is nothing for a variable file to win there.
 
 ### 15.1.1 Two things measured and deliberately left alone
 
@@ -1407,6 +1836,57 @@ second page needing it: promote it to a real `styles.css` component and delete t
 
 ---
 
+## 15.5.1 The accessible-name layer is bilingual too
+
+**2026-08-29.** The visible copy was bilingual; the accessible-name layer was 12%. A reader on
+中文 using a screen reader heard English for nearly every control on the site.
+
+| Attribute | Before | After | The remainder |
+| --- | --- | --- | --- |
+| `aria-label` | 19/207 | **193/207** | 14 × `Innovue` |
+| `placeholder` | 12/68 | **49/68** | 19 format examples |
+| `alt` (informative) | 0/23 | **16/23** | 5 board portraits + 2 `TIS` marks |
+| `<title>` | 9/9 | 9/9 | — |
+
+Every remaining gap is a decision, not an omission:
+
+- **`Innovue`** — its ZH name is unadjudicated across the whole site, and "Powered by Innovue"
+  is never translated (`visual-guide.md:253`). Left English until that is settled.
+- **Format examples** — `name@company.com`, `you@fund.com`, `+886 2 1234 5678`,
+  `K7P2-9XQR-4M`. An email or phone *pattern* is ASCII in both languages; swapping in
+  `姓名@公司.com` would show a shape nobody can type.
+- **Board portraits and the `TIS` mark** — their visible `<figcaption>` carries no `data-zh`
+  either, so translating only the `alt` would make image and caption disagree.
+
+**`data-zh-alt` is new.** There was no handler at all, so every informative image described
+itself in English under 中文. It mirrors `data-zh-placeholder` exactly: collect at init,
+snapshot the EN value to `dataset.enAlt`, swap in `swapText()`.
+
+**Product names are quoted from the site's own shipped `data-zh`, never translated fresh** —
+Snapshot=特寫報告, Study=景深報告, Survey=廣角報告, Licensing Platform=泰然專利防護網,
+iPIC=創智, III=資策會, NYCU=陽明交大. The voice uses 你, not 您, matching the shipped copy.
+
+**Two traps this pass exposed, both about *when* nodes exist:**
+
+1. **The i18n pass collects its nodes ONCE at init.** Anything added to the DOM later can
+   carry `data-zh-*` and will never swap. That is why the announce ticker's loop duplicates are
+   real markup rather than JS clones, and why the carousel dot's fallback label reads
+   `document.documentElement.lang` directly instead of taking a twin.
+2. **Anything inside a `data-zh-html` payload has to arrive already translated.** That swap
+   sets `innerHTML`, destroying the very node the i18n pass captured, and the replacement comes
+   from the `data-zh` string. `index.html`'s `.tis-mark` briefly had `data-zh-aria` on both
+   sides of exactly that boundary and could never have fired; each language's markup now
+   carries its own finished `aria-label`.
+
+**Landmark names, not layout jargon.** Six heroes carried `aria-label="Hero"` / `"Badge hero"`
+/ `"Licensing hero"` — a screen reader announced the page's largest landmark as "Hero, region".
+They now use `aria-labelledby` pointed at their own headline, which names them in whichever
+language is live with no `data-zh-aria` to keep in sync. On `licensing` and `badge` that
+heading is the hero's `<h2 class="pillar-title">`, because the page `<h1>` is the veil title.
+
+**Verified**: EN→ZH→EN round-trip over all nine pages, 378 attribute swaps, every twin
+restoring its EN value and every untwinned attribute holding still.
+
 ## 15.6 The legal modal — the site's first shared dialog
 
 Terms / Privacy / Disclosures open from the footer of all 8 pages. `.lgl-overlay` /
@@ -1497,6 +1977,33 @@ trigger on close — with two additions those two need.
 - Drawer links call `closeDrawer` **before** the browser follows them, so an in-page
   `#anchor` is not scrolled to while the body is still pinned.
 
+**The newsletter popup joined this lock on 2026-08-29** and was the last holdout. It ran
+`document.body.style.overflow = 'hidden'` — the exact pattern the first bullet above exists
+to warn about — so on iOS the page kept scrolling behind it, and closing it dropped the
+visitor back at the top. It also inerted nothing, which left the whole page behind an
+`aria-modal="true"` dialog readable and tabbable.
+
+`#mkt-overlay` is a **sibling** of `<main>`, not a descendant, so `lockPage()` does not inert
+the popup along with the background — worth checking before pointing any other overlay at
+this lock. One caveat that bit during the change: `lockPage()` calls `pauseScroll()` itself,
+and `unlockPage()` only calls `resumeScroll()` on the lenis path, so a caller that pauses
+separately leaves the refcount stranded. Let the lock own it.
+
+Verified after: open → `position: fixed`, `top: -3000px`, main and footer `inert`, popup not
+inert; close → unlocked and **scroll restored to 3000**.
+
+**`lockPage` / `unlockPage` are exported on `window` as of 2026-08-29**, alongside
+`__tisScrollPause` / `__tisScrollResume`, because page-local dialogs live outside the IIFE and
+were each reinventing the lock badly. `patents/index.html`'s `.pat-modal` was the last one —
+same `body.style.overflow` pattern, same two consequences: the page slid around behind it on
+iOS and closing it returned you to the top, and it declared `aria-modal="true"` while inerting
+nothing. It calls the shared lock now, guarded (`typeof window.__tisLockPage === 'function'`)
+because `site.js` is deferred and a page-local block must not throw inside its own `open()` —
+that is precisely how the sample-report dialog used to hang. Verified: open → `top: -1050px`,
+main and footer inert; close → **scroll restored to 1050**.
+
+There are now **no raw `body.style.overflow` locks left on the site.**
+
 The legal dialog keeps its own `body.lgl-lock` (plain `overflow: hidden`). It has extra
 concerns this lock does not — scrollbar-width compensation, a MutationObserver for
 injected i18n — and it is verified as-is; it would benefit from the same
@@ -1505,6 +2012,12 @@ injected i18n — and it is verified as-is; it would benefit from the same
 ## 16. Per-page notes
 
 ### 404 — `404.html`
+
+**The plasma-lines hero shader was removed on 2026-08-29 — it had never run.** The page has no
+`#hero-shader` element (its `<main>` goes straight to `.section`), so the script looked the mount
+up, got `null`, and returned. 156 lines of WebGL shipped on every 404 and executed nothing. If a
+hero shader is ever wanted here, add the mount first and copy `reports/index.html`'s pattern
+(§13.4), not one of the `createHeroShader` heroes.
 
 GitHub Pages serves it for any unmatched path under the domain. Built from the
 `reports/` chrome with `<main>` replaced; composes `.section` / `.container` /
@@ -1766,10 +2279,46 @@ renders to find it. `.sig-xpanel__media` and `.sig-xpanel__head` are retired.
 - **The three "Here's what a X looks like… mock …" disclaimers are gone.** `.sig-mockflag`
   stays live: the retrieve preview still flags its placeholder data.
 
+> **THE PANELS DID NOT OPEN AT ALL BETWEEN 2026-08-27 AND 2026-08-29.** When this block
+> was lifted out of the page and into `site.js` so `methodology.html` could share it, it
+> landed **outside** the main IIFE — and it calls `pauseScroll`, `resumeScroll` and
+> `lenis`, all three declared *inside* that IIFE. Every one was an undeclared identifier.
+> `open()` calls `pauseScroll()` on the line straight after
+> `document.body.classList.add('sig-xlock')`, so every click on a report card applied the
+> scroll lock and then threw, before `overlay.dataset.open` was set and before
+> `panel.hidden = false`. The result was a page locked at `overflow: hidden` with no
+> dialog on screen and nothing to dismiss — indistinguishable from a freeze, clearable
+> only by reloading. That is the reported "See sample reports breaks the site".
+>
+> Fixed by exporting the two scroll helpers as `window.__tisScrollPause` /
+> `__tisScrollResume` (the convention `window.__tisLenis` already established) and
+> resolving `lenis` from that promise. **Anything else moved out of the main IIFE needs
+> the same audit** — the minifier does not flag a free variable.
+
+Three further changes landed with that fix (2026-08-29):
+
+- **Touch gets a fade, not the FLIP.** At `(pointer: coarse)` the 440ms morph becomes a
+  ~200ms fade + rise, and `.sig-xbackdrop` drops `backdrop-filter` for a solid
+  `rgba(6,12,32,.88)`. The blur was a full-viewport re-composite on every frame anything
+  behind it painted. Desktop keeps the morph and the blur unchanged.
+- **`animating` can no longer stick.** It used to be cleared only inside `onfinish`, and
+  `close()` returned early on it — so one missed callback made the dialog permanently
+  undismissable. Every animation now settles on finish, on cancel, **or on a timer**, and
+  `close()` cancels what is in flight instead of refusing to run.
+- **`body.sig-xlock` is `position: fixed`**, matching `body.nav-lock`; `overflow: hidden`
+  alone does not hold iOS Safari, and Lenis runs `syncTouch: false`. `.sig-xclose` goes
+  44px on coarse pointers, and `body.sig-xlock` was added to the paint-freeze block and to
+  the Signal hero's rAF hold predicate — it only ever tested `lgl-lock`.
+
+The three trigger cards also stopped shipping **787KB of raw JPEG** at every viewport; the
+`-800.webp` variants already existed on disk and are ~173KB together.
+
 > **Verifying the panels headlessly:** `close()` resolves through a Web Animations
 > `onfinish`, and that callback **does not fire under `--virtual-time-budget`** — the
 > pre-existing X button fails the same way, so a panel that will not close in a headless
 > harness is the harness, not the page. Test open/close by hand in a real browser.
+> Note also that headless Chrome runs **rAF at ~1 tick/second**, so no rAF-driven motion
+> (the partner strip, the hero shader) can be timed there either.
 
 ### The samples read as a document (2026-08-25)
 
@@ -2313,6 +2862,112 @@ dissolved, because the panels are light now. What replaces it is the mirror imag
 `--surface-tertiary` is a *light* token, so under a restored dark theme the panels and the
 band would both need to step to a dark tint rather than staying `#F3F3F3`. Nothing to do
 while `site.js` keeps dark mode parked and `data-theme="light"` is hardcoded in the markup.
+
+---
+
+## 16.4 The contact card reads banner → form → details on a phone
+
+`.contact-overlay-meta` was moved out of `.contact-overlay` and is now a **direct child of
+`.contact-card`** (2026-08-29). It had to be a grid item of the card to be placed
+independently of it.
+
+**All eight pages that carry the card, as of the fix below.** The move originally landed on
+three — `index.html`, `about/`, `product/signal/` — and was never propagated, so five pages
+kept the nested markup and never got the reflow. The eight `.contact-overlay` → `</dl>` blocks
+now hash identically; keep it that way.
+
+At 390px the intro column ran **512px** — two-thirds of a viewport before the first form
+field — and on the Signal intake card it was worse, because that column carries a 30px
+live price figure and a three-line seller block. Worse than height: `#intake-deposit`
+updates when a report chip is picked, and stacked on top it rewrote itself ~300px above
+the control that changed it.
+
+- **≤880px**: `order: 1 / 2 / 3` — photo banner, form, contact details. The form starts at
+  **149px** instead of 512px. The meta gets its own flat ground below the form, goes 2-up
+  (`--wide` rows keep the full width, so the 66-character address does not wrap into a half
+  column), and `.contact-overlay` drops its 48px gap, its `space-between` and its 240px
+  `min-height`, none of which have anything left to do once the meta is out of the box.
+
+  > **Half of this shipped dead and was fixed on 2026-08-29.** The `order` declarations
+  > worked; `gap`, `justify-content`, `padding`, `min-height`, `grid-template-columns` and
+  > `column-gap` did not. All six were written into the ≤880px block up at `.contact-card`,
+  > which sits *above* `.contact-overlay` and `.contact-overlay-meta` in the file — same
+  > specificity, so the later base rule won and the phone kept rendering desktop values. The
+  > banner stayed 240px with its 48px gap, and the meta resolved to the base `auto auto 1fr`,
+  > stranding an empty 11px third track and squeezing the UBN into 61px.
+  >
+  > It looked correct precisely *because* `order` survived — no base rule declares `order`.
+  > The overrides now live below their base rules, and `npm run verify` fails on this class
+  > of bug via `scripts/check-cascade-order.mjs`. Measured after: `#contact` **1417px →
+  > 1266px**, banner 240 → 149, meta tracks `141px 141px`.
+  >
+  > **Which of those numbers belongs to which change** — worth being exact, because it was
+  > mis-attributed here at first. The **height** came from the six repaired declarations,
+  > which reach every page through `styles.css`: `#contact` measures **1258px on all eight
+  > pages**, moved or not. What the DOM move buys is **reading order**. Before it, five pages
+  > read banner → *details* → form on a phone, with a 438px banner carrying the address and
+  > UBN ahead of the first input; after, all eight read banner → form → details with a 149px
+  > banner.
+- **≥881px**: `grid-template-rows: 1fr auto`, overlay spanning `1 / -1` so the venture
+  photo still fills the left column, meta placed in row 2 at `align-self: end` — exactly
+  where `space-between` used to put it. **Verified pixel-identical**: card, overlay, top
+  block and panel all unchanged; only the meta's box now includes the padding it used to
+  inherit.
+
+**The trap this created, and the rule it leaves behind.** `.contact-overlay-meta::before` — the
+dark plinth that holds the white meta text over the venture photo — was written with
+`left/right/bottom: calc(-1 * clamp(32px, 4vw, 56px))`. Those are *the overlay's padding*, and
+they were right while the meta was nested: its border box sat 56px inside the overlay, and the
+negative offset brought the plinth back out flush.
+
+The move invalidated them and nothing flagged it. The meta now fills grid column 1 and carries
+that padding itself, so the same offset **overshot by a full 56px** — 33px of it landing on top
+of the white `.contact-panel` at 1440px, as a black-to-transparent band down the form's left
+edge (`z-index: 1` on the meta at ≥881px is what put it above the panel rather than behind).
+The offsets are now `0`, which *is* the overlay's edge in the new arrangement.
+
+> **The rule: a pseudo-element's offsets are keyed to where its host sits in the DOM.** Moving
+> the host is not a layout-neutral edit — every negative offset on it has to be re-derived. The
+> cascade-order checker cannot see this class of bug: both declarations are live and winning,
+> they just describe a box that moved.
+
+**Verified after the fix**, all eight pages: plinth right edge 657px against a panel starting at
+680px (was 713px on three); `#contact` 708px and banner → form → details at 1440px; banner 149px
+and banner → form → details at 390px.
+- `product/signal/index.html`'s page-local `.contact-card--sig-intake` had
+  `grid-template-rows: minmax(0, 1fr)` — one row — and it wins on load order. Left alone
+  it created an implicit row, the overlay stopped spanning the card, and the coremap photo
+  ended 218px short with the deposit sitting on bare black. It is `1fr auto` now.
+- `.contact-overlay-meta::before` is `content: none` below 880px. Its `top: -72px` lead-in
+  was measured against the overlay's padding, which is no longer its parent, and it painted
+  a black band 72px up over the bottom of the white form panel. **That override has to sit
+  after the base rule** — both are (0,1,0) + pseudo, and declared earlier it silently lost.
+- The shared scrim is held stronger below 880px. At the compact banner height the base
+  gradient is transparent between 34% and 60%, which put the lead on bare dot-cloud.
+
+The `≤520px` 1-up collapse was retired with this.
+
+**Form density, ≤880px** (2026-08-29). The form was **892px** — the largest single block on
+8 of the 9 pages. All five fields stay; the height came out of the gaps, which were tuned for
+a desktop column with room to spare: `.contact-form` gap 18 → 14px, `.contact-panel .field`
+gap 8 → 6px, and the textarea 128 → 96px (it still scrolls). **892px → 828px.** The 16px
+input floor is untouched — that is a font-size rule and this is spacing, and dropping below
+it would re-introduce the iOS focus-zoom.
+
+**The venture banner loads a smaller source below 880px.** `venture-1400.webp` (1400×2026,
+74.7 KB) was the only variant, on all seven pages that carry this card, for a 350×240 box —
+a 2.84-megapixel decode held in memory for a strip. `venture-800` is ~0.93 MP and 36.7 KB.
+At DPR 3 that is 800px into a ~1050px need; checked side by side at DPR 3 and
+indistinguishable, because `cover` on a 0.69 portrait source in a 1.46 landscape box already
+discards most of the frame and what is left sits under a 0.86 → 0.45 scrim. Note that only
+variants **named** in a `srcset` or `image-set` survive `scripts/build-images.mjs` — adding
+the reference is what makes the file exist.
+
+**`.contact-card--sig-retrieve .contact-panel` re-declares `border-radius: 18px`.** The
+shared component sets `0 0 18px 18px` at ≤880px, which is right *there* — the panel butts
+against the overlay above it. The retrieve card is `display: block` with a centred floating
+bar and nothing above it, so it read as a bug. That page-local selector already beat the
+shared rule on `margin` and `align-self`; it simply never redeclared radius.
 
 ---
 

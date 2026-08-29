@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -46,112 +46,348 @@
   })();
 </script>
 
-<!-- Page-scoped layout for the About page (hero + locked company-profile prose).
-     Composes existing tokens + classes only; no new design primitives. -->
+<!-- Page-scoped layout for the About page. One-off by design (DESIGN.md §0.3):
+     the --ab-* type/space ladder below is this page's own hierarchy, and the
+     board strip, the bento and the Innovue card exist nowhere else on the site.
+     Composes shared tokens and classes only; no invented hex, no new primitives. -->
 <style>
-  /* About page — website-local layout. Composes shared tokens only; no invented hex. */
+  /* ═════════════════════════════════════════════════════════════════════════
+     ONE LADDER. Every size and gap on this page resolves from here.
 
-  /* ── Hero — black field + muted shifting-lines shader, centred white logo ── */
-  .about-hero .hero-inner { display: flex; justify-content: center; }
-  /* White secondary wordmark, sized by height (mirrors the nav .topnav-logo
-     pattern) so EN + ZH share a baseline height and the width follows aspect.
-     Always the light/white logo — the hero field is black regardless of theme. */
-  .about-hero-logo {
+     Type — the ratio between adjacent hierarchy steps is >= 1.25 throughout, so
+     no two levels can read as peers:
+       display 60 → h2 40 → pull 32 → lead 22 → body 17
+               1.50    1.25     1.45     1.29
+     `small` (15) and `label` (13) are not further steps down that ladder; they
+     are different roles (card copy, metadata) and are separated by colour and
+     weight, not by scale.
+
+     Space — every endpoint lands on the 4px grid from design-tokens.md §4.
+     ═════════════════════════════════════════════════════════════════════════ */
+  .ab {
+    --ab-display: clamp(34px, 4.4vw, 60px);
+    --ab-h2:      clamp(26px, 3vw, 40px);
+    --ab-pull:    clamp(22px, 2.5vw, 32px);
+    --ab-lead:    clamp(18px, 1.6vw, 22px);
+    --ab-body:    17px;
+    --ab-small:   15px;
+    --ab-label:   13px;
+
+    --ab-section:  clamp(56px, 6.5vw, 96px);   /* section padding-block */
+    --ab-head-gap: clamp(28px, 3.2vw, 44px);   /* heading → its content */
+    --ab-block:    clamp(20px, 2.2vw, 28px);   /* between blocks in a column */
+    --ab-panel:    clamp(28px, 4vw, 60px);     /* inside a card */
+  }
+
+  /* ── Section shell + the one heading style, used by all four h2s ─────────── */
+  .ab-section { padding-block: var(--ab-section); }
+  .ab-h2 {
+    margin: 0 0 var(--ab-head-gap);
+    font-size: var(--ab-h2); font-weight: 700;
+    letter-spacing: -0.025em; line-height: 1.12;
+    color: var(--text-primary); text-wrap: balance;
+  }
+
+  /* ── Hero (from A) — black field + shader, left-anchored ─────────────────── */
+  /* No height here on purpose. The base .hero rule (styles.css) is
+     height: clamp(460px, 56vw, 580px) with padding-block: 32px 0, which is exactly
+     what the live About hero uses — and inheriting it also picks up the
+     @media (max-width: 640px) { height: auto; min-height: 340px } rule that a
+     hand-copied value would silently drop.
+     align-items only changes how .hero-inner fills the field, not the field's
+     dimensions, and stretch is what lets the scroll cue sit on its floor. */
+  .ab-hero { align-items: stretch; }
+  .ab-hero .hero-inner {
+    position: relative;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding-block: clamp(56px, 8vw, 96px);
+  }
+  /* Height-sized so EN and ZH share a baseline and the width follows the aspect
+     ratio. Always the light wordmark — the hero field is black in both themes. */
+  .ab-hero-logo {
     display: block;
-    height: clamp(42px, 4.8vw, 60px);          /* EN width ≈ clamp(368, …, 525px) */
+    height: clamp(26px, 2.5vw, 34px);
     aspect-ratio: 1467.19 / 167.59;
-    /* At the 42px height floor the EN wordmark is ~368px wide and overflowed a
-       320-375px hero. Cap to the container; background-size:contain then shrinks
-       the SVG to fit. Breakpoint-independent — no fragile mobile media query. */
     max-width: 100%;
-    background: url('/designs/assets/logos/tis/tis_secondarylogo_light_eng.svg') center / contain no-repeat;
-    /* Dark halo separates the white wordmark from the bright line glow. */
+    background: url('/designs/assets/logos/tis/tis_secondarylogo_light_eng.svg') left center / contain no-repeat;
     filter: drop-shadow(0 1px 16px rgba(0, 0, 0, 0.55));
   }
-  [lang="zh-Hant"] .about-hero-logo {
+  [lang="zh-Hant"] .ab-hero-logo {
     aspect-ratio: 626.7 / 167.58;
     background-image: url('/designs/assets/logos/tis/tis_secondarylogo_light_ch.svg');
   }
+  [lang="zh-Hant"] .ab-hero-line { text-wrap: normal; }
+  .ab-hero-line {
+    margin: clamp(28px, 3.6vw, 48px) 0 0;
+    max-width: 26ch;
+    font-size: var(--ab-display); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.06;
+    color: #FFFFFF;                     /* sanctioned literal, always-dark surface */
+    text-wrap: balance;
+    text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
+  }
+  /* An absolutely positioned child resolves against its ancestor's PADDING box, so
+     left:32px inside .container lands exactly on the container's own text edge at
+     every viewport, including past the 1440 max-width. Mirrors .container's own
+     padding-inline, which drops to 20px under 768. */
+  .ab-cue {
+    position: absolute; left: 32px; bottom: clamp(28px, 4vw, 48px);
+    width: 1px; height: 52px; overflow: hidden;
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .ab-cue::after {
+    content: ""; position: absolute; left: 0; width: 1px; height: 18px;
+    background: rgba(255, 255, 255, 0.95);
+    animation: ab-cue-run 2600ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  /* Animates `top`, a paint property, rather than transform — so a headless
+     render shows the cue mid-travel instead of a blank strip. */
+  @keyframes ab-cue-run { 0% { top: -18px; } 60%, 100% { top: 52px; } }
+  @media (prefers-reduced-motion: reduce) { .ab-cue::after { animation: none; top: 0; } }
+  @media (max-width: 768px) { .ab-cue { left: 20px; } }
+  /* Under 640px the inherited base rule collapses the hero to height:auto /
+     min-height:340px, which crowds the cue against the heading — and at that
+     height the next section is already on screen, so the cue has nothing to say. */
+  @media (max-width: 640px) { .ab-cue { display: none; } }
 
-  /* ── Why we exist — narrative beats (left) + 2×2 pillar grid (right) ── */
-  .about-story__layout {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-    gap: clamp(40px, 5vw, 80px); align-items: start;
+  /* ── Why we exist (from B) — sticky head beside one column of prose ──────── */
+  .ab-doc {
+    display: grid; grid-template-columns: minmax(0, 0.52fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 96px); align-items: start;
   }
-  /* Parallel section headings — both columns open at the same scale + baseline. */
-  .about-story__heading, .about-ways__heading {
-    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
-    line-height: 1.15; margin: 0 0 clamp(24px, 3vw, 36px); color: var(--text-primary);
+  /* The head rides down beside the prose it labels. Costs nothing on a static
+     render, and the column is narrow so it strands little space when it stops. */
+  .ab-doc__head { position: sticky; top: 96px; }
+  .ab-doc__head .ab-h2 { margin-bottom: 0; }
+  .ab-prose > p {
+    margin: 0; max-width: 62ch;
+    font-size: var(--ab-body); font-weight: 400; line-height: 1.75;
+    color: var(--text-secondary); text-wrap: pretty;
   }
-  .about-profile { max-width: 60ch; }
-
-  /* Narrative beats — mono kicker + body. A real 4-step argument (problem →
-     response → engine → cornerstone): the dossier voice, not eyebrow scaffolding. */
-  .about-beat + .about-beat { margin-top: clamp(22px, 2.6vw, 32px); }
-  .about-beat__label {
-    font-family: var(--font-sans);
-    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text-tertiary, var(--text-secondary)); margin: 0 0 8px;
+  .ab-prose > p + p { margin-top: var(--ab-block); }
+  /* The conclusion, set between hairlines the way a dossier sets a finding. */
+  .ab-pull {
+    margin: clamp(36px, 4.5vw, 64px) 0 0;
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
+    padding-block: clamp(28px, 3.2vw, 40px);
   }
-  .about-beat__body {
-    font-size: clamp(15px, 1.05vw, 17px); line-height: 1.65;
-    color: var(--text-secondary); margin: 0; text-wrap: pretty;
+  .ab-pull p {
+    margin: 0; max-width: 30ch;
+    font-size: var(--ab-pull); font-weight: 600;
+    letter-spacing: -0.02em; line-height: 1.24;
+    color: var(--text-primary); text-wrap: balance;
   }
-  .about-beat--cornerstone .about-beat__body { color: var(--text-primary); font-weight: 500; }
-
-  /* The three ways — compact offer-cards stacked in the right column. */
-  .about-ways__grid {
-    display: grid; grid-template-columns: 1fr; gap: clamp(12px, 1.2vw, 18px);
-  }
-  .offer-card--compact { min-height: clamp(160px, 19vw, 204px); padding: 20px; }
-
-  /* ── Strategic partner — Innovue (soft grey card: text left, 2 stats right) ── */
-  .about-partner__panel {
-    background: var(--surface-tertiary); border: none; border-radius: 24px;
-    padding: clamp(32px, 5vw, 72px);
-  }
-  /* One row: text block + two stats, vertically centred. */
-  .about-partner__row {
-    display: flex; align-items: center; gap: clamp(40px, 6vw, 96px);
-  }
-  .about-partner__intro { flex: 1 1 auto; min-width: 0; max-width: 46ch; }
-  /* Title matches the "Why we exist" section heading exactly. */
-  .about-partner__title {
-    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
-    line-height: 1.15; margin: 0; color: var(--text-primary); text-wrap: balance;
-  }
-  /* .innovue-wordmark (the inline Innovue mark in the title) lives in styles.css
-     beside .innovue-wm — it is shared with the Signal page's "Powered by" credit. */
-  .about-partner__body {
-    font-size: clamp(15px, 1vw, 16px); line-height: 1.6;
-    color: var(--text-secondary); margin: clamp(14px, 1.4vw, 18px) 0 0;
-    max-width: 46ch; text-wrap: pretty;
-  }
-  /* Two stats on the right — label above each heavy-sans number. */
-  .stats-2up {
-    display: flex; flex: 0 0 auto; gap: clamp(28px, 3.5vw, 56px);
-  }
-  .stats-2up .stat { max-width: 22ch; }
-  .about-partner__panel .stat-eyebrow {
-    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
-    text-transform: none; color: var(--text-secondary); margin: 0 0 12px;
-  }
-  .about-partner__panel .stat-num {
-    font-family: 'Urbanist', 'Inter', system-ui, sans-serif; font-weight: 800;
-    font-size: clamp(36px, 4vw, 54px); letter-spacing: -0.03em;
-    line-height: 0.95; color: var(--text-primary);
-  }
-  .about-partner__panel .stat-body { margin-top: 14px; max-width: 26ch; }
-  /* CTA sits at the bottom-right of the card. */
-  .about-partner__cta {
-    display: flex; justify-content: flex-end; margin: clamp(32px, 4vw, 48px) 0 0;
+  .ab-pull p + p {
+    margin-top: 14px; max-width: 54ch;
+    font-size: var(--ab-small); font-weight: 400; letter-spacing: 0;
+    line-height: 1.65; color: var(--text-secondary); text-wrap: pretty;
   }
 
-  /* ── Board of Directors — centred row of small (96px) headshots ── */
-  .about-board__heading {
-    font-size: clamp(26px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em;
-    line-height: 1.15; margin: 0 0 var(--space-head-gap); color: var(--text-primary); text-align: center;
+  /* ── Three ways (from D) — gapless dense bento, hairlines as shared edges ── */
+  .ab-bento {
+    display: grid; grid-auto-flow: dense;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    border: 1px solid var(--border-primary); border-radius: 16px; overflow: hidden;
   }
+  /* 3 columns x 2 rows = 6 cells. wide(2) + tall(2) + small(1) + type(1) = 6.
+     Zero voids, which is what grid-auto-flow: dense is there to guarantee. */
+  .ab-cell {
+    position: relative; isolation: isolate; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: clamp(230px, 26vw, 320px);
+    padding: clamp(24px, 2.6vw, 32px);
+    text-decoration: none;
+  }
+  .ab-cell--wide  { grid-column: 1 / 3; grid-row: 1; border-right: 1px solid var(--border-primary); border-bottom: 1px solid var(--border-primary); }
+  .ab-cell--tall  { grid-column: 3; grid-row: 1 / 3; border-left: 1px solid var(--border-primary); }
+  .ab-cell--small { grid-column: 1; grid-row: 2; border-right: 1px solid var(--border-primary); }
+  .ab-cell--type  { grid-column: 2; grid-row: 2; }
+  /* Image cells are always-dark, so pure white copy is the sanctioned literal
+     (DESIGN.md §1.3) and #0E0E0E matches .offer-card's own chip base. */
+  .ab-cell--img { background: #0E0E0E; }
+  .ab-cell--img::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background-size: cover; background-position: center;
+    transform: scale(1.01);
+    transition: transform 700ms var(--ease-out);
+  }
+  .ab-cell--img::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.46) 46%, rgba(0,0,0,0.06) 82%);
+  }
+  .ab-img--reports::before   { background-image: url('/assets/imagery/coremap/reports-800.webp'); }
+  .ab-img--licensing::before { background-image: url('/assets/imagery/coremap/licensing-800.webp'); }
+  .ab-img--owned::before     { background-image: url('/assets/imagery/coremap/owned-800.webp'); }
+  @media (hover: hover) and (pointer: fine) {
+    .ab-cell--img:hover::before { transform: scale(1.07); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ab-cell--img::before { transition: none; }
+    .ab-cell--img:hover::before { transform: scale(1.01); }
+  }
+  /* Top-right corner rather than inline above the title, matching the nav
+     dropdown and .offer-card-body > .status-flag (styles.css:2079).
+
+     20px, not 0: padding does not offset an absolutely positioned child, so the
+     containing block is the cell's outer rectangle. The Licensing cell is the
+     bento's top-right cell, so at 0/0 the chip would collide with the container's
+     16px radius and be clipped by its overflow:hidden. 20px clears it and reads
+     as a corner badge rather than a content element. */
+  .ab-cell .status-flag { position: absolute; top: 20px; right: 20px; z-index: 1; }
+  .ab-cell-t {
+    margin: 0; font-size: clamp(20px, 2vw, 28px); font-weight: 700;
+    letter-spacing: -0.025em; line-height: 1.14; color: #FFFFFF;
+  }
+  .ab-cell-d {
+    margin: 10px 0 0; max-width: 34ch;
+    font-size: var(--ab-small); line-height: 1.55; color: rgba(255, 255, 255, 0.82);
+  }
+  .ab-cell-more {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+    font-size: var(--ab-label); font-weight: 600; color: #FFFFFF;
+  }
+  .ab-cell-more svg {
+    width: 16px; height: 16px; stroke: currentColor; fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    transition: transform 200ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .ab-cell:hover .ab-cell-more svg { transform: translateX(4px); }
+  }
+  .ab-cell:focus-visible { outline: 2px solid #FFFFFF; outline-offset: -3px; }
+  /* The cell that keeps the grid dense. It carries the S8 clause the live page
+     drops, so the grid states its own thesis instead of needing a lead above it. */
+  /* #0E0E0E, not --surface-inverse. Two reasons: it matches the image cells
+     exactly (it is .offer-card's own chip base), and --surface-inverse /
+     --text-inverse FLIP under [data-theme="dark"] (#252525 → #FAFAFA, #FFFFFF →
+     #252525), which turned this into a light panel among four dark ones. Both
+     literals are the DESIGN.md §1.3 always-dark-surface exception. */
+  /* Centred on both axes: justify-content handles the block axis (the cell is a
+     flex column), align-items the inline axis. text-align centres the rag itself. */
+  .ab-cell--type { justify-content: center; align-items: center; background: #0E0E0E; }
+  /* --ab-pull, not a new value. This is a pulled statement, which is exactly the
+     role that step already serves for the "Why we exist" conclusion — so the page's
+     two pulled statements now match instead of being 24 and 32.
+
+     line-height 1.45, up from 1.3, for two reasons that compound here: 62
+     characters in a ~390px measure wraps to 3-4 lines, and tight leading is only
+     for short text; and light type on a dark ground reads lighter than it is, so it
+     needs more room than the same text would on white.
+
+     text-wrap: balance is load-bearing now rather than cosmetic — a centred block
+     with a ragged rag reads as broken, and balance is what evens the lines. */
+  .ab-cell--type p {
+    margin: 0; text-align: center;
+    font-size: var(--ab-pull); font-weight: 600;
+    letter-spacing: -0.02em; line-height: 1.45;
+    color: #FFFFFF; text-wrap: balance;
+  }
+
+  /* ── Powered by Innovue (from A) ──────────────────────────────────────────
+     The card IS the section: no marker above it, and the heading lives inside.
+     No TIS submark and no separate lockup — "Powered by Innovue" carries the
+     Innovue wordmark inline, which is the credit construction visual-guide.md
+     §Innovue Co-Branding specifies, and .innovue-wordmark is the shared
+     component the Signal page already uses for exactly this. ── */
+  .ab-partner {
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 24px;
+    padding: var(--ab-panel);
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(32px, 5vw, 88px);
+    align-items: stretch;              /* both columns full height so the CTA can sit on the floor */
+  }
+  /* Column, so the CTA can be pushed to the card's bottom edge with margin-top:auto. */
+  .ab-partner__col { display: flex; flex-direction: column; }
+  /* Down a full two steps from the section h2 (40 → 22), for two reasons.
+
+     One: it is a CARD title, not a page-section heading. The other four h2s open
+     sections; this one opens a panel inside one, and a subordinate heading that
+     shares its parent's step stops reading as subordinate.
+
+     Two: an inline logotype reads optically LARGER than text at the same em size.
+     It is a solid geometric mark with no x-height or ascender variation, so it
+     carries far more weight per em than the words around it — which is why this
+     heading felt oversized at 40px while "Why we exist" does not.
+
+     Weight 700 keeps it a title at the smaller size; the skill allows a shared
+     step when weight keeps the levels distinct. Tracking relaxes -0.025em →
+     -0.01em, matching design-tokens.md's heading-24 role: display tracking on a
+     22px heading pulls the letters too tight. */
+  .ab-partner__title {
+    margin: 0 0 var(--ab-block);
+    font-size: var(--ab-pull); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1.25;
+    color: var(--text-primary);
+  }
+  /* "Powered by" is the credit, not the subject — Innovue is. So the words go
+     small, light and italic while the logotype keeps the title's own em size.
+     0.52em against the title's 32px gives ~16.6px with a ~11.6px cap height,
+     against the wordmark's 23px glyph height: the mark reads roughly twice the
+     prefix, which is the relationship a credit lockup wants.
+
+     Both spans are children of the h2, so the wordmark still sizes off the TITLE
+     (0.72em of 32px) and is unaffected by the prefix shrinking.
+
+     Tracking to 0: -0.01em is display tracking and this is now 16px text.
+
+     NOTE — the italic is SYNTHESIZED. Only Urbanist 400/500/600/700 uprights are
+     built (assets/build/fonts/, every @font-face is font-style: normal), so the
+     browser mechanically slants the upright rather than rendering a true italic.
+     Acceptable on two words of geometric sans at this size, but the real fix is
+     adding the italic face to scripts/build-fonts.mjs — the source variable font
+     designs/assets/fonts/Urbanist/Urbanist-Italic[wght].ttf is already on disk. */
+  .ab-partner__pre {
+    font-size: 0.52em; font-weight: 400; font-style: italic;
+    letter-spacing: 0;
+  }
+  .ab-partner__body {
+    margin: 0; max-width: 52ch;
+    font-size: var(--ab-body); line-height: 1.65;
+    color: var(--text-secondary); text-wrap: pretty;
+  }
+  .ab-partner__body + .ab-partner__body { margin-top: 14px; }
+  /* Pinned to the card's bottom-left: margin-top:auto takes all the column's
+     slack, which also removes the void that used to sit under the prose. */
+  .ab-partner__cta { margin: var(--ab-block) 0 0; margin-top: auto; padding-top: var(--ab-block); }
+  .ab-stat + .ab-stat {
+    margin-top: clamp(24px, 2.8vw, 36px);
+    border-top: 1px solid var(--border-secondary);
+    padding-top: clamp(24px, 2.8vw, 36px);
+  }
+  .ab-stat__label {
+    margin: 0 0 10px;
+    font-size: var(--ab-label); font-weight: 600; letter-spacing: -0.01em;
+    color: var(--text-secondary);
+  }
+  /* Numerals are Inconsolata per design-tokens.md §3, and tabular so the two
+     figures share a rhythm and the count-up does not reflow on every frame. */
+  .ab-stat__num {
+    margin: 0; font-family: var(--font-mono);
+    font-size: clamp(30px, 3.1vw, 40px); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+  }
+  .ab-stat__body {
+    margin: 12px 0 0; max-width: 30ch;
+    font-size: var(--ab-small); line-height: 1.55;
+    color: var(--text-secondary); text-wrap: pretty;
+  }
+  .ab-stat__body strong { font-weight: 600; color: var(--text-primary); }
+
+  /* ── Board of Directors — the original strip, restored ─────────────────────
+     Verbatim from about/index.html: 96px circles in 132px cells, grayscale until
+     hover or focus, 15px name, 10px uppercase role, centred.
+
+     Centred is a deliberate exception to this page's shared left edge. Tried
+     left-aligned first: five 132px cells span 868px of a 1376px container, so it
+     left ~500px of dead width that read as an accident. A centred roster is the
+     conventional close for a page, and it is what the section already was. ── */
+  .ab-board__heading { text-align: center; }
   .about-board-grid {
     display: flex; flex-wrap: wrap; justify-content: center;
     gap: clamp(24px, 4vw, 52px);
@@ -166,7 +402,6 @@
   }
   .board-member__photo img {
     width: 100%; height: 100%; object-fit: cover;
-    /* Desaturated/dim until hover or focus reveals the headshot. */
     filter: grayscale(1) brightness(0.85); transition: filter 0.45s ease;
   }
   .board-member__img--jackson { transform: scale(1.213) translateY(-3%); }
@@ -176,46 +411,50 @@
   }
   .board-member:focus-within .board-member__photo img { filter: grayscale(0) brightness(1); }
   .board-member__name {
-    margin: 14px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
-    color: var(--text-primary);
+    margin: 14px 0 0; font-size: var(--ab-small); font-weight: 600;
+    letter-spacing: -0.01em; color: var(--text-primary);
   }
   .board-member__role {
     margin: 5px 0 0; font-size: 10px; font-weight: 500; text-transform: uppercase;
     letter-spacing: 0.16em; color: var(--text-tertiary);
   }
 
-  /* ── Scroll reveal (about page is its own [data-reveal] scope) ── */
-  [data-reveal] { opacity: 0; transform: translateY(16px); }
-  [data-reveal].is-revealed {
+  /* ── Reveals. site.js adds .is-revealed via IntersectionObserver. Gated
+       unconditionally, matching .h-section[data-reveal] in styles.css and the
+       block this replaced: with JS off the section stays hidden. Site-wide
+       behaviour, not this page's to change. ── */
+  .ab [data-reveal] { opacity: 0; transform: translateY(14px); }
+  .ab [data-reveal].is-revealed {
     opacity: 1; transform: none;
-    transition: opacity 560ms var(--ease-card), transform 560ms var(--ease-card);
+    transition: opacity 520ms var(--ease-card), transform 520ms var(--ease-card);
   }
-  [data-reveal][data-reveal-d="1"].is-revealed { transition-delay: 90ms; }
-  [data-reveal][data-reveal-d="2"].is-revealed { transition-delay: 170ms; }
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal] { opacity: 1; transform: none; }
+    .ab [data-reveal] { opacity: 1; transform: none; }
   }
 
   @media (max-width: 900px) {
-    .about-story__layout { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 64px); }
-    .about-profile { max-width: 65ch; }
-    /* Stack: text on top, stats below (still side by side until very narrow). */
-    .about-partner__row { flex-direction: column; align-items: stretch; gap: clamp(32px, 6vw, 44px); }
-    .about-partner__intro { max-width: 60ch; }
-    .stats-2up { gap: clamp(32px, 6vw, 48px); }
-  }
-  @media (max-width: 520px) {
-    .about-ways__grid { grid-template-columns: 1fr; }
-    .stats-2up { flex-direction: column; }
+    .ab-doc { grid-template-columns: 1fr; gap: var(--ab-head-gap); }
+    .ab-doc__head { position: static; }
+    .ab-bento { grid-template-columns: 1fr; }
+    .ab-cell--wide, .ab-cell--tall, .ab-cell--small, .ab-cell--type {
+      grid-column: 1; grid-row: auto;
+      border-right: 0; border-left: 0; border-bottom: 1px solid var(--border-primary);
+    }
+    .ab-partner { grid-template-columns: 1fr; gap: clamp(32px, 6vw, 48px); }
   }
   /* 10px is the smallest type on the site and this is the only place it carries
      prose — a person's job title beside their name, uppercase at 0.16em, in
-     --text-tertiary. Held at 10px on desktop where the reader is further from
-     nothing and the 132px card is a deliberate tight column; raised on a phone,
-     where 10px uppercase is roughly 1.7mm of cap height. Measured: no role
-     rewraps at 12px (the two-line one stays two lines) and the section grows
-     13px. (2026-08-28) */
-  @media (max-width: 640px) {
+     --text-tertiary. Held at 10px on desktop where the 132px card is a deliberate
+     tight column; raised on a phone, where 10px uppercase is roughly 1.7mm of cap
+     height. Measured: no role rewraps at 12px and the section grows 13px.
+
+     Gated on `(pointer: coarse)` as well as the width, because the 1.7mm argument is
+     about reading distance, not viewport size: a touch tablet at 641–880px was still
+     getting 10px. Matches how the rest of the site scopes its touch-accessibility
+     overrides (styles.css, the block at the foot of the file). DESIGN.md §14.2 puts
+     the floor at 11px, and 12px on a phone — 10px is a deliberate desktop-only
+     exception, which is why it stays width-gated on fine pointers. */
+  @media (max-width: 640px), (pointer: coarse) {
     .board-member__role { font-size: 12px; }
   }
 </style>
@@ -230,13 +469,13 @@
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -276,7 +515,7 @@
     <div class="topnav-controls">
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -290,7 +529,7 @@
       </div>
 
       <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -300,7 +539,7 @@
       <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -309,14 +548,14 @@
 
 <!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -353,7 +592,7 @@
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -363,7 +602,7 @@
 
 <!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -421,171 +660,169 @@
 
 <main id="main" class="about-page">
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Hero  —  Reports-style component (silver + 32px grid backdrop, no    ║
-       ║ shader). Title + sub only. Sizing inherits .hero / .pillar-title.    ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero about-hero" aria-label="About Talent Intelligence Strategies">
-    <!-- Shifting-lines WebGL shader (three.js), muted to a near-mono glow; mounted
-         by the ESM module near </body>. The black hero background shows through if
-         WebGL / esm.sh fail (the centred white logo stays readable either way). -->
+<div class="ab">
+
+  <!-- ╔═══════════════════════════════════════════════════════════════════════╗
+       ║ Hero — mark, page label, scroll cue. Dimensions are the live hero's:  ║
+       ║ the height override was removed so base .hero applies unchanged.       ║
+       ╚═══════════════════════════════════════════════════════════════════════╝ -->
+  <section class="hero ab-hero" aria-labelledby="ab-hero-line">
     <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <h1 id="about-page-heading" class="sr-only" data-zh="關於泰然策略解密">About Talent Intelligence Strategies</h1>
-      <span class="about-hero-logo" role="img" aria-label="Talent Intelligence Strategies" data-reveal></span>
+      <span class="ab-hero-logo" role="img" aria-label="Talent Intelligence Strategies" data-zh-aria="泰然策略解密"></span>
+      <h1 class="ab-hero-line" id="ab-hero-line" data-zh="關於我們">About us</h1>
+      <span class="ab-cue" aria-hidden="true"></span>
     </div>
   </section>
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Why we exist  —  locked profile copy, verbatim (positioning.md §4).  ║
-       ║ Two-column: narrative as four labelled beats (problem → response →   ║
-       ║ engine → cornerstone) on the left; the four value-release lines as a ║
-       ║ 2×2 compact offer-card grid on the right. Do not reword without §4.  ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about-story" aria-labelledby="about-story-heading">
+  <!-- ╔═══════════════════════════════════════════════════════════════════════╗
+       ║ Why we exist — §4 verbatim, re-cut into three paragraphs and a pulled  ║
+       ║ conclusion. S1+S2 / S3+S4 / S5+S6+S7, then S9+S10+S11. Sticky head.    ║
+       ║ Do not reword without positioning.md §4.                               ║
+       ╚═══════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section ab-section" aria-labelledby="ab-why-h">
     <div class="container">
-      <div class="about-story__layout">
-
-        <!-- Left — narrative beats -->
-        <div class="about-story__col" data-reveal>
-          <h2 class="about-story__heading" id="about-story-heading" data-zh="我們為何存在">Why we exist</h2>
-          <div class="about-profile">
-            <div class="about-beat">
-              <p class="about-beat__label" data-zh="問題所在">The problem</p>
-              <p class="about-beat__body" data-zh="在今天的經濟裡，企業的價值有很大一部分不在廠房與設備，而在無形資產。專利，是這份價值最明確的法律形式 — 卻也是資產負債表上最難被看懂、最難被流動的一項。">In today's economy, much of a company's value lies not in plant and equipment but in intangible assets. Patents are the clearest legal form of that value — yet also the hardest to understand and the least liquid item on the balance sheet.</p>
-            </div>
-            <div class="about-beat">
-              <p class="about-beat__label" data-zh="我們的回應">Our response</p>
-              <p class="about-beat__body" data-zh="TIS 的存在，是為了改變這件事。我們把專利從一份靜態的法律文件，轉化為可被衡量、可被交易、可被投資的資產；並立志建立一套讓專利價值被公正衡量的標準。">TIS exists to change this. We turn patents from static legal documents into assets that can be measured, traded, and invested — and we set out to build the standard by which their value is fairly judged.</p>
-            </div>
-            <div class="about-beat">
-              <p class="about-beat__label" data-zh="評級引擎">The rating engine</p>
-              <p class="about-beat__body" data-zh="這一切的起點，是把「一件專利值多少」變成一個可信的答案。我們與股東 Innovue 共同開發的專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級。我們的目標，是讓它成為市場公認的專利品質標杆。">It begins with making "what is a patent worth?" a credible question to answer. With our shareholder Innovue, we developed a patent-strength rating engine that scores every patent from S to D across fifty indicators. Our goal is for it to become the market's recognized benchmark for patent quality.</p>
-            </div>
-            <div class="about-beat about-beat--cornerstone">
-              <p class="about-beat__label" data-zh="一切的基石">The cornerstone</p>
-              <p class="about-beat__body" data-zh="專利往往是企業最大、卻最被低估的資產。當它的價值能被一致地衡量，它就能被信任、被交易、被投資。這是 TIS 一切業務的基石。">Patents are often a company's largest yet most undervalued asset. When their value can be measured consistently, they can be trusted, traded, and invested. This is the cornerstone of everything TIS does.</p>
-            </div>
-          </div>
+      <div class="ab-doc">
+        <div class="ab-doc__head">
+          <h2 class="ab-h2" id="ab-why-h" data-zh="我們為何存在">Why we exist</h2>
         </div>
 
-        <!-- Right — the four value-release lines (2×2 compact offer-cards).
-             site.js adds .is-in (image reveal) + .is-revealed (card reveal). -->
-        <div class="about-ways" data-reveal>
-          <h2 class="about-ways__heading" data-zh="釋放價值的三種方式" id="three-ways-we-unlock-value">Three ways we unlock value</h2>
-          <div class="about-ways__grid">
+        <div class="ab-prose" data-reveal>
+          <p data-zh="在今天的經濟裡，企業的價值有很大一部分不在廠房與設備，而在無形資產。專利，是這份價值最明確的法律形式——卻也是資產負債表上最難被看懂、最難被流動的一項。">In today's economy, much of a company's value lies not in plant and equipment but in intangible assets. Patents are the clearest legal form of that value — yet also the hardest to understand and the least liquid item on the balance sheet.</p>
+          <p data-zh="TIS 的存在，是為了改變這件事。我們把專利從一份靜態的法律文件，轉化為可被衡量、可被交易、可被投資的資產；並立志建立一套讓專利價值被公正衡量的標準。">TIS exists to change this. We turn patents from static legal documents into assets that can be measured, traded, and invested — and we set out to build the standard by which their value is fairly judged.</p>
+          <p data-zh="這一切的起點，是把「一件專利值多少」變成一個可信的答案。我們與股東 Innovue 共同開發的專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級。我們的目標，是讓它成為市場公認的專利品質標杆。">It begins with making "what is a patent worth?" a credible question to answer. With our shareholder Innovue, we developed a patent-strength rating engine that scores every patent from S to D across fifty indicators. Our goal is for it to become the market's recognized benchmark for patent quality.</p>
 
-            <a class="offer-card offer-card--compact offer-card--reports" href="/product/signal/">
-              <span class="offer-card-body">
-                <span class="offer-card-eyebrow" aria-hidden="true">01</span>
-                <span class="offer-card-title" data-zh="專利報告">Patent Reports</span>
-                <span class="offer-card-more"><span data-zh="為專利評級">Grade a patent</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                </span>
-              </span>
-            </a>
-
-            <a class="offer-card offer-card--compact offer-card--licensing" href="/product/licensing/">
-              <span class="offer-card-body">
-                <span class="offer-card-eyebrow" aria-hidden="true">02</span>
-                <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
-                <span class="offer-card-title" data-zh="泰然專利防護網">Licensing Platform</span>
-                <span class="offer-card-more"><span data-zh="了解詳情">See what's coming</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                </span>
-              </span>
-            </a>
-
-            <a class="offer-card offer-card--compact offer-card--owned" href="/patents/">
-              <span class="offer-card-body">
-                <span class="offer-card-eyebrow" aria-hidden="true">03</span>
-                <span class="offer-card-title" data-zh="自有專利">Owned Patents</span>
-                <span class="offer-card-more"><span data-zh="查看自有專利">See our portfolio</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                </span>
-              </span>
-            </a>
-
+          <div class="ab-pull">
+            <p data-zh="專利往往是企業最大、卻最被低估的資產。">Patents are often a company's largest yet most undervalued asset.</p>
+            <p data-zh="當它的價值能被一致地衡量，它就能被信任、被交易、被投資。這是 TIS 一切業務的基石。">When their value can be measured consistently, they can be trusted, traded, and invested. This is the cornerstone of everything TIS does.</p>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Strategic partner — Innovue.  Credit block (copy assembled from      ║
-       ║ locked facts only: shareholder, co-developed engine, 50 indicators,  ║
-       ║ 180M daily-synced DB, S–D) paired with the stats frame as proof.     ║
-       ║ Count-up on scroll (.counter, site.js). CTA → PSS methodology.       ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about-partner" aria-labelledby="about-partner-heading">
+  <!-- ╔═══════════════════════════════════════════════════════════════════════╗
+       ║ Three ways we unlock value — gapless dense bento. The rating engine    ║
+       ║ takes double area because it is the core, not a peer; equal thirds     ║
+       ║ would contradict the positioning. The fourth cell carries the S8       ║
+       ║ clause, the one §4 sentence the live page drops entirely.              ║
+       ╚═══════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section ab-section" aria-labelledby="ab-ways-h">
     <div class="container">
-      <!-- One bordered panel: big title (Innovue wordmark inline) + subtext,
-           then the two counters (label above each number). -->
-      <div class="stats-frame about-partner__panel" data-reveal>
-        <div class="about-partner__row">
-          <div class="about-partner__intro">
-            <h2 class="about-partner__title" id="about-partner-heading" data-zh-html data-zh='與 <span class="innovue-wordmark" role="img" aria-label="Innovue"></span> 共同打造。'>Built with <span class="innovue-wordmark" role="img" aria-label="Innovue"></span>.</h2>
-            <p class="about-partner__body" data-zh="我們的股東與評級夥伴。我們與 Innovue 共同開發專利強度評級引擎，以五十項指標為每件專利評出 S 到 D 的等級，背後是全球第三大、收錄一億八千萬筆並每日與官方同步的專利資料庫。">Our shareholder and rating partner. We co-developed the patent-strength rating engine with Innovue — scoring every patent S to D across fifty indicators, against the world's third-largest patent index of 180 million records synced daily with official offices.</p>
-          </div>
-          <div class="stats-2up">
-            <div class="stat">
-              <p class="stat-eyebrow" data-zh="專屬資料庫">Proprietary database</p>
-              <h2 class="stat-num" id="0-m"><span class="counter" data-target="180">0</span>M</h2>
-              <p class="stat-body" data-zh-html data-zh="Innovue 專屬資料庫所收錄的專利數 - <strong>每日</strong>與官方同步更新資料，全球第三大完整專利資料庫，檢索不遺漏任何蛛絲馬跡。">patents in Innovue's proprietary database — synced <strong>daily</strong> with official patent offices. World's 3rd-largest patent index — searches that miss no trace.</p>
-            </div>
-            <div class="stat">
-              <p class="stat-eyebrow" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
-              <h2 class="stat-num" id="0"><span class="counter" data-target="100">0</span>+</h2>
-              <p class="stat-body" data-zh="專利資料庫囊括全球超過 100 個國家，包含美、歐、日、台、韓，全球專利佈局的最佳夥伴。">jurisdictions in the index — US, EU, Japan, Taiwan, Korea, and more. The foundation of global patent positioning.</p>
-            </div>
-          </div>
+      <h2 class="ab-h2" id="ab-ways-h" data-zh="釋放價值的三種方式">Three ways we unlock value</h2>
+
+      <div class="ab-bento" data-reveal>
+        <a class="ab-cell ab-cell--wide ab-cell--img ab-img--reports" href="/product/signal/">
+          <span class="ab-cell-t" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
+          <span class="ab-cell-d" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Three reports for investors: the grade, all 50 indicators, or the ten closest patents on the market.</span>
+          <span class="ab-cell-more"><span data-zh="查看報告">See the reports</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <a class="ab-cell ab-cell--tall ab-cell--img ab-img--licensing" href="/product/licensing/">
+          <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
+          <span class="ab-cell-t" data-zh="泰然專利防護網">Licensing Platform</span>
+          <span class="ab-cell-d" data-zh="為出口貨物保專利險。依國家與產業精選 30 件專利組合。">Patent insurance for exporters. Curated 30-patent bundles by country and industry.</span>
+          <span class="ab-cell-more"><span data-zh="了解詳情">See what's coming</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <a class="ab-cell ab-cell--small ab-cell--img ab-img--owned" href="/patents/">
+          <span class="ab-cell-t" data-zh="自有專利">Owned Patents</span>
+          <span class="ab-cell-d" data-zh="以自有資本與自有專利投入我們深具信心的技術，為被投企業築起隱形的智財護城河。">Technologies we back with our own capital and our own patents, an invisible IP moat for the companies we invest in.</span>
+          <span class="ab-cell-more"><span data-zh="查看自有專利">See our portfolio</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <div class="ab-cell ab-cell--type">
+          <!-- ZH carries explicit breaks: balance set it as 「…我們以三 / 種方式…」, which
+               splits the compound 三種方式. CJK may break between any two characters, so
+               it is legal rather than broken, but 7/7/8 keeps 三種方式 and 釋放 whole and
+               reads better. Safe to force here because the cell is width-bounded: the
+               container caps at 1440, so this cell never exceeds ~458px. -->
+          <p data-zh-html data-zh="圍繞這個核心，<br>我們以三種方式<br>釋放專利的價值。">Around this core, we unlock the value of patents in three ways.</p>
         </div>
-        <p class="about-partner__cta">
-          <a href="/product/signal/methodology.html" class="btn btn-secondary" data-zh="看 PSS 評分方法">See the PSS methodology</a>
-        </p>
       </div>
     </div>
   </section>
 
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Board of Directors  —  uniform 4-up photo grid. Photo + name + role  ║
-       ║ per member. Grayscale until hover/focus. data-reveal staggers in.    ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section about" aria-labelledby="about-board-heading">
+  <!-- ╔═══════════════════════════════════════════════════════════════════════╗
+       ║ Powered by Innovue — one card, and the card is the whole section.      ║
+       ║ Prose carries the narrative register sanctioned for About only         ║
+       ║ (shareholder + co-developer, visual-guide.md:254 / positioning.md §5); ║
+       ║ the two figures carry the database. Nothing is stated twice.           ║
+       ╚═══════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section ab-section" aria-labelledby="ab-partner-h">
     <div class="container">
-      <h2 class="about-board__heading" id="about-board-heading" data-zh="董事會成員">Board of Directors</h2>
+      <div class="ab-partner" data-reveal>
+        <div class="ab-partner__col">
+          <h2 class="ab-partner__title" id="ab-partner-h"><span class="ab-partner__pre">Powered by</span> <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></h2>
+          <p class="ab-partner__body" data-zh="我們的股東，也是專利強度評級引擎的共同開發者。我們以五十項指標為每件專利評出 S 到 D 的等級。">Our shareholder, and co-developer of the patent-strength rating engine. Every patent is scored from S to D across fifty indicators.</p>
+          <p class="ab-partner__body" data-zh="我們的目標，是讓它成為市場公認的專利品質標杆。">Our goal is for it to become the market's recognized benchmark for patent quality.</p>
+          <p class="ab-partner__cta">
+            <a href="/product/signal/methodology.html" class="btn btn-primary btn-lg" data-zh="看 PSS 評分方法">See the PSS methodology</a>
+          </p>
+        </div>
+
+        <div>
+          <div class="ab-stat">
+            <p class="ab-stat__label" data-zh="專屬資料庫">Proprietary database</p>
+            <p class="ab-stat__num"><span class="counter" data-target="180">0</span>M</p>
+            <p class="ab-stat__body" data-zh-html data-zh="筆專利紀錄，<strong>每日</strong>與官方專利局同步更新。全球第三大完整專利資料庫。">records, synced <strong>daily</strong> with official patent offices. The world's third-largest patent index.</p>
+          </div>
+          <div class="ab-stat">
+            <p class="ab-stat__label" data-zh="司法管轄區覆蓋">Jurisdiction coverage</p>
+            <p class="ab-stat__num"><span class="counter" data-target="100">0</span>+</p>
+            <p class="ab-stat__body" data-zh="個司法管轄區，包含美、歐、日、台、韓。">jurisdictions, including the US, EU, Japan, Taiwan and Korea.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔═══════════════════════════════════════════════════════════════════════╗
+       ║ Board of Directors — the original strip, markup verbatim from          ║
+       ║ about/index.html. Grayscale until hover or focus; data-reveal per      ║
+       ║ member so they stagger in.                                             ║
+       ╚═══════════════════════════════════════════════════════════════════════╝ -->
+  <section class="section ab-section" aria-labelledby="ab-board-h">
+    <div class="container">
+      <h2 class="ab-h2 ab-board__heading" id="ab-board-h" data-zh="董事會成員">Board of Directors</h2>
       <div class="about-board-grid">
         <figure class="board-member" data-reveal>
-          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/ming-i-peng-400.webp 400w" sizes="(max-width: 640px) 94px, (max-width: 1100px) 94px, 94px"><img src="/assets/imagery/board/ming-i-peng.png" alt="Ming-I Peng" loading="lazy" decoding="async" width="410" height="410"></picture></span>
+          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/ming-i-peng-400.webp 400w" sizes="96px"><img src="/assets/imagery/board/ming-i-peng.png" alt="Ming-I Peng" loading="lazy" decoding="async" width="410" height="410"></picture></span>
           <figcaption class="board-member__name">Ming-I Peng</figcaption>
           <p class="board-member__role" data-zh="董事長 / 董事">Chairman / Board Director</p>
         </figure>
         <figure class="board-member" data-reveal>
-          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/ray-wu-400.webp 400w" sizes="(max-width: 640px) 94px, (max-width: 1100px) 94px, 94px"><img src="/assets/imagery/board/ray-wu.png" alt="Ray Wu" loading="lazy" decoding="async" width="410" height="410"></picture></span>
+          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/ray-wu-400.webp 400w" sizes="96px"><img src="/assets/imagery/board/ray-wu.png" alt="Ray Wu" loading="lazy" decoding="async" width="410" height="410"></picture></span>
           <figcaption class="board-member__name">Ray Wu</figcaption>
           <p class="board-member__role" data-zh="董事">Board Director</p>
         </figure>
         <figure class="board-member" data-reveal>
-          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/eric-huang-400.webp 400w" sizes="(max-width: 640px) 94px, (max-width: 1100px) 94px, 94px"><img src="/assets/imagery/board/eric-huang.png" alt="Dr. Eric Huang" loading="lazy" decoding="async" width="410" height="410"></picture></span>
+          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/eric-huang-400.webp 400w" sizes="96px"><img src="/assets/imagery/board/eric-huang.png" alt="Dr. Eric Huang" loading="lazy" decoding="async" width="410" height="410"></picture></span>
           <figcaption class="board-member__name">Dr. Eric Huang</figcaption>
           <p class="board-member__role" data-zh="董事">Board Director</p>
         </figure>
         <figure class="board-member" data-reveal>
-          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/jackson-hwang-400.webp 400w" sizes="(max-width: 640px) 114px, (max-width: 1100px) 114px, 114px"><img class="board-member__img--jackson" src="/assets/imagery/board/jackson-hwang.png" alt="Jackson Hwang" loading="lazy" decoding="async" width="410" height="410"></picture></span>
+          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/jackson-hwang-400.webp 400w" sizes="114px"><img class="board-member__img--jackson" src="/assets/imagery/board/jackson-hwang.png" alt="Jackson Hwang" loading="lazy" decoding="async" width="410" height="410"></picture></span>
           <figcaption class="board-member__name">Jackson Hwang</figcaption>
           <p class="board-member__role" data-zh="董事">Board Director</p>
         </figure>
         <figure class="board-member" data-reveal>
-          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/steven-lee-400.webp 400w" sizes="(max-width: 640px) 97px, (max-width: 1100px) 97px, 97px"><img class="board-member__img--steven" src="/assets/imagery/board/steven-lee.png" alt="Steven Lee" loading="lazy" decoding="async" width="442" height="350"></picture></span>
+          <span class="board-member__photo"><picture><source type="image/webp" srcset="/assets/imagery/board/steven-lee-400.webp 400w" sizes="97px"><img class="board-member__img--steven" src="/assets/imagery/board/steven-lee.png" alt="Steven Lee" loading="lazy" decoding="async" width="442" height="350"></picture></span>
           <figcaption class="board-member__name">Steven Lee</figcaption>
           <p class="board-member__role" data-zh="董事">Board Director</p>
         </figure>
       </div>
     </div>
   </section>
+
+</div>
 
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Get in touch  —  page-local contact form. Markup mirrors the         ║
@@ -601,44 +838,45 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
         </aside>
+
+        <!-- DOM order IS the visual order, so the screen-reader pass matches the
+             page: two full-width rows, then Email and the UBN paired on the last.
+             Office hours and the address are single long strings that break badly in
+             a half-width column, so each takes a row of its own (.contact-meta--wide).
+             Email and the UBN are both short, so they share one.
+             The address and UBN are published for payment-gateway verification — the
+             site named neither a street address nor an entity number before this. The
+             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="服務時間">Office hours</dt>
+            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+          </div>
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="地址">Address</dt>
+            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="電子郵件">Email</dt>
+            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="統一編號">UBN</dt>
+            <dd class="contact-meta__num">60331107</dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="contact-form" novalidate>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
                 <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
               </div>
             </div>
             <div class="contact-row">
@@ -653,7 +891,7 @@
             </div>
             <div class="field">
               <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
             </div>
 
             <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
@@ -672,7 +910,7 @@
 
             <div class="field">
               <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…" data-zh-placeholder="簡述你的需求…"></textarea>
             </div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
@@ -705,8 +943,8 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -776,7 +1014,7 @@
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -789,7 +1027,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 
 <!-- Shifting-lines hero shader (shared with the homepage hero) — ESM module →
      three.js from esm.sh, no build step. Muted to saturation 0.4 (near-mono glow)
@@ -812,6 +1050,7 @@
       const fragmentShader = `
         precision highp float;
         uniform vec2 resolution;
+        uniform float dprScale;   // buffer pixel ratio / REF_DPR
         uniform float time;
         uniform float xScale;
         uniform float yScale;
@@ -821,7 +1060,12 @@
         uniform float brightness;   // overall line intensity
 
         void main() {
-          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          // gl_FragCoord is in DEVICE pixels while the resolution uniform is in CSS
+          // pixels, so dividing one by the other made the whole coordinate space scale
+          // with the screen. Normalise the fragment coord onto the reference ratio's
+          // grid first; everything below is then identical on every device.
+          vec2 frag = gl_FragCoord.xy / dprScale;
+          vec2 p = (frag * 2.0 - resolution) / min(resolution.x, resolution.y);
           p.y -= yOffset;
 
           float d = length(p) * distortion;
@@ -844,8 +1088,37 @@
         }
       `;
 
+      /* Which screen's composition every visitor gets.
+         =====================================================================
+         This hero used to render three different PICTURES, not three sharpnesses.
+         `resolution` is CSS pixels; gl_FragCoord is device pixels — so `p` stretched
+         with the pixel ratio and the band slid down the hero as DPR rose. Measured
+         2026-08-29, DPR 1 vs DPR 3: mean difference 50/255, max 249, luminance centroid
+         0.508 → 0.732 of the hero height. At DPR 1 the band ran through the wordmark; at
+         DPR 3 it was a thin multi-strand ribbon along the bottom edge.
+
+         The old comment here read this as a resolution trade-off and called capping "a
+         visual decision". It was neither — it was the same CSS-px/device-px mismatch
+         already fixed on the homepage hero, and capping alone would only have chosen one
+         of the three pictures for phones while leaving a 1x monitor on another.
+
+         REF_DPR selects the composition. Each value reproduces exactly what that DPR
+         class saw before, with no re-tuning of yOffset / xScale / yScale / glow falloff,
+         because normalising the fragment coord leaves every constant meaning what it
+         meant on that grid. 2 = the Retina-laptop framing: copy on clean black with the
+         band sweeping beneath it. After the fix, DPR 1 vs 3 differ by mean 0.09/255 —
+         resampling noise — with an identical centroid.
+
+         Because the render no longer depends on the pixel ratio, capping the buffer at 2
+         is now purely a battery decision: 780×680 instead of 1170×1020 is 2.25× less
+         fragment work per frame, and it matches index.html and product/signal/.
+         ===================================================================== */
+      const REF_DPR = 2;
+      const bufDpr  = Math.min(window.devicePixelRatio || 1, 2);
+
       const uniforms = {
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        dprScale:   { value: bufDpr / REF_DPR },
         time:       { value: 0.0 },
         xScale:     { value: 1.0 },
         yScale:     { value: 0.30 },
@@ -856,17 +1129,19 @@
       };
 
       const renderer = createHeroShader(mount, fragmentShader, uniforms);
-      // Uncapped, unlike the homepage and Signal which cap at 2. Carried across from
-      // the three.js version verbatim — capping it here would change what a 3x phone
-      // renders, which is a visual decision and not part of retiring the dependency.
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(bufDpr);
       mount.appendChild(renderer.canvas);
       mount.classList.add('is-ready');
 
+      // Re-reads the pixel ratio, because it changes when a window moves between a
+      // Retina and a non-Retina display and dprScale has to follow it.
       const resize = () => {
         const w = mount.clientWidth, h = mount.clientHeight;
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.setPixelRatio(d);
         renderer.setSize(w, h);
         uniforms.resolution.value = [w, h];
+        uniforms.dprScale.value = d / REF_DPR;
       };
       resize();
       new ResizeObserver(resize).observe(mount);

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Build layer for tisglobalinc.com. The site is still hand-authored static HTML served from the repo root — this only builds the React islands, the Tailwind layer, and the vendored three.js / GSAP bundles into assets/build/.",
+  "description": "Build layer for tisglobalinc.com. The site is still hand-authored static HTML served from the repo root \u2014 this only builds the React islands, the Tailwind layer, and the vendored three.js / GSAP bundles into assets/build/.",
   "scripts": {
     "tokens": "node scripts/gen-tailwind-config.mjs",
     "fonts": "node scripts/build-fonts.mjs",
@@ -12,9 +12,10 @@
     "build": "npm run tokens && vite build && npm run fonts && npm run min && npm run images && npm run search",
     "dev": "vite build --watch",
     "serve": "python3 -m http.server 8000",
-    "verify": "node scripts/verify-build.mjs",
+    "verify": "node scripts/check-cascade-order.mjs && node scripts/verify-build.mjs",
     "min": "node scripts/build-min.mjs",
-    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
+    "cascade": "node scripts/check-cascade-order.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

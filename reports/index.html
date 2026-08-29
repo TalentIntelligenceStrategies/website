@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -72,13 +72,13 @@
      ╚═════════════════════════════════════════════════════════════════════╝ -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -118,7 +118,7 @@
     <div class="topnav-controls">
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -132,7 +132,7 @@
       </div>
 
       <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -142,7 +142,7 @@
       <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -151,14 +151,14 @@
 
 <!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -195,7 +195,7 @@
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -205,7 +205,7 @@
 
 <!-- Search modal — placeholder; wire to Reports/Press/section anchors when content is indexed -->
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -266,7 +266,11 @@
   <!-- ╔═════════════════════════════════════════════════════════════════════╗
        ║ Hero  —  homepage hero grammar; About-style plasma shader (mono glow) ║
        ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="hero" aria-label="Hero">
+  <!-- Named by its own heading, not aria-label="Hero". "Hero" is layout jargon: a
+       screen reader announced the page's largest landmark as "Hero, region". Pointing at
+       the headline names it in whichever language is live, with no data-zh-aria to keep
+       in sync — the same trick the carousel dots use. -->
+  <section class="hero" aria-labelledby="reports-press">
     <!-- Plasma-lines WebGL shader, muted to a near-mono white glow on black and
          slowed to match the About hero. Mounted by the inline script near
          </body>. The black .hero background shows through if WebGL fails. -->
@@ -296,10 +300,10 @@
           <p class="section-dek" data-reveal data-zh="每季解讀 IP 地形 — 專利佈局如何在各產業與司法管轄區之間移動。">Quarterly reads on the IP landscape — how patent positions shift across industries and jurisdictions.</p>
         </div>
         <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" aria-controls="reports-carousel">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous reports" data-zh-aria="上一份報告" aria-controls="reports-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
           </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" aria-controls="reports-carousel">
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next reports" data-zh-aria="下一份報告" aria-controls="reports-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -355,7 +359,7 @@
           </li>
         </ul>
       </div>
-      <div class="report-dots" role="tablist" aria-label="Report slides"></div>
+      <div class="report-dots" role="group" aria-label="Report slides" data-zh-aria="報告輪播"></div>
     </div>
   </section>
 
@@ -370,10 +374,10 @@
           <p class="section-dek" data-reveal data-zh-html data-zh="公司動態、合作公告與精選媒體報導。">Company news, partnership announcements,<br>and select press coverage.</p>
         </div>
         <div class="report-nav">
-          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous press releases" aria-controls="press-carousel">
+          <button type="button" class="report-nav-btn" data-dir="prev" aria-label="Previous press releases" data-zh-aria="上一則新聞" aria-controls="press-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>
           </button>
-          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next press releases" aria-controls="press-carousel">
+          <button type="button" class="report-nav-btn" data-dir="next" aria-label="Next press releases" data-zh-aria="下一則新聞" aria-controls="press-carousel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -432,7 +436,7 @@
           </li>
         </ul>
       </div>
-      <div class="report-dots" role="tablist" aria-label="Press slides"></div>
+      <div class="report-dots" role="group" aria-label="Press slides" data-zh-aria="新聞輪播"></div>
     </div>
   </section>
 
@@ -448,44 +452,45 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
         </aside>
+
+        <!-- DOM order IS the visual order, so the screen-reader pass matches the
+             page: two full-width rows, then Email and the UBN paired on the last.
+             Office hours and the address are single long strings that break badly in
+             a half-width column, so each takes a row of its own (.contact-meta--wide).
+             Email and the UBN are both short, so they share one.
+             The address and UBN are published for payment-gateway verification — the
+             site named neither a street address nor an entity number before this. The
+             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="服務時間">Office hours</dt>
+            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+          </div>
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="地址">Address</dt>
+            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="電子郵件">Email</dt>
+            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="統一編號">UBN</dt>
+            <dd class="contact-meta__num">60331107</dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="contact-form" novalidate>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
                 <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
               </div>
             </div>
             <div class="contact-row">
@@ -500,7 +505,7 @@
             </div>
             <div class="field">
               <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
             </div>
 
             <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
@@ -519,7 +524,7 @@
 
             <div class="field">
               <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…" data-zh-placeholder="簡述你的需求…"></textarea>
             </div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
@@ -549,8 +554,8 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -620,7 +625,7 @@
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -793,7 +798,7 @@
   })();
 </script>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 
 </body>
 </html>

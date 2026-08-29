@@ -39,7 +39,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -200,9 +200,26 @@
   /* These are abstract particle fields, not document renders — the composition sits
      mid-frame, so centre the crop. A top anchor would show the empty black margin. */
   .offer-card[data-report]::before{ background-position:center; }
-  .offer-card--sigA::before{ background-image:url('/assets/imagery/signal/short_report.jpg'); }
-  .offer-card--sigB::before{ background-image:url('/assets/imagery/signal/long_report.jpg'); }
-  .offer-card--sigC::before{ background-image:url('/assets/imagery/signal/advance_report.jpg'); }
+  /* image-set with a JPEG fallback, matching the homepage tiles in styles.css. These
+     three were plain full-size JPEGs at every viewport — 787KB for the card backgrounds
+     alone, on a phone, before anything was tapped. The -800.webp variants already
+     existed on disk and were simply never wired up; together they are ~173KB. The first
+     url() in each declaration is the fallback for browsers without image-set. */
+  .offer-card--sigA::before{
+    background-image:url('/assets/imagery/signal/short_report.jpg');
+    background-image:image-set(url('/assets/imagery/signal/short_report-800.webp') type('image/webp'),
+                               url('/assets/imagery/signal/short_report.jpg') type('image/jpeg'));
+  }
+  .offer-card--sigB::before{
+    background-image:url('/assets/imagery/signal/long_report.jpg');
+    background-image:image-set(url('/assets/imagery/signal/long_report-800.webp') type('image/webp'),
+                               url('/assets/imagery/signal/long_report.jpg') type('image/jpeg'));
+  }
+  .offer-card--sigC::before{
+    background-image:url('/assets/imagery/signal/advance_report.jpg');
+    background-image:image-set(url('/assets/imagery/signal/advance_report-800.webp') type('image/webp'),
+                               url('/assets/imagery/signal/advance_report.jpg') type('image/jpeg'));
+  }
 
   /* The subtext on these three cards is written to two lines, so reserve two. The
      shared .offer-card-desc reserves three (min-height:4.5em) for the homepage tiles,
@@ -691,7 +708,16 @@
          idea state) rather than squeezed. minmax(0,1fr) pins the row to the container,
          which is what pushes the constraint down to the panel, the form, and finally
          the two textareas that are meant to absorb it. */
-      grid-template-rows:minmax(0, 1fr);
+      /* `1fr auto`, not the single `minmax(0, 1fr)` this was until 2026-08-29.
+         .contact-overlay-meta became a direct child of .contact-card (so a phone can
+         read banner -> form -> details), which means the card needs the second, auto
+         row the shared stylesheet declares. Left at one row the meta created an
+         implicit row below it, the overlay stopped spanning the card, and the coremap
+         photo ended 218px short with the deposit figure sitting on bare black.
+         The first row still carries the height constraint that the comment above
+         describes — minmax(0,1fr) and 1fr floor identically here because .contact-panel
+         sets min-height:0 itself. */
+      grid-template-rows:1fr auto;
     }
     /* The panel fills that height rather than floating centred in it — the homepage
        panel does the same (670 of 718 at 1600, the balance being its own margin), so
@@ -790,6 +816,13 @@
     margin:0 auto 48px;
     align-self:auto;
     text-align:left;
+    /* Re-declare the full radius. The shared component's @media (max-width:880px)
+       branch sets `border-radius: 0 0 18px 18px` because THERE the panel butts flush
+       against .contact-overlay above it, so square top corners are correct. This card
+       is display:block with a centred, floating bar and nothing above it — the flat
+       top edge read as a bug. This selector already beat that rule on margin and
+       align-self but never redeclared radius, so the 0 0 18 18 survived. */
+    border-radius:18px;
   }
   .sig-lookup{ display:grid; grid-template-columns:1fr 1fr auto; gap:16px; align-items:end; }
   .sig-lookup .btn{ height:50px; }            /* == the .field input height beside it */
@@ -1051,13 +1084,13 @@
 <!-- ── Top nav — mirrors index.html chrome ── -->
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -1096,7 +1129,7 @@
 
     <div class="topnav-controls">
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -1109,7 +1142,7 @@
         </div>
       </div>
 
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -1124,7 +1157,7 @@
            below stay on #intake; that IS the order action. -->
       <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -1133,14 +1166,14 @@
 
 <!-- Mobile drawer -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -1177,7 +1210,7 @@
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -1188,7 +1221,7 @@
 
 <!-- Search modal -->
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -1252,18 +1285,39 @@
        Blue dot, pairing with the cool pillar, same as the homepage's Patent
        Intelligence notice. The copy states the pre-launch position, which is also
        what explains why prices are visible on a page you cannot yet buy from. -->
-  <div class="announce" data-announce-id="2026-q3-signal-preorder" role="region" aria-label="Site announcement">
-    <span class="announce-cluster">
-      <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
-      <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 已核准專利、審查中的申請案，或只是一個想法，50 項指標的深度">Orders open soon: TIS Patent Intelligence — a granted patent, a pending draft, or just an idea, 50 indicators deep</span>
+  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement" data-zh-aria="網站公告">
+    <span class="announce-rotator">
+      <span class="announce-item is-active">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
+      </span>
+      <!-- Ticker loop duplicate (<=880px only). Must stay an EXACT copy of the two
+           items above — the track translates -50%, which is only seamless while the
+           second half matches the first. aria-hidden so each message is announced once. -->
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+      </span>
+      <span class="announce-item announce-item--dup" aria-hidden="true">
+        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
+        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
+      </span>
     </span>
-    <button type="button" class="announce-close" aria-label="Dismiss announcement">
+    <button type="button" class="announce-close" aria-label="Dismiss announcement" data-zh-aria="關閉公告">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
 
   <!-- ── 1 · Hero — homepage .hero foreground + shifting-lines shader ── -->
-  <section class="hero" data-active-pillar="signal" aria-label="Hero">
+  <!-- Named by its own heading, not aria-label="Hero". "Hero" is layout jargon: a
+       screen reader announced the page's largest landmark as "Hero, region". Pointing at
+       the headline names it in whichever language is live, with no data-zh-aria to keep
+       in sync — the same trick the carousel dots use. -->
+  <section class="hero" data-active-pillar="signal" aria-labelledby="know-what-a-patent-is-really-worth">
     <!-- Shifting-lines shader, the homepage's, recoloured to one blue hue and
          dropped below the copy. Uses the SHARED .hero-shader carrier from
          styles.css (position, z2, the 600ms .is-ready crossfade) rather than a
@@ -1584,32 +1638,33 @@
                Filled by the gate script at the foot of the page. data-zh-html, because
                the filled state carries a unit <span>; the script writes data-zh beside
                the visible text so a later language swap still resolves. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="今日應付（10%）">Amount due today (10%)</dt>
-              <dd id="intake-deposit" class="sig-due sig-due--empty" data-zh-html data-zh="選擇報告後顯示">Select a report</dd>
-            </div>
-            <!-- Seller identity. Published here rather than in the footer because this is
-                 the only page that sells and the only one with no contact panel, and a
-                 payment gateway checking a priced product wants the seller named beside
-                 the price. It joins the SAME dl as the amount on purpose: the two are one
-                 pair of transaction facts — what you pay, and who you are paying — and the
-                 dl already carries .contact-overlay-meta::before, the plinth that holds
-                 contrast over the bright arm of reports.jpg. A sibling below the dl would
-                 sit outside that scrim.
-                 The full legal name, not the shorthand: a gateway matches the name it is
-                 shown against the UBN's registration. See visual-guide.md §Name Usage,
-                 which was widened for exactly this surface. -->
-            <div class="contact-meta contact-meta--wide sig-seller">
-              <dt class="sr-only" data-zh="銷售方">Sold by</dt>
-              <dd>
-                <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies Global Inc.</span>
-                <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
-                <span><span data-zh="統一編號">UBN</span> 60331107</span>
-              </dd>
-            </div>
-          </dl>
         </aside>
+
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="今日應付（10%）">Amount due today (10%)</dt>
+            <dd id="intake-deposit" class="sig-due sig-due--empty" data-zh-html data-zh="選擇報告後顯示">Select a report</dd>
+          </div>
+          <!-- Seller identity. Published here rather than in the footer because this is
+               the only page that sells and the only one with no contact panel, and a
+               payment gateway checking a priced product wants the seller named beside
+               the price. It joins the SAME dl as the amount on purpose: the two are one
+               pair of transaction facts — what you pay, and who you are paying — and the
+               dl already carries .contact-overlay-meta::before, the plinth that holds
+               contrast over the bright arm of reports.jpg. A sibling below the dl would
+               sit outside that scrim.
+               The full legal name, not the shorthand: a gateway matches the name it is
+               shown against the UBN's registration. See visual-guide.md §Name Usage,
+               which was widened for exactly this surface. -->
+          <div class="contact-meta contact-meta--wide sig-seller">
+            <dt class="sr-only" data-zh="銷售方">Sold by</dt>
+            <dd>
+              <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies Global Inc.</span>
+              <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
+              <span><span data-zh="統一編號">UBN</span> 60331107</span>
+            </dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="intake-form" novalidate>
@@ -1890,7 +1945,7 @@
 
     <!-- Panel A · Snapshot -->
     <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
           <picture><source type="image/webp" srcset="/assets/imagery/signal/short_report-400.webp 400w, /assets/imagery/signal/short_report-800.webp 800w, /assets/imagery/signal/short_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
@@ -1915,11 +1970,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" data-zh-alt="特寫報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" data-zh-alt="特寫報告範例，首頁 — SABCD 評級、PSS 分數、排名與百分位、專利資訊，以及八大構面雷達圖" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -1933,7 +1988,7 @@
 
     <!-- Panel B · Study -->
     <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
           <picture><source type="image/webp" srcset="/assets/imagery/signal/long_report-400.webp 400w, /assets/imagery/signal/long_report-800.webp 800w, /assets/imagery/signal/long_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1243"></picture>
@@ -1958,11 +2013,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" data-zh-alt="景深報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" data-zh-alt="景深報告範例，首頁 — SABCD 評級、專利資訊、八大構面評分，以及主要指標與風險" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -1976,7 +2031,7 @@
 
     <!-- Panel C · Survey -->
     <div class="sig-xpanel" id="sig-panel-c" role="dialog" aria-modal="true" aria-labelledby="sig-panel-c-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
           <picture><source type="image/webp" srcset="/assets/imagery/signal/advance_report-400.webp 400w, /assets/imagery/signal/advance_report-800.webp 800w, /assets/imagery/signal/advance_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/advance_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
@@ -2001,11 +2056,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-landscape.png" alt="Sample Survey report, cover sheet" data-zh-alt="廣角報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-landscape-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-landscape-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-landscape-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-landscape.png" alt="Sample Survey report, first page — SABCD grade, top similarity, and the ten closest patents ranked by vector similarity" data-zh-alt="廣角報告範例，首頁 — SABCD 評級、最高相似度，以及依向量相似度排序的十件最接近專利" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 12 頁</strong> · 等級，以及依相似度排序的十件最相近專利"><strong>Page 1 of 12</strong> · the grade, and the ten closest patents ranked by similarity</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -2028,8 +2083,8 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -2098,7 +2153,7 @@
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -2111,7 +2166,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 
 <!-- Shifting-lines hero shader — the homepage's (index.html), in one blue hue and
      dropped below the copy. Same idiom throughout: ESM module → three.js from the
@@ -2165,6 +2220,7 @@
       const fragmentShader = `
         precision highp float;
         uniform vec2  resolution;
+        uniform float dprScale;    // buffer pixel ratio / REF_DPR
         uniform float time;
         uniform float xScale;
         uniform float yScale;
@@ -2186,7 +2242,10 @@
         #define CORE_HI 2.5
 
         void main() {
-          vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+          // gl_FragCoord is DEVICE px, resolution is CSS px. Normalise onto the
+          // reference ratio's grid first — see the REF_DPR block below.
+          vec2 frag = gl_FragCoord.xy / dprScale;
+          vec2 p = (frag * 2.0 - resolution) / min(resolution.x, resolution.y);
           // Positive yOffset lifts the band; negative drops it. Negative here so
           // the lines run beneath the copy block.
           p.y -= yOffset;
@@ -2227,6 +2286,7 @@
 
       const uniforms = {
         resolution: { value: [mount.clientWidth, mount.clientHeight] },
+        dprScale:   { value: 1.0 },   // set in resize(), which knows the ratio
         time:       { value: 0.0 },
         xScale:     { value: 1.0 },
         // Amplitude of the sweep, the homepage's own. Held as a constant; the CENTRE
@@ -2319,9 +2379,21 @@
       };
 
       // resolution stays in CSS px while setPixelRatio drives the device-px draw
-      // buffer — that reproduces the homepage's line scale on retina. On coarse
-      // pointers react to WIDTH only and lock the buffer to the tallest reachable
-      // height, so the mobile URL bar collapsing on scroll can't snap the wave.
+      // buffer. That mismatch used to reach the picture: bandOffset() and staticPhase()
+      // both measure the copy block in CSS px, but p was built from device px, so the
+      // band only landed where they aimed it at ONE pixel ratio. Measured 2026-08-29 at
+      // 390x780 — dpr 1 pushed the wave into the top-right corner above the eyebrow and
+      // left the hero all but empty, while dpr 2 swept it through the dek and CTAs as
+      // intended. Centroid 0.408 vs 0.506, mean difference 12.64/255.
+      //
+      // dprScale normalises the fragment coord onto REF_DPR's grid, so every screen now
+      // gets the dpr-2 composition — the one this was tuned against, and the one that is
+      // not degenerate. Neither bandOffset() nor staticPhase() needed changing: they were
+      // already written for that grid.
+      //
+      // On coarse pointers react to WIDTH only and lock the buffer to the tallest
+      // reachable height, so the mobile URL bar collapsing on scroll can't snap the wave.
+      const REF_DPR = 2;
       const coarse = window.matchMedia('(pointer: coarse)').matches;
       let lastW = -1;
       const resize = (force) => {
@@ -2331,8 +2403,13 @@
         const h = coarse
           ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
           : mount.clientHeight;
+        // Re-read the ratio: a window moving between Retina and non-Retina changes it
+        // with no reload.
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.setPixelRatio(d);
         renderer.setSize(w, h);
         uniforms.resolution.value = [w, h];
+        uniforms.dprScale.value = d / REF_DPR;
         uniforms.yOffset.value = bandOffset(w, h);
         // Both the band's centre and the still's phase are measured, so the still has
         // to be re-derived on resize too, not just re-rendered at the new size.
@@ -2358,13 +2435,23 @@
         // first paint and drifts from there, rather than arriving mid-sweep.
         const phase0 = staticPhase(mount.clientWidth, mount.clientHeight);
         const start = performance.now();
-        // Held while a legal dialog is open: that overlay carries a backdrop-filter across
+        // Held while a full-viewport overlay is open: those carry a backdrop-filter across
         // the whole viewport, so every frame painted here makes the compositor re-blur the
         // entire viewport. Held time is subtracted, so the band resumes on the phase it
         // stopped on rather than jumping forward to wall clock.
+        //
+        // `sig-xlock` was missing from this test until 2026-08-29, and that is the bug
+        // behind "See sample reports breaks the site on mobile". The report panel sets
+        // sig-xlock, not lgl-lock, so this loop kept rendering — ~1.4M fragments a frame
+        // at the coarse-pointer buffer size — underneath a blurred backdrop, while a
+        // 440ms FLIP scaled a panel decoding ~369KB of report sheets. The Web Animations
+        // onfinish that cleared `animating` got starved, and close() used to bail on
+        // `animating`, so the dialog became undismissable and the page needed a reload.
+        // If a THIRD overlay is ever added, add its class here too.
+        const OVERLAY_LOCKS = ['lgl-lock', 'sig-xlock'];
         let held = 0, heldAt = 0;
         const animate = () => {
-          if (document.body.classList.contains('lgl-lock')) {
+          if (OVERLAY_LOCKS.some(c => document.body.classList.contains(c))) {
             if (!heldAt) heldAt = performance.now();
           } else {
             if (heldAt) { held += performance.now() - heldAt; heldAt = 0; }

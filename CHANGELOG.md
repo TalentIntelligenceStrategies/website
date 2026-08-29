@@ -5,13 +5,20 @@ Deploy-relevant changes to the rendered TIS marketing site (`index.html`, `asset
 Format: one short entry per editing session, newest on top.
 
 ```
-- **2026-08-28 15:48 +0800** · Fixed the licensing step media never loading, WebP'd its 1.39 MB of stills, tidied heading structure, and gave 中文 its own page titles.
-- **2026-08-28 15:28 +0800** · Pages now load minified build twins of styles.css and site.js, and the unreferenced React island bundle is gone.
-- **2026-08-28 15:12 +0800** · Replaced the heroes' vendored three.js with a 1.7 KB fullscreen-quad shader runner; renders verified byte-identical.
 - **YYYY-MM-DD HH:MM +08:00** · one short sentence (~20 words max) describing what changed.
 ```
 
 ## Entries
+- **2026-08-29 12:01 +0800** · Contact card: the meta plinth stopped painting over the form panel, and the phone reflow it came from now covers all eight pages instead of three.
+- **2026-08-29 09:21 +0800** · Focus ring made visible on the black surfaces it was invisible on, pricing toggle and language switcher given honest roles, and the accessible-name layer translated.
+- **2026-08-29 07:26 +0800** · Workstream E: same shader bug found live on the homepage and Signal heroes and fixed, patents modal moved onto the shared page lock, 156 lines of never-running shader removed from 404.
+- **2026-08-29 06:47 +0800** · About hero rendered a different composition per screen (CSS-px resolution vs device-px fragment coord); normalised it and capped the buffer at 2 like the other heroes.
+- **2026-08-29 06:15 +0800** · Mobile pass 2: repaired 10 dead media-query declarations (six from pass 1) and added a build check, tightened footer and contact form, CJK switched to one variable font, dots and accordions given real semantics.
+- **2026-08-29 04:50 +0800** · Rebuilt the About page: page-label hero, sticky "Why we exist", gapless three-module bento, Powered-by-Innovue card, and one type/space ladder.
+- **2026-08-29 04:01 +0800** · Mobile pass across all pages: announce ticker, 34px hero floor with phone-only breaks, DPR-invariant shader band, about-card framing, contact/intake/About reflow, tighter dots, touch-scrollable partner strip, and the sample-report dialog fixed (it threw on every click).
+- **2026-08-28 15:48 +0800** · Fixed the licensing step media never loading, WebP'd its 1.39 MB of stills, tidied heading structure, and gave 中文 its own page titles.
+- **2026-08-28 15:28 +0800** · Pages now load minified build twins of styles.css and site.js, and the unreferenced React island bundle is gone.
+- **2026-08-28 15:12 +0800** · Replaced the heroes' vendored three.js with a 1.7 KB fullscreen-quad shader runner; renders verified byte-identical.
 - **2026-08-28 14:27 +0800** · Announce bar keeps its padding under Reduce Motion and drops the orphaned pulse dot on phones; the two sub-11px labels rise to 12px.
 - **2026-08-28 13:50 +0800** · Mobile pass: drawer opens Products and holds the language switch, short heroes drop to 340px, stacked hero CTAs match width, card deks gain a third line.
 - **2026-08-28 12:18 +0800** · Chinese em dashes normalised to a spaced single; status chips get a recessed fill and a real hairline so the badge shape reads.

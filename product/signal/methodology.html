@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=24">
+<link rel="stylesheet" href="/assets/build/styles.css?v=28">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -53,13 +53,13 @@
 
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
-    <a href="/" class="topnav-logo-link" aria-label="TIS — home">
+    <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
       <span class="topnav-logo" aria-hidden="true"></span>
     </a>
 
     <span class="topnav-spacer"></span>
 
-    <nav class="topnav-links" aria-label="Primary">
+    <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <div class="topnav-dropdown-wrap">
         <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
           <span data-zh="產品">Products</span>
@@ -99,7 +99,7 @@
     <div class="topnav-controls">
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -113,7 +113,7 @@
       </div>
 
       <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
-      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
+      <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
           <circle cx="11" cy="11" r="8"/>
@@ -123,7 +123,7 @@
       <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
 
       <!-- Mobile trigger -->
-      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
@@ -131,14 +131,14 @@
 </header>
 
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu">
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
-    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu">
+    <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <nav class="mobile-list" aria-label="Primary mobile">
+  <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
     <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
       <span data-zh="產品">Products</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -175,7 +175,7 @@
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
-    <div class="mobile-lang" role="radiogroup" aria-label="Language">
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
@@ -184,7 +184,7 @@
 </aside>
 
 <div class="search-overlay" id="search-overlay"></div>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
   <div class="search-input-row">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m21 21-4.34-4.34"/>
@@ -263,7 +263,7 @@
       </div>
       <div class="mth-pipe-band">
         <div class="container">
-          <nav class="mth-pipe" aria-label="How the score is calculated">
+          <nav class="mth-pipe" aria-label="How the score is calculated" data-zh-aria="評分的計算方式">
         <a class="mth-pipe__step" href="#indicators">
           <span class="mth-pipe__fig">50</span>
           <span class="mth-pipe__label" data-zh="項指標">indicators</span>
@@ -361,7 +361,7 @@
         </figure>
         <figure class="mth-stage__fig" data-step="1" aria-labelledby="mth-pil-title">
           <div class="mth-panel">
-              <svg class="mth-radar" viewBox="0 0 681 390" role="img" aria-label="How the 50 indicators distribute across the eight pillars: seven, eight, seven, five, eight, four, six and five">
+              <svg class="mth-radar" viewBox="0 0 681 390" role="img" aria-label="How the 50 indicators distribute across the eight pillars: seven, eight, seven, five, eight, four, six and five" data-zh-aria="50 項指標在八大構面的分布：七、八、七、五、八、四、六、五">
                 <polygon class="mth-radar__ring" points="340.0,162.0 359.8,170.2 368.0,190.0 359.8,209.8 340.0,218.0 320.2,209.8 312.0,190.0 320.2,170.2"/><polygon class="mth-radar__ring" points="340.0,134.0 379.6,150.4 396.0,190.0 379.6,229.6 340.0,246.0 300.4,229.6 284.0,190.0 300.4,150.4"/><polygon class="mth-radar__ring" points="340.0,106.0 399.4,130.6 424.0,190.0 399.4,249.4 340.0,274.0 280.6,249.4 256.0,190.0 280.6,130.6"/><polygon class="mth-radar__ring" points="340.0,78.0 419.2,110.8 452.0,190.0 419.2,269.2 340.0,302.0 260.8,269.2 228.0,190.0 260.8,110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="78.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="452.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="302.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="228.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="110.8"/>
                 <polygon class="mth-radar__area" points="340.0,92.0 419.2,110.8 438.0,190.0 389.5,239.5 340.0,302.0 300.4,229.6 256.0,190.0 290.5,140.5"/>
                 <circle class="mth-radar__dot" cx="340.0" cy="92.0" r="4"/><circle class="mth-radar__dot" cx="419.2" cy="110.8" r="4"/><circle class="mth-radar__dot" cx="438.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="389.5" cy="239.5" r="4"/><circle class="mth-radar__dot" cx="340.0" cy="302.0" r="4"/><circle class="mth-radar__dot" cx="300.4" cy="229.6" r="4"/><circle class="mth-radar__dot" cx="256.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="290.5" cy="140.5" r="4"/><text class="mth-radar__lbl" x="340.0" y="50.0" text-anchor="middle" data-zh="書目計量">Citation Impact</text><text class="mth-radar__val" x="340.0" y="66.0" text-anchor="middle">P1 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="100.2" text-anchor="start" data-zh="法律強度">Legal Strength</text><text class="mth-radar__val" x="434.8" y="116.2" text-anchor="start">P2 &#183; 8</text><text class="mth-radar__lbl" x="474.0" y="195.0" text-anchor="start" data-zh="技術價值">Technical Value</text><text class="mth-radar__val" x="474.0" y="211.0" text-anchor="start">P3 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="289.8" text-anchor="start" data-zh="市場覆蓋">Market Coverage</text><text class="mth-radar__val" x="434.8" y="305.8" text-anchor="start">P4 &#183; 5</text><text class="mth-radar__lbl" x="340.0" y="341.0" text-anchor="middle" data-zh="文本品質">Text Quality</text><text class="mth-radar__val" x="340.0" y="357.0" text-anchor="middle">P5 &#183; 8</text><text class="mth-radar__lbl" x="245.2" y="289.8" text-anchor="end" data-zh="網路中心性">Network Centrality</text><text class="mth-radar__val" x="245.2" y="305.8" text-anchor="end">P6 &#183; 4</text><text class="mth-radar__lbl" x="206.0" y="195.0" text-anchor="end" data-zh="授權潛力">Licensing Potential</text><text class="mth-radar__val" x="206.0" y="211.0" text-anchor="end">P7 &#183; 6</text><text class="mth-radar__lbl" x="245.2" y="100.2" text-anchor="end" data-zh="前瞻價值">Forward-Looking Value</text><text class="mth-radar__val" x="245.2" y="116.2" text-anchor="end">P8 &#183; 5</text>
@@ -375,11 +375,11 @@
                 <div class="mth-field">
                   <div class="mth-poolhero"><span class="mth-poolhero__num">1433</span>
                     <span class="mth-poolhero__lbl" data-zh="件專利，組成參考池">patents in the reference pool</span></div>
-                  <div class="mth-field__img" role="img" aria-label="A field of 1433 marks with one highlighted, representing one patent&#39;s place in the reference pool"></div>
+                  <div class="mth-field__img" role="img" aria-label="A field of 1433 marks with one highlighted, representing one patent&#39;s place in the reference pool" data-zh-aria="由 1433 個標記組成的圖示，其中一個為高亮，代表單一專利在參考池中的位置"></div>
                 </div>
                 <div class="mth-dist">
                   <div class="mth-dist__lead"><span class="mth-dist__no">310</span><span class="mth-dist__den">/ 1433</span></div>
-                  <svg class="mth-hist" viewBox="0 0 278 168" role="img" aria-label="Where this patent sits in the pool&#39;s own distribution">
+                  <svg class="mth-hist" viewBox="0 0 278 168" role="img" aria-label="Where this patent sits in the pool&#39;s own distribution" data-zh-aria="此專利在專利池分布中的位置">
                     <polygon class="mth-hist__mark" points="214.4,98.6 224.4,98.6 219.4,106.6"/>
                     <rect class="mth-hist__bar" x="0.0" y="149.4" width="10" height="8.6" rx="2"/><rect class="mth-hist__bar" x="13.4" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="26.8" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="40.2" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="53.6" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="67.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar" x="80.4" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="93.8" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="107.2" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="120.6" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="134.0" y="30.0" width="10" height="128.0" rx="2"/><rect class="mth-hist__bar" x="147.4" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="160.8" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="174.2" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="187.6" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="201.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar mth-hist__bar--hi" x="214.4" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="227.8" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="241.2" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="254.6" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="268.0" y="149.4" width="10" height="8.6" rx="2"/>
                   </svg>
@@ -394,7 +394,7 @@
               <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
               <div class="mth-split mth-split--pct">
                 <div class="mth-arc">
-                  <svg class="mth-arc__svg" viewBox="0 0 210 210" role="img" aria-label="This indicator&#39;s percentile in the pool">
+                  <svg class="mth-arc__svg" viewBox="0 0 210 210" role="img" aria-label="This indicator&#39;s percentile in the pool" data-zh-aria="此指標在專利池中的百分位">
                     <path class="mth-arc__track" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8"/>
                     <path class="mth-arc__fill" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8" stroke-dasharray="332 405"/>
                   </svg>
@@ -506,44 +506,45 @@
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
             <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
-          <!-- DOM order IS the visual order, so the screen-reader pass matches the
-               page: two full-width rows, then Email and the UBN paired on the last.
-               Office hours and the address are single long strings that break badly in
-               a half-width column, so each takes a row of its own (.contact-meta--wide).
-               Email and the UBN are both short, so they share one.
-               The address and UBN are published for payment-gateway verification — the
-               site named neither a street address nor an entity number before this. The
-               UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-          <dl class="contact-overlay-meta">
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="服務時間">Office hours</dt>
-              <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-            </div>
-            <div class="contact-meta contact-meta--wide">
-              <dt data-zh="地址">Address</dt>
-              <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="電子郵件">Email</dt>
-              <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-            </div>
-            <div class="contact-meta">
-              <dt data-zh="統一編號">UBN</dt>
-              <dd class="contact-meta__num">60331107</dd>
-            </div>
-          </dl>
         </aside>
+
+        <!-- DOM order IS the visual order, so the screen-reader pass matches the
+             page: two full-width rows, then Email and the UBN paired on the last.
+             Office hours and the address are single long strings that break badly in
+             a half-width column, so each takes a row of its own (.contact-meta--wide).
+             Email and the UBN are both short, so they share one.
+             The address and UBN are published for payment-gateway verification — the
+             site named neither a street address nor an entity number before this. The
+             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
+        <dl class="contact-overlay-meta">
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="服務時間">Office hours</dt>
+            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+          </div>
+          <div class="contact-meta contact-meta--wide">
+            <dt data-zh="地址">Address</dt>
+            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="電子郵件">Email</dt>
+            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
+          </div>
+          <div class="contact-meta">
+            <dt data-zh="統一編號">UBN</dt>
+            <dd class="contact-meta__num">60331107</dd>
+          </div>
+        </dl>
 
         <div class="contact-panel">
           <form class="contact-form" id="contact-form" novalidate>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name" data-zh="姓名">Full Name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" />
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
                 <label for="contact-title" data-zh="職稱">Job Title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" />
+                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
               </div>
             </div>
             <div class="contact-row">
@@ -558,7 +559,7 @@
             </div>
             <div class="field">
               <label for="contact-org" data-zh="機構">Organization</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" />
+              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
             </div>
 
             <!-- Inquiry type — chips (native radios). ZH per chinese-copy-direction.md slide 16;
@@ -577,7 +578,7 @@
 
             <div class="field">
               <label for="contact-message" data-zh="您的需求">Your Inquiry</label>
-              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…"></textarea>
+              <textarea id="contact-message" name="message" rows="4" placeholder="Briefly describe your requirements…" data-zh-placeholder="簡述你的需求…"></textarea>
             </div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出諮詢">Send Inquiry</button>
@@ -621,7 +622,7 @@
 
     <!-- Panel A · Snapshot -->
     <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
           <picture><source type="image/webp" srcset="/assets/imagery/signal/short_report-400.webp 400w, /assets/imagery/signal/short_report-800.webp 800w, /assets/imagery/signal/short_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
@@ -645,11 +646,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" data-zh-alt="特寫報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" data-zh-alt="特寫報告範例，首頁 — SABCD 評級、PSS 分數、排名與百分位、專利資訊，以及八大構面雷達圖" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -664,7 +665,7 @@
 
     <!-- Panel B · Study -->
     <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       <div class="sig-xpanel__scroll">
         <div class="sig-xbanner">
           <picture><source type="image/webp" srcset="/assets/imagery/signal/long_report-400.webp 400w, /assets/imagery/signal/long_report-800.webp 800w, /assets/imagery/signal/long_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1243"></picture>
@@ -688,11 +689,11 @@
             </div>
             <div class="sig-doc__stage">
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" data-zh-alt="景深報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
               </figure>
               <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" loading="lazy" width="1136" height="1512" ></picture>
+                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" data-zh-alt="景深報告範例，首頁 — SABCD 評級、專利資訊、八大構面評分，以及主要指標與風險" loading="lazy" width="1136" height="1512" ></picture>
                 <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
               </figure>
               <div class="sig-doc__rest">
@@ -715,8 +716,8 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" aria-label="Email address" required />
-              <button type="submit" aria-label="Subscribe">
+              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
@@ -787,7 +788,7 @@
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
   <div class="lgl-dialog">
-    <button type="button" class="lgl-close" aria-label="Close">
+    <button type="button" class="lgl-close" aria-label="Close" data-zh-aria="關閉">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="lgl-head"><h2 id="legal-title"></h2></div>
@@ -799,7 +800,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=13" defer></script>
+<script src="/assets/build/site.js?v=16" defer></script>
 
 </body>
 </html>

@@ -90,8 +90,15 @@ The snapshots are `design-tokens-snapshot.md`, `primitives-snapshot.md`,
 ```
 python3 -m http.server 8000     # preview — root-relative paths need a server
 npm run build                   # regenerate tailwind.config.js + assets/build/
-npm run verify                  # fail if committed assets/build/ has drifted from src/
+npm run cascade                 # fail if any @media declaration is dead on source order
+npm run verify                  # cascade check, then fail if assets/build/ has drifted from src/
 ```
+
+**`npm run cascade` guards a silent class of bug.** `assets/styles.css` interleaves media
+queries with the base rules they override, and nearly every rule is one class — so a `@media`
+block written *above* its component loses every property the base rule also declares, with no
+error. Ten such declarations were live on 2026-08-29, six of them from a mobile reflow that had
+already shipped and been eyeballed. See DESIGN.md §3.2. `npm run verify` runs it first.
 
 **A pre-commit hook guards the minified twins.** Editing `assets/styles.css` or
 `assets/site.js` and committing without rebuilding is a *silent* failure — the pages load

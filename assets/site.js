@@ -127,6 +127,12 @@
   const lenisReady = initLenis();
   window.__tisLenis = lenisReady;
   window.__tisLenisTakeOverRaf = takeOverRaf;
+  // Exported for blocks that live OUTSIDE this IIFE — currently the .sig-x* report
+  // dialog, which was moved out on 2026-08-27 so methodology.html could share it and
+  // has been calling these as bare globals ever since. Keep the refcount here: it is
+  // the only thing that knows how many overlays are stacked.
+  window.__tisScrollPause  = pauseScroll;
+  window.__tisScrollResume = resumeScroll;
 
   // Same-page anchors — the skip link, the ~15 #contact links, #intake, and the six
   // methodology pipe-nav targets. Lenis swallows these clicks by default, and its own
@@ -170,6 +176,15 @@
   // holds the CH form, data-en-placeholder snapshots the original EN placeholder.
   const i18nPlaceholderEls = document.querySelectorAll('[data-zh-placeholder]');
   i18nPlaceholderEls.forEach(el => { el.dataset.enPlaceholder = el.placeholder; });
+
+  // Same pattern again for alt text. Added 2026-08-29: until then there was no handler
+  // at all, so every informative image on the site described itself in English under
+  // 中文 — the six licensing step stills and the six sample-report sheets, which are
+  // whole sentences, not labels. Board-member portraits and the TIS mark are
+  // deliberately NOT given data-zh-alt: their visible captions carry no data-zh either,
+  // and translating only the alt would make image and caption disagree.
+  const i18nAltEls = document.querySelectorAll('[data-zh-alt]');
+  i18nAltEls.forEach(el => { el.dataset.enAlt = el.getAttribute('alt') || ''; });
 
   // Same pattern for aria-label. The attribute was already in the markup (the patents
   // modal's close button) with nothing reading it, so that control stayed announced
@@ -308,6 +323,9 @@
     });
     i18nAriaEls.forEach(el => {
       el.setAttribute('aria-label', lang === 'zh' ? el.dataset.zhAria : el.dataset.enAria);
+    });
+    i18nAltEls.forEach(el => {
+      el.setAttribute('alt', lang === 'zh' ? el.dataset.zhAlt : el.dataset.enAlt);
     });
     // The tab and the bookmark. Until 2026-08-28 the whole page swapped to 中文 while its
     // title stayed English, so a reader with several TIS tabs open picked between them in a
@@ -564,6 +582,12 @@
     landmarksOf().forEach(el => { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); });
   };
 
+  // Exported for the same reason as __tisScrollPause above: page-local dialogs that
+  // live outside this IIFE need the ONE lock, not a private `body.style.overflow`.
+  // patents/index.html's .pat-modal is the current caller. The refcount, the
+  // position:fixed offset restore and the `inert` on <main>/.footer all live here — a
+  // second implementation gets one of the three wrong, which is how the sample-report
+  // and newsletter dialogs each ended up broken on iOS.
   const unlockPage = () => {
     if (!lockDepth || --lockDepth) return;
     document.body.classList.remove('nav-lock');
@@ -584,6 +608,8 @@
       resumeScroll();
     }
   };
+  window.__tisLockPage   = lockPage;
+  window.__tisUnlockPage = unlockPage;
 
   // Tab cycles within `panel`. Bound per-panel rather than globally so the two
   // overlays cannot fight over the same handler.
@@ -892,6 +918,27 @@
   // off this handler are gone: no page carries either, and no `.acc-item` carries
   // `data-step` (methodology's `data-step` lives on `.mth-stage__*`, a different
   // component). The chevron is CSS, driven by `.is-open`.
+  //
+  // The trigger used to announce nothing at all: no aria-expanded, so a screen reader
+  // read five identical buttons with no indication that any of them had opened. And
+  // the panel collapses with `grid-template-rows: 0fr` + overflow:hidden, which hides
+  // it visually but leaves every answer in the accessibility tree and any link inside
+  // it in the tab order — so all five answers were being read out regardless of state.
+  // `inert` on the closed panel fixes both halves of that.
+  let accId = 0;
+  const accSync = (item) => {
+    const trigger = item.querySelector('.acc-trigger');
+    const panel = item.querySelector('.acc-content');
+    if (!trigger) return;
+    const open = item.classList.contains('is-open');
+    trigger.setAttribute('aria-expanded', String(open));
+    if (panel) {
+      if (!panel.id) panel.id = `acc-panel-${++accId}`;
+      trigger.setAttribute('aria-controls', panel.id);
+      panel.inert = !open;
+    }
+  };
+  document.querySelectorAll('.acc-item').forEach(accSync);
   document.querySelectorAll('.acc-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
       const item = trigger.closest('.acc-item');
@@ -899,6 +946,52 @@
       const wasOpen = item.classList.contains('is-open');
       group.querySelectorAll('.acc-item').forEach(el => el.classList.remove('is-open'));
       if (!wasOpen) item.classList.add('is-open');
+      group.querySelectorAll('.acc-item').forEach(accSync);
+    });
+  });
+
+  // ───────── Roving tabindex + arrow keys for any [role="radiogroup"] ─────────
+  //
+  // The drawer's .mobile-lang carried role="radiogroup" + role="radio" with none of
+  // the keyboard behaviour those roles promise: all options were separate tab stops
+  // and arrow keys did nothing. A screen reader announced "radio group, 1 of 2" and
+  // the obvious next keypress was inert.
+  //
+  // Written against [role="radiogroup"] rather than .mobile-lang so it is one helper
+  // and not a special case. It is deliberately NOT what fixed the licensing pricing
+  // toggle: that control is four toggle buttons, so it dropped the radio roles for
+  // role="group" + aria-pressed instead. Adding roles you then have to service is the
+  // expensive fix; use this one only where the control is a genuine radio group.
+  //
+  // State is never written here — arrow keys call .click() and let whatever already
+  // owns the group do the work (for .mobile-lang that is applyLang, which sets
+  // aria-checked on BOTH switchers at once). aria-checked is therefore observed, not
+  // assumed, so the roving tab stop follows a change this handler did not make.
+  document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+    const radios = () => [...group.querySelectorAll('[role="radio"]')];
+    const syncTabstop = () => {
+      const rs = radios();
+      if (!rs.length) return;
+      const checked = rs.find(r => r.getAttribute('aria-checked') === 'true') || rs[0];
+      rs.forEach(r => { r.tabIndex = r === checked ? 0 : -1; });
+    };
+    syncTabstop();
+    new MutationObserver(syncTabstop)
+      .observe(group, { subtree: true, attributes: true, attributeFilter: ['aria-checked'] });
+
+    group.addEventListener('keydown', (e) => {
+      const rs = radios();
+      const i = rs.indexOf(document.activeElement);
+      if (i < 0) return;
+      let n;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % rs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + rs.length) % rs.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = rs.length - 1;
+      else return;
+      e.preventDefault();          // stop the page scrolling under the drawer
+      rs[n].focus();
+      rs[n].click();
     });
   });
 
@@ -1219,8 +1312,15 @@
       lastFocus = document.activeElement;
       mkt.classList.add('is-open');
       mkt.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      pauseScroll();
+      // lockPage(), not `body.style.overflow = 'hidden'`. Two reasons, both mobile:
+      // iOS Safari keeps scrolling the document behind an overflow-hidden body (the
+      // reason nav-lock uses position:fixed with the offset carried on `top`), and
+      // lockPage also inerts <main> and the footer — without which this aria-modal
+      // dialog left the entire page behind it readable and tabbable. #mkt-overlay is a
+      // sibling of <main>, not a descendant, so it is not inerted by its own lock.
+      // lockPage calls pauseScroll itself; a second call here would not be balanced by
+      // closePopup, because unlockPage only resumes on the lenis path.
+      lockPage();
       markMktSeen();
       const email = mktCard.querySelector('input[type="email"]');
       if (email) setTimeout(() => email.focus(), 50);
@@ -1229,8 +1329,7 @@
     function closePopup() {
       mkt.classList.remove('is-open');
       mkt.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      resumeScroll();
+      unlockPage();
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
@@ -1472,6 +1571,11 @@
 // (Formerly nested in the hero-slider IIFE, retired with the carousel 2026-06-24.)
 (() => {
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  // Below 881px the bar is a travelling ticker driven entirely by CSS, not a
+  // crossfade rotator. The 6s timer has nothing to do there — every item is painted
+  // at once — so it stands down rather than toggling .is-active into the void.
+  // Must match the TICKER breakpoint in styles.css.
+  const tickerMQ = matchMedia('(max-width: 880px)');
   document.querySelectorAll('.announce').forEach((bar) => {
     const key = 'tis-announce-dismissed:' + bar.dataset.announceId;
     let dismissed = false;
@@ -1482,7 +1586,10 @@
     // Both items are always in the DOM and in the a11y tree, so nothing depends
     // on catching the right moment; this only drives which one is painted.
     // Skipped entirely under reduced motion, where CSS shows both side by side.
-    const items = [...bar.querySelectorAll('.announce-item')];
+    // :not(--dup) matters. The ticker's loop duplicate is real markup, and without
+    // this the cycle would spend half its slots on items that are display:none above
+    // 880px — the bar would simply go blank for 6s at a time.
+    const items = [...bar.querySelectorAll('.announce-item:not(.announce-item--dup)')];
     if (items.length > 1) {
       let i = 0, timer = null;
       const advance = () => {
@@ -1492,12 +1599,14 @@
       };
       const start = () => { if (!timer) timer = setInterval(advance, 6000); };
       const stop  = () => { clearInterval(timer); timer = null; };
-      const rotating = () => !reduceMotion.matches;
+      const rotating = () => !reduceMotion.matches && !tickerMQ.matches;
       const sync = () => {
         if (rotating()) { start(); return; }
-        // Not rotating (reduced motion): park on the first item, so if the
-        // preference is switched back the cycle resumes from the top rather
-        // than mid-swap.
+        // Not rotating (reduced motion, or the ticker owns the bar): park on the
+        // first item, so if the preference or the width changes back the cycle
+        // resumes from the top rather than mid-swap. In ticker mode .is-active is
+        // inert anyway — CSS paints every item — but parking keeps the two modes
+        // from disagreeing about which item is "current" when the width crosses back.
         stop();
         i = 0;
         items.forEach((el, n) => el.classList.toggle('is-active', n === 0));
@@ -1510,7 +1619,23 @@
       bar.addEventListener('focusin', stop);
       bar.addEventListener('focusout', () => { if (rotating()) start(); });
       reduceMotion.addEventListener('change', sync);
+      tickerMQ.addEventListener('change', sync);
       sync();
+
+      // WCAG 2.2.2 for the ticker. mouseenter/focusin cover the desktop rotator, but
+      // a phone fires neither, so the travelling copy had no pause at all. Holding a
+      // finger on the bar stops the track; lifting resumes it on the same phase.
+      // The rotator is a JS timer and the ticker is a CSS animation, so this pauses
+      // the animation directly rather than going through stop()/start().
+      const rot = bar.querySelector('.announce-rotator');
+      if (rot) {
+        const hold = () => { rot.style.animationPlayState = 'paused'; };
+        const release = () => { rot.style.animationPlayState = ''; };
+        bar.addEventListener('pointerdown', hold);
+        bar.addEventListener('pointerup', release);
+        bar.addEventListener('pointercancel', release);
+        bar.addEventListener('pointerleave', release);
+      }
     }
 
     const close = bar.querySelector('.announce-close');
@@ -1520,8 +1645,109 @@
       const done = () => { bar.hidden = true; bar.classList.remove('is-dismissing'); };
       if (reduceMotion.matches) { done(); return; }
       bar.classList.add('is-dismissing');
-      bar.addEventListener('transitionend', done, { once: true });
+      // Guarded and timed out. `transitionend` fires per property and .announce
+      // transitions both max-height and opacity; they share a 200ms duration today,
+      // so the unguarded version happened to be correct, but any future change to
+      // either duration would fire `done` early. The timeout is the real backstop —
+      // if the bar is display:none'd or the transition is interrupted, no
+      // transitionend ever arrives and the bar would sit at opacity 0 forever,
+      // still occupying its box.
+      let settled = false;
+      const finish = () => { if (settled) return; settled = true; done(); };
+      bar.addEventListener('transitionend', (e) => {
+        if (e.target === bar && e.propertyName === 'max-height') finish();
+      });
+      setTimeout(finish, 400);
     });
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PARTNER STRIP — touch autoplay  (coarse pointers only)
+
+   On desktop this strip is pure CSS: a max-content track with a 34s linear keyframe
+   translating -50%, paused on :hover. That gave a phone nothing — :hover is unreliable
+   and sticky on iOS, and `overflow: hidden` meant the logos could not be dragged at all.
+
+   A transform and a native scroller cannot share an element, so on coarse pointers the
+   CSS animation is switched off (see styles.css) and the same motion is driven here by
+   incrementing scrollLeft, wrapping at half the track. The markup already duplicates
+   the four marks exactly once for the -50% loop, which is what makes the wrap seamless
+   — if the number of marks ever changes, both halves must change together.
+
+   `data-partner-marquee` was a dead hook until now: it was in the markup with zero
+   references anywhere in this file.
+   ══════════════════════════════════════════════════════════════════════════ */
+(() => {
+  const coarse = matchMedia('(pointer: coarse)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const PX_PER_SEC = 29;          // matches the 34s CSS duration over a ~992px half-track
+
+  document.querySelectorAll('[data-partner-marquee]').forEach((box) => {
+    const track = box.querySelector('.partner-marquee__track');
+    if (!track) return;
+
+    let raf = null, last = 0, holds = 0;
+    // Position is tracked here as a float rather than read back from scrollLeft each
+    // frame. At 29px/s and 60fps each step is ~0.48px, and reading scrollLeft back
+    // quantises it away — the strip advanced ~2px in 1.6s instead of ~46px. Writing
+    // an accumulated float keeps the sub-pixel remainder.
+    let pos = 0;
+    const running = () => coarse.matches && !reduce.matches;
+
+    const step = (t) => {
+      const dt = last ? Math.min((t - last) / 1000, 0.05) : 0;   // clamp after a tab switch
+      last = t;
+      if (!holds) {
+        const half = track.scrollWidth / 2;
+        if (half > 0) {
+          pos += PX_PER_SEC * dt;
+          if (pos >= half) pos -= half;                          // seamless wrap
+          box.scrollLeft = pos;
+        }
+      }
+      raf = requestAnimationFrame(step);
+    };
+
+    const start = () => { if (!raf && running()) { last = 0; raf = requestAnimationFrame(step); } };
+    const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+
+    // A finger on the strip holds it, and so does a finger anywhere mid-drag. Refcounted
+    // because pointercancel and pointerup can both arrive for one gesture.
+    const hold    = () => { holds++; };
+    // Adopt the position the finger left it at, or the next frame would snap the strip
+    // back to wherever the accumulator had got to.
+    const release = () => { holds = Math.max(0, holds - 1); if (!holds) pos = box.scrollLeft; };
+
+    // Drag vs tap. The four real marks are target="_blank" anchors, so without this a
+    // swipe that happens to start on a logo opens innovue.ltd on release.
+    let downX = 0, downY = 0, moved = false;
+    box.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; moved = false; hold(); });
+    box.addEventListener('pointermove', (e) => {
+      if (!holds) return;
+      if (Math.abs(e.clientX - downX) > 8 || Math.abs(e.clientY - downY) > 8) moved = true;
+    });
+    box.addEventListener('pointerup', release);
+    box.addEventListener('pointercancel', release);
+    box.addEventListener('pointerleave', release);
+    box.addEventListener('click', (e) => {
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+    }, true);   // capture, so it beats the anchor's own navigation
+
+    // Nothing to animate while the section is off-screen.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => {
+        es.forEach(en => en.isIntersecting ? start() : stop());
+      }, { rootMargin: '100px' }).observe(box);
+    } else { start(); }
+
+    const sync = () => {
+      stop();
+      if (running()) { pos = 0; box.scrollLeft = 0; start(); }
+      else { pos = 0; box.scrollLeft = 0; }   // desktop/reduced-motion: CSS owns it again
+    };
+    coarse.addEventListener('change', sync);
+    reduce.addEventListener('change', sync);
   });
 })();
 
@@ -1540,12 +1766,35 @@ function initCardCarousel(carouselId) {
   const dotsWrap = section && section.querySelector('.report-dots');
 
   // Build one dot per card.
-  const dots = cells.map((_, i) => {
+  //
+  // These are pagination, not tabs. They used to carry role="tab" inside a
+  // role="tablist", with no tabpanel and no aria-controls anywhere on the page — so a
+  // screen reader announced "tab 1 of 4" and then had nowhere to send you. A labelled
+  // group of buttons with aria-current is what this control actually is.
+  //
+  // The name comes from the card's own <h3> via aria-labelledby rather than a written
+  // string. Two reasons: the hardcoded "Go to report N" was also announcing on the
+  // Press carousel, and a written label would need its own data-zh-aria to survive the
+  // language toggle. Pointing at the heading borrows a node that already swaps, so the
+  // dot is named "Japanese Enterprise Patent Sell-Off Flow Report" in English and the
+  // Chinese title in Chinese, with no extra i18n plumbing.
+  const dots = cells.map((cell, i) => {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.className = 'report-dot';
-    dot.setAttribute('role', 'tab');
-    dot.setAttribute('aria-label', `Go to report ${i + 1}`);
+    const title = cell.querySelector('.report-card-title[id]');
+    if (title) dot.setAttribute('aria-labelledby', title.id);
+    else {
+      // Unreached today — every cell on both carousels has a titled <h3> — and here
+      // only so a dot can never be nameless. It deliberately does NOT take
+      // data-zh-aria: this file collects its i18n nodes once at init and these
+      // buttons are built afterwards, so an attribute set here would never swap.
+      // Read the live lang instead, and warn: landing here means a card shipped
+      // without a heading, which is the actual bug to fix.
+      const zh = document.documentElement.lang === 'zh-Hant';
+      dot.setAttribute('aria-label', zh ? `前往第 ${i + 1} 張` : `Go to slide ${i + 1}`);
+      console.warn('[carousel] cell has no .report-card-title[id]; dot fell back to a positional label', cell);
+    }
     dot.addEventListener('click', () => scrollToCell(i));
     if (dotsWrap) dotsWrap.appendChild(dot);
     return dot;
@@ -1573,7 +1822,13 @@ function initCardCarousel(carouselId) {
 
   const sync = () => {
     const active = nearestIndex();
-    dots.forEach((d, i) => d.setAttribute('aria-selected', String(i === active)));
+    // aria-current, not aria-selected: aria-selected is only meaningful on a tab,
+    // option or gridcell, and these are none of those. Styling keys off the same
+    // attribute (see .report-dot[aria-current="true"] in styles.css).
+    dots.forEach((d, i) => {
+      if (i === active) d.setAttribute('aria-current', 'true');
+      else d.removeAttribute('aria-current');
+    });
     const atStart = track.scrollLeft <= 2;
     const atEnd   = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
     if (prevBtn) prevBtn.disabled = atStart;
@@ -1707,11 +1962,78 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
 (() => {
   const overlay = document.getElementById('sig-xoverlay');
   if (!overlay) return;
+
+  /* ── THE BUG THIS BLOCK SHIPPED WITH ───────────────────────────────────────
+     `pauseScroll`, `resumeScroll` and `lenis` are declared inside the main IIFE at
+     the top of this file. This block is NOT inside it — it was lifted out on
+     2026-08-27 so methodology.html could open the same panels — so all three were
+     bare, undeclared identifiers, and every one of them threw a ReferenceError.
+
+     open() called pauseScroll() immediately after `document.body.classList.add
+     ('sig-xlock')`. So every click on a report card added the scroll lock and then
+     threw, before `overlay.dataset.open = 'true'` and before `panel.hidden = false`.
+     The result was a page locked at `overflow: hidden` with no dialog on screen and
+     nothing to dismiss — indistinguishable from a freeze, and only a reload cleared
+     it. That is the reported "See sample reports breaks the site / I have to refresh".
+
+     The dialog has therefore not opened at all, on any device, since that refactor.
+     ────────────────────────────────────────────────────────────────────────── */
+  const pauseScroll  = () => { if (typeof window.__tisScrollPause  === 'function') window.__tisScrollPause();  };
+  const resumeScroll = () => { if (typeof window.__tisScrollResume === 'function') window.__tisScrollResume(); };
+  let lenis = null;
+  (window.__tisLenis || Promise.resolve(null)).then(l => { lenis = l; }).catch(() => {});
+
   const backdrop = document.getElementById('sig-xbackdrop');
   const cards = [...document.querySelectorAll('.offer-card[data-report]')];
   const EASE = 'cubic-bezier(0.16,1,0.3,1)';
   let activeCard = null, activePanel = null, lastFocus = null, animating = false;
   const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // A finger, not a mouse. The 440ms FLIP scales a panel holding two 1136px report
+  // sheets while .sig-xbackdrop blurs the whole viewport behind it — on a phone that
+  // is a full-viewport re-composite every frame, and it is what made this dialog hang.
+  // Touch gets a short fade instead; the morph stays on desktop where it is affordable.
+  const touch = () => matchMedia('(pointer: coarse)').matches;
+  const morphs = () => !reduce() && !touch();
+
+  // `animating` used to be cleared ONLY inside a Web Animations `onfinish`. Under the
+  // load described above that callback can be missed — and close() bailed on
+  // `animating`, so the X, the backdrop tap and Escape all silently did nothing while
+  // the body stayed locked. A reload was the only way out. Every animation that owns
+  // the flag now goes through here: it settles on finish, on cancel, or on a timer,
+  // whichever comes first, and it can only settle once.
+  const settle = (anim, fn, ms) => {
+    let done = false;
+    const run = () => { if (done) return; done = true; animating = false; fn(); };
+    anim.onfinish = run;
+    anim.oncancel = run;
+    setTimeout(run, ms);
+    return run;
+  };
+
+  // Scroll lock. `overflow: hidden` alone does not hold iOS Safari — it keeps scrolling
+  // the document behind the dialog — and Lenis runs with syncTouch:false, so lenis.stop()
+  // does not intercept touch either. Same position:fixed idiom as body.nav-lock, kept
+  // local because that one lives in another IIFE.
+  let lockedY = 0;
+  const lock = () => {
+    lockedY = window.scrollY || window.pageYOffset || 0;
+    const sb = window.innerWidth - document.documentElement.clientWidth;
+    if (sb > 0) document.body.style.paddingRight = sb + 'px';
+    document.body.style.top = `-${lockedY}px`;
+    document.body.classList.add('sig-xlock');
+    pauseScroll();
+  };
+  const unlock = () => {
+    if (!document.body.classList.contains('sig-xlock')) return;
+    document.body.classList.remove('sig-xlock');
+    document.body.style.top = '';
+    document.body.style.paddingRight = '';
+    // position:fixed collapsed the document while locked, so Lenis's cached limit is
+    // stale and the instance is still stopped — resize, then scroll with force.
+    if (lenis) { lenis.resize(); lenis.scrollTo(lockedY, { immediate:true, force:true }); }
+    else { window.scrollTo({ top: lockedY, behavior:'instant' }); }
+    resumeScroll();
+  };
   const focusables = el => [...el.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])')]
     .filter(n => !n.hasAttribute('disabled') && n.offsetParent !== null);
 
@@ -1722,17 +2044,22 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     activeCard = card; activePanel = panel; lastFocus = card;
     card.setAttribute('aria-expanded', 'true');
 
-    const sb = window.innerWidth - document.documentElement.clientWidth;
-    if (sb > 0) document.body.style.paddingRight = sb + 'px';
-    document.body.classList.add('sig-xlock');
-    pauseScroll();
+    lock();
 
     overlay.dataset.open = 'true';
     panel.hidden = false;
     backdrop.animate([{opacity:0},{opacity:1}], {duration: reduce()?120:260, easing:'ease-out', fill:'forwards'});
 
-    if (reduce()){
-      panel.animate([{opacity:0},{opacity:1}], {duration:120, fill:'forwards'}).onfinish = finishOpen;
+    if (!morphs()){
+      // Reduced motion, or any touch device: fade (plus a short rise when motion is
+      // allowed) instead of the FLIP. No geometry to measure, nothing to keep in sync
+      // with a card that may have scrolled away underneath.
+      const ms = reduce() ? 120 : 200;
+      const from = reduce() ? {opacity:0} : {opacity:0, transform:'translateY(12px)'};
+      const to   = reduce() ? {opacity:1} : {opacity:1, transform:'none'};
+      animating = true;
+      settle(panel.animate([from, to], {duration:ms, easing:'ease-out', fill:'forwards'}),
+             finishOpen, ms + 400);
       return;
     }
     animating = true;
@@ -1747,7 +2074,7 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     const body = panel.querySelector('.sig-xpanel__body');
     if (body) body.animate([{opacity:0, transform:'translateY(10px)'},{opacity:1, transform:'none'}],
       { duration:320, delay:130, easing:'ease-out', fill:'both' });
-    a.onfinish = () => { a.cancel(); animating = false; finishOpen(); };
+    settle(a, () => { a.cancel(); finishOpen(); }, 440 + 400);
   }
   function finishOpen(){
     if (!activePanel) return;
@@ -1755,14 +2082,17 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     (btn || activePanel).focus({ preventScroll:true });
   }
   function close(after){
-    if (!activePanel || animating) return;
+    if (!activePanel) return;
+    // NOT `|| animating`. That guard is what turned a missed onfinish into a page you
+    // had to reload: every dismissal path checked it and returned. An in-flight open
+    // is cancelled instead — its settle() handler clears the flag on the way out.
+    activePanel.getAnimations().forEach(a => a.cancel());
+    animating = false;
     const panel = activePanel, card = activeCard;
     const done = () => {
       panel.hidden = true;
       overlay.dataset.open = 'false';
-      document.body.classList.remove('sig-xlock');
-      resumeScroll();
-      document.body.style.paddingRight = '';
+      unlock();
       if (card) card.setAttribute('aria-expanded', 'false');
       panel.getAnimations().forEach(a => a.cancel());
       activeCard = activePanel = null;
@@ -1773,7 +2103,13 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
       if (typeof after === 'function') after();
     };
     backdrop.animate([{opacity:1},{opacity:0}], {duration: reduce()?100:220, easing:'ease-in', fill:'forwards'});
-    if (reduce()){ panel.animate([{opacity:1},{opacity:0}], {duration:100, fill:'forwards'}).onfinish = done; return; }
+    if (!morphs()){
+      const ms = reduce() ? 100 : 180;
+      animating = true;
+      settle(panel.animate([{opacity:1},{opacity:0}], {duration:ms, easing:'ease-in', fill:'forwards'}),
+             done, ms + 400);
+      return;
+    }
     animating = true;
     const first = panel.getBoundingClientRect();
     const target = card.getBoundingClientRect();
@@ -1785,7 +2121,7 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
       [{ transform:'translate(0,0) scale(1)', opacity:1 },
        { transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`, opacity:.4 }],
       { duration:360, easing:EASE, fill:'forwards' });
-    a.onfinish = () => { animating = false; done(); };
+    settle(a, done, 360 + 400);
   }
 
   // The panel's CTA is a request for THAT report: land the reader in the intake form
