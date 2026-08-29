@@ -39,7 +39,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=28">
+<link rel="stylesheet" href="/assets/build/styles.css?v=29">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -2166,7 +2166,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=16" defer></script>
+<script src="/assets/build/site.js?v=17" defer></script>
 
 <!-- Shifting-lines hero shader — the homepage's (index.html), in one blue hue and
      dropped below the copy. Same idiom throughout: ESM module → three.js from the
@@ -2449,7 +2449,7 @@
         // `animating`, so the dialog became undismissable and the page needed a reload.
         // If a THIRD overlay is ever added, add its class here too.
         const OVERLAY_LOCKS = ['lgl-lock', 'sig-xlock'];
-        let held = 0, heldAt = 0;
+        let held = 0, heldAt = 0, raf = null, onScreen = true;
         const animate = () => {
           if (OVERLAY_LOCKS.some(c => document.body.classList.contains(c))) {
             if (!heldAt) heldAt = performance.now();
@@ -2458,9 +2458,31 @@
             uniforms.time.value = phase0 + ((performance.now() - start - held) / 1000) * RATE;
             renderer.render();
           }
-          requestAnimationFrame(animate);
+          raf = requestAnimationFrame(animate);
         };
-        animate();
+        // ── Off-screen is a hold, not a stop (2026-08-29) ──────────────────────────
+        // Until now this loop was unconditional: it drew ~1.4M fragments a frame at the
+        // coarse-pointer buffer size for the whole session, all the way down a page that
+        // is one of the longest on the site, competing with scroll compositing. The
+        // overlay case above already had the right shape, so off-screen reuses it —
+        // pausing sets `heldAt`, and animate()'s first frame back subtracts the time
+        // away, so the band resumes on the phase it stopped on rather than jumping
+        // forward to wall clock. Stopping the rAF outright, rather than skipping the
+        // render inside it, is what actually gives the frame back.
+        const play  = () => { if (!raf && onScreen) raf = requestAnimationFrame(animate); };
+        const pause = () => {
+          if (!raf) return;
+          cancelAnimationFrame(raf); raf = null;
+          if (!heldAt) heldAt = performance.now();
+        };
+        uniforms.time.value = phase0;
+        renderer.render();   // the phase the loop starts on, in case the observer is late
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver((es) => {
+            onScreen = es[0].isIntersecting;
+            onScreen ? play() : pause();
+          }).observe(mount);
+        } else { play(); }
       }
     } catch (err) {
       console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);

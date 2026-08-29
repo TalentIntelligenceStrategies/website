@@ -37,7 +37,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=28">
+<link rel="stylesheet" href="/assets/build/styles.css?v=29">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -508,13 +508,19 @@ body {
    the per-section gradients (hero + CTA) which need to bloom against
    white for contrast. Body stays neutral; sections own their own
    gradient washes (.section--page-hero::before, .cta-banner--themed
-   ::before). background-image:none removes the site-wide faint 32px
-   graph-paper grid (styles.css §body underlay) on this page only —
-   the hero keeps its own blueprint grid (a separate element). */
+   ::before). The site-wide faint 32px graph-paper grid (styles.css §body
+   underlay) is switched off on this page only — the hero keeps its own
+   blueprint grid (a separate element).
+
+   `body::before { content: none }`, not `background-image: none`, since
+   2026-08-29: the grid moved off body's own background onto a fixed
+   pseudo-element so it stops repainting the viewport on every scroll frame.
+   See the note beside body::before in styles.css. Killing the pseudo is now
+   what opts a page out. */
 body {
   background-color: var(--surface-page);
-  background-image: none;
 }
+body::before { content: none; }
 [data-theme="dark"] body {
   background-color: var(--surface-page);
 }
@@ -2902,7 +2908,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=16" defer></script>
+<script src="/assets/build/site.js?v=17" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.

@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=28">
+<link rel="stylesheet" href="/assets/build/styles.css?v=29">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -1027,7 +1027,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=16" defer></script>
+<script src="/assets/build/site.js?v=17" defer></script>
 
 <!-- Shifting-lines hero shader (shared with the homepage hero) — ESM module →
      three.js from esm.sh, no build step. Muted to saturation 0.4 (near-mono glow)
@@ -1146,18 +1146,47 @@
       resize();
       new ResizeObserver(resize).observe(mount);
 
-      // Held while a legal dialog is open: that overlay carries a backdrop-filter across
-      // the whole viewport, so every frame painted here makes the compositor re-blur the
-      // entire viewport. The clock is per-frame, so it resumes on the phase it stopped on.
+      // ── Draw only while the hero is on screen, and only when motion is wanted ──
+      //   (2026-08-29)
+      //
+      // This loop used to be unconditional. It drew a viewport-filling quad at up to
+      // DPR 2 for the whole session — footer included, on a page nobody was looking at
+      // the hero from — competing with scroll compositing and thermally throttling the
+      // device. An IntersectionObserver on the mount costs nothing and stops it the
+      // moment the hero leaves. rAF already handles the hidden-tab case.
+      //
+      // The reduced-motion branch was also only half-written: `if (!reduce)` froze the
+      // CLOCK but not the DRAW, so the GPU still rendered ~60 identical frames a second,
+      // and the `if (reduce) renderer.render()` that was meant to be the single static
+      // frame was immediately followed by animate() starting the loop anyway. Now
+      // reduce means one frame and no loop, which is what reports/index.html always did.
+      let raf = null, onScreen = true;
       const animate = () => {
+        // Held while a legal dialog is open: that overlay carries a backdrop-filter
+        // across the whole viewport, so every frame painted here makes the compositor
+        // re-blur the entire viewport. The clock is per-frame, so it resumes on the
+        // phase it stopped on.
         if (!document.body.classList.contains('lgl-lock')) {
-          if (!reduce) uniforms.time.value += SPEED;
+          uniforms.time.value += SPEED;
           renderer.render();
         }
-        requestAnimationFrame(animate);
+        raf = requestAnimationFrame(animate);
       };
-      if (reduce) renderer.render();
-      animate();
+      const play  = () => { if (!raf && onScreen && !reduce) raf = requestAnimationFrame(animate); };
+      const pause = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+
+      renderer.render();   // one frame, so .is-ready has something to crossfade in
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((es) => {
+          onScreen = es[0].isIntersecting;
+          onScreen ? play() : pause();
+        }).observe(mount);
+      } else { play(); }
+
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+        reduce = e.matches;
+        if (reduce) { pause(); renderer.render(); } else play();
+      });
     } catch (err) {
       console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
     }

@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-29 13:16 +0800** · Mobile pass: partner-strip touch spasm, stale contact-panel radius, split email, ticker size and speed, and three per-frame scroll costs.
 - **2026-08-29 12:01 +0800** · Contact card: the meta plinth stopped painting over the form panel, and the phone reflow it came from now covers all eight pages instead of three.
 - **2026-08-29 09:21 +0800** · Focus ring made visible on the black surfaces it was invisible on, pricing toggle and language switcher given honest roles, and the accessible-name layer translated.
 - **2026-08-29 07:26 +0800** · Workstream E: same shader bug found live on the homepage and Signal heroes and fixed, patents modal moved onto the shared page lock, 156 lines of never-running shader removed from 404.

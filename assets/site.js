@@ -1292,12 +1292,27 @@
     let timer = null;
     let opened = false;
 
-    const onScroll = () => {
-      if (opened) return;
+    // Cached, and rAF-coalesced (2026-08-29). `doc.scrollHeight` is a forced synchronous
+    // layout flush, and this ran it on EVERY scroll event, un-throttled. It is
+    // `passive: true` so it never blocked the gesture, but the flush still landed on the
+    // main thread mid-scroll — and the listener is only armed when the popup is not
+    // suppressed, i.e. on a FIRST VISIT, which is exactly when the site was reported to
+    // stutter. The document height cannot change under a scroll, only under a resize or
+    // a reveal, so measure it there instead.
+    let scrollMax = 0;
+    const measure = () => {
       const doc = document.documentElement;
-      const scrolled = (doc.scrollTop || document.body.scrollTop);
-      const max = (doc.scrollHeight - doc.clientHeight);
-      if (max > 0 && (scrolled / max) >= SCROLL_THRESHOLD) openPopup();
+      scrollMax = doc.scrollHeight - doc.clientHeight;
+    };
+    let scrollRaf = null;
+    const onScroll = () => {
+      if (opened || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null;
+        if (opened) return;
+        const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
+        if (scrollMax > 0 && (scrolled / scrollMax) >= SCROLL_THRESHOLD) openPopup();
+      });
     };
 
     function openPopup() {
@@ -1395,7 +1410,12 @@
     // Arm triggers if not suppressed.
     if (!isSuppressed()) {
       timer = setTimeout(openPopup, DELAY_MS);
+      measure();
       window.addEventListener('scroll', onScroll, { passive: true });
+      // Reveals and lazy images change the document height after load, so re-measure on
+      // resize and once the page has settled rather than trusting the value taken here.
+      window.addEventListener('resize', measure, { passive: true });
+      window.addEventListener('load', measure, { once: true });
     }
   }
 
@@ -1687,7 +1707,7 @@
     const track = box.querySelector('.partner-marquee__track');
     if (!track) return;
 
-    let raf = null, last = 0, holds = 0;
+    let raf = null, last = 0, down = false;
     // Position is tracked here as a float rather than read back from scrollLeft each
     // frame. At 29px/s and 60fps each step is ~0.48px, and reading scrollLeft back
     // quantises it away — the strip advanced ~2px in 1.6s instead of ~46px. Writing
@@ -1695,15 +1715,53 @@
     let pos = 0;
     const running = () => coarse.matches && !reduce.matches;
 
+    // ── The pause gate watches the SCROLLER, not the pointer (2026-08-29) ──────────
+    //
+    // This used to be a refcount incremented on pointerdown and decremented on
+    // pointerup / pointercancel / pointerleave, and it could not survive a native
+    // scroll gesture. `touch-action` hands a horizontal pan to the compositor, and the
+    // browser marks that handover by firing POINTERCANCEL — so the refcount hit zero
+    // the instant the drag actually started, autoplay resumed mid-drag, and from the
+    // next frame the loop was writing an absolute scrollLeft on top of the browser's
+    // own scroll. The two fought for the same property every frame: the strip juddered,
+    // refused to follow the finger, and killed the momentum fling on release. Reported
+    // as "the whole thing spasms and doesn't work".
+    //
+    // Watching `scroll` fixes the whole class at once, because it observes the OUTCOME
+    // instead of trying to infer the gesture: finger drag, momentum fling, wheel and
+    // trackpad all produce scroll events, and pointercancel is no longer a signal we
+    // have to interpret. The loop distinguishes its own writes by remembering the value
+    // it last wrote — see the scroll handler for why a flag will not do.
+    let userScrolling = false, idleTimer = null, lastWritten = -1;
+    const IDLE_MS = 900;      // long enough to outlast an iOS momentum fling
+
+    // ── Wrap ──────────────────────────────────────────────────────────────────────
+    // Position X and X + half render IDENTICALLY — that is what the duplicated mark set
+    // buys — so normalising into [0, half) is invisible by construction. The old
+    // `if (pos >= half) pos -= half` is correct only while the value overshoots by less
+    // than one half-track; that holds at today's four marks (max scrollLeft 1636 < 2 ×
+    // 968) but silently stops holding if the strip ever gets narrower relative to its
+    // track. A modulo is correct for any overshoot and costs the same.
+    //
+    // The teleport this was blamed for was not the arithmetic. It was `release()`
+    // adopting scrollLeft mid-gesture and the loop then WRITING that normalised value
+    // back while the finger was still moving — the visible jump was the write, not the
+    // wrap. The scroll-idle gate above is what actually fixes it.
+    const norm = (v, half) => (half > 0 ? ((v % half) + half) % half : 0);
+
     const step = (t) => {
       const dt = last ? Math.min((t - last) / 1000, 0.05) : 0;   // clamp after a tab switch
       last = t;
-      if (!holds) {
+      if (!down && !userScrolling) {
         const half = track.scrollWidth / 2;
         if (half > 0) {
-          pos += PX_PER_SEC * dt;
-          if (pos >= half) pos -= half;                          // seamless wrap
+          pos = norm(pos + PX_PER_SEC * dt, half);               // seamless wrap
           box.scrollLeft = pos;
+          // Read back rather than remembering `pos`: the browser rounds and clamps the
+          // value it actually stores, and the scroll handler below compares against it
+          // exactly. The read is free here — a scroll write does not dirty layout, so
+          // this is not a forced reflow.
+          lastWritten = box.scrollLeft;
         }
       }
       raf = requestAnimationFrame(step);
@@ -1712,26 +1770,68 @@
     const start = () => { if (!raf && running()) { last = 0; raf = requestAnimationFrame(step); } };
     const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
 
-    // A finger on the strip holds it, and so does a finger anywhere mid-drag. Refcounted
-    // because pointercancel and pointerup can both arrive for one gesture.
-    const hold    = () => { holds++; };
-    // Adopt the position the finger left it at, or the next frame would snap the strip
-    // back to wherever the accumulator had got to.
-    const release = () => { holds = Math.max(0, holds - 1); if (!holds) pos = box.scrollLeft; };
+    box.addEventListener('scroll', () => {
+      // Our own write, echoed back — ignore it, or the loop would permanently pause
+      // itself on its first frame.
+      //
+      // Compared by VALUE, not by a "this one is mine" flag. Scroll events are
+      // coalesced and dispatched at the next rendering opportunity, so a flag set by
+      // the loop can be consumed by an event that actually carries the user's position
+      // too, and the drag is silently swallowed — every frame, for as long as the drag
+      // lasts. Any position that is not the one we last wrote came from the user.
+      if (Math.abs(box.scrollLeft - lastWritten) < 1) return;
+      userScrolling = true;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        userScrolling = false;
+        // Adopt where the scroll actually came to rest, or the next frame would snap
+        // the strip back to wherever the accumulator had got to meanwhile.
+        pos = norm(box.scrollLeft, track.scrollWidth / 2);
+      }, IDLE_MS);
+    }, { passive: true });
 
-    // Drag vs tap. The four real marks are target="_blank" anchors, so without this a
-    // swipe that happens to start on a logo opens innovue.ltd on release.
-    let downX = 0, downY = 0, moved = false;
-    box.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; moved = false; hold(); });
+    // ── Drag vs tap ───────────────────────────────────────────────────────────────
+    // The four real marks are target="_blank" anchors, so without this a swipe that
+    // happens to start on a logo opens innovue.ltd on release.
+    //
+    // TWO independent signals, because neither alone covers both pointer types:
+    //
+    //   `moved`  — pointer travel while the button/finger is down. Gated on `down`,
+    //              which is what makes it safe on a mouse: an ungated pointermove
+    //              turns every hover across the strip into a "drag" and then eats the
+    //              next genuine click on a logo.
+    //   `scrolled` — how far the strip itself travelled during the gesture. This is the
+    //              touch safety net. A horizontal pan ends in POINTERCANCEL, after
+    //              which no further pointermove arrives, so `moved` can still be false
+    //              when the finger has clearly dragged. Comparing scrollLeft against
+    //              its value at pointerdown sees the drag regardless. Safe to read here
+    //              because the loop is paused for the whole gesture — `down` covers the
+    //              press and the scroll-idle gate covers the fling — so any delta is
+    //              the user's, never autoplay's. On desktop the strip is not a scroller
+    //              at all (overflow: hidden, CSS transform), so this term is always 0.
+    let downX = 0, downY = 0, downLeft = 0, moved = false;
+
+    // A finger on the strip stops it immediately, before any scroll event exists — a
+    // plain boolean, not a refcount, because the release paths are no longer symmetric
+    // with the press. `pointerleave` is gone: on a scroller whose content moves under a
+    // stationary finger it fires unprompted, and each spurious call re-adopted `pos`.
+    box.addEventListener('pointerdown', (e) => {
+      down = true; moved = false;
+      downX = e.clientX; downY = e.clientY; downLeft = box.scrollLeft;
+    });
+    const lift = () => { down = false; };
+    box.addEventListener('pointerup', lift);
+    box.addEventListener('pointercancel', lift);   // hands off to the scroll-idle gate
+
     box.addEventListener('pointermove', (e) => {
-      if (!holds) return;
+      if (!down || moved) return;
       if (Math.abs(e.clientX - downX) > 8 || Math.abs(e.clientY - downY) > 8) moved = true;
     });
-    box.addEventListener('pointerup', release);
-    box.addEventListener('pointercancel', release);
-    box.addEventListener('pointerleave', release);
     box.addEventListener('click', (e) => {
-      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      const scrolled = Math.abs(box.scrollLeft - downLeft) > 8;
+      if (moved || scrolled) { e.preventDefault(); e.stopPropagation(); }
+      moved = false;
+      downLeft = box.scrollLeft;
     }, true);   // capture, so it beats the anchor's own navigation
 
     // Nothing to animate while the section is off-screen.
@@ -1743,8 +1843,13 @@
 
     const sync = () => {
       stop();
-      if (running()) { pos = 0; box.scrollLeft = 0; start(); }
-      else { pos = 0; box.scrollLeft = 0; }   // desktop/reduced-motion: CSS owns it again
+      clearTimeout(idleTimer);
+      userScrolling = false;
+      down = false;
+      pos = 0;
+      box.scrollLeft = 0;
+      lastWritten = box.scrollLeft;
+      if (running()) start();                 // else desktop/reduced-motion: CSS owns it again
     };
     coarse.addEventListener('change', sync);
     reduce.addEventListener('change', sync);

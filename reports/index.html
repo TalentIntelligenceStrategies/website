@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=28">
+<link rel="stylesheet" href="/assets/build/styles.css?v=29">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -781,16 +781,36 @@
         // the whole viewport, so every frame painted here makes the compositor re-blur the
         // entire viewport. Held time is subtracted, so this resumes on the phase it
         // stopped on rather than jumping forward to wall clock.
-        var held = 0, heldAt = 0;
-        (function loop() {
+        var held = 0, heldAt = 0, raf = null, onScreen = true;
+        function loop() {
           if (document.body.classList.contains('lgl-lock')) {
             if (!heldAt) heldAt = performance.now();
           } else {
             if (heldAt) { held += performance.now() - heldAt; heldAt = 0; }
             draw((performance.now() - start - held) / 1000);
           }
-          requestAnimationFrame(loop);
-        })();
+          raf = requestAnimationFrame(loop);
+        }
+        // ── Off-screen is a hold, not a stop (2026-08-29) ──────────────────────────
+        // The loop was unconditional and kept drawing a viewport-filling quad the whole
+        // way down the page. Off-screen reuses the overlay hold above: pausing sets
+        // `heldAt`, and loop()'s first frame back subtracts the time away, so the hero
+        // resumes on the phase it stopped on rather than jumping to wall clock.
+        // Cancelling the rAF, rather than skipping the draw inside it, is what gives the
+        // frame back. Same shape as index.html, about/ and product/signal/.
+        var play  = function () { if (!raf && onScreen) raf = requestAnimationFrame(loop); };
+        var pause = function () {
+          if (!raf) return;
+          cancelAnimationFrame(raf); raf = null;
+          if (!heldAt) heldAt = performance.now();
+        };
+        draw(0);   // in case the observer is late
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (es) {
+            onScreen = es[0].isIntersecting;
+            onScreen ? play() : pause();
+          }).observe(mount);
+        } else { play(); }
       }
     } catch (err) {
       console.error('[reports-shader] failed to init; falling back to black hero.', err);
@@ -798,7 +818,7 @@
   })();
 </script>
 
-<script src="/assets/build/site.js?v=16" defer></script>
+<script src="/assets/build/site.js?v=17" defer></script>
 
 </body>
 </html>

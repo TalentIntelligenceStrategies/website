@@ -248,12 +248,29 @@ own drawing code. Tokenizing it breaks the selector. Leave it.
 
 ### 1.4 Global background — the graph-paper underlay
 
-`body` paints a fixed **32px graph-paper grid** over `--surface-page`: two
+A fixed **32px graph-paper grid** sits over `--surface-page`: two
 `repeating-linear-gradient`s (0deg + 90deg) at `rgba(37,37,37,0.024)`, 1px line every
-32px, `background-attachment: fixed` so it reads as a steady viewport underlay.
-Transparent sections show it through; solid sections (cards, footer, the black hero)
-cover it. Base body type: `16px / line-height 1.6 / letter-spacing 0.01em`, antialiased.
+32px, pinned to the viewport so it reads as a steady underlay. Transparent sections show
+it through; solid sections (cards, footer, the black hero) cover it. Base body type:
+`16px / line-height 1.6 / letter-spacing 0.01em`, antialiased.
 `html { scroll-behavior: smooth; scroll-padding-top: 80px }`.
+
+**It is `body::before { position: fixed }`, not `background-attachment: fixed` on `body`**
+(2026-08-29). Those look identical and cost wildly different things. A fixed *background*
+cannot ride the scrolling layer, so the browser leaves the fast compositor path and
+repaints the whole viewport **on the main thread every scroll frame** — and this repaint
+is two procedural gradients rather than a cached tile, for lines at 0.024 alpha that are
+close to invisible on a phone. It was the single most expensive thing this stylesheet did
+during a scroll. A `position: fixed` *element* gets its own compositor layer and is not
+repainted while scrolling at all.
+
+`patents/` had already reached this shape independently, with its own white-on-dark
+variant; the shared rule is modelled on it and patents' page-local block is now a theme
+override rather than a lone implementation. `product/licensing/` opts out — with
+`body::before { content: none }`, which is what its `background-image: none` became. The
+one constraint the new form carries: `z-index: -1` only sits below content while `body`
+creates no stacking context, so nothing may put `transform`, `filter`, `opacity`,
+`isolation` or `will-change` on `body`.
 
 ---
 
@@ -644,6 +661,15 @@ removing or reordering a message means doing it in both halves. Two consequences
 - `.announce-msg` stays `nowrap`, so the bar is **44px at every width below 881px**
   instead of up to 160px. On the Signal page, whose string is 113 characters, that
   branch cost three lines of the first screen — and six under reduced motion.
+- **12px and 52s below 881px, from 14px and 42s** (2026-08-29). At 390px the 14px line
+  was the loudest thing on the first screen, competing with the `h1` two rows under it;
+  12px is the phone type floor (§14.2), and the bar is chrome rather than prose, so the
+  floor is where it belongs.
+  **The two settings are coupled — do not change one without re-deriving the other.**
+  The track is `width: max-content`, so shrinking the type shortens the travel and slows
+  the strip on its own: 14 → 12px is ~14% before the clock is touched. The ask was "about
+  30% slower", and a literal 42 × 1.3 = 55s would have compounded to ~40%. 52s lands ~30%
+  *at the new size* — measured 29.4 → 20.7 px/s over a half-track that went 1235 → 1078px.
 - `.ticker-pulse` **comes back** below 640px. It was hidden there only because the
   wrapping branch stranded it alone on a row above the text.
 - `.announce-item` is pinned `flex: 0 0 auto` so the track keeps its true content width;
@@ -1009,6 +1035,22 @@ each is allowed and that each has a fallback.
 | `IntersectionObserver` + CSS transitions (`site.js`) | every page — the default | `prefers-reduced-motion` shows the resolved state |
 | GLSL / WebGL via `assets/build/hero-shader.js` | hero backdrops (`index.html`, `about/`, `product/signal/`) | DPR capped at 2 — **except `about/`, which is uncapped**; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
 | GLSL / WebGL, inline raw context | `404.html`, `reports/` | never used three.js; own uniform conventions and quad topology, deliberately not folded into the shared runner |
+
+> **Every hero shader loop is gated on an `IntersectionObserver` over its mount**
+> (2026-08-29, all four of `index.html`, `about/`, `product/signal/`, `reports/`). None of
+> them were: each drew a viewport-filling quad at up to DPR 2 for the entire session,
+> footer included, competing with scroll compositing and thermally throttling the phone.
+> Off-screen is a **hold, not a stop** — the two time-based loops reuse the `held` /
+> `heldAt` accumulator they already had for overlay locks, so the band resumes on the
+> phase it stopped on rather than jumping to wall clock. Cancel the rAF; do not merely
+> skip the draw inside it, or the frame is not actually given back.
+>
+> The reduced-motion branch was also **half-written on three of the four**:
+> `if (!reduce) uniforms.time.value += SPEED` froze the *clock* but not the *draw*, so the
+> GPU still rendered ~60 identical frames a second — and the `if (reduce) renderer.render()`
+> meant to be the single static frame was immediately followed by `animate()` starting the
+> loop anyway. `reports/` always had this right and is the reference shape: reduce means
+> one frame and **no loop**.
 | GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
 
 Prefer the observer. Reach for GSAP only when a timeline genuinely needs scrub-linked
@@ -1071,15 +1113,45 @@ dormant until the veil lifts.
   A transform and a native scroller cannot share an element — the transform moves content
   the scroll container knows nothing about — and `overflow: hidden` meant the logos could
   not be dragged at all on a phone, while `:hover` (the only pause) is unreliable and
-  sticky on iOS. Three things that are easy to get wrong there:
-    · Position is accumulated as a **float**, not read back from `scrollLeft`. At 29px/s
-      and 60fps each step is ~0.48px and reading it back quantises that away — the strip
-      advanced ~2px in 1.6s instead of ~46px.
+  sticky on iOS. Four things that are easy to get wrong there:
+    · **The pause gate watches the SCROLLER, not the pointer.** This is the one that
+      matters, and it shipped wrong (fixed 2026-08-29). The gate was a refcount
+      incremented on `pointerdown` and decremented on `pointerup` / `pointercancel` /
+      `pointerleave` — and a refcount cannot survive a native scroll, because
+      **`touch-action` handing the pan to the compositor is signalled by
+      `pointercancel`**. The count hit zero the instant the drag began, autoplay resumed
+      *mid-drag*, and the loop and the finger then fought over `scrollLeft` every frame.
+      Reported as "the whole thing spasms and doesn't work". Listening for `scroll` with a
+      900ms idle timer observes the *outcome* instead of inferring the gesture, so drag,
+      momentum fling and wheel are all covered by one rule.
+      **Distinguish our own writes by VALUE, not by a flag** — scroll events are coalesced
+      and dispatched at the next rendering opportunity, so a "this one is mine" boolean
+      gets consumed by an event that also carries the user's position, and the drag is
+      swallowed every frame for as long as it lasts. Compare `scrollLeft` against the
+      value read back after the last write.
+      Note what was *not* the bug: the `pos -= half` wrap. Position X and X + half render
+      identically (that is what the duplicated mark set buys), so normalising is invisible
+      either way. The visible jump was the loop **writing** an adopted position back while
+      the finger was still moving. The modulo now used is correctness insurance for a
+      future mark count, not the fix.
+    · Position is accumulated as a **float**, not read back from `scrollLeft` each frame.
+      At 29px/s and 60fps each step is ~0.48px and reading it back quantises that away —
+      the strip advanced ~2px in 1.6s instead of ~46px. (The one read-back that *is*
+      correct is immediately after writing, to learn what the browser actually stored.)
     · The edge fades become a `mask-image`. The two `.partner-marquee__blur` elements are
       `position: absolute` inside what is now a scroll container, so they scroll away with
       the logos; a mask applies to the element's own box.
     · The four real marks are `target="_blank"` anchors, so a capture-phase `click`
-      handler suppresses the click when the pointer moved >8px, or a swipe navigates.
+      handler suppresses the click when the gesture was a drag. **Two signals, because
+      neither covers both pointer types**: pointer travel >8px *while the button is down*
+      (gating on `down` is what keeps a mouse **hover** from being read as a drag and
+      eating the next real click), plus how far `scrollLeft` moved since `pointerdown`
+      (the touch safety net — after `pointercancel` no further `pointermove` arrives, so
+      travel alone stays false on a finger swipe that clearly dragged).
+  `touch-action` is **`pan-x pan-y`**, not `pan-x`. `pan-x` alone also told the browser
+  this element does not handle vertical gestures, so a finger landing anywhere on the
+  1936px logo row could not scroll the *page* — the band was a dead zone. The element is
+  `overflow-y: hidden`, so `pan-y` costs it nothing.
   `data-partner-marquee` was a **dead hook** with zero references until this; it is the
   driver's selector now. Reduced motion still reflows the track to a static wrapping row,
   and both the scroller and the mask stand down there.
@@ -2945,7 +3017,40 @@ and banner → form → details at 390px.
 - The shared scrim is held stronger below 880px. At the compact banner height the base
   gradient is transparent between 34% and 60%, which put the lead on bare dot-cloud.
 
-The `≤520px` 1-up collapse was retired with this.
+The `≤520px` 1-up collapse was retired with this — and then the block went 1-up again the
+same day at ≤880px, for the email. See the paragraph below.
+
+**The panel's radius was keyed to the DOM position this move changed** (fixed
+2026-08-29). `.contact-panel` carried `border-radius: 0 0 18px 18px` at ≤880px, written in
+July when the panel was the **last** child of `.contact-card` and its bottom edge *was* the
+card's bottom edge — square top against the banner, 18px bottom matching the card. Giving
+the meta `order: 3` put a square-cornered `#000` block below it, so those bottom corners
+started curving away from a seam in the *middle* of the card, with the card's own `#000`
+filling the two notches and `box-shadow: var(--shadow-high)` firing into them — which is
+what made it read as a shadowed step rather than a seam. It is `border-radius: 0` now; the
+card is `overflow: hidden` with its own 18px and clips the outer corners.
+
+> **This is the `::before`-offsets trap again, one rule further down.** A `border-radius`,
+> exactly like a pseudo-element's offsets, is keyed to **where its host sits in the DOM**.
+> Reordering children invalidates every corner that was rounded because it touched an edge.
+> `check-cascade-order.mjs` cannot catch it either: the declaration is live and winning, it
+> just describes a shape that moved.
+
+`.contact-card--sig-retrieve .contact-panel` re-declares `border-radius: 18px` for its own
+composition and was unaffected — see the note at the foot of this section.
+
+**The meta is 1-up, and 2-up was a 66px trade for a broken email** (2026-08-29). The
+≤880px grid was `1fr 1fr` with a 20px gutter, which at 390px gives Email and UBN **141px
+each** — and `contact@tisglobalinc.com` sets at ~174px. `.contact-meta a` carries
+`word-break: break-all`, so rather than overflow it split into `contact@tisglobalin` /
+`c.com`. (The base rule already carries a comment about repairing this same break at 881px
+by reclaiming gutter; the mobile branch reintroduced it 20px lower down.)
+
+It is `grid-template-columns: 1fr` now. Office hours and Address are already `--wide`, so
+that shared Email|UBN row **was the entire 2-up saving** — the earlier claim here that
+going 1-up "would give back most of the height that move reclaimed" was overstated.
+Measured at 390px: `#contact` **1266px → 1332px, +66px in both languages**, and the email
+holds one line at 320 / 360 / 390px in EN and ZH.
 
 **Form density, ≤880px** (2026-08-29). The form was **892px** — the largest single block on
 8 of the 9 pages. All five fields stay; the height came out of the gaps, which were tuned for
