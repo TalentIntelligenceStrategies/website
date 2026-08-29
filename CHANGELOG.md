@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-08-29 16:11 +0800** · Mobile ticker quietened via leading, tracking, weight and alpha rather than size, and the home hero sub now balances its line break.
 - **2026-08-29 14:59 +0800** · Audit fixes: Reduce-Motion TypeError, frozen marquee, keyboard-dead partner links, latched popup trigger, shader phase jump, methodology pairing on wide screens.
 - **2026-08-29 13:35 +0800** · Patent-bank numbers redacted to pending, lamp hero scaled to phone widths, methodology paired text with its figure, signal CTA unified.
 - **2026-08-29 13:16 +0800** · Mobile pass: partner-strip touch spasm, stale contact-panel radius, split email, ticker size and speed, and three per-frame scroll costs.

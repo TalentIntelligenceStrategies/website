@@ -1168,13 +1168,25 @@ main { padding-top: 64px; }
        SQUASHED width, which lands mid-message and reads as a jump rather than a loop.
        flex: 0 0 auto lets the track keep its true content width and overflow. */
     flex: 0 0 auto;
-    /* 52s, from 42s (2026-08-29). The ask was "about 30% slower", but the duration is
-       not the only term: the track is `width: max-content`, so dropping .announce-msg
-       from 14px to 12px below shortens the travel by ~14% and slows the strip by that
-       much on its own. A literal 42 x 1.3 = 55s would have compounded to ~40%. 52s
-       lands the intended ~30% AT THE NEW TYPE SIZE. Re-derive this if either the type
-       size or the message set changes -- the two are coupled. */
-    animation: announce-scroll 52s linear infinite;
+    /* 50s, from 52s, from 42s (2026-08-29). The duration is NOT independent of the type:
+       the track is `width: max-content`, so anything that changes the rendered width of
+       the item set changes the speed on its own. Hold the strip at ~20.6 px/s and derive
+       the clock from the MEASURED half-track.
+
+       42s -> 52s: .announce-msg went 14px -> 12px, shortening the travel ~14% and slowing
+       the strip by that much before the clock was touched. The ask was "about 30% slower",
+       so a literal 42 x 1.3 = 55s would have compounded to ~40%; 52s landed ~30% at the
+       new size.
+
+       52s -> 50s: the quieting pass below (letter-spacing 0.01em -> 0, gap 10 -> 8px, dot
+       7 -> 6px) took the half-track from 1071px to 1037.5px -- measured at 390px on the
+       same box, -3.13%, i.e. 50.4s at 20.6 px/s. Font-size did not move; tracking did most
+       of it.
+
+       Re-derive whenever the type, the spacing or the message set changes:
+         rot = document.querySelector('.announce-rotator')
+         (rot.scrollWidth / 2) / 20.6   // seconds */
+    animation: announce-scroll 50s linear infinite;
   }
   .announce-item {
     /* The rotator's crossfade states do not apply in ticker mode — every item is
@@ -1185,17 +1197,49 @@ main { padding-top: 64px; }
     transition: none;
     flex: 0 0 auto;
     padding-inline: 24px;
+    gap: 8px;                        /* from the base 10px — scales with the smaller type */
   }
   .announce-item--dup { display: flex; }
   /* 12px, down from the base 14px (2026-08-29). At 390px the 14px line was the loudest
      thing on the first screen, competing with the h1 two rows below it. 12px is the
      phone type floor (DESIGN.md 14.2) and this is chrome, not prose, so the floor is
      the right place to sit. Shortening the track is also half of the speed change --
-     see the duration note above. */
-  .announce-msg { font-size: 12px; white-space: nowrap; overflow: visible; text-overflow: clip; }
+     see the duration note above.
+
+     The four properties below are the 2026-08-29 follow-up: 12px still read large, and
+     the size ramp has nowhere left to go (12px is the floor here AND in
+     design-tokens.md 7.2). The cause was never the size -- this rule set no
+     line-height and no letter-spacing, so a 12px chrome string inherited BODY's prose
+     values, 1.6 and 0.01em, at weight 500 in full white on black. 1.6 puts a 12px line
+     in a 19.2px box; 1.2 is what every brand small-chrome role uses (label-13,
+     label-12). Together these compress the line by close to a full size step without
+     touching the floor.
+
+     `opacity`, NOT `rgba(255,255,255,0.82)`. This bar INVERTS in dark theme -- the
+     background becomes --surface-inverse (#FAFAFA) and --text-inverse becomes #252525
+     -- so a hardcoded white would be white-on-near-white. The site's other 0.82 white
+     literals all sit on surfaces that do not invert. Contrast after: 11.5:1 light,
+     ~9.5:1 dark.
+
+     400, NOT 450. Urbanist ships as four STATIC faces (400/500/600/700), so a declared
+     450 matches down to 400 for Latin -- while ZH falls through to NotoSansTC-var
+     (400 700) and renders a true 450. 400 keeps both languages at one weight. */
+  .announce-msg {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0;
+    opacity: 0.82;
+    white-space: nowrap; overflow: visible; text-overflow: clip;
+  }
   /* The dot comes back. It was display:none below 640px only because, in the wrapping
-     branch, it landed alone on its own row — a problem the single line removes. */
-  .announce .ticker-pulse { display: inline-block; }
+     branch, it landed alone on its own row — a problem the single line removes.
+     6px and no glow (2026-08-29): at 7px with a 0 0 6px halo it was a second attention
+     magnet sitting directly beside the text, which is the thing being quietened. The
+     .ticker-pulse base rules live BELOW this block, but these selectors are (0,2,0)
+     against their (0,1,0) — they win on specificity, not source order. */
+  .announce .ticker-pulse { display: inline-block; width: 6px; height: 6px; }
+  .announce .ticker-pulse--signal { box-shadow: none; }
 
   /* Edge masks. Without the right-hand one the copy scrolls out from under the close
      button, which is absolutely positioned over the track. #000 matches .announce's
@@ -1252,6 +1296,17 @@ main { padding-top: 64px; }
   opacity: 1;
 }
 .announce-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* Close button, ticker widths. SPLIT FROM THE TICKER BLOCK ABOVE ON PURPOSE:
+   `.announce-close svg` is declared immediately above at equal specificity (0,2,0),
+   so a size override placed inside that block would be dead on source order — the
+   exact class of bug `npm run cascade` exists to catch (DESIGN.md §3.2).
+   The × recedes to match the quietened copy. Its 44px hit area is untouched —
+   `@media (pointer: coarse)` sets that further down and it is an a11y floor; only
+   the drawn glyph shrinks. */
+@media (max-width: 880px) {
+  .announce-close { opacity: 0.55; }
+  .announce-close svg { width: 14px; height: 14px; }
+}
 @media (max-width: 640px) {
   /* `padding-inline: 48px` used to live here. It is gone because this block sits
      AFTER the TICKER block and would win at equal specificity, re-inserting a gap
@@ -1579,6 +1634,25 @@ main { padding-top: 64px; }
   max-width: 52ch;
   margin: 4px 0 0;
 }
+
+/* Balanced in BOTH languages, deliberately — the one exception to the note at the top
+   of the Chinese line-breaking block (:355), which scopes `balance` to [lang="zh-Hant"]
+   because "the EN copy was written to its full measure and must not move". Here it has
+   to move. .pillar-sub carried no text-wrap at all and wrapped greedily, so at 390px
+   (a 350px measure — .container drops to padding-inline:20px at ≤768px) the 48-char EN
+   string orphaned its last word:
+
+     We make their value seen, measured, and   ~289px
+     unlocked.                                  ~67px
+
+   `balance` evens that to roughly 185px / 170px. `pretty` is the wrong tool twice over:
+   it is inert on Han (:341), and on the EN it only clears the orphan, leaving 259/103.
+
+   Scoped to home because .pillar-sub is shared by three heroes with very different
+   strings — licensing's is two spans, signal's is 128 characters and runs ~5 lines on a
+   phone. Extending it there is a separate call. Progressive enhancement: browsers
+   without text-wrap fall back to today's greedy wrap. */
+[data-page="home"] .pillar-sub { text-wrap: balance; }
 
 /* Attribution variant — "Powered by Innovue" style sub-line. Mirrors the
    .stats-frame-foot treatment (italic, tertiary, inline wordmark) but sized

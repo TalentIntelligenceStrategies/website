@@ -394,6 +394,18 @@ shipped strings rather than read off the spec:
   copy length — at the desktop clamp of 2 lines, which is the tighter of the two (§7
   relaxes it to 3 at ≤640px).
 
+**`[data-page="home"] .pillar-sub` is balanced in BOTH languages** (2026-08-29) — the one
+exception to the rule above that the ZH `balance` list is `[lang="zh-Hant"]`-scoped "because
+the EN copy was written to its full measure and must not move." Here it had to move.
+`.pillar-sub` carried **no `text-wrap` at all** and wrapped greedily, so at 390px (a 350px
+measure — `.container` drops to `padding-inline: 20px` at ≤768px) the 48-character EN string
+orphaned its last word: **~289px / ~67px**. `balance` measures **191px / 183px**. `pretty` is
+the wrong tool twice over — inert on Han, and on the EN it only clears the orphan, leaving
+259/103. Scoped to home deliberately: `.pillar-sub` is shared by three heroes with very
+different strings (licensing's is two spans, signal's is 128 characters and runs ~5 lines on
+a phone), so extending it is a separate call. The ZH string is a single 337px line at 390px,
+so `balance` is a no-op there today.
+
 **Chinese does not drop the negative tracking yet.** `.pillar-title` ships `-0.02em` in both
 languages and no `zh-Hant` override exists in `styles.css`. Pending, not shipped — and not
 free, because adding it re-measures every balanced ZH block.
@@ -662,15 +674,39 @@ removing or reordering a message means doing it in both halves. Two consequences
 - `.announce-msg` stays `nowrap`, so the bar is **44px at every width below 881px**
   instead of up to 160px. On the Signal page, whose string is 113 characters, that
   branch cost three lines of the first screen — and six under reduced motion.
-- **12px and 52s below 881px, from 14px and 42s** (2026-08-29). At 390px the 14px line
+- **12px and 50s below 881px, from 14px and 42s** (2026-08-29). At 390px the 14px line
   was the loudest thing on the first screen, competing with the `h1` two rows under it;
   12px is the phone type floor (§14.2), and the bar is chrome rather than prose, so the
   floor is where it belongs.
-  **The two settings are coupled — do not change one without re-deriving the other.**
-  The track is `width: max-content`, so shrinking the type shortens the travel and slows
-  the strip on its own: 14 → 12px is ~14% before the clock is touched. The ask was "about
-  30% slower", and a literal 42 × 1.3 = 55s would have compounded to ~40%. 52s lands ~30%
-  *at the new size* — measured 29.4 → 20.7 px/s over a half-track that went 1235 → 1078px.
+  **Type and duration are coupled — do not change one without re-deriving the other.**
+  The track is `width: max-content`, so anything that changes the rendered width of the
+  item set changes the strip's speed on its own. Hold ~20.6 px/s and derive the clock
+  from the measured half-track: `(rot.scrollWidth / 2) / 20.6`.
+  14 → 12px was ~14% before the clock was touched; the ask was "about 30% slower", and a
+  literal 42 × 1.3 = 55s would have compounded to ~40%, so 52s landed ~30% *at the new
+  size* — measured 29.4 → 20.7 px/s over a half-track that went 1235 → 1078px.
+- **The size was spent, so the second pass took the other four properties** (2026-08-29).
+  12px still read large, and §14.2 plus `design-tokens.md` §7.2 both stop there. The cause
+  was never the size: `.announce-msg` set **no `line-height` and no `letter-spacing`**, so
+  a 12px chrome string inherited `body`'s prose values — **1.6 and 0.01em** — at weight 500
+  in full white on black. 1.6 puts a 12px line in a **19.2px box**. Below 881px it is now
+  **1.2 leading, 0 tracking, weight 400, `opacity: 0.82`**, with the dot at 6px (glow off)
+  and the × glyph at 14px / 0.55. Together that compresses the line by close to a full
+  size step without touching the floor.
+  Three things that constrain any future edit here:
+  - **`opacity`, never `rgba(255,255,255,0.82)`.** This bar *inverts* in dark theme, so a
+    hardcoded white is white-on-#FAFAFA. Measured after: **13.8:1 light, 8.3:1 dark**.
+    `color-mix()` is not an alternative — it appears zero times in `styles.css`.
+  - **Weight 400, not 450.** Urbanist ships as four *static* faces (400/500/600/700), so a
+    declared 450 matches down to 400 for Latin while ZH falls through to `NotoSansTC-var`
+    (`400 700`) and renders a true 450. 400 keeps both languages at one weight. (`.pillar-sub`
+    and `.offer-card-desc` carry a 450 and have this EN/ZH split today.)
+  - **The close button lives in its own `@media` block after `.announce-close svg`**, not in
+    the ticker block. Both are (0,2,0), so inside the ticker block the size override would be
+    dead on source order — the §3.2 / `npm run cascade` hazard.
+  52s → **50s** follows from the same coupling: tracking, gap and dot took the half-track
+  from **1071px to 1037.5px** at 390px on the same box (−3.13%), i.e. 50.4s at 20.6 px/s.
+  Font-size did not move; tracking did most of it.
 - `.ticker-pulse` **comes back** below 640px. It was hidden there only because the
   wrapping branch stranded it alone on a row above the text.
 - `.announce-item` is pinned `flex: 0 0 auto` so the track keeps its true content width;
