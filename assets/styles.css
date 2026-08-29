@@ -6205,8 +6205,16 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    at its own step's <h2>, authored precisely because that adjacency is absent. */
 @media (max-width: 980px) {
   .mth-stage__grid { grid-template-columns: 1fr; gap: 0; }
+  /* `.mth-stage__stage.is-live` too, not just the bare class. The un-pin block above
+     sets `.is-live { display: block }` at (0,2,0), which outranks a bare (0,1,0)
+     `display: contents` and silently drops the entire interleave for any frame where
+     .is-live survives at this width — the resize frame before site.js's re-check lands.
+     Matching its specificity and sitting below it in source order is what wins.
+     check-cascade-order.mjs cannot catch this: it only reports EQUAL-specificity
+     source-order losses, so it called this block clean while it was being overridden. */
   .mth-stage__steps,
-  .mth-stage__stage { display: contents; }
+  .mth-stage__stage,
+  .mth-stage__stage.is-live { display: contents; }
 
   .mth-stage__step[data-step="0"] { order: 1; }  .mth-stage__fig[data-step="0"] { order: 2; }
   .mth-stage__step[data-step="1"] { order: 3; }  .mth-stage__fig[data-step="1"] { order: 4; }
@@ -6225,6 +6233,37 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   /* The (0,2,0) sibling rule still matches — display:contents does not change DOM
      siblinghood — and would otherwise reopen a 32-56px gap at a text→figure seam. */
   .mth-stage__fig + .mth-stage__fig { margin-top: 16px; }
+}
+
+/* ── Wide, but un-pinned · the other two conditions ───────────────────────────
+   The stage un-pins under THREE conditions — reduced motion, ≤980px, or ≤700px tall —
+   but the interleave above only covered the middle one. A reduced-motion visitor on a
+   1440px screen, or anyone in a short window, still got six steps in column 1 and six
+   uncorrelated figures in column 2: the exact association problem the interleave exists
+   to solve, just at a width nobody thought to check.
+
+   Here the answer is NOT the phone layout. There is room for two columns, so keep them
+   and pair the rows instead: step N and figure N share an explicit grid row, so each
+   step sits beside its own figure. min-width 981px keeps this and the block above
+   mutually exclusive. The grid is already align-items:start, so a pair aligns at the top
+   of its row and the taller of the two sets the row height. */
+@media (prefers-reduced-motion: reduce) and (min-width: 981px),
+       (max-height: 700px) and (min-width: 981px) {
+  .mth-stage__steps,
+  .mth-stage__stage,
+  .mth-stage__stage.is-live { display: contents; }
+
+  .mth-stage__step[data-step="0"] { grid-column: 1; grid-row: 1; }  .mth-stage__fig[data-step="0"] { grid-column: 2; grid-row: 1; }
+  .mth-stage__step[data-step="1"] { grid-column: 1; grid-row: 2; }  .mth-stage__fig[data-step="1"] { grid-column: 2; grid-row: 2; }
+  .mth-stage__step[data-step="2"] { grid-column: 1; grid-row: 3; }  .mth-stage__fig[data-step="2"] { grid-column: 2; grid-row: 3; }
+  .mth-stage__step[data-step="3"] { grid-column: 1; grid-row: 4; }  .mth-stage__fig[data-step="3"] { grid-column: 2; grid-row: 4; }
+  .mth-stage__step[data-step="4"] { grid-column: 1; grid-row: 5; }  .mth-stage__fig[data-step="4"] { grid-column: 2; grid-row: 5; }
+  .mth-stage__step[data-step="5"] { grid-column: 1; grid-row: 6; }  .mth-stage__fig[data-step="5"] { grid-column: 2; grid-row: 6; }
+
+  /* The observer band is dead space with no observer; the row gap carries the rhythm. */
+  .mth-stage__step { padding-block: 0; }
+  .mth-stage__grid { row-gap: clamp(48px, 6vh, 88px); }
+  .mth-stage__fig + .mth-stage__fig { margin-top: 0; }
 }
 /* ── Exit · the two PSS-backed reports ────────────────────────────────────
    Reuses the shared .offer-card recipe. The cards are <button>s carrying

@@ -1301,6 +1301,14 @@
     // a reveal, so measure it there instead.
     let scrollMax = 0;
     const measure = () => {
+      // Never measure while the page is locked. body.nav-lock and the legal lock are
+      // `position: fixed; overflow: hidden`, which takes <body> out of flow and makes
+      // scrollHeight - clientHeight collapse to ~0. A resize while the mobile drawer is
+      // open (orientation change, iOS URL-bar collapse, soft keyboard) would otherwise
+      // latch scrollMax at 0 — and closing the drawer fires no resize, so the trigger
+      // stayed dead for the rest of the session.
+      const b = document.body.classList;
+      if (b.contains('nav-lock') || b.contains('lgl-lock')) return;
       const doc = document.documentElement;
       scrollMax = doc.scrollHeight - doc.clientHeight;
     };
@@ -1310,6 +1318,11 @@
       scrollRaf = requestAnimationFrame(() => {
         scrollRaf = null;
         if (opened) return;
+        // Self-heal: any path that left the cache non-positive (a missed resize, a
+        // measurement taken while locked) re-measures once here. Still off the hot
+        // path — this only runs when the cached value is unusable, and it is inside
+        // the rAF, so the forced layout lands with the frame rather than mid-gesture.
+        if (scrollMax <= 0) measure();
         const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
         if (scrollMax > 0 && (scrolled / scrollMax) >= SCROLL_THRESHOLD) openPopup();
       });
@@ -1768,7 +1781,10 @@
     };
 
     const start = () => { if (!raf && running()) { last = 0; raf = requestAnimationFrame(step); } };
-    const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+    // `down` is reset here as well as in sync(): the two teardown paths were asymmetric,
+    // and a press still latched when the IntersectionObserver stopped the loop left the
+    // strip frozen on the way back in.
+    const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } down = false; };
 
     box.addEventListener('scroll', () => {
       // Our own write, echoed back — ignore it, or the loop would permanently pause
@@ -1809,19 +1825,32 @@
     //              press and the scroll-idle gate covers the fling — so any delta is
     //              the user's, never autoplay's. On desktop the strip is not a scroller
     //              at all (overflow: hidden, CSS transform), so this term is always 0.
-    let downX = 0, downY = 0, downLeft = 0, moved = false;
+    //   `pointered` — whether a pointer sequence actually preceded this click. Without
+    //              it, a keyboard Enter (which dispatches click with no pointerdown) is
+    //              measured against a stale `downLeft` while autoplay writes scrollLeft
+    //              continuously, so `scrolled` is effectively always true and the link
+    //              is silently preventDefault'd. `moved` alone was false for keyboard,
+    //              which is why the pre-scrolled version did not have this problem.
+    let downX = 0, downY = 0, downLeft = 0, moved = false, pointered = false;
 
     // A finger on the strip stops it immediately, before any scroll event exists — a
     // plain boolean, not a refcount, because the release paths are no longer symmetric
     // with the press. `pointerleave` is gone: on a scroller whose content moves under a
     // stationary finger it fires unprompted, and each spurious call re-adopted `pos`.
     box.addEventListener('pointerdown', (e) => {
-      down = true; moved = false;
+      down = true; moved = false; pointered = true;
       downX = e.clientX; downY = e.clientY; downLeft = box.scrollLeft;
     });
     const lift = () => { down = false; };
     box.addEventListener('pointerup', lift);
     box.addEventListener('pointercancel', lift);   // hands off to the scroll-idle gate
+    // Failsafe release. A mouse gets no implicit pointer capture, so press → drag off the
+    // strip → release fires neither event on `box`, `down` stays true, and step()'s gate
+    // is false for the rest of the session. window sees the release wherever it lands.
+    // NOT pointerleave, which is what this replaces: on a scroller whose content moves
+    // under a stationary finger it fires unprompted and re-adopts `pos` each time.
+    window.addEventListener('pointerup', lift);
+    window.addEventListener('pointercancel', lift);
 
     box.addEventListener('pointermove', (e) => {
       if (!down || moved) return;
@@ -1829,8 +1858,11 @@
     });
     box.addEventListener('click', (e) => {
       const scrolled = Math.abs(box.scrollLeft - downLeft) > 8;
-      if (moved || scrolled) { e.preventDefault(); e.stopPropagation(); }
+      // Only a click that a pointer actually produced can be a swallowed drag. Keyboard
+      // and assistive-tech activation fall straight through to the anchor.
+      if (pointered && (moved || scrolled)) { e.preventDefault(); e.stopPropagation(); }
       moved = false;
+      pointered = false;
       downLeft = box.scrollLeft;
     }, true);   // capture, so it beats the anchor's own navigation
 

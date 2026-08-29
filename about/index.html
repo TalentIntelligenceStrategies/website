@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=30">
+<link rel="stylesheet" href="/assets/build/styles.css?v=31">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -1027,7 +1027,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=17" defer></script>
+<script src="/assets/build/site.js?v=18" defer></script>
 
 <!-- Shifting-lines hero shader (shared with the homepage hero) — ESM module →
      three.js from esm.sh, no build step. Muted to saturation 0.4 (near-mono glow)
@@ -1037,7 +1037,11 @@
   (async () => {
     const mount = document.getElementById('hero-shader');
     if (!mount) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // `let`, not `const`: the matchMedia change handler below reassigns it. It was
+    // const until 2026-08-29, which made every Reduce-Motion toggle throw a TypeError
+    // and abort the handler before pause() — so the shader kept running at full rate
+    // under the exact preference the handler exists to honour. index.html had it right.
+    let reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const SPEED = 0.003;
 

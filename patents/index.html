@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=30">
+<link rel="stylesheet" href="/assets/build/styles.css?v=31">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -72,9 +72,13 @@
        come back on-screen and the bar keeps a black margin either side. No
        breakpoint to cross, and nothing for a cascade check to miss (the checker
        does not read page-local blocks). */
+    /* All three ratios are the desktop rem value scaled by the same 70/30, so all three
+       cross at 685.7px and the "desktop untouched" claim above holds exactly. Rounded
+       ratios (65vw / 37vw) put the halo at 689px and the glow at 692px, which left a 7px
+       band where they were ~2px narrower than before and the invariant quietly false. */
     --lamp-w:      min(30rem, 70vw);
-    --lamp-halo-w: min(28rem, 65vw);
-    --lamp-glow-w: min(16rem, 37vw);
+    --lamp-halo-w: min(28rem, 65.333vw);   /* 28/30 x 70 */
+    --lamp-glow-w: min(16rem, 37.333vw);   /* 16/30 x 70 */
     position: relative;
     flex-direction: column;
     justify-content: center;
@@ -1037,7 +1041,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=17" defer></script>
+<script src="/assets/build/site.js?v=18" defer></script>
 
 <!-- ───────── Owned-patents blueprint marquee ─────────
      Generates ink patent-drawing cards and duplicates the set once for a
@@ -1068,7 +1072,7 @@
     el('line', { x1: 0, y1: 42, x2: 100, y2: 42, class: 'stroke-thin' }, g);
     text(g, 4, 9, fig, 'label-fade');
     text(g, 4, 23, name, 'label-large');
-    text(g, 4, 37, patentNo);
+    text(g, 4, 37, patentNo, 'pat-status');   // classed so syncLang() can retranslate it
     text(g, 4, 51, inventor, 'label-fade');
     text(g, 4, 57, date, 'label-fade');
   }
@@ -1218,6 +1222,19 @@
 
   function pad(n, len){ return String(n).padStart(len, '0'); }
 
+  // Filing status, shown wherever a grant number would sit. One label for the whole set —
+  // none of these are published, so there is nothing per-item to show, and it replaced a
+  // per-item `tw` field on 2026-08-29.
+  //
+  // It has to be a function, not a constant: this is the one string on the card that the
+  // language switcher must reach. site.js's applyLang dispatches no event, so there is
+  // nothing to subscribe to — but it does set <html lang>, which a MutationObserver can
+  // watch. That is the hook syncLang() below uses. (The card's title, domain and abstract
+  // are English-only by an older decision; this only fixes the string this pass added.)
+  const STATUS = { en: 'Pending', zh: '申請中' };
+  const statusLabel = () => STATUS[document.documentElement.lang === 'zh-Hant' ? 'zh' : 'en'];
+  const cardLabel = (item) => `${statusLabel()} — ${item.name}. Open patent detail.`;
+
   // ── ILLUSTRATIVE DATA — nothing here is a published record. ──
   // The `tw` field deliberately carries no number. It held plausible grant-format
   // strings (TWI######B) until 2026-08-29, rendered in the card badge, the blueprint
@@ -1229,37 +1246,37 @@
   // "Filed by · pending publication" line at the same time.
   const INVENTORS = ['K. CHEN, R. PARK', 'M. WONG', 'T. TANAKA', 'L. MORENO', 'D. KAUR, N. ABE', 'A. NAGY', 'J. LIN, H. PATEL'];
   const PATENTS = [
-    { tw: 'TW · Pending', name: 'Multi-rotor attitude stabilization system', domain: 'Flight control', juris: 'TW · Taiwan', ipc: 'G05D 1/08', draw: drawControlLoop,
+    { name: 'Multi-rotor attitude stabilization system', domain: 'Flight control', juris: 'TW · Taiwan', ipc: 'G05D 1/08', draw: drawControlLoop,
       abstract: 'Holds a multi-rotor level under gusts by fusing inertial rate measurements with rotor-speed feedback in a closed control loop.' },
-    { tw: 'TW · Pending', name: 'LiDAR–vision fusion for obstacle avoidance', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01S 17/933', draw: drawAntenna,
+    { name: 'LiDAR–vision fusion for obstacle avoidance', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01S 17/933', draw: drawAntenna,
       abstract: 'Fuses LiDAR range returns with a camera stream to detect and route around obstacles along the flight path in real time.' },
-    { tw: 'TW · Pending', name: 'Foldable coaxial rotor assembly', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 27/10', draw: drawLinkage,
+    { name: 'Foldable coaxial rotor assembly', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 27/10', draw: drawLinkage,
       abstract: 'A rotor head whose blades fold along the boom for transport and lock into a coaxial arrangement for flight.' },
-    { tw: 'TW · Pending', name: 'BVLOS command-link redundancy module', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H04B 7/185', draw: drawGearTrain,
+    { name: 'BVLOS command-link redundancy module', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H04B 7/185', draw: drawGearTrain,
       abstract: 'Keeps the command link alive beyond visual line of sight by failing over across redundant radio paths.' },
-    { tw: 'TW · Pending', name: 'Three-axis gimbal vibration-isolation mount', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 47/08', draw: drawCam,
+    { name: 'Three-axis gimbal vibration-isolation mount', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 47/08', draw: drawCam,
       abstract: 'Isolates a three-axis camera gimbal from airframe vibration to keep imaging stable throughout flight.' },
-    { tw: 'TW · Pending', name: 'VTOL fixed-wing transition mechanism', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 29/00', draw: drawTruss,
+    { name: 'VTOL fixed-wing transition mechanism', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 29/00', draw: drawTruss,
       abstract: 'Rotates the lift rotors between vertical and cruise orientation, enabling vertical takeoff and fixed-wing flight.' },
-    { tw: 'TW · Pending', name: 'Swarm formation-keeping controller', domain: 'Autonomy & swarm', juris: 'TW · Taiwan', ipc: 'G05D 1/10', draw: drawCylinder,
+    { name: 'Swarm formation-keeping controller', domain: 'Autonomy & swarm', juris: 'TW · Taiwan', ipc: 'G05D 1/10', draw: drawCylinder,
       abstract: 'Keeps a swarm in formation by sharing relative-position estimates between neighbouring aircraft.' },
   ];
 
   // Second row — a different set of representative owned patents.
   const PATENTS_2 = [
-    { tw: 'TW · Pending', name: 'Adaptive battery thermal-management loop', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'H01M 10/63', draw: drawControlLoop,
+    { name: 'Adaptive battery thermal-management loop', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'H01M 10/63', draw: drawControlLoop,
       abstract: 'Regulates pack temperature in flight by modulating coolant flow against a predicted discharge-rate curve.' },
-    { tw: 'TW · Pending', name: 'Phased-array telemetry antenna', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H01Q 3/26', draw: drawAntenna,
+    { name: 'Phased-array telemetry antenna', domain: 'Comms & datalink', juris: 'TW · Taiwan', ipc: 'H01Q 3/26', draw: drawAntenna,
       abstract: 'Steers a telemetry beam electronically to hold the ground link while the airframe manoeuvres.' },
-    { tw: 'TW · Pending', name: 'Quick-release payload mounting linkage', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 1/12', draw: drawLinkage,
+    { name: 'Quick-release payload mounting linkage', domain: 'Payload & imaging', juris: 'TW · Taiwan', ipc: 'B64D 1/12', draw: drawLinkage,
       abstract: 'Latches and releases interchangeable payloads through a single-motion linkage without tools.' },
-    { tw: 'TW · Pending', name: 'Variable-pitch propeller gear drive', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 11/30', draw: drawGearTrain,
+    { name: 'Variable-pitch propeller gear drive', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 11/30', draw: drawGearTrain,
       abstract: 'Adjusts blade pitch through a compact gear train to trade thrust for efficiency across flight phases.' },
-    { tw: 'TW · Pending', name: 'Optical-flow landing-guidance sensor', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01C 21/16', draw: drawCam,
+    { name: 'Optical-flow landing-guidance sensor', domain: 'Sense & avoid', juris: 'TW · Taiwan', ipc: 'G01C 21/16', draw: drawCam,
       abstract: 'Estimates descent velocity from ground optical flow to guide precise autonomous landings.' },
-    { tw: 'TW · Pending', name: 'Modular tail-boom structural joint', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 1/26', draw: drawTruss,
+    { name: 'Modular tail-boom structural joint', domain: 'Airframe & propulsion', juris: 'TW · Taiwan', ipc: 'B64C 1/26', draw: drawTruss,
       abstract: 'Joins interchangeable tail booms to the fuselage through a preloaded structural interface.' },
-    { tw: 'TW · Pending', name: 'Fuel-cell hybrid range extender', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'B64D 27/24', draw: drawCylinder,
+    { name: 'Fuel-cell hybrid range extender', domain: 'Power & energy', juris: 'TW · Taiwan', ipc: 'B64D 27/24', draw: drawCylinder,
       abstract: 'Extends endurance by pairing a hydrogen fuel-cell stack with the battery bus under a shared controller.' },
   ];
 
@@ -1275,7 +1292,7 @@
     const yr = 2023 + (idx % 3);
     const mo = pad(((idx * 7) % 12) + 1, 2);
     const dy = pad(((idx * 11) % 28) + 1, 2);
-    drawTitleBlock(svg, fig, item.domain.toUpperCase(), item.tw, inv, `${yr}/${mo}/${dy}`);
+    drawTitleBlock(svg, fig, item.domain.toUpperCase(), statusLabel(), inv, `${yr}/${mo}/${dy}`);
     text(svg, 22, 24, `SHEET ${idx + 1} / ${ALL.length}`, 'label-fade');
     return svg;
   }
@@ -1288,7 +1305,7 @@
     card.tabIndex = 0;
     card.dataset.idx = String(idx);
     card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', `${item.tw} — ${item.name}. Open patent detail.`);
+    card.setAttribute('aria-label', cardLabel(item));
     card.appendChild(buildBlueprint(item, idx));
 
     const domain = document.createElement('span');
@@ -1298,7 +1315,7 @@
 
     const overlay = document.createElement('div');
     overlay.className = 'pat-overlay';
-    const no = document.createElement('span');   no.className = 'pat-no';   no.textContent = item.tw;
+    const no = document.createElement('span');   no.className = 'pat-no';   no.textContent = statusLabel();
     const name = document.createElement('span');  name.className = 'pat-name'; name.textContent = item.name;
     const sub = document.createElement('span');  sub.className = 'pat-sub'; sub.textContent = item.domain;
     const cta = document.createElement('span');   cta.className = 'pat-cta'; cta.setAttribute('aria-hidden', 'true');
@@ -1326,6 +1343,7 @@
   fillTrack(track, PATENTS.map((item, i) => [item, i]));
   if (track2) fillTrack(track2, PATENTS_2.map((item, i) => [item, PATENTS.length + i]));
 
+
   // ────────────────────────────────────────────────────────
   // Detail modal — click / Enter / Space on a card opens it.
   // ────────────────────────────────────────────────────────
@@ -1339,6 +1357,31 @@
   const mAbstract = document.getElementById('pat-modal-abstract');
   const mChips = document.getElementById('pat-modal-chips');
   let lastFocus = null;
+
+  // ── Language ──────────────────────────────────────────────────────────────
+  // Every string on these cards is written by textContent, so none of them are reachable
+  // by site.js's data-zh sweep. The status label is the one that must follow the
+  // switcher, and applyLang() fires no event — but it does set <html lang> before it
+  // swaps any text, so watching that attribute is the hook.
+  //
+  // On the animated path applyLang swaps the rest of the page 900ms later, while the
+  // shimmer overlay covers it. Landing early is therefore invisible, not a mismatch.
+  //
+  // Cards are cloned once for the seamless marquee loop, so these queries deliberately
+  // cover clones too; the clones carry the same data-idx.
+  function syncLang(){
+    const label = statusLabel();
+    document.querySelectorAll('.pat-no').forEach(el => { el.textContent = label; });
+    document.querySelectorAll('.blueprint .pat-status').forEach(el => { el.textContent = label; });
+    document.querySelectorAll('.pat-card').forEach(el => {
+      const item = ALL[Number(el.dataset.idx)];
+      if (item) el.setAttribute('aria-label', cardLabel(item));
+    });
+    if (mNo) mNo.textContent = label;
+  }
+  new MutationObserver(syncLang).observe(document.documentElement, {
+    attributes: true, attributeFilter: ['lang'],
+  });
 
   /* The site's one page lock, exported from site.js. NOT `body.style.overflow`, which
      is what this used to do and what the sample-report and newsletter dialogs each had
@@ -1367,7 +1410,7 @@
     if (!item) return;
     lastFocus = document.activeElement;
     mFig.replaceChildren(buildBlueprint(item, idx));
-    mNo.textContent = item.tw;
+    mNo.textContent = statusLabel();
     mName.textContent = item.name;
     mDomain.textContent = item.domain;
     mAbstract.textContent = item.abstract;

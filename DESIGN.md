@@ -234,7 +234,8 @@ Anything not on this list is a violation.
 | `patents/` | `#F2F3F5` | `.lamp-line` — the 2px resolve line the lamp animates open |
 | `patents/` | `#ECECEC` | `--pat-ground` — drafting-paper ground for the blueprint marquee cards; deliberately off-white so the strip doesn't glare against the black page |
 | `patents/` | `#17130E` | blueprint overlay ink (name + sub-pill), 2 uses |
-| `patents/` | `#0A0A0A` | `.pat-modal` shell — near-black, one step off the `#000` blueprint ground so the modal edge reads |
+| `patents/` | `#0A0A0A` | The page's raised-dark-panel ground — one step off the `#000` blueprint field so a panel edge reads. Three uses: the `.pat-modal` shell, and (2026-08-29) `.contact-card` + `.contact-overlay-meta`, where a `#000` card on a `#000` page behind a near-black photo left the "Get in touch." half with no edge at all |
+| `patents/` | `rgba(255,255,255,0.10)` | `.contact-card` hairline — pairs with the `#0A0A0A` lift above; same construction as the `.pat-modal` border, one step lighter because the card carries no scrim |
 | `product/signal/index.html` | `#0369A1` | page-local `--sig-blue-deep`. Equals light-theme `--score-b`, but the token flips to `#38BDF8` in dark and this page needs it fixed |
 
 > Retired 2026-08-10: this page also carried an ink literal twice, for a white hover fill

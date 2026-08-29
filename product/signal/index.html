@@ -39,7 +39,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=30">
+<link rel="stylesheet" href="/assets/build/styles.css?v=31">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -2166,7 +2166,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=17" defer></script>
+<script src="/assets/build/site.js?v=18" defer></script>
 
 <!-- Shifting-lines hero shader — the homepage's (index.html), in one blue hue and
      dropped below the copy. Same idiom throughout: ESM module → three.js from the
@@ -2471,9 +2471,13 @@
         // render inside it, is what actually gives the frame back.
         const play  = () => { if (!raf && onScreen) raf = requestAnimationFrame(animate); };
         const pause = () => {
+          // Record the hold BEFORE the rAF guard. If the hero is already off-screen when
+          // the observer first fires, play() has never run, so raf is null and an early
+          // return here would skip heldAt entirely — the first frame back would then draw
+          // at full wall-clock elapsed and snap, which is the jump this exists to prevent.
+          if (!heldAt) heldAt = performance.now();
           if (!raf) return;
           cancelAnimationFrame(raf); raf = null;
-          if (!heldAt) heldAt = performance.now();
         };
         uniforms.time.value = phase0;
         renderer.render();   // the phase the loop starts on, in case the observer is late

@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=30">
+<link rel="stylesheet" href="/assets/build/styles.css?v=31">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -800,9 +800,13 @@
         // frame back. Same shape as index.html, about/ and product/signal/.
         var play  = function () { if (!raf && onScreen) raf = requestAnimationFrame(loop); };
         var pause = function () {
+          // Record the hold BEFORE the rAF guard. If the hero is already off-screen when
+          // the observer first fires, play() has never run, so raf is null and an early
+          // return here would skip heldAt entirely — the first frame back would then draw
+          // at full wall-clock elapsed and snap, which is the jump this exists to prevent.
+          if (!heldAt) heldAt = performance.now();
           if (!raf) return;
           cancelAnimationFrame(raf); raf = null;
-          if (!heldAt) heldAt = performance.now();
         };
         draw(0);   // in case the observer is late
         if ('IntersectionObserver' in window) {
@@ -818,7 +822,7 @@
   })();
 </script>
 
-<script src="/assets/build/site.js?v=17" defer></script>
+<script src="/assets/build/site.js?v=18" defer></script>
 
 </body>
 </html>
