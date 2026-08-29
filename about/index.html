@@ -36,7 +36,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=32">
+<link rel="stylesheet" href="/assets/build/styles.css?v=33">
 
 <script>
   // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
@@ -259,14 +259,36 @@
   .ab-cell:focus-visible { outline: 2px solid #FFFFFF; outline-offset: -3px; }
   /* The cell that keeps the grid dense. It carries the S8 clause the live page
      drops, so the grid states its own thesis instead of needing a lead above it. */
-  /* #0E0E0E, not --surface-inverse. Two reasons: it matches the image cells
-     exactly (it is .offer-card's own chip base), and --surface-inverse /
-     --text-inverse FLIP under [data-theme="dark"] (#252525 → #FAFAFA, #FFFFFF →
-     #252525), which turned this into a light panel among four dark ones. Both
-     literals are the DESIGN.md §1.3 always-dark-surface exception. */
+  /* #000, and NOT #0E0E0E. An earlier version of this rule used #0E0E0E on the
+     reasoning that it "matches the image cells exactly (it is .offer-card's own
+     chip base)". That reasoning was wrong, and it is worth recording why, because
+     the same mistake is available to anyone matching a surface to these tiles:
+     #0E0E0E is the .ab-cell--img *base*, but it is never the colour those cells
+     actually render. The coremap particle fields are drawn on true black and
+     cover the base completely, so sampling the dark areas of all three image
+     cells returns (0,0,0). This cell was the only surface in the bento showing
+     #0E0E0E, and that 14/255 step is the whole reason it read as a grey rectangle
+     punched into the grid rather than a fourth tile.
+
+     It also repairs a second, independent bug. --surface-page is #0E0E0E under
+     [data-theme="dark"] (styles.css:241), byte-identical to the old fill, so in
+     dark theme the cell had no edge against the page at all while its neighbours
+     stayed tiles. At #000 it sits one step below the ground and the edge survives.
+
+     Still a literal rather than --surface-inverse, for the original reason, which
+     does hold: --surface-inverse / --text-inverse FLIP under [data-theme="dark"]
+     (#252525 → #FAFAFA, #FFFFFF → #252525), which would turn this into a light
+     panel among four dark ones. Both literals are the DESIGN.md §1.3
+     always-dark-surface set.
+
+     On §1.3's scoping: that section scopes the set to image-backed surfaces, and
+     this cell carries no image. It is kept here because it is one tile inside an
+     image-backed container, contiguous on three sides with black that comes from
+     renders — not a standalone dark panel on a light page, which is the case
+     §1.3 withdrew (.mth-panel). Revisit if that argument stops holding. */
   /* Centred on both axes: justify-content handles the block axis (the cell is a
      flex column), align-items the inline axis. text-align centres the rag itself. */
-  .ab-cell--type { justify-content: center; align-items: center; background: #0E0E0E; }
+  .ab-cell--type { justify-content: center; align-items: center; background: #000; }
   /* --ab-pull, not a new value. This is a pulled statement, which is exactly the
      role that step already serves for the "Why we exist" conclusion — so the page's
      two pulled statements now match instead of being 24 and 32.

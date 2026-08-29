@@ -369,6 +369,24 @@ picture { display: contents; }
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+/* Stop mobile text autosizing (2026-08-29). iOS Safari and Chrome Android inflate text
+   inside a block WIDER THAN THE VIEWPORT — "font boosting" — and the default is `auto`,
+   which this stylesheet had never overridden. The announce ticker is exactly that shape:
+   `.announce-rotator` is `width: max-content` and measures 2075px inside a 390px viewport
+   (5.3x), so its authored 12px was being rendered materially larger ON A REAL PHONE while
+   the hero sub beside it, whose block is 350px and therefore narrower than the viewport,
+   rendered at its true 17px. That inversion is why the 12px ticker read LARGER than the
+   17px line under it.
+
+   Not reproducible in headless Chrome on macOS — desktop Chrome does not font-boost, so
+   every computed-style probe returns a clean 12px and the bug is invisible. Verify on a
+   device or via CDP device-metrics emulation.
+
+   100%, not `none`: `none` also disables the user's pinch-zoom text scaling in some
+   engines, which is an a11y regression. 100% only pins text to its authored size and is
+   what normalize.css ships. It can never shrink type below its CSS value, so it is a
+   no-op everywhere except the boosted case. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 /* ───────── Lenis smooth scroll ─────────
    Transport only — Lenis drives the REAL native scroll position every frame
