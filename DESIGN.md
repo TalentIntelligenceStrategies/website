@@ -774,7 +774,8 @@ mode, 18px in reduced motion. Measured at 390px:
    ruled-grid `::before` (`rgba(37,37,37,0.020)`, white at `0.025` in dark) and, on
    product pages, the full-bleed static hero image.
 3. **`.hero-shader#hero-shader` (z2)** — the **shifting-lines WebGL fragment shader**
-   (RGB chromatic sine lines on black), run by `/assets/build/hero-shader.js` from an
+   (three chromatic sine lines on black — deep red-orange `#D92100`, green, blue; see
+   §13.5), run by `/assets/build/hero-shader.js` from an
    inline ESM module in `index.html` (`SPEED=0.003`, DPR capped at 2). Until 2026-08-28 the
    runner was a vendored `three.js@0.160.0` — see §15.1.
    It mounts a `<canvas>`, adds `.is-ready` to crossfade in over **600ms**. On any
@@ -1496,6 +1497,54 @@ All at `REF_DPR = 2`, which preserves what each was tuned against and repairs th
 manage their own canvas and pass `iResolution` in **device** pixels, matching `gl_FragCoord`,
 capping DPR at 2 themselves. If a hero can be written that way, prefer it — `dprScale` is the
 retrofit for heroes whose constants were already tuned against the mismatched space.
+
+## 13.5 Recolouring one strand of an additive shader
+
+**2026-09-08.** The homepage hero's three strands are the raw R, G and B channels: each
+writes one channel, and every colour in the picture is those three summing. Warming the
+first one from pure red to `#D92100` is therefore not a swap of a colour value — there is
+no colour value to swap — and two plausible ways to do it are both wrong.
+
+**Tinting by the strand's raw intensity casts the whole hero.** Adding green in proportion
+to `r` lifts green everywhere `r` reaches, and its tail reaches everywhere. Down in the dark
+field all three tails are worth about the same, which is exactly why the ground reads neutral
+grey; adding to one of them turned the entire black field olive — measured `9,8,8 → 9,12,8`,
+frame-mean green **+34%**.
+
+**Tinting by dominance breaks the strand.** Gating on `r - max(g, b)` protects the ground
+(dominance is ~0 there) and the white crossings (~0 there too), and it is wrong for a reason
+that does not show up until you look: it also collapses wherever a *neighbour* is merely
+close, which is **74% of all lit pixels**. The strand renders with a tinted core and pure-red
+shoulders, and visibly breaks apart as it approaches the other two.
+
+**Gate on the strand's own brightness instead.** `smoothstep(0.05, 0.25, r)` leaves the
+neutral wash alone — below that range no single strand is the light source, so no strand
+should be tinting it — and above it the strand takes its colour regardless of what is nearby.
+The hue then depends on nothing but the strand itself, so it cannot break:
+
+```glsl
+float s = smoothstep(0.05, 0.25, r);
+col.g += s * min(r, 1.0) * WARM_G;
+col.r  = mix(col.r, min(col.r, max(WARM_R, max(g, b))), s);
+```
+
+`min(r, 1.0)` holds green in step with red so the hue survives the clipped core instead of
+burning to yellow — which is what the untouched green and blue strands already do.
+
+**The red cap is what makes a darker colour possible at all.** Uncapped, the core clips to
+255 and every candidate looks identical there; the choice only exists once the peak can sit
+below full. The cap lifts to whatever the other strands are worth locally (`max(WARM_R,
+max(g, b))`), so the white convergence band stays white rather than going cyan — without
+that term a peak below 1.0 tints the brightest, most prominent part of the hero.
+
+Verified against a NumPy model of the same fragment shader (agreeing with the GL render to
+1/255): `WARM_R = 1.0, WARM_G = 0.0` is bit-identical to the pre-change hero, the neutral
+ground moves at most 2/255, and the white band at most 6/255 along one fringe.
+
+> **Headless `--screenshot` never composites a WebGL canvas** — the hero photographs black,
+> before and after. `.beam-probe.html` (untracked) renders a page's own fragment source and
+> reads the pixels back out instead; that, or the NumPy model, is the only way to verify a
+> change to these strands. See §13.4 for why the geometry constants are what they are.
 
 ## 14.0.0 Safe-area insets: deliberately not adopted
 

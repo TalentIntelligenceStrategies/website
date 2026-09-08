@@ -893,7 +893,8 @@
 <script src="/assets/build/site.js?v=18" defer></script>
 
 <!-- Shifting-lines hero shader. Renders a single full-screen quad with a tiny
-     fragment shader (RGB chromatic lines on black), scoped to #hero-shader. Far
+     fragment shader (three chromatic lines on black — deep red-orange, green, blue),
+     scoped to #hero-shader. Far
      lighter on the GPU than the retired ShaderGradient sphere. On any failure the
      catch leaves #hero-shader empty → the black hero background shows through. -->
 <script type="module">
@@ -922,6 +923,12 @@
         uniform float yOffset;
         uniform float saturation;   // 0 = white/grey glow, 1 = full RGB
 
+        // The first strand's peak — the colour it resolves to where it clips.
+        // #D92100, a deep red-orange: the pure red it replaced (2026-09-08) read as
+        // an alert against the green and blue rather than as a third light.
+        const float WARM_R = 0.850;
+        const float WARM_G = 0.130;
+
         void main() {
           // gl_FragCoord is DEVICE px, resolution is CSS px. Normalise onto the
           // reference ratio's grid first, or the whole coordinate space scales with
@@ -941,10 +948,36 @@
           float g = 0.05 / abs(p.y + sin((gx + time) * xScale) * yScale);
           float b = 0.05 / abs(p.y + sin((bx + time) * xScale) * yScale);
 
+          vec3 col = vec3(r, g, b);
+
+          // ── Recolour the first strand, and nothing else ────────────────────
+          // Gated on how bright THAT strand is here, deliberately not on how far it
+          // stands above the other two. Dominance (r minus the brighter of g and b)
+          // was tried first and looks equivalent on paper, but it switches the tint
+          // off wherever a neighbour comes close — 74% of all lit pixels — so the
+          // strand renders with an orange core and red shoulders and visibly breaks
+          // apart near the crossings.
+          //
+          // Brightness is the honest gate. Down in the dark field all three tails are
+          // worth about the same and the ground reads neutral grey, so leaving that
+          // range alone keeps the ground exactly as it was; tinting it lifted the whole
+          // hero green (frame-mean G +34%). Above it the strand IS the light and takes
+          // its colour whatever else is nearby, so the hue cannot break.
+          float s = smoothstep(0.05, 0.25, r);
+
+          // min(r, 1.0) holds the green in step with the red, so the hue stays put from
+          // the faintest edge to the core — what the pure green and blue strands do.
+          col.g += s * min(r, 1.0) * WARM_G;
+
+          // Capping red at WARM_R is what makes a colour darker than #FF0000 possible
+          // at all: uncapped, the core clips to 255 and reads the same whatever the
+          // tint. The cap lifts to whatever the other strands are worth locally, so the
+          // white convergence band stays white instead of turning cyan.
+          col.r = mix(col.r, min(col.r, max(WARM_R, max(g, b))), s);
+
           // Mute the chroma WITHOUT thinning the lines: blend each channel toward
           // the brightest channel (value), not luminance. Every lit pixel keeps
           // its full brightness — so glow thickness is preserved — while hue drops.
-          vec3 col = vec3(r, g, b);
           float val = max(r, max(g, b));
           col = mix(vec3(val), col, saturation);
 

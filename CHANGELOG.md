@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-09-08 21:36 +0800** · Home hero's red light strand recoloured to a deep red-orange, gated on its own brightness so the ground and white band stay put.
 - **2026-08-29 17:04 +0800** · Pinned text-size-adjust so phones stop inflating the ticker, then took it back to 14px and the scroll to 58s.
 - **2026-08-29 16:41 +0800** · About bento's type cell moved to true black, matching what the three image cells actually render.
 - **2026-08-29 16:11 +0800** · Mobile ticker quietened via leading, tracking, weight and alpha rather than size, and the home hero sub now balances its line break.
