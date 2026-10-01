@@ -853,7 +853,7 @@
   // JS, under reduced motion, or without IntersectionObserver.
   const fdTargets = [
     ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .fd-map, .fd-close .container, .fd-commit__quote, .fd-band__inner > div:first-child, .fd-note, .fd-pending'],
-    ['list', '.fd-mosaic, .fd-steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners'],
+    ['list', '.fd-mosaic, .fd-steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners, .fd-ksp'],
     ['clip', '.fd-frame, .fd-offer > .fd-ph'],
     ['settle', '.fd-band > .fd-ph'],
   ];
@@ -894,6 +894,100 @@
       });
     });
   }
+
+  // ──────────────── Home v0.5 — KV carousel (APG tabbed carousel) ────────────────
+  // styles.css "HOME v0.5" owns the looks. The progress line IS the timer: its CSS
+  // animation runs for --kv-dur and its animationend advances the slide, so a hover or
+  // focus hold (animation-play-state) pauses both at once. Rotation never starts under
+  // reduced motion, stops for good once a slide is chosen, and the live region speaks
+  // only while paused. Without JS the controls stay hidden and slide 1 shows alone.
+  const kvEl = document.getElementById('kv');
+  if (kvEl) {
+    const tabs = Array.from(kvEl.querySelectorAll('.kv__tab'));
+    const slides = Array.from(kvEl.querySelectorAll('.kv__slide'));
+    const layers = Array.from(kvEl.querySelectorAll('.kv__media'));
+    const pause = kvEl.querySelector('.kv__pause');
+    const live = kvEl.querySelector('.kv__slides');
+    kvEl.querySelector('.kv__controls').hidden = false;
+    let cur = 0, playing = false;
+    const restartTrack = () => {
+      kvEl.classList.remove('is-running');
+      void kvEl.offsetWidth;   // reflow, so the next slide's line starts from zero
+      if (playing) kvEl.classList.add('is-running');
+    };
+    const show = (n, focus) => {
+      cur = (n + slides.length) % slides.length;
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === cur)); t.tabIndex = k === cur ? 0 : -1; });
+      slides.forEach((s, k) => { s.classList.toggle('is-active', k === cur); s.inert = k !== cur; });
+      layers.forEach((m, k) => m.classList.toggle('is-active', k === cur));
+      kvEl.dataset.active = String(cur);
+      if (focus) tabs[cur].focus();
+      restartTrack();
+    };
+    const setPlaying = (on) => {
+      playing = on;
+      pause.dataset.state = on ? 'playing' : 'paused';
+      live.setAttribute('aria-live', on ? 'off' : 'polite');
+      restartTrack();
+    };
+    tabs.forEach((t, k) => {
+      t.querySelector('.kv__track > span').addEventListener('animationend', () => { if (playing && k === cur) show(cur + 1); });
+      t.addEventListener('click', () => { setPlaying(false); show(k); });
+    });
+    kvEl.querySelector('.kv__tabs').addEventListener('keydown', (e) => {
+      const to = { ArrowRight: cur + 1, ArrowLeft: cur - 1, Home: 0, End: slides.length - 1 }[e.key];
+      if (to === undefined) return;
+      e.preventDefault(); setPlaying(false); show(to, true);
+    });
+    pause.addEventListener('click', () => setPlaying(!playing));
+    // Hold while the pointer or keyboard focus is inside, or the KV is scrolled away.
+    const hold = { hover: false, focus: false, away: false };
+    const applyHold = () => kvEl.classList.toggle('is-hold', hold.hover || hold.focus || hold.away);
+    kvEl.addEventListener('pointerenter', () => { hold.hover = true; applyHold(); });
+    kvEl.addEventListener('pointerleave', () => { hold.hover = false; applyHold(); });
+    kvEl.addEventListener('focusin', () => { hold.focus = true; applyHold(); });
+    kvEl.addEventListener('focusout', (e) => { if (!kvEl.contains(e.relatedTarget)) { hold.focus = false; applyHold(); } });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([en]) => { hold.away = !en.isIntersecting; applyHold(); }, { threshold: 0.35 }).observe(kvEl);
+    }
+    // aria-roledescription has no data-zh-* handler; follow <html lang> here.
+    const rdEls = [kvEl, ...slides];
+    rdEls.forEach(el => { el.dataset.rdEn = el.getAttribute('aria-roledescription'); });
+    const syncRd = () => {
+      const zh = document.documentElement.lang === 'zh-Hant';
+      rdEls.forEach(el => el.setAttribute('aria-roledescription', zh ? el.dataset.rdZh : el.dataset.rdEn));
+    };
+    syncRd();
+    new MutationObserver(syncRd).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    show(0);
+    // Phones get one slide at a time (styles.css), so rotating would reflow the page under the reader.
+    setPlaying(!reduced && !matchMedia('(max-width: 760px)').matches);
+  }
+
+  // ──────────────── Home v0.5 — pillar tabs (APG tabs, automatic activation) ────────────────
+  // Panels render instantly, so arrow keys select as they move. Without JS the tablist
+  // stays hidden and the three panels stack under their own names.
+  document.querySelectorAll('.ptabs').forEach(root => {
+    const list = root.querySelector('.ptabs__list');
+    const ptabs = Array.from(list.querySelectorAll('[role="tab"]'));
+    const panels = ptabs.map(t => document.getElementById(t.getAttribute('aria-controls')));
+    list.hidden = false;
+    let at = 0;
+    const select = (k, focus) => {
+      at = (k + ptabs.length) % ptabs.length;
+      ptabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === at)); t.tabIndex = j === at ? 0 : -1; panels[j].hidden = j !== at; });
+      if (focus) ptabs[at].focus();
+      const p = panels[at];
+      p.classList.remove('is-in'); void p.offsetWidth; p.classList.add('is-in');
+    };
+    ptabs.forEach((t, k) => t.addEventListener('click', () => select(k)));
+    list.addEventListener('keydown', (e) => {
+      const to = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: ptabs.length - 1 }[e.key];
+      if (to === undefined) return;
+      e.preventDefault(); select(to, true);
+    });
+    ptabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === 0)); t.tabIndex = j === 0 ? 0 : -1; panels[j].hidden = j !== 0; });
+  });
 
   // ──────────────── Scroll-reveal — [data-reveal] fades/rises into view once ────────────────
   // Guarded so it no-ops on pages without [data-reveal] elements (homepage, signal).

@@ -184,7 +184,7 @@ For MVP, **Lucide is the only icon source.** Do not draw custom icons. If a conc
 
 - **Type-led affordance.** A letter or abbreviation inside a chip or pill handles most identity markers — SABCD grades render as `A`/`B`/`C`/`D` inside [Status chip](./components.md); no icon needed.
 - **Closest generic with explicit label.** If the closest Lucide icon is near-but-not-perfect (e.g., `coins` for "tokens"), use it with a clear text label alongside. Ambiguity is absorbed by the label, not by the icon.
-- **The TIS submark is the canonical "verified" mark.** The Verified License Badge already uses the submark; no separate "verified" icon is required.
+- **The Verified License Badge is the canonical "verified" mark.** No separate "verified" icon is required.
 
 Custom-icon commissioning reopens once the three MVP surfaces ship. Any candidate then follows the library rules (24px grid, 1.5px stroke, rounded linecaps, `currentColor`, SVG only) and lands only after design-director review — each custom icon is a long-term maintenance commitment and a stylistic precedent.
 
@@ -265,6 +265,9 @@ Canonical implementation: [`../website/index.html`](../website/index.html) — s
 
 - **"Powered by" is Innovue-only and Insights / product-UI-only.** Never "Powered by Suntek", "Powered by FairTech", or "Powered by" on a front-door or Sustain surface.
 - **Never merge partners.** On pages that span pillars (Home, Ecosystem, the AUSA deck), each partner sits beside its own pillar. No single "partners" row implying every partner stands behind every service.
+  - **The homepage ecosystem diagram and partner introduction** (sheet v0.5) may show all three partners in one figure, because each sits in its own labelled layer: service capacity = Suntek Group / PG Union, capability lifting = FairTech, IP services = TIS × Innovue. They feed TIS as orchestrator, which delivers Sustain · Protect · License.
+  - The TIS × Innovue patent portfolio sits in a **dashed frame**, as a separate asset (the separation rule, `positioning.md` §2).
+  - Names in text only. No partner logos, and no Innovue lockup on the front door.
 - **Footer.** Front-door pages carry the TIS submark alone in the footer; the TIS|Innovue footer lockup stays on Insights pages ([`components.md`](./components.md) §Footer).
 - **Service-partner logos** (Suntek Group, PG Union, FairTech) are **not used** until approved. Names are cleared; logos are an open item.
 - **FairTech** is named as trainer and maintenance specialist only — never as a UAV maker, and its own products never appear.
@@ -367,52 +370,58 @@ Stored in `brand/assets/logos/partners/`.
 
 ## Verified License Badge
 
-A co-branded credential TIS issues to licensees, analogous to CE / UL marks. The current canonical form is a stadium-shaped pill that wraps the TIS issuer seal, one or more licensee seals, and a verification QR. Visual implementation (dimensions, tokens, light-lock construction): [`components.md`](./components.md) §Verified License Badge. This section owns identity — what goes in, how it pluralises, what each seal carries.
+A co-branded credential TIS issues to licensees, analogous to CE / UL marks. The canonical form is a **certificate card**: the TIS issuer seal and credential line above, and beneath it a tray holding one seal for each institution whose patents the licence covers. Visual implementation (seal construction, card dimensions, expired state): [`components.md`](./components.md) §Seal · Standalone and §Verified License Badge. This section owns identity: what goes in, how it pluralises, what each seal carries.
 
-**Form factor.** Stadium pill (full `border-radius`), light-locked: it does not invert in dark mode. The credential is meant to read as a stamped artifact wherever it lands — on screens, packaging, exhibition boards — not as themed UI. Each constituent mark is a §Seal · Standalone at ×0.65, sized to keep the curved arc text legible.
+**Form factor.** Certificate card, light-locked: it does not invert in dark mode and uses no theme tokens. The credential reads as a stamped artifact wherever it lands: screens, packaging, exhibition boards. Reference lane is the certification plaque (UL Listed, an appellation neck label, a museum accession plate). Rank is carried by structure: TIS sits alone above the rule with the statement beside it, and the suppliers are listed below a label.
 
-**Content (left → right):**
+**Content.**
 
-- TIS issuer seal — top arc `TIS ISSUED VERIFIED LICENSE`, bottom arc `LIC-NNNNN`
-- 1–N licensee seals — one per IP supplier on the credential, in issuance-ledger order; top arc carries the partner's standardized full registered name (table below), bottom arc carries that partner's patent count (`N PATENTS`)
-- Verification QR — 72×72 square; license number (`LIC-NNNNN`) sits below in mono. Resolves to the TIS verification page.
+- **Issuer zone.** The TIS seal, plus the credential line `已驗證授權` / `VERIFIED LICENSE` and the validity date beside it.
+- **Tray.** Label `專利授權來源` / `LICENSED PATENTS FROM`, then one supplier seal per patent-source institution on the licence, three to a row.
+- **Every seal carries three things:**
+  - its institution's own primary colour
+  - its initials in white at the centre
+  - its full registered name on the top arc, with the validity line on the bottom arc
 
-**Top-arc strings per seal** (uppercase, rendered exactly — the source of truth for `tspan` / `textPath` content on the seal SVGs):
+**Each seal carries its licensor's primary colour.** The colour is the institution's own, taken from a published or supplied brand source and recorded in [`components.md`](./components.md) §Seal · Standalone. It is never a TIS palette colour and never adjusted for contrast.
 
-| Seal | Top arc |
-|---|---|
-| TIS issuer | `TIS ISSUED VERIFIED LICENSE` |
-| ITRI licensee | `INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE` |
-| III licensee | `INSTITUTE FOR INFORMATION INDUSTRY` |
-| NYCU licensee | `NATIONAL YANG MING CHIAO TUNG UNIVERSITY` |
+**Top-arc strings per seal** (rendered exactly; the source of truth for `textPath` content):
 
-When a new licensee onboards, extend this table with the partner's registered legal name in uppercase before any seal renders. Acronyms (ITRI / III / NYCU) never appear on the arc — the registered full name carries the institutional weight the credential is meant to project.
+| Seal | ZH | EN |
+|---|---|---|
+| TIS issuer | 泰然策略解密 | `TALENT INTELLIGENCE STRATEGIES` |
+| NCKU | 國立成功大學 | `NATIONAL CHENG KUNG UNIVERSITY` |
+| NYCU | 國立陽明交通大學 | `NATIONAL YANG MING CHIAO TUNG UNIVERSITY` |
+| NTU | 國立臺灣大學 | `NATIONAL TAIWAN UNIVERSITY` |
+| III | 資訊工業策進會 | `INSTITUTE FOR INFORMATION INDUSTRY` |
+| ITRI | 工業技術研究院 | `INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE` |
+| NTHU | 國立清華大學 | `NATIONAL TSING HUA UNIVERSITY` |
+
+When a new institution onboards, add its registered legal name (ZH and uppercase EN) and its sourced colour before any seal renders. Acronyms appear only as the centre initials, never on the arc: the full name carries the institutional weight.
 
 **Content formats**
 
-- **License #** — `LIC-NNNNN` (5-digit zero-padded, e.g., `LIC-00042`). The same identifier appears in two registers on the badge: curved on the TIS seal's bottom arc, and mono below the QR. They must match — treat any drift as a defect.
-- **Patent count** — per-licensee, integer + `PATENTS` (e.g., `18 PATENTS`). On the licensee seal's bottom arc.
-- **Validity period** — when surfaced (verification page, not on the badge itself): `YYYY-MM-DD – YYYY-MM-DD` per [`brand-voice.md`](./brand-voice.md) §6; en-dash separator with a single space on each side.
+- **Validity date.** Generated by the licensing engine from the licence expiry in Asia/Taipei, never typed. Written `YYYY.MM.DD` on the badge: `有效期至 2027.07.27` / `Valid through 2027.07.27`, and on each seal's bottom arc `已驗證授權 · 有效期至 2027.07.27` / `VERIFIED LICENSE · VALID THROUGH 2027.07.27`. **Open:** this departs from [`brand-voice.md`](./brand-voice.md) §6, which requires ISO `YYYY-MM-DD` for credentials. The adopted workbook seal and the live card both use dots. Resolve by adding a badge exception to §6 or by moving the seal to hyphens.
+- **No licence number, patent count or QR** on the badge. Those live on the licence detail and verification pages.
 
 **Construction rules**
 
-- TIS seal follows §Seal · Standalone (`is-tis` modifier locks the dark-disc / dark-cube-submark look in any theme — credential marks must not invert).
-- Licensee seals use the partner colour map (`is-itri` / `is-iii` / `is-nycu`); add new partner variants in [`components.md`](./components.md) when a new licensee onboards.
-- "Powered by Innovue" does not appear on the badge — it credits the patent-source institution, not the underlying technology platform.
-- The pill itself is light-locked via local CSS-variable scope (full token list in [`components.md`](./components.md) §Verified License Badge). Identity rule: the stamped artifact reads consistently across surface and theme.
+- One seal construction for every issuer (Direction 1, "Medium · larger initials", workbook `website/assets/badges/badge-preview.html`). Institutions differ only in colour, initials and name.
+- No submark on the seal. The centre is type.
+- "Powered by Innovue" does not appear on the badge. The badge credits the patent-source institution, not the technology platform.
 
-### Combined badges (multiple licensees)
+### Combined badges (multiple suppliers)
 
-The canonical pill IS the combined form. Single-licensee and multi-licensee badges share one chassis: TIS issuer seal · divider · 1–N licensee seals · divider · QR + LIC. The licensee zone grows with each supplier; no separate "single" variant.
+The certificate card IS the combined form. A licence with one supplier and a licence with six share one card; there is no separate single-supplier variant.
 
 **Layout rules.**
 
-- **Two dividers, three zones.** A vertical hairline separates the issuer (TIS) from the licensee zone, and a second hairline separates the licensee zone from the credential stack (QR + LIC). Inside the licensee zone, seals sit at equal optical weight with no dividers between them — they're peers under TIS.
-- **Issuance-ledger order.** Licensee seals render left-to-right in the order they were issued, not alphabetically. The badge is a record, not a directory.
-- **One QR, one lookup.** A single QR resolves to a multi-licensee verification page that lists every licensee — supplier, scope, jurisdiction, status. One mark, one registry lookup — matching the CE / UL convention.
-- **Guidance cap.** The pill scales horizontally with each added licensee seal. Above ~5 licensees the pill grows beyond standard preview / packaging widths — route those holders to a dedicated bundle-detail page instead of a single combined badge.
+- **Two zones, one rule.** The issuer zone sits above a hairline and the tray sits below it. Supplier seals are peers under TIS: equal size, no dividers between them.
+- **Fixed supplier order.** `NCKU → NYCU → NTU → III → ITRI → NTHU`, filtered to the suppliers present. The order is set by colour separation (closest adjacent pair ΔE 30.1). It is not issuance, alphabetical or patent-count order; any of those would put NTU next to NCKU or NYCU next to III.
+- **The card grows downward only.** It is always 380 wide, with three seals per row. Six institutions exist today, so the card has at most two rows. The height formula carries on for more rows if more institutions onboard.
+- **No suppliers.** The card collapses to the issuer zone alone.
 
-**Anti-counterfeit.** The invisible watermark is bound to the combined badge as a whole. Lapsing any license invalidates the watermark, and the verification page reflects the new state at scan time.
+**Anti-counterfeit.** Bound to the badge as a whole at generation. Lapsing the licence invalidates it, and the verification page reflects the state at lookup time. Server-side; not a visual spec.
 
 ### Surfaces
 
@@ -421,13 +430,13 @@ The canonical pill IS the combined form. Single-licensee and multi-licensee badg
 | Website footer / product page | Digital PNG/SVG with embedded verification link |
 | Exhibition booth | High-resolution print (PDF/AI) for backdrops, tabletop signs |
 | Marketing collateral | Embedded in catalogs, brochures, company profiles |
-| Product packaging / labels | Small-format badge + QR code (CE/UL-style) |
+| Product packaging / labels | Small-format badge (CE/UL-style), 100 px seal floor |
 
 ### Lifecycle
 
 - **Active** — auto-generated on license purchase; auto-updates on renewal.
-- **Expired** — visual treatment deferred. See [`design-tokens.md`](./design-tokens.md) §6.
-- **Anti-counterfeit** — invisible watermark embedded at generation; QR code resolves to the TIS verification page showing real-time status and authorized scope.
+- **Expired** — the card turns greyscale with a red `EXPIRED` stamp beside the issuer seal, and supplier initials stay uncovered. Construction in [`components.md`](./components.md) §Verified License Badge.
+- **Anti-counterfeit** — invisible watermark embedded at generation; the TIS verification page shows real-time status and authorized scope.
 
 For copy attribution rules, see [`brand-voice.md`](./brand-voice.md) §7.
 

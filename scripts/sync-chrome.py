@@ -22,7 +22,7 @@ FLAG = '<span class="status-flag" data-zh="即將推出">Coming soon</span>'
 # The section's page is PAGE_HREF[key]: the panel eyebrow links to it (there is no
 # "Overview" row), and the main links are anchors within that page.
 NAV = [
-    ('sustain', 'Sustain', '維運', [
+    ('sustain', 'Sustain', '維護', [
         ('/sustain/#service-package', 'Service package', '服務項目'),
         ('/sustain/#network', 'Island-wide network', '全台服務網'),
         ('/sustain/#roadmap', 'Capability roadmap', '能力路線圖'),
@@ -31,7 +31,7 @@ NAV = [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
         ('/engage/#phases', 'Engagement phases', '合作階段'),
     ]),
-    ('protect', 'Protect', '保護', [
+    ('protect', 'Protect', '防護', [
         ('/protect/#why-neutral', 'Why a neutral advisor', '為何需要中立顧問'),
         ('/protect/#capabilities', 'Three capabilities', '三項核心能力'),
         ('/protect/#filing-strategy', 'Taiwan & Asia filing strategy', '台灣與亞洲申請策略'),
@@ -240,8 +240,8 @@ def drawer():
 </aside>'''
 
 SEARCH_JUMP = [
-    ('/sustain/', 'Sustain', '維運', '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
-    ('/protect/', 'Protect', '保護', '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'),
+    ('/sustain/', 'Sustain', '維護', '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
+    ('/protect/', 'Protect', '防護', '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'),
     ('/license/', 'License', '授權', '<path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>'),
     ('/ecosystem/', 'Ecosystem', '生態系', '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/>'),
     ('/why-taiwan/', 'Why Taiwan', '為何是台灣', '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
@@ -274,7 +274,7 @@ def search():
 </div>'''
 
 FOOTER_COLS = [
-    ('Services', '服務', [('/sustain/', 'Sustain', '維運'), ('/protect/', 'Protect', '保護'), ('/license/', 'License', '授權')]),
+    ('Services', '服務', [('/sustain/', 'Sustain', '維護'), ('/protect/', 'Protect', '防護'), ('/license/', 'License', '授權')]),
     ('Company', '公司', [('/ecosystem/', 'Ecosystem', '生態系'), ('/why-taiwan/', 'Why Taiwan', '為何是台灣'), ('/about/', 'About', '關於'), ('/engage/', 'Engage', '合作')]),
     ('Insights', '洞察', [('/reports/', 'Reports & press', '報告與新聞'), ('/product/signal/methodology.html', 'SABCD rating', 'SABCD 評級方法'), ('/product/signal/', 'Patent Intelligence SaaS', '泰然專利強度評級系統'), ('/product/licensing/', 'Licensing Platform', '泰然專利防護網', True)]),
 ]

@@ -58,7 +58,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-00.woff2') format('woff2');
-  unicode-range: U+2E80,U+2EFF,U+3000-3002,U+3008-300D,U+303F,U+3100,U+312F,U+3200,U+32FF,U+3400,U+4DBF,U+4E00,U+4E03,U+4E09-4E0B,U+4E0D,U+4E14,U+4E16,U+4E26,U+4E2D,U+4E32,U+4E39,U+4E3B,U+4E45,U+4E4B,U+4E59,U+4E5D,U+4E5F,U+4E86,U+4E88,U+4E8B-4E8C,U+4E92,U+4E94,U+4E9B,U+4E9E,U+4EA4,U+4EA6,U+4EAB,U+4EAE,U+4EBA,U+4EC0-4EC1,U+4ECA-4ECB,U+4ECD,U+4ED6,U+4ED8,U+4EE3,U+4EE5,U+4EF2,U+4EF6,U+4EFB,U+4EFD,U+4EFF,U+4F01,U+4F30,U+4F34,U+4F38,U+4F3C,U+4F46,U+4F48,U+4F4D-4F50,U+4F54-4F55,U+4F5C,U+4F60,U+4F73,U+4F75,U+4F7F,U+4F86,U+4F8B,U+4F9B,U+4F9D,U+4FB5,U+4FC2-4FC3,U+4FDD,U+4FE1,U+4FEE-4FEF,U+500B,U+500D,U+5011-5012,U+5019,U+503C,U+5047,U+505A,U+505C,U+5065,U+5074-5076,U+5099,U+50B3,U+50B5,U+50C5,U+50CF,U+50F9,U+5100,U+5104,U+511F,U+512A,U+5132,U+5141,U+5143,U+5145,U+5148-5149,U+514B,U+514D,U+5165,U+5167-5169,U+516B-516D,U+5171,U+5176-5177,U+517C,U+518A,U+518D,U+51C6,U+51F1,U+51FA,U+51FD,U+5206-5207,U+5217,U+5224-5225,U+5229-522A,U+5230,U+5236-5237,U+523A-523B,U+5247,U+524D,U+5269,U+526F,U+5275,U+5283,U+529B,U+529F-52A0,U+52A9,U+52D5,U+52D9,U+52FE-52FF,U+5305,U+5316-5317,U+532F,U+5340-5341,U+5343,U+5347,U+534A,U+5354,U+5357,U+5360-5361,U+5370,U+5373,U+537B,U+539F,U+53BB,U+53C3,U+53C8,U+53CA,U+53CD,U+53D6-53D7,U+53E3,U+53E5-53E6,U+53EA,U+53EF-53F0,U+53F2-53F3,U+53F8,U+5404,U+5408,U+540C-540D,U+5411,U+5426-5427,U+542B,U+5438,U+5448,U+544A,U+5468,U+548C,U+54C1,U+54E1,U+54EA,U+552E-552F,U+5546,U+554F,U+555F,U+5584,U+55AE,U+55CE,U+5668,U+566A,U+5687,U+56CA,U+56DB,U+56DE,U+56E0,U+56FA,U+570B,U+570D,U+5712-5713,U+5716,U+5718,U+5728,U+5730,U+5740,U+5747,U+5761,U+5782,U+578B,U+57CE,U+57DF,U+57F7,U+57F9-57FA,U+5806,U+5831,U+5834,U+584A,U+5854,U+586B,U+5883,U+588A,U+589E,U+58C1,U+58D3,U+5916,U+591A,U+5920,U+5925,U+5927,U+5929-592A,U+5931,U+5948,U+594F,U+5951,U+5957,U+5960,U+5967,U+597D,U+5982,U+59A5,U+59CB,U+59D3-59D4,U+5A01,U+5A92,U+5B50,U+5B54,U+5B57-5B58,U+5B63,U+5B78,U+5B83,U+5B88-5B89,U+5B8C,U+5B8F,U+5B98,U+5B9A,U+5B9C,U+5BA2-5BA4,U+5BB6;
+  unicode-range: U+2E80,U+2EFF,U+3000-3002,U+3008-300D,U+303F,U+3100,U+312F,U+3200,U+32FF,U+3400,U+4DBF,U+4E00,U+4E03,U+4E09-4E0B,U+4E0D,U+4E14,U+4E16,U+4E26,U+4E2D,U+4E32,U+4E39,U+4E3B,U+4E45,U+4E4B,U+4E59,U+4E5D,U+4E5F,U+4E86,U+4E88,U+4E8B-4E8C,U+4E92,U+4E94,U+4E9B,U+4E9E,U+4EA4,U+4EA6,U+4EAB,U+4EAE,U+4EBA,U+4EC0-4EC1,U+4ECA-4ECB,U+4ECD,U+4ED6,U+4ED8,U+4EE3,U+4EE5,U+4EF2,U+4EF6,U+4EFB,U+4EFD,U+4EFF,U+4F01,U+4F30,U+4F34,U+4F38,U+4F3C,U+4F46,U+4F48,U+4F4D-4F50,U+4F54-4F55,U+4F5C,U+4F60,U+4F73,U+4F75,U+4F7F,U+4F86,U+4F8B,U+4F9B,U+4F9D,U+4FB5,U+4FC2-4FC3,U+4FDD,U+4FE1,U+4FEE-4FEF,U+500B,U+500D,U+5011-5012,U+5019,U+503C,U+5047,U+505A,U+505C,U+5065,U+5074-5076,U+5099,U+50B3,U+50B5,U+50C5,U+50CF,U+50F9,U+5100,U+5104,U+511F,U+512A,U+5132,U+5141,U+5143,U+5145,U+5148-5149,U+514B,U+514D,U+5165,U+5167-5169,U+516B-516D,U+5171,U+5176-5177,U+517C,U+518A,U+518D,U+51C6,U+51F1,U+51FA,U+51FD,U+5206-5207,U+5217,U+5224-5225,U+5229-522A,U+5230,U+5236-5237,U+523A-523B,U+5247,U+524D,U+5269,U+526F,U+5275,U+5283,U+529B,U+529F-52A0,U+52A9,U+52D5,U+52D9,U+52E2,U+52FE-52FF,U+5305,U+5316-5317,U+532F,U+5340-5341,U+5343,U+5347,U+534A,U+5354,U+5357,U+5360-5361,U+5370,U+5373,U+537B,U+539F,U+53BB,U+53C3,U+53C8,U+53CA,U+53CD,U+53D6-53D7,U+53E3,U+53E5-53E6,U+53EA,U+53EF-53F0,U+53F2-53F3,U+53F8,U+5404,U+5408,U+540C-540D,U+5411,U+5426-5427,U+542B,U+5438,U+5448,U+544A,U+5468,U+548C,U+54C1,U+54E1,U+54EA,U+552E-552F,U+5546,U+554F,U+555F,U+5584,U+55AE,U+55CE,U+5668,U+566A,U+5687,U+56CA,U+56DB,U+56DE,U+56E0,U+56FA,U+570B,U+570D,U+5712-5713,U+5716,U+5718,U+5728,U+5730,U+5740,U+5747,U+5782,U+578B,U+57CE,U+57DF,U+57F7,U+57F9-57FA,U+5806,U+5831,U+5834,U+584A,U+5854,U+586B,U+5883,U+588A,U+589E,U+58C1,U+58D3,U+5916,U+591A,U+5920,U+5925,U+5927,U+5929-592A,U+5931,U+5948,U+594F,U+5951,U+5957,U+5960,U+5967,U+597D,U+5982,U+59A5,U+59CB,U+59D3-59D4,U+5A01,U+5A92,U+5B50,U+5B54,U+5B57-5B58,U+5B63,U+5B78,U+5B83,U+5B88-5B89,U+5B8C,U+5B8F,U+5B98,U+5B9A,U+5B9C,U+5BA2-5BA4,U+5BB6;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -66,7 +66,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-01.woff2') format('woff2');
-  unicode-range: U+5BB9,U+5BC4,U+5BC6,U+5BCC,U+5BDF,U+5BE6-5BE7,U+5BE9,U+5BEB-5BEC,U+5C01,U+5C07-5C08,U+5C0B,U+5C0D-5C0F,U+5C11,U+5C16,U+5C1A,U+5C31,U+5C3C,U+5C3E,U+5C40,U+5C45-5C46,U+5C55,U+5C64,U+5C6C,U+5CB8,U+5CF6,U+5D34,U+5D4C,U+5DE5-5DE6,U+5DEE,U+5DF1-5DF2,U+5E02-5E03,U+5E0C,U+5E2B,U+5E33,U+5E36,U+5E38,U+5E63,U+5E73-5E74,U+5E79,U+5E7E,U+5E8F,U+5E95,U+5E9C,U+5EA6,U+5EAB,U+5ED3,U+5EE0,U+5EE2-5EE3,U+5EF3,U+5EF6-5EF7,U+5EFA,U+5F0F,U+5F15,U+5F31,U+5F35,U+5F37,U+5F48,U+5F59,U+5F62,U+5F69,U+5F71,U+5F80,U+5F85,U+5F88,U+5F8B-5F8C,U+5F91-5F92,U+5F97,U+5F9E,U+5FA9,U+5FAE,U+5FC3,U+5FC5,U+5FD7-5FD8,U+5FEB,U+600E,U+6021,U+6025,U+6027,U+6062,U+6069,U+606F,U+60A8,U+60C5,U+60F3,U+610F,U+611F,U+614B,U+6167,U+6191,U+61C2,U+61C9,U+61F2,U+6210-6211,U+6216,U+622A,U+6230,U+6233-6234,U+6236,U+6240,U+6247,U+624B,U+624D,U+6253,U+6263,U+6279,U+627E-6280,U+628A,U+6291,U+6295,U+6297-6298,U+62AC,U+62B5,U+62C6,U+62C9,U+62D3,U+62D8,U+62EC,U+62FF,U+6301,U+6307,U+6309,U+6311,U+6368,U+6383,U+6388-6389,U+638C,U+6392,U+639B,U+63A1,U+63A5,U+63A7-63A8,U+63CF-63D0,U+63DB,U+63E1,U+63ED,U+63F4,U+641C,U+642D,U+6458,U+6490,U+6495,U+64A4,U+64AD,U+64B0,U+64B2,U+64C1,U+64C7,U+64CA-64CB,U+64CE,U+64D4,U+64DA,U+64F4,U+651C,U+652F,U+6536,U+6539,U+653B,U+653E-653F,U+6545,U+6548,U+654F,U+6557-6558,U+6574,U+6578,U+6582,U+6587,U+6599,U+65AF-65B0,U+65B7,U+65B9,U+65BC-65BD,U+65CF,U+65D7,U+65E2,U+65E5-65E6,U+6602,U+660E,U+6613,U+662F,U+6642,U+6657,U+665F,U+666F,U+6676,U+667A,U+66AB,U+66B4,U+66DD,U+66F4,U+66F8,U+66FF-6700,U+6703,U+6708-6709,U+670D,U+671F,U+672A,U+672C,U+6746,U+6750,U+675F,U+6771,U+677F,U+6790,U+6797,U+679C,U+67B6,U+67D0,U+67E5,U+67F1,U+6821,U+6838-6839,U+683C,U+6848,U+689D,U+68B0,U+68C4,U+68EE,U+690D,U+695A,U+696D,U+6975,U+6982,U+69CB,U+69FD,U+6A13,U+6A19,U+6A21,U+6A23,U+6A4B,U+6A5F,U+6A6B,U+6AA2,U+6ABB,U+6B04,U+6B0A,U+6B21,U+6B3E,U+6B50,U+6B61-6B65,U+6B67,U+6B77-6B78,U+6BB5,U+6BCF,U+6BD4,U+6BEB,U+6C11,U+6C13,U+6C27,U+6C34,U+6C38,U+6C42,U+6C60,U+6C7A,U+6C7D,U+6C83,U+6C89,U+6C92,U+6CB3,U+6CBB,U+6CBF,U+6CC1,U+6CD5,U+6CE2;
+  unicode-range: U+5BB9,U+5BC4,U+5BC6,U+5BCC,U+5BDF,U+5BE6-5BE7,U+5BE9,U+5BEB-5BEC,U+5C01,U+5C07-5C08,U+5C0B,U+5C0D-5C0F,U+5C11,U+5C16,U+5C1A,U+5C31,U+5C3C,U+5C3E,U+5C40,U+5C45-5C46,U+5C55,U+5C64-5C65,U+5C6C,U+5CB8,U+5CF6,U+5D34,U+5D4C,U+5DE5-5DE6,U+5DEE,U+5DF1-5DF2,U+5E02-5E03,U+5E0C,U+5E2B,U+5E33,U+5E36,U+5E38,U+5E63,U+5E73-5E74,U+5E79,U+5E7E,U+5E8F,U+5E95,U+5E9C,U+5EA6,U+5EAB,U+5ED3,U+5EE0,U+5EE2-5EE3,U+5EF3,U+5EF6-5EF7,U+5EFA,U+5F0F,U+5F15,U+5F31,U+5F35,U+5F37,U+5F48,U+5F59,U+5F62,U+5F69,U+5F71,U+5F80,U+5F85,U+5F88,U+5F8B-5F8C,U+5F91-5F92,U+5F97,U+5F9E,U+5FA9,U+5FAE,U+5FC3,U+5FC5,U+5FD7-5FD8,U+5FEB,U+600E,U+6021,U+6025,U+6027,U+6062,U+6069,U+606F,U+60A8,U+60C5,U+60F3,U+610F,U+611F,U+614B,U+6167,U+616E,U+6191,U+61C2,U+61C9,U+61F2,U+6210-6211,U+6216,U+622A,U+6230,U+6233-6234,U+6236,U+6240,U+6247,U+624B,U+624D,U+6253,U+6263,U+6279,U+627E-6280,U+628A,U+6291,U+6295,U+6297-6298,U+62AC,U+62B5,U+62C6,U+62C9,U+62D3,U+62D8,U+62EC,U+62FF,U+6301,U+6307,U+6309,U+6311,U+6368,U+6383,U+6388-6389,U+638C,U+6392,U+639B,U+63A1,U+63A5,U+63A7-63A8,U+63CF-63D0,U+63DB,U+63E1,U+63ED,U+63F4,U+641C,U+642D,U+6458,U+6490,U+6495,U+64A4,U+64AD,U+64B0,U+64B2,U+64C1,U+64C7,U+64CA-64CB,U+64CE,U+64D4,U+64DA,U+64F4,U+651C,U+652F,U+6536,U+6539,U+653B,U+653E-653F,U+6545,U+6548,U+654F,U+6557-6558,U+6574,U+6578,U+6582,U+6587,U+6599,U+65AF-65B0,U+65B7,U+65B9,U+65BC-65BD,U+65CF,U+65D7,U+65E2,U+65E5-65E6,U+6602,U+660E,U+6613,U+662F,U+6642,U+6657,U+665F,U+666F,U+6676,U+667A,U+66AB,U+66B4,U+66DD,U+66F4,U+66F8,U+66FF-6700,U+6703,U+6708-6709,U+670D,U+671F,U+672A,U+672C,U+6746,U+6750,U+675F,U+6771,U+677F,U+6790,U+6797,U+679C,U+67B6,U+67D0,U+67E5,U+67F1,U+6821,U+6838-6839,U+683C,U+6848,U+689D,U+68B0,U+68C4,U+68EE,U+690D,U+695A,U+696D,U+6975,U+6982,U+69CB,U+69FD,U+6A13,U+6A19,U+6A21,U+6A23,U+6A4B,U+6A5F,U+6A6B,U+6AA2,U+6ABB,U+6B04,U+6B0A,U+6B21,U+6B3E,U+6B50,U+6B61-6B65,U+6B67,U+6B77-6B78,U+6BB5,U+6BCF,U+6BD4,U+6BEB,U+6C11,U+6C13,U+6C27,U+6C34,U+6C38,U+6C42,U+6C60,U+6C7A,U+6C7D,U+6C83,U+6C89,U+6C92,U+6CB3,U+6CBB,U+6CBF,U+6CC1;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -74,7 +74,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-02.woff2') format('woff2');
-  unicode-range: U+6CE8,U+6CF0,U+6D1E,U+6D32,U+6D3D-6D3E,U+6D41,U+6D6E,U+6D77-6D78,U+6D88-6D89,U+6DB5,U+6DE8,U+6DF1,U+6DF7,U+6DFA,U+6E05,U+6E2C,U+6E4A,U+6E90,U+6E96,U+6E9D,U+6EAF,U+6EFF,U+6F0F,U+6F5B,U+6FB3,U+6FDF,U+6FFE,U+700F,U+7063,U+706B,U+70BA,U+7121,U+7136,U+7167,U+71B1,U+71C3,U+71DF,U+722D,U+7246-7248,U+7269,U+7279,U+72C0,U+731C,U+7368,U+7387,U+73FE,U+7403,U+7406,U+745E,U+74B0,U+751F,U+7522,U+7528,U+7531-7533,U+754C,U+7559,U+7565,U+756B,U+7570,U+7576,U+7587,U+758A,U+767B-767E,U+7684,U+7686,U+76CA,U+76DB,U+76DF,U+76E1,U+76E3-76E4,U+76EE,U+76F4,U+76F8,U+76FE,U+7701,U+770B,U+771F,U+773C,U+777F,U+77B0,U+77BB,U+77E5,U+77ED,U+77EF,U+77FD,U+7814,U+7834,U+78B3,U+78BA,U+78BC,U+790E,U+793A,U+795E,U+7968,U+79A6,U+79C1,U+79D1-79D2,U+79DF,U+79FB,U+7A00,U+7A05,U+7A0B,U+7A0D,U+7A2E,U+7A31,U+7A3D,U+7A3F,U+7A4D-7A4E,U+7A69,U+7A76,U+7A7A,U+7A7F,U+7A81,U+7A97,U+7ACB,U+7AD9,U+7AE0,U+7AF6,U+7AF9,U+7AFF,U+7B26,U+7B2C,U+7B46,U+7B49,U+7B54,U+7B56,U+7B8B,U+7B97,U+7BA1,U+7BB1,U+7BC0,U+7BC4,U+7BC9,U+7BE9,U+7C21,U+7C3D,U+7C4C-7C4D,U+7C64,U+7C73,U+7CBE,U+7CCA,U+7CFB,U+7D00,U+7D04-7D05,U+7D0D,U+7D14,U+7D19-7D1A,U+7D22,U+7D2B,U+7D2F-7D30,U+7D42,U+7D44,U+7D50,U+7D55,U+7D61,U+7D66,U+7D71,U+7D81,U+7D91,U+7D93,U+7D9C,U+7DA0,U+7DAD,U+7DB1-7DB2,U+7DCA,U+7DDA,U+7DE0,U+7DE8,U+7DF4,U+7E3D,U+7E54,U+7E5E,U+7E6B,U+7E73,U+7E7C,U+7E8C,U+7EDC,U+7F3A,U+7F51,U+7F69,U+7F6E,U+7F70,U+7F72,U+7F8E,U+7FA4,U+7FA9,U+7FD2,U+8003,U+8005,U+800C,U+8017,U+8026,U+8058,U+805A,U+805E,U+806F,U+8072,U+8077,U+80A1,U+80CC,U+80FD,U+819C,U+81E8,U+81EA,U+81F3-81F4,U+81FA,U+8207-8208,U+822A,U+822C,U+8272,U+82E5,U+8349,U+83EF,U+842C,U+843D,U+8457,U+8463,U+8490,U+84CB,U+853D,U+8584,U+85A6,U+85AA,U+85CF,U+862D,U+8655,U+865F,U+8755,U+8782,U+87D1,U+884C,U+8853,U+885D,U+8861,U+8863,U+8868,U+88AB,U+88DC-88DD,U+88E1,U+88FD,U+8907,U+897F,U+8981,U+8986,U+898B,U+898F,U+8996,U+89BA,U+89BD,U+89C0,U+89D2,U+89E3,U+89F8,U+8A00,U+8A02,U+8A08,U+8A0A,U+8A0E,U+8A13,U+8A17-8A18,U+8A1F,U+8A2A,U+8A2D,U+8A31,U+8A34,U+8A3A-8A3B,U+8A55,U+8A5E,U+8A62,U+8A66,U+8A71-8A73,U+8A8D,U+8A9E,U+8AA4,U+8AAA;
+  unicode-range: U+6CD5,U+6CE2,U+6CE8,U+6CF0,U+6D1E,U+6D29,U+6D32,U+6D3B,U+6D3D-6D3E,U+6D41,U+6D6E,U+6D77-6D78,U+6D88-6D89,U+6DB5,U+6DE8,U+6DF1,U+6DF7,U+6DFA,U+6E05,U+6E1B,U+6E2C,U+6E4A,U+6E90,U+6E96,U+6E9D,U+6EAF,U+6EFF,U+6F0F,U+6F5B,U+6FB3,U+6FDF,U+6FFE,U+700F,U+7063,U+706B,U+70BA,U+7121,U+7136,U+7167,U+71B1,U+71C3,U+71DF,U+722D,U+7246-7248,U+7269,U+7279,U+72C0,U+731C,U+7368,U+7372,U+7387,U+73FE,U+7403,U+7406,U+745E,U+74B0,U+751F,U+7522,U+7528,U+7531-7533,U+754C,U+7559,U+7565,U+756B,U+7570,U+7576,U+7587,U+758A,U+7591,U+767B-767E,U+7684,U+7686,U+76CA,U+76DB,U+76DF,U+76E1,U+76E3-76E4,U+76EE,U+76F4,U+76F8,U+76FE,U+7701,U+770B,U+771F,U+773C,U+777F,U+77B0,U+77BB,U+77E5,U+77ED,U+77EF,U+77FD,U+7814,U+7834,U+7891,U+78B3,U+78BA,U+78BC,U+790E,U+793A,U+795E,U+7968,U+79A6,U+79C1,U+79D1-79D2,U+79DF,U+79FB,U+7A00,U+7A05,U+7A0B,U+7A0D,U+7A2E,U+7A31,U+7A3D,U+7A3F,U+7A4D-7A4E,U+7A69,U+7A76,U+7A7A,U+7A7F,U+7A81,U+7A97,U+7ACB,U+7AD9,U+7AE0,U+7AEF,U+7AF6,U+7AF9,U+7AFF,U+7B26,U+7B2C,U+7B46,U+7B49,U+7B54,U+7B56,U+7B8B,U+7B97,U+7BA1,U+7BB1,U+7BC0,U+7BC4,U+7BC9,U+7BE9,U+7C21,U+7C3D,U+7C4C-7C4D,U+7C64,U+7C73,U+7CBE,U+7CCA,U+7CFB,U+7D00,U+7D04-7D05,U+7D0D,U+7D14,U+7D19-7D1A,U+7D22,U+7D2B,U+7D2F-7D30,U+7D42,U+7D44,U+7D50,U+7D55,U+7D61,U+7D66,U+7D71,U+7D81,U+7D91,U+7D93,U+7D9C,U+7DA0,U+7DAD,U+7DB1-7DB2,U+7DCA,U+7DDA,U+7DE0,U+7DE8,U+7DF4,U+7E3D-7E3E,U+7E54,U+7E5E,U+7E6B,U+7E73,U+7E7C,U+7E8C,U+7EDC,U+7F3A,U+7F51,U+7F69,U+7F6E,U+7F70,U+7F72,U+7F8E,U+7FA4,U+7FA9,U+7FD2,U+7FFB,U+8003,U+8005,U+800C,U+8017,U+8026,U+8058,U+805A,U+805E,U+806F,U+8072,U+8077,U+80A1,U+80CC,U+80FD,U+819C,U+81E8,U+81EA,U+81F3-81F4,U+81FA,U+8207-8208,U+822A,U+822C,U+8272,U+82B1,U+82E5,U+8349,U+83EF,U+842C,U+843D,U+8457,U+8463,U+8490,U+84CB,U+853D,U+8584,U+85A6,U+85AA,U+85CF,U+862D,U+8655,U+865F,U+8755,U+8782,U+87D1,U+884C,U+8853,U+885D,U+8861,U+8863,U+8868,U+88AB,U+88DC-88DD,U+88E1,U+88FD,U+8907,U+897F,U+8981,U+8986,U+898B,U+898F,U+8996,U+89BA,U+89BD,U+89C0,U+89D2,U+89E3,U+89F8,U+8A00,U+8A02,U+8A08,U+8A0A,U+8A0E,U+8A13,U+8A17-8A18,U+8A1F,U+8A2A,U+8A2D,U+8A31,U+8A34,U+8A3A;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -82,7 +82,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-03.woff2') format('woff2');
-  unicode-range: U+8AB0,U+8ABF,U+8AC7,U+8ACB,U+8AD6,U+8AEE,U+8AFE,U+8B04,U+8B1B,U+8B1D,U+8B39,U+8B49,U+8B58,U+8B70,U+8B77,U+8B80,U+8B8A,U+8B93,U+8C41,U+8C61,U+8C8C,U+8CA0-8CA1,U+8CA8-8CA9,U+8CAC,U+8CB4,U+8CB7,U+8CBB-8CBC,U+8CBF,U+8CC3,U+8CC7,U+8CE0,U+8CE3,U+8CE6,U+8CEA,U+8CFC-8CFD,U+8D6B,U+8D70,U+8D77,U+8D85,U+8D8A,U+8DB3,U+8DD1,U+8DDD,U+8DDF,U+8DE8,U+8DEF,U+8DF3,U+8E64,U+8EAB,U+8ECA,U+8ECC-8ECD,U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9328,U+932F,U+9375,U+9396,U+93C8,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+990A,U+9918,U+9996,U+99D5,U+9A57,U+9A5F,U+9AA8,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
+  unicode-range: U+8A3B,U+8A55,U+8A5E,U+8A62,U+8A66,U+8A71-8A73,U+8A8D,U+8A9E,U+8AA4,U+8AAA,U+8AB0,U+8ABF,U+8AC7,U+8ACB,U+8AD6,U+8AEE,U+8AFE,U+8B04,U+8B1B,U+8B1D,U+8B39,U+8B49,U+8B58,U+8B6F-8B70,U+8B77,U+8B80,U+8B8A,U+8B93,U+8C41,U+8C61,U+8C8C,U+8CA0-8CA1,U+8CA8-8CA9,U+8CAC,U+8CB4,U+8CB7,U+8CBB-8CBC,U+8CBF,U+8CC3,U+8CC7,U+8CE0,U+8CE3,U+8CE6,U+8CEA,U+8CFC-8CFD,U+8D6B,U+8D70,U+8D77,U+8D85,U+8D8A,U+8DB3,U+8DD1,U+8DDD,U+8DDF,U+8DE8,U+8DEF,U+8DF3,U+8E64,U+8EAB,U+8ECA,U+8ECC-8ECD,U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9328,U+932F,U+9375,U+9396,U+93C8,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9748,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805-9806,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+990A,U+9918,U+9996,U+99D5,U+9A57,U+9A5F,U+9AA8,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9F4A,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
 }
 /* @generated:fonts:end */
 
@@ -790,6 +790,17 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   .topnav-cta { display: none; }
   .theme-toggle { display: none; }   /* the drawer carries the theme control below the nav breakpoint */
   .topnav-mobile-trigger { display: inline-flex; }
+  /* Drawer layout: no links sit left of the controls, so the divider has nothing to
+     divide. The globe drops its EN / 中文 code — the drawer footer names both locales —
+     and becomes a square button, since the coarse-pointer 44px width (below) would
+     otherwise squeeze globe + code and spill into the search hit area. Icons step up
+     to the hamburger's 20px so the three read as one row. Two classes to outrank
+     that later single-class rule. */
+  .topnav-controls { padding-left: 0; margin-left: 0; }
+  .topnav-controls::before { display: none; }
+  .topnav-controls .icon-btn--code { padding: 0; }
+  .topnav-controls .lang-code { display: none; }
+  .topnav-controls .icon-btn svg { width: 20px; height: 20px; }
 }
 /* 1081–1199: six items + theme pill + globe + search + Contact run 40px over at 1081
    with the bar's 32px gaps (measured 2026-09-29). Halving the gaps wins back 48px;
@@ -1453,19 +1464,6 @@ main { padding-top: 64px; }
   background: #000;
 }
 
-/* ───────── Homepage: full-viewport hero ─────────
-   The landing hero owns the first screen — 100dvh minus the fixed 64px nav
-   (reserved by main's padding-top). The announce bar is lifted out of flow
-   and overlaid on the hero's top (below), so it no longer pushes the hero
-   down; it scrolls away with the page while only the nav stays pinned. The
-   hero bottom lands at the fold, keeping the scroll cue just inside it.
-   Scoped to [data-page="home"] so the product/licensing & signal heroes
-   (plain .hero) keep their clamped height. */
-[data-page="home"] .hero {
-  height: auto;
-  min-height: calc(100dvh - 64px);
-  padding-block: 0;
-}
 [data-page="home"] .announce,
 [data-page="signal"] .announce,
 [data-page="licensing"] .announce {
@@ -1820,15 +1818,6 @@ main { padding-top: 64px; }
   background: rgba(0,0,0,0.60);
   border-color: rgba(255,255,255,0.42);
 }
-/* Home now opens on a photograph like every front-door hero (2026-09-30), so its
-   primary CTA takes the same solid white as .fd-hero .btn-primary instead of the glass
-   treatment that was tuned for the retired black shader. */
-[data-page="home"] .hero .btn-primary {
-  background: #FFFFFF; color: #000; -webkit-text-fill-color: #000;
-  border-color: transparent;
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-}
-[data-page="home"] .hero .btn-primary:hover { background: rgba(255,255,255,0.86); }
 
 /* Hero glass CTA — true glass-on-dark: a low-opacity white tint (not the nav's
    70% token, which reads near-solid on the black shader) so the hero colour
@@ -1858,39 +1847,6 @@ main { padding-top: 64px; }
    faint ruled-grid carrier over the photo (its cream gradient is cleared below,
    its ::before grid is recolored white to read over the warm image). */
 [data-page="licensing"] .hero::before { display: none; }
-/* ───────── Homepage hero — UV photograph (2026-09-30) ─────────
-   A technician fitting a rotor blade at an open hangar door, the landscape beyond:
-   sustainment, the front door's lead pillar. Swapped with the Sustain page hero on
-   2026-09-30 (that page now carries the coast-and-hangar frame, uv/hero.jpg). It
-   replaced the shifting-lines shader (its mount is gone from index.html, so the
-   module returns early). The aircraft and technician sit right of centre, clear of
-   the left-set copy, which lands on the darker hangar wall. The scrim darkens the
-   left and the base so the white copy and scroll cue read in both themes. The ruled
-   grid (.hero-grid, and the silver slide's ::before) is dropped — it read as a
-   screen over a photograph. */
-[data-page="home"] .hero {
-  background:
-    url('/assets/imagery/uv/sustain-hero.jpg') 50% 50% / cover no-repeat, #000;
-  background:
-    image-set(url('/assets/imagery/uv/sustain-hero-1376.webp') type('image/webp'),
-              url('/assets/imagery/uv/sustain-hero.jpg') type('image/jpeg')) 50% 50% / cover no-repeat, #000;
-}
-[data-page="home"] .hero::before {
-  background:
-    linear-gradient(90deg, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.44) 38%, rgba(0,0,0,0.06) 68%, rgba(0,0,0,0) 100%),
-    linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 30%),
-    linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 18%);
-}
-[data-page="home"] .hero-grid,
-[data-page="home"] .hero-silver { display: none; }
-@media (max-width: 720px) {
-  /* Portrait crop: keep the aircraft in frame above the stacked copy. */
-  /* Portrait: copy is bottom-anchored so the aircraft keeps the top of the frame. */
-  [data-page="home"] .hero { background-position: 70% 50%; align-items: flex-end; padding-bottom: 72px; }
-  [data-page="home"] .hero::before {
-    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.25) 100%);
-  }
-}
 [data-page="licensing"] .hero-warm { background: none; }
 [data-page="licensing"] .hero-warm::before {
   background:
@@ -2018,9 +1974,8 @@ main { padding-top: 64px; }
      that matters: the base rule sets height: clamp(460px, 56vw, 580px), so
      lowering min-height alone would have changed nothing. 340px is the floor,
      not the height — badge.html's taller hero still sizes to its content.
-     Home and signal override this with their own full-viewport heroes. */
+     Signal overrides this with its own full-viewport hero; Home has no .hero since the v0.5 KV. */
   .hero { height: auto; min-height: 340px; }
-  [data-page="home"] .hero { min-height: calc(100dvh - 64px); }
 }
 /* Narrow phone — drop the pillar's 32px left offset since the container
    padding already shrinks to 20px on this range. */
@@ -7898,6 +7853,14 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-feature--rev > .fd-frame { order: 0; }
   .fd-feature .fd-frame { --fd-ratio: 4 / 3; }
 }
+/* Stacked on a phone, a feature photo is a full-width slab on the light page: the
+   #000 stand-in flashed black while the lazy image decoded, and the clip reveal
+   animated that empty slab. Show the frame as-is, on a neutral tone. (After the
+   MOTION block in source order would also work; the specificity carries it here.) */
+@media (max-width: 900px) {
+  .fd-feature > .fd-ph--img.fd-frame { background: var(--surface-tertiary); }
+  .fd-feature > .fd-frame[data-fd="clip"] { transition: none; clip-path: none; }
+}
 
 /* ── Rows — large typographic rows for a short list of services. ── */
 .fd-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--text-primary); }
@@ -7984,6 +7947,331 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-hero .fd-ph__cap { top: auto; bottom: 14px; right: 14px; font-size: 11px; }
   .fd-hero__inner { padding-bottom: 72px; }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   HOME v0.5 (2026-10-01) — the team's approved homepage sheet
+   (mro/website-copy-ledger.md Part A). Four new blocks, DESIGN.md §16.5:
+     .kv      three-slide KV (position · why Taiwan · ecosystem) over one stat strip
+     .eco2    the KV's ecosystem diagram: partner layers → TIS → what you get
+     .ptabs   Sustain · Protect · License as tabs, each a one-liner + KSP grid
+     .fd-links two .fd-link side by side
+   The KV is always dark (photographs and an ink field), so its #000/#fff are the
+   §1.3 literals; .ptabs runs on the theme tokens.
+   ═════════════════════════════════════════════════════════════════════════ */
+.kv {
+  --kv-dur: 8s;
+  --kv-display: clamp(36px, 4.7vw, 68px);
+  --kv-h2: clamp(30px, 3.6vw, 54px);
+  position: relative; isolation: isolate; overflow: hidden;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr);
+  min-height: min(calc(100svh - 64px), 940px);
+  background: #000; color: #FFFFFF;
+}
+.kv__layers { position: absolute; inset: 0; z-index: -1; }
+.kv__media { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms var(--ease-out); }
+.kv__media.is-active { opacity: 1; }
+.kv__media > .fd-ph { position: absolute; inset: 0; }
+/* Copy sits low-left and the strip runs along the floor: a left fade, and a deep base. */
+.kv__media > .fd-ph::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.04) 70%, rgba(0,0,0,0) 100%),
+    linear-gradient(to top, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.5) 26%, rgba(0,0,0,0) 52%),
+    linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 18%);
+}
+/* Slide 3 has no photograph: the stand-in ink field with its 32px rule. */
+.kv__field.fd-ph::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 32px);
+}
+@media (max-width: 720px) {
+  .kv__media > .fd-ph--img::before {
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.62) 50%, rgba(0,0,0,0.34) 100%);
+  }
+}
+
+/* All slides share one cell, so the KV takes the tallest slide's height and never jumps. */
+.kv__slides { display: grid; grid-template-columns: minmax(0, 1fr); }  /* an auto track would grow to the widest slide */
+.kv__slide {
+  grid-area: 1 / 1; display: flex; align-items: flex-end;
+  opacity: 0; visibility: hidden;
+  transition: opacity 500ms var(--ease-out), visibility 0s linear 500ms;
+}
+.kv__slide.is-active { opacity: 1; visibility: visible; transition: opacity 700ms var(--ease-out) 120ms, visibility 0s; }
+.kv__body { width: 100%; padding-block: clamp(32px, 4.4vw, 64px) clamp(22px, 2.2vw, 30px); }
+.kv__body > * { max-width: 1100px; }
+.kv__kicker {
+  margin: 0 0 12px;
+  font-size: 15px; font-weight: 600; letter-spacing: 0.01em; color: rgba(255,255,255,0.78);
+}
+.kv__subkicker {
+  margin: 0 0 clamp(18px, 2vw, 26px); max-width: 40ch;
+  font-size: clamp(17px, 1.4vw, 20px); font-weight: 600; line-height: 1.4;
+  color: rgba(255,255,255,0.92); text-wrap: balance;
+}
+[lang="zh-Hant"] .kv__subkicker { max-width: 30em; }
+.kv__title {
+  margin: 0; max-width: 20ch;
+  font-size: var(--kv-display); font-weight: 700;
+  letter-spacing: -0.035em; line-height: 1.06;
+  color: #FFFFFF; text-wrap: balance;
+}
+.kv__title--h2 { font-size: var(--kv-h2); max-width: 16ch; }
+[lang="zh-Hant"] .kv__title { letter-spacing: 0; line-height: 1.18; max-width: 13em; }
+.kv__sub {
+  margin: clamp(18px, 2vw, 24px) 0 0; max-width: 58ch;
+  font-size: clamp(18px, 1.6vw, 22px); line-height: 1.5; color: rgba(255,255,255,0.84); text-wrap: pretty;  /* the .ab lead step; .kv sits outside .ab */
+}
+[lang="zh-Hant"] .kv__sub { max-width: 34em; }
+.kv__cta { margin-bottom: clamp(18px, 2.2vw, 26px); }
+.kv .pillar-actions { margin-top: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.kv .btn-primary { background: #FFFFFF; color: #000; }
+.kv .btn-primary:hover { background: rgba(255,255,255,0.86); }
+.kv .pillar-note { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: rgba(255,255,255,0.78); }
+.kv .pillar-note svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.kv .fd-link { color: #FFFFFF; }
+
+/* Slide 2: two figures on one rule, the band grammar at KV scale. */
+.kv__figs {
+  list-style: none; margin: clamp(32px, 4vw, 56px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 3vw, 48px);
+  max-width: 760px; border-top: 1px solid rgba(255,255,255,0.28);
+}
+.kv__figs li { padding-top: clamp(18px, 2vw, 26px); }
+.kv__figs b {
+  display: block; font-family: var(--font-sans); font-weight: 700;
+  font-size: clamp(40px, 4.2vw, 60px); letter-spacing: -0.035em; line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+.kv__figs span { display: block; margin-top: 12px; max-width: 28ch; font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.8); text-wrap: pretty; }
+
+/* Slide 3: the body beside the diagram. */
+.kv__split {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 88px); align-items: end;
+}
+.kv__body > .kv__split { max-width: none; }
+.kv__lede {
+  margin: 0; max-width: 34ch;
+  font-size: clamp(17px, 1.35vw, 20px); font-weight: 500; line-height: 1.6;
+  color: rgba(255,255,255,0.88); text-wrap: pretty;
+}
+/* Body size, not display: the approved copy is two full sentences, so the diagram carries the slide. */
+.kv__split .kv__lede { max-width: 44ch; }
+[lang="zh-Hant"] .kv__lede { line-height: 1.85; max-width: 26em; }
+.kv__note { margin: 18px 0 0; max-width: 46ch; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.7); }
+@media (max-width: 1024px) {
+  .kv__split { grid-template-columns: 1fr; align-items: start; }
+}
+
+/* The strip and the controls sit on the KV floor, under every slide. */
+.kv__bar { position: relative; z-index: 1; width: 100%;  /* a grid item with auto margins would shrink to its content */ padding-bottom: clamp(20px, 2.2vw, 30px); }
+.kv__controls { display: flex; align-items: center; gap: 16px; margin-bottom: clamp(14px, 1.6vw, 20px); }
+.kv__controls[hidden] { display: none; }
+.kv__pause {
+  flex: none; display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: transparent; border: 1px solid rgba(255,255,255,0.36); color: #FFFFFF; cursor: pointer;
+  transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
+}
+.kv__pause { position: relative; transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out), scale 120ms var(--ease-out); }
+.kv__pause:active { scale: 0.96; }
+/* Both icons stay in the DOM and cross-fade (better-ui icon recipe). */
+.kv__pause svg {
+  grid-area: 1 / 1; width: 16px; height: 16px;
+  stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none;
+  transition-property: opacity, scale, filter; transition-duration: 200ms; transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+.kv__ico-play { fill: currentColor !important; stroke-width: 0; translate: 1px 0; }  /* optical centre of the triangle */
+.kv__pause[data-state="playing"] .kv__ico-play,
+.kv__pause[data-state="paused"]  .kv__ico-pause { opacity: 0; scale: 0.25; filter: blur(4px); }
+.kv__pause[data-state="playing"] .kv__lbl-play,
+.kv__pause[data-state="paused"]  .kv__lbl-pause { display: none; }
+@media (hover: hover) { .kv__pause:hover { border-color: #FFFFFF; background: rgba(255,255,255,0.08); } }
+.kv__tabs { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); }
+.kv__tab {
+  position: relative; min-height: 44px; padding: 14px 0 6px;
+  display: flex; align-items: baseline; gap: 8px;
+  background: none; border: 0; text-align: start; cursor: pointer;
+  font: inherit; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,0.62);
+  transition: color 180ms var(--ease-out);
+}
+.kv__tab[aria-selected="true"] { color: #FFFFFF; }
+@media (hover: hover) { .kv__tab:hover { color: rgba(255,255,255,0.9); } }
+.kv__tab-n { font-size: 12.5px; font-variant-numeric: tabular-nums; opacity: 0.7; }
+.kv__track { position: absolute; inset-inline: 0; top: 0; height: 2px; background: rgba(255,255,255,0.22); border-radius: 2px; overflow: hidden; }
+.kv__track > span { position: absolute; inset: 0; background: #FFFFFF; transform: scaleX(0); transform-origin: left center; }
+.kv__tab[aria-selected="true"] .kv__track > span { transform: none; }
+.kv.is-running .kv__tab[aria-selected="true"] .kv__track > span { animation: kv-fill var(--kv-dur) linear both; }
+.kv.is-running.is-hold .kv__track > span { animation-play-state: paused; }
+@keyframes kv-fade { from { opacity: 0; } }
+@keyframes kv-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.kv__pause:focus-visible, .kv__tab:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; border-radius: 6px; }
+
+.kv__stats {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(16px, 2.4vw, 40px);
+  border-top: 1px solid rgba(255,255,255,0.22);
+}
+.kv__stat { padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.kv__stat b { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+.kv__stat > span:not(.kv__by) { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.76); text-wrap: pretty; }
+.kv__by { margin-top: 2px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.56); }
+@media (max-width: 900px) {
+  .kv__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 16px; }
+}
+/* Phone: one slide at a time and no autoplay (site.js), so the KV is as tall as the slide
+   in view, not the tallest one, and the action stays on the first screen. Changing slide
+   is the reader's own tap, so the reflow below it is expected, not a shift. */
+@media (max-width: 760px) {
+  .kv__slide:not(.is-active) { display: none; }
+  .kv__pause { display: none; }
+  .kv__note { display: none; }  /* the dashed "separate asset" frame says it on a phone */
+}
+@media (max-width: 560px) {
+  /* Overrides the old home hero's shrink-to-fit column (≤480), which sized the button to the ZH label. */
+  .kv .pillar-actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .kv .pillar-actions .btn { white-space: normal; text-align: center; }
+  .kv__tab { font-size: 13px; }
+  .kv__tab-n { display: none; }
+  .kv__stat > span:not(.kv__by) { font-size: 13px; }
+}
+[data-theme="dark"] .kv { box-shadow: 0 1px 0 var(--edge-window); }
+
+/* ── Ecosystem diagram (sheet row 16). Three equal rows on each side so the elbow
+      wires (SVG, stretched) meet every node at its centre. ── */
+.eco2 { margin: 0; }
+.eco2__grid {
+  display: grid; align-items: stretch;
+  grid-template-columns: minmax(0, 1.3fr) 48px minmax(0, 0.8fr) 48px minmax(0, 1fr);
+  margin-top: 28px;
+}
+.eco2__col { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-rows: 1fr; }
+.eco2__node {
+  margin-block: 6px; padding: 14px 16px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  border: 1px solid rgba(255,255,255,0.22); border-radius: 12px;
+  background: rgba(255,255,255,0.045);
+}
+.eco2__node b { font-size: 16px; font-weight: 700; line-height: 1.25; color: #FFFFFF; }
+.eco2__node--out b { font-size: 18px; }
+.eco2__k { display: block; font-size: 12.5px; font-weight: 600; line-height: 1.3; color: rgba(255,255,255,0.62); }
+.eco2__wire { display: block; width: 100%; height: 100%; }
+.eco2__wire path { fill: none; stroke: rgba(255,255,255,0.42); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.eco2__core {
+  align-self: center; padding: 22px 14px; text-align: center;
+  border-radius: 14px; background: #FFFFFF; color: #000;
+}
+.eco2__core b { display: block; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.eco2__core .eco2__k { margin-top: 4px; color: rgba(0,0,0,0.62); }
+.eco2__right { position: relative; display: grid; }
+.eco2__head { position: absolute; bottom: 100%; inset-inline-start: 0; margin-bottom: 4px; }
+.eco2__asset {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+  width: fit-content; margin: 16px 0 0 auto; padding: 10px 14px;
+  border: 1px dashed rgba(255,255,255,0.5); border-radius: 12px;
+}
+.eco2__asset b { font-size: 14.5px; font-weight: 700; color: #FFFFFF; }
+.eco2__asset span { font-size: 13px; color: rgba(255,255,255,0.68); }
+/* Phone: the flow turns vertical; layers and outcomes sit as rows of three. */
+@media (max-width: 760px) {
+  .eco2__grid { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
+  .eco2__wire { display: none; }
+  .eco2__col { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 8px; }
+  .eco2__node { margin: 0; padding: 10px; }
+  .eco2__node b { font-size: 14px; }
+  .eco2__node--out b { font-size: 15px; }
+  .eco2__k { font-size: 11.5px; }
+  .eco2__core { position: relative; align-self: stretch; margin-block: 22px; padding: 12px; }
+  .eco2__core::before, .eco2__core::after {
+    content: ""; position: absolute; inset-inline-start: 50%; width: 1px; height: 22px; background: rgba(255,255,255,0.42);
+  }
+  .eco2__core::before { bottom: 100%; }
+  .eco2__core::after { top: 100%; }
+  .eco2__core b { display: inline; font-size: 18px; }
+  .eco2__core .eco2__k { display: inline; margin: 0 0 0 8px; }
+  .eco2__head { position: static; margin-bottom: 8px; }
+  .eco2__asset { margin-inline: 0; }
+}
+
+/* ── Pillar tabs (sheet rows 17–49). Three equal segments, as the wireframe draws
+      them; each panel is a one-liner over a 2×2 of KSPs in the .fd-trio ink-rule
+      grammar. Without JS the tablist stays hidden and the panels stack, each under
+      its own name. ── */
+.ptabs__list {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: clamp(44px, 5.4vw, 80px);
+  border-bottom: 1px solid var(--border-tertiary);
+}
+.ptabs__list[hidden] { display: none; }
+.ptabs__tab {
+  position: relative; min-height: 44px;
+  padding: 0 0 clamp(16px, 1.8vw, 24px);
+  background: none; border: 0; text-align: start; cursor: pointer;
+  font: inherit; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  color: var(--text-secondary);
+  transition: color 200ms var(--ease-out);
+}
+.ptabs__tab::after {
+  content: ""; position: absolute; inset-inline: 0; bottom: -1px; height: 2px;
+  background: var(--text-primary);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 240ms cubic-bezier(0.2, 0, 0, 1);
+}
+.ptabs__tab[aria-selected="true"] { color: var(--text-primary); }
+.ptabs__tab[aria-selected="true"]::after { transform: scaleX(1); }
+@media (hover: hover) { .ptabs__tab:hover { color: var(--text-primary); } }
+.ptabs__tab:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 6px; border-radius: 4px; }
+[lang="zh-Hant"] .ptabs__tab { letter-spacing: 0; }
+.ptabs__panel[hidden] { display: none; }
+.ptabs__panel:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 12px; border-radius: 8px; }
+.ptabs__panel + .ptabs__panel { margin-top: var(--fd-section); }
+.ptabs__name { margin: 0 0 20px; font-size: var(--fd-row); font-weight: 700; color: var(--text-primary); }
+.ptabs:has(.ptabs__list:not([hidden])) .ptabs__name { display: none; }
+.ptabs__line {
+  margin: 0 0 clamp(44px, 5.4vw, 80px); max-width: 24ch;
+  font-size: var(--fd-statement); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--text-primary); text-wrap: balance;
+}
+[lang="zh-Hant"] .ptabs__line { letter-spacing: 0; line-height: 1.32; max-width: 15em; }
+.fd-ksp {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 4.4vw, 64px) clamp(32px, 5vw, 96px);
+}
+.fd-ksp__i { padding-top: 20px; border-top: 1px solid var(--text-primary); }
+.fd-ksp__t { margin: 0; font-size: clamp(19px, 1.6vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; color: var(--text-primary); text-wrap: balance; }
+.fd-ksp__d { margin: 12px 0 0; max-width: 54ch; font-size: 16.5px; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
+[lang="zh-Hant"] .fd-ksp__d { line-height: 1.8; }
+.fd-ksp__i--more { border-top-color: var(--border-tertiary); }
+.fd-ksp__i--more .fd-link { margin-top: 0; }
+.ptabs__panel > .fd-link { margin-top: clamp(36px, 4vw, 56px); }
+@media (max-width: 760px) {
+  .fd-ksp { grid-template-columns: 1fr; }
+  .ptabs__tab { font-size: 19px; }
+}
+@media (max-width: 560px) {
+  [lang="zh-Hant"] .ptabs__tab { font-size: 16px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* A tab switch is frequent: a 150ms fade, no rise, no stagger (better-ui motion restraint). */
+  .ptabs__panel.is-in { animation: kv-fade 150ms linear both; }
+  /* A slide change is not: its photograph settles behind the copy. */
+  .kv__media.is-active .fd-ph__img { animation: fd-settle 6000ms var(--ease-out) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kv__media, .kv__slide, .kv__slide.is-active { transition: none; }
+  .ptabs__tab::after { transition: none; }
+}
+
+.fd-links { display: flex; flex-wrap: wrap; gap: 0 28px; margin: 0; }
+/* Why TIS: the benefit names carry the section, so they set at statement scale; the
+   section closes on the page's one action. */
+#why-tis .fd-row__t { font-size: clamp(28px, 3.2vw, 44px); letter-spacing: -0.025em; }
+[lang="zh-Hant"] #why-tis .fd-row__t { letter-spacing: 0; }
+#why-tis .fd-row { align-items: center; }
+#why-tis .fd-close__row { margin-top: clamp(40px, 4.4vw, 64px); }
 
 /* ═════════════════════════════════════════════════════════════════════════
    FRONT DOOR v2 · MOTION (Phase B, 2026-09-29). Quiet and in reading order; each

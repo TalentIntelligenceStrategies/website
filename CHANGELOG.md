@@ -9,6 +9,8 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-01 18:44 +08:00** · Home rebuilt to the approved v0.5 sheet (three-slide KV, pillar tabs, Why TIS); pillar pages gain KSPs and 您; nav ZH 維護 · 防護; snapshots resynced.
+- **2026-10-01 15:41 +08:00** · Mobile nav: globe drops the EN/中文 code and matches the 20px icons; home ecosystem photo no longer flashes black on load.
 - **2026-10-01 14:19 +08:00** · Share card moves to the hangar photo with a larger logo and a smaller, more open headline; homepage card gets its own title and description.
 - **2026-10-01 01:16 +08:00** · Ship-readiness pass: front-door copy to the UV proposal, Insights on hold, legal rewrite, forms, favicons, share card, mobile/dark QA.
 - **2026-09-30 18:43 +08:00** · Home Why Taiwan band: the foot line and link move beside the heading, aligned to the third figure column.

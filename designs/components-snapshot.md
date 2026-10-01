@@ -466,7 +466,7 @@ The marketing topnav swaps content live with the document `lang` attribute (`en`
 |---|---|---|
 | Logo | Secondary `_eng` mark, ≈8.75:1, height 28px | Secondary `_ch` mark, ≈3.74:1, height 28px |
 | Logo (below `sm` 640px) | Submark 32×32 | Submark 32×32 |
-| Primary nav (marketing, 2026-09-28) | Sustain · Protect · License · Ecosystem · Insights · About — each a mega-panel trigger (website `DESIGN.md` §4) | 維運 · 保護 · 授權 · 生態系 · 洞察 · 關於 *(ZH pending copy review)* |
+| Primary nav (marketing, 2026-09-28) | Sustain · Protect · License · Ecosystem · Insights · About — each a mega-panel trigger (website `DESIGN.md` §4) | 維護 · 防護 · 授權 · 生態系 · 洞察 · 關於 *(pillar ZH approved 2026-10-01, sheet v0.5; `brand-voice.md` §2.1)* |
 | Auth — Marketing cluster | Contact | 聯絡我們 |
 | Auth — Product unauthenticated cluster | Log in · Sign up | 登入 · 註冊 |
 
@@ -1007,7 +1007,7 @@ On Insights pages the footer co-branded lockup *is* the "Powered by Innovue" att
 Row of partner marks — Innovue, ITRI, III — rendered monochrome, returning to own brand color on hover. Innovue renders first to anchor the bound-partner status; ITRI and III follow as collaborators (per [`visual-guide.md`](./visual-guide.md) §Collaborator Partners).
 
 - **Consumes:** `surface-page`, `border-primary`
-- **Surfaces:** website homepage (always); Licensing Platform pages (when a partner is the IP source)
+- **Surfaces:** Insights pages; Licensing Platform pages (when a partner is the IP source). **Not on the UV front door.** The homepage names partners in text inside the ecosystem diagram, with no logos ([`visual-guide.md`](./visual-guide.md) §Partner Credit by Pillar).
 - **Variants:** default
 - **States:** rest (grayscale, 55% opacity), hover (full color, 100% opacity)
 
@@ -1044,61 +1044,100 @@ Container `surface-page`, `1px solid border-primary`, radius 16, padding `48 × 
 
 ## Seal · Standalone
 
-Round seal — TIS's translation of LEED-style certification badges. Thin outer ring, 1px white gap, filled disc, smaller white inner disc holding the issuer or partner submark; curved sans text on top and bottom arcs carries the issuer line and the per-seal credential count. Atomic: each seal stands alone or composes inside the §Verified License Badge pill.
+Round seal: TIS's version of LEED-style certification marks. One construction serves every issuer. TIS and each patent-source institution differ only in colour, centre initials and top-arc name. Atomic: a seal stands alone or composes inside §Verified License Badge.
 
-- **Consumes:** `surface-inverse` (TIS disc), `surface-page` (inner disc), `text-inverse` (curved text), `border-primary`, `--logo-submark` (TIS) plus partner submark URLs (NYCU / ITRI / III). The TIS variant pins these four tokens to light values via `.is-tis` so the issuer mark stays dark-on-white in dark mode (LEED / UL precedent — credential marks must not invert with theme).
-- **Surfaces:** Licensing Platform (issuance, packaging, exhibition) · website (Credentials section) · Patent Intelligence SaaS (verification page)
-- **Variants:** issuer (TIS) · partner (NYCU · ITRI · III, brand color as disc fill); standalone 176×176 · ×0.65 (114×114, the embeddable size used inside the Verified License Badge pill)
-- **States:** default (no hover or interactive states — credential mark, not a control)
+- **Consumes:** no tokens. The seal is **light-locked** and uses literal values only (issuer hex below, `#FFFFFF` initials). This is a deliberate credential exception to the no-raw-hex rule: the mark must render identically in any theme and after export. Fonts: Urbanist 700 (initials), Urbanist 600 (EN arcs), Noto Sans TC 600 (ZH arcs).
+- **Surfaces:** Licensing Platform (license detail, downloads, packaging, exhibition) · website (Credentials section) · Patent Intelligence SaaS (verification page)
+- **Variants:** issuer (TIS) · supplier (one per patent-source institution, colour map below); ZH and EN arc text; sizes 176 standalone, 132 card issuer, 100 card supplier
+- **States:** default · expired (greyscale, owned by §Verified License Badge). No hover or interactive states: a credential mark, not a control.
 
-**Construction (200×200 viewBox, scaled to render size):**
-- Outer thin ring at `r=98`, `stroke-width: 1.25`, `vector-effect: non-scaling-stroke`
-- Filled disc at `r=92`
-- Inner white disc at `r=48`
-- Top-arc text on path `M 45,146 A 72,72 0 1,1 155,146`, `text-anchor: middle`, `startOffset: 50%`
-- Bottom-arc text on path `M 24,100 A 76,76 0 0,0 176,100`, `text-anchor: middle`, `startOffset: 50%`
-- Submark centered on inner disc via flex on the seal container; sized per the partner table below
+**Construction** (`viewBox 0 0 200 200`, centre 100,100). Paint in this order. Every stroke and fill is the issuer colour unless stated.
 
-**Partner colour map:**
+| # | Element | Geometry | Stroke / fill |
+|---|---|---|---|
+| 1 | Outer ring | circle `r=96` | stroke `2.5` |
+| 2 | Inner ring | circle `r=89` | stroke `1`, opacity `0.7` |
+| 3 | Knurled edge | 2 paths, `r(θ) = 92.5 ± 2.3·sin(72θ)` | stroke `0.6`, opacity `0.85`, no fill |
+| 4 | Woven moiré band | 2 paths, radial band `45.5–57` | stroke `0.4`, opacity `0.55`, no fill |
+| 5 | Band ring | circle `r=60` | stroke `1`, opacity `0.7` |
+| 6 | Centre disc | circle `r=39` | fill |
+| 7 | Hairline ring | circle `r=43.7` (drawn after the disc) | stroke `1.7` |
+| 8 | Initials | text at 100,100, `text-anchor: middle`, `dominant-baseline: central` | Urbanist `21 / 700 / 0.04em`, fill `#FFFFFF` |
+| 9 | Top arc | path `M 45.61,145.64 A 71,71 0 1,1 154.39,145.64` (r71, 280° over the top), `startOffset 50%`, `text-anchor middle` | issuer name, fill |
+| 10 | Bottom arc | path `M 24,100 A 76,76 0 0,0 176,100` (r76, 180° under), same anchoring | validity line, fill |
 
-| Partner | Disc fill | Submark file | Submark size (standalone / ×0.65) | Bottom-arc content |
+**Knurled edge.** Two closed polylines of 720 segments at 0.5° steps, starting at `(192.5, 100)`. Path A uses `+2.3·sin(72θ)`, path B `−2.3·sin(72θ)`. Being 180° out of phase gives the twisted-rope read. The formula reproduces the reference path byte for byte at 2-decimal precision.
+
+**Woven moiré.** Two overlaid hypotrochoids with different turn counts, so the strokes interfere:
+
+- Base curve `z(s) = a·e^{i·p·s} + b·e^{−i·q·s}`, `s ∈ [0, 2π]`, sampled at 2600 steps, with `a + b = 57`:
+  - curve A: `p = 13`, `q = 71`, `b/a = 14/71` (13 turns, 84 lobes)
+  - curve B: `p = 11`, `q = 73`, `b/a = 16/73` (11 turns, 84 lobes)
+- The base curves span `36.5–57`. Each point is pushed radially into the adopted band, keeping its angle: `r' = 57 − (57 − r)·(11.5 / 20.5)`, giving `45.5–57`.
+- Coordinates are written at 2 decimals, with the base points rounded to 2 decimals before the remap. Output matches the reference except for 112 of 5,202 points, each one last digit (0.01 units) off, which is a rounding tie. The reference path data, not the formula, is canonical for byte-exact output.
+
+**Typography.**
+
+| | ZH | EN |
+|---|---|---|
+| Arc font | Noto Sans TC `10.5 / 600` | Urbanist `9 / 600` |
+| Top-arc tracking | `0.055em` | `0.055em` |
+| Bottom-arc tracking | `0.03em` | `0.03em` |
+| Initials | Urbanist `21 / 700 / 0.04em` (both languages) | |
+
+**Issuer map** (order = render order; see §Verified License Badge):
+
+| Code | Colour | Colour source | Top arc ZH | Top arc EN |
 |---|---|---|---|---|
-| TIS | `surface-inverse` (#252525, light-locked) | per `--logo-submark` (light-locked to dark-cube file) | 50 / 33 | `LIC-NNNNN` |
-| NYCU | `#0033A0` | `partners/nycu/nycu_seal.svg` | 50 / 33 | `N PATENTS` |
-| ITRI | `#00AAEA` | `partners/itri/itrilogo_submark.svg` | 40 / 26 | `N PATENTS` |
-| III | `#14156D` | `partners/iii/logo_iii_submark.svg` | 50 / 33 | `N PATENTS` |
+| TIS | `#252525` | brand ink | 泰然策略解密 | `TALENT INTELLIGENCE STRATEGIES` |
+| NCKU | `#A31F34` | Pantone 201 C | 國立成功大學 | `NATIONAL CHENG KUNG UNIVERSITY` |
+| NYCU | `#0033A0` | published identity | 國立陽明交通大學 | `NATIONAL YANG MING CHIAO TUNG UNIVERSITY` |
+| NTU | `#7A0019` | supplied by TIS (NTU publishes no spec) | 國立臺灣大學 | `NATIONAL TAIWAN UNIVERSITY` |
+| III | `#14156D` | published identity | 資訊工業策進會 | `INSTITUTE FOR INFORMATION INDUSTRY` |
+| ITRI | `#00AAEA` | `itrilogo_eng.svg` | 工業技術研究院 | `INDUSTRIAL TECHNOLOGY RESEARCH INSTITUTE` |
+| NTHU | `#7F1084` | Pantone 259 C | 國立清華大學 | `NATIONAL TSING HUA UNIVERSITY` |
 
-ITRI's box runs smaller than its peers because its wordmark fills its own viewBox edge-to-edge; the other partners' submarks carry built-in padding or radial decoration, so the larger 50 / 33 box keeps the visible glyph at parity. Top-arc strings are standardized per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — never inline literal arc text here.
+ITRI's contrast (2.5:1 as type, 2.65:1 under white initials) is accepted to keep the institution's own colour. Do not adjust it.
 
-**×0.65 variant** — every dimension multiplied by 0.65: disc 114×114, submarks per the table, font-size 13. Keeps the curved text legible while shrinking the seal for embedding. This is the size used inside §Verified License Badge.
+**Bottom arc.** Filled from licence data, never typed in: ZH `已驗證授權 · 有效期至 YYYY.MM.DD`, EN `VERIFIED LICENSE · VALID THROUGH YYYY.MM.DD`. The date is the licence expiry in Asia/Taipei, dot-separated. **Open:** the dot format departs from [`brand-voice.md`](./brand-voice.md) §6 (ISO `YYYY-MM-DD`, credentials included). Either §6 gains a badge exception or the seal moves to hyphens. With no date the line reads `已驗證授權` / `VERIFIED LICENSE` alone. Every seal on one badge carries the same line.
+
+**Adding an issuer.** The colour must come from a published or supplied brand source (record it in the table). Add the ZH and EN registered names, then choose a slot in the render order that keeps adjacent colours apart (ΔE ≥ 30). Uppercase EN; acronyms appear only as the centre initials, never on the arc. IPIC is retired from the seal set because its colour has no source and it holds no patents.
+
+**Size floor.** 100 px is the smallest sanctioned render; below it the arc text drops under ~4.5 px (EN) and stops resolving. The earlier ×0.65 (114 px) pill size remains legible but belongs to the retired pill.
+
+**Implementation.** Geometry (elements 1–7) is identical across issuers. On a multi-seal badge, put it once in the badge's own `<defs>` on `currentColor`. Each seal is then `<g style="color:#hex"><use/></g>` plus its three text elements with literal fills. The `<defs>` must stay inside the badge `<svg>` so exports keep it. Reference implementation: operations-site `src/components/license/badge/` (`sealGeometry.ts`, `issuers.ts`, `CertificateCard.tsx`). Workbook: `website/assets/badges/badge-preview.html` (Direction 1, "Medium · larger initials").
 
 ---
 
 ## Verified License Badge
 
-Stadium-shaped credential pill that wraps the issuer seal, three licensee seals, and a verification QR — TIS's CE / UL analog for IP. Emitted by the Licensing Platform on issuance; embeddable on customer surfaces (product pages, packaging, exhibition materials). The pill is **light-locked**: it does not invert in dark mode. The credential is meant to read as a stamped artifact on whatever surface it lands on, never as themed UI.
+The credential TIS issues to licensees, analogous to CE / UL marks: a **certificate card** with the TIS seal as issuer over a tray of the supplier seals whose patents the licence covers. Emitted by the Licensing Platform on the license detail page and as downloads; embeddable on customer surfaces. **Light-locked**: literal values only, identical in any theme and after export.
 
-- **Consumes:** `surface-tertiary` (pill body), `border-primary`, `border-tertiary` (internal dividers), `text-secondary` (LIC text), `text-primary` (QR pattern); composes §Seal · Standalone (×0.65)
-- **Surfaces:** Licensing Platform (primary issuance) · embedded across customer surfaces · website (Credentials section)
-- **Variants:** combined (issuer + 1–N licensee seals + QR — current canonical shape)
-- **States:** active (expired-state visual treatment deferred — see [`design-tokens.md`](./design-tokens.md) §6)
+- **Consumes:** no tokens (credential exception, as §Seal · Standalone); composes §Seal · Standalone at 132 (issuer) and 100 (suppliers)
+- **Surfaces:** Licensing Platform (license detail `/license/[id]/dlc`, badge downloads) · embedded across customer surfaces · website (Credentials section)
+- **Variants:** 1–N suppliers (three per tray row; six institutions exist today, so at most two rows) · no suppliers (issuer zone only) · ZH / EN
+- **States:** active · expired
 
-**Container.** Full stadium pill (`border-radius: 999px`), `background: surface-tertiary` (tinted), 1px `border-primary` hairline, soft elevation: `box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.06)`. Padding `18px 24px`, gap `14px`. Width hugs content (`width: max-content`); the parent row must apply `align-self: flex-start` to prevent flex stretch from blowing the pill out to the column max-width and stranding the QR mid-pill.
+**Card** (`viewBox 0 0 380 H`). Width 380 is derived, not chosen: `28 + 100 + 12 + 100 + 12 + 100 + 28`.
 
-**Light-lock construction.** The pill scopes the eight tokens it relies on to light-mode values via local CSS-variable overrides on `.seal-pill`: `--surface-page`, `--surface-tertiary`, `--surface-inverse`, `--text-primary`, `--text-secondary`, `--text-inverse`, `--border-primary`, `--border-tertiary`, plus `--logo-submark` pinned to the dark cube file. Children inherit through the cascade — the issuer seal stays dark-disc / dark-cube-submark, the chassis stays tinted, the QR pattern reads dark-on-light, regardless of `[data-theme]`. The TIS seal's `.is-tis` modifier carries the same lock at the seal level for standalone use outside the pill.
+- **Height.** `H = 216 + rows·100 + (rows − 1)·12 + 26`, three seals per row: 3 suppliers → 342, 6 → 454. With no suppliers, `H = 188` and the tray, divider and label are omitted.
+- **Chassis.** `rect x=0.5 y=0.5 width=379 height=H−1 rx=20`, fill `#FFFFFF`, stroke `#EEEEEE`.
+- **Tray.** `M0.5 182 H379.5 V{H−20.5} a20 20 0 0 1 -20 20 H20.5 a20 20 0 0 1 -20 -20 Z`, fill `#F7F7F7`. Divider line at `y=182`, stroke `#EEEEEE`.
+- **Issuer zone.** TIS seal at `translate(28,28) scale(0.66)` (132 px).
+  - Title at `x=186 y=96`, 17 / 700, `#252525`: ZH `已驗證授權` at `0.16em`, EN `VERIFIED LICENSE` at `0.10em`.
+  - Date at `x=186 y=120`, 13 / 500, `#474747`: ZH `有效期至 YYYY.MM.DD`, EN `Valid through YYYY.MM.DD`. Omitted with no date.
+- **Tray.** Label at `x=28 y=206`, 10 / 600, `#5A5F68`: ZH `專利授權來源` at `0.18em`, EN `LICENSED PATENTS FROM` at `0.12em`. Supplier seals at `scale(0.5)`, x = `28 / 140 / 252`, row y = `216 + row·112`.
+- **Fonts.** ZH card text is Noto Sans TC; EN is Urbanist.
 
-**Layout (left → right):**
-1. Issuer seal — TIS at ×0.65
-2. Vertical divider — 1px × 80px, `border-tertiary` at 70% opacity
-3. Licensee seals — N × ×0.65 (NYCU, ITRI, III in canonical issuance-ledger order)
-4. Vertical divider
-5. Credential stack — 72×72 QR (1px `border-primary`, radius 8) above mono `LIC-NNNNN` (`label-mono-11 / text-secondary`)
+**Supplier order is fixed:** `NCKU → NYCU → NTU → III → ITRI → NTHU`, filtered to the suppliers on the licence. NTU/NCKU (ΔE 9.4) and NYCU/III (ΔE 10.4) collide as colours; this sequence keeps the closest adjacent pair at ΔE 30.1. Never sort alphabetically, by patent count or by issuance. Unknown supplier codes are skipped, never drawn as a placeholder.
 
-**Curved-text contract.** Each seal's top arc carries its standardized identifier per [`visual-guide.md`](./visual-guide.md) §Verified License Badge — TIS issuer reads `TIS ISSUED VERIFIED LICENSE`; licensee seals read the partner's full registered name from that file's top-arc table (NYCU / ITRI / III strings, uppercase, never the acronym). Bottom arc carries the per-seal credential count. The TIS seal's bottom-arc `LIC-NNNNN` must match the credential stack's `lic-no` literal — the same identifier rendered in two registers (curved on the seal, mono below the QR). If they drift, treat it as a defect.
+**Expired.** Any status other than valid turns the whole card greyscale at 70% opacity. An `EXPIRED` stamp (English in both languages, rotated −8°, `status-danger` colours) sits outside the greyscale layer so it stays red. It is centred at `x=269, y=150` in card units, the empty band right of the issuer seal, which exists at every height. The stamp is host-page UI over the card, not part of the light-locked SVG. It must never cover supplier initials, which carry identity once colour is gone (TIS and III differ by 0.4 L* in greyscale).
 
-**Anti-counterfeit** (server-side, not a visual spec): invisible watermark embedded at generation; QR resolves to the TIS verification page.
+**Not on the card:** QR, licence number, patent counts, "Powered by Innovue". Verification lookup is carried by the surrounding page, not the mark.
 
-> **TODO (pending PRD):** **expired-state visual treatment** (greyscale? overlay stamp? replacement label? — deferred in [`design-tokens.md`](./design-tokens.md) §6, ship-blocker because licenses will expire). **Digital embed snippet** — the script tag / iframe / PNG-with-link pattern customers paste onto their own sites to render a live badge.
+**History.** The stadium pill (issuer · divider · licensee seals · divider · QR + `LIC-NNNNN`) was the canonical form until the certificate card was adopted. It survives only as Combined · A in the workbook.
+
+> **TODO:** **Digital embed snippet**, the pattern customers paste onto their own sites to render a live badge. **Anti-counterfeit** (watermark binding, verification-page lookup) remains a server-side spec, not a visual one.
 
 ---
 
