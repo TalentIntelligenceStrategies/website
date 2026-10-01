@@ -58,7 +58,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-00.woff2') format('woff2');
-  unicode-range: U+2E80,U+2EFF,U+3000-3002,U+300A-300D,U+303F,U+3100,U+312F,U+3200,U+32FF,U+3400,U+4DBF,U+4E00,U+4E03,U+4E09-4E0B,U+4E0D,U+4E14,U+4E16,U+4E26,U+4E2D,U+4E32,U+4E39,U+4E3B,U+4E45,U+4E4B,U+4E59,U+4E5F,U+4E86,U+4E88,U+4E8B-4E8C,U+4E92,U+4E94,U+4E9B,U+4E9E,U+4EA4,U+4EA6,U+4EAB,U+4EAE,U+4EBA,U+4EC0,U+4ECA-4ECB,U+4ECD,U+4ED6,U+4ED8,U+4EE3-4EE5,U+4EF2,U+4EF6,U+4EFB,U+4EFD,U+4F01,U+4F30,U+4F34,U+4F38,U+4F3A,U+4F3C,U+4F46,U+4F48,U+4F4D-4F50,U+4F54-4F55,U+4F5C,U+4F60,U+4F73,U+4F75,U+4F7F,U+4F86,U+4F8B,U+4F9B,U+4F9D,U+4FB5,U+4FC2-4FC3,U+4FDD,U+4FE1,U+4FEE,U+500B,U+500D,U+5011-5012,U+5019,U+503C,U+5047,U+505A,U+505C,U+5065,U+5074-5076,U+5099,U+50B3,U+50B5,U+50C5,U+50CF,U+50F9,U+5100,U+5104,U+511F,U+512A,U+5132,U+5141,U+5143,U+5145,U+5148-5149,U+514B,U+514D,U+5165,U+5167-5169,U+516B-516D,U+5171,U+5176-5177,U+517C,U+518A,U+518D,U+51C6,U+51F1,U+51FA,U+5206-5207,U+5217,U+5224-5225,U+5229-522A,U+5230,U+5236-5237,U+523B,U+5247,U+524D,U+5269,U+526F,U+5275,U+5283,U+529B,U+529F-52A0,U+52A9,U+52D5,U+52D9,U+52FE,U+5305,U+5316-5317,U+532F,U+5340-5341,U+5343,U+5347,U+534A,U+5354,U+5357,U+5360-5361,U+5370,U+5373,U+537B,U+539F,U+53BB,U+53C3,U+53C8,U+53CA,U+53CD,U+53D6-53D7,U+53E3,U+53E5-53E6,U+53EA,U+53EF-53F0,U+53F2-53F3,U+53F8,U+5403-5404,U+5408,U+540C-540D,U+5411,U+5427,U+542B,U+5438,U+5448,U+544A,U+5468,U+548C,U+54C1,U+54E1,U+54EA,U+552E-552F,U+5546,U+554F,U+555F,U+55AE,U+55CE,U+5668,U+566A,U+5687,U+56CA,U+56DB,U+56DE,U+56E0,U+56FA,U+570B,U+570D,U+5712-5713,U+5716,U+5718,U+5728,U+5730,U+5740,U+5747,U+5782,U+578B,U+57CE,U+57DF,U+57F7,U+57FA,U+5806,U+5831,U+5834,U+584A,U+5854,U+586B,U+5883,U+588A,U+589E,U+58C1,U+58D3,U+5916,U+591A,U+5920,U+5925,U+5927,U+5929,U+5931,U+5948,U+594F,U+5951,U+5957,U+5960,U+5967,U+597D,U+5982,U+59CB,U+59D3,U+5A01,U+5A92,U+5B50,U+5B54,U+5B57-5B58,U+5B63,U+5B78,U+5B83,U+5B88-5B89,U+5B8C,U+5B8F,U+5B98,U+5B9A,U+5B9C,U+5BA2-5BA4,U+5BB6,U+5BB9,U+5BC4,U+5BC6,U+5BE6-5BE7,U+5BE9,U+5BEB-5BEC,U+5C01,U+5C07-5C08,U+5C0B,U+5C0D;
+  unicode-range: U+2E80,U+2EFF,U+3000-3002,U+3008-300D,U+303F,U+3100,U+312F,U+3200,U+32FF,U+3400,U+4DBF,U+4E00,U+4E03,U+4E09-4E0B,U+4E0D,U+4E14,U+4E16,U+4E26,U+4E2D,U+4E32,U+4E39,U+4E3B,U+4E45,U+4E4B,U+4E59,U+4E5D,U+4E5F,U+4E86,U+4E88,U+4E8B-4E8C,U+4E92,U+4E94,U+4E9B,U+4E9E,U+4EA4,U+4EA6,U+4EAB,U+4EAE,U+4EBA,U+4EC0-4EC1,U+4ECA-4ECB,U+4ECD,U+4ED6,U+4ED8,U+4EE3,U+4EE5,U+4EF2,U+4EF6,U+4EFB,U+4EFD,U+4EFF,U+4F01,U+4F30,U+4F34,U+4F38,U+4F3C,U+4F46,U+4F48,U+4F4D-4F50,U+4F54-4F55,U+4F5C,U+4F60,U+4F73,U+4F75,U+4F7F,U+4F86,U+4F8B,U+4F9B,U+4F9D,U+4FB5,U+4FC2-4FC3,U+4FDD,U+4FE1,U+4FEE-4FEF,U+500B,U+500D,U+5011-5012,U+5019,U+503C,U+5047,U+505A,U+505C,U+5065,U+5074-5076,U+5099,U+50B3,U+50B5,U+50C5,U+50CF,U+50F9,U+5100,U+5104,U+511F,U+512A,U+5132,U+5141,U+5143,U+5145,U+5148-5149,U+514B,U+514D,U+5165,U+5167-5169,U+516B-516D,U+5171,U+5176-5177,U+517C,U+518A,U+518D,U+51C6,U+51F1,U+51FA,U+51FD,U+5206-5207,U+5217,U+5224-5225,U+5229-522A,U+5230,U+5236-5237,U+523A-523B,U+5247,U+524D,U+5269,U+526F,U+5275,U+5283,U+529B,U+529F-52A0,U+52A9,U+52D5,U+52D9,U+52FE-52FF,U+5305,U+5316-5317,U+532F,U+5340-5341,U+5343,U+5347,U+534A,U+5354,U+5357,U+5360-5361,U+5370,U+5373,U+537B,U+539F,U+53BB,U+53C3,U+53C8,U+53CA,U+53CD,U+53D6-53D7,U+53E3,U+53E5-53E6,U+53EA,U+53EF-53F0,U+53F2-53F3,U+53F8,U+5404,U+5408,U+540C-540D,U+5411,U+5426-5427,U+542B,U+5438,U+5448,U+544A,U+5468,U+548C,U+54C1,U+54E1,U+54EA,U+552E-552F,U+5546,U+554F,U+555F,U+5584,U+55AE,U+55CE,U+5668,U+566A,U+5687,U+56CA,U+56DB,U+56DE,U+56E0,U+56FA,U+570B,U+570D,U+5712-5713,U+5716,U+5718,U+5728,U+5730,U+5740,U+5747,U+5761,U+5782,U+578B,U+57CE,U+57DF,U+57F7,U+57F9-57FA,U+5806,U+5831,U+5834,U+584A,U+5854,U+586B,U+5883,U+588A,U+589E,U+58C1,U+58D3,U+5916,U+591A,U+5920,U+5925,U+5927,U+5929-592A,U+5931,U+5948,U+594F,U+5951,U+5957,U+5960,U+5967,U+597D,U+5982,U+59A5,U+59CB,U+59D3-59D4,U+5A01,U+5A92,U+5B50,U+5B54,U+5B57-5B58,U+5B63,U+5B78,U+5B83,U+5B88-5B89,U+5B8C,U+5B8F,U+5B98,U+5B9A,U+5B9C,U+5BA2-5BA4,U+5BB6;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -66,7 +66,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-01.woff2') format('woff2');
-  unicode-range: U+5C0E-5C0F,U+5C11,U+5C16,U+5C1A,U+5C31,U+5C3C,U+5C3E,U+5C40,U+5C45-5C46,U+5C55,U+5C64,U+5C6C,U+5CF6,U+5D34,U+5D4C,U+5DE5-5DE6,U+5DEE,U+5DF1-5DF2,U+5E02-5E03,U+5E0C,U+5E2B,U+5E33,U+5E36,U+5E38,U+5E63,U+5E73-5E74,U+5E7E,U+5E8F,U+5E9C,U+5EA6,U+5EAB,U+5ED3,U+5EE0,U+5EE2-5EE3,U+5EF3,U+5EF6-5EF7,U+5EFA,U+5F0F,U+5F15,U+5F31,U+5F35,U+5F37,U+5F48,U+5F59,U+5F62,U+5F69,U+5F71,U+5F80,U+5F85,U+5F88,U+5F8B-5F8C,U+5F92,U+5F97,U+5F9E,U+5FA9,U+5FAE,U+5FC3,U+5FC5,U+5FD7-5FD8,U+5FEB,U+600E,U+6021,U+6027,U+6062,U+6069,U+606F,U+6094,U+60A8,U+60C5,U+60E0,U+60F3,U+610F,U+611F,U+614B,U+6167,U+6191,U+61C2,U+61C9,U+61F2,U+6210-6211,U+6216,U+6230,U+6233-6234,U+6236,U+623F-6240,U+6247,U+624B,U+624D,U+6253,U+6263,U+6279,U+627E-6280,U+628A,U+6291,U+6295,U+6298,U+62AC,U+62C6,U+62C9,U+62D3,U+62D8,U+62EC,U+62FF,U+6301,U+6307,U+6309,U+6311,U+6368,U+6383,U+6388-6389,U+638C,U+6392,U+639B,U+63A1,U+63A5,U+63A7-63A8,U+63CF-63D0,U+63DB,U+63E1,U+63ED,U+63F4,U+641C,U+6458,U+6490,U+6495,U+64A4,U+64AD,U+64B0,U+64B2,U+64C1,U+64C7,U+64CA-64CB,U+64CE,U+64D4,U+64DA,U+64F4,U+651C,U+652F,U+6536,U+6539,U+653B,U+653E-653F,U+6545,U+6548,U+654F,U+6557-6558,U+6574,U+6578,U+6582,U+6587,U+6599,U+65AF-65B0,U+65B9,U+65BC-65BD,U+65CF,U+65D7,U+65E2,U+65E5-65E6,U+660E,U+6613,U+662F,U+6642,U+6657,U+665F,U+666F,U+6676,U+667A,U+66AB,U+66B4,U+66F4,U+66F8,U+66FF-6700,U+6703,U+6708-6709,U+670D,U+671F,U+672A,U+672C,U+6746,U+6750,U+675F,U+6771,U+677F,U+6790,U+6797,U+679C,U+67B6,U+67D0,U+67E5,U+67F1,U+6821,U+6838-6839,U+683C,U+6848,U+689D,U+68B0,U+68C4,U+68EE,U+690D,U+695A,U+696D,U+6975,U+6982,U+69CB,U+69FD,U+6A13,U+6A19,U+6A21,U+6A23,U+6A4B,U+6A5F,U+6A6B,U+6AA2,U+6ABB,U+6B04,U+6B0A,U+6B21,U+6B3E,U+6B50,U+6B61-6B65,U+6B67,U+6B77-6B78,U+6BB5,U+6BCF,U+6BD4,U+6BEB,U+6C11,U+6C13,U+6C27,U+6C34,U+6C38,U+6C42,U+6C60,U+6C7A,U+6C83,U+6C89,U+6C92,U+6CB3,U+6CC1,U+6CD5,U+6CE2,U+6CE8,U+6CF0,U+6D32,U+6D41,U+6D6E,U+6D77-6D78,U+6D88-6D89,U+6DB5,U+6DE8,U+6DF1,U+6DF7,U+6E05,U+6E2C,U+6E4A,U+6E90,U+6E96,U+6E9D,U+6EAF,U+6EFF,U+6F0F,U+6F5B,U+6FDF,U+6FFE,U+700F,U+7063;
+  unicode-range: U+5BB9,U+5BC4,U+5BC6,U+5BCC,U+5BDF,U+5BE6-5BE7,U+5BE9,U+5BEB-5BEC,U+5C01,U+5C07-5C08,U+5C0B,U+5C0D-5C0F,U+5C11,U+5C16,U+5C1A,U+5C31,U+5C3C,U+5C3E,U+5C40,U+5C45-5C46,U+5C55,U+5C64,U+5C6C,U+5CB8,U+5CF6,U+5D34,U+5D4C,U+5DE5-5DE6,U+5DEE,U+5DF1-5DF2,U+5E02-5E03,U+5E0C,U+5E2B,U+5E33,U+5E36,U+5E38,U+5E63,U+5E73-5E74,U+5E79,U+5E7E,U+5E8F,U+5E95,U+5E9C,U+5EA6,U+5EAB,U+5ED3,U+5EE0,U+5EE2-5EE3,U+5EF3,U+5EF6-5EF7,U+5EFA,U+5F0F,U+5F15,U+5F31,U+5F35,U+5F37,U+5F48,U+5F59,U+5F62,U+5F69,U+5F71,U+5F80,U+5F85,U+5F88,U+5F8B-5F8C,U+5F91-5F92,U+5F97,U+5F9E,U+5FA9,U+5FAE,U+5FC3,U+5FC5,U+5FD7-5FD8,U+5FEB,U+600E,U+6021,U+6025,U+6027,U+6062,U+6069,U+606F,U+60A8,U+60C5,U+60F3,U+610F,U+611F,U+614B,U+6167,U+6191,U+61C2,U+61C9,U+61F2,U+6210-6211,U+6216,U+622A,U+6230,U+6233-6234,U+6236,U+6240,U+6247,U+624B,U+624D,U+6253,U+6263,U+6279,U+627E-6280,U+628A,U+6291,U+6295,U+6297-6298,U+62AC,U+62B5,U+62C6,U+62C9,U+62D3,U+62D8,U+62EC,U+62FF,U+6301,U+6307,U+6309,U+6311,U+6368,U+6383,U+6388-6389,U+638C,U+6392,U+639B,U+63A1,U+63A5,U+63A7-63A8,U+63CF-63D0,U+63DB,U+63E1,U+63ED,U+63F4,U+641C,U+642D,U+6458,U+6490,U+6495,U+64A4,U+64AD,U+64B0,U+64B2,U+64C1,U+64C7,U+64CA-64CB,U+64CE,U+64D4,U+64DA,U+64F4,U+651C,U+652F,U+6536,U+6539,U+653B,U+653E-653F,U+6545,U+6548,U+654F,U+6557-6558,U+6574,U+6578,U+6582,U+6587,U+6599,U+65AF-65B0,U+65B7,U+65B9,U+65BC-65BD,U+65CF,U+65D7,U+65E2,U+65E5-65E6,U+6602,U+660E,U+6613,U+662F,U+6642,U+6657,U+665F,U+666F,U+6676,U+667A,U+66AB,U+66B4,U+66DD,U+66F4,U+66F8,U+66FF-6700,U+6703,U+6708-6709,U+670D,U+671F,U+672A,U+672C,U+6746,U+6750,U+675F,U+6771,U+677F,U+6790,U+6797,U+679C,U+67B6,U+67D0,U+67E5,U+67F1,U+6821,U+6838-6839,U+683C,U+6848,U+689D,U+68B0,U+68C4,U+68EE,U+690D,U+695A,U+696D,U+6975,U+6982,U+69CB,U+69FD,U+6A13,U+6A19,U+6A21,U+6A23,U+6A4B,U+6A5F,U+6A6B,U+6AA2,U+6ABB,U+6B04,U+6B0A,U+6B21,U+6B3E,U+6B50,U+6B61-6B65,U+6B67,U+6B77-6B78,U+6BB5,U+6BCF,U+6BD4,U+6BEB,U+6C11,U+6C13,U+6C27,U+6C34,U+6C38,U+6C42,U+6C60,U+6C7A,U+6C7D,U+6C83,U+6C89,U+6C92,U+6CB3,U+6CBB,U+6CBF,U+6CC1,U+6CD5,U+6CE2;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -74,7 +74,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-02.woff2') format('woff2');
-  unicode-range: U+70BA,U+7121,U+7136,U+7167,U+71B1,U+71C3,U+71DF,U+722D,U+723E,U+7247-7248,U+7269,U+7279,U+72C0,U+731C,U+7368,U+7387,U+73FE,U+7403,U+7406,U+745E,U+74B0,U+751F,U+7522,U+7528,U+7531-7533,U+754C,U+7559,U+7565,U+756B,U+7570,U+7576,U+758A,U+767B-767E,U+7684,U+7686,U+76DF,U+76E1,U+76E4,U+76EE,U+76F4,U+76F8,U+76FE,U+7701,U+770B,U+771F,U+773C,U+777F,U+77BB,U+77E5,U+77ED,U+77F3,U+77FD,U+7814,U+7834,U+78B3,U+78BA,U+78BC,U+790E,U+793A,U+795E,U+7968,U+79A6,U+79C1,U+79D1-79D2,U+79DF,U+79FB,U+7A05,U+7A0B,U+7A0D,U+7A2E,U+7A31,U+7A3F,U+7A4D-7A4E,U+7A69,U+7A76,U+7A7A,U+7A7F,U+7A81,U+7A97,U+7ACB,U+7AD9,U+7AE0,U+7AF6,U+7AF9,U+7AFF,U+7B26,U+7B2C,U+7B46,U+7B49,U+7B54,U+7B56,U+7B8B,U+7B97,U+7BA1,U+7BB1,U+7BC0,U+7BC4,U+7BC9,U+7BE9,U+7C21,U+7C3D,U+7C4D,U+7C64,U+7C73,U+7CBE,U+7CCA,U+7CFB,U+7D00,U+7D04,U+7D0D,U+7D14,U+7D19-7D1A,U+7D22,U+7D2B,U+7D2F-7D30,U+7D42,U+7D44,U+7D50,U+7D55,U+7D61,U+7D66,U+7D71,U+7D93,U+7D9C,U+7DA0,U+7DAD,U+7DB1-7DB2,U+7DDA,U+7DE0,U+7DE8,U+7DF4,U+7E3D,U+7E54,U+7E5E,U+7E6B,U+7E73,U+7E7C,U+7E8C,U+7EDC,U+7F3A,U+7F51,U+7F69,U+7F6E,U+7F70,U+7F72,U+7F8E,U+7FA4,U+7FA9,U+7FD2,U+8003,U+8005,U+800C,U+8017,U+8026,U+8058,U+805A,U+805E,U+806F,U+8072,U+8077,U+80A1,U+80CC,U+80FD,U+8173,U+819C,U+81E8,U+81EA,U+81F3-81F4,U+81FA,U+8207,U+822A,U+822C,U+8272,U+82E5,U+8349,U+83EF,U+842C,U+843D,U+8457,U+8463,U+84CB,U+853D,U+8584,U+85A6,U+85AA,U+85CF,U+8655,U+865F,U+8667,U+8755,U+8782,U+87D1,U+884C,U+8853,U+8861,U+8863,U+8868,U+88AB,U+88DC-88DD,U+88E1,U+88FD,U+8907,U+897F,U+8981,U+8986,U+898B,U+898F,U+8996,U+89BA,U+89BD,U+89C0,U+89D2,U+89E3,U+89F8,U+8A00,U+8A02,U+8A08,U+8A0A,U+8A13,U+8A18,U+8A1F,U+8A2A,U+8A2D,U+8A31,U+8A34,U+8A3B,U+8A55,U+8A5E,U+8A62,U+8A66,U+8A71-8A73,U+8A8D,U+8A9E,U+8AA4,U+8AAA,U+8AB0,U+8ABF,U+8ACB,U+8AD6,U+8AEE,U+8AFE,U+8B1B,U+8B1D,U+8B39,U+8B49,U+8B70,U+8B77,U+8B80,U+8B8A,U+8B93,U+8C61,U+8C8C,U+8CA0-8CA1,U+8CA8-8CA9,U+8CAC,U+8CB4,U+8CB7,U+8CBB-8CBC,U+8CC3,U+8CC7,U+8CE0,U+8CE3,U+8CEA,U+8CFC-8CFD,U+8D6B,U+8D70,U+8D77,U+8D85,U+8D8A,U+8DB3,U+8DD1,U+8DDD,U+8DDF,U+8DE8,U+8DEF,U+8DF3,U+8E64,U+8EAB,U+8ECA,U+8ECC-8ECD;
+  unicode-range: U+6CE8,U+6CF0,U+6D1E,U+6D32,U+6D3D-6D3E,U+6D41,U+6D6E,U+6D77-6D78,U+6D88-6D89,U+6DB5,U+6DE8,U+6DF1,U+6DF7,U+6DFA,U+6E05,U+6E2C,U+6E4A,U+6E90,U+6E96,U+6E9D,U+6EAF,U+6EFF,U+6F0F,U+6F5B,U+6FB3,U+6FDF,U+6FFE,U+700F,U+7063,U+706B,U+70BA,U+7121,U+7136,U+7167,U+71B1,U+71C3,U+71DF,U+722D,U+7246-7248,U+7269,U+7279,U+72C0,U+731C,U+7368,U+7387,U+73FE,U+7403,U+7406,U+745E,U+74B0,U+751F,U+7522,U+7528,U+7531-7533,U+754C,U+7559,U+7565,U+756B,U+7570,U+7576,U+7587,U+758A,U+767B-767E,U+7684,U+7686,U+76CA,U+76DB,U+76DF,U+76E1,U+76E3-76E4,U+76EE,U+76F4,U+76F8,U+76FE,U+7701,U+770B,U+771F,U+773C,U+777F,U+77B0,U+77BB,U+77E5,U+77ED,U+77EF,U+77FD,U+7814,U+7834,U+78B3,U+78BA,U+78BC,U+790E,U+793A,U+795E,U+7968,U+79A6,U+79C1,U+79D1-79D2,U+79DF,U+79FB,U+7A00,U+7A05,U+7A0B,U+7A0D,U+7A2E,U+7A31,U+7A3D,U+7A3F,U+7A4D-7A4E,U+7A69,U+7A76,U+7A7A,U+7A7F,U+7A81,U+7A97,U+7ACB,U+7AD9,U+7AE0,U+7AF6,U+7AF9,U+7AFF,U+7B26,U+7B2C,U+7B46,U+7B49,U+7B54,U+7B56,U+7B8B,U+7B97,U+7BA1,U+7BB1,U+7BC0,U+7BC4,U+7BC9,U+7BE9,U+7C21,U+7C3D,U+7C4C-7C4D,U+7C64,U+7C73,U+7CBE,U+7CCA,U+7CFB,U+7D00,U+7D04-7D05,U+7D0D,U+7D14,U+7D19-7D1A,U+7D22,U+7D2B,U+7D2F-7D30,U+7D42,U+7D44,U+7D50,U+7D55,U+7D61,U+7D66,U+7D71,U+7D81,U+7D91,U+7D93,U+7D9C,U+7DA0,U+7DAD,U+7DB1-7DB2,U+7DCA,U+7DDA,U+7DE0,U+7DE8,U+7DF4,U+7E3D,U+7E54,U+7E5E,U+7E6B,U+7E73,U+7E7C,U+7E8C,U+7EDC,U+7F3A,U+7F51,U+7F69,U+7F6E,U+7F70,U+7F72,U+7F8E,U+7FA4,U+7FA9,U+7FD2,U+8003,U+8005,U+800C,U+8017,U+8026,U+8058,U+805A,U+805E,U+806F,U+8072,U+8077,U+80A1,U+80CC,U+80FD,U+819C,U+81E8,U+81EA,U+81F3-81F4,U+81FA,U+8207-8208,U+822A,U+822C,U+8272,U+82E5,U+8349,U+83EF,U+842C,U+843D,U+8457,U+8463,U+8490,U+84CB,U+853D,U+8584,U+85A6,U+85AA,U+85CF,U+862D,U+8655,U+865F,U+8755,U+8782,U+87D1,U+884C,U+8853,U+885D,U+8861,U+8863,U+8868,U+88AB,U+88DC-88DD,U+88E1,U+88FD,U+8907,U+897F,U+8981,U+8986,U+898B,U+898F,U+8996,U+89BA,U+89BD,U+89C0,U+89D2,U+89E3,U+89F8,U+8A00,U+8A02,U+8A08,U+8A0A,U+8A0E,U+8A13,U+8A17-8A18,U+8A1F,U+8A2A,U+8A2D,U+8A31,U+8A34,U+8A3A-8A3B,U+8A55,U+8A5E,U+8A62,U+8A66,U+8A71-8A73,U+8A8D,U+8A9E,U+8AA4,U+8AAA;
 }
 @font-face {
   font-family: 'Noto Sans TC';
@@ -82,7 +82,7 @@
   font-weight: 400 700;
   font-display: swap;
   src: url('/assets/build/fonts/NotoSansTC-var-03.woff2') format('woff2');
-  unicode-range: U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F-9080,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9322,U+9328,U+932F,U+9375,U+9396,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+98FE,U+9918,U+9996,U+99AC,U+99D5,U+9A57,U+9A5F,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
+  unicode-range: U+8AB0,U+8ABF,U+8AC7,U+8ACB,U+8AD6,U+8AEE,U+8AFE,U+8B04,U+8B1B,U+8B1D,U+8B39,U+8B49,U+8B58,U+8B70,U+8B77,U+8B80,U+8B8A,U+8B93,U+8C41,U+8C61,U+8C8C,U+8CA0-8CA1,U+8CA8-8CA9,U+8CAC,U+8CB4,U+8CB7,U+8CBB-8CBC,U+8CBF,U+8CC3,U+8CC7,U+8CE0,U+8CE3,U+8CE6,U+8CEA,U+8CFC-8CFD,U+8D6B,U+8D70,U+8D77,U+8D85,U+8D8A,U+8DB3,U+8DD1,U+8DDD,U+8DDF,U+8DE8,U+8DEF,U+8DF3,U+8E64,U+8EAB,U+8ECA,U+8ECC-8ECD,U+8EDF,U+8EF8,U+8F03,U+8F09,U+8F15,U+8F2A,U+8F2F,U+8F38,U+8F44,U+8F49,U+8FA6,U+8FAF,U+8FCE,U+8FD1,U+8FD4,U+8FF0,U+8FF4,U+8FFD,U+9000-9001,U+9006,U+900F-9010,U+9014,U+9017,U+9019-901A,U+901F-9020,U+9023,U+9031-9032,U+904B,U+904E,U+9053-9054,U+905E,U+9060,U+9069,U+906E,U+9072,U+9078,U+907F,U+9084,U+908A,U+908F,U+90A3,U+90E8,U+90F5,U+90FD,U+914D,U+916C,U+9192,U+91AB,U+91CB,U+91CD,U+91CF,U+91D1,U+91DD,U+9215,U+9280,U+9285,U+92B7,U+9304,U+9328,U+932F,U+9375,U+9396,U+93C8,U+9418,U+9451,U+9577,U+9580,U+9589,U+958B,U+9593,U+9598,U+95B1,U+95BE,U+95DC,U+9632,U+963B,U+9644,U+964D,U+9650,U+9662-9664,U+9673,U+9678,U+967D,U+968A,U+968E,U+9694,U+969B,U+96A8,U+96AA,U+96B1,U+96C6,U+96D9,U+96E2-96E3,U+96F6-96F7,U+96FB,U+9700,U+9732,U+9752,U+975C,U+975E,U+9762,U+9776,U+97D3,U+97F3,U+97FF,U+9801-9802,U+9805,U+9808,U+9810,U+9813,U+9818,U+982D,U+983B,U+984C-984D,U+985E,U+9867,U+986F,U+98A8,U+98DB,U+990A,U+9918,U+9996,U+99D5,U+9A57,U+9A5F,U+9AA8,U+9AD4,U+9AD8,U+9D3B,U+9EBC,U+9ED1,U+9ED8,U+9EDE,U+9F0E,U+9FFF,U+F900,U+FAFF,U+FE30,U+FE4F,U+FF00-FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0E-FF0F,U+FF1A-FF1B,U+FF1F,U+FFEF;
 }
 /* @generated:fonts:end */
 
@@ -105,6 +105,15 @@ picture { display: contents; }
      --surface-elevated: one step down, not up. Never a page ground. */
   --surface-recessed:       #E9E9EC;
   --surface-inverse:        #252525;
+  /* Ink block + window edge (2026-09-29, dark-theme pass). --surface-ink is the fill of a
+     deliberate dark slab (page close, Lane B, the TIS node, the announce bar): #252525 here,
+     and it STAYS dark in dark theme instead of flipping to a white slab the way
+     --surface-inverse does. --edge-window is the hairline an always-black image surface
+     draws against the page — nothing on white, a white hairline on a dark page. */
+  --surface-ink:            #252525;
+  --text-on-ink:            #FFFFFF;
+  --edge-ink:               transparent;
+  --edge-window:            transparent;
   --surface-inverse-hover:  #292524;
   --surface-translucent:    rgba(0,0,0,0.05);
   --surface-page-translucent: rgba(255,255,255,0.70);
@@ -197,7 +206,7 @@ picture { display: contents; }
     radial-gradient(circle at 70% 70%, var(--surface-quaternary), transparent 60%);
 
   --logo-submark:           url('/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg');
-  --logo-secondary:         url('/designs/assets/logos/tis/tis_secondarylogo_dark_eng.svg');
+  --logo-secondary:         url('/designs/assets/logos/tis/SecondaryLogo_Eng_Dark_MRO.svg');
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
 
   /* Partner / institution brand colors — externally owned, not the TIS palette.
@@ -237,27 +246,35 @@ picture { display: contents; }
 
 /* ───────── Tokens — dark (homepage-scope, not yet in design-tokens.md) ───────── */
 [data-theme="dark"] {
-  --surface-page:           #0E0E0E;
-  --surface-secondary:      #161616;
-  --surface-tertiary:       #1F1F1F;
-  --surface-quaternary:     #262626;
-  --surface-elevated:       #262626;
-  --surface-recessed:       #080808;   /* one step below --surface-page, not above */
-  --surface-inverse:        #FAFAFA;
-  --surface-inverse-hover:  #EEEEEE;
+  /* Dark ramp, re-derived 2026-09-29 (DESIGN.md §18). Graphite, chroma 0: the page sits
+     one clear step ABOVE #000 so the always-black windows (heroes, media slots, cards)
+     read as recessed glass rather than dissolving into it; every raised surface is
+     lighter than the page. */
+  --surface-page:           #121212;
+  --surface-secondary:      #181818;
+  --surface-tertiary:       #202020;
+  --surface-quaternary:     #292929;
+  --surface-elevated:       #232323;
+  --surface-recessed:       #0A0A0A;   /* one step below --surface-page, not above */
+  --surface-inverse:        #F2F2F2;
+  --surface-inverse-hover:  #E2E2E2;
+  --surface-ink:            #000;
+  --text-on-ink:            #F2F2F2;
+  --edge-ink:               rgba(255,255,255,0.10);
+  --edge-window:            rgba(255,255,255,0.09);
   --surface-translucent:    rgba(255,255,255,0.06);
-  --surface-page-translucent: rgba(14,14,14,0.70);
+  --surface-page-translucent: rgba(18,18,18,0.72);
 
-  --text-primary:    #F5F5F5;
-  --text-secondary:  #BFBFBF;
-  --text-tertiary:   #8A8F98;
-  --text-quaternary: #5A5A5A;
-  --text-inverse:    #252525;
+  --text-primary:    #F2F2F2;   /* 16.9:1 on #121212 */
+  --text-secondary:  #C2C2C2;   /* 11.0:1 */
+  --text-tertiary:   #8E939B;   /*  5.9:1 — clears AA for body */
+  --text-quaternary: #5E5E5E;   /* disabled / decorative only */
+  --text-inverse:    #1A1A1A;
 
-  --border-primary:   #1F1F1F;
-  --border-secondary: #262626;
-  --border-tertiary:  #303030;
-  --border-focus:     #FAFAFA;
+  --border-primary:   #262626;
+  --border-secondary: #2E2E2E;
+  --border-tertiary:  #3B3B3B;
+  --border-focus:     #F2F2F2;
 
   --success-bg: #052E16; --success-fg: #86EFAC;
 
@@ -291,9 +308,9 @@ picture { display: contents; }
   --juris-jp: #F0ABFC; --juris-jp-bg: rgba(162,28,175,0.18);
   --juris-kr: #FDA4AF; --juris-kr-bg: rgba(190,18,60,0.18);
 
-  --shadow-low:    0 2px 4px rgba(0,0,0,0.5);
-  --shadow-medium: 0 4px 24px rgba(0,0,0,0.55);
-  --shadow-high:   0 7px 32px rgba(0,0,0,0.7);
+  --shadow-low:    0 2px 4px rgba(0,0,0,0.4);
+  --shadow-medium: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-high:   0 7px 32px rgba(0,0,0,0.6);
   --shadow-stacked-low:
     0 8px 2px 0 rgba(0,0,0,0),
     0 5px 2px 0 rgba(0,0,0,0.05),
@@ -302,7 +319,7 @@ picture { display: contents; }
     0 0 1px 0 rgba(0,0,0,0.5);
 
   --logo-submark:           url('/designs/assets/logos/tis/tis_cubelogo_submark_light.svg');
-  --logo-secondary:         url('/designs/assets/logos/tis/tis_secondarylogo_light_eng.svg');
+  --logo-secondary:         url('/designs/assets/logos/tis/SecondaryLogo_Eng_Light_MRO.svg');
   --partner-innovue-color:  url('/designs/assets/logos/partners/innovue/Innovue_Logo_Blue_eng.svg');
 
   /* ── Hero backdrop token (dark) ── */
@@ -614,11 +631,11 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   gap: 32px;
 }
 /* Marketing-site topnav logo — Secondary mark, single-language by document lang.
-   Aspect ratios match SVG viewBoxes: eng 1467.19×167.59 (≈8.75:1), ch 626.7×167.58 (≈3.74:1).
+   Aspect ratios match SVG viewBoxes: eng MRO 1702.49×167.59 (≈10.16:1), ch 626.7×167.58 (≈3.74:1).
    Per visual-guide.md §Logo Family → Top nav header. */
 .topnav-logo {
   height: 28px;
-  aspect-ratio: 1467.19 / 167.59;
+  aspect-ratio: 1702.49 / 167.59;
   background: var(--logo-secondary) center/contain no-repeat;
   flex-shrink: 0;
 }
@@ -685,6 +702,35 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Theme toggle — 3-segment pill: System / Light / Dark */
+.theme-toggle {
+  display: inline-flex; align-items: center;
+  height: 32px;
+  padding: 2px;
+  background: var(--surface-tertiary);
+  border: 0;
+  border-radius: 9999px;
+}
+.theme-seg {
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent;
+  color: var(--text-tertiary);
+  border: 0;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 100ms linear, color 100ms linear, box-shadow 100ms linear;
+}
+.theme-seg:hover { color: var(--text-primary); }
+.theme-seg[aria-pressed="true"] {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-low);
+}
+.theme-seg svg {
+  width: 14px; height: 14px;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -737,10 +783,20 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .topnav-mobile-trigger:hover { background: var(--surface-tertiary); }
 .topnav-mobile-trigger svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-@media (max-width: 980px) {
+/* 1080, not 980: six section triggers + the Secondary wordmark + the controls need
+   ~1040px of row at 14px/600 (measured 2026-09-28; the old four-link nav fit at 980). */
+@media (max-width: 1080px) {
   .topnav-links { display: none; }
   .topnav-cta { display: none; }
+  .theme-toggle { display: none; }   /* the drawer carries the theme control below the nav breakpoint */
   .topnav-mobile-trigger { display: inline-flex; }
+}
+/* 1081–1199: six items + theme pill + globe + search + Contact run 40px over at 1081
+   with the bar's 32px gaps (measured 2026-09-29). Halving the gaps wins back 48px;
+   the drawer breakpoint itself stays at 1080. */
+@media (min-width: 1081px) and (max-width: 1199px) {
+  .topnav-inner { gap: 16px; }
+  .topnav-controls { padding-left: 16px; margin-left: 0; }   /* keep the divider centred in the smaller gap */
 }
 
 /* Language menu */
@@ -798,122 +854,164 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
           mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
 }
 
-/* ───────── Products dropdown — Linear-style mega menu ───────── */
-.topnav-link.has-dropdown {
-  display: inline-flex; align-items: center; gap: 6px;
+/* ───────── Mega nav — six sections, two-column panels ─────────
+   Spec: mro/website-page-map.md §1–§3 (DESIGN.md §4). Each .mega-panel is a child of
+   its own .nav-item, directly after its trigger, so Tab runs trigger → panel links →
+   next trigger (the disclosure pattern) and hover stays inside one element. The panel
+   is absolute against the fixed .topnav — no .nav-item ancestor is positioned.
+   Rules between links are ink, not the grey hairline: the list is the whole panel,
+   and the rules are what make it read as an index rather than loose type. */
+.nav-items {
+  display: flex; align-items: center;
+  gap: 2px;
+  list-style: none; margin: 0; padding: 0;
+}
+.nav-trigger {
+  position: relative;
+  display: inline-flex; align-items: center;
+  height: 63px;          /* the bar's content box: 64px less its 1px bottom border */
+  padding: 0 12px;
   border: 0; background: transparent; cursor: pointer;
   font-family: inherit;
 }
-.topnav-chevron {
-  width: 12px; height: 12px;
-  color: var(--text-quaternary);
-  stroke: currentColor; fill: none; stroke-width: 1.8;
-  stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
+/* Open-state underline: sits on the bar's bottom edge, the width of the label. */
+.nav-trigger::after {
+  content: "";
+  position: absolute; left: 12px; right: 12px; bottom: 0;
+  height: 2px;
+  background: var(--text-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms var(--ease-out);
 }
-.topnav-link.has-dropdown[aria-expanded="true"] .topnav-chevron { transform: rotate(180deg); }
+.nav-trigger[aria-expanded="true"] { color: var(--text-primary); }
+.nav-trigger[aria-expanded="true"]::after { transform: scaleX(1); }
+/* Current section (components.md §Top nav · Current section): the open-state underline
+   at rest, faint. Opening the panel takes it to full strength via the rule above. */
+.nav-trigger[data-current="true"]:not([aria-expanded="true"])::after { transform: scaleX(1); opacity: 0.35; }
+.topnav[data-mega-open="true"] { background: var(--surface-page); }
 
-.topnav-dropdown-wrap { position: relative; }
-.products-menu {
+/* One surface, one tone (2026-09-29 polish). The panel continues the open bar: same
+   --surface-page, hairline --border-primary rules, height set by its content. Type sits
+   one step above the 14px triggers, not a display size: the panel is a menu to scan,
+   not a page to read. Columns: the section link + its anchors (two-up), then Resources
+   behind a 1px hairline. */
+.mega-panel {
   position: absolute;
-  /* Anchor below the topnav's bottom border, not the trigger's bottom. The trigger
-     sits centered inside the 64px topnav row, so its bottom lands ~17px above the
-     topnav bottom edge — adding 24px pushes the panel past the border with an 8px
-     visible gap. */
-  top: calc(100% + 24px);
-  left: 0;
-  transform: translateY(-4px);
-  width: min(560px, calc(100vw - 32px));
+  top: 100%; left: 12px; right: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  column-gap: clamp(32px, 4vw, 64px);
+  padding: 28px clamp(24px, 3vw, 44px) 32px;
+  max-height: calc(100dvh - 88px);
+  overflow: auto;
+  overscroll-behavior: contain;
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
-  box-shadow: var(--shadow-medium);
-  padding: 8px;
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+  box-shadow: var(--shadow-high);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 150ms cubic-bezier(0.2,1,0.3,1), transform 150ms cubic-bezier(0.2,1,0.3,1);
-  z-index: 600;
+  visibility: hidden;
+  transform: translateY(-6px);
+  /* Closing is quicker than opening: the exit answers the user, the entrance orients them. */
+  transition: opacity 120ms var(--ease-out), transform 160ms var(--ease-out), visibility 0s linear 160ms;
 }
-/* Transparent hover bridge over the gap between trigger and panel — keeps pointer
-   movement from trigger to panel inside one continuous hit area. Spans the full
-   distance from panel's top up to the trigger's bottom edge. */
-.products-menu::before {
-  content: '';
-  position: absolute;
-  top: -24px; left: 0; right: 0; height: 24px;
+.mega-panel[data-open="true"] {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity 180ms var(--ease-out), transform 240ms var(--ease-out), visibility 0s;
 }
-.products-menu[data-open="true"] {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+/* Moving across triggers swaps content in place — no fade-out / fade-in stutter. */
+.topnav.mega-switching .mega-panel { transition: none; }
+
+.mega-main { min-width: 0; }
+.mega-aside {
+  min-width: 0;
+  padding-left: clamp(24px, 3vw, 44px);
+  border-left: 1px solid var(--border-primary);
 }
-.products-menu-grid {
+.mega-eyebrow {
+  margin: 0 0 10px;
+  min-height: 20px;
+  font-size: 12px; font-weight: 600; line-height: 20px; letter-spacing: 0.01em;
+  color: var(--text-secondary);
+}
+.mega-list, .mega-res { list-style: none; margin: 0; padding: 0; }
+.mega-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(20px, 2.4vw, 36px);
 }
-.product-card {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 12px;
-  border-radius: 8px;
-  background: var(--surface-page);
+.mega-list > li, .mega-res > li { border-top: 1px solid var(--border-primary); }
+.mega-link {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 48px;
+  padding: 12px 0;
+  font-size: 16px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.35;
+  color: var(--text-primary);
+  transition: color 120ms linear;
+}
+.mega-arrow {
+  flex: none; margin-left: auto;
+  width: 16px; height: 16px;
+  stroke: currentColor; fill: none; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity 160ms linear, transform 240ms var(--ease-out);
+}
+.mega-link:hover .mega-arrow,
+.mega-link:focus-visible .mega-arrow,
+.mega-link[aria-current="page"] .mega-arrow { opacity: 1; transform: none; }
+.mega-res-link {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px;
+  min-height: 44px;
+  padding: 11px 0;
+  font-size: 14px; font-weight: 500; line-height: 1.4;
+  color: var(--text-secondary);
+  transition: color 120ms linear;
+}
+.mega-res-link:hover { color: var(--text-primary); }
+.mega-res-link:hover > span:first-child { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+/* The panel eyebrow is the section's page link (no "Overview" row). */
+.mega-eyebrow--page {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0; line-height: 20px;
+  color: var(--text-primary);
   text-decoration: none;
 }
-.product-card[aria-current="page"] { box-shadow: inset 0 0 0 1px var(--border-primary); }
-/* Media frame — holds the gradient image with the icon + title overlaid on top.
-   overflow:hidden clips the hover zoom so only the image behind the fixed title
-   moves ("push on the image, not the card/text"). */
-.product-card-media {
-  position: relative;
-  display: block; flex: none;
-  width: 100%; height: 96px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--surface-tertiary);
-}
-.product-card-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: transform 300ms var(--ease-card);
-}
-@media (hover: hover) and (pointer: fine) {
-  .product-card:hover .product-card-img { transform: scale(1.06); }
-}
-/* Icon + title overlaid on the image, bottom-aligned, white (matches the
-   image-tile text treatment on .offer-card). Subtle shadow for legibility;
-   no scrim/darkening per design. */
-.product-card-name {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 12px;
-  color: #FFFFFF;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.28);
-}
-.product-card-ico {
-  flex: none;
-  width: 16px; height: 16px;
-  stroke: currentColor; fill: none;
-  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-.product-card-name-text {
-  font-size: 18px; font-weight: 600;
-  line-height: 1.3;
-  color: #FFFFFF;
-}
-.product-card-desc {
-  font-size: 14px; font-weight: 400;
-  line-height: 1.45;
-  color: var(--text-secondary);
-  text-wrap: balance;
+.mega-eyebrow--page .mega-arrow { width: 14px; height: 14px; opacity: 1; transform: none; }
+.mega-eyebrow--page:hover span,
+.mega-eyebrow--page:focus-visible span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.mega-eyebrow--page:hover .mega-arrow { transform: translateX(3px); }
+@media (max-width: 1240px) {
+  .mega-list { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Mobile drawer accordion — Products row */
+.mega-scrim {
+  position: fixed; inset: 64px 0 0 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.14);
+  opacity: 0; pointer-events: none;
+  transition: opacity 200ms linear;
+}
+.mega-scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+/* Globe + current language code (EN / 中文) — the reference nav names the active
+   locale beside the icon, so the switch is legible before it is opened. */
+.icon-btn--code { width: auto; padding: 0 8px; gap: 6px; }
+.lang-code { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; line-height: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mega-panel, .mega-scrim, .mega-arrow, .nav-trigger::after { transition: none; }
+  .mega-panel { transform: none; }
+}
+
+/* Mobile drawer — six accordion groups mirroring the mega panels. */
 .mobile-list .mobile-row-dropdown {
   display: flex; align-items: center; justify-content: space-between;
   width: 100%;
-  height: 48px;
-  font-size: 16px; font-weight: 500;
+  height: 52px;
+  font-size: 17px; font-weight: 500;
   color: var(--text-primary);
   background: transparent;
   border: 0;
@@ -931,54 +1029,28 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
 }
 .mobile-row-dropdown[aria-expanded="true"] .mobile-nav-chevron { transform: rotate(180deg); }
-.mobile-sublist { display: none; flex-direction: column; }
+.mobile-sublist {
+  display: none; flex-direction: column;
+  padding: 6px 0 18px;
+  border-bottom: 1px solid var(--border-primary);
+}
 .mobile-sublist[data-open="true"] { display: flex; }
-.mobile-list .mobile-sub-row {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.mobile-list .mobile-sub-link {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px;
   min-height: 44px;
-  padding: 8px 0 8px 16px;
-  justify-content: center;
-  align-items: flex-start;
+  padding: 6px 0;
+  font-size: 17px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.3;
+  color: var(--text-primary);
 }
-.mobile-sub-media {
-  position: relative;
-  display: block; flex: none;
-  width: 100%; height: 88px;
-  margin-bottom: 4px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--surface-tertiary);
+.mobile-list .mobile-sub-link[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.mobile-sub-label {
+  margin: 14px 0 2px;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-secondary);
 }
-.mobile-sub-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.mobile-sub-name {
-  position: absolute; left: 0; right: 0; bottom: 0;
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px;
-  color: #FFFFFF;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.28);
-}
-.mobile-sub-ico {
-  flex: none;
-  width: 15px; height: 15px;
-  stroke: currentColor; fill: none;
-  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-  color: #FFFFFF;
-}
-.mobile-sub-name-text {
-  font-size: 15px;
-  font-weight: 500;
-  color: #FFFFFF;
-}
-.mobile-sub-desc {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.35;
+.mobile-list .mobile-sub-link--res {
+  min-height: 40px;
+  font-size: 15px; letter-spacing: 0;
   color: var(--text-secondary);
 }
 
@@ -1060,6 +1132,8 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   background: var(--surface-page);
   box-shadow: var(--shadow-low);
 }
+/* Theme sits above language in the drawer footer, same segmented control. */
+.mobile-theme + .mobile-lang { margin-top: 8px; }
 
 /* ───────── Main offset for fixed nav ───────── */
 main { padding-top: 64px; }
@@ -1073,12 +1147,12 @@ main { padding-top: 64px; }
   display: flex; align-items: center; justify-content: center;
   min-height: 44px; padding: 10px 56px;
   background: #000;                 /* matches the always-dark about panels / offer cards */
-  color: var(--text-inverse);
+  color: var(--text-on-ink);        /* white on the black bar in both themes (--text-inverse turns dark in dark theme) */
   overflow: hidden; max-height: 80px;
   transition: max-height 200ms var(--ease-card), opacity 200ms var(--ease-card);
 }
-/* Dark theme keeps the inverted (light) bar so it stays distinct from the dark page. */
-[data-theme="dark"] .announce { background: var(--surface-inverse); }
+/* Dark theme: the bar stays an ink block (black + hairline) instead of a white strip. */
+[data-theme="dark"] .announce { background: var(--surface-ink); box-shadow: inset 0 -1px 0 var(--edge-ink); }
 .announce[hidden] { display: none; }
 .announce.is-dismissing {
   max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
@@ -1133,14 +1207,14 @@ main { padding-top: 64px; }
      `animation` is declared there and would win over anything set here. */
 }
 .announce-msg {
-  font-size: 14px; font-weight: 500; color: var(--text-inverse);
+  font-size: 14px; font-weight: 500; color: var(--text-on-ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .announce-close {
   position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
   width: 24px; height: 24px; display: grid; place-items: center;
   border: none; background: transparent; border-radius: 6px; cursor: pointer;
-  color: var(--text-inverse); opacity: 0.75;
+  color: var(--text-on-ink); opacity: 0.75;
 }
 /* Below the nav breakpoint the message wraps instead of ellipsing. The bar is a
    single nowrap line at desktop widths, but the full string is 74 characters and
@@ -1246,10 +1320,9 @@ main { padding-top: 64px; }
      black. 1.6 puts a 14px line in a 22.4px box; 1.2 is what every brand small-chrome
      role uses (label-13, label-12).
 
-     `opacity`, NOT `rgba(255,255,255,0.82)`. This bar INVERTS in dark theme -- the
-     background becomes --surface-inverse (#FAFAFA) and --text-inverse becomes #252525
-     -- so a hardcoded white would be white-on-near-white. The site's other 0.82 white
-     literals all sit on surfaces that do not invert.
+     `opacity`, NOT `rgba(255,255,255,0.82)`: the ink comes from --text-on-ink, so the
+     dimming has to be opacity to stay theme-agnostic. (Until 2026-09-29 the bar inverted
+     to a light strip in dark theme; it now stays an ink block, DESIGN.md §18.)
 
      400, NOT 450. Urbanist ships as four STATIC faces (400/500/600/700), so a declared
      450 matches down to 400 for Latin -- while ZH falls through to NotoSansTC-var
@@ -1747,6 +1820,15 @@ main { padding-top: 64px; }
   background: rgba(0,0,0,0.60);
   border-color: rgba(255,255,255,0.42);
 }
+/* Home now opens on a photograph like every front-door hero (2026-09-30), so its
+   primary CTA takes the same solid white as .fd-hero .btn-primary instead of the glass
+   treatment that was tuned for the retired black shader. */
+[data-page="home"] .hero .btn-primary {
+  background: #FFFFFF; color: #000; -webkit-text-fill-color: #000;
+  border-color: transparent;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+[data-page="home"] .hero .btn-primary:hover { background: rgba(255,255,255,0.86); }
 
 /* Hero glass CTA — true glass-on-dark: a low-opacity white tint (not the nav's
    70% token, which reads near-solid on the black shader) so the hero colour
@@ -1776,6 +1858,39 @@ main { padding-top: 64px; }
    faint ruled-grid carrier over the photo (its cream gradient is cleared below,
    its ::before grid is recolored white to read over the warm image). */
 [data-page="licensing"] .hero::before { display: none; }
+/* ───────── Homepage hero — UV photograph (2026-09-30) ─────────
+   A technician fitting a rotor blade at an open hangar door, the landscape beyond:
+   sustainment, the front door's lead pillar. Swapped with the Sustain page hero on
+   2026-09-30 (that page now carries the coast-and-hangar frame, uv/hero.jpg). It
+   replaced the shifting-lines shader (its mount is gone from index.html, so the
+   module returns early). The aircraft and technician sit right of centre, clear of
+   the left-set copy, which lands on the darker hangar wall. The scrim darkens the
+   left and the base so the white copy and scroll cue read in both themes. The ruled
+   grid (.hero-grid, and the silver slide's ::before) is dropped — it read as a
+   screen over a photograph. */
+[data-page="home"] .hero {
+  background:
+    url('/assets/imagery/uv/sustain-hero.jpg') 50% 50% / cover no-repeat, #000;
+  background:
+    image-set(url('/assets/imagery/uv/sustain-hero-1376.webp') type('image/webp'),
+              url('/assets/imagery/uv/sustain-hero.jpg') type('image/jpeg')) 50% 50% / cover no-repeat, #000;
+}
+[data-page="home"] .hero::before {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.44) 38%, rgba(0,0,0,0.06) 68%, rgba(0,0,0,0) 100%),
+    linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 30%),
+    linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 18%);
+}
+[data-page="home"] .hero-grid,
+[data-page="home"] .hero-silver { display: none; }
+@media (max-width: 720px) {
+  /* Portrait crop: keep the aircraft in frame above the stacked copy. */
+  /* Portrait: copy is bottom-anchored so the aircraft keeps the top of the frame. */
+  [data-page="home"] .hero { background-position: 70% 50%; align-items: flex-end; padding-bottom: 72px; }
+  [data-page="home"] .hero::before {
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.25) 100%);
+  }
+}
 [data-page="licensing"] .hero-warm { background: none; }
 [data-page="licensing"] .hero-warm::before {
   background:
@@ -2220,8 +2335,7 @@ main { padding-top: 64px; }
    Platform" at 18px plus the flag overflows a 260px card — so the flag goes in
    the corner of the media box, clear of the name. Both media boxes are already
    position: relative. */
-.product-card-media > .status-flag,
-.mobile-sub-media > .status-flag { position: absolute; top: 8px; right: 8px; z-index: 1; }
+
 
 /* Footer Products column. .footer-col a is inline-flex/gap 8px, so the flag
    needs no margin; wrapping is allowed only on the row that has one, so a
@@ -2352,7 +2466,7 @@ main { padding-top: 64px; }
   overflow: hidden;
   background: #000;                          /* always-dark, matches .about-card */
   border: 1px solid rgba(255,255,255,0.08);  /* same hairline as .about-card */
-  border-radius: 20px;                       /* matches .about-card radius exactly */
+  border-radius: 16px;                       /* matches .about-card radius exactly */
   padding-block: 32px;
 }
 /* Scroll reveal — fades + rises in with the About panels (observer adds
@@ -2620,7 +2734,7 @@ main { padding-top: 64px; }
   display: flex; flex-direction: column; justify-content: flex-end;
   min-height: 420px;
   padding: 28px;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--bg-placeholder-radials), var(--surface-tertiary);
   box-shadow: var(--shadow-stacked-low);
@@ -2792,7 +2906,7 @@ main { padding-top: 64px; }
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;  /* brand slightly wider, then 3 even link tracks — .footer-cols dissolves in via display:contents */
+  grid-template-columns: 1.4fr repeat(4, 1fr);  /* brand slightly wider, then 4 even link tracks (Services · Company · Insights · Legal) — .footer-cols dissolves in via display:contents */
   gap: 48px 56px;
   align-items: start;
 }
@@ -2860,7 +2974,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);   /* tertiary measured 3.11:1 on the #FAFAFA footer (AA needs 4.5) */
   margin: 0;
 }
 /* Links dissolve into the parent grid (display:contents) so brand + the three
@@ -2869,19 +2983,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 @media (max-width: 980px) {
   .footer-cols {                            /* re-form as its own grid under the stacked brand */
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 32px;
     justify-items: start;
   }
 }
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .footer-cols { grid-template-columns: 1fr 1fr; }
-  /* Products spans the full row so its "Coming soon" status-flag can stretch beside
-     the label instead of wrapping under it (see the :has() rule on .footer-col a).
-     Company + Legal then sit 2-up beneath — which also fills the cell that Legal
-     used to leave empty when the three columns wrapped 2 + 1. First-child, not a
-     class: the footer markup is hand-copied into 9 files and this stays CSS-only. */
-  .footer-col:first-child { grid-column: 1 / -1; }
 }
 .footer-col { min-width: 0; }   /* let wide items (contact email) sit inside their track, not blow it out */
 .footer-col h2 {
@@ -3073,7 +3181,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   isolation: isolate;
   overflow: hidden;
   min-height: clamp(192px, 18vw, 232px);
-  border-radius: 20px;
+  border-radius: 16px;
   background: #000;                /* matches the pure-black field of both images */
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #fff;
@@ -3317,7 +3425,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   display: grid;
   grid-template-columns: 5fr 6fr;
   margin-block: var(--space-section);  /* gap above/below matches every other section */
-  border-radius: 18px;
+  border-radius: 16px;
   background: #000;                    /* matches venture.jpg's pure-black background */
   box-shadow: var(--shadow-medium);
 }
@@ -3532,6 +3640,21 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   }
 }
 
+/* UV front door (home, about, engage, ausa): engineers at an aircraft replaces the
+   venture sphere. The Insights pages keep venture via the shared rules above. Two-class
+   specificity beats both of them, the phone twin included, with no reordering. The
+   -800/-1376 variants are also named by ecosystem/index.html. */
+.contact-card--uv .contact-overlay::before {
+  background: url('/assets/imagery/uv/ecosystem-hero.jpg') 58% 50% / cover no-repeat, #000;
+  background: image-set(url('/assets/imagery/uv/ecosystem-hero-1376.webp') type('image/webp'), url('/assets/imagery/uv/ecosystem-hero.jpg') type('image/jpeg')) 58% 50% / cover no-repeat, #000;
+}
+@media (max-width: 880px) {
+  .contact-card--uv .contact-overlay::before {
+    background: url('/assets/imagery/uv/ecosystem-hero.jpg') 58% 50% / cover no-repeat, #000;
+    background: image-set(url('/assets/imagery/uv/ecosystem-hero-800.webp') type('image/webp'), url('/assets/imagery/uv/ecosystem-hero.jpg') type('image/jpeg')) 58% 50% / cover no-repeat, #000;
+  }
+}
+
 /* ═════════════════════════════════════════════════════════════════════
    Mobile contact card — the declarations that have to beat a base rule
    (2026-08-29)
@@ -3661,7 +3784,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: clamp(14px, 1.6vw, 24px);
   padding: clamp(26px, 2.4vw, 40px);
   background: var(--surface-elevated);
-  border-radius: 18px;
+  border-radius: 16px;
   box-shadow: var(--shadow-high);
 }
 @media (max-width: 880px) {
@@ -3740,6 +3863,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px var(--surface-translucent);
 }
+/* Required marker, hint and invalid state (Phase 3, 2026-09-30). The asterisk is
+   aria-hidden; the inputs carry aria-required, and site.js sets aria-invalid plus an
+   aria-describedby to the error when a submit fails. */
+.field-req { color: var(--text-tertiary); font-weight: 600; }
+.field-hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-tertiary); }
+.contact-panel .field input[aria-invalid="true"],
+.contact-panel .field textarea[aria-invalid="true"] { border-color: var(--danger-border); }
 
 /* Mobile form density (2026-08-29). Measured at 390px the form was 892px — the
    largest single block on 8 of the 9 pages. All five fields stay; the height came out
@@ -3876,8 +4006,8 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   line-height: 1.5;
   color: var(--danger-border);
   background: var(--danger-border-wash);
-  border-left: 2px solid var(--danger-border);
-  border-radius: 0 8px 8px 0;
+  border: 1px solid var(--danger-border);
+  border-radius: 8px;
 }
 .form-error.is-shown { display: block; }
 .mkt-form .form-error { margin-top: 14px; }
@@ -3920,6 +4050,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0;              /* was 0 0 8px for the subtext that used to follow */
+}
+.contact-success__next {
+  margin: -8px 0 0;       /* the column gap is 20px; the next step belongs to its heading */
+  max-width: 36ch;
+  font-size: 15px; line-height: 1.55;
+  color: var(--text-secondary);
 }
 /* ───────── Confirmation check — draw-on choreography ─────────
    A form success is a rare, first-time event, so it earns motion that a
@@ -4076,7 +4212,7 @@ svg.is-primed polyline {
   -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); opacity:0; }
 .sig-xpanel{ position:relative; z-index:1; width:min(850px, 100%); max-height:min(92svh, 940px);
   display:flex; flex-direction:column; overflow:hidden; background:var(--surface-page);
-  border-radius:18px; box-shadow:var(--shadow-high); transform-origin:top left; }
+  border-radius:16px; box-shadow:var(--shadow-high); transform-origin:top left; }
 .sig-xpanel[hidden]{ display:none; }
 .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
 
@@ -4514,7 +4650,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-card {
   position: relative;
   background: var(--surface-page);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow-high);
   width: 100%; max-width: 520px;
   overflow: hidden;
@@ -5367,6 +5503,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   gap: clamp(16px, 1.6vw, 24px);
 }
 @media (max-width: 720px) { .offerings-grid { grid-template-columns: 1fr; } }
+/* Front-door pillar cards (Home, /ausa) carry a photo, a two-line title and a CTA:
+   three-up below 900 squeezes the titles onto two lines and the bodies out of line. */
+@media (max-width: 900px) { .ab .offerings-grid { grid-template-columns: 1fr; } }
 
 .offer-card {
   position: relative;
@@ -5377,7 +5516,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   flex-direction: column;
   justify-content: flex-end;        /* copy anchored to the bottom */
   padding: 28px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: #0E0E0E;              /* dark chip base behind the particle image (::before) */
   box-shadow: var(--shadow-medium);
   text-decoration: none;
@@ -5416,12 +5555,65 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   background-image: image-set(url('/assets/imagery/coremap/owned-800.webp') type('image/webp'),
                               url('/assets/imagery/coremap/owned.jpg') type('image/jpeg'));
 }
+/* Homepage pillar photography (UV direction, 2026-09-29). The three frames are
+   composed as one row: each crop lifts its subject — hangar aircraft, tail fin,
+   field aircraft — into the same band in the card's top half, clear of the copy,
+   with the far horizon (hangar door, bench wall, ridge line) at a shared height. --img-size / --img-pos are
+   per-card because the sources differ in aspect and subject depth. */
+.offer-card--sustain,
+.offer-card--protect,
+.offer-card--license { --img-size: cover; --img-pos: center; }
+.offer-card--sustain::before,
+.offer-card--protect::before,
+.offer-card--license::before {
+  background-size: var(--img-size);
+  background-position: var(--img-pos);
+}
+.offer-card--sustain { --img-pos: 50% 100%; }
+.offer-card--sustain::before {
+  background-image: url('/assets/imagery/uv/sustain.jpg');
+  background-image: image-set(url('/assets/imagery/uv/sustain-800.webp') type('image/webp'),
+                              url('/assets/imagery/uv/sustain.jpg') type('image/jpeg'));
+}
+.offer-card--protect { --img-size: auto 150%; --img-pos: 45% 100%; }
+.offer-card--protect::before {
+  background-image: url('/assets/imagery/uv/protect.jpg');
+  background-image: image-set(url('/assets/imagery/uv/protect-800.webp') type('image/webp'),
+                              url('/assets/imagery/uv/protect.jpg') type('image/jpeg'));
+}
+.offer-card--license { --img-pos: 50% 20%; }
+.offer-card--license::before {
+  background-image: url('/assets/imagery/uv/license.jpg');
+  background-image: image-set(url('/assets/imagery/uv/license-800.webp') type('image/webp'),
+                              url('/assets/imagery/uv/license.jpg') type('image/jpeg'));
+}
+/* One-up (≤900): the cards turn wide, so the three-up crops stop working. Protect's
+   auto-150% sizing leaves bars either side, and Sustain's bottom anchor lands on the floor.
+   All three go to cover, with the subject lifted into view. */
+@media (max-width: 900px) {
+  .offer-card--sustain { --img-pos: 50% 45%; }
+  .offer-card--protect { --img-size: cover; --img-pos: 45% 55%; }
+  .offer-card--license { --img-pos: 50% 40%; }
+}
+@media (max-width: 720px) {
+  /* Single column: the card is near-square and the copy runs taller, so each frame
+     is scaled up and lifted to keep its subject above the eyebrow. */
+  .offer-card--sustain { --img-size: 115% auto; --img-pos: 50% 100%; }
+  .offer-card--protect { --img-size: auto 170%; --img-pos: 45% 100%; }
+  .offer-card--license { --img-size: 115% auto; --img-pos: 50% 40%; }
+}
 
 
 /* Fixed-dark legibility scrim so the white copy always reads (theme-independent). */
 .offer-card::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.06) 80%);
+}
+.offer-card--sustain::after,
+.offer-card--protect::after,
+.offer-card--license::after {
+  /* Photographs are busier than the particle art, so the scrim reaches higher. */
+  background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.62) 42%, rgba(0,0,0,0.12) 70%, rgba(0,0,0,0) 88%);
 }
 .offer-card-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 /* Words in an eyebrow are Urbanist; only the 01/02/03 sectional numerals are mono. */
@@ -6562,3 +6754,1358 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
      visual. A width override here would fight it and lose to page-local order.) */
   .footer-nl-form button { width: 44px; height: 44px; }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   EDITORIAL PAGE PRIMITIVES (.ab-*) — promoted from about/index.html's page-scoped
+   <style> on 2026-09-29 so the UV front-door pages (Sustain, Protect, License,
+   Ecosystem, Engage, /ausa) share one ladder with /about/ (DESIGN.md §0.3 bans new
+   page-local blocks). Scope with class="ab" on <main>. The retired bento and the
+   Innovue card were dropped with the About rewrite; .ab-stat was kept.
+   ═════════════════════════════════════════════════════════════════════════ */
+/* ═════════════════════════════════════════════════════════════════════════
+   ONE LADDER. Every size and gap on this page resolves from here.
+
+   Type — the ratio between adjacent hierarchy steps is >= 1.25 throughout, so
+   no two levels can read as peers:
+     display 60 → h2 40 → pull 32 → lead 22 → body 17
+             1.50    1.25     1.45     1.29
+   `small` (15) and `label` (13) are not further steps down that ladder; they
+   are different roles (card copy, metadata) and are separated by colour and
+   weight, not by scale.
+
+   Space — every endpoint lands on the 4px grid from design-tokens.md §4.
+   ═════════════════════════════════════════════════════════════════════════ */
+.ab {
+  --ab-display: clamp(34px, 4.4vw, 60px);
+  --ab-h2:      clamp(26px, 3vw, 40px);
+  --ab-pull:    clamp(22px, 2.5vw, 32px);
+  --ab-lead:    clamp(18px, 1.6vw, 22px);
+  --ab-body:    17px;
+  --ab-small:   15px;
+  --ab-label:   13px;
+
+  --ab-section:  clamp(56px, 6.5vw, 96px);   /* section padding-block */
+  --ab-head-gap: clamp(28px, 3.2vw, 44px);   /* heading → its content */
+  --ab-block:    clamp(20px, 2.2vw, 28px);   /* between blocks in a column */
+  --ab-panel:    clamp(28px, 4vw, 60px);     /* inside a card */
+}
+
+/* ── Section shell + the one heading style, used by all four h2s ─────────── */
+.ab-section { padding-block: var(--ab-section); }
+.ab-h2 {
+  margin: 0 0 var(--ab-head-gap);
+  font-size: var(--ab-h2); font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1.12;
+  color: var(--text-primary); text-wrap: balance;
+}
+
+/* ── Hero (from A) — black field + shader, left-anchored ─────────────────── */
+/* No height here on purpose. The base .hero rule (styles.css) is
+   height: clamp(460px, 56vw, 580px) with padding-block: 32px 0, which is exactly
+   what the live About hero uses — and inheriting it also picks up the
+   @media (max-width: 640px) { height: auto; min-height: 340px } rule that a
+   hand-copied value would silently drop.
+   align-items only changes how .hero-inner fills the field, not the field's
+   dimensions, and stretch is what lets the scroll cue sit on its floor. */
+.ab-hero { align-items: stretch; }
+.ab-hero .hero-inner {
+  position: relative;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  padding-block: clamp(56px, 8vw, 96px);
+}
+/* Height-sized so EN and ZH share a baseline and the width follows the aspect
+   ratio. Always the light wordmark — the hero field is black in both themes. */
+.ab-hero-logo {
+  display: block;
+  height: clamp(26px, 2.5vw, 34px);
+  aspect-ratio: 1702.49 / 167.59;
+  max-width: 100%;
+  background: url('/designs/assets/logos/tis/SecondaryLogo_Eng_Light_MRO.svg') left center / contain no-repeat;
+  filter: drop-shadow(0 1px 16px rgba(0, 0, 0, 0.55));
+}
+[lang="zh-Hant"] .ab-hero-logo {
+  aspect-ratio: 626.7 / 167.58;
+  background-image: url('/designs/assets/logos/tis/tis_secondarylogo_light_ch.svg');
+}
+[lang="zh-Hant"] .ab-hero-line { text-wrap: normal; }
+.ab-hero-line {
+  margin: clamp(28px, 3.6vw, 48px) 0 0;
+  max-width: 26ch;
+  font-size: var(--ab-display); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.06;
+  color: #FFFFFF;                     /* sanctioned literal, always-dark surface */
+  text-wrap: balance;
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
+}
+/* An absolutely positioned child resolves against its ancestor's PADDING box, so
+   left:32px inside .container lands exactly on the container's own text edge at
+   every viewport, including past the 1440 max-width. Mirrors .container's own
+   padding-inline, which drops to 20px under 768. */
+.ab-cue {
+  position: absolute; left: 32px; bottom: clamp(28px, 4vw, 48px);
+  width: 1px; height: 52px; overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+.ab-cue::after {
+  content: ""; position: absolute; left: 0; width: 1px; height: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  animation: ab-cue-run 2600ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+/* Animates `top`, a paint property, rather than transform — so a headless
+   render shows the cue mid-travel instead of a blank strip. */
+@keyframes ab-cue-run { 0% { top: -18px; } 60%, 100% { top: 52px; } }
+@media (prefers-reduced-motion: reduce) { .ab-cue::after { animation: none; top: 0; } }
+@media (max-width: 768px) { .ab-cue { left: 20px; } }
+/* Under 640px the inherited base rule collapses the hero to height:auto /
+   min-height:340px, which crowds the cue against the heading — and at that
+   height the next section is already on screen, so the cue has nothing to say. */
+@media (max-width: 640px) { .ab-cue { display: none; } }
+
+/* ── Why we exist (from B) — sticky head beside one column of prose ──────── */
+.ab-doc {
+  display: grid; grid-template-columns: minmax(0, 0.52fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 96px); align-items: start;
+}
+/* The head rides down beside the prose it labels. Costs nothing on a static
+   render, and the column is narrow so it strands little space when it stops. */
+.ab-doc__head { position: sticky; top: 96px; }
+.ab-doc__head .ab-h2 { margin-bottom: 0; }
+.ab-prose > p {
+  margin: 0; max-width: 62ch;
+  font-size: var(--ab-body); font-weight: 400; line-height: 1.75;
+  color: var(--text-secondary); text-wrap: pretty;
+}
+.ab-prose > p + p { margin-top: var(--ab-block); }
+/* The conclusion, set between hairlines the way a dossier sets a finding. */
+.ab-pull {
+  margin: clamp(36px, 4.5vw, 64px) 0 0;
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+  padding-block: clamp(28px, 3.2vw, 40px);
+}
+.ab-pull p {
+  margin: 0; max-width: 30ch;
+  font-size: var(--ab-pull); font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.24;
+  color: var(--text-primary); text-wrap: balance;
+}
+.ab-pull p + p {
+  margin-top: 14px; max-width: 54ch;
+  font-size: var(--ab-small); font-weight: 400; letter-spacing: 0;
+  line-height: 1.65; color: var(--text-secondary); text-wrap: pretty;
+}
+
+/* ── Stats — label / mono number / body (from the retired Innovue card) ── */
+.ab-stat + .ab-stat {
+  margin-top: clamp(24px, 2.8vw, 36px);
+  border-top: 1px solid var(--border-secondary);
+  padding-top: clamp(24px, 2.8vw, 36px);
+}
+.ab-stat__label {
+  margin: 0 0 10px;
+  font-size: var(--ab-label); font-weight: 600; letter-spacing: -0.01em;
+  color: var(--text-secondary);
+}
+/* Numerals are Inconsolata per design-tokens.md §3, and tabular so the two
+   figures share a rhythm and the count-up does not reflow on every frame. */
+.ab-stat__num {
+  margin: 0; font-family: var(--font-mono);
+  font-size: clamp(30px, 3.1vw, 40px); font-weight: 700;
+  letter-spacing: -0.01em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.ab-stat__body {
+  margin: 12px 0 0; max-width: 30ch;
+  font-size: var(--ab-small); line-height: 1.55;
+  color: var(--text-secondary); text-wrap: pretty;
+}
+.ab-stat__body strong { font-weight: 600; color: var(--text-primary); }
+
+/* ── Board of Directors — the original strip, restored ─────────────────────
+   Verbatim from about/index.html: 96px circles in 132px cells, grayscale until
+   hover or focus, 15px name, 10px uppercase role, centred.
+
+   Centred is a deliberate exception to this page's shared left edge. Tried
+   left-aligned first: five 132px cells span 868px of a 1376px container, so it
+   left ~500px of dead width that read as an accident. A centred roster is the
+   conventional close for a page, and it is what the section already was. ── */
+.ab-board__heading { text-align: center; }
+.about-board-grid {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(24px, 4vw, 52px);
+}
+.board-member {
+  margin: 0; width: 132px; text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.board-member__photo {
+  width: 96px; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden;
+  border: 1px solid var(--border-primary); background: var(--surface-tertiary);
+}
+.board-member__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) brightness(0.85); transition: filter 0.45s ease;
+}
+.board-member__img--jackson { transform: scale(1.213) translateY(-3%); }
+.board-member__img--steven { transform: scale(1.037); }
+@media (hover: hover) {
+  .board-member:hover .board-member__photo img { filter: grayscale(0) brightness(1); }
+}
+.board-member:focus-within .board-member__photo img { filter: grayscale(0) brightness(1); }
+.board-member__name {
+  margin: 14px 0 0; font-size: var(--ab-small); font-weight: 600;
+  letter-spacing: -0.01em; color: var(--text-primary);
+}
+.board-member__role {
+  margin: 5px 0 0; font-size: 10px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.16em; color: var(--text-tertiary);
+}
+
+/* ── Reveals. site.js adds .is-revealed via IntersectionObserver. Gated
+     unconditionally, matching .h-section[data-reveal] in styles.css and the
+     block this replaced: with JS off the section stays hidden. Site-wide
+     behaviour, not this page's to change. ── */
+.ab [data-reveal] { opacity: 0; transform: translateY(14px); }
+.ab [data-reveal].is-revealed {
+  opacity: 1; transform: none;
+  transition: opacity 520ms var(--ease-card), transform 520ms var(--ease-card);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab [data-reveal] { opacity: 1; transform: none; }
+}
+
+@media (max-width: 900px) {
+  .ab-doc { grid-template-columns: 1fr; gap: var(--ab-head-gap); }
+  .ab-doc__head { position: static; }
+}
+/* 10px is the smallest type on the site and this is the only place it carries
+   prose — a person's job title beside their name, uppercase at 0.16em, in
+   --text-tertiary. Held at 10px on desktop where the 132px card is a deliberate
+   tight column; raised on a phone, where 10px uppercase is roughly 1.7mm of cap
+   height. Measured: no role rewraps at 12px and the section grows 13px.
+
+   Gated on `(pointer: coarse)` as well as the width, because the 1.7mm argument is
+   about reading distance, not viewport size: a touch tablet at 641–880px was still
+   getting 10px. Matches how the rest of the site scopes its touch-accessibility
+   overrides (styles.css, the block at the foot of the file). DESIGN.md §14.2 puts
+   the floor at 11px, and 12px on a phone — 10px is a deliberate desktop-only
+   exception, which is why it stays width-gated on fine pointers. */
+@media (max-width: 640px), (pointer: coarse) {
+  .board-member__role { font-size: 12px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   UV FRONT-DOOR COMPONENTS (2026-09-29) — the small set the Stage-2 pages need
+   that no existing component covers (DESIGN.md §16.6). Tokens only; no pillar
+   accents (the front door speaks in ink, visual-guide §Surface identity).
+   ═════════════════════════════════════════════════════════════════════════ */
+
+/* A section dek directly under an .ab-h2 belongs to the heading, not the content:
+   pull it up into the heading's gap and give the gap back beneath it. */
+.ab-h2 + .section-dek {
+  margin-top: calc(-1 * var(--ab-head-gap) + 12px);
+  margin-bottom: var(--ab-head-gap);
+  max-width: 60ch;
+}
+
+/* ── Crumb — the section a page belongs to, above its H1. Also the "Insights /"
+      wayfinding on the kept product pages, whose URLs did not move. ── */
+.crumb {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin: 0 0 16px;
+  font-size: 14px; font-weight: 500; line-height: 1.3;
+  color: var(--text-secondary);
+}
+.crumb a { color: var(--text-secondary); text-decoration: none; }
+.crumb a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+.crumb__sep { color: var(--text-tertiary); }
+.crumb--on-dark, .crumb--on-dark a { color: rgba(255, 255, 255, 0.78); }
+.crumb--on-dark a:hover { color: #FFFFFF; }
+
+/* A crumb placed straight after the fixed nav on a page whose first block is its own
+   hero: give it the page's gutter so it lines up with the H1 below. */
+.crumb-bar { padding-top: 24px; }
+.crumb-bar .crumb { margin: 0; }
+
+/* ── Masthead lede on the ab ladder: the pillar pages' quiet hero is the methodology
+      masthead (.mth-masthead) — this only adds the one-line rider under the lede. ── */
+.mth-masthead__rider {
+  margin: 16px 0 0; max-width: 60ch;
+  font-size: 15px; line-height: 1.6; color: var(--text-secondary);
+}
+.mth-masthead .pillar-actions { margin-top: 28px; }
+
+/* ── Pipe band, four stages (L0–L3; the page TOC on Sustain). ── */
+.mth-pipe--4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 880px) { .mth-pipe--4 { grid-template-columns: 1fr; } }
+
+/* ── Proof strip — the hero's evidence row (proposal §15.3). Sits on the black
+      hero field, so the literals are the DESIGN.md §1.3 always-dark set. ── */
+.proof-strip {
+  display: flex; flex-wrap: wrap; gap: 10px 22px;
+  list-style: none; margin: 28px 0 0; padding: 0;
+  max-width: 980px;
+}
+.proof-strip li {
+  font-size: 13.5px; font-weight: 500; line-height: 1.35;
+  color: rgba(255, 255, 255, 0.78);
+  position: relative; padding-left: 14px;
+}
+.proof-strip li::before {
+  content: ""; position: absolute; left: 0; top: calc(0.675em - 2px);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.proof-strip strong { color: #FFFFFF; font-weight: 600; }
+/* Home: two pairs of points. A grid, not flex-wrap, so the shape holds in both
+   languages: the shorter ZH points would otherwise pack three to the first line.
+   One column once a pair can't fit. */
+.proof-strip--pairs { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; }
+@media (max-width: 900px) { .proof-strip--pairs { grid-template-columns: 1fr; } }
+/* Hero headline divider: the middle dot, in a span only so it can drop out below. */
+.pillar-title__sep { margin: 0 0.02em; }
+/* Too narrow for one line: a wrapped dot would dangle at a line end, so each
+   divider becomes a line break and the three pillars stack. */
+@media (max-width: 480px) { .pillar-title__sep { display: block; height: 0; overflow: hidden; } }
+.pillar-note { margin: 14px 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.66); }
+/* Inside the CTA row the note is the button's condition, not its own line: it
+   centres on the button and carries a Lucide lock. Stacks under the full-width
+   button at ≤480px via the [data-page="home"] column rule. */
+.pillar-actions .pillar-note {
+  margin: 0; display: inline-flex; align-items: center; gap: 6px;
+  align-self: center; padding-left: 4px;
+  font-size: 13.5px; font-weight: 500; color: rgba(255, 255, 255, 0.86);   /* matches the proof strip, not the fainter standalone note */
+}
+.pillar-note svg {
+  width: 14px; height: 14px; flex: none; stroke: currentColor; fill: none;
+  stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (max-width: 480px) {
+  [data-page="home"] .pillar-actions .pillar-note { align-self: flex-start; padding-left: 0; margin-top: 2px; }
+}
+
+/* ── Phases — the numbered-process list, generalised from Signal's .sig-phases
+      (product/signal/index.html) for Engage, Home and Protect. Signal keeps its own
+      page-scoped copy until it migrates. ── */
+.phases {
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: 16px;
+  padding: clamp(26px, 2.6vw, 38px) clamp(22px, 2.2vw, 32px);
+}
+.phases__list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 44px);
+}
+.phase + .phase {
+  border-left: 1px solid var(--border-tertiary);
+  padding-left: clamp(24px, 3vw, 44px);
+  margin-left: calc(-1 * clamp(24px, 3vw, 44px) / 2);
+}
+.phase__name {
+  margin: 0 0 6px;
+  font-size: 13.5px; font-weight: 600; line-height: 1.3; letter-spacing: 0.01em;
+  color: var(--text-secondary);
+}
+.phase__title {
+  margin: 0 0 8px;
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 10px;
+  font-size: 18px; font-weight: 600; line-height: 1.35;
+  color: var(--text-primary);
+}
+.phase__chip {
+  flex: none;
+  padding: 2px 8px; border-radius: 9999px;
+  background: var(--surface-page); border: 1px solid var(--border-tertiary);
+  color: var(--text-secondary);
+  font-size: 11px; font-weight: 600; line-height: 16px; letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.phase__desc {
+  margin: 0;
+  font-size: 14px; line-height: 1.6; color: var(--text-secondary);
+  text-wrap: pretty; overflow-wrap: break-word;
+}
+.phase__desc + .phase__desc { margin-top: 10px; }
+.phase__desc strong { color: var(--text-primary); font-weight: 600; }
+.phases__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: clamp(20px, 3vw, 44px); flex-wrap: wrap;
+  margin-top: clamp(28px, 2.8vw, 38px);
+  padding-top: clamp(24px, 2.4vw, 30px);
+  border-top: 1px solid var(--border-tertiary);
+}
+.phases__trade {
+  margin: 0; flex: 1 1 420px; min-width: 0;
+  font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--text-primary);
+  text-wrap: pretty;
+}
+.phases__foot .btn { flex: 0 0 auto; }
+@media (max-width: 880px) {
+  .phases { padding: 28px 22px; }
+  .phases__list { grid-template-columns: 1fr; gap: 0; }
+  .phase { padding: 20px 0; }
+  .phase:first-child { padding-top: 0; }
+  .phase:last-child { padding-bottom: 0; }
+  .phase + .phase { border-left: 0; border-top: 1px solid var(--border-tertiary); padding-left: 0; margin-left: 0; }
+}
+
+/* ── Data table — the service package, the L0–L3 model, the roles table. Real
+      <table> semantics; below 720px each row stacks into a labelled card, with the
+      column name drawn from data-label so nothing is lost on a phone. ── */
+.data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px; line-height: 1.5;
+  color: var(--text-secondary);
+}
+.data-table caption {
+  caption-side: bottom; text-align: left;
+  padding-top: 14px; font-size: 13px; color: var(--text-secondary);
+}
+.data-table th, .data-table td {
+  text-align: left; vertical-align: top;
+  padding: 16px 20px 16px 0;
+  border-bottom: 1px solid var(--border-primary);
+}
+.data-table thead th {
+  padding-top: 0;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.01em;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--text-primary);
+}
+.data-table tbody th { font-weight: 600; color: var(--text-primary); }
+.data-table td:last-child, .data-table th:last-child { padding-right: 0; }
+.data-table .data-table__num {
+  width: 3ch;
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-weight: 600; color: var(--text-tertiary);
+}
+.data-table .data-table__lvl {
+  font-family: var(--font-mono); font-weight: 600; white-space: nowrap; color: var(--text-primary);
+}
+@media (max-width: 720px) {
+  .data-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .data-table, .data-table tbody, .data-table tr, .data-table th, .data-table td { display: block; width: 100%; }
+  .data-table tr { padding: 16px 0; border-bottom: 1px solid var(--border-primary); }
+  .data-table tbody tr:first-child { border-top: 1px solid var(--text-primary); }
+  .data-table th, .data-table td { border: 0; padding: 3px 0; }
+  .data-table td[data-label]::before {
+    content: attr(data-label);
+    display: block; margin-top: 8px;
+    font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+  }
+  .data-table .data-table__num { width: auto; }
+}
+
+/* ── Spec list — term / definition rows for text (principles, tiers, parties).
+      .mth-read is the numeric sibling; this one wraps prose. ── */
+.spec-list { margin: 0; border-top: 1px solid var(--text-primary); }
+.spec-list__row {
+  display: grid; grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: 12px clamp(20px, 3vw, 48px);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border-primary);
+}
+.spec-list dt {
+  margin: 0;
+  font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--text-primary);
+}
+.spec-list dd {
+  margin: 0; max-width: 64ch;
+  font-size: 15.5px; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty;
+}
+.spec-list dd + dd { margin-top: 8px; }
+@media (max-width: 720px) {
+  .spec-list__row { grid-template-columns: 1fr; gap: 6px; }
+}
+
+/* A lede sitting directly above a spec list needs air before the list's ink rule. */
+.mth-masthead__lede + .spec-list { margin-top: clamp(20px, 2.4vw, 28px); }
+
+/* ── Rule list — a plain list between hairlines (SLA/KPI framework, neutrality
+      rules, what TIS builds). Numbered only where the proposal numbers it. ── */
+.rule-list {
+  list-style: none; margin: 0; padding: 0;
+  border-top: 1px solid var(--border-primary);
+}
+.rule-list > li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-primary);
+  font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty;
+}
+.rule-list > li strong { color: var(--text-primary); font-weight: 600; }
+.rule-list--num { counter-reset: rl; }
+/* Positioned, not grid: an item holding <strong>lead</strong> + text would split into
+   separate grid items and wrap the text one word per line. */
+.rule-list--num > li {
+  counter-increment: rl;
+  position: relative;
+  padding-left: calc(3ch + 12px);
+}
+.rule-list--num > li::before {
+  content: counter(rl);
+  position: absolute; left: 0; top: 14px;
+  font-family: var(--font-mono); font-weight: 600; font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+.rule-list--cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 64px); }
+@media (max-width: 720px) { .rule-list--cols { grid-template-columns: 1fr; } }
+
+/* ── Two-up panels — the two compliance lanes; License's two separated blocks. ── */
+.duo {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+}
+.panel {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+  padding: clamp(24px, 3vw, 40px);
+}
+.panel__label {
+  margin: 0 0 8px;
+  font-size: 13.5px; font-weight: 600; color: var(--text-secondary);
+}
+.panel__title {
+  margin: 0 0 16px;
+  font-size: clamp(22px, 2.2vw, 28px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--text-primary); text-wrap: balance;
+}
+.panel .spec-list { border-top-color: var(--border-tertiary); }
+.panel .spec-list__row { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
+.panel .spec-list dt { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+.panel .spec-list dd { font-size: 15.5px; color: var(--text-primary); }
+@media (max-width: 880px) { .duo { grid-template-columns: 1fr; } }
+
+/* A block that must read as its own asset (License: portfolio vs services).
+   Full-width panel with a heavier edge than .panel so the split is unmistakable. */
+.block {
+  border: 1px solid var(--border-tertiary);
+  border-radius: 24px;
+  padding: clamp(28px, 4vw, 60px);
+}
+.block + .block { margin-top: clamp(24px, 3vw, 40px); }
+.block__label {
+  display: inline-block; margin: 0 0 18px;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--surface-tertiary);
+  font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
+}
+
+/* ── Separation line (proposal §0 / §15.3): stated wherever the portfolio and MRO
+      appear together. Quiet, but never absent. ── */
+.sep-line {
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-primary);
+  max-width: 72ch;
+  font-size: 15px; line-height: 1.6; color: var(--text-secondary);
+}
+.sep-line strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── Stat row — the .ab-stat unit laid out across (Why Taiwan). ── */
+.stat-row {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 48px);
+  border-top: 1px solid var(--text-primary);
+  padding-top: clamp(24px, 2.6vw, 32px);
+}
+.stat-row .ab-stat + .ab-stat { margin-top: 0; border-top: 0; padding-top: 0; }
+.stat-row .ab-stat__body { max-width: 26ch; }
+@media (max-width: 980px) { .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .stat-row { grid-template-columns: 1fr; } }
+
+/* ── Image placeholder — photography lands in a later pass. A labelled frame, so
+      nobody mistakes it for a finished surface. ── */
+.ph {
+  position: relative;
+  display: grid; place-items: center;
+  aspect-ratio: var(--ph-ratio, 16 / 10);
+  margin: 0;
+  border: 1px dashed var(--border-tertiary);
+  border-radius: 16px;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, var(--surface-tertiary) 14px 15px),
+    var(--surface-secondary);
+  color: var(--text-secondary);
+  overflow: hidden;
+}
+.ph__label {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 8px;
+  background: var(--surface-page);
+  border: 1px solid var(--border-primary);
+  font-size: 13px; font-weight: 500;
+}
+.ph__label svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* On the always-dark offer tiles the frame is the card itself. */
+.offer-card--ph::before {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.05) 14px 15px),
+    #0E0E0E;
+}
+.offer-card .ph__label--on-dark {
+  position: absolute; top: 20px; left: 20px; z-index: 1;
+  background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* ── Split — prose beside a placeholder (partner sections, network). ── */
+.split {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 88px); align-items: start;
+}
+.split--rev > :first-child { order: 2; }
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .split--rev > :first-child { order: 0; }
+}
+
+/* ── CTA band — the page close. ── */
+.cta-band {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px 40px; flex-wrap: wrap;
+  padding: clamp(28px, 3.4vw, 48px) clamp(24px, 3.4vw, 48px);
+  border-radius: 24px;
+  background: var(--surface-ink);
+  color: var(--text-on-ink);
+  box-shadow: inset 0 0 0 1px var(--edge-ink);
+}
+.cta-band__line {
+  margin: 0; max-width: 32ch;
+  font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+  text-wrap: balance;
+}
+.cta-band__sub { margin: 8px 0 0; font-size: 15px; opacity: 0.78; }
+.cta-band .btn-primary { background: var(--text-on-ink); color: var(--surface-ink); }
+.cta-band .btn-primary:hover { background: var(--surface-tertiary); }
+
+/* ── Link cards — a row of quiet text links to the three pillars (/ausa). ── */
+.link-cards {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+}
+.link-card {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 24px; border-radius: 16px;
+  border: 1px solid var(--border-primary); background: var(--surface-page);
+  color: var(--text-primary);
+  transition: border-color 150ms linear, background 150ms linear;
+}
+.link-card:hover { border-color: var(--border-tertiary); background: var(--surface-secondary); }
+.link-card__t { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.link-card__d { font-size: 14.5px; line-height: 1.55; color: var(--text-secondary); }
+@media (max-width: 880px) { .link-cards { grid-template-columns: 1fr; } }
+
+/* ── Ecosystem map — the proposal §4.1 diagram as HTML (so both languages swap
+      and it reflows), not an image. Customer → one contract → TIS → four partners →
+      end users & regulators. ── */
+.eco-map { display: grid; gap: 0; justify-items: center; }
+.eco-node {
+  width: 100%;
+  border: 1px solid var(--border-tertiary); border-radius: 16px;
+  background: var(--surface-page);
+  padding: 18px 22px; text-align: center;
+}
+.eco-node__t { margin: 0; font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.eco-node__d { margin: 6px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-secondary); }
+.eco-node--edge { max-width: 560px; }
+.eco-node--core { max-width: 760px; background: var(--surface-ink); border-color: var(--surface-ink); box-shadow: inset 0 0 0 1px var(--edge-ink); }
+.eco-node--core .eco-node__t { color: var(--text-on-ink); }
+.eco-node--core .eco-node__d { color: var(--text-on-ink); opacity: 0.8; }
+.eco-link {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 6px 0;
+  font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
+}
+.eco-link::before, .eco-link::after { content: ""; width: 1px; height: 14px; background: var(--border-tertiary); }
+.eco-row {
+  width: 100%;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.eco-row .eco-node { text-align: left; }
+.eco-node__k { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+@media (max-width: 880px) { .eco-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .eco-row { grid-template-columns: 1fr; } }
+
+/* ── Redirect stub (/patents/ → /license/). ── */
+.redirect-note { padding-block: 120px; }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   FRONT DOOR v2 (2026-09-29, Stage 3) — image-led, outcome-level pages.
+   The Stage-2 pages were the proposal set as tables; these replace them with one
+   idea per section and media where a photograph will go. DESIGN.md §16.5 names
+   which page uses which block. The v1 table/list blocks above stay for the
+   Insights pages but are not used on the front door.
+
+   Type ladder, on top of the .ab scale (display 84 → statement 56 → h2 40 →
+   row 28 → lead 21 → body 17; every step ≥1.3×). Figures cap at 60: data sits
+   above the band's h2 by weight and tabular setting, not by shouting at 96.
+   ═════════════════════════════════════════════════════════════════════════ */
+.ab {
+  --fd-display:   clamp(40px, 5.6vw, 84px);
+  --fd-statement: clamp(30px, 3.8vw, 56px);
+  --fd-row:       clamp(22px, 2vw, 28px);
+  --fd-figure:    clamp(40px, 4.2vw, 60px);
+  --fd-gutter:    clamp(20px, 3.4vw, 48px);
+  --fd-section:   clamp(80px, 10vw, 152px);
+}
+
+.mobile-list .mobile-sub-link--page { font-weight: 700; }
+.mobile-list .mobile-sub-link--page .mega-arrow { width: 18px; height: 18px; opacity: 1; transform: none; }
+
+/* ── Media slot. Photography lands later; until then the slot is a dark field with
+      the shot it is waiting for written on it, so the page already has the weight
+      a photograph will give it. Always-dark, so #000/#fff are the §1.3 literals. ── */
+.fd-ph {
+  position: relative; isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 72% 18%, rgba(255,255,255,0.13), transparent 58%),
+    radial-gradient(90% 70% at 10% 100%, rgba(255,255,255,0.06), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0)),
+    #000;
+}
+.fd-ph::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  opacity: 0.22; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.fd-ph__cap {
+  position: absolute; z-index: 1;
+  right: clamp(14px, 1.6vw, 20px); bottom: clamp(14px, 1.6vw, 20px);
+  display: inline-flex; align-items: center; gap: 8px; max-width: calc(100% - 28px);
+  padding: 6px 12px; border-radius: 9999px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+  font-size: 12px; font-weight: 500; line-height: 1.35; color: rgba(255,255,255,0.74);
+}
+.fd-ph__cap svg { flex: none; width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* Ship state for an empty slot (2026-09-30): the caption pill was a shot-list note for
+   the team, not for visitors. Hidden; the slot reads as a quiet 32px-grid field, the
+   same ruling the heroes use, until its photograph lands. The markup keeps the caption
+   so the shot list is still greppable. */
+.fd-ph:not(.fd-ph--img) .fd-ph__cap { display: none; }
+.fd-ph:not(.fd-ph--img):not(.fd-ph--drawn)::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px);
+}
+/* Drawn slot — the Sustain network band's outline of Taiwan (build.py DRAWN). Always
+   dark, so the #fff literals are the §1.3 exception. Sits right of the band copy. */
+.fd-ph--drawn .fd-map-tw {
+  position: absolute; right: 12%; top: 10%;
+  height: 56%; width: auto;   /* clears the figures row that closes the band */
+}
+.fd-map-tw pattern circle { fill: rgba(255,255,255,0.28); }
+.fd-map-tw__fill { fill: url(#tw-dots); }
+.fd-map-tw__line { fill: none; stroke: rgba(255,255,255,0.55); stroke-width: 1.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+@media (max-width: 760px) {
+  .fd-ph--drawn .fd-map-tw { display: none; }  /* on a phone the band copy runs across the whole frame */
+}
+/* A filled slot: the photograph replaces the stand-in gradient and grain (the images
+   carry their own). It sits at z-index -1 inside the isolated slot, so every scrim
+   drawn on ::before (hero, band, tile) still lands on top of it. --fd-pos re-aims the
+   crop per slot where the centre would cut the subject. */
+.fd-ph--img { background: #000; }
+.fd-ph--img::after { display: none; }
+.fd-ph__img {
+  position: absolute; inset: 0; z-index: -1;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--fd-pos, 50% 50%);
+}
+/* Portrait phones keep only the middle third of a 16:9 frame; --fd-pos-m (set per slot
+   by the page builder) moves that third onto the subject. */
+@media (max-width: 720px) {
+  .fd-ph__img { object-position: var(--fd-pos-m, var(--fd-pos, 50% 50%)); }
+}
+/* A slot that sits in the page, not behind copy. */
+.fd-frame { border-radius: 16px; aspect-ratio: var(--fd-ratio, 4 / 5); }
+
+/* ── Media hero — the pillar pages' first screen. Headline anchored low-left on the
+      media field, the way a photograph-led page sets its first frame. ── */
+.fd-hero {
+  position: relative;
+  min-height: min(calc(100svh - 64px), 880px);
+  display: flex; flex-direction: column;
+  color: #FFFFFF;
+}
+.fd-hero > .fd-ph { position: absolute; inset: 0; }
+/* The copy needs a floor to read on once a real photograph arrives. */
+.fd-hero > .fd-ph::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0) 70%);
+}
+/* A real photograph is brighter than the stand-in, often pale overcast sky: add a left
+   fade under the low-left headline and a top fade under the crumb, or both wash out. */
+.fd-hero > .fd-ph--img::before {
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0) 70%),
+    linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.28) 38%, rgba(0,0,0,0) 62%),
+    linear-gradient(to bottom, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 22%);
+}
+@media (max-width: 720px) {
+  .fd-hero > .fd-ph--img::before {
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.3) 100%);
+  }
+}
+.fd-hero .fd-ph__cap { top: clamp(20px, 2.4vw, 32px); bottom: auto; }
+.fd-hero__inner {
+  position: relative; z-index: 1;
+  flex: 1; display: flex; flex-direction: column; justify-content: space-between;
+  padding-block: clamp(24px, 3vw, 40px) clamp(40px, 6vw, 88px);
+  width: 100%;
+}
+.fd-hero__body { margin-top: auto; max-width: 1100px; }
+.fd-hero__title {
+  margin: 0; max-width: 15ch;
+  font-size: var(--fd-display); font-weight: 700;
+  letter-spacing: -0.035em; line-height: 1.02;
+  color: #FFFFFF; text-wrap: balance;
+}
+[lang="zh-Hant"] .fd-hero__title { letter-spacing: 0; line-height: 1.16; max-width: 14em; }
+.fd-hero__sub {
+  margin: clamp(20px, 2.2vw, 28px) 0 0; max-width: 46ch;
+  font-size: var(--ab-lead); line-height: 1.5;
+  color: rgba(255,255,255,0.82); text-wrap: pretty;
+}
+.fd-hero__meta {
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  font-size: 15px; font-weight: 600; letter-spacing: 0.01em; color: rgba(255,255,255,0.78);
+}
+.fd-hero .pillar-actions { margin-top: clamp(28px, 3vw, 40px); display: flex; flex-wrap: wrap; gap: 12px; }
+.fd-hero .btn-primary { background: #FFFFFF; color: #000; }
+.fd-hero .btn-primary:hover { background: rgba(255,255,255,0.86); }
+.fd-hero .btn-ghost-dark {
+  background: transparent; color: #FFFFFF;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.fd-hero .btn-ghost-dark:hover { border-color: #FFFFFF; }
+/* The one hero that leads with a number (Protect). */
+.fd-hero__figure {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 20px;
+  margin: 0 0 clamp(20px, 2.4vw, 32px);
+}
+/* Large figures are Urbanist with tabular numerals, not Inconsolata: at display size
+   the mono cell spaces "9 of 16" into three loose words (same call as .offer-card-price). */
+.fd-hero__figure b {
+  font-family: var(--font-sans); font-weight: 700;
+  font-size: var(--fd-figure); letter-spacing: -0.035em; line-height: 0.9;
+  font-variant-numeric: tabular-nums; color: #FFFFFF;
+}
+.fd-hero__figure span { max-width: 22ch; font-size: 17px; line-height: 1.4; color: rgba(255,255,255,0.82); }
+
+/* ── Section shell for the v2 blocks: more air than .ab-section, because each
+      section now carries one idea instead of a table. ── */
+/* Half the rhythm on each side, so two light sections meet at one full step and a
+   full-bleed band between them needs no special case. */
+.fd-section { padding-block: calc(var(--fd-section) / 2); }
+.fd-section:first-child, .fd-hero + .fd-section, .fd-band + .fd-section, .hero + .fd-section { padding-top: var(--fd-section); }
+.fd-section:has(+ .fd-band), .fd-section:has(+ .fd-close), .fd-section:has(+ .contact), .fd-section:last-child { padding-bottom: var(--fd-section); }
+.fd-h2 {
+  margin: 0; max-width: 20ch;
+  font-size: var(--ab-h2); font-weight: 700;
+  letter-spacing: -0.028em; line-height: 1.1;
+  color: var(--text-primary); text-wrap: balance;
+}
+.fd-lead {
+  margin: 18px 0 0; max-width: 52ch;
+  font-size: var(--ab-lead); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty;
+}
+.fd-head { margin-bottom: clamp(40px, 5vw, 72px); }
+/* With a lead, the head splits: heading left, lead right on its baseline — the
+   lead answers the heading instead of queueing under it. */
+.fd-head:has(.fd-lead) {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px clamp(32px, 5vw, 96px); align-items: end;
+}
+.fd-head:has(.fd-lead) .fd-lead { margin: 0; }
+@media (max-width: 900px) { .fd-head:has(.fd-lead) { grid-template-columns: 1fr; } }
+.fd-note {
+  margin: clamp(28px, 3.4vw, 44px) 0 0; max-width: 70ch;
+  font-size: 15px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty;
+}
+.fd-pending {
+  display: inline-flex; margin: clamp(24px, 2.8vw, 32px) 0 0;
+  padding: 8px 14px; border-radius: 9999px;
+  border: 1px dashed var(--border-tertiary);
+  font-size: 14px; font-weight: 500; color: var(--text-secondary);
+}
+.fd-note strong { color: var(--text-primary); font-weight: 600; }
+.fd-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: clamp(24px, 2.8vw, 32px);
+  font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
+}
+.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease-out); }
+.fd-link:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.fd-link:hover svg { transform: translateX(4px); }
+
+/* ── Statement — one sentence, set large, with its support to the side. ── */
+.fd-statement {
+  display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 96px); align-items: end;
+}
+.fd-statement__text {
+  margin: 0; max-width: 22ch;
+  font-size: var(--fd-statement); font-weight: 600;
+  letter-spacing: -0.03em; line-height: 1.08;
+  color: var(--text-primary); text-wrap: balance;
+}
+[lang="zh-Hant"] .fd-statement__text { letter-spacing: 0; line-height: 1.3; max-width: 16em; }
+.fd-statement--quiet .fd-statement__text { font-size: var(--ab-pull); line-height: 1.25; max-width: 32ch; font-weight: 600; }
+.fd-statement__aside > p {
+  margin: 0; max-width: 40ch;
+  font-size: var(--ab-body); line-height: 1.65; color: var(--text-secondary); text-wrap: pretty;
+}
+.fd-statement__aside > p + p { margin-top: 16px; }
+/* Short support copy: balance so each paragraph breaks into even lines rather
+   than a long line over a short tail. */
+.fd-statement__aside > p { text-wrap: balance; }
+/* balance alone splits Chinese words (一份合/約中); keep-all breaks only at the
+   punctuation, overflow-wrap is the fallback if a clause outgrows the column. */
+[lang="zh-Hant"] .fd-statement__aside > p { word-break: keep-all; overflow-wrap: anywhere; }
+/* The rule that sets the aside apart: a hairline above, primary-weight emphasis. */
+/* With the note the aside outgrows the statement, and bottom-aligned the heading
+   would sink below the aside's first line: top-align so both start together. */
+.fd-statement:has(.fd-statement__note) { align-items: start; }
+.fd-statement__aside > .fd-statement__note {
+  margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-tertiary);
+}
+.fd-statement__note strong { color: var(--text-primary); font-weight: 600; }
+.fd-scope { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 10px; }
+.fd-scope li {
+  padding-top: 10px; border-top: 1px solid var(--border-tertiary);
+  font-size: 17px; font-weight: 600; color: var(--text-primary);
+}
+@media (max-width: 900px) { .fd-statement { grid-template-columns: 1fr; align-items: start; } }
+
+/* ── Mosaic — four image tiles in an offset 7/5 · 5/7 rhythm, so a group of four
+      never reads as a card grid. Tiles are not links; they describe. ── */
+.fd-mosaic {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(12px, 1.4vw, 20px);
+}
+.fd-tile {
+  position: relative; grid-column: span 5;
+  min-height: clamp(300px, 30vw, 440px);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 16px; color: #FFFFFF;
+}
+.fd-tile:nth-child(4n+1), .fd-tile:nth-child(4n+4) { grid-column: span 7; }
+.fd-tile::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; border-radius: inherit;
+  background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0) 80%);
+}
+.fd-tile .fd-ph__cap { top: 18px; left: 18px; right: auto; bottom: auto; }
+.fd-tile__t, .fd-tile__d { position: relative; z-index: 1; }
+.fd-tile__t {
+  margin: 0; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  color: #FFFFFF; text-wrap: balance;
+}
+.fd-tile__d {
+  margin: 10px 0 0; max-width: 42ch;
+  font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.82); text-wrap: pretty;
+}
+@media (max-width: 760px) {
+  .fd-mosaic { grid-template-columns: 1fr; }
+  .fd-tile, .fd-tile:nth-child(4n+1), .fd-tile:nth-child(4n+4) { grid-column: auto; min-height: 340px; }
+}
+
+/* ── Band — a full-bleed media field carrying a heading and a few large figures on
+      a shared rule (Home "why Taiwan", Sustain network, Ecosystem FairTech). ── */
+.fd-band {
+  position: relative; color: #FFFFFF;
+  min-height: min(92svh, 860px);
+  display: flex;
+}
+.fd-band > .fd-ph { position: absolute; inset: 0; }
+.fd-band > .fd-ph::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0) 38%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.7));
+}
+/* Band copy runs top AND bottom over the whole frame, so a real photograph needs a
+   floor under both ends and a left fade under the heading, not just the corners. */
+.fd-band > .fd-ph--img::before {
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.22) 40%, rgba(0,0,0,0.4) 58%, rgba(0,0,0,0.84) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 55%);
+}
+.fd-band__inner {
+  position: relative; z-index: 1; width: 100%;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 64px;
+  padding-block: clamp(56px, 7vw, 112px);
+}
+.fd-band .fd-h2 { color: #FFFFFF; max-width: 18ch; }
+.fd-band .fd-lead { color: rgba(255,255,255,0.8); }
+.fd-band__label { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.72); }
+.fd-figures {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(var(--fd-cols, 3), minmax(0, 1fr));
+  gap: 0 clamp(24px, 3vw, 48px);
+  border-top: 1px solid rgba(255,255,255,0.28);
+}
+.fd-figures li { padding-top: clamp(20px, 2.4vw, 32px); }
+.fd-figures b {
+  display: block;
+  font-family: var(--font-sans); font-weight: 700;
+  font-size: var(--fd-figure); letter-spacing: -0.035em; line-height: 0.95;
+  font-variant-numeric: tabular-nums; color: #FFFFFF;
+}
+.fd-figures--text b { font-size: clamp(26px, 2.6vw, 40px); letter-spacing: -0.02em; }
+.fd-figures span {
+  display: block; margin-top: 14px; max-width: 30ch;
+  font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.8); text-wrap: pretty;
+}
+.fd-band .fd-link { color: #FFFFFF; }
+.fd-band__foot { margin: 28px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.72); }
+/* Headline row (home Why Taiwan): the foot line and its link sit beside the heading,
+   bottom-aligned to it, so the takeaway reads next to the claim and the empty
+   top-right is used; the figures close the band alone. The same 3-column grid and
+   gutter as .fd-figures, so the text's left edge lines up with the last figure.
+   Stacks under 900px. */
+.fd-band__top {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px clamp(24px, 3vw, 48px); align-items: end;
+}
+.fd-band__top > :first-child { grid-column: span 2; }
+.fd-band__end { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.fd-band__end .fd-band__foot { margin: 0; font-size: 16px; color: rgba(255,255,255,0.82); text-wrap: pretty; }
+.fd-band__end .fd-link { margin-top: 0; }
+@media (max-width: 900px) { .fd-band__top { grid-template-columns: 1fr; } .fd-band__top > :first-child { grid-column: auto; } }
+.fd-regions { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
+.fd-regions li {
+  padding: 7px 14px; border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: 14px; font-weight: 600; color: #FFFFFF;
+}
+@media (max-width: 760px) {
+  .fd-figures { grid-template-columns: 1fr; }
+  .fd-figures li + li { margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.18); }
+}
+
+/* ── Steps — a real sequence (L0–L3, the three engagement phases), so it is the one
+      place a page is allowed its numbers. A rule runs through the markers. ── */
+.fd-steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(var(--fd-cols, 4), minmax(0, 1fr));
+  gap: clamp(20px, 2.6vw, 40px);
+  position: relative;
+}
+.fd-steps::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 1px;
+  background: var(--border-tertiary);
+}
+.fd-step { position: relative; padding-top: 40px; }
+.fd-step::before {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--surface-page); border: 1.5px solid var(--text-primary);
+}
+.fd-step:last-child::before { background: var(--text-primary); }
+.fd-step__k {
+  display: block; margin-bottom: 12px;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 700;  /* reads as words ("Phase 1 · 6–10 weeks") — DESIGN.md §2 */
+  letter-spacing: 0.02em; color: var(--text-secondary);
+}
+.fd-step__t {
+  margin: 0; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  color: var(--text-primary); text-wrap: balance;
+}
+.fd-step__d {
+  margin: 12px 0 0; max-width: 32ch;
+  font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty;
+}
+@media (max-width: 900px) {
+  .fd-steps { grid-template-columns: 1fr; gap: 36px; padding-left: 36px; }
+  .fd-steps::before { left: 7px; right: auto; top: 8px; bottom: 8px; width: 1px; height: auto; }
+  .fd-step { padding-top: 0; }
+  .fd-step::before { left: -36px; top: 4px; }
+}
+
+/* ── Lanes — the two compliance lanes as one split object: light half, ink half. ── */
+.fd-lanes {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-radius: 24px; overflow: hidden;
+  border: 1px solid var(--border-secondary);
+}
+.fd-lane {
+  min-height: clamp(260px, 26vw, 360px);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+  padding: clamp(28px, 3.4vw, 52px);
+  background: var(--surface-secondary);
+}
+.fd-lane--ink { background: var(--surface-ink); box-shadow: inset 0 0 0 1px var(--edge-ink); }
+.fd-lane__k { margin: 0; font-family: var(--font-sans); font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+.fd-lane__t {
+  margin: 0; font-size: var(--ab-h2); font-weight: 700; letter-spacing: -0.028em; line-height: 1.1;
+  color: var(--text-primary); text-wrap: balance;
+}
+.fd-lane__d { margin: 14px 0 0; max-width: 48ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); }
+.fd-lane--ink .fd-lane__k, .fd-lane--ink .fd-lane__d { color: var(--text-on-ink); opacity: 0.74; }
+.fd-lane--ink .fd-lane__t { color: var(--text-on-ink); }
+@media (max-width: 760px) { .fd-lanes { grid-template-columns: 1fr; } }
+
+/* ── Feature — a large image beside a short block of text; alternates. ── */
+.fd-feature {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(32px, 5vw, 96px); align-items: center;
+}
+.fd-feature--rev { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.fd-feature--rev > .fd-frame { order: 2; }
+.fd-feature__label { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+.fd-feature .fd-h2 { max-width: 16ch; }
+.fd-feature__body > p:not([class]) {
+  margin: 20px 0 0; max-width: 44ch;
+  font-size: var(--ab-body); line-height: 1.65; color: var(--text-secondary); text-wrap: pretty;
+}
+.fd-fact {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px;
+  margin: clamp(28px, 3vw, 40px) 0 0; padding-top: 20px;
+  border-top: 1px solid var(--border-tertiary);
+}
+.fd-fact b {
+  font-family: var(--font-sans); font-size: clamp(34px, 3.4vw, 48px); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--text-primary);
+}
+.fd-fact span { font-size: 15px; line-height: 1.45; color: var(--text-secondary); }
+.fd-quote {
+  margin: clamp(28px, 3vw, 40px) 0 0;
+  font-size: var(--ab-pull); font-weight: 600; letter-spacing: -0.02em; line-height: 1.22;
+  color: var(--text-primary); max-width: 20ch; text-wrap: balance;
+}
+.fd-partners { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--border-tertiary); }
+.fd-partners li { padding: 16px 0; border-bottom: 1px solid var(--border-primary); }
+.fd-partners b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); }
+/* Partner name as an outbound link (Lucide square-arrow-out-up-right). The icon
+   rests at secondary and nudges toward the corner it points at on hover. */
+.fd-partner-link { display: inline-flex; align-items: center; gap: 7px; color: var(--text-primary); text-decoration: none; }
+.fd-partner-link svg {
+  width: 15px; height: 15px; flex: none; stroke: var(--text-secondary); fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 180ms var(--ease-out), stroke 180ms var(--ease-out);
+}
+.fd-partner-link:hover b, .fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { transform: none; } }
+.fd-partners li > span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); }
+@media (max-width: 900px) {
+  .fd-feature, .fd-feature--rev { grid-template-columns: 1fr; }
+  .fd-feature--rev > .fd-frame { order: 0; }
+  .fd-feature .fd-frame { --fd-ratio: 4 / 3; }
+}
+
+/* ── Rows — large typographic rows for a short list of services. ── */
+.fd-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--text-primary); }
+.fd-row {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 12px clamp(24px, 4vw, 72px); align-items: baseline;
+  padding-block: clamp(28px, 3.2vw, 44px);
+  border-bottom: 1px solid var(--border-tertiary);
+}
+.fd-row__t {
+  margin: 0; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  color: var(--text-primary); text-wrap: balance;
+}
+.fd-row__d { margin: 0; max-width: 52ch; font-size: 17px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+@media (max-width: 760px) { .fd-row { grid-template-columns: 1fr; } }
+
+/* ── Commitments — a pull line, then three short promises under an ink rule. ── */
+.fd-commit__quote {
+  margin: 0 0 clamp(48px, 6vw, 88px); max-width: 26ch;
+  font-size: var(--fd-statement); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--text-primary); text-wrap: balance;
+}
+[lang="zh-Hant"] .fd-commit__quote { letter-spacing: 0; line-height: 1.32; max-width: 18em; }
+.fd-trio {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 48px);
+}
+.fd-trio li { padding-top: 20px; border-top: 1px solid var(--text-primary); }
+.fd-trio b { display: block; font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; color: var(--text-primary); }
+.fd-trio span { display: block; margin-top: 10px; max-width: 34ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.fd-trio--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: clamp(32px, 3.6vw, 48px); }
+.fd-trio--4 b { font-size: 18px; }
+.fd-trio--4 span { font-size: 15px; }
+@media (max-width: 1100px) { .fd-trio--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 820px) { .fd-trio { grid-template-columns: 1fr; } }
+@media (min-width: 561px) and (max-width: 820px) { .fd-trio--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ── Offer — a single wide proposition card (the Sustainment Bundle). ── */
+.fd-offer {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border-radius: 24px; overflow: hidden;
+  background: var(--surface-secondary); border: 1px solid var(--border-secondary);
+}
+.fd-offer__body { padding: clamp(32px, 4vw, 64px); display: flex; flex-direction: column; justify-content: center; }
+.fd-offer__body > p:not([class]) { margin: 18px 0 0; max-width: 42ch; font-size: 17px; line-height: 1.6; color: var(--text-secondary); }
+.fd-offer__parts { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; }
+.fd-offer__parts li {
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 14px 0; border-top: 1px solid var(--border-tertiary);
+  font-size: 16px; font-weight: 600; color: var(--text-primary);
+}
+.fd-offer__parts li span:last-child { font-family: var(--font-mono); font-weight: 600; color: var(--text-secondary); }
+.fd-offer .btn { align-self: flex-start; margin-top: 32px; }
+.fd-offer > .fd-ph { min-height: 360px; }
+@media (max-width: 860px) { .fd-offer { grid-template-columns: 1fr; } .fd-offer > .fd-ph { min-height: 240px; order: -1; } }
+
+/* ── Close — the pillar pages end on one line and one action, full width. ── */
+.fd-close {
+  background: var(--surface-ink); color: var(--text-on-ink);
+  box-shadow: inset 0 1px 0 var(--edge-ink);
+  padding-block: clamp(80px, 10vw, 144px);
+}
+.fd-close__line {
+  margin: 0; max-width: 20ch;
+  font-size: var(--fd-statement); font-weight: 700; letter-spacing: -0.03em; line-height: 1.06;
+  color: var(--text-on-ink); text-wrap: balance;
+}
+[lang="zh-Hant"] .fd-close__line { letter-spacing: 0; line-height: 1.28; max-width: 16em; }
+.fd-close__row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; margin-top: clamp(32px, 4vw, 48px); }
+.fd-close .btn-primary { background: var(--text-on-ink); color: var(--surface-ink); }
+.fd-close .btn-primary:hover { background: var(--text-on-ink); opacity: 0.88; }
+.fd-close__sub { margin: 0; font-size: 15px; color: var(--text-on-ink); opacity: 0.72; }
+
+/* ── Ecosystem diagram, v2: customer → one contract → TIS → four roles. ── */
+.fd-map { display: grid; justify-items: center; }
+.fd-map .eco-node--core { max-width: 520px; padding: 28px; }
+.fd-map .eco-node--core .eco-node__t { font-size: 22px; }
+.fd-map .eco-row .eco-node { padding: 22px; }
+.fd-map .eco-row .eco-node__t { font-size: 18px; }
+
+/* Phone: the hero's shot caption would sit on the crumb; drop it to the floor. */
+@media (max-width: 760px) {
+  .fd-hero .fd-ph__cap { top: auto; bottom: 14px; right: 14px; font-size: 11px; }
+  .fd-hero__inner { padding-bottom: 72px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   FRONT DOOR v2 · MOTION (Phase B, 2026-09-29). Quiet and in reading order; each
+   block gets the motion that suits it, never one fade for everything:
+     media   → clip from a 6% inset out to the frame (it is always visible)
+     bands   → the photograph settles from 1.08 to 1 behind the copy
+     heads   → a soft 18px rise
+     lists   → the items rise in turn, 70ms apart
+     steps   → the connecting rule draws, then the steps rise
+     figures → count up once (site.js, 1200ms linear per design-tokens §7.2)
+     hero    → the copy rises on load and the field settles
+   Visible by default: site.js only adds .fd-pre (the "before" state) to blocks
+   that start below the fold, and only when motion is allowed and
+   IntersectionObserver exists. Without JS, with reduced motion, or in a headless
+   render, every block is simply there.
+   ═════════════════════════════════════════════════════════════════════════ */
+.fd-band { overflow: hidden; }
+@keyframes fd-rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes fd-settle { from { transform: scale(1.06); } }
+@media (prefers-reduced-motion: no-preference) {
+  .fd-hero__body > * { animation: fd-rise 800ms var(--ease-out) both; }
+  .fd-hero__body > :nth-child(2) { animation-delay: 80ms; }
+  .fd-hero__body > :nth-child(3) { animation-delay: 160ms; }
+  .fd-hero__body > :nth-child(4) { animation-delay: 240ms; }
+  .fd-hero > .fd-ph { animation: fd-settle 1800ms var(--ease-out) both; }
+
+  [data-fd="rise"] { transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+  [data-fd="rise"].fd-pre { opacity: 0; transform: translateY(18px); }
+
+  [data-fd="list"] > * {
+    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+    transition-delay: calc(var(--fd-i, 0) * 70ms);
+  }
+  [data-fd="list"].fd-pre > * { opacity: 0; transform: translateY(14px); }
+
+  [data-fd="clip"] { transition: clip-path 1000ms var(--ease-out); }
+  [data-fd="clip"].fd-pre { clip-path: inset(6% 6% 6% 6% round 20px); }
+
+  [data-fd="settle"] { transition: transform 1600ms var(--ease-out); }
+  [data-fd="settle"].fd-pre { transform: scale(1.08); }
+
+  .fd-steps::before { transform-origin: left center; transition: transform 1100ms var(--ease-out); }
+  .fd-steps.fd-pre::before { transform: scaleX(0); }
+  .fd-steps > * { transition-delay: calc(200ms + var(--fd-i, 0) * 90ms); }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
+  .fd-steps::before { transform-origin: center top; }
+  .fd-steps.fd-pre::before { transform: scaleY(0); }
+}
+
+/* Theme pill on touch: 34px segments clear WCAG 2.5.8 AA (restored with the pill, 2026-09-29). */
+@media (pointer: coarse) {
+  .theme-toggle { height: 38px; }
+  .theme-seg { width: 34px; height: 34px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DARK THEME (restored 2026-09-29) — the two rules DESIGN.md §18 names.
+   1. Windows. An always-black, image-backed surface (§1.3) stays #000 and draws a
+      white hairline (--edge-window) so it reads as recessed glass on the graphite
+      page. Outline, not border or box-shadow: it paints above the scrims and
+      positioned layers inside, and costs no layout.
+   2. Ink blocks stay ink (--surface-ink), set in each component above.
+   ═════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] :is(.fd-ph.fd-frame, .fd-tile, .offer-card, .report-card, .contact-card, .fd-offer) {
+  outline: 1px solid var(--edge-window); outline-offset: -1px;
+}
+[data-theme="dark"] :is(.fd-hero, .fd-band, .hero) { box-shadow: 0 1px 0 var(--edge-window); }
+[data-theme="dark"] .fd-band { box-shadow: 0 -1px 0 var(--edge-window), 0 1px 0 var(--edge-window); }
+/* Page grid: the light rule draws ink lines at 0.024, which vanish on graphite. */
+[data-theme="dark"] body::before {
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.022) 0, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 32px);
+}
+[data-theme="dark"] .fd-offer { background: var(--surface-secondary); }
+/* The contact card's submit is pinned to #000 to match its black body; in dark the
+   theme's --text-inverse is dark too, so the button becomes the light primary instead. */
+[data-theme="dark"] .contact-panel .btn-primary { background: var(--surface-inverse); color: var(--text-inverse); }
+[data-theme="dark"] .contact-panel .btn-primary:hover { background: var(--surface-inverse-hover); }
+/* Methodology panels draw ink as rgba(37,37,37,·) over --surface-tertiary; on the dark
+   ramp the same roles are white at the same alphas (dim .62 ≈ 6.3:1 on #202020). */
+[data-theme="dark"] .mth-panel {
+  --mth-mark:   rgba(242, 242, 242, 0.86);
+  --mth-track:  rgba(242, 242, 242, 0.14);
+  --mth-rule:   rgba(242, 242, 242, 0.12);
+  --mth-mute:   rgba(242, 242, 242, 0.74);
+  --mth-dim:    rgba(242, 242, 242, 0.62);
+  --mth-flagbg: rgba(242, 242, 242, 0.07);
+}
+
+/* ── Insights hub (/reports/): the four research and product lines, each a link.
+      Same ink-rule grammar as .fd-trio so it reads as the site's own list, not a
+      card grid. ── */
+.fd-hub {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0 clamp(24px, 3vw, 44px);
+}
+.fd-hub__card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  height: 100%;
+  padding-top: 20px; border-top: 1px solid var(--text-primary);
+  color: var(--text-primary); text-decoration: none;
+}
+.fd-hub__card b { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+.fd-hub__d { max-width: 34ch; font-size: 15.5px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.fd-hub__more {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 8px;
+  font-size: 15px; font-weight: 600;
+}
+.fd-hub__more svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease-out); }
+.fd-hub__card:hover .fd-hub__more span,
+.fd-hub__card:focus-visible .fd-hub__more span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+@media (hover: hover) and (pointer: fine) {
+  .fd-hub__card:hover .fd-hub__more svg { transform: translateX(4px); }
+}
+@media (max-width: 1100px) { .fd-hub { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; } }
+@media (max-width: 640px) { .fd-hub { grid-template-columns: 1fr; row-gap: 32px; } }
+@media (prefers-reduced-motion: reduce) { .fd-hub__more svg { transition: none; } }
+
+/* Press items have no source link yet: static, so no hover lift or pointer. */
+.report-card--static { cursor: default; }
+.report-card--static:hover { transform: none; box-shadow: var(--shadow-stacked-low); }
+.report-card--static.is-in:hover .report-card-media { transform: none; }

@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Colours the mobile browser chrome to the page ground; light page. -->
 <meta name="theme-color" content="#FFFFFF" />
-<title data-zh-title="泰然專利強度評級系統">Patent Intelligence — TIS</title>
-<meta name="description" content="Know what a patent is really worth before you invest. An objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — human + AI." />
+<title data-zh-title="泰然專利強度評級系統">Patent Intelligence SaaS — TIS</title>
+<meta name="description" content="Know what a patent is worth before you file, license or defend it: a SABCD grade from Tier S to Tier D across 50 indicators. Powered by Innovue." />
 <link rel="canonical" href="https://tisglobalinc.com/product/signal/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
 <meta property="og:url" content="https://tisglobalinc.com/product/signal/" />
-<meta property="og:title" content="Patent Intelligence — TIS" />
-<meta property="og:description" content="Know what a patent is really worth before you invest. An objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — human + AI." />
-<meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
+<meta property="og:title" content="Patent Intelligence SaaS — TIS" />
+<meta property="og:description" content="Know what a patent is worth before you file, license or defend it: a SABCD grade from Tier S to Tier D across 50 indicators. Powered by Innovue." />
+<meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="TIS Patent Intelligence — patent strength, rated" />
+<meta property="og:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 <meta property="og:locale" content="en_US" />
 <!-- The page is bilingual on one URL: EN is the DOM text, 中文 lives in data-zh and
      swaps client-side. Crawlers and unfurlers read the served HTML, so they only ever
@@ -25,13 +25,16 @@
 <meta property="og:locale:alternate" content="zh_TW" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Patent Intelligence — TIS" />
-<meta name="twitter:description" content="Know what a patent is really worth before you invest. An objective full-pool PSS ranking, a deep report, or the ten most relevant patents on the market — human + AI." />
-<meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og.png" />
-<meta name="twitter:image:alt" content="TIS Patent Intelligence — patent strength, rated" />
+<meta name="twitter:title" content="Patent Intelligence SaaS — TIS" />
+<meta name="twitter:description" content="Know what a patent is worth before you file, license or defend it: a SABCD grade from Tier S to Tier D across 50 indicators. Powered by Innovue." />
+<meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
+<meta name="twitter:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
@@ -39,13 +42,19 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=34">
+<link rel="stylesheet" href="/assets/build/styles.css?v=40">
 
 <script>
-  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
+  // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
+  // <html data-theme / lang> before first paint. site.js keeps them in step afterwards.
   (() => {
-    const lang = localStorage.getItem('tis-lang');
-    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+    const d = document.documentElement;
+    let t = null, lang = null;
+    try { t = localStorage.getItem('tis-theme'); lang = localStorage.getItem('tis-lang'); } catch (e) {}
+    const choice = (t === 'light' || t === 'dark') ? t : 'system';
+    d.setAttribute('data-theme', choice === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : choice);
+    if (lang === 'zh') d.setAttribute('lang', 'zh-Hant');
   })();
 </script>
 
@@ -58,11 +67,10 @@
          intake card, which otherwise runs the homepage's own contact-card treatment,
      (2) the proof grid — a wide black PSS ledger and a scrim-captioned image card
          beside a full-height cool-wash panel carrying the three process phases.
-     The hero is NOT in that list any more: it now runs the homepage's own
-     shifting-lines shader on the shared .hero-shader carrier, recoloured in the
-     module rather than in CSS, so the only page-local hero rule left is the scrim.
-     Tokens only; signal blue = --score-b-vivid. No invented hex beyond the hero's
-     #000 ground and the shader's three blue literals (GLSL can't read CSS tokens).
+     The hero is NOT in that list: since 2026-09-30 it is the shared full-viewport
+     .fd-hero (styles.css, FRONT DOOR v2) like every other page, and the blue
+     shifting-lines shader is retired, so there is no page-local hero rule at all.
+     Tokens only; signal blue = --score-b-vivid.
 
      (Until 2026-08-10 there was a fourth: a 7-beat how-it-works timeline on its own
      black panel, with spine + node geometry derived from five custom properties. The
@@ -72,7 +80,7 @@
      DESIGN.md §0.3 — this block is a sanctioned page-local exception, not drift.
      Audited 2026-08-27: 76 classes, of which 52 are sig-* page-namespaced and 24 are
      shared classes reached through a scoped or descendant selector, or as modifiers on
-     shared components ([data-page="signal"] .hero, .sig-phases__foot .btn,
+     shared components (.sig-phases__foot .btn,
      #intake .section-head, #intake .section-head + .contact-card,
      .sig-ledger .arrow-link, .sig-colophon .arrow-link, .sig-ledger .innovue-wordmark,
      .topic-chip:has(input:disabled), .contact-form .field[hidden],
@@ -143,53 +151,6 @@
   :root{
     --sig-blue: var(--score-b-vivid);   /* #0EA5E9 */
     --sig-blue-deep: #0369A1;           /* --score-b light text token */
-  }
-
-  /* ── Hero — homepage .hero foreground over the shifting-lines shader ──
-     Reuses the homepage full-viewport override and its shared .hero-shader
-     carrier, so there is no page-local backdrop layer at all. Black base: a
-     failed shader degrades to the same ground the shader draws on. */
-  [data-page="signal"] .hero{
-    height:auto;
-    min-height:calc(100dvh - 64px);
-    padding-block:0;
-    background:#000;
-  }
-
-  /* ── Hero legibility scrim — a pool under the copy, not a wash over the hero.
-     The band now runs ABOVE the copy and sweeps down across it once a cycle, which
-     is the homepage's own behaviour (its core crosses its headline at four of eight
-     phases; it just ships without a scrim). This page keeps one because its copy
-     block is taller — eyebrow, two-line headline, two-line sub — so more of it is
-     inside the crest's path.
-
-     Shape follows that: an ellipse seated on the copy column instead of the old
-     full-width floor + left guard, which between them dimmed half the frame to hold
-     copy against a band that ran BELOW it. Aiming it lets the total come down —
-     nothing outside the copy's own footprint is touched, so the band keeps its full
-     brightness everywhere it is not competing with words.
-
-     Local stack: shader 2 (shared .hero-shader) · scrim 3 · content 5 (the shared
-     .hero-inner z-index, hence no override here). ── */
-  [data-page="signal"] .sig-hero-scrim{
-    position:absolute;
-    inset:0;
-    z-index:3;
-    pointer-events:none;
-    background:
-      /* Seated on the copy block: left-anchored at 22%, and vertically centred on
-         the stack. Falls off to nothing by 78% of its radius, so the right half of
-         the frame — where the band is brightest and there is nothing to read —
-         stays untouched. */
-      radial-gradient(ellipse 66% 44% at 24% 52%,
-        rgba(0,0,0,0.52) 0%,
-        rgba(0,0,0,0.30) 52%,
-        rgba(0,0,0,0.00) 78%),
-      /* Seats the scroll cue against the glow's lower falloff. This is the only part
-         of the old floor worth keeping, and it stops at 16%. */
-      linear-gradient(to top,
-        rgba(0,0,0,0.30) 0%,
-        rgba(0,0,0,0.00) 16%);
   }
 
   /* ── Report value-cards — signal-gradient image behind the shared offer-card
@@ -307,7 +268,7 @@
     position:relative;                         /* carries the corner-set credit */
     background:#000;                           /* matches .about-card / .partner-band */
     border:1px solid rgba(255,255,255,0.08);
-    border-radius:20px;
+    border-radius:16px;
     padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
     color:#fff;
   }
@@ -473,7 +434,7 @@
   .sig-phases{
     background:var(--surface-tertiary);
     border:1px solid var(--border-secondary);
-    border-radius:20px;
+    border-radius:16px;
     padding:clamp(26px, 2.6vw, 38px) clamp(22px, 2.2vw, 32px);
   }
 
@@ -822,7 +783,7 @@
        is display:block with a centred, floating bar and nothing above it — the flat
        top edge read as a bug. This selector already beat that rule on margin and
        align-self but never redeclared radius, so the 0 0 18 18 survived. */
-    border-radius:18px;
+    border-radius:16px;
   }
   .sig-lookup{ display:grid; grid-template-columns:1fr 1fr auto; gap:16px; align-items:end; }
   .sig-lookup .btn{ height:50px; }            /* == the .field input height beside it */
@@ -852,7 +813,7 @@
   .sig-rt__panel{
     max-width:920px; margin:clamp(18px, 2vw, 26px) auto 0;
     padding:clamp(22px, 2.4vw, 32px);
-    background:var(--surface-elevated); border-radius:18px; box-shadow:var(--shadow-high);
+    background:var(--surface-elevated); border-radius:16px; box-shadow:var(--shadow-high);
     text-align:left;
   }
 
@@ -1091,50 +1052,153 @@
     <span class="topnav-spacer"></span>
 
     <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
-      <div class="topnav-dropdown-wrap">
-        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
-          <span data-zh="產品">Products</span>
-          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
-          <div class="products-menu-grid">
-            <a href="/product/licensing/" class="product-card" role="menuitem">
-              <span class="product-card-media">
-                <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
-                <span class="product-card-name">
-                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-                  <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
-                </span>
-                <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
-              </span>
-              <span class="product-card-desc" data-zh="為出口貨物保專利險。依國家與產業精選 30 件專利組合。">Patent insurance for exporters. Curated 30-patent bundles by country and industry.</span>
-            </a>
-            <a href="/product/signal/" class="product-card" role="menuitem">
-              <span class="product-card-media">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
-                <span class="product-card-name">
-                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-                  <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
-                </span>
-              </span>
-              <span class="product-card-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Three reports for investors: the grade, all 50 indicators, or the ten closest patents on the market.</span>
-            </a>
+      <ul class="nav-items">
+      <li class="nav-item" data-nav="sustain">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-sustain" aria-expanded="false" aria-controls="mega-sustain"><span data-zh="維運">Sustain</span></button>
+        <div class="mega-panel" id="mega-sustain" role="region" aria-labelledby="nav-t-sustain">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/sustain/"><span data-zh="維運">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/sustain/#service-package" class="mega-link"><span data-zh="服務項目">Service package</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#network" class="mega-link"><span data-zh="全台服務網">Island-wide network</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#roadmap" class="mega-link"><span data-zh="能力路線圖">Capability roadmap</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#compliance" class="mega-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/why-taiwan/" class="mega-res-link"><span data-zh="為何是台灣">Why Taiwan</span></a></li>
+              <li><a href="/engage/#phases" class="mega-res-link"><span data-zh="合作階段">Engagement phases</span></a></li>
+            </ul>
           </div>
         </div>
-      </div>
-      <a href="/patents/"   class="topnav-link" data-zh="自有專利">Owned Patents</a>
-      <a href="/reports/"  class="topnav-link" data-zh="報告與新聞">Reports &amp; Press</a>
-      <a href="/about/"    class="topnav-link" data-zh="關於">About</a>
+      </li>
+      <li class="nav-item" data-nav="protect">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-protect" aria-expanded="false" aria-controls="mega-protect"><span data-zh="保護">Protect</span></button>
+        <div class="mega-panel" id="mega-protect" role="region" aria-labelledby="nav-t-protect">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/protect/"><span data-zh="保護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/protect/#why-neutral" class="mega-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/protect/#capabilities" class="mega-link"><span data-zh="三項核心能力">Three capabilities</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/protect/#filing-strategy" class="mega-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/reports/" class="mega-res-link"><span data-zh="專利布局報告">Landscape reports</span></a></li>
+              <li><a href="/engage/#bundle" class="mega-res-link"><span data-zh="維運組合方案">Sustainment Bundle</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="license">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-license" aria-expanded="false" aria-controls="mega-license"><span data-zh="授權">License</span></button>
+        <div class="mega-panel" id="mega-license" role="region" aria-labelledby="nav-t-license">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/license/"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/license/#services" class="mega-link"><span data-zh="授權服務">Licensing services</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/license/#commitments" class="mega-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/why-taiwan/#patents" class="mega-res-link"><span data-zh="台灣專利現況">Taiwan patent picture</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="ecosystem">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-ecosystem" aria-expanded="false" aria-controls="mega-ecosystem"><span data-zh="生態系">Ecosystem</span></button>
+        <div class="mega-panel" id="mega-ecosystem" role="region" aria-labelledby="nav-t-ecosystem">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/ecosystem/"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/ecosystem/#suntek" class="mega-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#fairtech" class="mega-link"><span data-zh="富蘭登科技">FairTech</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#innovue" class="mega-link"><span data-zh="Innovue">Innovue</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/ecosystem/#map" class="mega-res-link"><span data-zh="整體架構">How it fits together</span></a></li>
+              <li><a href="/engage/" class="mega-res-link"><span data-zh="開始合作">Start an engagement</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="insights">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-insights" aria-expanded="false" aria-controls="mega-insights"><span data-zh="洞察">Insights</span></button>
+        <div class="mega-panel" id="mega-insights" role="region" aria-labelledby="nav-t-insights">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/reports/"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/reports/#reports" class="mega-link"><span data-zh="專利布局報告">Landscape reports</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/methodology.html" class="mega-link"><span data-zh="SABCD 評級方法">SABCD rating</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/" class="mega-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/reports/#press" class="mega-res-link"><span data-zh="新聞">Press</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="about">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-about" aria-expanded="false" aria-controls="mega-about"><span data-zh="關於">About</span></button>
+        <div class="mega-panel" id="mega-about" role="region" aria-labelledby="nav-t-about">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/about/"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/why-taiwan/" class="mega-link"><span data-zh="為何是台灣">Why Taiwan</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/about/#governance" class="mega-link"><span data-zh="治理與中立">Governance &amp; neutrality</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/about/#board" class="mega-link"><span data-zh="董事會">Board of directors</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/engage/" class="mega-res-link"><span data-zh="合作模式">Engagement model</span></a></li>
+              <li><a href="/legal/disclosures.en.html" class="mega-res-link" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      </ul>
     </nav>
 
     <div class="topnav-controls">
+      <!-- Theme toggle — 3-segment pill: System / Light / Dark (restored 2026-09-29 from ef34f5b^) -->
+      <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme" data-zh-aria="主題">
+        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" data-zh-aria="跟隨系統" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" data-zh-aria="淺色主題" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" data-zh-aria="深色主題" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+
+      <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn icon-btn--code" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
             <path d="M2 12h20"/>
           </svg>
+          <span class="lang-code" aria-hidden="true">EN</span>
         </button>
         <div class="lang-menu" role="menu">
           <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
@@ -1142,6 +1206,7 @@
         </div>
       </div>
 
+      <!-- Search trigger — Lucide `search` icon (brand/assets/icons/ui/search.svg) -->
       <button id="search-trigger" type="button" class="icon-btn" aria-label="Search" data-zh-aria="搜尋" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-modal">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m21 21-4.34-4.34"/>
@@ -1149,24 +1214,23 @@
         </svg>
       </button>
 
-      <!-- Cross-page, unlike the other ten pages' same-page "#contact": this page has
-           no .contact "Get in touch." section. Its equivalent slot is #intake, which is
-           a transactional order form — it asks which report you want and takes a card
-           deposit, so it cannot answer "Contact sales". Point the chrome at the
-           homepage's general enquiry form instead. The two "Order a report" CTAs
-           below stay on #intake; that IS the order action. -->
-      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="/engage/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
 
+      <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
     </div>
   </div>
 </header>
+<!-- Mega-panel scrim. Outside the header on purpose: .topnav's backdrop-filter makes it
+     the containing block for fixed descendants, so a fixed scrim inside it would be
+     clipped to the 64px bar. z-index 99 sits under the nav (100), over the veil (95). -->
+<div class="mega-scrim" id="mega-scrim" aria-hidden="true"></div>
 
 <!-- Mobile drawer -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
+<aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
     <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
@@ -1174,48 +1238,100 @@
     </button>
   </div>
   <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
-    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="true" aria-controls="m-products-sublist">
-      <span data-zh="產品">Products</span>
+    <button type="button" class="mobile-row-dropdown" id="m-t-sustain" data-nav="sustain" aria-expanded="false" aria-controls="m-sub-sustain">
+      <span data-zh="維運">Sustain</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
-    <div id="m-products-sublist" class="mobile-sublist" data-open="true">
-      <a href="/product/licensing/" class="mobile-sub-row">
-        <span class="mobile-sub-media">
-          <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
-          <span class="mobile-sub-name">
-            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-            <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
-          </span>
-          <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
-        </span>
-        <span class="mobile-sub-desc" data-zh="為出口貨物保專利險。依國家與產業精選 30 件專利組合。">Patent insurance for exporters. Curated 30-patent bundles by country and industry.</span>
-      </a>
-      <a href="/product/signal/" class="mobile-sub-row">
-        <span class="mobile-sub-media">
-          <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
-          <span class="mobile-sub-name">
-            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-            <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
-          </span>
-        </span>
-        <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Three reports for investors: the grade, all 50 indicators, or the ten closest patents on the market.</span>
-      </a>
+    <div id="m-sub-sustain" class="mobile-sublist">
+      <a href="/sustain/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="維運">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/sustain/#service-package" class="mobile-sub-link"><span data-zh="服務項目">Service package</span></a>
+      <a href="/sustain/#network" class="mobile-sub-link"><span data-zh="全台服務網">Island-wide network</span></a>
+      <a href="/sustain/#roadmap" class="mobile-sub-link"><span data-zh="能力路線圖">Capability roadmap</span></a>
+      <a href="/sustain/#compliance" class="mobile-sub-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/why-taiwan/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="為何是台灣">Why Taiwan</span></a>
+      <a href="/engage/#phases" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作階段">Engagement phases</span></a>
     </div>
-    <a href="/patents/"   data-zh="自有專利">Owned Patents</a>
-    <a href="/reports/"  data-zh="報告與新聞">Reports &amp; Press</a>
-    <a href="/about/"    data-zh="關於">About</a>
+    <button type="button" class="mobile-row-dropdown" id="m-t-protect" data-nav="protect" aria-expanded="false" aria-controls="m-sub-protect">
+      <span data-zh="保護">Protect</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-protect" class="mobile-sublist">
+      <a href="/protect/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="保護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/protect/#why-neutral" class="mobile-sub-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span></a>
+      <a href="/protect/#capabilities" class="mobile-sub-link"><span data-zh="三項核心能力">Three capabilities</span></a>
+      <a href="/protect/#filing-strategy" class="mobile-sub-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/reports/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="專利布局報告">Landscape reports</span></a>
+      <a href="/engage/#bundle" class="mobile-sub-link mobile-sub-link--res"><span data-zh="維運組合方案">Sustainment Bundle</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-license" data-nav="license" aria-expanded="false" aria-controls="m-sub-license">
+      <span data-zh="授權">License</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-license" class="mobile-sublist">
+      <a href="/license/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/license/#portfolio" class="mobile-sub-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span></a>
+      <a href="/license/#services" class="mobile-sub-link"><span data-zh="授權服務">Licensing services</span></a>
+      <a href="/license/#commitments" class="mobile-sub-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/why-taiwan/#patents" class="mobile-sub-link mobile-sub-link--res"><span data-zh="台灣專利現況">Taiwan patent picture</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-ecosystem" data-nav="ecosystem" aria-expanded="false" aria-controls="m-sub-ecosystem">
+      <span data-zh="生態系">Ecosystem</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-ecosystem" class="mobile-sublist">
+      <a href="/ecosystem/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/ecosystem/#suntek" class="mobile-sub-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span></a>
+      <a href="/ecosystem/#fairtech" class="mobile-sub-link"><span data-zh="富蘭登科技">FairTech</span></a>
+      <a href="/ecosystem/#innovue" class="mobile-sub-link"><span data-zh="Innovue">Innovue</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/ecosystem/#map" class="mobile-sub-link mobile-sub-link--res"><span data-zh="整體架構">How it fits together</span></a>
+      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="開始合作">Start an engagement</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-insights" data-nav="insights" aria-expanded="false" aria-controls="m-sub-insights">
+      <span data-zh="洞察">Insights</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-insights" class="mobile-sublist">
+      <a href="/reports/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/reports/#reports" class="mobile-sub-link"><span data-zh="專利布局報告">Landscape reports</span></a>
+      <a href="/product/signal/methodology.html" class="mobile-sub-link"><span data-zh="SABCD 評級方法">SABCD rating</span></a>
+      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a>
+      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/reports/#press" class="mobile-sub-link mobile-sub-link--res"><span data-zh="新聞">Press</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-about" data-nav="about" aria-expanded="false" aria-controls="m-sub-about">
+      <span data-zh="關於">About</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-about" class="mobile-sublist">
+      <a href="/about/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/why-taiwan/" class="mobile-sub-link"><span data-zh="為何是台灣">Why Taiwan</span></a>
+      <a href="/about/#governance" class="mobile-sub-link"><span data-zh="治理與中立">Governance &amp; neutrality</span></a>
+      <a href="/about/#board" class="mobile-sub-link"><span data-zh="董事會">Board of directors</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作模式">Engagement model</span></a>
+      <a href="/legal/disclosures.en.html" class="mobile-sub-link mobile-sub-link--res" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a>
+    </div>
   </nav>
   <div class="mobile-auth">
     <!-- Language sits in the drawer footer because the topnav globe is hidden
          behind the drawer once it is open, leaving the switch unreachable on a
          phone. Same hook the topnav menu uses, so site.js picks these up and
          keeps aria-checked in sync across both. -->
+    <div class="mobile-lang mobile-theme" role="radiogroup" aria-label="Theme" data-zh-aria="主題">
+      <button type="button" data-theme-set="system" role="radio" aria-checked="false"><span data-zh="系統">System</span></button>
+      <button type="button" data-theme-set="light" role="radio" aria-checked="false"><span data-zh="淺色">Light</span></button>
+      <button type="button" data-theme-set="dark" role="radio" aria-checked="false"><span data-zh="深色">Dark</span></button>
+    </div>
     <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
-    <!-- /#contact, not #intake — see the topnav CTA above. -->
-    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <a href="/engage/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
   </div>
 </aside>
 
@@ -1227,41 +1343,44 @@
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面、報告與新聞…" placeholder="Search pages, reports and press…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/product/signal/" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
-      <span data-zh="專利情報">Patent Intelligence</span>
+    <a href="/sustain/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span data-zh="維運">Sustain</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/product/signal/methodology.html" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-      <span data-zh="SABCD 評級方法">SABCD Methodology</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/product/licensing/" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-      <span data-zh="專利授權平台">Licensing Platform</span>
-      <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/product/licensing/badge.html" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
-      <span data-zh="授權驗證標章">Verified License Badge</span>
-      <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/patents/" class="search-link">
+    <a href="/protect/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span data-zh="自有專利">Owned Patents</span>
+      <span data-zh="保護">Protect</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/license/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+      <span data-zh="授權">License</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/ecosystem/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg>
+      <span data-zh="生態系">Ecosystem</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/why-taiwan/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+      <span data-zh="為何是台灣">Why Taiwan</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/reports/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-      <span data-zh="報告與新聞">Reports &amp; Press</span>
+      <span data-zh="洞察">Insights</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/signal/methodology.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <span data-zh="SABCD 評級方法">SABCD rating</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/about/" class="search-link">
@@ -1269,9 +1388,9 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/#contact" class="search-link">
+    <a href="/engage/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-      <span data-zh="聯絡">Contact</span>
+      <span data-zh="聯絡我們">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
   </div>
@@ -1279,75 +1398,21 @@
 
 <main id="main">
 
-  <!-- §Announcement banner — TIS-system chrome (identical across all surfaces).
-       Single message, no rotator: this page is one someone is already reading,
-       so rotating copy under them would be intrusive rather than informative.
-       Blue dot, pairing with the cool pillar, same as the homepage's Patent
-       Intelligence notice. The copy states the pre-launch position, which is also
-       what explains why prices are visible on a page you cannot yet buy from. -->
-  <div class="announce" data-pillar="silver" data-announce-id="2026-q3-launch-queue" role="region" aria-label="Site announcement" data-zh-aria="網站公告">
-    <span class="announce-rotator">
-      <span class="announce-item is-active">
-        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
-      </span>
-      <span class="announce-item">
-        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
-      </span>
-      <!-- Ticker loop duplicate (<=880px only). Must stay an EXACT copy of the two
-           items above — the track translates -50%, which is only seamless while the
-           second half matches the first. aria-hidden so each message is announced once. -->
-      <span class="announce-item announce-item--dup" aria-hidden="true">
-        <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
-      </span>
-      <span class="announce-item announce-item--dup" aria-hidden="true">
-        <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將開放訂購：泰然專利強度評級系統 — 單件評級、50 項指標，或完整專利地圖">Orders open soon: TIS Patent Intelligence — one grade, 50 indicators, or the whole landscape</span>
-      </span>
-    </span>
-    <button type="button" class="announce-close" aria-label="Dismiss announcement" data-zh-aria="關閉公告">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-
-  <!-- ── 1 · Hero — homepage .hero foreground + shifting-lines shader ── -->
-  <!-- Named by its own heading, not aria-label="Hero". "Hero" is layout jargon: a
-       screen reader announced the page's largest landmark as "Hero, region". Pointing at
-       the headline names it in whichever language is live, with no data-zh-aria to keep
-       in sync — the same trick the carousel dots use. -->
-  <section class="hero" data-active-pillar="signal" aria-labelledby="know-what-a-patent-is-really-worth">
-    <!-- Shifting-lines shader, the homepage's, recoloured to one blue hue and
-         dropped below the copy. Uses the SHARED .hero-shader carrier from
-         styles.css (position, z2, the 600ms .is-ready crossfade) rather than a
-         sig-* layer, so this page and the homepage stay one mechanism.
-         Degrades to the #000 black .hero if WebGL / esm.sh fail. -->
-    <div class="hero-shader" id="hero-shader" aria-hidden="true"></div>
-    <!-- No .hero-grid here (the homepage keeps it): a 32px square graph-paper
-         grid crossing the glow band reads as interference. -->
-    <!-- Legibility scrim: light, since the lines run below the copy and the copy
-         sits on plain black. Mostly seats the scroll cue. -->
-    <div class="sig-hero-scrim" aria-hidden="true"></div>
-
-    <div class="container hero-inner">
-      <div class="pillar" data-pillar="signal">
-        <p class="pillar-eyebrow">
-          <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-          <span data-zh="泰然專利強度評級系統">Patent Intelligence</span>
-        </p>
-        <h1 class="pillar-title" id="know-what-a-patent-is-really-worth">
-          <span data-zh-html data-zh="在投資之前，看清一件專利<em>真正的價值</em>。">Know what a patent is <em>really worth</em> — before you invest.</span>
-        </h1>
-        <p class="pillar-sub" data-zh="帶著已核准專利、申請中草稿，或僅是一個想法。拿回 PSS 排名、深度報告，或市場上最相關的十件專利。">Bring a granted patent, a pending draft, or just an idea. Get back a PSS rank, a deep report, or the ten patents that matter most.</p>
-        <div class="pillar-actions">
-          <a href="#intake" class="btn btn-primary btn-lg" data-zh="開始評估">Order a report</a>
-          <a href="#reports" class="btn btn-glass btn-lg" data-zh="看報告樣張">See a sample report</a>
-        </div>
+  <!-- ── 1 · Hero — shared full-viewport .fd-hero (front-door pattern; shader retired) ── -->
+  <div class="ab">
+  <section class="fd-hero" aria-labelledby="page-title">
+    <div class="fd-ph " aria-hidden="true"><span class="fd-ph__cap"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg><span data-zh="圖像：專利強度評級表">Image: patent-strength ledger</span></span></div>
+    <div class="container fd-hero__inner">
+      <nav aria-label="Breadcrumb" data-zh-aria="導覽路徑"><p class="crumb crumb--on-dark"><a href="/reports/" data-zh="洞察">Insights</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></p></nav>
+      <div class="fd-hero__body">
+        <p class="fd-hero__meta" data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</p>
+        <h1 class="fd-hero__title" id="page-title" data-zh="在申請、授權或防禦之前，先知道一件專利的價值。">Know what a patent is worth before you file, license or defend it.</h1>
+        <p class="fd-hero__sub" data-zh="帶著已核准專利、申請中草稿，或僅是一個想法。拿回 PSS 排名、深度報告，或市場上最相關的十件專利。">Bring a granted patent, a pending draft, or just an idea. Get back a PSS rank, a deep report, or the ten patents that matter most.</p>
+        <div class="pillar-actions"><a href="/engage/#contact" class="btn btn-lg btn-primary" data-zh="開放訂購時通知我">Get notified when orders open</a><a href="#reports" class="btn btn-lg btn-ghost-dark" data-zh="看報告樣張">See a sample report</a></div>
       </div>
     </div>
-    <div class="hero-scroll-cue" aria-hidden="true"><span></span></div>
   </section>
+  </div>
 
   <!-- ── 2 · Reports — three value-cards (offerings pattern) ── -->
   <section class="section offerings" id="reports" aria-labelledby="reports-heading">
@@ -1364,7 +1429,9 @@
              data-zh swap writes textContent and would destroy it on the first EN→ZH toggle.
              EN drops the "US" prefix — a bare $ carries it. ZH keeps NT$: in Taiwan a bare
              $ reads as NTD, so dropping it would make the two currencies indistinguishable.
-             Prices are placeholder list prices, published so the products carry a visible
+             2026-09-30: prices are withheld while orders are on hold — each price slot
+             reads "Pricing on request" in the eyebrow style until ordering reopens.
+             Prices were placeholder list prices, published so the products carry a visible
              price tag for payment-gateway verification. EN shows USD, ZH shows the TWD
              list price — the currency swaps with the language via data-zh, the same
              mechanism every other string on the page uses. The ladder is ascending in DOM
@@ -1374,7 +1441,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
             <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
-            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>24,000"><span class="offer-card-price__unit">$</span>750</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="價格請洽詢">Pricing on request</span>
             <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1433-patent pool. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1386,7 +1453,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
             <span class="offer-card-title" data-zh="景深報告">Study Report</span>
-            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>48,000"><span class="offer-card-price__unit">$</span>1,500</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="價格請洽詢">Pricing on request</span>
             <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1398,7 +1465,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
             <span class="offer-card-title" data-zh="廣角報告">Survey Report</span>
-            <span class="offer-card-price" data-zh-html data-zh="<span class='offer-card-price__unit'>NT$</span>80,000"><span class="offer-card-price__unit">$</span>2,500</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="價格請洽詢">Pricing on request</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可 — 連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1451,7 +1518,7 @@
         <header class="section-head">
           <div>
             <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
-            <p class="section-dek" data-reveal data-zh-html data-zh="為新創與投資人而做的專利評估：<br>你要能為那個數字辯護，而不只是引用它。">Patent intelligence for startups and investors<br>who have to defend a number, not just quote one.</p>
+            <p class="section-dek" data-reveal data-zh-html data-zh="為製造商與智財法務而做的專利評估：<br>你要能為那個數字辯護，而不只是引用它。">Patent intelligence for makers and IP counsel<br>who have to defend a number, not just quote one.</p>
           </div>
           <!-- Names what the reference pool actually is, per legal/disclosures.en.html
                §"A rating is a position, not a verdict". The section claims a score
@@ -1548,7 +1615,7 @@
       <header class="section-head">
         <div>
           <h2 id="process-heading" class="h-section" data-reveal data-zh="如何進行。">How it works.</h2>
-          <p class="section-dek" data-reveal data-zh-html data-zh="三個步驟。付 10% 啟動，<br>尾款在你下載時才付。">Three steps. You pay 10% to start,<br>and the balance only when you download.</p>
+          <p class="section-dek" data-reveal data-zh-html data-zh="三個步驟。付訂金啟動，<br>尾款在你下載時才付。">Three steps. A deposit starts the work,<br>and the balance is due only when you download.</p>
         </div>
       </header>
 
@@ -1559,9 +1626,9 @@
                 <h3 class="sig-phase__name" data-zh="送件" id="submit">Submit</h3>
                 <p class="sig-phase__title">
                   <span data-zh="選報告，上傳資料">Pick a report, add your input</span>
-                  <span class="sig-phase__chip" data-zh="訂金 10%">10% deposit</span>
+                  <span class="sig-phase__chip" data-zh="訂金">Deposit</span>
                 </p>
-                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含取件碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation email carrying a retrieval code.</p>
+                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。你會收到一封含登錄碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation email carrying a registration code.</p>
               </li>
 
               <!-- Innovue removed from this description: it was the third credit in one
@@ -1579,9 +1646,9 @@
                 <h3 class="sig-phase__name" data-zh="取件" id="retrieve-2">Retrieve</h3>
                 <p class="sig-phase__title">
                   <span data-zh="驗證、預覽，再下載">Verify, preview, then download</span>
-                  <span class="sig-phase__chip" data-zh="尾款 90%">90% balance</span>
+                  <span class="sig-phase__chip" data-zh="尾款">Balance</span>
                 </p>
-                <p class="sig-phase__desc" data-zh="以信箱加取件碼免費預覽各章節將涵蓋的內容全貌，而非摘錄。付尾款後下載含浮水印 PDF，日後憑同一組憑證永久取回。">Your email and code unlock a free outline of what every chapter covers, not excerpts. Settle the balance to download the watermarked PDF, retrievable forever with the same credentials.</p>
+                <p class="sig-phase__desc" data-zh="以信箱加登錄碼免費預覽各章節將涵蓋的內容全貌，而非摘錄。付尾款後下載含浮水印 PDF，日後憑同一組憑證永久取回。">Your email and code open a free outline of what every chapter covers, not excerpts. Settle the balance to download the watermarked PDF, retrievable forever with the same credentials.</p>
               </li>
 
             </ol>
@@ -1591,7 +1658,7 @@
                  produces it. CTA copy is byte-identical to the hero's primary CTA. -->
             <div class="sig-phases__foot">
               <p class="sig-phases__trade" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：<br>投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade:<br>real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
-              <a href="#intake" class="btn btn-primary" data-zh="開始評估">Order a report</a>
+              <a href="/engage/#contact" class="btn btn-primary" data-zh="開放訂購時通知我">Get notified when orders open</a>
             </div>
       </div>
     </div>
@@ -1642,8 +1709,8 @@
 
         <dl class="contact-overlay-meta">
           <div class="contact-meta contact-meta--wide">
-            <dt data-zh="今日應付（10%）">Amount due today (10%)</dt>
-            <dd id="intake-deposit" class="sig-due sig-due--empty" data-zh-html data-zh="選擇報告後顯示">Select a report</dd>
+            <dt data-zh="價格">Price</dt>
+            <dd id="intake-deposit" data-zh="價格請洽詢">Pricing on request</dd>
           </div>
           <!-- Seller identity. Published here rather than in the footer because this is
                the only page that sells and the only one with no contact panel, and a
@@ -1659,7 +1726,7 @@
           <div class="contact-meta contact-meta--wide sig-seller">
             <dt class="sr-only" data-zh="銷售方">Sold by</dt>
             <dd>
-              <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies Global Inc.</span>
+              <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies MRO Global Inc.</span>
               <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
               <span><span data-zh="統一編號">UBN</span> 60331107</span>
             </dd>
@@ -1667,7 +1734,13 @@
         </dl>
 
         <div class="contact-panel">
-          <form class="contact-form" id="intake-form" novalidate>
+          <!-- 2026-09-30 hold: orders are closed. The form stays in the markup for when
+               ordering reopens, but it is inert (no focus, no clicks, out of the a11y
+               tree) and every control carries `disabled`; this notice says why. To reopen:
+               remove this notice, `inert` and the `disabled` attributes, and restore the
+               submit label. -->
+          <p class="lgl-notice" id="intake-hold" role="note" data-zh-html data-zh="<strong>訂購即將開放。</strong>請在<a href='/engage/#contact'>聯絡表單</a>留下電子郵件，開放時我們會通知你。"><strong>Orders open soon.</strong> Leave your email in the <a href="/engage/#contact">contact form</a> and we'll tell you when they do.</p>
+          <form class="contact-form" id="intake-form" novalidate inert aria-disabled="true">
 
             <!-- Input type — a segmented track rather than pills, because it is a mode
                  switch: exactly one of the three inputs below renders, and this is which.
@@ -1676,9 +1749,9 @@
             <fieldset class="contact-topics">
               <legend data-zh="你的輸入類型">Your input type</legend>
               <div class="sig-seg">
-                <label class="sig-seg__opt"><input type="radio" name="input-type" value="granted" checked /><span data-zh="已核准 / 已公開">Granted / published</span></label>
-                <label class="sig-seg__opt"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中草稿">Pending draft</span></label>
-                <label class="sig-seg__opt"><input type="radio" name="input-type" value="idea" /><span data-zh="純想法">Just an idea</span></label>
+                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="granted" checked /><span data-zh="已核准 / 已公開">Granted / published</span></label>
+                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="pending" /><span data-zh="申請中草稿">Pending draft</span></label>
+                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="idea" /><span data-zh="純想法">Just an idea</span></label>
               </div>
             </fieldset>
 
@@ -1691,9 +1764,9 @@
             <fieldset class="contact-topics" aria-describedby="intake-gate-note">
               <legend data-zh="報告類型">Report</legend>
               <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫報告">Snapshot Report</span><span class="topic-chip__price" data-zh="NT$24,000">$750</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深報告">Study Report</span><span class="topic-chip__price" data-zh="NT$48,000">$1,500</span></label>
-                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角報告">Survey Report</span><span class="topic-chip__price" data-zh="NT$80,000">$2,500</span></label>
+                <label class="topic-chip"><input disabled type="radio" name="report" value="a-short" data-requires="granted" /><span data-zh="特寫報告">Snapshot Report</span></label>
+                <label class="topic-chip"><input disabled type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深報告">Study Report</span></label>
+                <label class="topic-chip"><input disabled type="radio" name="report" value="b-advanced" /><span data-zh="廣角報告">Survey Report</span></label>
               </div>
               <p class="sig-callout" id="intake-gate-note" hidden data-zh="特寫與景深需要已公開專利；草稿或想法走廣角。">Snapshot and Study need a published patent. A draft or an idea takes Survey.</p>
             </fieldset>
@@ -1708,21 +1781,21 @@
                  labelled — the same no-JS stance the report gating takes. -->
             <div class="field" data-input-for="granted">
               <label for="intake-input" data-zh="專利號">Patent number</label>
-              <input id="intake-input" name="input" type="text" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
+              <input disabled id="intake-input" name="input" type="text" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
             </div>
             <div class="field" data-input-for="pending">
               <label for="intake-file" data-zh="上傳草稿 / 說明書（PDF）">Upload the draft or specification (PDF)</label>
-              <input id="intake-file" name="file" type="file" accept="application/pdf" />
+              <input disabled id="intake-file" name="file" type="file" accept="application/pdf" />
             </div>
             <div class="field" data-input-for="idea">
               <label for="intake-desc" data-zh="描述你的技術想法">Describe your technical idea</label>
-              <textarea id="intake-desc" name="desc" rows="3" data-zh-placeholder="描述你的技術想法…" placeholder="Describe your technical idea…"></textarea>
+              <textarea disabled id="intake-desc" name="desc" rows="3" data-zh-placeholder="描述你的技術想法…" placeholder="Describe your technical idea…"></textarea>
             </div>
 
             <div class="field">
               <label for="intake-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-              <input id="intake-email" name="email" type="email" placeholder="you@fund.com" />
-              <p class="sig-callout" data-zh-html data-zh="用於寄送 confirmation email 與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation email and completion notice. <strong>The report is not emailed here.</strong></p>
+              <input disabled id="intake-email" name="email" type="email" placeholder="name@company.com" />
+              <p class="sig-callout" data-zh-html data-zh="用於寄送確認信與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation email and completion notice. <strong>The report is not emailed here.</strong></p>
             </div>
 
             <!-- 備註, the last field on the build handoff's §2 table that wasn't built.
@@ -1732,11 +1805,11 @@
                  that flexes (see .sig-notes above); rows="2" is only the no-flex floor. -->
             <div class="field sig-notes">
               <label for="intake-notes" data-zh="備註（選填）">Notes (optional)</label>
-              <textarea id="intake-notes" name="notes" rows="2" data-zh-placeholder="時程、決策背景，或任何我們該知道的事…" placeholder="Timing, the decision this feeds, anything we should know…"></textarea>
+              <textarea disabled id="intake-notes" name="notes" rows="2" data-zh-placeholder="時程、決策背景，或任何我們該知道的事…" placeholder="Timing, the decision this feeds, anything we should know…"></textarea>
             </div>
 
             <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="付 10% 訂金並送出">Pay 10% deposit &amp; submit</button>
+              <button type="submit" class="btn btn-primary btn-lg" disabled data-zh="即將開放訂購">Orders open soon</button>
             </div>
           </form>
 
@@ -1746,7 +1819,7 @@
             </span>
             <div>
               <h3 data-zh="已送出。">Submitted.</h3>
-              <p data-zh="你會收到含 registration code 的 confirmation email。">You'll receive a confirmation email with your registration code.</p>
+              <p data-zh="你會收到含登錄碼的確認信。">You'll receive a confirmation email with your registration code.</p>
             </div>
           </div>
         </div>
@@ -1765,22 +1838,23 @@
       <div class="contact-card contact-card--sig-retrieve">
 
         <div class="sig-rt__head">
-          <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>registration code 取件。">Retrieve with your email + registration code.</h2>
-          <p class="contact-lead" data-zh="點 confirmation email 中的連結，或輸入 registration code，即可驗證身分、查進度、預覽或下載。">Follow the link in your confirmation email or enter your registration code to verify, check status, preview, or download.</p>
+          <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>登錄碼取件。">Retrieve with your email + registration code.</h2>
+          <p class="contact-lead" data-zh="點確認信中的連結，或輸入登錄碼，即可驗證身分、查進度、預覽或下載。">Follow the link in your confirmation email or enter your registration code to verify, check status, preview, or download.</p>
+          <p class="lgl-notice" id="retrieve-hold" role="note" data-zh="取件會在訂購開放後啟用。">Retrieval opens when orders do.</p>
         </div>
 
         <div class="contact-panel">
-          <form class="contact-form" id="retrieve-form" novalidate>
+          <form class="contact-form" id="retrieve-form" novalidate inert aria-disabled="true" aria-describedby="retrieve-hold">
             <div class="sig-lookup">
               <div class="field">
                 <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-                <input id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="you@fund.com" />
+                <input disabled id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
               </div>
               <div class="field">
-                <label for="retrieve-code" data-zh="Registration code">Registration code</label>
-                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
+                <label for="retrieve-code" data-zh="登錄碼">Registration code</label>
+                <input disabled id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
               </div>
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
+              <button disabled type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
             </div>
           </form>
         </div>
@@ -1797,7 +1871,7 @@
              removing them did not resize the card. -->
 
         <!-- §8.8.0b AC-2: a mismatch must not say WHICH half was wrong (防猜). -->
-        <p class="sig-rt__error" id="retrieve-error" role="alert" hidden data-zh="查無相符的紀錄。請對照 confirmation email 再確認一次。">No matching record. Check both against your confirmation email.</p>
+        <p class="sig-rt__error" id="retrieve-error" role="alert" hidden data-zh="查無相符的紀錄。請對照確認信再確認一次。">No matching record. Check both against your confirmation email.</p>
 
         <div class="sig-rt__reveal" id="retrieve-reveal" data-open="false">
           <div>
@@ -1831,7 +1905,7 @@
                     <div class="sig-rt__page">
                       <span class="sig-rt__lock">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-                        <span data-zh="尾款後解鎖">Unlocks with the balance</span>
+                        <span data-zh="付清尾款後開放">Opens once the balance is paid</span>
                       </span>
                       <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 273px, (max-width: 1100px) 273px, 273px"><img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" ></picture>
                     </div>
@@ -1925,7 +1999,7 @@
                       </li>
                     </ol>
                     <div class="sig-rt__pay">
-                      <button type="button" class="btn btn-primary btn-lg" data-zh="付 90% 尾款 → 下載完整報告">Pay 90% balance → download</button>
+                      <button disabled type="button" class="btn btn-primary btn-lg" data-zh="付尾款 → 下載完整報告">Pay the balance → download</button>
                     </div>
                   </div>
                 </div>
@@ -1956,7 +2030,7 @@
               <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名 — 一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
             </div>
             <div class="sig-xbanner__buy">
-              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>24,000"><span class="sig-xprice__unit">$</span>750</span>
+              <span class="sig-xcard__kind" data-zh="價格請洽詢">Pricing on request</span>
               <button type="button" class="btn btn-primary sig-xcta" data-report="a-short" data-zh="選擇此報告">Choose this report</button>
             </div>
           </div>
@@ -1999,7 +2073,7 @@
               <p class="sig-xpanel__lede" data-zh="完整七章報告 — 專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
             </div>
             <div class="sig-xbanner__buy">
-              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>48,000"><span class="sig-xprice__unit">$</span>1,500</span>
+              <span class="sig-xcard__kind" data-zh="價格請洽詢">Pricing on request</span>
               <button type="button" class="btn btn-primary sig-xcta" data-report="b-long" data-zh="選擇此報告">Choose this report</button>
             </div>
           </div>
@@ -2042,7 +2116,7 @@
               <p class="sig-xpanel__lede" data-zh="市場上最相關的十件專利，附相似度分數與比對原因，透過向量檢索取得，並附上你自己專利的 SABCD 等級。">The ten most relevant patents on the market, each with a similarity score and why it matches — retrieved by vector search, alongside your own patent's SABCD grade.</p>
             </div>
             <div class="sig-xbanner__buy">
-              <span class="sig-xprice" data-zh-html data-zh="<span class='sig-xprice__unit'>NT$</span>80,000"><span class="sig-xprice__unit">$</span>2,500</span>
+              <span class="sig-xcard__kind" data-zh="價格請洽詢">Pricing on request</span>
               <button type="button" class="btn btn-primary sig-xcta" data-report="b-advanced" data-zh="選擇此報告">Choose this report</button>
             </div>
           </div>
@@ -2081,9 +2155,9 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2099,43 +2173,37 @@
 
         <div class="footer-cols">
           <div class="footer-col">
-            <h2 data-zh="產品">Products</h2>
+            <h2 data-zh="服務">Services</h2>
             <ul>
-              <li><a href="/product/licensing/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-                <span data-zh="泰然專利防護網">Licensing Platform</span>
-                <span class="status-flag" data-zh="即將推出">Coming soon</span></a></li>
-              <li><a href="/product/signal/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-                <span data-zh="泰然專利強度評級系統">Patent Intelligence</span></a></li>
+              <li><a href="/sustain/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span data-zh="維運">Sustain</span></a></li>
+              <li><a href="/protect/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span data-zh="保護">Protect</span></a></li>
+              <li><a href="/license/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5"/></svg><span data-zh="授權">License</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h2 data-zh="公司">Company</h2>
             <ul>
-              <li><a href="/patents/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2v5a1 1 0 001 1h5"/><path d="M14.692 22H18a2 2 0 002-2V8a2.4 2.4 0 00-.706-1.706l-3.588-3.588A2.4 2.4 0 0014 2H6a2 2 0 00-2 2v3.804"/><path d="M2.264 13.752 7 16.5l4.737-2.748"/><path d="M2.995 13.014A2 2 0 002 14.744v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0012 18.26v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z"/><path d="M7 16.5V22"/></svg>
-                <span data-zh="自有專利">Owned Patents</span></a></li>
-              <li><a href="/reports/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg>
-                <span data-zh="報告與新聞">Reports &amp; Press</span></a></li>
-              <li><a href="/about/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-                <span data-zh="關於">About</span></a></li>
+              <li><a href="/ecosystem/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg><span data-zh="生態系">Ecosystem</span></a></li>
+              <li><a href="/why-taiwan/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span data-zh="為何是台灣">Why Taiwan</span></a></li>
+              <li><a href="/about/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg><span data-zh="關於">About</span></a></li>
+              <li><a href="/engage/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span data-zh="合作">Engage</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h2 data-zh="洞察">Insights</h2>
+            <ul>
+              <li><a href="/reports/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg><span data-zh="報告與新聞">Reports &amp; press</span></a></li>
+              <li><a href="/product/signal/methodology.html" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="SABCD 評級方法">SABCD rating</span></a></li>
+              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a></li>
+              <li><a href="/product/licensing/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h2 data-zh="法律">Legal</h2>
             <ul>
-              <li><a href="/legal/terms.en.html" data-legal="terms">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-                <span data-zh="服務條款">Terms</span></a></li>
-              <li><a href="/legal/privacy.en.html" data-legal="privacy">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
-                <span data-zh="隱私政策">Privacy</span></a></li>
-              <li><a href="/legal/disclosures.en.html" data-legal="disclosures">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
-                <span data-zh="揭露聲明">Disclosures</span></a></li>
+              <li><a href="/legal/terms.en.html" data-legal="terms"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg><span data-zh="服務條款">Terms</span></a></li>
+              <li><a href="/legal/privacy.en.html" data-legal="privacy"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg><span data-zh="隱私政策">Privacy</span></a></li>
+              <li><a href="/legal/disclosures.en.html" data-legal="disclosures"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg><span data-zh="揭露聲明">Disclosures</span></a></li>
             </ul>
           </div>
         </div>
@@ -2145,7 +2213,7 @@
 
   <div class="footer-baseline">
     <div class="container">
-      <p class="footer-copy">© 2026 Talent Intelligence Strategies Global Inc.</p>
+      <p class="footer-copy">© 2026 Talent Intelligence Strategies MRO Global Inc.</p>
     </div>
   </div>
 
@@ -2166,334 +2234,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=18" defer></script>
-
-<!-- Shifting-lines hero shader — the homepage's (index.html), in one blue hue and
-     dropped below the copy. Same idiom throughout: ESM module → three.js from the
-     local bundle with an esm.sh fallback, one full-screen quad, RawShaderMaterial,
-     DPR capped at 2, the coarse-pointer URL-bar guard, and the shared .hero-shader
-     crossfade carrier. On any failure the catch leaves #hero-shader empty → the
-     black .hero shows through.
-
-     The glow maths, the sweep (yScale 0.5) and the strand split (distortion 0.05) are
-     now the homepage's own values, so the two heroes read as one effect in two hues.
-     Two departures remain, and both are deliberate:
-
-     1. COLOUR. The homepage splits one line into R/G/B and mutes it with a
-        `saturation` uniform that blends toward the brightest channel. That is a
-        chroma control, so it can only ever travel between "full RGB" and "grey" —
-        there is no value of it that produces a blue. Here the three split strands
-        are instead multiplied by three steps of a single blue and summed, so the
-        hue is fixed and the split survives as depth: deep blue at the outside,
-        --sig-blue at the inside. `saturation` is therefore gone rather than set to 0.
-        The near-white core is not a side effect of that sum — it is `coreWhite`,
-        a dial that whitens the crest and only the crest. See the shader.
-
-     2. TIME. The homepage advances `time` by a fixed amount per frame, so it runs
-        at double speed on a 120Hz display. This one reads performance.now(), and
-        under reduced motion renders a single frame instead of leaving a rAF loop
-        spinning with a frozen clock. index.html still has both quirks — worth
-        fixing there too, but that is a homepage edit, not this one. -->
-<script type="module">
-  (async () => {
-    const mount = document.getElementById('hero-shader');
-    if (!mount) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Seconds of shader time per real second. The homepage's 0.003/frame at 60Hz
-    // is 0.18/s — matched here so the two heroes move at the same rate.
-    const RATE = 0.18;
-    // Fallback frozen clock for the reduced-motion still, used only if the copy block
-    // cannot be measured. π/2 puts sin() at its maximum at x=0, which drops the band
-    // lowest at frame centre and lifts it symmetrically toward both edges — safe,
-    // because a round number instead lands the crest wherever it happens to fall
-    // (the first attempt here ran it straight through the headline). When the copy
-    // IS measurable, staticPhase() below picks a better frame — see it for why.
-    const STATIC_T = 1.5708;
-
-    try {
-      // assets/build/hero-shader.js — the fullscreen-quad runner that replaced three.js.
-      // The vertex shader and the quad live in there; only the fragment stage is
-      // per-hero.
-      const { createHeroShader } = await import('/assets/build/hero-shader.js');
-
-      const fragmentShader = `
-        precision highp float;
-        uniform vec2  resolution;
-        uniform float dprScale;    // buffer pixel ratio / REF_DPR
-        uniform float time;
-        uniform float xScale;
-        uniform float yScale;
-        uniform float distortion;
-        uniform float yOffset;
-        uniform float coreWhite;   // 0 = crest stays blue · 1 = homepage-hot white core
-
-        // One hue, three values. Outer strands sit deep, the inner strand carries
-        // --sig-blue; summing them lifts the convergence to a near-white core.
-        #define C_DEEP vec3(0.024, 0.204, 0.310)   // #06344F
-        #define C_MID  vec3(0.039, 0.447, 0.690)   // #0A72B0
-        #define C_SIG  vec3(0.055, 0.647, 0.914)   // #0EA5E9 = --sig-blue
-
-        // Where the crest starts and finishes turning white, measured on the summed
-        // brightness. Below CORE_LO the band is pure blue; above CORE_HI it is as
-        // white as coreWhite allows. The window is what keeps the whitening on the
-        // core instead of washing the whole glow.
-        #define CORE_LO 1.0
-        #define CORE_HI 2.5
-
-        void main() {
-          // gl_FragCoord is DEVICE px, resolution is CSS px. Normalise onto the
-          // reference ratio's grid first — see the REF_DPR block below.
-          vec2 frag = gl_FragCoord.xy / dprScale;
-          vec2 p = (frag * 2.0 - resolution) / min(resolution.x, resolution.y);
-          // Positive yOffset lifts the band; negative drops it. Negative here so
-          // the lines run beneath the copy block.
-          p.y -= yOffset;
-
-          float d = length(p) * distortion;
-
-          // The three strands diverge toward the frame edges and converge at centre.
-          float o = p.x * (1.0 + d);
-          float m = p.x;
-          float i = p.x * (1.0 - d);
-
-          // Unbounded, exactly as the homepage writes it. The 1/abs() term running
-          // past 1.0 at the crest IS the glow: it is what gives the band a blown-out
-          // core and a falloff wide enough to read as light rather than as a line.
-          // This used to be compressed to 0..1 with g/(1+g) before tinting, to keep
-          // the sum inside a single hue — but that maps 20 to 0.95, which flattens
-          // the whole bright region into one thin strand. The hue is protected by
-          // coreWhite below instead, which is a knob rather than a ceiling.
-          float go = 0.05 / abs(p.y + sin((o + time) * xScale) * yScale);
-          float gm = 0.05 / abs(p.y + sin((m + time) * xScale) * yScale);
-          float gi = 0.05 / abs(p.y + sin((i + time) * xScale) * yScale);
-
-          vec3 col = go * C_DEEP + gm * C_MID + gi * C_SIG;
-
-          // Whiten the crest, and only the crest. Mixing toward vec3(v) — the
-          // brightest channel — rather than toward vec3(1.0) is the homepage's own
-          // saturation trick run backwards: it drops hue without touching
-          // brightness, so the glow keeps its full thickness while the core goes
-          // white. Gating it on a smoothstep over that same brightness is what makes
-          // it a dial: at coreWhite 0 the band blooms in pure blue, and raising it
-          // grows the hot core toward the homepage's.
-          float v = max(col.r, max(col.g, col.b));
-          col = mix(col, vec3(v), coreWhite * smoothstep(CORE_LO, CORE_HI, v));
-
-          gl_FragColor = vec4(col, 1.0);
-        }
-      `;
-
-      const uniforms = {
-        resolution: { value: [mount.clientWidth, mount.clientHeight] },
-        dprScale:   { value: 1.0 },   // set in resize(), which knows the ratio
-        time:       { value: 0.0 },
-        xScale:     { value: 1.0 },
-        // Amplitude of the sweep, the homepage's own. Held as a constant; the CENTRE
-        // it sweeps around is measured, not constant — see bandOffset() below. At
-        // 0.5 the band travels half the frame, so it crosses the top of the copy at
-        // its trough — which is what the homepage does too, and the reason the scrim
-        // still exists. The 0.18 this replaces was a flat bar, not a sweep.
-        yScale:     { value: 0.5 },
-        // The homepage's. It was 0.11 here only because compressing the strands cost
-        // them their brightness separation, so the split had to carry depth
-        // geometrically; the bloom carries it now, so the tight split comes back.
-        distortion: { value: 0.05 },
-        // Overwritten by resize() before the first frame. -0.36 is the value the OLD
-        // CTA-row measurement landed on at the reference viewport; it survives as the
-        // no-element fallback, so a missing .pillar degrades to the previous
-        // composition — band below the copy — rather than to 0, which would run the
-        // band straight through the headline.
-        yOffset:    { value: -0.36 },
-        // How much of the crest goes white. 0 blooms in pure blue; 1 is as neutral as
-        // the homepage's core. Tuned by eye against index.html at 1440×900.
-        coreWhite:  { value: 0.65 },
-      };
-
-      const renderer = createHeroShader(mount, fragmentShader, uniforms);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      mount.appendChild(renderer.canvas);
-      mount.classList.add('is-ready');   // styles.css crossfades the shader in
-
-      // Where the band's centre sits, measured off the copy block rather than pinned.
-      //
-      // yOffset lives in shader space, which is normalised to min(w, h). The copy does
-      // not: it is a roughly fixed ~400px content stack centred in a 100dvh hero, so as
-      // the viewport gets taller the block rises in normalised terms while a constant
-      // yOffset stays put. The two only agree at one viewport — which is why the
-      // hardcoded -0.36 this replaced sat on the CTA row at 1440×900, drifted below it
-      // at 1440×1080, and fell outside the row entirely at 1280×800. Measuring is the
-      // fix, and it is the same move the intake card makes with its height: restate the
-      // formula, don't sample it.
-      //
-      // The anchor is the TOP of the whole .pillar — eyebrow included, not the headline
-      // and not the CTA row — lifted by BAND_LIFT so the band rides above the copy the
-      // way the homepage's does. Anchoring on the block rather than on the h1 is what
-      // keeps the eyebrow out of the core when the headline re-wraps to three lines.
-      //
-      // The maths: the shader builds p.y as (2 * gl_FragCoord.y - h) / min(w, h), and
-      // styles.css stretches the canvas to the mount (width/height 100% !important).
-      // So a fraction f down the MOUNT is (1 - f) * h up the BUFFER, and the band
-      // centre for that fraction is h * (1 - 2f) / min(w, h). Note this takes the same
-      // w/h resize() computes — on coarse pointers h is the locked tall buffer, not
-      // clientHeight, and mixing the two puts the band in the wrong place on mobile.
-      //
-      // BAND_LIFT is in shader units, so it is viewport-independent like the offset it
-      // adds to. 0.18 is the gap the homepage's own constant leaves between its band
-      // centre and the top of its copy at 1440×900 — matched here rather than invented.
-      const BAND_LIFT = 0.18;
-      const copyEl = document.querySelector('.hero .pillar')
-                  || document.querySelector('.hero .pillar-title');
-      const bandOffset = (w, h) => {
-        if (!copyEl || !mount.clientHeight) return -0.36;   // see the uniform's comment
-        const heroBox = mount.getBoundingClientRect();
-        const copyBox = copyEl.getBoundingClientRect();
-        const f = (copyBox.top - heroBox.top) / mount.clientHeight;
-        return (h * (1 - 2 * f)) / Math.min(w, h) + BAND_LIFT;
-      };
-
-      // Which frame the reduced-motion still freezes on. The band's height at any x is
-      // yOffset - sin(p.x + time) * yScale, so the phase that puts it exactly ON the
-      // measured anchor at a given x is the one where that sine is zero there.
-      //
-      // Two choices, and both were got wrong once. Of the two zero phases per cycle we
-      // take `-p.x`, not `π - p.x`: this one rises over the left half and descends to
-      // the right, so the band lifts away from the copy column and crosses only the
-      // empty right side. (That is the opposite of the phase picked when the band lived
-      // UNDER the CTA row, and it flipped for the same reason — the copy is below the
-      // band now, not above it.)
-      //
-      // And the x it is anchored at is the copy block's RIGHT edge, not its centre.
-      // The band descends across the copy's own width, so the centre is not the worst
-      // case: anchoring there put the band on the anchor at mid-headline and a further
-      // ~150px down by the end of the line, which ran the core straight through the
-      // last word. The right edge is the lowest the band gets over any of the copy, so
-      // anchoring it there clears the whole block.
-      const staticPhase = (w, h) => {
-        if (!copyEl || !mount.clientWidth) return STATIC_T;
-        const heroBox = mount.getBoundingClientRect();
-        const copyBox = copyEl.getBoundingClientRect();
-        const fx = (copyBox.right - heroBox.left) / mount.clientWidth;
-        const pxCopy = (w * (2 * fx - 1)) / Math.min(w, h);
-        return -pxCopy;
-      };
-
-      // resolution stays in CSS px while setPixelRatio drives the device-px draw
-      // buffer. That mismatch used to reach the picture: bandOffset() and staticPhase()
-      // both measure the copy block in CSS px, but p was built from device px, so the
-      // band only landed where they aimed it at ONE pixel ratio. Measured 2026-08-29 at
-      // 390x780 — dpr 1 pushed the wave into the top-right corner above the eyebrow and
-      // left the hero all but empty, while dpr 2 swept it through the dek and CTAs as
-      // intended. Centroid 0.408 vs 0.506, mean difference 12.64/255.
-      //
-      // dprScale normalises the fragment coord onto REF_DPR's grid, so every screen now
-      // gets the dpr-2 composition — the one this was tuned against, and the one that is
-      // not degenerate. Neither bandOffset() nor staticPhase() needed changing: they were
-      // already written for that grid.
-      //
-      // On coarse pointers react to WIDTH only and lock the buffer to the tallest
-      // reachable height, so the mobile URL bar collapsing on scroll can't snap the wave.
-      const REF_DPR = 2;
-      const coarse = window.matchMedia('(pointer: coarse)').matches;
-      let lastW = -1;
-      const resize = (force) => {
-        const w = mount.clientWidth;
-        if (coarse && !force && w === lastW) return;
-        lastW = w;
-        const h = coarse
-          ? Math.max(mount.clientHeight, window.innerHeight || 0, window.screen.height || 0)
-          : mount.clientHeight;
-        // Re-read the ratio: a window moving between Retina and non-Retina changes it
-        // with no reload.
-        const d = Math.min(window.devicePixelRatio || 1, 2);
-        renderer.setPixelRatio(d);
-        renderer.setSize(w, h);
-        uniforms.resolution.value = [w, h];
-        uniforms.dprScale.value = d / REF_DPR;
-        uniforms.yOffset.value = bandOffset(w, h);
-        // Both the band's centre and the still's phase are measured, so the still has
-        // to be re-derived on resize too, not just re-rendered at the new size.
-        if (reduce) {
-          uniforms.time.value = staticPhase(w, h);
-          renderer.render();            // no loop to pick the size up
-        }
-      };
-      resize(true);
-      new ResizeObserver(() => resize(false)).observe(mount);
-      // The observer watches the MOUNT, and the mount is 100dvh — it does not change
-      // when Urbanist swaps in. The copy block does: the headline re-wraps and the whole
-      // stack re-centres, which moves the thing yOffset is derived from. That matters
-      // more now that the anchor IS the copy block. Without this the band stays
-      // anchored to the fallback-font layout it was measured against.
-      if (document.fonts?.ready) document.fonts.ready.then(() => resize(true));
-
-      // resize(true) has already set time + rendered for the reduced-motion still, so
-      // there is nothing left to do on that branch — re-assigning STATIC_T here would
-      // clobber the measured phase it just derived.
-      if (!reduce) {
-        // Start ON the phase the still would freeze, so the band is over the copy at
-        // first paint and drifts from there, rather than arriving mid-sweep.
-        const phase0 = staticPhase(mount.clientWidth, mount.clientHeight);
-        const start = performance.now();
-        // Held while a full-viewport overlay is open: those carry a backdrop-filter across
-        // the whole viewport, so every frame painted here makes the compositor re-blur the
-        // entire viewport. Held time is subtracted, so the band resumes on the phase it
-        // stopped on rather than jumping forward to wall clock.
-        //
-        // `sig-xlock` was missing from this test until 2026-08-29, and that is the bug
-        // behind "See sample reports breaks the site on mobile". The report panel sets
-        // sig-xlock, not lgl-lock, so this loop kept rendering — ~1.4M fragments a frame
-        // at the coarse-pointer buffer size — underneath a blurred backdrop, while a
-        // 440ms FLIP scaled a panel decoding ~369KB of report sheets. The Web Animations
-        // onfinish that cleared `animating` got starved, and close() used to bail on
-        // `animating`, so the dialog became undismissable and the page needed a reload.
-        // If a THIRD overlay is ever added, add its class here too.
-        const OVERLAY_LOCKS = ['lgl-lock', 'sig-xlock'];
-        let held = 0, heldAt = 0, raf = null, onScreen = true;
-        const animate = () => {
-          if (OVERLAY_LOCKS.some(c => document.body.classList.contains(c))) {
-            if (!heldAt) heldAt = performance.now();
-          } else {
-            if (heldAt) { held += performance.now() - heldAt; heldAt = 0; }
-            uniforms.time.value = phase0 + ((performance.now() - start - held) / 1000) * RATE;
-            renderer.render();
-          }
-          raf = requestAnimationFrame(animate);
-        };
-        // ── Off-screen is a hold, not a stop (2026-08-29) ──────────────────────────
-        // Until now this loop was unconditional: it drew ~1.4M fragments a frame at the
-        // coarse-pointer buffer size for the whole session, all the way down a page that
-        // is one of the longest on the site, competing with scroll compositing. The
-        // overlay case above already had the right shape, so off-screen reuses it —
-        // pausing sets `heldAt`, and animate()'s first frame back subtracts the time
-        // away, so the band resumes on the phase it stopped on rather than jumping
-        // forward to wall clock. Stopping the rAF outright, rather than skipping the
-        // render inside it, is what actually gives the frame back.
-        const play  = () => { if (!raf && onScreen) raf = requestAnimationFrame(animate); };
-        const pause = () => {
-          // Record the hold BEFORE the rAF guard. If the hero is already off-screen when
-          // the observer first fires, play() has never run, so raf is null and an early
-          // return here would skip heldAt entirely — the first frame back would then draw
-          // at full wall-clock elapsed and snap, which is the jump this exists to prevent.
-          if (!heldAt) heldAt = performance.now();
-          if (!raf) return;
-          cancelAnimationFrame(raf); raf = null;
-        };
-        uniforms.time.value = phase0;
-        renderer.render();   // the phase the loop starts on, in case the observer is late
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver((es) => {
-            onScreen = es[0].isIntersecting;
-            onScreen ? play() : pause();
-          }).observe(mount);
-        } else { play(); }
-      }
-    } catch (err) {
-      console.error('[hero-shader] shifting-lines shader failed to load; falling back to black hero.', err);
-      // #hero-shader stays empty → the black hero background shows through.
-    }
-  })();
-</script>
+<script src="/assets/build/site.js?v=23" defer></script>
 
 <!-- Intake routing — PRD v0.7 F-ROUTE / §8.2.1 AC-6. The input type drives two things.
 
@@ -2532,21 +2273,12 @@
     const note = form.querySelector('#intake-gate-note');
     if (!inputTypes.length) return;
 
-    // Deposit due — 10% of each report's list price, in the language's own currency.
-    // The <dd> lives in the overlay ASIDE, not in the form, so it is queried off the
-    // document. Keyed by the radio's own value so the map cannot drift from the markup.
+    // The deposit figure that used to live here is gone: prices are withheld while
+    // orders are on hold (2026-09-30), and #intake-deposit is static copy now.
     const reports = [...form.querySelectorAll('input[name="report"]')];
-    const dueEl = document.getElementById('intake-deposit');
-    const U = (unit, value) => '<span class="sig-due__unit">' + unit + '</span>' + value;
-    const DEPOSITS = {
-      'a-short':    { en: U('$','75'),  zh: U('NT$','2,400') },
-      'b-long':     { en: U('$','150'), zh: U('NT$','4,800') },
-      'b-advanced': { en: U('$','250'), zh: U('NT$','8,000') }
-    };
-    // A dash, not a sentence: it holds the exact size and position of the figure it
-    // becomes, so nothing shifts when a price arrives. The eyebrow already says what
-    // the slot is, so the placeholder does not have to explain itself.
-    const NO_REPORT = { en: '—', zh: '—' };
+    // On hold the form is inert and every control is disabled in the markup; the gate
+    // below must not re-enable the two gated reports.
+    const held = form.hasAttribute('inert');
 
     const sync = () => {
       const chosen = inputTypes.find(r => r.checked);
@@ -2560,7 +2292,7 @@
       fields.forEach(field => { field.hidden = field.dataset.inputFor !== type; });
 
       gated.forEach(radio => {
-        radio.disabled = !allow;
+        radio.disabled = held || !allow;
         // A checked-then-disabled radio still submits its value in some engines, and
         // would in any case leave an impossible pairing visibly selected. Clear it.
         if (!allow && radio.checked) radio.checked = false;
@@ -2568,22 +2300,6 @@
 
       if (note) note.hidden = allow;
 
-      // Runs last, so a report cleared by the gate above resets the figure rather than
-      // leaving a deposit standing against no selection. data-zh is written beside the
-      // visible text because site.js collects its i18n nodes once at init — without it
-      // the number renders correctly and then refuses to translate on the next swap.
-      if (dueEl) {
-        const picked = reports.find(r => r.checked && !r.disabled);
-        const due = (picked && DEPOSITS[picked.value]) || NO_REPORT;
-        const zh = document.documentElement.getAttribute('lang') === 'zh-Hant';
-        // innerHTML, not textContent: the filled state is a composed numeral. The empty
-        // state is a plain sentence, and .sig-due--empty drops it back to label size so
-        // "Select a report" is not set at 36px.
-        dueEl.innerHTML = zh ? due.zh : due.en;
-        dueEl.dataset.zh = due.zh;
-        if ('en' in dueEl.dataset) dueEl.dataset.en = due.en;
-        dueEl.classList.toggle('sig-due--empty', !picked);
-      }
     };
 
     inputTypes.forEach(radio => radio.addEventListener('change', sync));

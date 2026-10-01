@@ -486,8 +486,7 @@ Signal / 回到 Signal" button in the hero.
    structured data, 16 graded by NLP, 1 derived**" and dropping the "34" wording.
 2. **Innovue scale number (D.2 / number).** Preview disclosure still says "Innovue **170M**-patent
    index"; the live site + deck + this PRD use **180M / 1.8 億**, "3rd-largest globally."
-   **When rendering §C disclosures, change 170M → 180M.** (Brand-voice.md still says 170M and is
-   pending its own sync — out of scope here, but the page must ship 180M.)
+   **When rendering §C disclosures, change 170M → 180M.** (Brand preview fixed to 180M 2026-09-28.)
 3. **AIChip pool size mismatch (D.3).** methodology.html company card = 67-patent pool / 19 graded;
    sample-report patent = 183-patent G06N pool. Align to **183 / G06N** on both, or footnote the
    distinction (portfolio cohort vs. single-patent cohort).

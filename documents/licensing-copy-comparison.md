@@ -114,7 +114,7 @@ The page has been **rebuilt well past what either reference doc describes.** Bot
 
 > **HTML:** [3860–4109](../product/licensing/index.html#L3860-L4109) (`.bundlegrid`, now **6 boxes**: Why-30 · SABCD · AI Smart-pick · FTO-guarded · Swap · Verified License Badge). **Not in copy-audit-v1, not in direction-doc.**
 >
-> **Reading:** ZH/EN written together; EN is a tighter editorial paraphrase, meaning holds. One naming note: ZH credits "Innovue 1.7 億件專利庫" (170M pool) in the AI card; EN keeps "Innovue's 170M-patent pool." Consistent.
+> **Reading:** ZH/EN written together; EN is a tighter editorial paraphrase, meaning holds. One naming note: at review time the AI card credited the 170M pool in both languages; the canonical figure is now 180M / 1.8 億 (brand-voice.md §5).
 >
 > **Timing-promise sweep (2026-06-09, licensing page only):** removed all *granular delivery SLAs* per Miko — `5 分鐘`/"five minutes" (Box 3 + pillar), "15 seconds" ×3 (EN-only embellishments in the "two ways" section), `24 小時`/"within 24 hours" (Box 4 + FAQ "how do you decide the 30"), `每季再平衡`/"rebalanced quarterly" (FAQ split), and **deleted the entire "How long from subscribing to the badge?" FAQ** (it existed only to promise ~1 week / 24h / 72h). **Kept** the macro positioning (當週上線/"active the week you subscribe", 隔日生效/"day after payment" — Irene-verbatim), the 2-秒/"2-second" verify *feature*, and the 1–2 business-day contact line. ZH edits (Box 3, Box 4, pillar, both FAQs) **flagged for Irene**. PRD timing note ([licensing-page-prd.md:307](licensing-page-prd.md)/[411](licensing-page-prd.md)) NOT yet updated — Miko deferred the PRD pass.
 >

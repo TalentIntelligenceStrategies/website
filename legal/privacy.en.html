@@ -8,103 +8,84 @@
      render exists so an "open in new tab" is readable, not so it ranks. -->
 <meta name="robots" content="noindex" />
 <title>Privacy Policy — TIS</title>
-<link rel="stylesheet" href="/assets/build/styles.css?v=34" />
+<link rel="stylesheet" href="/assets/build/styles.css?v=40" />
+<script>
+  // Theme init — the standalone render follows the visitor's choice (tis-theme), like every page.
+  (() => { let t = null; try { t = localStorage.getItem('tis-theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', (t === 'light' || t === 'dark') ? t
+      : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')); })();
+</script>
 </head>
 <body class="lgl-page">
 <!-- site.js fetches this file and injects only the <body> into the legal dialog,
      so this wrapper is what the dialog receives too. Keep .lgl-body on it. -->
 <main class="lgl-body">
 <h1 class="lgl-page-title">Privacy Policy</h1>
-<p class="lgl-meta">Effective 2026-08-25 · Last updated 2026-08-25</p>
+<p class="lgl-meta">Effective 2026-09-30 · Last updated 2026-09-30</p>
 
 <div class="lgl-notice">
-  Orders aren't open yet. This describes what we collect today, and what we'll collect when
-  they are.
+  This covers what the website collects today: what you send through its forms, and what your
+  browser keeps. There are no cookies and no analytics on the site.
 </div>
 
 <h2>Who's handling it</h2>
 <p>
-  <strong>Talent Intelligence Strategies Global Inc.</strong> (泰然策略解密股份有限公司),
-  UBN <strong>60331107</strong>, No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100,
-  Taiwan.
+  <strong>Talent Intelligence Strategies MRO Global Inc.</strong> (泰然策略解密股份有限公司),
+  UBN <strong>60331107</strong>, at No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100,
+  Taiwan. When we say TIS or we, that's who we mean.
 </p>
 
 <h2>What we collect</h2>
-<p><strong>When you contact us or subscribe.</strong> Your name, job title, email, phone,
-  organisation, what you're asking about and your message. Along with those we record when you
-  submitted, the page you submitted from, your language setting and your browser's user agent
-  string.</p>
-
-<p><strong>When orders open, and you order a report.</strong> All of the above, plus whatever
-  you send us to evaluate:</p>
-<ul>
-  <li>a patent number, or</li>
-  <li>a PDF of a pending draft or specification, or</li>
-  <li>a description of an idea you haven't filed yet,</li>
-</ul>
-<p>
-  together with the report you picked, any notes you add and your contact email.
-  <strong>This will be the most sensitive material we hold.</strong> An unfiled idea or an
-  unpublished draft can lose its novelty if it gets out, so we treat it as confidential by
-  default.
-</p>
-<p><strong>Payment.</strong> Card details will go to our payment provider and never touch TIS
-  servers. We'll keep the result of the transaction and a payment reference.</p>
+<p><strong>When you contact us, request a scoping conversation or a meeting, or subscribe.</strong>
+  Your name, job title, email, phone, organisation, the topic you pick and your message. Along with
+  those we record when you submitted, the page you submitted from, your language setting and your
+  browser's user agent string.</p>
+<p><strong>What not to send.</strong> Export-controlled technical data (ITAR, EAR or Taiwan
+  Strategic High-Tech Commodities), classified material, and details of inventions you haven't
+  filed. The forms are not a controlled channel. Describe what you need in general terms and we
+  will set up an NDA and a proper channel for anything sensitive.</p>
 
 <h2>Why we've got it</h2>
 <ul>
-  <li>To produce and deliver the report you ordered.</li>
-  <li>To send your confirmation, your registration code and your completion notice.</li>
-  <li>To answer whatever you've asked us.</li>
-  <li>To send you what you subscribed to. Every newsletter will carry an unsubscribe link.</li>
-  <li>To keep our accounting, invoicing and other legal obligations straight.</li>
+  <li>To answer what you've asked, and to arrange a scoping conversation, a meeting or an NDA.</li>
+  <li>To send you what you subscribed to. Every newsletter carries an unsubscribe link.</li>
+  <li>To keep our accounting, contracting and other legal obligations straight.</li>
 </ul>
 
 <h2>Who else sees it</h2>
-<p>
-  Producing a report will mean your material gets handled outside TIS. Worth knowing before
-  you send us anything:
-</p>
 <ul>
-  <li><strong>TIS staff in Taiwan.</strong> Reports will be produced by analysts leveraging closed-database AI tools, not by an unattended pipeline. Named people will read what you send, under confidentiality obligations, and only the ones who need to.</li>
-  <li><strong>Innovue</strong>, for patent search and comparison against their database.</li>
-  <li><strong>Our payment provider</strong>, for the card transaction.</li>
-  <li><strong>Google</strong>, whose Sheets service already receives every contact and newsletter submission. That one is happening today; the three above start when orders do.</li>
+  <li><strong>TIS staff in Taiwan</strong> who need it to answer you, under confidentiality obligations.</li>
+  <li><strong>Google</strong>, whose Sheets service receives every form submission.</li>
+  <li><strong>Our service partners, for sustainment enquiries.</strong> Scoping a Sustain program
+    means working out capacity with Suntek Group / PG Union and capability with FairTech. We share
+    only what they need to scope the work, under confidentiality, and we tell you before we do.</li>
+  <li><strong>Innovue</strong>, only where a Protect or License enquiry needs its patent data, and
+    only what that needs.</li>
 </ul>
 <p>
-  Which means your material crosses borders. <strong>We don't sell your data, and we don't let
-  it be used to train AI models.</strong>
+  Some of these services run outside Taiwan, so your details can cross borders.
+  <strong>We don't sell your data, and we don't let it be used to train AI models.</strong>
 </p>
 <p>
-  Separately from any of that, visiting the site at all involves two more parties.
-  <strong>GitHub Pages</strong> hosts it, so it sees the IP address and request details of
-  every visit. And if a page's local copy of a graphics or animation library fails to load, the
-  page falls back to a public CDN — <strong>esm.sh</strong>, <strong>jsDelivr</strong> or
-  <strong>unpkg</strong> — which then sees your IP as well. Neither of them gets anything you
-  typed.
+  Visiting the site at all involves two more parties. <strong>GitHub Pages</strong> hosts it, so
+  it sees the IP address and request details of every visit. And if a page's local copy of a
+  graphics or animation library fails to load, the page falls back to a public CDN —
+  <strong>esm.sh</strong>, <strong>jsDelivr</strong> or <strong>unpkg</strong> — which then sees
+  your IP as well. Neither gets anything you typed.
 </p>
 
 <h2>How long we keep it</h2>
 <p>
-  <strong>What you send us to evaluate</strong> — the draft, the specification, the description
-  of an unfiled idea — we keep only for as long as producing and supporting your report needs
-  it. Ask us to delete it and we will, any time.
-</p>
-<p>
-  <strong>The finished report</strong> we'll keep for as long as we offer retrieval, because the
-  Terms say you can come back for it whenever with your email and registration code.
-</p>
-<p>
-  Contact and enquiry records stay while we're dealing with you. Transaction records stay as
-  long as accounting and tax law needs them. Newsletter subscriptions stay until you
-  unsubscribe.
+  Enquiry records stay while we're dealing with you, and for as long as a resulting contract and
+  accounting law need them. Newsletter subscriptions stay until you unsubscribe. Ask us to delete
+  anything we don't have to keep, and we will.
 </p>
 
 <h2>How we look after it</h2>
 <ul>
   <li>The site runs on HTTPS throughout.</li>
   <li>Only staff who need access have it, under confidentiality obligations.</li>
-  <li>Every downloaded report will be watermarked with the account and the download time, so a leaked copy can be traced back.</li>
+  <li>Material exchanged under an NDA follows that NDA, not this page.</li>
 </ul>
 
 <h2>What you can ask us to do</h2>
@@ -117,21 +98,28 @@
   counts against you.
 </p>
 
-<h2>Cookies</h2>
+<h2>Cookies and analytics</h2>
 <p>
-  <strong>The site sets no cookies at all</strong> — not for advertising, not for analytics,
-  none. There is no analytics or advertising code on it either.
+  <strong>The site sets no cookies at all</strong>, and there is no analytics or advertising code
+  on it.
 </p>
 <p>
-  It does keep three things in your browser's own storage, and nowhere else: your language
-  choice, so it sticks between visits; that you've dismissed the notice bar, for the rest of
-  that browsing session; and that you've already seen the newsletter prompt, so it stays away
-  for 30 days. None of it leaves your browser.
+  It keeps a few things in your browser's own storage, and nowhere else: your language and theme
+  choice, so they stick between visits; that you've dismissed a notice bar, for the rest of that
+  browsing session; and that you've already seen a newsletter prompt, so it stays away for 30
+  days. None of it leaves your browser.
+</p>
+
+<h2>When Insights orders open</h2>
+<p>
+  Ordering a report will involve material we don't collect today — patent numbers, drafts,
+  payment references. We will update this policy, and say exactly what is collected and who
+  handles it, before the first order is taken.
 </p>
 
 <h2>Changes</h2>
 <p>
-  We update this as the service changes, and move the date at the top when we do.
+  We update this as the site and services change, and move the date at the top when we do.
 </p>
 
 <h2>Questions</h2>

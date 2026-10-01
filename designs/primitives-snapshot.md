@@ -2,7 +2,7 @@
 
 # TIS Primitives
 
-Atomic UI elements catalog across the three downstream surfaces that consume the TIS brand system: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP. Primitives are the small, single-purpose building blocks (Button, Input, Toggle, chips, etc.) — composed components (Modal, Top nav, Footer, Patent card, Pillar, etc.) live in [components.md](./components.md). Each consumer repo carries a read-only `primitives-snapshot.md` mirror of this file.
+Atomic UI elements catalog across the three downstream surfaces that consume the TIS brand system: the marketing website (front door: Sustain · Protect · License) and two Insights products — the Patent Intelligence SaaS and the Licensing Platform. Primitives are the small, single-purpose building blocks (Button, Input, Toggle, chips, etc.) — composed components (Modal, Top nav, Footer, Patent card, Pillar, etc.) live in [components.md](./components.md). Each consumer repo carries a read-only `primitives-snapshot.md` mirror of this file.
 
 > Primitives here are shared across all three surfaces unless a surface-specific variant is explicitly named. They consume semantic tokens from [`design-tokens.md`](./design-tokens.md) via **material presets** (see §7.3 there). For logo / co-branding / badge identity, see [`visual-guide.md`](./visual-guide.md).
 

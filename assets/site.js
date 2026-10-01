@@ -1,9 +1,35 @@
-// ─── Universal site chrome: language, mobile drawer, search, forms, pillar tabs ───
-// Note: dark mode is parked for the MVP. `[data-theme="dark"]` token blocks and
-// component overrides remain in styles.css as dormant infrastructure — re-enable
-// later by restoring the toggle markup + a `data-theme` setter here.
+// ─── Universal site chrome: theme, language, mobile drawer, search, forms, pillar tabs ───
 (() => {
   const root = document.documentElement;
+
+  // ──────────────── Theme — system / light / dark ────────────────
+  // Restored 2026-09-29 (parked 2026-06-01 in ef34f5b). The inline head script sets
+  // data-theme before first paint; this keeps it in step with the two controls — the
+  // nav pill (aria-pressed) and the drawer radiogroup (aria-checked) — and follows a
+  // live OS change while the choice is "system".
+  const themeSegs = document.querySelectorAll('[data-theme-set]');
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const readTheme = () => { try { return localStorage.getItem('tis-theme'); } catch (e) { return null; } };
+  const resolveTheme = (choice) =>
+    choice === 'system' ? (prefersDark.matches ? 'dark' : 'light') : choice;
+  const applyTheme = (choice, persist) => {
+    root.setAttribute('data-theme', resolveTheme(choice));
+    if (persist) { try { localStorage.setItem('tis-theme', choice); } catch (e) {} }
+    themeSegs.forEach(b => {
+      const on = String(b.dataset.themeSet === choice);
+      b.setAttribute(b.getAttribute('role') === 'radio' ? 'aria-checked' : 'aria-pressed', on);
+    });
+    if (themeMeta) themeMeta.setAttribute('content', getComputedStyle(root).getPropertyValue('--surface-page').trim() || '#FFFFFF');
+  };
+  const storedTheme = readTheme();
+  const themeChoice = () => {
+    const t = readTheme();
+    return (t === 'system' || t === 'light' || t === 'dark') ? t : 'system';
+  };
+  applyTheme((storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'system', false);
+  themeSegs.forEach(b => b.addEventListener('click', () => applyTheme(b.dataset.themeSet, true)));
+  prefersDark.addEventListener('change', () => { if (themeChoice() === 'system') applyTheme('system', false); });
 
   // ──────────────── Lenis smooth scroll ────────────────
   // Transport, not animation: Lenis writes the REAL scroll position every frame
@@ -345,8 +371,10 @@
     showcaseFrames.forEach(frame => postLang(frame, lang));
   };
 
+  const langCodes = document.querySelectorAll('.lang-code');
   const applyLang = (lang, opts = {}) => {
     root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+    langCodes.forEach(el => { el.textContent = lang === 'zh' ? '中文' : 'EN'; });
     langButtons.forEach(b => b.setAttribute('aria-checked', String(b.dataset.langSet === lang)));
     if (opts.animate && !reduceMotion.matches) {
       const myGen = ++langGen;
@@ -359,18 +387,19 @@
     } else {
       swapText(lang);
     }
-    localStorage.setItem('tis-lang', lang);
+    try { localStorage.setItem('tis-lang', lang); } catch (e) {}
   };
-  applyLang(localStorage.getItem('tis-lang') || 'en');  // first paint: no overlay
+  // Guarded like readTheme(): a blocked storage read would otherwise throw here and
+  // take the nav, drawer, search and forms down with it.
+  const readLang = () => { try { return localStorage.getItem('tis-lang'); } catch (e) { return null; } };
+  applyLang(readLang() || 'en');  // first paint: no overlay
 
   // Lock topnav translatable elements to their EN natural width so the lang toggle
   // doesn't shrink them (which would otherwise shift the right cluster rightward via
   // the flex spacer absorbing the slack). Mobile-drawer items live in full-width or
   // flex:1 containers so they don't cause neighbor reflow — left unlocked.
-  // `.topnav-link.has-dropdown > [data-zh]` covers the Products dropdown trigger's
-  // inner span (the button itself wraps text + chevron, so we lock the text span
-  // rather than the button to keep the chevron stable across language toggles).
-  const lockables = document.querySelectorAll('.topnav-link[data-zh], .topnav-cta[data-zh], .topnav-link.has-dropdown > [data-zh]');
+  // `.nav-trigger > [data-zh]` covers the six mega-nav triggers' inner spans.
+  const lockables = document.querySelectorAll('.topnav-link[data-zh], .topnav-cta[data-zh], .nav-trigger > [data-zh]');
   const lockI18nWidths = () => {
     lockables.forEach(el => {
       if (el.dataset.locked) return;
@@ -411,144 +440,158 @@
   document.addEventListener('click', closeLangMenu);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
 
-  // ──────────────── Products dropdown — Linear-style mega menu ────────────────
-  const pdWrap = document.querySelector('.topnav-dropdown-wrap');
-  if (pdWrap) {
-    const pdTrigger = pdWrap.querySelector('#products-trigger');
-    const pdMenu    = pdWrap.querySelector('#products-menu');
-    const pdCards   = Array.from(pdMenu.querySelectorAll('.product-card'));
-    const hoverFine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-    let openTimer = null, closeTimer = null;
+  // ──────────────── Section map — which nav group a URL belongs to ────────────────
+  // Drives aria-current on nav links and which drawer group opens by default.
+  // Old URLs are kept (mro/website-page-map.md §4), so the Insights pages are
+  // matched by their /product/ and /reports/ paths.
+  const sectionOf = (path) => {
+    if (/^\/sustain\//.test(path)) return 'sustain';
+    if (/^\/protect\//.test(path)) return 'protect';
+    if (/^\/(license|patents)\//.test(path)) return 'license';
+    if (/^\/ecosystem\//.test(path)) return 'ecosystem';
+    if (/^\/(reports|product)\//.test(path)) return 'insights';
+    if (/^\/(about|engage|why-taiwan)\//.test(path)) return 'about';
+    return null;
+  };
+  const here = location.pathname.replace(/index\.html$/, '');
+  const currentSection = sectionOf(here);
+  // The one active-state exception in the top nav (components.md §Top nav · Current section):
+  // the trigger of the page's own section carries a faint underline at rest.
+  document.querySelectorAll('.nav-item[data-nav]').forEach(li => {
+    if (li.dataset.nav === currentSection) li.querySelector('.nav-trigger')?.setAttribute('data-current', 'true');
+  });
+  document.querySelectorAll('.mega-link, .mega-res-link, .mega-eyebrow--page, .mobile-sub-link').forEach(a => {
+    const u = new URL(a.getAttribute('href'), location.origin);
+    if (!u.hash && u.pathname.replace(/index\.html$/, '') === here) a.setAttribute('aria-current', 'page');
+  });
 
-    const pdOpen = () => {
-      pdMenu.dataset.open = 'true';
-      pdTrigger.setAttribute('aria-expanded', 'true');
-    };
-    const pdClose = () => {
-      pdMenu.dataset.open = 'false';
-      pdTrigger.setAttribute('aria-expanded', 'false');
-    };
+  // ──────────────── Mega nav — six disclosure triggers, one open panel ────────────────
+  // Disclosure pattern (button[aria-expanded] → region of plain links), not role="menu":
+  // the panels hold ordinary navigation links, and menu semantics would make screen
+  // readers announce them as application commands and hijack the arrow keys.
+  const navItems = Array.from(document.querySelectorAll('.nav-item'));
+  const topnav = document.querySelector('.topnav');
+  const megaScrim = document.getElementById('mega-scrim');
+  let closeMega = () => {};
+  if (navItems.length && topnav) {
+    const hoverFine = matchMedia('(hover: hover) and (pointer: fine)');
+    let current = null;       // the open .nav-item
+    let pinned = false;       // opened by click/keyboard (hover-leave must not close it)
+    let openTimer = null, closeTimer = null;
+    const parts = (item) => ({ trigger: item.querySelector('.nav-trigger'), panel: item.querySelector('.mega-panel') });
     const cancelTimers = () => {
       if (openTimer)  { clearTimeout(openTimer);  openTimer  = null; }
       if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
     };
-
-    if (hoverFine) {
-      // Wrap covers only the trigger's bounding box (the panel is absolute,
-      // outside the wrap). Listen on both — entering either cancels close;
-      // leaving either schedules close. The 8px gap is bridged by .products-menu::before.
-      const onEnter = () => {
-        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-        if (pdMenu.dataset.open === 'true') return;
-        openTimer = setTimeout(() => { openTimer = null; pdOpen(); }, 120);
-      };
-      const onLeave = () => {
-        if (openTimer) { clearTimeout(openTimer); openTimer = null; }
-        if (pdMenu.dataset.open !== 'true') return;
-        closeTimer = setTimeout(() => { closeTimer = null; pdClose(); }, 200);
-      };
-      pdWrap.addEventListener('pointerenter', onEnter);
-      pdWrap.addEventListener('pointerleave', onLeave);
-      pdMenu.addEventListener('pointerenter', onEnter);
-      pdMenu.addEventListener('pointerleave', onLeave);
-    }
-
-    pdTrigger.addEventListener('click', (e) => {
-      e.stopPropagation();
+    const hide = (item) => {
+      const { trigger, panel } = parts(item);
+      trigger.setAttribute('aria-expanded', 'false');
+      delete panel.dataset.open;
+    };
+    const open = (item, { pin = false } = {}) => {
       cancelTimers();
-      // Click only opens — it never closes. A click while the panel is already
-      // open (e.g. surfaced by hover) confirms intent and moves focus into the
-      // panel instead of toggling it shut. Close paths are outside-click / Esc /
-      // scroll / card-select, all wired below.
-      if (pdMenu.dataset.open === 'true') {
-        const current = pdMenu.querySelector('.product-card[aria-current="page"]') || pdCards[0];
-        if (current) current.focus();
-      } else {
-        pdOpen();
+      if (pin) pinned = true;
+      if (current === item) return;
+      const switching = !!current;
+      if (switching) {
+        topnav.classList.add('mega-switching');
+        hide(current);
       }
-    });
+      const { trigger, panel } = parts(item);
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.dataset.open = 'true';
+      current = item;
+      topnav.dataset.megaOpen = 'true';
+      if (megaScrim) megaScrim.dataset.open = 'true';
+      closeLangMenu();
+      if (switching) requestAnimationFrame(() => requestAnimationFrame(() => topnav.classList.remove('mega-switching')));
+    };
+    closeMega = ({ focusTrigger = false } = {}) => {
+      cancelTimers();
+      if (!current) return;
+      const item = current;
+      hide(item);
+      current = null;
+      pinned = false;
+      topnav.dataset.megaOpen = 'false';
+      if (megaScrim) megaScrim.dataset.open = 'false';
+      if (focusTrigger) parts(item).trigger.focus();
+    };
 
-    pdTrigger.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' || (e.key === 'Enter' && pdMenu.dataset.open !== 'true')) {
-        e.preventDefault();
-        cancelTimers();
-        pdOpen();
-        const current = pdMenu.querySelector('.product-card[aria-current="page"]') || pdCards[0];
-        if (current) current.focus();
-      } else if (e.key === 'Escape') {
-        cancelTimers();
-        pdClose();
-      }
-    });
-
-    pdCards.forEach((card, i) => {
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    navItems.forEach(item => {
+      const { trigger, panel } = parts(item);
+      // Hover intent (fine pointers only). The panel is a descendant of the item, so
+      // the pointer moving from trigger into panel never leaves the item; the short
+      // gap between trigger and panel edge is covered by the close delay.
+      item.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse' || !hoverFine.matches) return;
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        if (current === item) return;
+        if (current) { open(item); return; }      // already browsing: swap at once
+        openTimer = setTimeout(() => { openTimer = null; open(item); }, 120);
+      });
+      item.addEventListener('pointerleave', (e) => {
+        if (e.pointerType !== 'mouse' || !hoverFine.matches) return;
+        if (openTimer) { clearTimeout(openTimer); openTimer = null; }
+        if (current !== item || pinned) return;
+        closeTimer = setTimeout(() => { closeTimer = null; closeMega(); }, 200);
+      });
+      // Click toggles. A click on a panel that hover already opened pins it rather than
+      // shutting it — the reader clicked because they wanted it, not to dismiss it.
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (current === item && pinned) closeMega();
+        else open(item, { pin: true });
+      });
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
           e.preventDefault();
-          pdCards[(i + 1) % pdCards.length].focus();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          pdCards[(i - 1 + pdCards.length) % pdCards.length].focus();
-        } else if (e.key === 'Escape') {
-          cancelTimers();
-          pdClose();
-          pdTrigger.focus();
+          open(item, { pin: true });
+          const first = panel.querySelector('a');
+          if (first) first.focus();
         }
       });
-      card.addEventListener('click', () => { cancelTimers(); pdClose(); });
+      // Focus leaving the item entirely (Tab past the last panel link) closes it.
+      item.addEventListener('focusout', (e) => {
+        if (current === item && e.relatedTarget && !item.contains(e.relatedTarget)) closeMega();
+      });
+      panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeMega()));
     });
 
     document.addEventListener('click', (e) => {
-      if (pdMenu.dataset.open !== 'true') return;
-      if (pdWrap.contains(e.target)) return;
-      pdClose();
+      if (current && !current.contains(e.target)) closeMega();
     });
+    if (megaScrim) megaScrim.addEventListener('click', () => closeMega());
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && pdMenu.dataset.open === 'true') {
-        pdClose();
-        pdTrigger.focus();
-      }
+      if (e.key === 'Escape' && current) closeMega({ focusTrigger: true });
     });
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 64 && pdMenu.dataset.open === 'true') pdClose();
+      if (window.scrollY > 64 && current && !pinned) closeMega();
     }, { passive: true });
+    // The triggers are display:none below the drawer breakpoint — never leave a panel
+    // open (and the scrim up) on a layout that cannot reach its trigger.
+    matchMedia('(max-width: 1080px)').addEventListener('change', (e) => { if (e.matches) closeMega(); });
+    langTrigger.addEventListener('click', () => closeMega());
   }
 
-  // ──────────────── Mobile drawer accordion — Products ────────────────
-  const mProductsRow = document.querySelector('.mobile-list .mobile-row-dropdown');
-  let fitProductsDefault = () => {};
-  if (mProductsRow) {
-    const sublistId = mProductsRow.getAttribute('aria-controls');
-    const mSublist  = sublistId ? document.getElementById(sublistId) : null;
-    if (mSublist) {
-      mProductsRow.addEventListener('click', () => {
-        const open = mProductsRow.getAttribute('aria-expanded') === 'true';
-        mProductsRow.setAttribute('aria-expanded', String(!open));
-        if (open) delete mSublist.dataset.open;
-        else mSublist.dataset.open = 'true';
-        // Once the reader has an opinion, stop imposing one.
-        mProductsRow.dataset.userToggled = 'true';
-      });
-
-      // The markup ships expanded: collapsed, the drawer was 503px of empty white
-      // below four links on a 844px phone. But the two product cards are 308px, so
-      // on a shorter viewport (SE-class, 667px) expanding pushes the last nav rows
-      // under the fold — hidden navigation is a worse fault than empty space.
-      // Measure rather than guess a breakpoint: expand, and if the list now
-      // overflows its own box, put it back. Runs per open, so rotating the phone
-      // re-decides, and never overrides a reader who has toggled it themselves.
-      fitProductsDefault = () => {
-        const mList = mProductsRow.closest('.mobile-list');
-        if (!mList || mProductsRow.dataset.userToggled === 'true') return;
-        mProductsRow.setAttribute('aria-expanded', 'true');
-        mSublist.dataset.open = 'true';
-        if (mList.scrollHeight > mList.clientHeight + 1) {
-          mProductsRow.setAttribute('aria-expanded', 'false');
-          delete mSublist.dataset.open;
-        }
-      };
-    }
-  }
+  // ──────────────── Mobile drawer accordion — six groups ────────────────
+  const mRows = Array.from(document.querySelectorAll('.mobile-list .mobile-row-dropdown'));
+  const setRow = (row, openIt) => {
+    const sub = document.getElementById(row.getAttribute('aria-controls'));
+    if (!sub) return;
+    row.setAttribute('aria-expanded', String(openIt));
+    if (openIt) sub.dataset.open = 'true'; else delete sub.dataset.open;
+  };
+  mRows.forEach(row => row.addEventListener('click', () => {
+    setRow(row, row.getAttribute('aria-expanded') !== 'true');
+    row.dataset.userToggled = 'true';
+  }));
+  // Default: the group for the page being read opens, so its siblings are one tap away.
+  // Never overrides a reader who has toggled a group themselves.
+  const fitDrawerDefault = () => {
+    if (mRows.some(r => r.dataset.userToggled === 'true')) return;
+    mRows.forEach(r => setRow(r, r.dataset.nav === currentSection));
+  };
 
   // ──────────────── Overlay lock — shared by the drawer and search ────────────────
   // Both are role="dialog" aria-modal="true", and until now neither backed that up:
@@ -633,9 +676,8 @@
   // the page locked.
   const openDrawer = () => {
     if (mDrawer.dataset.open === 'true') return;
-    // Decide the Products default against this viewport before the panel slides
-    // in — the drawer is laid out off-canvas, so the measurement is valid here.
-    fitProductsDefault();
+    fitDrawerDefault();
+    closeMega();
     mDrawer.dataset.open = mOverlay.dataset.open = 'true';
     mTrigger.setAttribute('aria-expanded','true');
     lockPage();
@@ -780,7 +822,9 @@
     if (reduced) { el.textContent = fmt(end, el); return; }
     const startT = performance.now();
     const tick = (now) => {
-      const t = Math.min((now - startT) / COUNT_MS, 1);
+      // Clamped on both sides: the first rAF timestamp can precede startT, which
+      // made t negative and rendered "-1" for a frame.
+      const t = Math.max(0, Math.min((now - startT) / COUNT_MS, 1));
       el.textContent = fmt(Math.floor(t * end), el);
       if (t < 1) requestAnimationFrame(tick);
     };
@@ -800,6 +844,55 @@
     counters.forEach(el => counterObserver.observe(el));
   } else {
     counters.forEach(el => el.textContent = fmt(parseInt(el.dataset.target, 10), el));
+  }
+
+  // ──────────────── Front door v2 — reveals + figure count-up ────────────────
+  // styles.css "FRONT DOOR v2 · MOTION" owns the looks; this only decides WHEN. A block
+  // gets .fd-pre (its hidden "before" state) only if it starts below the fold, so
+  // nothing on screen at load ever blinks out, and nothing at all is hidden without
+  // JS, under reduced motion, or without IntersectionObserver.
+  const fdTargets = [
+    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .fd-map, .fd-close .container, .fd-commit__quote, .fd-band__inner > div:first-child, .fd-note, .fd-pending'],
+    ['list', '.fd-mosaic, .fd-steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners'],
+    ['clip', '.fd-frame, .fd-offer > .fd-ph'],
+    ['settle', '.fd-band > .fd-ph'],
+  ];
+  const fdCount = (b) => {
+    // One number per figure ("48,750", "×21", "30+", "180M"); "9 of 16" and the
+    // CJK forms are left as written. Stops, and restores the text, if the
+    // language changes mid-count.
+    const txt = b.textContent, m = txt.match(/^(\D*)(\d[\d,]*)(\D*)$/);
+    if (!m || document.documentElement.lang !== 'en') return;
+    const end = parseInt(m[2].replace(/,/g, ''), 10), comma = m[2].includes(',');
+    const t0 = performance.now();
+    const tick = (now) => {
+      if (document.documentElement.lang !== 'en') { b.textContent = b.dataset.zh || txt; return; }
+      const t = Math.max(0, Math.min((now - t0) / COUNT_MS, 1));
+      const n = Math.floor(t * end);
+      b.textContent = m[1] + (comma ? n.toLocaleString('en-US') : n) + m[3];
+      if (t < 1) requestAnimationFrame(tick); else b.textContent = txt;
+    };
+    requestAnimationFrame(tick);
+  };
+  if (!reduced && 'IntersectionObserver' in window) {
+    const fdObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.remove('fd-pre');
+        if (el.classList.contains('fd-figures')) el.querySelectorAll('b').forEach(fdCount);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+    fdTargets.forEach(([kind, sel]) => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.dataset.fd = kind;
+        if (kind === 'list') Array.from(el.children).forEach((c, i) => c.style.setProperty('--fd-i', i));
+        if (el.getBoundingClientRect().top < innerHeight * 0.94) return;   // already in view: leave it be
+        el.classList.add('fd-pre');
+        fdObs.observe(el);
+      });
+    });
   }
 
   // ──────────────── Scroll-reveal — [data-reveal] fades/rises into view once ────────────────
@@ -1055,12 +1148,20 @@
   // preflight OPTIONS that Apps Script cannot answer. Deliberately NOT
   // mode:'no-cors' — the response has to stay readable, or every failure
   // would be indistinguishable from a success.
+  // 15s ceiling: a hung Apps Script call used to leave the button on "Sending…" for
+  // good. Aborting lands in the caller's catch, which shows the retry message.
   const frontDeskPost = async (payload) => {
-    const res = await fetch(FRONT_DESK_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-    });
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 15000);
+    let res;
+    try {
+      res = await fetch(FRONT_DESK_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        signal: ctl.signal,
+      });
+    } finally { clearTimeout(timer); }
     const data = await res.json();
     if (!data || !data.ok) throw new Error((data && data.error) || 'write failed');
   };
@@ -1082,6 +1183,20 @@
   const clearFormError = (form) => {
     const el = form.querySelector('.form-error');
     if (el) el.classList.remove('is-shown');
+    form.querySelectorAll('[aria-invalid="true"]').forEach(f => f.removeAttribute('aria-invalid'));
+  };
+  // Marks the offending field, points it at the message and moves focus there, so a
+  // keyboard or screen-reader user lands on what needs fixing rather than the button.
+  const flagField = (form, field) => {
+    if (!field) return;
+    field.setAttribute('aria-invalid', 'true');
+    const err = form.querySelector('.form-error');
+    if (err) {
+      if (!err.id) err.id = (form.id || 'form') + '-error';
+      const ids = (field.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+      if (!ids.includes(err.id)) field.setAttribute('aria-describedby', ids.concat(err.id).join(' '));
+    }
+    field.focus();
   };
 
   // Normalises every check SVG to pathLength="1" so the CSS can draw it with
@@ -1132,12 +1247,18 @@
       e.preventDefault();
       clearFormError(contactForm);
 
-      const payload = serializeForm(contactForm, { form: 'contact', source: 'contact' });
-      const invalid =
-        !payload.name                       ? t('Please enter your name.', '請填寫姓名。') :
-        !EMAIL_RE.test(payload.email || '') ? t('Please enter a valid email address.', '請填寫有效的電子郵件。') :
-        !payload.message                    ? t('Please tell us briefly what you need.', '請簡述您的需求。') : '';
-      if (invalid) { showFormError(contactForm, invalid); return; }
+      // One handler, several pages: /engage/ and /ausa/ carry the same form with a
+      // data-source, so their rows are distinguishable in the Front Desk sheet.
+      const payload = serializeForm(contactForm, { form: 'contact', source: contactForm.dataset.source || 'contact' });
+      const [invalid, bad] =
+        !payload.name                       ? [t('Please enter your name.', '請填寫姓名。'), 'name'] :
+        !EMAIL_RE.test(payload.email || '') ? [t('Please enter a valid email address.', '請填寫有效的電子郵件。'), 'email'] :
+        !payload.message                    ? [t('Please tell us briefly what you need.', '請簡述你的需求。'), 'message'] : ['', null];
+      if (invalid) {
+        showFormError(contactForm, invalid);
+        flagField(contactForm, contactForm.querySelector(`[name="${bad}"]`));
+        return;
+      }
 
       const succeed = () => {
         // Pin the panel to the height the form occupied BEFORE hiding it, so
@@ -1147,7 +1268,7 @@
         contactSuccess.style.minHeight = contactForm.offsetHeight + 'px';
         // Shim: capital/ is a separate repo still carrying the old subtext.
         // Drop it once that repo has the markup change.
-        const stale = contactSuccess.querySelector('p');
+        const stale = contactSuccess.querySelector('p:not(.contact-success__next)');
         if (stale) stale.remove();
         primeCheck(contactSuccess);
         contactForm.style.display = 'none';
@@ -1197,7 +1318,7 @@
       nlBlock.classList.remove('is-error');
       primeCheck(nlForm.querySelector('.icon-check'));
       nlBlock.classList.add('is-success');
-      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，感謝您');
+      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，謝謝你');
       nlInput.value = '';
       // Cross-suppress the IP-intel drop popup — already engaged via footer.
       markMktSeen();
@@ -1206,7 +1327,20 @@
     nlForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = serializeForm(nlForm, { form: 'newsletter', source: 'footer' });
-      if (!EMAIL_RE.test(payload.email || '')) return;
+      if (!EMAIL_RE.test(payload.email || '')) {
+        // Used to return silently, which read as a dead button.
+        nlBlock.classList.add('is-error');
+        nlLabel.textContent = t('Enter a valid email address', '請填寫有效的電子郵件');
+        nlInput.setAttribute('aria-invalid', 'true');
+        nlInput.focus();
+        clearTimeout(nlTimer);
+        nlTimer = setTimeout(() => {
+          nlBlock.classList.remove('is-error');
+          nlInput.removeAttribute('aria-invalid');
+          nlRestore();
+        }, 2600);
+        return;
+      }
       if (!frontDeskLive()) { nlSucceed(); return; }
 
       nlBtn.disabled = true;

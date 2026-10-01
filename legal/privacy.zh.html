@@ -8,116 +8,107 @@
      render exists so an "open in new tab" is readable, not so it ranks. -->
 <meta name="robots" content="noindex" />
 <title>隱私政策 — TIS</title>
-<link rel="stylesheet" href="/assets/build/styles.css?v=34" />
+<link rel="stylesheet" href="/assets/build/styles.css?v=40" />
+<script>
+  // Theme init — the standalone render follows the visitor's choice (tis-theme), like every page.
+  (() => { let t = null; try { t = localStorage.getItem('tis-theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', (t === 'light' || t === 'dark') ? t
+      : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')); })();
+</script>
 </head>
 <body class="lgl-page">
 <!-- site.js fetches this file and injects only the <body> into the legal dialog,
      so this wrapper is what the dialog receives too. Keep .lgl-body on it. -->
 <main class="lgl-body">
 <h1 class="lgl-page-title">隱私政策</h1>
-<p class="lgl-meta">生效日 2026-08-25 · 最後更新 2026-08-25</p>
+<p class="lgl-meta">生效日 2026-09-30 · 最後更新 2026-09-30</p>
 
 <div class="lgl-notice">
-  訂購還沒開放。這份說明的是我們目前收集什麼，以及開放後會收集什麼。
+  這份說明涵蓋網站目前蒐集的資料：你透過表單寄來的內容，以及你的瀏覽器所保存的資訊。
+  本網站不使用 Cookie，也沒有任何分析工具。
 </div>
 
 <h2>誰在處理</h2>
 <p>
-  <strong>泰然策略解密股份有限公司</strong>（Talent Intelligence Strategies Global Inc.），
+  <strong>泰然策略解密股份有限公司</strong>（Talent Intelligence Strategies MRO Global Inc.），
   統一編號 <strong>60331107</strong>，地址 100 台北市中正區青島東路4之8號。
+  下面講「泰然」或「我們」，指的就是這家公司。
 </p>
 
-<h2>我們收集什麼</h2>
-<p><strong>你跟我們聯絡或訂閱的時候。</strong>你的姓名、職稱、email、電話、單位、
-  你想問什麼，還有你寫的內容。連帶記下的還有送出時間、你從哪一頁送出、
-  你的語言設定，以及瀏覽器的 user agent 字串。</p>
+<h2>我們蒐集什麼</h2>
+<p><strong>當你聯絡我們、預約範疇評估會談或會面，或訂閱時。</strong>
+  你的姓名、職稱、電子郵件、電話、機構、你選擇的主題與留言。同時我們會記錄送出時間、
+  送出的頁面、你的語言設定，以及瀏覽器的 user agent 字串。</p>
+<p><strong>請勿寄送的內容。</strong>受出口管制的技術資料（ITAR、EAR 或台灣戰略性高科技貨品）、
+  機密資料，以及尚未申請專利的發明細節。網站表單不是受控的傳遞管道。請以概括的方式說明需求，
+  涉及敏感內容時，我們會先安排保密協議與適當的管道。</p>
 
-<p><strong>訂購開放、你訂報告的時候。</strong>上面那些，加上你送來評估的東西：</p>
+<h2>為什麼需要</h2>
 <ul>
-  <li>一個專利號，或</li>
-  <li>申請中草稿或說明書的 PDF，或</li>
-  <li>一段還沒去申請的想法描述，</li>
-</ul>
-<p>
-  再加上你選的報告、你寫的備註，還有聯絡信箱。
-  <strong>這將是我們手上最敏感的資料。</strong>還沒申請的想法、還沒公開的草稿，
-  一旦外流就可能失去新穎性，所以我們預設就當機密處理。
-</p>
-<p><strong>付款。</strong>卡片資料會交給金流服務商，不會經過泰然的伺服器。
-  我們留的是交易結果跟一組付款序號。</p>
-
-<h2>為什麼留著</h2>
-<ul>
-  <li>產製並交付你訂的報告。</li>
-  <li>寄確認信、取件碼，還有完成通知。</li>
-  <li>回覆你問我們的事。</li>
-  <li>寄你訂閱的內容。每封電子報都會附退訂連結。</li>
-  <li>把會計、發票和其他法定義務處理好。</li>
+  <li>回覆你的問題，並安排範疇評估會談、會面或保密協議。</li>
+  <li>寄送你訂閱的內容。每一封電子報都附有取消訂閱連結。</li>
+  <li>處理會計、簽約及其他法定義務。</li>
 </ul>
 
 <h2>還有誰會看到</h2>
-<p>
-  產製報告，會代表你的資料在泰然以外被處理。送東西過來之前，這件事值得先知道：
-</p>
 <ul>
-  <li><strong>泰然在台灣的同事。</strong>報告會是分析人員運用封閉資料庫的 AI 工具做出來的，不是全自動流程。會是具名的人在讀你送來的東西，負有保密義務，而且只有需要的人才會看。</li>
-  <li><strong>新穎</strong>，做專利檢索與資料庫比對。</li>
-  <li><strong>金流服務商</strong>，處理刷卡。</li>
-  <li><strong>Google</strong>，聯絡與電子報表單已經是送到它的 Sheets。這一項現在就在發生；上面三項要等訂購開放。</li>
+  <li><strong>泰然在台灣的同仁</strong>，僅限需要回覆你的人，並負有保密義務。</li>
+  <li><strong>Google</strong>，其 Sheets 服務會接收每一筆表單。</li>
+  <li><strong>維運相關詢問的服務夥伴。</strong>規劃維運專案，需要與 Suntek Group / PG Union 確認量能、
+    與富蘭登科技（FairTech）確認能力。我們只分享他們評估所需的內容，並要求保密；分享之前會先告訴你。</li>
+  <li><strong>Innovue</strong>，僅在保護或授權相關詢問需要其專利資料時，並僅限所需範圍。</li>
 </ul>
 <p>
-  所以你的資料會跨境。<strong>我們不販售你的資料，也不讓它被用來訓練 AI 模型。</strong>
+  其中部分服務位於台灣以外，因此你的資料可能跨境傳輸。
+  <strong>我們不販售你的資料，也不允許它被用來訓練 AI 模型。</strong>
 </p>
 <p>
-  跟上面那些分開講：光是造訪這個網站，就還會涉及兩方。<strong>GitHub Pages</strong> 負責代管，
-  所以它看得到每一次造訪的 IP 位址與請求資訊。另外，如果某一頁本機的圖形或動畫程式庫載入失敗，
-  該頁會退回公開 CDN——<strong>esm.sh</strong>、<strong>jsDelivr</strong> 或
-  <strong>unpkg</strong>——那時它也會看到你的 IP。這兩方都拿不到你填的任何內容。
+  光是造訪網站，就還會涉及另外兩方。<strong>GitHub Pages</strong> 負責託管網站，
+  因此會看到每次造訪的 IP 位址與請求資訊。若頁面本地的圖形或動畫函式庫載入失敗，
+  頁面會改從公開 CDN 載入——<strong>esm.sh</strong>、<strong>jsDelivr</strong> 或
+  <strong>unpkg</strong>——它們也會看到你的 IP。它們都拿不到你輸入的任何內容。
 </p>
 
-<h2>留多久</h2>
+<h2>保存多久</h2>
 <p>
-  <strong>你送來評估的東西</strong>——草稿、說明書、還沒申請的想法描述——
-  只在產製與支援你的報告需要的期間內保留。你要我們刪，隨時說，我們就刪。
-</p>
-<p>
-  <strong>做好的報告</strong>則是只要我們還提供取件，就會一直留著，
-  因為服務條款說了你可以隨時用 email 加取件碼回來拿。
-</p>
-<p>
-  聯絡與詢問紀錄，在往來期間留著。交易紀錄，留到會計與稅務法令不需要為止。
-  電子報訂閱，留到你退訂。
+  詢問紀錄在我們與你往來期間保存，並依後續合約與會計法規的需要保存。
+  訂閱資料保存到你取消訂閱為止。任何我們沒有義務保存的資料，你要求刪除，我們就會刪除。
 </p>
 
-<h2>我們怎麼保護</h2>
+<h2>我們如何保護</h2>
 <ul>
-  <li>整個網站都走 HTTPS。</li>
-  <li>只有需要的同事有存取權，而且負有保密義務。</li>
-  <li>每份下載的報告都會帶浮水印，記著帳號跟下載時間，外流的話追得回來。</li>
+  <li>網站全程使用 HTTPS。</li>
+  <li>只有需要的同仁能夠存取，並負有保密義務。</li>
+  <li>依保密協議交換的資料，依該協議處理，而非依本頁。</li>
 </ul>
 
 <h2>你可以要求我們做什麼</h2>
 <p>
-  依《個人資料保護法》，你可以要求查詢、閱覽、給你複製本、補充更正、停止利用，或是刪除。
-  寫信到 <a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a>。
-  我們依法定期間回覆——查詢、閱覽、複製本 15 天，補充更正、停止利用、刪除 30 天——
-  如果需要用到法律允許的展延，我們會告訴你。這不用錢，也不會讓你因此吃虧。
+  依《個人資料保護法》，你可以要求查詢、取得複本、更正、停止使用或刪除我們持有的你的資料。
+  請寄信至 <a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a>。
+  我們會在法定期限內回覆——查詢與複本 15 日、更正與刪除 30 日——如需依法延長，也會通知你。
+  不收任何費用，也絕不會因此對你不利。
 </p>
 
-<h2>Cookie</h2>
+<h2>Cookie 與分析工具</h2>
 <p>
-  <strong>這個網站完全不設 cookie</strong>——廣告沒有，分析沒有，一個都沒有。
-  站上也沒有任何分析或廣告程式碼。
+  <strong>本網站完全不設定 Cookie</strong>，也沒有任何分析或廣告程式碼。
 </p>
 <p>
-  它確實會在你瀏覽器自己的儲存空間裡留三件事，也只留在那裡：你的語言選擇，讓它在你下次來的時候還在；
-  你關掉過通知列這件事，效期到這次瀏覽階段結束；還有你已經看過電子報邀請這件事，讓它 30 天內不再出現。
-  這些都不會離開你的瀏覽器。
+  網站只在你瀏覽器自己的儲存空間保存幾項資訊，不會傳到其他地方：你的語言與主題設定，
+  讓下次造訪時沿用；你已關閉某則通知列，僅在該次瀏覽期間有效；以及你已看過訂閱提示，
+  讓它 30 天內不再出現。這些都不會離開你的瀏覽器。
+</p>
+
+<h2>洞察產品開放訂購時</h2>
+<p>
+  訂購報告將涉及我們目前不蒐集的資料——專利號、草稿、付款紀錄。
+  在接受第一筆訂單之前，我們會更新這份政策，清楚說明蒐集什麼、由誰處理。
 </p>
 
 <h2>政策變更</h2>
 <p>
-  服務有變動我們就更新，同時把上面的日期改掉。
+  網站與服務有變動時，我們會更新這份政策，並修改最上方的日期。
 </p>
 
 <h2>有問題</h2>

@@ -1,6 +1,6 @@
 # TIS Marketing Website
 
-The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — a Taiwan-rooted IP intelligence consultancy. A static multi-page site that loads its fonts, logos, and icons from [`designs/assets/`](designs/assets/) — the read-only mirror of the brand monorepo's `brand/assets/`.
+The deployable marketing site for **Talent Intelligence Strategies** (泰然策略解密) — Taiwan's ecosystem service provider for unmanned-vehicle makers — Sustain · Protect · License. **The site is mid-restructure:** the shipped pages still carry the retired patent-intelligence / rating-at-core positioning, and the existing product pages (SABCD, Licensing Platform, Signal, reports) move under Insights. Canonical positioning: `brand/positioning.md` in the brand monorepo. A static multi-page site that loads its fonts, logos, and icons from [`designs/assets/`](designs/assets/) — the read-only mirror of the brand monorepo's `brand/assets/`.
 
 ## Pages
 

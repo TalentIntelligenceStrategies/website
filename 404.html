@@ -14,10 +14,10 @@
 <meta property="og:url" content="https://tisglobalinc.com/" />
 <meta property="og:title" content="Page not found — TIS" />
 <meta property="og:description" content="That page doesn't exist on tisglobalinc.com." />
-<meta property="og:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
+<meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="TIS — Talent Intelligence Strategies" />
+<meta property="og:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 <meta property="og:locale" content="en_US" />
 <!-- The page is bilingual on one URL: EN is the DOM text, 中文 lives in data-zh and
      swaps client-side. Crawlers and unfurlers read the served HTML, so they only ever
@@ -27,41 +27,34 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Page not found — TIS" />
 <meta name="twitter:description" content="That page doesn't exist on tisglobalinc.com." />
-<meta name="twitter:image" content="https://talentintelligencestrategies.github.io/website/designs/assets/imagery/og.png" />
-<meta name="twitter:image:alt" content="TIS — Talent Intelligence Strategies" />
+<meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
+<meta name="twitter:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" media="(prefers-color-scheme: light)" />
 <link rel="icon" type="image/svg+xml" href="/designs/assets/logos/tis/tis_cubelogo_submark_light.svg" media="(prefers-color-scheme: dark)" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=34">
+<link rel="stylesheet" href="/assets/build/styles.css?v=40">
 
 <script>
-  // Language init — sync to avoid FOUC. Reads tis-lang from localStorage and sets <html> lang attr before paint.
+  // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
+  // <html data-theme / lang> before first paint. site.js keeps them in step afterwards.
   (() => {
-    const lang = localStorage.getItem('tis-lang');
-    if (lang === 'zh') document.documentElement.setAttribute('lang', 'zh-Hant');
+    const d = document.documentElement;
+    let t = null, lang = null;
+    try { t = localStorage.getItem('tis-theme'); lang = localStorage.getItem('tis-lang'); } catch (e) {}
+    const choice = (t === 'light' || t === 'dark') ? t : 'system';
+    d.setAttribute('data-theme', choice === 'system'
+      ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : choice);
+    if (lang === 'zh') d.setAttribute('lang', 'zh-Hant');
   })();
 </script>
 
-<!-- Reports & Press — page-scoped layout. Composes shared tokens only; no new
-     primitives, no invented hex. -->
-<style>
-  /* Hero carries the About-style WebGL shader (black field, near-mono glow),
-     so the foreground keeps the default white hero text from styles.css.
-     No per-page color override. */
-
-  /* The shared .hero-grid is tuned (white 0.025) for the sparse About/home
-     shader; this page's plasma is denser, so the faint grid washes out. Bump
-     the ruled grid here so it reads over the shader, like the other heroes. */
-  .hero-grid {
-    background:
-      repeating-linear-gradient(0deg,  rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 32px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 32px);
-  }
-</style>
 </head>
 <body>
 
@@ -79,51 +72,153 @@
     <span class="topnav-spacer"></span>
 
     <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
-      <div class="topnav-dropdown-wrap">
-        <button type="button" class="topnav-link has-dropdown" id="products-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="products-menu">
-          <span data-zh="產品">Products</span>
-          <svg class="topnav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div id="products-menu" class="products-menu" role="menu" aria-labelledby="products-trigger">
-          <div class="products-menu-grid">
-            <a href="/product/licensing/" class="product-card" role="menuitem">
-              <span class="product-card-media">
-                <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
-                <span class="product-card-name">
-                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-                  <span class="product-card-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
-                </span>
-                <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
-              </span>
-              <span class="product-card-desc" data-zh="為出口貨物保專利險。依國家與產業精選 30 件專利組合。">Patent insurance for exporters. Curated 30-patent bundles by country and industry.</span>
-            </a>
-            <a href="/product/signal/" class="product-card" role="menuitem">
-              <span class="product-card-media">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 243px, (max-width: 1100px) 243px, 243px"><img class="product-card-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
-                <span class="product-card-name">
-                  <svg class="product-card-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-                  <span class="product-card-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
-                </span>
-              </span>
-              <span class="product-card-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Three reports for investors: the grade, all 50 indicators, or the ten closest patents on the market.</span>
-            </a>
+      <ul class="nav-items">
+      <li class="nav-item" data-nav="sustain">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-sustain" aria-expanded="false" aria-controls="mega-sustain"><span data-zh="維運">Sustain</span></button>
+        <div class="mega-panel" id="mega-sustain" role="region" aria-labelledby="nav-t-sustain">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/sustain/"><span data-zh="維運">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/sustain/#service-package" class="mega-link"><span data-zh="服務項目">Service package</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#network" class="mega-link"><span data-zh="全台服務網">Island-wide network</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#roadmap" class="mega-link"><span data-zh="能力路線圖">Capability roadmap</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/sustain/#compliance" class="mega-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/why-taiwan/" class="mega-res-link"><span data-zh="為何是台灣">Why Taiwan</span></a></li>
+              <li><a href="/engage/#phases" class="mega-res-link"><span data-zh="合作階段">Engagement phases</span></a></li>
+            </ul>
           </div>
         </div>
-      </div>
-      <a href="/patents/"   class="topnav-link" data-zh="自有專利">Owned Patents</a>
-      <a href="/reports/"  class="topnav-link" data-zh="報告與新聞">Reports &amp; Press</a>
-      <a href="/about/"    class="topnav-link" data-zh="關於">About</a>
+      </li>
+      <li class="nav-item" data-nav="protect">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-protect" aria-expanded="false" aria-controls="mega-protect"><span data-zh="保護">Protect</span></button>
+        <div class="mega-panel" id="mega-protect" role="region" aria-labelledby="nav-t-protect">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/protect/"><span data-zh="保護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/protect/#why-neutral" class="mega-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/protect/#capabilities" class="mega-link"><span data-zh="三項核心能力">Three capabilities</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/protect/#filing-strategy" class="mega-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/reports/" class="mega-res-link"><span data-zh="專利布局報告">Landscape reports</span></a></li>
+              <li><a href="/engage/#bundle" class="mega-res-link"><span data-zh="維運組合方案">Sustainment Bundle</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="license">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-license" aria-expanded="false" aria-controls="mega-license"><span data-zh="授權">License</span></button>
+        <div class="mega-panel" id="mega-license" role="region" aria-labelledby="nav-t-license">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/license/"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/license/#services" class="mega-link"><span data-zh="授權服務">Licensing services</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/license/#commitments" class="mega-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/why-taiwan/#patents" class="mega-res-link"><span data-zh="台灣專利現況">Taiwan patent picture</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="ecosystem">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-ecosystem" aria-expanded="false" aria-controls="mega-ecosystem"><span data-zh="生態系">Ecosystem</span></button>
+        <div class="mega-panel" id="mega-ecosystem" role="region" aria-labelledby="nav-t-ecosystem">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/ecosystem/"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/ecosystem/#suntek" class="mega-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#fairtech" class="mega-link"><span data-zh="富蘭登科技">FairTech</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#innovue" class="mega-link"><span data-zh="Innovue">Innovue</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/ecosystem/#map" class="mega-res-link"><span data-zh="整體架構">How it fits together</span></a></li>
+              <li><a href="/engage/" class="mega-res-link"><span data-zh="開始合作">Start an engagement</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="insights">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-insights" aria-expanded="false" aria-controls="mega-insights"><span data-zh="洞察">Insights</span></button>
+        <div class="mega-panel" id="mega-insights" role="region" aria-labelledby="nav-t-insights">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/reports/"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/reports/#reports" class="mega-link"><span data-zh="專利布局報告">Landscape reports</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/methodology.html" class="mega-link"><span data-zh="SABCD 評級方法">SABCD rating</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/" class="mega-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/reports/#press" class="mega-res-link"><span data-zh="新聞">Press</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" data-nav="about">
+        <button type="button" class="topnav-link nav-trigger" id="nav-t-about" aria-expanded="false" aria-controls="mega-about"><span data-zh="關於">About</span></button>
+        <div class="mega-panel" id="mega-about" role="region" aria-labelledby="nav-t-about">
+          <div class="mega-main">
+            <a class="mega-eyebrow mega-eyebrow--page" href="/about/"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <ul class="mega-list">
+              <li><a href="/why-taiwan/" class="mega-link"><span data-zh="為何是台灣">Why Taiwan</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/about/#governance" class="mega-link"><span data-zh="治理與中立">Governance &amp; neutrality</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/about/#board" class="mega-link"><span data-zh="董事會">Board of directors</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+            </ul>
+          </div>
+          <div class="mega-aside">
+            <p class="mega-eyebrow" data-zh="資源">Resources</p>
+            <ul class="mega-res">
+              <li><a href="/engage/" class="mega-res-link"><span data-zh="合作模式">Engagement model</span></a></li>
+              <li><a href="/legal/disclosures.en.html" class="mega-res-link" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      </ul>
     </nav>
 
     <div class="topnav-controls">
+      <!-- Theme toggle — 3-segment pill: System / Light / Dark (restored 2026-09-29 from ef34f5b^) -->
+      <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme" data-zh-aria="主題">
+        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" data-zh-aria="跟隨系統" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" data-zh-aria="淺色主題" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" data-zh-aria="深色主題" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn icon-btn--code" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
             <path d="M2 12h20"/>
           </svg>
+          <span class="lang-code" aria-hidden="true">EN</span>
         </button>
         <div class="lang-menu" role="menu">
           <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
@@ -139,7 +234,7 @@
         </svg>
       </button>
 
-      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡業務">Contact sales</a>
+      <a href="/engage/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
@@ -148,10 +243,14 @@
     </div>
   </div>
 </header>
+<!-- Mega-panel scrim. Outside the header on purpose: .topnav's backdrop-filter makes it
+     the containing block for fixed descendants, so a fixed scrim inside it would be
+     clipped to the 64px bar. z-index 99 sits under the nav (100), over the veil (95). -->
+<div class="mega-scrim" id="mega-scrim" aria-hidden="true"></div>
 
 <!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
-<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" data-zh-aria="選單">
+<aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
     <span class="mobile-header-logo" aria-hidden="true"></span>
     <button class="icon-btn" id="mobile-close" type="button" aria-label="Close menu" data-zh-aria="關閉選單">
@@ -159,39 +258,100 @@
     </button>
   </div>
   <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
-    <button type="button" class="mobile-row-dropdown" id="m-products-trigger" aria-expanded="false" aria-controls="m-products-sublist">
-      <span data-zh="產品">Products</span>
+    <button type="button" class="mobile-row-dropdown" id="m-t-sustain" data-nav="sustain" aria-expanded="false" aria-controls="m-sub-sustain">
+      <span data-zh="維運">Sustain</span>
       <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
-    <div id="m-products-sublist" class="mobile-sublist">
-      <a href="/product/licensing/" class="mobile-sub-row">
-        <span class="mobile-sub-media">
-          <picture><source type="image/webp" srcset="/assets/imagery/coremap/licensing-warm-v2-400.webp 400w, /assets/imagery/coremap/licensing-warm-v2-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/coremap/licensing-warm-v2.png" alt="" loading="lazy" decoding="async" width="640" height="360" ></picture>
-          <span class="mobile-sub-name">
-            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-            <span class="mobile-sub-name-text" data-zh="泰然專利防護網">Licensing Platform</span>
-          </span>
-          <span class="status-flag status-flag--on-image" data-zh="即將推出">Coming soon</span>
-        </span>
-        <span class="mobile-sub-desc" data-zh="為出口貨物保專利險。依國家與產業精選 30 件專利組合。">Patent insurance for exporters. Curated 30-patent bundles by country and industry.</span>
-      </a>
-      <a href="/product/signal/" class="mobile-sub-row">
-        <span class="mobile-sub-media">
-          <picture><source type="image/webp" srcset="/assets/imagery/signal/signal-cool-400.webp 400w, /assets/imagery/signal/signal-cool-640.webp 640w" sizes="(max-width: 640px) 100vw, 720px"><img class="mobile-sub-img" src="/assets/imagery/signal/signal-cool.jpg" alt="" loading="lazy" decoding="async" width="640" height="413" ></picture>
-          <span class="mobile-sub-name">
-            <svg class="mobile-sub-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-            <span class="mobile-sub-name-text" data-zh="泰然專利強度評級系統">Patent Intelligence</span>
-          </span>
-        </span>
-        <span class="mobile-sub-desc" data-zh="比對同產業專利，針對「量」「質」兼備的50 個指標，有理有據地為專利作專業評級。">Three reports for investors: the grade, all 50 indicators, or the ten closest patents on the market.</span>
-      </a>
+    <div id="m-sub-sustain" class="mobile-sublist">
+      <a href="/sustain/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="維運">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/sustain/#service-package" class="mobile-sub-link"><span data-zh="服務項目">Service package</span></a>
+      <a href="/sustain/#network" class="mobile-sub-link"><span data-zh="全台服務網">Island-wide network</span></a>
+      <a href="/sustain/#roadmap" class="mobile-sub-link"><span data-zh="能力路線圖">Capability roadmap</span></a>
+      <a href="/sustain/#compliance" class="mobile-sub-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/why-taiwan/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="為何是台灣">Why Taiwan</span></a>
+      <a href="/engage/#phases" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作階段">Engagement phases</span></a>
     </div>
-    <a href="/patents/"   data-zh="自有專利">Owned Patents</a>
-    <a href="/reports/"  data-zh="報告與新聞">Reports &amp; Press</a>
-    <a href="/about/"    data-zh="關於">About</a>
+    <button type="button" class="mobile-row-dropdown" id="m-t-protect" data-nav="protect" aria-expanded="false" aria-controls="m-sub-protect">
+      <span data-zh="保護">Protect</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-protect" class="mobile-sublist">
+      <a href="/protect/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="保護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/protect/#why-neutral" class="mobile-sub-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span></a>
+      <a href="/protect/#capabilities" class="mobile-sub-link"><span data-zh="三項核心能力">Three capabilities</span></a>
+      <a href="/protect/#filing-strategy" class="mobile-sub-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/reports/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="專利布局報告">Landscape reports</span></a>
+      <a href="/engage/#bundle" class="mobile-sub-link mobile-sub-link--res"><span data-zh="維運組合方案">Sustainment Bundle</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-license" data-nav="license" aria-expanded="false" aria-controls="m-sub-license">
+      <span data-zh="授權">License</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-license" class="mobile-sublist">
+      <a href="/license/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/license/#portfolio" class="mobile-sub-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span></a>
+      <a href="/license/#services" class="mobile-sub-link"><span data-zh="授權服務">Licensing services</span></a>
+      <a href="/license/#commitments" class="mobile-sub-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/why-taiwan/#patents" class="mobile-sub-link mobile-sub-link--res"><span data-zh="台灣專利現況">Taiwan patent picture</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-ecosystem" data-nav="ecosystem" aria-expanded="false" aria-controls="m-sub-ecosystem">
+      <span data-zh="生態系">Ecosystem</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-ecosystem" class="mobile-sublist">
+      <a href="/ecosystem/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/ecosystem/#suntek" class="mobile-sub-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span></a>
+      <a href="/ecosystem/#fairtech" class="mobile-sub-link"><span data-zh="富蘭登科技">FairTech</span></a>
+      <a href="/ecosystem/#innovue" class="mobile-sub-link"><span data-zh="Innovue">Innovue</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/ecosystem/#map" class="mobile-sub-link mobile-sub-link--res"><span data-zh="整體架構">How it fits together</span></a>
+      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="開始合作">Start an engagement</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-insights" data-nav="insights" aria-expanded="false" aria-controls="m-sub-insights">
+      <span data-zh="洞察">Insights</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-insights" class="mobile-sublist">
+      <a href="/reports/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/reports/#reports" class="mobile-sub-link"><span data-zh="專利布局報告">Landscape reports</span></a>
+      <a href="/product/signal/methodology.html" class="mobile-sub-link"><span data-zh="SABCD 評級方法">SABCD rating</span></a>
+      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a>
+      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/reports/#press" class="mobile-sub-link mobile-sub-link--res"><span data-zh="新聞">Press</span></a>
+    </div>
+    <button type="button" class="mobile-row-dropdown" id="m-t-about" data-nav="about" aria-expanded="false" aria-controls="m-sub-about">
+      <span data-zh="關於">About</span>
+      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="m-sub-about" class="mobile-sublist">
+      <a href="/about/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/why-taiwan/" class="mobile-sub-link"><span data-zh="為何是台灣">Why Taiwan</span></a>
+      <a href="/about/#governance" class="mobile-sub-link"><span data-zh="治理與中立">Governance &amp; neutrality</span></a>
+      <a href="/about/#board" class="mobile-sub-link"><span data-zh="董事會">Board of directors</span></a>
+      <p class="mobile-sub-label" data-zh="資源">Resources</p>
+      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作模式">Engagement model</span></a>
+      <a href="/legal/disclosures.en.html" class="mobile-sub-link mobile-sub-link--res" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a>
+    </div>
   </nav>
   <div class="mobile-auth">
-    <a href="/#contact" class="btn btn-primary" data-zh="聯絡業務">Contact sales</a>
+    <!-- Language sits in the drawer footer because the topnav globe is hidden
+         behind the drawer once it is open, leaving the switch unreachable on a
+         phone. Same hook the topnav menu uses, so site.js picks these up and
+         keeps aria-checked in sync across both. -->
+    <div class="mobile-lang mobile-theme" role="radiogroup" aria-label="Theme" data-zh-aria="主題">
+      <button type="button" data-theme-set="system" role="radio" aria-checked="false"><span data-zh="系統">System</span></button>
+      <button type="button" data-theme-set="light" role="radio" aria-checked="false"><span data-zh="淺色">Light</span></button>
+      <button type="button" data-theme-set="dark" role="radio" aria-checked="false"><span data-zh="深色">Dark</span></button>
+    </div>
+    <div class="mobile-lang" role="radiogroup" aria-label="Language" data-zh-aria="語言">
+      <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
+      <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
+    </div>
+    <a href="/engage/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
   </div>
 </aside>
 
@@ -203,41 +363,44 @@
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋報告、新聞與頁面…" placeholder="Search reports, press, and pages…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面、報告與新聞…" placeholder="Search pages, reports and press…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
-    <a href="/product/signal/" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-6 9 6-9 6-9-6z"/><path d="M3 15l9 6 9-6"/></svg>
-      <span data-zh="專利情報">Patent Intelligence</span>
+    <a href="/sustain/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span data-zh="維運">Sustain</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/product/signal/methodology.html" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-      <span data-zh="SABCD 評級方法">SABCD Methodology</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/product/licensing/" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-      <span data-zh="專利授權平台">Licensing Platform</span>
-      <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/product/licensing/badge.html" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
-      <span data-zh="授權驗證標章">Verified License Badge</span>
-      <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/patents/" class="search-link">
+    <a href="/protect/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span data-zh="自有專利">Owned Patents</span>
+      <span data-zh="保護">Protect</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/license/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+      <span data-zh="授權">License</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/ecosystem/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg>
+      <span data-zh="生態系">Ecosystem</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/why-taiwan/" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+      <span data-zh="為何是台灣">Why Taiwan</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/reports/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-      <span data-zh="報告與新聞">Reports &amp; Press</span>
+      <span data-zh="洞察">Insights</span>
+      <span class="search-link-meta" data-zh="頁面">Page</span>
+    </a>
+    <a href="/product/signal/methodology.html" class="search-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <span data-zh="SABCD 評級方法">SABCD rating</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/about/" class="search-link">
@@ -245,9 +408,9 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/#contact" class="search-link">
+    <a href="/engage/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-      <span data-zh="聯絡">Contact</span>
+      <span data-zh="聯絡我們">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
   </div>
@@ -272,30 +435,42 @@
 
       <ul class="nf-list">
         <li>
-          <a href="/product/signal/"><span data-zh="專利情報">Patent Intelligence</span></a>
-          <span data-zh="單件專利評級、50 項指標，或完整專利地圖。">One grade, 50 indicators, or the whole landscape.</span>
+          <a href="/sustain/"><span data-zh="維運">Sustain</span></a>
+          <span data-zh="已部署無人載具系統的 MRO 與維運支援。">MRO and sustainment for fielded UV systems.</span>
         </li>
         <li>
-          <a href="/product/licensing/"><span data-zh="專利授權平台">Licensing Platform</span></a>
-          <span data-zh="涵蓋美國與台灣的 30 件專利防護網（即將推出）。">30-patent bundles across US and Taiwan (coming soon).</span>
+          <a href="/protect/"><span data-zh="保護">Protect</span></a>
+          <span data-zh="在台灣與亞洲的專利顧問。">Patent consulting in Taiwan and Asia.</span>
         </li>
         <li>
-          <a href="/patents/"><span data-zh="自有專利">Owned Patents</span></a>
-          <span data-zh="我們自有的專利組合。">The portfolio we hold ourselves.</span>
+          <a href="/license/"><span data-zh="授權">License</span></a>
+          <span data-zh="TIS × Innovue 無人機專利組合與授權服務。">The TIS × Innovue UAV patent portfolio and licensing services.</span>
         </li>
         <li>
-          <a href="/reports/"><span data-zh="報告與新聞">Reports &amp; Press</span></a>
-          <span data-zh="季度專利地形報告與公司消息。">Quarterly landscape reads and company news.</span>
+          <a href="/ecosystem/"><span data-zh="生態系">Ecosystem</span></a>
+          <span data-zh="一份合約背後，每個夥伴各自負責的角色。">Who does what behind the one contract.</span>
+        </li>
+        <li>
+          <a href="/why-taiwan/"><span data-zh="為何是台灣">Why Taiwan</span></a>
+          <span data-zh="需求、採購計畫與專利現況。">Demand, procurement programs and the patent picture.</span>
+        </li>
+        <li>
+          <a href="/reports/"><span data-zh="洞察">Insights</span></a>
+          <span data-zh="報告、新聞，以及以 TIS 研究為基礎的產品。">Reports, press, and the products built on TIS research.</span>
         </li>
         <li>
           <a href="/about/"><span data-zh="關於 TIS">About TIS</span></a>
-          <span data-zh="我們是誰，以及我們為何做這件事。">Who we are, and why we do this.</span>
+          <span data-zh="我們是誰。">Who we are.</span>
+        </li>
+        <li>
+          <a href="/engage/"><span data-zh="合作">Engage</span></a>
+          <span data-zh="範疇評估、試行，然後全面合作。">Scoping, pilot, then full partnership.</span>
         </li>
       </ul>
 
       <div class="nf-actions">
         <a href="/" class="btn btn-primary" data-zh="回到首頁">Back to home</a>
-        <a href="/#contact" class="btn btn-secondary" data-zh="與我們聯絡">Talk to us</a>
+        <a href="/engage/" class="btn btn-secondary" data-zh="聯絡我們">Contact</a>
       </div>
     </div>
   </section>
@@ -307,9 +482,9 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get Our Latest News</div>
+            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your Email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -317,51 +492,43 @@
             </form>
           </div>
           <div class="footer-logo-row">
-            <span class="footer-logo" aria-hidden="true"></span>
-            <span class="footer-divider" aria-hidden="true"></span>
-            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+            <span class="footer-logo" role="img" aria-label="TIS" data-zh-aria="泰然策略解密"></span>
           </div>
         </div>
 
         <div class="footer-cols">
           <div class="footer-col">
-            <h2 data-zh="產品">Products</h2>
+            <h2 data-zh="服務">Services</h2>
             <ul>
-              <li><a href="/product/licensing/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-                <span data-zh="泰然專利防護網">Licensing Platform</span>
-                <span class="status-flag" data-zh="即將推出">Coming soon</span></a></li>
-              <li><a href="/product/signal/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg>
-                <span data-zh="泰然專利強度評級系統">Patent Intelligence</span></a></li>
+              <li><a href="/sustain/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span data-zh="維運">Sustain</span></a></li>
+              <li><a href="/protect/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span data-zh="保護">Protect</span></a></li>
+              <li><a href="/license/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5"/></svg><span data-zh="授權">License</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h2 data-zh="公司">Company</h2>
             <ul>
-              <li><a href="/patents/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2v5a1 1 0 001 1h5"/><path d="M14.692 22H18a2 2 0 002-2V8a2.4 2.4 0 00-.706-1.706l-3.588-3.588A2.4 2.4 0 0014 2H6a2 2 0 00-2 2v3.804"/><path d="M2.264 13.752 7 16.5l4.737-2.748"/><path d="M2.995 13.014A2 2 0 002 14.744v3.516a2 2 0 00.996 1.73l3 1.74a2 2 0 002.008 0l3-1.74A2 2 0 0012 18.26v-3.517a2 2 0 00-.995-1.73l-3-1.742a2 2 0 00-1.892-.064z"/><path d="M7 16.5V22"/></svg>
-                <span data-zh="自有專利">Owned Patents</span></a></li>
-              <li><a href="/reports/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg>
-                <span data-zh="報告與新聞">Reports &amp; Press</span></a></li>
-              <li><a href="/about/">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-                <span data-zh="關於">About</span></a></li>
+              <li><a href="/ecosystem/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg><span data-zh="生態系">Ecosystem</span></a></li>
+              <li><a href="/why-taiwan/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span data-zh="為何是台灣">Why Taiwan</span></a></li>
+              <li><a href="/about/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg><span data-zh="關於">About</span></a></li>
+              <li><a href="/engage/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span data-zh="合作">Engage</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h2 data-zh="洞察">Insights</h2>
+            <ul>
+              <li><a href="/reports/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg><span data-zh="報告與新聞">Reports &amp; press</span></a></li>
+              <li><a href="/product/signal/methodology.html" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="SABCD 評級方法">SABCD rating</span></a></li>
+              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a></li>
+              <li><a href="/product/licensing/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h2 data-zh="法律">Legal</h2>
             <ul>
-              <li><a href="/legal/terms.en.html" data-legal="terms">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-                <span data-zh="服務條款">Terms</span></a></li>
-              <li><a href="/legal/privacy.en.html" data-legal="privacy">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
-                <span data-zh="隱私政策">Privacy</span></a></li>
-              <li><a href="/legal/disclosures.en.html" data-legal="disclosures">
-                <svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
-                <span data-zh="揭露聲明">Disclosures</span></a></li>
+              <li><a href="/legal/terms.en.html" data-legal="terms"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg><span data-zh="服務條款">Terms</span></a></li>
+              <li><a href="/legal/privacy.en.html" data-legal="privacy"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg><span data-zh="隱私政策">Privacy</span></a></li>
+              <li><a href="/legal/disclosures.en.html" data-legal="disclosures"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg><span data-zh="揭露聲明">Disclosures</span></a></li>
             </ul>
           </div>
         </div>
@@ -371,7 +538,7 @@
 
   <div class="footer-baseline">
     <div class="container">
-      <p class="footer-copy">© 2026 Talent Intelligence Strategies Global Inc.</p>
+      <p class="footer-copy">© 2026 Talent Intelligence Strategies MRO Global Inc.</p>
     </div>
   </div>
 
@@ -401,7 +568,7 @@
      first and copy reports/index.html: it passes iResolution in DEVICE pixels to
      match gl_FragCoord, which is the thing three of the other heroes got wrong. -->
 
-<script src="/assets/build/site.js?v=18" defer></script>
+<script src="/assets/build/site.js?v=23" defer></script>
 
 </body>
 </html>

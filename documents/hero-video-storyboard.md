@@ -1,7 +1,7 @@
 ---
 title: "Hero-Video Storyboards — narration-first, ~30s"
 owner: "Michael (Miko)"
-status: "draft — for story decision"
+status: "superseded 2026-09-28 — built on the retired rating-at-core positioning; do not produce"
 created_at: "2026-06-19"
 updated_at: "2026-06-24"
 source:

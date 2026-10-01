@@ -1,0 +1,26 @@
+# GitHub Pages runs this repo through Jekyll (build_type: legacy). Without this file
+# every tracked .md was published — /DESIGN.md, /CLAUDE.md, /documents/*.md, and their
+# auto-rendered .html twins. The site itself is plain HTML with no front matter, so
+# Jekyll copies it through untouched; this file only keeps working material out.
+#
+# Setting `exclude` replaces Jekyll's defaults, so those are restated at the bottom.
+# Patterns match paths relative to the repo root: "*.md" covers root files only,
+# folders need their own pattern.
+exclude:
+  - "*.md"
+  - "documents/*.md"
+  - "designs/*.md"
+  - "designs/assets/fonts/*.md"
+  - src
+  - scripts
+  - package.json
+  - package-lock.json
+  - vite.config.js
+  - tailwind.config.js
+  - postcss.config.js
+  - skills-lock.json
+  # Jekyll defaults
+  - node_modules
+  - vendor
+  - Gemfile
+  - Gemfile.lock

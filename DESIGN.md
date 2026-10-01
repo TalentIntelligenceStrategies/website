@@ -541,68 +541,65 @@ make the next edit harder and neither leaves a trace of why.
 - **Logo** (`.topnav-logo`): Secondary mark, `height:28px`, `aspect-ratio` from the SVG
   viewBox (eng ≈8.75:1, ch ≈3.74:1), themed/lang-switched via `--logo-secondary`. Below
   640px it falls back to the square submark (`aspect-ratio:1/1`, `height:32px`).
-- **Links** (`.topnav-link`): 14px/600, secondary colour, centered, hover → `#000`
-  (`#fff` in dark). The Products link is a `.has-dropdown` disclosure (chevron rotates
-  180° when `aria-expanded="true"`) holding two `.product-card`s with lazy `<img>` media.
-- **Controls cluster**: language globe + search (`.icon-btn`), then "Contact sales"
-  primary CTA, then the mobile hamburger (`.topnav-mobile-trigger`, shown at narrow
-  widths). The mobile drawer (`.mobile-drawer` + `.mobile-overlay`) mirrors the nav.
+- **Six section triggers** (2026-09-28): Sustain · Protect · License · Ecosystem · Insights
+  · About, right-aligned before the controls cluster, where the old links sat (`.nav-items` → `.nav-item` → `button.nav-trigger`,
+  14px/600, secondary colour, hover → `#000`). No chevrons. Each opens a **mega panel**.
+  Contents are the section map from `mro/website-page-map.md` §2 and live in one place:
+  `scripts/sync-chrome.py`.
+- **Controls cluster**: language globe with the active code (`.lang-code`: `EN` / `中文`,
+  set by `applyLang`), search, the **Contact** primary CTA (→ `/engage/`), then the hamburger.
+- **Breakpoint 1080px**, not 980: six triggers + the Secondary wordmark + controls need
+  ~1040px of row. At ≤1080 the triggers and the CTA hide and the hamburger shows.
 
-**The drawer carries the language switch, and the Products group opens by default**
-(2026-08-27). Two facts drove both:
+**Mega panel** (modelled on the reference supplied 2026-09-28).
 
-- The topnav globe is *behind* the drawer once it slides in, so on a phone the language
-  switch was unreachable while the menu was open. `.mobile-lang` is a segmented pair in
-  the drawer footer above the CTA, using the same `[data-lang-set]` hook as the topnav
-  menu — `langButtons` in `site.js` is queried document-wide, not scoped to `#lang-wrap`,
-  so one `applyLang` call keeps both sets' `aria-checked` in sync. Choosing a language
-  from the drawer also closes it: the swap plays a full-screen shimmer and two stacked
-  overlays read as a fight. There is **no theme toggle** anywhere in the UI — dark theme
-  is styled but never switchable — so the footer holds language only.
-- Collapsed, the drawer was four links over **503px of empty white** on a 844px phone
-  (60% of the panel). Expanded it is four links plus two 88px-media product cards.
+- One `.mega-panel` per `.nav-item`, **directly after its trigger in the DOM**, absolutely
+  positioned against the fixed `.topnav` (`top:100%; left/right:12px`, bottom radius 16,
+  `--shadow-high`). Being a child of the item is what makes Tab run trigger → panel links →
+  next trigger, and what keeps hover continuous from trigger into panel.
+- **One surface, one tone** (polish 2026-09-29, replacing the two-tone 38% / grey-aside
+  panel). The panel is `--surface-page` end to end, continuous with the opaque bar, and its
+  height is set by its content (no `min-height`). Two columns, `2fr / minmax(220px,1fr)`:
+  `.mega-main` holds the section eyebrow and the anchor list, set **two-up** (one column at
+  ≤1240); `.mega-aside` holds "Resources" behind a 1px `--border-primary` hairline. **The
+  eyebrow is the page link** (`a.mega-eyebrow--page`, "Sustain →", 13px/600); there is no
+  "Overview" row, and every row below it is an anchor on that page. The trigger still only
+  opens the panel. The drawer mirrors this: each group opens with the page link
+  (`.mobile-sub-link--page`, bold), then its anchors at 17px.
+- Type is one step above the 14px triggers, not a display size: anchors `.mega-link` 16px/500,
+  resources `.mega-res-link` 14px/500 in `--text-secondary`, the "Resources" label 12px/600
+  `--text-secondary`. Rows are split by `--border-primary` hairlines, not ink rules; every row
+  is ≥44px. Why Taiwan (`/why-taiwan/`) sits under About and Sustain → Resources, not as a
+  seventh trigger.
+- Open trigger: `aria-expanded="true"`, ink colour, a 2px ink underline on the bar's bottom
+  edge. The bar turns opaque (`.topnav[data-mega-open]`). `.mega-scrim` dims the page lightly (`rgba(0,0,0,0.14)`); it sits
+  **outside** the header because `.topnav`'s `backdrop-filter` would contain a fixed child,
+  at `z-index:99` (under the nav, over the veil at 95).
+- Behaviour (`site.js` "Mega nav"): disclosure pattern, **not** `role="menu"`. Hover intent
+  120ms open / 200ms close on fine pointers; moving across triggers swaps content instantly
+  (`.mega-switching` suppresses the fade). Click toggles; a click on a hover-opened panel pins
+  it. ArrowDown opens and focuses the first link. Esc closes and returns focus. Focus leaving
+  the item, an outside click, the scrim, opening the language menu, scrolling past 64px
+  (unpinned only) and crossing the 1080 breakpoint all close it. Reduced motion: no fade or
+  slide.
+- `aria-current="page"` is set by `site.js` on any panel or drawer link whose path is the
+  current page (the arrow shows on it). There is still no active pill in the bar.
 
-**The expanded default is measured, not assumed.** The markup ships
-`aria-expanded="true"` + `data-open="true"`; `fitProductsDefault()` runs on every
-`openDrawer()`, and if `.mobile-list` now overflows its own box it puts the group back.
-That matters on short viewports — at 375x667 the expanded sublist pushes the last two nav
-rows under the fold, and hidden navigation is a worse fault than empty space. Verified at
-390x844, 375x667 (falls back to collapsed), 430x932 and 412x915: no drawer scrolls and
-every nav row is visible. A reader who toggles the group sets `data-userToggled` and is
-never overridden again.
+**Mobile drawer.** Six accordion groups (`.mobile-row-dropdown` → `.mobile-sublist`) carry the
+same links: main links at 20px, then "Resources" at 15px. On open, the group for the current
+page's section expands (`fitDrawerDefault`), unless the reader has toggled one. The drawer keeps
+the language segment and the Contact CTA in its pinned foot (2026-08-27 rationale: the topnav
+globe is behind the drawer once it opens).
 
-**Contact-chrome routing rule** (2026-08-18). Three links per page carry a contact
-intent — the topnav CTA, the mobile-drawer CTA, and the search-modal "Contact" entry —
-and all three follow one rule:
-
-> **If the page has its own `.contact` `#contact` section, all three point at `#contact`
-> on that page. If it does not, all three point at `/#contact` on the homepage.**
-
-Never a cross-page link to a *different* page's `#contact`, and never a same-page
-`#contact` on a page that has no such anchor. Both failure modes were live before this
-rule was written: `methodology.html` pointed at `/product/signal/#contact`, an anchor
-that does not exist, so it silently landed at the top of the Signal page; `badge.html`,
-`about/`, `patents/` and `reports/` each sent their search-modal link off their own page
-despite carrying the form themselves.
-
-**A veiled page counts as being in the `does not` branch** (§17). Its own `#contact`
-section is inside an `inert` `<main>` and the page cannot scroll, so a same-page
-`#contact` is unreachable twice over. All three links go to `/#contact`. This applies to
-`product/licensing/index.html` and `product/licensing/badge.html` while the veil is up,
-and reverts with it.
-
-**Signal (`product/signal/index.html`) is the only unveiled page in the `does not` branch.** Its
-equivalent slot is `#intake`, a transactional order form that asks which report you want
-and takes a card deposit, so it cannot answer a general enquiry. Its two "Start an
-evaluation" CTAs stay on `#intake` — that is the order action, and keeping the two
-distinct is the point. Add a `.contact` section to that page and all three links move
-back to same-page `#contact`.
+**Contact routing** (2026-09-28): every contact chrome link (topnav CTA, drawer CTA, search
+"Contact") points at `/engage/`. This replaces the 2026-08-18 same-page-`#contact` rule; pages
+may still carry their own `#contact` form, but the chrome no longer targets it.
 
 `main` reserves `padding-top` for the fixed 64px nav; `scroll-padding-top:80px` keeps
 anchored jumps clear of it.
 
-Chrome is **duplicated per page** — there is no shared include. A nav or footer change
-means editing every page file.
+Chrome is **duplicated per page** — there is no shared include. Edit it in
+`scripts/sync-chrome.py` and run it with `--write`; never hand-edit one page's copy.
 
 ---
 
@@ -938,12 +935,15 @@ Cards only where a card is the true affordance. **No nested cards.**
 ## 8. Footer
 
 `.footer`: background `--surface-secondary`, `padding-block:68px`. `.footer-grid` =
-`1.4fr 1fr 1fr 1fr`; `.footer-cols { display:contents }` dissolves the three link
-columns into that parent grid. Contains: a newsletter block (44px input, arrow → check
-success swap), the co-branded **TIS × Innovue** lockup (32px TIS submark + 1px×32px
-divider + Innovue wordmark 103×36), and three link columns (Products / Company / Legal)
-with 15px Lucide icons. A `.footer-baseline` band carries the centered
-"© 2026 Talent Intelligence Strategies" over an inset hairline.
+`1.4fr repeat(4, 1fr)`; `.footer-cols { display:contents }` dissolves the four link columns
+into that grid (2026-09-28): **Services** (Sustain, Protect, License) · **Company** (Ecosystem,
+About, Why Taiwan, Contact) · **Insights** (Reports & press, SABCD rating, Patent Intelligence
+SaaS, Licensing Platform) · **Legal** (`data-legal` modal hooks). Every link carries a 15px Lucide `.footer-ico` (survivors keep their old glyph; paths live in `FOOTER_ICONS` in `scripts/sync-chrome.py`). The identity
+column holds the newsletter block and the mark, **per pillar**: front-door pages show the TIS
+submark alone; Insights pages (reports, signal, methodology, licensing, badge) keep the
+**TIS × Innovue** lockup (32px submark + 1px×32px divider + Innovue 103×36), per
+`visual-guide-snapshot.md` §Partner Credit by Pillar. A `.footer-baseline` band carries the
+centered copyright over an inset hairline.
 
 **At ≤560px the two `.about-card`s adopt the `.offer-card` recipe** (2026-08-29), and the
 reason is worth stating because it looked like a centring bug and was not. `innovue-dots.png`
@@ -967,11 +967,11 @@ once.
 
 ## 8. Footer — mobile
 
-**At ≤560px Products spans the full row** (2026-08-29): `.footer-col:first-child
-{ grid-column: 1 / -1 }`, so its "Coming soon" status flag sits beside the label instead of
-wrapping under it, and Company + Legal pair below. This also fills the cell Legal used to
-leave empty when three columns wrapped 2 + 1. CSS-only — which matters, because the footer
-markup is hand-copied into **9 files**.
+**Columns fold 4 → 4 → 2** (2026-09-28): at ≤980px the link columns re-form as their own
+4-up grid under the identity block; at ≤640px they pair 2-up (Services + Company, Insights +
+Legal). The old ≤560 rule that spanned Products across the row is gone with the Products
+column; the Licensing row's "Coming soon" flag wraps under its label via
+`.footer-col a:has(> .status-flag)`.
 
 **Spacing tightens at ≤560px, links do not** (2026-08-29). Measured at 390px the footer was
 **700px — 83% of a phone viewport**, identically on all 9 pages, which made it the single most
@@ -1002,7 +1002,7 @@ meant `role="contentinfo"` was nested inside `main` and was never exposed as a l
 on any page. Fixed on all 8 pages at once so the skeletons stay identical. The
 `.footer-baseline` copyright row moved out with it.
 
-The Products column's Licensing row carries a `.status-flag` (§17). `.footer-col a` is
+The Insights column's Licensing row carries a `.status-flag` (§17). `.footer-col a` is
 `inline-flex` with `gap: 8px`, so the flag needs no margin; only the row that has one
 gets `flex-wrap: wrap`, so a narrow 2-column footer drops the flag below the label
 instead of squeezing it.
@@ -1343,8 +1343,8 @@ dossier, not the adrenaline of a SaaS hero.
    walks you through. Sectional numbering and monospaced metadata are legitimate here
    because the content literally *is* a sequence of patent IDs, tiers, licence numbers
    and dates.
-3. **Evidence over adjectives.** Lead with the real number (30, NT$50,000+, 18 months,
-   5·6·9·6·4, 1.7億件). The design's job is to make those numbers land, never to inflate
+3. **Evidence over adjectives.** Lead with the real number (9 of 16, 48,750 aircraft, 18 months,
+   30, 1.8 億件). The design's job is to make those numbers land, never to inflate
    them.
 4. **Honest about the edges.** The "when it doesn't go to plan" beat is a feature of the
    brand, not fine print. Give it real weight.
@@ -3179,6 +3179,56 @@ bar and nothing above it, so it read as a bug. That page-local selector already 
 shared rule on `margin` and `align-self`; it simply never redeclared radius.
 
 ---
+
+### 16.5 UV front-door pages — Home, About, Sustain, Protect, License, Ecosystem, Why Taiwan, Engage, /ausa (2026-09-29, v2)
+
+Outcome-level, image-led pages: one idea per section, detail left to the conversation. Copy is
+written for the web but every claim traces to `mro/TIS_UV_Ecosystem_Repositioning_Proposal.md`
+v1.3.0 — the mapping is `mro/website-copy-ledger.md` and the Chinese drafts are
+`mro/website-zh-review.md` (neither is in this repo; `documents/` is served publicly). The pages
+are generated by `mro/website-build/build.py` + `home_about.py`; edit there, not in the HTML.
+
+- **Blocks** (`styles.css`, "FRONT DOOR v2"), and where each is used:
+
+  | Block | What it is | Used on |
+  | --- | --- | --- |
+  | `.fd-hero` | full-bleed media field, headline low-left, optional `__figure` / `__meta` | every pillar page, Why Taiwan, Engage, About, Insights, /ausa (the shader heroes are retired) |
+  | `.fd-statement` | one large sentence (the h2) with its support to the side; `--quiet` for long ones | Home, Protect, About, /ausa |
+  | `.fd-mosaic` / `.fd-tile` | four image tiles in a 7/5 · 5/7 offset | Sustain service package |
+  | `.fd-band` / `.fd-figures` | full-bleed media with a heading and 2–3 large figures on a rule | Home why-Taiwan, Sustain network, Ecosystem FairTech |
+  | `.fd-steps` | a real sequence with a drawn rule (the only numbered block) | Sustain L0–L3, Engage phases |
+  | `.fd-lanes` | the two compliance lanes as one light/ink split | Sustain |
+  | `.fd-feature` | 7/5 image + short text, `--rev` alternates, optional `.fd-fact` / `.fd-quote` | Home, Protect, License, Ecosystem, About |
+  | `.fd-rows` | large typographic rows for a short service list | Protect, License |
+  | `.fd-trio` | three short promises under an ink rule | License, Ecosystem, About |
+  | `.fd-offer` | one wide proposition card | Engage (Sustainment Bundle) |
+  | `.fd-close` | full-width ink close: one line, one action | pillar pages |
+  | `.fd-hub` | four linked entries under an ink rule, `.fd-trio` grammar | Insights (`/reports/#hub`) |
+  | `.fd-trio--4` | the eight §11 neutrality principles, 4-up (2-up ≤1100) | License `#commitments` |
+
+  Reused unchanged: the Home shader `.hero` + `.proof-strip`, `.offer-card--ph` (pillar cards),
+  `.eco-map` (+ `.fd-map`), the reports carousel, the contact card, the About hero and board.
+- **Retired from the front door:** `.data-table`, `.spec-list`, `.rule-list`, `.phases`,
+  `.cta-band`, `.mth-masthead` / `.mth-pipe-band`. The CSS stays (Insights pages use some).
+- **Variety rule.** No two adjacent sections share a block; no eyebrow above every section
+  (labels appear only where they name a partner's role or a band's subject).
+- **Type.** `--fd-display` 84 → `--fd-statement` 56 → h2 40 → `--fd-row` 28 → lead 21 → body 17.
+  Large figures are Urbanist + tabular numerals, not Inconsolata: at display size the mono cell
+  spaces "9 of 16" into three loose words. CJK drops the negative tracking on display lines.
+- **Media slots.** `.fd-ph` is a dark field (`#000` + white-alpha layers, §1.3 literals) with the
+  shot it waits for written on `.fd-ph__cap`. Replace the field with the photograph; keep the
+  caption text as the `alt`.
+- **Motion** ("FRONT DOOR v2 · MOTION" + site.js "Front door v2"). Media clips out from a 6%
+  inset; band photographs settle 1.08 → 1; heads rise 18px; lists rise 70ms apart; the steps
+  rule draws first; figures count up once (1200ms linear, one-number figures only, EN only,
+  aborted on a language switch). Content is visible by default — `.fd-pre` is added only to
+  blocks that start below the fold, only when motion is allowed. The hero rises on load via CSS.
+- **Word budget.** ≤ 70 words per section excluding forms; headlines ≤ 8 words.
+- **License** keeps the portfolio and the licensing services visibly separate, and states the
+  portfolio-is-not-MRO line wherever both appear (positioning.md §2).
+- **/ausa/** is `noindex`, absent from the sitemap and search, reached by QR only.
+  **/patents/** is a meta-refresh redirect to `/license/#portfolio`.
+- **Forms.** `#contact-form[data-source]` posts `source` = `contact`, `engage` or `ausa`.
 
 ## 17. Page state — the veil
 

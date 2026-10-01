@@ -1,5 +1,7 @@
 # Chinese Copy Direction — TIS Website
 
+> **Direction note (2026-09-28).** TIS now positions as the ecosystem partner for unmanned-vehicle makers (Sustain · Protect · License; `brand/positioning.md`). The audience analysis below (SME owners, investors) and the headline set built on it are **superseded** as a description of who TIS serves; they remain valid only for the Insights product pages (SABCD, Licensing Platform, Signal). Locked product names and verbatim source strings are kept as history. Figures: Innovue is **1.8 億 / 全球第三大** — any 1.7 億 or 第四大 below is historical.
+
 > Canonical source for the TIS website's Chinese-market copy. Decoupled from the English site — these are **not** 1:1 translations. Every Chinese string is preserved verbatim from Irene's PDF (`TIS官網文案重寫_創意策略提案_簡報_v1_0.pdf`, dated 2026-05-25), paired with a literal word-for-word English translation, plus an "English (TBD)" column that Miko fills in manually one entry at a time.
 
 ---

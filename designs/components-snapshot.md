@@ -2,7 +2,7 @@
 
 # TIS Components
 
-Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, IP intelligence drop popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
+Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website (front door: Sustain · Protect · License) and two Insights products — the Patent Intelligence SaaS and the Licensing Platform. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, IP intelligence drop popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
 
 > Components compose primitives + semantic tokens from [`design-tokens.md`](./design-tokens.md) via **material presets** (see §7.3 there). For logo / co-branding / badge identity, see [`visual-guide.md`](./visual-guide.md).
 
@@ -427,6 +427,7 @@ Height 64px, `position: fixed; top: 0; left: 0; right: 0; z-index: 100`. Backgro
 
 - **Primary nav links** — inline, `gap: 4px`, `button-14` weight 600 no tracking, color `text-secondary` → `text-primary` on hover over 100ms linear. Each link padding 6×14.
 - **Active link** — carries `aria-current="page"` for assistive tech only; **no visual distinction** from inactive links (no pill, no background, no color change). The page's own H1 / hero is the wayfinding signal, not the nav.
+- **Current section (mega-nav marketing variant)** — the one exception. The top-level trigger of the section the page belongs to carries the open-state 2px underline at rest, at 35% opacity (the open state stays 100%). Individual links keep no visual distinction. It tells a visitor on a deep page which pillar they are in without adding a pill or colour change.
 - **Controls cluster** — `display: inline-flex; align-items: center; padding-left: 24px; margin-left: -8px; position: relative`. A 1px × 20px `border-primary` hairline sits at `left: 0` via `::before` — this is the *only* divider in the bar, and it sits on the cluster's left edge, not between sub-groups inside the cluster. The negative `margin-left` tightens the outer flex gap from 32→24 so whitespace flanking the divider reads equal (24px from the last primary nav link to the hairline, 24px from the hairline to the first cluster item).
 
 Inside the cluster, the leading items are constant across all surfaces; only the trailing auth sub-group changes by surface. Canonical order: **theme toggle** (§Theme toggle, 32px tall) · **language switcher** (§Language switcher, 32×32 icon button) · **search trigger** (§Search bar → compact icon-trigger variant, 32×32 icon button) · *auth sub-group per the variant table below*.
@@ -465,8 +466,8 @@ The marketing topnav swaps content live with the document `lang` attribute (`en`
 |---|---|---|
 | Logo | Secondary `_eng` mark, ≈8.75:1, height 28px | Secondary `_ch` mark, ≈3.74:1, height 28px |
 | Logo (below `sm` 640px) | Submark 32×32 | Submark 32×32 |
-| Primary nav | Products · Services · Reports · Press · About · Contact | 產品 · 服務 · 報告 · 新聞 · 關於 · 聯絡 |
-| Auth — Marketing cluster | Contact sales | 聯絡業務 |
+| Primary nav (marketing, 2026-09-28) | Sustain · Protect · License · Ecosystem · Insights · About — each a mega-panel trigger (website `DESIGN.md` §4) | 維運 · 保護 · 授權 · 生態系 · 洞察 · 關於 *(ZH pending copy review)* |
+| Auth — Marketing cluster | Contact | 聯絡我們 |
 | Auth — Product unauthenticated cluster | Log in · Sign up | 登入 · 註冊 |
 
 - **Stable footprint.** Each translatable item (`.topnav-link`, plus whichever of the auth sub-group items render on this surface — the `Contact sales` pill on the marketing cluster, or the `Log in` text + `Sign up` pill on the product-unauthenticated cluster) carries a JS-locked `min-width` set to its EN natural width measured after `document.fonts.ready` — so toggling `lang` never shrinks any item and the right cluster never reflows via the `flex: 1` spacer absorbing slack. Nav-link and the `Log in` text variant use `text-align: center` so the shorter CH form sits centered inside its EN-sized box; the `Contact sales` and `Sign up` pills inherit centering from `.btn` (`inline-flex` / `justify-content: center`).
@@ -976,7 +977,7 @@ Container `padding-block: 64px`; inner row inherits the page container (`max-wid
   - **Button** — 32×32, radius 8, `surface-tertiary` fill, hover `surface-quaternary`, active `transform: scale(0.95)`, `aria-label: Subscribe`. Carries two icons (`arrow-right` / `check`); only the arrow renders by default.
 - **Success state** — submit on a valid email flips the block to `.is-success` for 1.6s, then auto-resets. In-place affordance, no toast: label colour → `success-fg`; input border → `success-fg`; button background → `success-bg` and color → `success-fg`; button icon swaps from arrow to check; success-state label copy: `Thanks — you're subscribed` (CH: `感謝訂閱`). The whole transition is `dur-base linear` (CSS-driven; no JS animation timing).
 
-**Co-branded lockup.** TIS|Innovue per [`visual-guide.md`](./visual-guide.md) §Co-Branded Lockup, sized for footer prominence:
+**Co-branded lockup (Insights pages only).** Per [`visual-guide.md`](./visual-guide.md) §Partner Credit by Pillar, front-door pages (Home, Sustain, Protect, License, Ecosystem, About, `/ausa`) show the **TIS submark alone** here; Insights pages carry the TIS|Innovue lockup per §Co-Branded Lockup, sized for footer prominence:
 
 - **TIS submark** 32×32, sourced from `--logo-submark` (light/dark variant)
 - **Hairline divider** 1px × 32px, `border-tertiary`, with 24px clear space each side
@@ -985,19 +986,19 @@ Container `padding-block: 64px`; inner row inherits the page container (`max-wid
 
 > **Footer-variant override on Innovue size.** [`visual-guide.md`](./visual-guide.md) §Spacing Rules calls for Innovue to optically balance with the TIS Submark. The footer over-weights Innovue (36px vs the 32px submark) deliberately — this is the surface where attribution is most load-bearing, not just present. Track the override against §Spacing Rules.
 
-**Region 2 — Link columns (center, 2fr).** Three sub-columns: `display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px`. Each sub-column:
+**Region 2 — Link columns (center, 2fr).** Four sub-columns: `display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px`. Each sub-column:
 
 - **Header** — `label-mono-12` in `text-tertiary`, `margin-bottom: 16`
 - **List** — `display: flex; flex-direction: column; gap: 10px`, `list-style: none`, padding 0
 - **Items** — `copy-14` (Urbanist 14 / 400 / `text-secondary`), hover → `text-primary` over 100ms linear, no underline
 
-Canonical headers for the marketing surface: `Products` · `Company` · `Legal`. Items match the surface's information architecture.
+Canonical headers for the marketing surface (2026-09-28): `Services` · `Company` · `Insights` · `Legal`. Items match the surface's information architecture (website `DESIGN.md` §8). Product surfaces may use fewer columns.
 
 **Region 3 — Contact column (right, 1fr).** Header in `label-mono-12` (matches link-column headers); items in `copy-14` (matches link-column items). Typical entries: email mailto, location, primary social link.
 
-**Responsive.** At `lg` (980): grid collapses to `grid-template-columns: 1fr 1fr` — the link-columns block stays internally 3-up (the inner sub-grid drops to 2-up only at `sm` 640). At `sm` (640): outer grid collapses to `grid-template-columns: 1fr; gap: 32px`; the link-columns inner sub-grid drops to `repeat(2, 1fr)`.
+**Responsive.** At `lg` (980): grid collapses to `grid-template-columns: 1fr 1fr` — the link-columns block stays internally 4-up (the inner sub-grid drops to 2-up only at `sm` 640). At `sm` (640): outer grid collapses to `grid-template-columns: 1fr; gap: 32px`; the link-columns inner sub-grid drops to `repeat(2, 1fr)`.
 
-Per [`visual-guide.md`](./visual-guide.md) §First Touchpoint Rule, the footer co-branded lockup *is* the "Powered by Innovue" attribution on surfaces where the top nav uses submark only — no separate credit strip needed.
+On Insights pages the footer co-branded lockup *is* the "Powered by Innovue" attribution — no separate credit strip needed. Front-door pages credit partners in page content, beside their pillar ([`visual-guide.md`](./visual-guide.md) §Partner Credit by Pillar).
 
 ---
 
@@ -1021,7 +1022,7 @@ Per [`visual-guide.md`](./visual-guide.md) Collaborator Partners: ITRI, III, and
 Single-row credit card introducing the Innovue partnership. Two columns separated by a vertical hairline: tight "Powered by" eyebrow + Innovue logo lockup on the left, introduction sentence on the right in the flat silver register (TIS-overall, per [`visual-guide.md`](./visual-guide.md) §Imagery → Surface identity). Sibling to §Partner strip — shares the same container shell (`surface-page`, 1px `border-primary`, radius 16, padding 48 × 32) but carries different content: §Partner strip is the multi-mark peer row; this card is the Innovue-specific introduction. Both can coexist on the same surface — partner strip up top as the row of collaborators, this card below as the dedicated Innovue credit.
 
 - **Consumes:** `surface-page`, `border-primary`, `text-secondary`, `--slate-700` (light) / `--slate-200` (dark) per [`design-tokens.md`](./design-tokens.md) §7.2 *Slate ramp*
-- **Surfaces:** website homepage (Innovue partnership section); first-touch surfaces requiring Innovue credit per [`brand-voice.md`](./brand-voice.md) §7
+- **Surfaces:** website Insights pages and the Protect / License pillar pages (Innovue credit per [`visual-guide.md`](./visual-guide.md) §Partner Credit by Pillar); **not** the homepage or Sustain
 - **Variants:** default
 - **States:** rest only
 

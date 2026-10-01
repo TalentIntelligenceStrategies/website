@@ -8,59 +8,91 @@
      render exists so an "open in new tab" is readable, not so it ranks. -->
 <meta name="robots" content="noindex" />
 <title>Disclosures — TIS</title>
-<link rel="stylesheet" href="/assets/build/styles.css?v=34" />
+<link rel="stylesheet" href="/assets/build/styles.css?v=40" />
+<script>
+  // Theme init — the standalone render follows the visitor's choice (tis-theme), like every page.
+  (() => { let t = null; try { t = localStorage.getItem('tis-theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', (t === 'light' || t === 'dark') ? t
+      : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')); })();
+</script>
 </head>
 <body class="lgl-page">
 <!-- site.js fetches this file and injects only the <body> into the legal dialog,
      so this wrapper is what the dialog receives too. Keep .lgl-body on it. -->
 <main class="lgl-body">
 <h1 class="lgl-page-title">Disclosures</h1>
-<p class="lgl-meta">Effective 2026-08-25 · Last updated 2026-08-25</p>
+<p class="lgl-meta">Effective 2026-09-30 · Last updated 2026-09-30</p>
 
 <div class="lgl-notice">
-  This describes what a TIS rating does and doesn't tell you.
+  Three things to know before you rely on our work: where TIS holds patents of its own, who our
+  partners are, and what a TIS rating does and doesn't tell you.
 </div>
 
-<h2>What a TIS report is</h2>
+<h2>Our own patent interest</h2>
 <p>
-  A rating and an analysis. Every patent we evaluate gets an SABCD grade and a score built
-  from 50 indicators — most computed from patent records, the rest graded by closed-database
-  AI tools reading the patent text. Our analysts direct the work and review what comes out of it.
+  TIS and Innovue hold a UAV patent portfolio, applied for by both, in product-technology fields.
+  We also advise UV makers on their patents, so we state the interest plainly:
+</p>
+<ul>
+  <li>We show advisory clients the portfolio's technical fields before work starts, and check them
+    against your product fields. Where they overlap, you choose how to proceed.</li>
+  <li>We do not assert portfolio patents against our advisory or MRO customers.</li>
+  <li>The advisory team does not see licensing negotiations, and your confidential information is
+    never used for filings or licensing.</li>
+  <li>The portfolio has nothing to do with our maintenance business. A portfolio licence is never a
+    condition of an MRO contract, and the two are signed and invoiced separately.</li>
+</ul>
+<p>
+  The full governance arrangements for the portfolio are being finalised with Innovue. We will
+  update this page when they are.
 </p>
 
-<h2>What it isn't</h2>
+<h2>Our partners</h2>
+<ul>
+  <li><strong>Innovue</strong> provides the 180M-patent database behind our patent work, is a
+    co-applicant on the UAV patent portfolio, and is a shareholder in TIS.</li>
+  <li><strong>Suntek Group / PG Union</strong> provide service capacity for Sustain.</li>
+  <li><strong>FairTech</strong> is contracted to train and certify service partners to UV
+    standard.</li>
+</ul>
 <p>
-  It is not a legal opinion. Not a freedom-to-operate analysis, not an infringement or
-  validity opinion, and no substitute for a patent attorney. It is not investment advice.
-  What you decide after reading one is your decision, and you should do your own diligence
-  before acting on it.
+  We don't take referral fees from patent firms and keep no preferred-firm list. Firms are
+  recommended case by case, on technical fit.
 </p>
 
-<h2>A rating is a position, not a verdict</h2>
+<h2>Where the market figures come from</h2>
 <p>
-  Your patent is ranked against a reference pool of patents held by TIS and its partners —
-  patents we also license commercially. So a rank tells you where you sit against our
-  inventory, not against every patent in the world, and it is not an independent benchmark.
-  We would rather say that plainly than have you assume otherwise.
-</p>
-<p>
-  The pool re-ranks as patents are granted and lapse. Your number can move even when
-  nothing about your patent has. A report is a snapshot of the day it was made.
+  Procurement, budget, output and export figures on the site are TIS research compiled from
+  Taiwan government budget and procurement announcements, with data through 2026-05-16. "9 of 16"
+  comes from TIS's landscape study of 16 leading foreign UAV makers and their Taiwan patent
+  holdings. Plans and budgets change; each figure is as of that date.
 </p>
 
-<h2>Where the data comes from</h2>
+<h2>What a TIS rating is</h2>
 <p>
-  Innovue's patent database, around 180 million records. Innovue is also a shareholder in TIS.
-  Like every patent dataset it carries publication delays, incomplete family records and the
-  occasional transcription error, and we don't verify every underlying record ourselves.
+  The SABCD rating on our Insights pages grades a patent from Tier S to Tier D, with a score built
+  from 50 indicators — most computed from patent records, the rest graded by closed-database AI
+  tools reading the patent text. Our analysts direct the work and review what comes out of it.
+</p>
+<p>
+  <strong>A rating is a position, not a verdict.</strong> A patent is ranked against a reference
+  pool of patents held by TIS and its partners — patents we also license. So a rank tells you
+  where a patent sits against that pool, not against every patent in the world, and it is not an
+  independent benchmark. The pool re-ranks as patents are granted and lapse, so a number can move
+  even when nothing about the patent has.
+</p>
+<p>
+  Patent data comes from Innovue's 180M-patent database. Like every patent dataset it carries
+  publication delays, incomplete family records and the occasional transcription error, and we
+  don't verify every underlying record ourselves.
 </p>
 
-<h2>What we do with what you send us</h2>
+<h2>What none of this is</h2>
 <p>
-  Drafts and unfiled ideas are treated as confidential. We don't sell them and we don't let
-  them be used to train AI models. Producing your report will mean our analysts read them, and
-  the material will pass through Innovue on the way. The Privacy Policy has the detail,
-  including how long we keep it.
+  A rating, a report or a page on this site is not a legal opinion — not a freedom-to-operate
+  analysis, not an infringement or validity opinion, and no substitute for a patent attorney. It
+  is not export-control or investment advice. What you decide is your decision; do your own
+  diligence before acting.
 </p>
 
 <h2>Questions</h2>

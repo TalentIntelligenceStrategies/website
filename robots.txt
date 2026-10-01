@@ -2,12 +2,16 @@
 User-agent: *
 Allow: /
 
-# Internal working material — copy reviews, storyboards, script drafts. Served from
-# the repo root because Pages serves the whole tree, but not public-facing.
+# Working material — copy reviews, storyboards, script drafts. Served because Pages
+# serves the whole tree; not a destination.
 Disallow: /documents/
 # Read-only brand mirrors: fonts, logos, snapshot .md files. Assets are referenced
 # from the pages that need them; the directory itself is not a destination.
 Disallow: /designs/
+# ...except the share card and the favicons. X and LinkedIn honour robots.txt when
+# fetching og:image, and Google needs a crawlable favicon to show it in results.
+Allow: /designs/assets/imagery/
+Allow: /designs/assets/logos/tis/
 # assets/build/ is deliberately NOT disallowed. It holds the stylesheet and the
 # script every page loads, and Google renders pages to index them — blocking those
 # would have it index the site unstyled. Build artifacts carry no indexable content

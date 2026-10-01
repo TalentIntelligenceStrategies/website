@@ -1,6 +1,6 @@
 # Product
 
-The product register for the Licensing Platform landing page. **This is not a design
+The product register for the Licensing Platform landing page — an Insights product under the UV direction (`brand/positioning.md` §6), not the site's front door. **This is not a design
 authority** — layout, spacing, type, chrome, CTA, motion and the page's per-page notes
 live in [DESIGN.md](DESIGN.md); tokens, colour, logo and voice live upstream in
 `brand/` (mirrored read-only into [designs/](designs/)). See DESIGN.md §0.1.

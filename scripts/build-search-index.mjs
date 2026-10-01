@@ -34,12 +34,17 @@ const OUT  = join(ROOT, 'assets/build/search-index.json');
 /* label is what a result row shows as its page; veiled pages link to the root. */
 const PAGES = [
   { file: 'index.html',                      url: '/',                                 en: 'Home',                    zh: '首頁' },
-  { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Intelligence',     zh: '專利情報' },
+  { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Intelligence SaaS', zh: '泰然專利強度評級系統' },
   { file: 'product/signal/methodology.html', url: '/product/signal/methodology.html',  en: 'SABCD Methodology',       zh: 'SABCD 評級方法' },
-  { file: 'product/licensing/index.html',    url: '/product/licensing/',               en: 'Licensing Platform',      zh: '專利授權平台', veil: true },
-  { file: 'product/licensing/badge.html',    url: '/product/licensing/badge.html',     en: 'Verified License Badge',  zh: '授權驗證標章', veil: true },
-  { file: 'patents/index.html',              url: '/patents/',                         en: 'Owned Patents',           zh: '自有專利' },
-  { file: 'reports/index.html',              url: '/reports/',                         en: 'Reports & Press',         zh: '報告與新聞' },
+  { file: 'product/licensing/index.html',    url: '/product/licensing/',               en: 'Licensing Platform',      zh: '泰然專利防護網', veil: true },
+  { file: 'product/licensing/badge.html',    url: '/product/licensing/badge.html',     en: 'Verified License Badge',  zh: '授權認證標章', veil: true },
+  { file: 'sustain/index.html',              url: '/sustain/',                         en: 'Sustain',                 zh: '維運' },
+  { file: 'protect/index.html',              url: '/protect/',                         en: 'Protect',                 zh: '保護' },
+  { file: 'license/index.html',              url: '/license/',                         en: 'License',                 zh: '授權' },
+  { file: 'ecosystem/index.html',            url: '/ecosystem/',                       en: 'Ecosystem',               zh: '生態系' },
+  { file: 'why-taiwan/index.html',           url: '/why-taiwan/',                      en: 'Why Taiwan',              zh: '為何是台灣' },
+  { file: 'engage/index.html',               url: '/engage/',                          en: 'Engage',                  zh: '合作' },
+  { file: 'reports/index.html',              url: '/reports/',                         en: 'Insights',                zh: '洞察' },
   { file: 'about/index.html',                url: '/about/',                           en: 'About',                   zh: '關於' },
 ];
 
@@ -85,8 +90,10 @@ const cjkTighten = (s) => s.replace(new RegExp(`([${CJK}])\\s+(?=[${CJK}])`, 'g'
 const DATA_ZH = /\bdata-zh=(?:"([^"]*)"|'([^']*)')/;
 const zhOf = (attrs, inner) => {
   const own = DATA_ZH.exec(attrs);
-  if (own) return cjkTighten(strip(own[1] ?? own[2]));
-  const parts = [...inner.matchAll(new RegExp(DATA_ZH.source, 'g'))].map((m) => strip(m[1] ?? m[2]));
+  // A data-zh value is attribute-escaped, so markup inside it arrives as &lt;span…&gt;.
+  // One strip decodes it back to tags, the second removes them.
+  if (own) return cjkTighten(strip(strip(own[1] ?? own[2])));
+  const parts = [...inner.matchAll(new RegExp(DATA_ZH.source, 'g'))].map((m) => strip(strip(m[1] ?? m[2])));
   return cjkTighten(parts.join(' ').trim());
 };
 
@@ -104,8 +111,11 @@ PAGES.forEach((page, pageIndex) => {
   const path = join(ROOT, page.file);
   let html = readFileSync(path, 'utf8');
 
-  const mainStart = html.indexOf('<main');
-  const mainEnd   = html.indexOf('</main>');
+  // Find <main> on a comment-blanked copy: the veil comment on the licensing page
+  // mentions "<main>" in prose, which used to start the slice inside the comment.
+  const blanked = html.replace(/<!--[\s\S]*?-->/g, (c) => ' '.repeat(c.length));
+  const mainStart = blanked.search(/<main[\s>]/);
+  const mainEnd   = blanked.indexOf('</main>', mainStart);
   if (mainStart === -1 || mainEnd === -1) throw new Error(`${page.file}: no <main>`);
 
   // Work on the <main> slice only, then splice it back, so ids are never written
@@ -165,7 +175,9 @@ PAGES.forEach((page, pageIndex) => {
 
     // The dek / lede immediately after the heading, if there is one.
     const after = main.slice(m.index + full.length, m.index + full.length + 1600);
-    const p = /<p\b([^>]*)>([\s\S]*?)<\/p>/.exec(after);
+    // Same quote-aware attribute matcher as HEADING: a dek whose data-zh carries <br>
+    // otherwise ends its attributes early and bleeds the ZH tail into the EN body.
+    const p = new RegExp(`<p\\b(${ATTRS})>([\\s\\S]*?)</p>`).exec(after);
     let bodyEn = '', bodyZh = '';
     if (p && after.slice(0, p.index).replace(/<[^>]+>|\s/g, '') === '') {
       bodyEn = strip(p[2]).slice(0, 240);

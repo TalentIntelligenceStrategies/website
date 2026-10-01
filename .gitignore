@@ -25,6 +25,9 @@ skills-lock.json
 .veil-probe.html
 .about-probe.html
 .beam-probe.html
+.nav-probe.html
+.nav-test.html
+.form-test.html
 
 # Transient harnesses the verification probes write into the repo root and delete
 # again. Listed so an interrupted run cannot leave one behind to be committed:
@@ -34,3 +37,8 @@ skills-lock.json
 .shot.html
 .zh-index.html
 .en-index.html
+.full-probe.html
+
+# /ausa (AUSA 2026 QR landing page) — deferred 2026-09-30. Built locally by
+# mro/website-build/build.py but held out of the release. Delete these lines to ship it.
+ausa/

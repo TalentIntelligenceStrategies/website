@@ -2,7 +2,7 @@
 
 # TIS Visual System
 
-Source of truth for the look and feel of TIS — primitives, semantic tokens, motion, accessibility, and material presets. Three downstream surfaces consume this system and live in separate repositories: the marketing website, the Patent Intelligence SaaS MVP, and the Licensing Platform MVP (upcoming). §§1–6 describe the system; §7 is the developer appendix. For the shared component catalog, see [`components.md`](./components.md); for tone, [`brand-voice.md`](./brand-voice.md); for logo and name usage, [`visual-guide.md`](./visual-guide.md).
+Source of truth for the look and feel of TIS — primitives, semantic tokens, motion, accessibility, and material presets. Three downstream surfaces consume this system and live in separate repositories: the marketing website (front door: Sustain · Protect · License) and two Insights products — the Patent Intelligence SaaS and the Licensing Platform. §§1–6 describe the system; §7 is the developer appendix. For the shared component catalog, see [`components.md`](./components.md); for tone, [`brand-voice.md`](./brand-voice.md); for logo and name usage, [`visual-guide.md`](./visual-guide.md).
 
 ---
 

@@ -1,5 +1,7 @@
 # Voice-state audit — the shipped site vs `brand-voice.md`
 
+> **Dated audit.** Findings reflect the site under the June 2026 rating-at-core positioning, which was retired 2026-09-28 (`brand/positioning.md`). The "unlocked" triad it discusses is no longer sanctioned.
+
 **Audit date:** 2026-08-07 · **Scope:** all 10 live pages · **Status: findings only. No copy was rewritten.**
 
 This is the raw material for the voice rewrite, not the rewrite. It answers one question —

@@ -2,7 +2,7 @@
 
 # TIS Visual Guide
 
-Brand-identity reference for TIS — logo meaning, logo usage, Innovue co-branding, and name usage. Scope: marketing website + Patent Intelligence SaaS MVP + Licensing Platform MVP.
+Brand-identity reference for TIS — logo meaning, logo usage, Innovue co-branding, and name usage. Scope: the marketing website (front door: Sustain · Protect · License) and the Insights products — Patent Intelligence SaaS and Licensing Platform.
 
 > For the visual system (colors, typography, motion, spacing, components), see [`design-tokens.md`](./design-tokens.md). For voice and copy rules, see [`brand-voice.md`](./brand-voice.md). This file scopes to brand-identity artifacts outside the token system.
 
@@ -39,8 +39,8 @@ Stored in `brand/assets/logos/tis/`.
 
 | Variant | File | When to use |
 |---|---|---|
-| **Primary** | `tis_primarylogo_dark.svg` / `tis_primarylogo_light.svg` | First-impression contexts: pitch decks, report covers, business cards, email signature. Deck cover construction → [`presentations.md`](./presentations.md) §3 |
-| **Secondary** | `tis_secondarylogo_{dark,light}_{ch,eng}.svg` | Wordmark presence in tighter contexts than Primary, where the Submark alone is too quiet. Choose `_ch` or `_eng` by surface language — never paired together at this tier. Detail in §Secondary below. |
+| **Primary** | `tis_primarylogo_dark.svg` / `tis_primarylogo_light.svg` | Carries "Powered by Innovue" in the artwork, so it is used **only where Innovue is the credited partner** — Insights report covers, Insights product decks, SABCD / Licensing / Signal collateral. Not on front-door surfaces (§Partner Credit by Pillar). Deck cover construction → [`presentations.md`](./presentations.md) §3 |
+| **Secondary** | `tis_secondarylogo_{dark,light}_ch.svg` · `SecondaryLogo_Eng_{Dark,Light}_MRO.svg` (EN, front door) · `tis_secondarylogo_{dark,light}_eng.svg` (EN, non-MRO) | **The front-door mark** — website chrome, Home / pillar / About pages, AUSA deck cover and leave-behind, business cards, email signature, letterheads, booth. Also tighter contexts where the Submark alone is too quiet. Choose `_ch` or `_eng` by surface language — never paired together at this tier. Detail in §Secondary below. |
 | **Submark** | `tis_cubelogo_submark_dark.svg` / `tis_cubelogo_submark_light.svg` | Space-constrained or secondary: favicon, social profile, mobile-drawer header, report headers/footers, watermarks, product-app top nav (SaaS / Licensing Platform). |
 
 **Minimum submark size:** 24px. Do not stretch, recolour, rotate, or add effects to any logo.
@@ -49,7 +49,7 @@ Stored in `brand/assets/logos/tis/`.
 
 | Surface | Mark | Why |
 |---|---|---|
-| Marketing website (above `sm` 640px) | Secondary, single-language by `lang` (`_ch` for `zh-Hant`, `_eng` for `en`) at logo height 28px | First-touchpoint brand surface — the wordmark earns its keep; the cube alone reads as too quiet at site scale. |
+| Marketing website (above `sm` 640px) | Secondary, single-language by `lang` (`_ch` for `zh-Hant`, `SecondaryLogo_Eng_*_MRO` for `en`) at logo height 28px | First-touchpoint brand surface — the wordmark earns its keep; the cube alone reads as too quiet at site scale. |
 | Marketing website (below `sm` 640px) | Submark at 32×32 | The eng wordmark won't fit alongside the controls cluster on narrow viewports; the cube falls back cleanly. |
 | Patent Intelligence SaaS · Licensing Platform | Submark at 32×32 | App chrome stays compact; the cube is the navigation identity, page header / breadcrumbs supply context. |
 | Mobile drawer header | Submark at 24×24 | Drawer header is space-constrained regardless of surface. |
@@ -60,7 +60,9 @@ Implementation in [`components.md`](./components.md) §Top nav.
 
 **Form.** Cube + single-language wordmark. CH wordmark = `泰然策略` (the on-mark short form from §Name Usage). EN wordmark is set inside the `_eng` SVG. No "Powered by Innovue" line; no bilingual stack.
 
-**When to use.** Surfaces where the Primary lockup is too heavy and the Submark alone is too quiet — section headers inside long documents, slide footers and section dividers, secondary marketing surfaces, product-page chrome below the top nav, repeating watermarks where wordmark presence still matters. **Not a first-touchpoint variant.** First touchpoints stay Primary (per §Innovue Co-Branding → First Touchpoint Rule).
+**EN MRO variant.** `SecondaryLogo_Eng_Dark_MRO.svg` (dark ink, for light backgrounds) and `SecondaryLogo_Eng_Light_MRO.svg` (light ink, for dark backgrounds), viewBox 1702.49 × 167.59. Since 2026-09-30 it is the EN front-door Secondary — website top nav and About hero. The dark theme uses the `_Light_` file; never invert or recolour the `_Dark_` file to get it. No CH MRO variant exists — Chinese surfaces keep `_ch`. The non-MRO `_eng` files stay for contexts not yet moved over.
+
+**When to use.** Surfaces where the Primary lockup is too heavy and the Submark alone is too quiet — section headers inside long documents, slide footers and section dividers, secondary marketing surfaces, product-page chrome below the top nav, repeating watermarks where wordmark presence still matters. **Since 2026-09-28 it is also the front-door first-touch mark** (per §Partner Credit by Pillar) — the Primary is reserved for Innovue-credited contexts.
 
 **Why split CH and EN at this tier.** The Primary lockup carries both scripts plus Innovue credit because first-touch surfaces have room for the full identity. The Secondary mark earns its keep at smaller sizes and tighter spaces — bilingual stacking compresses to illegibility, and most secondary surfaces have a single language register anyway. Pick by surface: Chinese-primary pages, decks, and Taiwan-facing collateral take `_ch`; English-primary surfaces take `_eng`. Never composite the two at this tier — that's the Primary's job.
 
@@ -95,7 +97,7 @@ The dark-surface 1200×630 card platforms render when `tisglobalinc.com` is shar
 
 **Source.** Rendered from [`brand/catalog/imagery-preview.html`](./catalog/imagery-preview.html) §6 via Chrome headless `?og=2b` query param. The §2 cool-signal `.hero` is cloned in by JS so the OG card stays in visual sync with the homepage hero pattern.
 
-**Composition.** §2 cool-signal `.hero` cloned in as backdrop; cool radial wash overridden to top-down silver-luminous gradient (`slate-200 → slate-300 → transparent at 65%`). White two-line headline (`Turn IP into market position, / grounded in 170M patents`) left-anchored, vertically centered. Co-branded TIS|Innovue lockup beneath per [§Co-Branded Lockup](#co-branded-lockup), **with an OG-tightened clear-space of `2cqw` each side of the divider** (vs the default minimum of submark-height) to fit the card's constrained vertical space. Submark and Innovue both rendered at `5cqw` height (peer weight).
+**Composition.** §2 cool-signal `.hero` cloned in as backdrop; cool radial wash overridden to top-down silver-luminous gradient (`slate-200 → slate-300 → transparent at 65%`). White two-line headline (**stale** — the shipped card reads `Turn IP into market position, / grounded in 170M patents`, an old tagline and the retired 170M figure; re-render with the Sustain · Protect · License line and no database figure when the site is restructured) left-anchored, vertically centered. Co-branded TIS|Innovue lockup beneath per [§Co-Branded Lockup](#co-branded-lockup) (**also stale** — the homepage card is a front-door surface and re-renders TIS-only per §Partner Credit by Pillar), **with an OG-tightened clear-space of `2cqw` each side of the divider** (vs the default minimum of submark-height) to fit the card's constrained vertical space. Submark and Innovue both rendered at `5cqw` height (peer weight).
 
 **Per-surface variants (TODO).** Currently a single homepage variant. LinkedIn supports a separate 1200×628 size; product-pages, pricing, and report-pages may eventually want their own copy. Add siblings to `brand/assets/imagery/` as `og-{surface}.png` and update `website/index.html` to reference the per-page version (either inline per-page meta tags or JS-injected `<meta>` rewrites).
 
@@ -232,11 +234,11 @@ Why: gradients had become a second, parallel colour system — 181 declarations 
 
 | Surface | Accent | Imagery |
 |---|---|---|
-| **TIS overall** — marketing, hero, global chrome | Neutral ink `--surface-accent-tis`. Silver register available as flat `--slate-700` / `--slate-200`. | The WebGL shifting-lines shader on the homepage hero; black image-backed cards elsewhere. TIS speaks in ink, not in a colour of its own. |
-| **Patent Intelligence SaaS** | `--surface-accent-signal` `#0EA5E9` on dark; `--surface-accent-signal-text` `#0A72B0` on light | Blue-register stills — `assets/imagery/signal/signal-cool.jpg` is the reference. |
-| **Licensing Platform** | `--surface-accent-licensing` `#EC4200`; `--surface-accent-licensing-text` `#D93B00` on light | Orange-register stills — `assets/imagery/coremap/licensing-warm-v2.png` is the reference. |
+| **TIS overall** — front door (Home, Sustain, Protect, License, Ecosystem, About), hero, global chrome | Neutral ink `--surface-accent-tis`. Silver register available as flat `--slate-700` / `--slate-200`. | The WebGL shifting-lines shader on the homepage hero; black image-backed cards elsewhere. TIS speaks in ink, not in a colour of its own. |
+| **Patent Intelligence SaaS** *(Insights)* | `--surface-accent-signal` `#0EA5E9` on dark; `--surface-accent-signal-text` `#0A72B0` on light | Blue-register stills — `assets/imagery/signal/signal-cool.jpg` is the reference. |
+| **Licensing Platform** *(Insights)* | `--surface-accent-licensing` `#EC4200`; `--surface-accent-licensing-text` `#D93B00` on light | Orange-register stills — `assets/imagery/coremap/licensing-warm-v2.png` is the reference. |
 
-**Services · Ascent / Brokerage removed.** The bronze theme existed only for those surfaces, which the rating-at-core model in [`positioning.md`](./positioning.md) superseded. The bronze ramp is retired in `design-tokens.md` §7.2.
+**Services · Ascent / Brokerage removed.** The bronze theme existed only for those surfaces. The bronze ramp is retired in `design-tokens.md` §7.2. The Sustain · Protect · License pillars ([`positioning.md`](./positioning.md) §2) speak in TIS-overall neutral ink; no new pillar accents are defined.
 
 **Don't cross-cast.** A surface's accent is its identity — Signal surfaces don't carry orange, Licensing surfaces don't carry blue. Neutral ink is the only register that speaks across surfaces, and it's reserved for TIS-overall.
 
@@ -246,26 +248,41 @@ Canonical implementation: [`../website/index.html`](../website/index.html) — s
 
 ---
 
+## Partner Credit by Pillar
+
+**Replaces the First Touchpoint Rule (2026-09-28).** Partner credit follows the **pillar a surface speaks for**, not whether it is a first touch. There is no blanket "Powered by Innovue" rule: each partner is credited where its work is, and nowhere else. Positioning source: [`positioning.md`](./positioning.md) §2, §7.
+
+| Surface | Partner credited | Form |
+|---|---|---|
+| **Front door** — Home, About, Ecosystem overview, `/ausa`, AUSA deck cover, leave-behind front, business cards, letterheads, booth | None in the mark | **Secondary** logo, TIS only. Partners are named in prose next to the pillar they serve. |
+| **Sustain** (MRO and sustainment) | **Suntek Group / PG Union** (service capacity); **FairTech** (capability lifter, trainer) | Names in text. **Logos: not used — open.** |
+| **Protect** (patent consulting) | **Innovue** (database and analytics) | Name in text; §Co-Branded Lockup allowed where the claim is the database. |
+| **License** (UAV portfolio + licensing services) | **Innovue** (portfolio co-applicant) | Name in text; §Co-Branded Lockup allowed on the portfolio block. |
+| **Insights** (SABCD, Licensing Platform, Patent Intelligence SaaS, reports) | **Innovue** | "Powered by Innovue" — Primary logo, §Co-Branded Lockup, footer lockup, as before. |
+| **Product UI** (license.tisglobalinc.com, Signal app) | **Innovue** | "Powered by Innovue" credential, unchanged. |
+
+**Rules**
+
+- **"Powered by" is Innovue-only and Insights / product-UI-only.** Never "Powered by Suntek", "Powered by FairTech", or "Powered by" on a front-door or Sustain surface.
+- **Never merge partners.** On pages that span pillars (Home, Ecosystem, the AUSA deck), each partner sits beside its own pillar. No single "partners" row implying every partner stands behind every service.
+- **Footer.** Front-door pages carry the TIS submark alone in the footer; the TIS|Innovue footer lockup stays on Insights pages ([`components.md`](./components.md) §Footer).
+- **Service-partner logos** (Suntek Group, PG Union, FairTech) are **not used** until approved. Names are cleared; logos are an open item.
+- **FairTech** is named as trainer and maintenance specialist only — never as a UAV maker, and its own products never appear.
+
+When-to-apply logic in copy: [`brand-voice.md`](./brand-voice.md) §7.
+
 ## Innovue Co-Branding
 
-Innovue is a visible strategic partner and **shareholder** — not a hidden technology layer.
+Innovue is a visible technology partner, **shareholder**, and co-applicant on the TIS × Innovue UAV patent portfolio — not a hidden technology layer, and not a partner in the Sustain (MRO) services. *Where* Innovue is credited is governed by §Partner Credit by Pillar above; this section governs *how*.
 
-Innovue credit comes in two registers, scoped by surface (the hybrid rule):
+- **Logo-lockup credit text:** "Powered by Innovue" — no variations. Travels with the co-branded *mark* on Insights and product-UI surfaces only.
+- **Narrative attribution:** on Protect and License, prose names Innovue as **technology partner** (database) and **UAV-portfolio co-applicant**. Co-developer-of-SABCD framing is allowed on the SABCD pages under Insights only.
 
-- **Logo-lockup credit text:** "Powered by Innovue" — no variations. This is the credit that travels with the co-branded *mark* (header lockups, marketing footer, in-product chrome, OG card). Use everywhere a lockup appears.
-- **Narrative attribution (About / profile / first-touch marketing only):** in *prose* on these surfaces, Innovue may be credited as **shareholder and co-developer of the SABCD rating engine** — e.g. "the patent-strength rating engine we co-developed with our shareholder Innovue." Do **not** extend co-developer framing into product UI or in-app chrome — those stay on the "Powered by Innovue" credential only.
-
-When-to-apply logic for both registers: [`brand-voice.md`](./brand-voice.md) §7. Canonical positioning copy that uses the co-developer framing: [`positioning.md`](./positioning.md) §4.
-
-### First Touchpoint Rule
-
-On the first customer-facing touchpoint, use the **TIS Primary Logo**. Its lockup already includes "Powered by Innovue" — partnership credit is built in.
-
-> Deck application: cover slide is a first-touchpoint surface. See [`presentations.md`](./presentations.md) §3 for cover construction; credit-when logic is in [`brand-voice.md`](./brand-voice.md) §7.
+Innovue's role in the positioning: [`positioning.md`](./positioning.md) §7.
 
 ### Co-Branded Lockup
 
-For all subsequent or space-constrained placements: **TIS Submark** + thin vertical divider + **Innovue Logo**.
+For Innovue-credited placements (Protect, License, Insights, product UI — per §Partner Credit by Pillar): **TIS Submark** + thin vertical divider + **Innovue Logo**.
 
 ```
 [TIS Submark]  |  [Innovue Logo]
@@ -284,8 +301,8 @@ For all subsequent or space-constrained placements: **TIS Submark** + thin verti
 
 | Surface | Override | Source |
 |---|---|---|
-| Marketing footer | Innovue 36px tall × 172px wide against the 32px TIS submark — Innovue reads dominant; the lockup *is* the "Powered by Innovue" attribution for the page | [`components.md`](./components.md) §Footer |
-| Pitch-deck content-slide footer | Innovue logotype targeted at 40px (~1.25× submark height) for projection legibility | [`presentations.md`](./presentations.md) §3 Footer |
+| Marketing footer (Insights pages only) | Innovue 36px tall × 172px wide against the 32px TIS submark — Innovue reads dominant; the lockup *is* the "Powered by Innovue" attribution for the page | [`components.md`](./components.md) §Footer |
+| Pitch-deck content-slide footer (Insights decks only) | Innovue logotype targeted at 40px (~1.25× submark height) for projection legibility | [`presentations.md`](./presentations.md) §3 Footer |
 
 A third override — distinct in kind, not size — applies to the **Open Graph card**: clear-space each side of the divider is tightened from the submark-height default to `2cqw` (~24px) to fit the card's constrained vertical space. Innovue stays at peer weight (no over-weighting). See §Open Graph / Social share image above.
 
@@ -303,7 +320,7 @@ Stored in `brand/assets/logos/partners/innovue/`.
 
 ## Collaborator Partners
 
-Distinct tier from Innovue. TIS is contractually **bound** to Innovue — "Powered by Innovue" credit always visible. Collaborators are **materially involved** in specific deliverables, credited only in those contexts.
+Distinct tier from Innovue and from the service partners. Collaborators (institutional patent sources) are **materially involved** in specific Insights deliverables and credited only in those contexts.
 
 **Current collaborators:**
 
@@ -422,13 +439,13 @@ Physical and offline brand surfaces — anywhere TIS appears outside a screen. P
 
 | Surface | Pending |
 |---|---|
-| **Convention booths** | Backwall, header banner, table runners, tabletop signage. Aspect ratios for common booth sizes (3×3m, 6×3m), TIS submark scale relative to booth height, Innovue co-branded lockup placement on backdrop, Verified License Badge surfacing, partner-logo treatment on side panels. |
+| **Convention booths** | Backwall, header banner, table runners, tabletop signage. Aspect ratios for common booth sizes (3×3m, 6×3m), TIS submark scale relative to booth height, partner credit per §Partner Credit by Pillar (a Sustain-led booth such as AUSA carries no Innovue lockup on the backwall), Verified License Badge surfacing, partner-logo treatment on side panels. |
 | **Signage** | Office plaques, doorway, conference / event wayfinding. Monochrome vs. colour rules per environment, substrate options (acrylic / metal / vinyl), minimum mark sizes for sightlines. |
 | **Stationery** | Business cards, envelopes, notepads, folders. Paper stock, ink (spot black vs. CMYK), bleed and safe area, how the cube mark anchors each format. |
-| **Letterheads** | Cover letters, contracts, MOUs, formal correspondence. Header lockup (TIS primary logo + "Powered by Innovue"), footer with full legal name (per §Name Usage), margins, font fallbacks for Word / Google Docs templates. |
+| **Letterheads** | Cover letters, contracts, MOUs, formal correspondence. Header: TIS Secondary logo (front-door mark, no partner credit), footer with full legal name (per §Name Usage), margins, font fallbacks for Word / Google Docs templates. |
 | **Merchandise** | T-shirts, totes, notebooks, stickers, event swag. Which mark variant per item (submark on small items / primary where there is room), monochrome vs. inverse on dark substrates, minimum sizes after embroidery / screen-print. |
 
-Until each row is spec'd, defer to: §Logo Usage (variants, minimum sizes, no recolour / stretch), §Innovue Co-Branding (Powered by Innovue lockup), §Collaborator Partners (when ITRI / III appear), §Verified License Badge (when the badge appears on a physical surface), §Name Usage (which name form on which document).
+Until each row is spec'd, defer to: §Logo Usage (variants, minimum sizes, no recolour / stretch), §Partner Credit by Pillar and §Innovue Co-Branding, §Collaborator Partners (when ITRI / III appear), §Verified License Badge (when the badge appears on a physical surface), §Name Usage (which name form on which document).
 
 ---
 
@@ -436,7 +453,7 @@ Until each row is spec'd, defer to: §Logo Usage (variants, minimum sizes, no re
 
 | Form | Chinese | English | Use |
 |---|---|---|---|
-| Full legal name | 泰然策略解密股份有限公司 | Talent Intelligence Strategies Global Inc. | Legal documents, and the seller-identity block published for payment-gateway verification |
+| Full legal name | 泰然策略解密股份有限公司 | Talent Intelligence Strategies MRO Global Inc. | Legal documents, and the seller-identity block published for payment-gateway verification |
 | Trade name | 泰然策略解密 | — | Formal trade documents |
 | Logo mark | 泰然策略 | — | On-mark only |
 | Verbal shorthand | 泰然 | Talent Intelligence Strategies | First reference, formal docs, footer |
