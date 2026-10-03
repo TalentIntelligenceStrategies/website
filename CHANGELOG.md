@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-03 15:18 +08:00** · Home trays mobile pass: CTA wraps at 320, anchors land under the nav, opening a tray scrolls its points into view; css v44, js v27.
 - **2026-10-02 09:12 +08:00** · Home pillars become folded trays (KSPs behind one pill each); Why TIS gets a summary line and grey tiles; asset versions bumped (css v43, js v26).
 - **2026-10-01 20:21 +08:00** · Home KV quieted: click-only slides, no stat strip or diagram; proof points move to slide 3; asset versions bumped (css v42, js v25).
 - **2026-10-01 18:44 +08:00** · Home rebuilt to the approved v0.5 sheet (three-slide KV, pillar tabs, Why TIS); pillar pages gain KSPs and 您; nav ZH 維護 · 防護; snapshots resynced.

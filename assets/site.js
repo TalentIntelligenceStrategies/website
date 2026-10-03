@@ -956,7 +956,21 @@
     if (first) set(first, true);
     void root.offsetHeight;
     root.classList.remove('is-instant');
-    trays.forEach(ch => ch.querySelector('.ptray__tg').addEventListener('click', () => set(ch, !ch.classList.contains('is-open'))));
+    // Opening a tray low on a phone grew the drawer below the fold, so nothing visibly
+    // happened. If the first tile would start in the bottom quarter, bring it up to
+    // mid-screen (through Lenis when it runs, so the two scrollers don't fight).
+    const reveal = (ch) => {
+      const top = ch.querySelector('.ptray__drawer').getBoundingClientRect().top;
+      if (top < innerHeight * 0.75) return;
+      const y = scrollY + top - innerHeight * 0.45;
+      if (lenis) lenis.scrollTo(y, { immediate: reduced });
+      else scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
+    };
+    trays.forEach(ch => ch.querySelector('.ptray__tg').addEventListener('click', () => {
+      const opening = !ch.classList.contains('is-open');
+      set(ch, opening);
+      if (opening) reveal(ch);
+    }));
     window.addEventListener('hashchange', () => open(byHash()));
     root.querySelectorAll('.ptray__chip').forEach(a => a.addEventListener('click', () => open(document.getElementById(a.getAttribute('href').slice(1)))));
   });

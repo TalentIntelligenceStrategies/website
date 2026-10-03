@@ -8169,7 +8169,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   padding: var(--pt-tray-pad);
   background: var(--pt-tray);
   border-radius: var(--pt-tray-r);
-  scroll-margin-top: 96px;
+  scroll-margin-top: 16px;   /* + html scroll-padding-top 80px = lands 32px under the 64px nav */
 }
 .ptray__top {
   display: grid;
@@ -8215,7 +8215,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   display: flex; flex-wrap: wrap; align-items: center;
   gap: 14px 28px;
 }
-.ptray__more { margin-top: 0; font-size: 15px; font-weight: 600; }
+.ptray__more { margin-top: 0; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 600; }
 .ptray__more svg { transition: transform .25s var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .ptray__more:hover svg { transform: translateX(3px); }
@@ -8406,21 +8406,35 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .ptray__acts { padding-top: 24px; }
   .ptray__media { aspect-ratio: 16 / 9; }
 }
+/* 561–880: stacked, so a 16:9 photo would fill most of the tray; go wider and shorter. */
+@media (min-width: 561px) and (max-width: 880px) {
+  .ptray__media { aspect-ratio: 21 / 9; }
+}
 @media (max-width: 768px) {
-  .why-tiles__list { grid-template-columns: minmax(0, 1fr); }
-  .why-tiles__t { margin-top: 20px; }
   .ptray__pts, .ptray__pts--3 { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .ptray, .why-tiles { --pt-tray-r: 16px; --pt-tray-pad: 10px; --pt-pad: 20px; }
-  .ptray__lede { padding: 14px 10px 10px; }
+  .ptray__lede { padding: 14px 20px 10px; }   /* lines the promise up with the tile text (10 tray + 20 tile) */
+  .ptray__line { font-size: clamp(23px, 7.2vw, 28px); }
+  /* ZH: sized so each clause fits a line at 320 (10 characters); strict keeps 。，attached. */
+  [lang="zh-Hant"] .ptray__line { font-size: clamp(21px, 6.6vw, 28px); word-break: normal; line-break: strict; }
   .ptray__pts { padding-top: 10px; }
   .ptray__pt { grid-template-columns: minmax(0, 1fr); }
   .ptray__pt-n, .ptray__pt-t, .ptray__pt-d { grid-column: 1; }
   .ptray__pt-n { grid-row: 1; margin-bottom: 6px; }
   .ptray__pt-t { grid-row: 2; font-size: 18px; }
   .ptray__pt-d { grid-row: 3; }
-  .why-tiles__cta .btn { width: 100%; justify-content: center; text-align: center; }
+  .why-tiles__list { grid-template-columns: minmax(0, 1fr); }
+  .why-tiles__t { margin-top: 20px; }
+  /* The EN label is 295px of nowrap tracked caps; at 320 it overran the button. */
+  .why-tiles__cta .btn { width: 100%; justify-content: center; text-align: center; white-space: normal; line-height: 1.3; padding-inline: 20px; text-wrap: balance; }
+}
+@media (max-width: 380px) {
+  .ptray__chip { padding: 10px 14px 10px 12px; gap: 6px; }
+}
+@media (max-width: 340px) {
+  .ptray__chip-n { display: none; }   /* three chips fit one row at 320 */
 }
 
 /* reduced motion: state changes are instant; nothing moves */
