@@ -24,12 +24,14 @@
   renders its alt text and silently reproduces exactly that bug — check the rendered PNG,
   not the DOM.
 
-  THE ONE HARD CONSTRAINT. These are shown at 260px behind a 4px blur. All three tiers
-  carry the same grade, subject, facts grid and metric row, so the difference lives in
-  the chapter block and the contents length:
+  THE ONE HARD CONSTRAINT. These are shown at 260px behind a 4px blur. Snapshot and
+  Study carry the same grade, subject, facts grid and metric row, so the difference lives
+  in the chapter block and the contents length. Survey carries NO grade, PSS, rank or
+  percentile (documents/survey-sample-spec.md) — it opens on the ten matches, each with
+  its similarity score and a TIS-authored "why it matches":
       Snapshot   radar                 → circular mass, short list
       Study      eight pillar bars     → even bar band, long list
-      Survey     ten stepped bars      → descending ladder, short list
+      Survey     ten matches + why     → dense text column, short list
   Snapshot gets the radar and Study does not, because that is what their chapters are:
   Snapshot ch.3 is "Eight pillars at a glance", Study ch.3 is "Eight pillars, all 50
   indicators". At-a-glance is a radar; the drill-down is per-pillar values. Giving both
@@ -37,8 +39,8 @@
   Change a cover and re-run the blur test, or the thumbnail stops distinguishing tiers.
 
   HEIGHT. .page is a fixed 1512px flex column, so a sheet that runs long silently
-  COMPRESSES its children instead of overflowing — that clipped the Survey grade cell
-  in half once. Every sheet block carries flex:none so overflow stays visible. Measure
+  COMPRESSES its children instead of overflowing — that clipped the old Survey grade
+  cell in half once. Every sheet block carries flex:none so overflow stays visible. Measure
   scrollHeight vs clientHeight; do not eyeball it.
 -->
 <style>
@@ -105,7 +107,7 @@
   .subject b{ font-family:var(--mono); font-weight:600; color:var(--ink); }
 
   /* flex-shrink:0 on every sheet block — see the height note in the header comment. */
-  .summary, .facts, .metrics, .texture, .drivers, .rationale, .contents{ flex:none; }
+  .summary, .facts, .metrics, .texture, .drivers, .rationale, .contents, .matches{ flex:none; }
 
   /* ── summary box ──────────────────────────────────────────────── */
   .summary{ margin-top:22px; border:1px solid var(--rule); border-radius:14px;
@@ -133,9 +135,8 @@
   /* ── issuer facts ── ported from .r-issuer. June stacks these 2×5, which costs ~240px
      of a 1512px sheet; the 5×2 arrangement is June's own .r-issuer-band variant and
      uses the width this page has anyway. ────────────────────────── */
-  /* Appears on Snapshot and Study, not Survey — those two open on "Patent facts & family"
-     and Survey opens on "PSS overview". The block sits where the report has the
-     chapter, which is also what makes room for Survey's ten-row ladder. */
+  /* Appears on Snapshot and Study, not Survey — those two open on "Patent facts & family";
+     Survey opens on the ten matches and has no facts block. */
   .facts{ margin-top:18px; padding-top:16px; border-top:1px solid var(--rule);
           display:grid; grid-template-columns:repeat(5, 1fr); gap:14px 24px; }
   .fact dt{ font-size:9px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3);
@@ -181,9 +182,6 @@
               border:1px solid var(--rule-3); border-radius:3px; overflow:hidden; }
   .meter-fill{ position:absolute; top:0; bottom:0; left:0; background:var(--ink); }
   .meter-tick{ position:absolute; top:-3px; bottom:-3px; left:50%; width:1px; background:var(--rule-3); }
-  /* Survey's meter runs 0.00–1.00 cosine, so its reference is the 0.70 retrieval floor,
-     not the midpoint. */
-  .meter-tick--70{ left:70%; }
   .meter-scale{ display:flex; justify-content:space-between; font-family:var(--mono);
                 font-feature-settings:"tnum"; font-size:9px; font-weight:600;
                 color:var(--ink-3); margin-top:5px; letter-spacing:0.04em; }
@@ -202,7 +200,7 @@
      radar was stranded in ~250px of dead gutter; the eight pillars, given all 1044px,
      became 117px-wide solid slabs rather than bars), and the rationale stops costing a
      block of its own, which is where the slack above CONTENTS was coming from.
-     Survey keeps the full width — a ten-row ladder needs it. */
+     Survey keeps the full width — ten rows with their why need it. */
   .texture--split{ display:grid; grid-template-columns:1fr 360px; column-gap:44px; row-gap:12px;
                    align-items:center; }
   .texture--split .texture-h{ grid-column:1 / -1; margin-bottom:0; }
@@ -256,23 +254,39 @@
   .drv-n{ font-size:12.5px; font-weight:500; }
   .drv-v{ font-family:var(--mono); font-size:12px; font-weight:600; }
 
-  /* Survey — ten matches, descending ladder */
-  .ladder{ display:flex; flex-direction:column; }
-  /* 5px, not the 9.5 the other rhythms use: ten rows plus a rationale and a four-item
-     contents makes this the densest of the three covers, and it now carries the facts
-     grid and metric row too. Ten rows amplify every pixel here — check the overflow
-     measurement, not the eye, after changing it. */
-  .lad{ display:grid; grid-template-columns:26px 1fr 176px 52px; gap:16px; align-items:center;
-        padding:5px 0; border-top:1px solid var(--rule-2); }
-  .ladder .lad:first-child{ border-top:1px solid var(--rule); }
+  /* Survey row atoms — rank, patent code, score bar. Used by .mt below. */
   .lad-r{ font-family:var(--mono); font-size:11px; color:var(--ink-3); }
-  .lad-p{ min-width:0; }
   .lad-no{ font-family:var(--mono); font-size:11px; color:var(--accent); font-weight:600; display:block; }
-  .lad-t{ display:block; font-size:12.5px; font-weight:500; margin-top:1px;
-          white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .lad-b{ height:8px; border-radius:4px; background:var(--rule-2); overflow:hidden; }
   .lad-b i{ display:block; height:100%; background:var(--ink); }
-  .lad-s{ font-family:var(--mono); font-size:13px; font-weight:600; text-align:right; }
+
+  /* Survey — the ten matches, each with its "why". Replaces the June ladder + metric row:
+     the why is the only part of this report TIS authors, so it sits on the row, not pages
+     later. The score is shown exactly as Innovue returns it — closeness of this result to
+     this input, never re-normalised, never a grade. */
+  .read{ flex:none; margin-top:12px; display:grid; grid-template-columns:172px 1fr; gap:34px;
+         align-items:baseline; }
+  .read h2{ font-size:9.5px; font-weight:600; letter-spacing:0.14em; color:var(--ink-3); text-transform:uppercase; }
+  .read p{ font-size:14.5px; line-height:1.5; color:var(--ink-2); max-width:72ch; text-wrap:pretty; }
+  .strip{ flex:none; margin-top:20px; border:1px solid var(--rule); border-radius:14px;
+          display:grid; grid-template-columns:repeat(3,1fr); }
+  .strip .row + .row{ border-left:1px solid var(--rule-2); }
+  .matches{ display:flex; flex-direction:column; }
+  .mt{ display:grid; grid-template-columns:26px 372px 1fr 84px; gap:18px; align-items:start;
+       padding:7px 0; border-top:1px solid var(--rule-2); }
+  .matches .mt:first-child{ border-top:1px solid var(--rule); }
+  .mt .lad-r{ padding-top:1px; }
+  .mt-p{ min-width:0; }
+  .mt-p .lad-no{ display:inline; }
+  .mt-m{ font-size:11px; color:var(--ink-3); margin-left:8px; }
+  .mt-t{ display:block; font-size:13px; font-weight:600; line-height:1.3; margin-top:3px;
+         white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mt-w{ font-size:12.5px; line-height:1.45; color:var(--ink-2); text-wrap:pretty; }
+  .mt-w em{ font-style:italic; }
+  .mt-s{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .mt-s b{ font-family:var(--mono); font-size:15px; font-weight:600; font-feature-settings:"tnum"; }
+  .mt-s .lad-b{ width:100%; height:6px; }
+  .mt--near .mt-w{ color:var(--ink); }
 
   /* ── rationale — the prose an S&P Research Update carries under its rating action ── */
   .rationale{ margin-top:20px; padding-top:16px; border-top:1px solid var(--rule);
@@ -639,7 +653,10 @@
   </div>
 </div>
 
-<!-- ═════════════ BX · SURVEY — ten descending bars ═════════════ -->
+<!-- ═════════════ BX · SURVEY — the ten matches, each with its why ═════════════
+     No grade, no PSS, no pool rank: Survey takes drafts and ideas, which cannot be scored.
+     Spec and the canonical row data: website/documents/survey-sample-spec.md. Assignee /
+     IPC / year are illustrative; the ten numbers and scores are the live sample's. -->
 <div class="page" id="p-landscape">
   <div class="band">
     <span class="band-l">
@@ -651,103 +668,62 @@
   </div>
 
   <div class="sheet">
-    <span class="kicker">Patent Strength Rating · Market Comparison</span>
-    <h1 class="headline">Rated S, with the ten closest patents on the market.</h1>
+    <span class="kicker">Semantic Patent Search · The field</span>
+    <h1 class="headline">The ten patents closest to your input, and why.</h1>
     <p class="subject"><b>US9876543</b> &nbsp;·&nbsp; Process control methods for fin-FET gate uniformity at sub-7-nanometre nodes &nbsp;·&nbsp; Macrosilicon Manufacturing Corp.</p>
-
-    <div class="summary">
-      <div class="grade">
-        <span class="grade-k">SABCD Grade</span>
-        <span class="grade-l">S</span>
-        <span class="grade-n">Top 2.2%</span>
-      </div>
-      <dl class="rows">
-        <div class="row"><dt>PSS score</dt><dd>78.91</dd></div>
-        <div class="row"><dt>Matches returned</dt><dd>10</dd></div>
-        <div class="row"><dt>Search corpus</dt><dd>US <small>· last 10 yrs</small></dd></div>
-        <div class="row"><dt>Retrieved</dt><dd>2026-08-10</dd></div>
-      </dl>
+    <div class="read">
+      <h2>Our read</h2>
+      <p>A closed-loop process-control method that holds fin-FET gate critical dimension uniform across a wafer at sub-7&nbsp;nm nodes, feeding in-line metrology back into etch on a per-die basis.</p>
     </div>
 
-    <div class="metrics">
-      <div class="met">
-        <div class="met-l">Cohort percentile</div>
-        <div class="arc">
-          <svg viewBox="0 0 148 148" aria-hidden="true">
-            <path class="arc-track" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4"/>
-            <path class="arc-fill" d="M 31.6 116.4 A 60 60 0 1 1 116.4 116.4" stroke-dasharray="271.9 283"/>
-          </svg>
-          <div class="met-v">97.8<small>%</small></div>
-        </div>
-        <div class="met-s">1,433-patent reference pool</div>
-      </div>
-      <div class="met">
-        <div class="met-l">Rank in pool</div>
-        <div class="met-v">4<small> / 1,433</small></div>
-        <div class="dist">
-          <svg viewBox="-12 0 258 120" preserveAspectRatio="none" aria-hidden="true">
-            <line class="baseline" x1="-12" y1="112" x2="246" y2="112"/>
-            <rect class="bar is-this" x="4" y="104" width="10" height="8"/><rect class="bar" x="17" y="96" width="10" height="16"/><rect class="bar" x="30" y="82" width="10" height="30"/><rect class="bar" x="43" y="64" width="10" height="48"/><rect class="bar" x="56" y="42" width="10" height="70"/><rect class="bar" x="69" y="22" width="10" height="90"/><rect class="bar" x="82" y="10" width="10" height="102"/><rect class="bar" x="95" y="6" width="10" height="106"/><rect class="bar" x="108" y="12" width="10" height="100"/><rect class="bar" x="121" y="26" width="10" height="86"/><rect class="bar" x="134" y="46" width="10" height="66"/><rect class="bar" x="147" y="66" width="10" height="46"/><rect class="bar" x="160" y="82" width="10" height="30"/><rect class="bar" x="173" y="90" width="10" height="22"/><rect class="bar" x="186" y="96" width="10" height="16"/><rect class="bar" x="199" y="100" width="10" height="12"/><rect class="bar" x="212" y="102" width="10" height="10"/><rect class="bar" x="225" y="106" width="10" height="6"/>
-            <line class="locator" x1="9" y1="15" x2="9" y2="112"/>
-            <polygon class="marker" points="4,0 14,0 9,15"/>
-          </svg>
-        </div>
-        <div class="met-s">Re-ranked weekly as the pool updates</div>
-      </div>
-      <div class="met">
-        <div class="met-l">Top similarity</div>
-        <div class="met-v">0.96</div>
-        <div class="meter">
-          <div class="meter-bar">
-            <span class="meter-tick meter-tick--70"></span>
-            <div class="meter-fill" style="width:96%"></div>
-          </div>
-          <div class="meter-scale"><span>0.00</span><span>floor 0.70</span><span>1.00</span></div>
-        </div>
-        <div class="met-s">Cosine similarity, vector search</div>
-      </div>
-    </div>
+    <dl class="strip">
+      <div class="row"><dt>Matches returned</dt><dd>10</dd></div>
+      <div class="row"><dt>Search corpus</dt><dd>TW + US <small>· granted + published</small></dd></div>
+      <div class="row"><dt>Retrieved</dt><dd>2026-08-10</dd></div>
+    </dl>
 
     <div class="texture">
-      <div class="texture-h"><span>Ten closest patents</span><em>vector similarity, descending</em></div>
-      <div class="ladder">
-        <div class="lad"><span class="lad-r">01</span><span class="lad-p"><span class="lad-no">US9214887</span><span class="lad-t">Adaptive etch dwell control for FinFET gate modules</span></span><span class="lad-b"><i style="width:96%"></i></span><span class="lad-s">0.96</span></div>
-        <div class="lad"><span class="lad-r">02</span><span class="lad-p"><span class="lad-no">US9019233</span><span class="lad-t">In-line CD metrology with per-die process correction</span></span><span class="lad-b"><i style="width:94%"></i></span><span class="lad-s">0.94</span></div>
-        <div class="lad"><span class="lad-r">03</span><span class="lad-p"><span class="lad-no">EP3140219</span><span class="lad-t">Gate critical-dimension uniformity at advanced nodes</span></span><span class="lad-b"><i style="width:91%"></i></span><span class="lad-s">0.91</span></div>
-        <div class="lad"><span class="lad-r">04</span><span class="lad-p"><span class="lad-no">US8877661</span><span class="lad-t">Wafer-level variance compensation in plasma etch</span></span><span class="lad-b"><i style="width:88%"></i></span><span class="lad-s">0.88</span></div>
-        <div class="lad"><span class="lad-r">05</span><span class="lad-p"><span class="lad-no">KR102330144</span><span class="lad-t">Real-time etch endpoint detection for 5&nbsp;nm logic</span></span><span class="lad-b"><i style="width:85%"></i></span><span class="lad-s">0.85</span></div>
-        <div class="lad"><span class="lad-r">06</span><span class="lad-p"><span class="lad-no">US8654902</span><span class="lad-t">Feed-forward lithography correction from etch data</span></span><span class="lad-b"><i style="width:83%"></i></span><span class="lad-s">0.83</span></div>
-        <div class="lad"><span class="lad-r">07</span><span class="lad-p"><span class="lad-no">WO2018201477</span><span class="lad-t">Statistical process control for multi-patterning</span></span><span class="lad-b"><i style="width:80%"></i></span><span class="lad-s">0.80</span></div>
-        <div class="lad"><span class="lad-r">08</span><span class="lad-p"><span class="lad-no">TW I712345</span><span class="lad-t">Chamber-matching for high-volume logic fabrication</span></span><span class="lad-b"><i style="width:77%"></i></span><span class="lad-s">0.77</span></div>
-        <div class="lad"><span class="lad-r">09</span><span class="lad-p"><span class="lad-no">US8402118</span><span class="lad-t">Overlay control using post-etch inspection feedback</span></span><span class="lad-b"><i style="width:74%"></i></span><span class="lad-s">0.74</span></div>
-        <div class="lad"><span class="lad-r">10</span><span class="lad-p"><span class="lad-no">JP6553311</span><span class="lad-t">Gate profile tuning across multi-chamber toolsets</span></span><span class="lad-b"><i style="width:71%"></i></span><span class="lad-s">0.71</span></div>
+      <div class="texture-h"><span>The ten closest, and why each one is close</span><em>similarity as returned · closest first</em></div>
+      <div class="matches">
+        <div class="mt mt--near"><span class="lad-r">01</span><span class="mt-p"><span class="lad-no">US9214887</span><span class="mt-m">Northgate Semiconductor · H01L 21/3065 · 2019</span><span class="mt-t">Adaptive etch dwell control for FinFET gate modules</span></span><p class="mt-w">Claims the same per-die feedback loop at the core of your method — adjusting etch dwell from in-line CD measurement (claim 1). The closest on the list, and a near-direct read onto your gate-uniformity claim.</p><span class="mt-s"><b>0.96</b><span class="lad-b"><i style="width:96%"></i></span></span></div>
+        <div class="mt mt--near"><span class="lad-r">02</span><span class="mt-p"><span class="lad-no">US9019233</span><span class="mt-m">Corvane Instruments · H01L 21/66 · 2018</span><span class="mt-t">In-line CD metrology with per-die process correction</span></span><p class="mt-w">The measurement-and-correction half of your loop, claimed in its own right (claims 1–3): per-die CD metrology driving a process adjustment. Overlaps on <em>how you sense and correct</em>, less on the etch step itself.</p><span class="mt-s"><b>0.94</b><span class="lad-b"><i style="width:94%"></i></span></span></div>
+        <div class="mt mt--near"><span class="lad-r">03</span><span class="mt-p"><span class="lad-no">EP3140219</span><span class="mt-m">Varo Lithography BV · G03F 7/70 · 2017</span><span class="mt-t">Gate critical-dimension uniformity at advanced nodes</span></span><p class="mt-w">Same objective — holding gate CD at advanced nodes — but via litho-side correction rather than etch dwell. Converges on the goal, diverges on the lever.</p><span class="mt-s"><b>0.91</b><span class="lad-b"><i style="width:91%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">04</span><span class="mt-p"><span class="lad-no">US8877661</span><span class="mt-m">Kestrel Process Systems · H01J 37/32 · 2016</span><span class="mt-t">Wafer-level variance compensation in plasma etch</span></span><p class="mt-w">Compensates wafer-level etch variance; your method is per-die, so the overlap is the control principle, not the resolution. Relevant prior art on the compensation concept.</p><span class="mt-s"><b>0.88</b><span class="lad-b"><i style="width:88%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">05</span><span class="mt-p"><span class="lad-no">KR102330144</span><span class="mt-m">Hanseo Semicon Co. · H01L 21/3065 · 2021</span><span class="mt-t">Real-time etch endpoint detection for 5&nbsp;nm logic</span></span><p class="mt-w">Shares the real-time etch-control context at the same node; the claimed invention is endpoint detection, adjacent to — not the same as — your uniformity loop.</p><span class="mt-s"><b>0.85</b><span class="lad-b"><i style="width:85%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">06</span><span class="mt-p"><span class="lad-no">US8654902</span><span class="mt-m">Aldmoor Systems · G03F 7/20 · 2015</span><span class="mt-t">Feed-forward lithography correction from etch data</span></span><p class="mt-w">Feeds etch data forward into lithography; your loop runs the other way, from metrology back into etch.</p><span class="mt-s"><b>0.83</b><span class="lad-b"><i style="width:83%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">07</span><span class="mt-p"><span class="lad-no">WO2018201477</span><span class="mt-m">Lumet Fab Technologies · G05B 19/418 · 2018</span><span class="mt-t">Statistical process control for multi-patterning</span></span><p class="mt-w">Statistical control of CD drift across patterning steps; shares the uniformity goal, not the per-die loop.</p><span class="mt-s"><b>0.80</b><span class="lad-b"><i style="width:80%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">08</span><span class="mt-p"><span class="lad-no">TW I712345</span><span class="mt-m">Jinhe Foundry Co. · H01J 37/32 · 2020</span><span class="mt-t">Chamber-matching for high-volume logic fabrication</span></span><p class="mt-w">Matches etch results chamber to chamber rather than die to die; tool-level, a step removed.</p><span class="mt-s"><b>0.77</b><span class="lad-b"><i style="width:77%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">09</span><span class="mt-p"><span class="lad-no">US8402118</span><span class="mt-m">Halden Microdevices · G03F 7/70 · 2014</span><span class="mt-t">Overlay control using post-etch inspection feedback</span></span><p class="mt-w">Post-etch inspection as feedback, but to correct overlay rather than gate CD.</p><span class="mt-s"><b>0.74</b><span class="lad-b"><i style="width:74%"></i></span></span></div>
+        <div class="mt"><span class="lad-r">10</span><span class="mt-p"><span class="lad-no">JP6553311</span><span class="mt-m">Kōsei Plasma K.K. · H01L 21/8234 · 2019</span><span class="mt-t">Gate profile tuning across multi-chamber toolsets</span></span><p class="mt-w">Same gate module, tuned at toolset level; the furthest from your per-die etch loop.</p><span class="mt-s"><b>0.71</b><span class="lad-b"><i style="width:71%"></i></span></span></div>
       </div>
     </div>
 
     <div class="rationale">
-      <h2>Survey rationale</h2>
+      <h2>The field, read as a whole</h2>
       <div>
-        <p>Ten matches returned above the <b>0.70</b> similarity floor, clustered on in-line
-        metrology feedback for advanced-node etch. The three closest all claim per-die correction,
-        which is where this patent's own independent claims sit. Chapter 4 sets out where the
-        cluster converges and where it splits.</p>
+        <p>The ten cluster tightly on in-line, per-die process control at advanced nodes: this
+        space is crowded, not open. The three closest
+        (<b>US9214887</b>, <b>US9019233</b>, <b>EP3140219</b>) all claim per-die correction, which is
+        exactly where its independent claims sit, so that is where overlap risk is highest. The
+        rest sit a step removed, upstream in metrology or downstream in overlay and profile
+        control. The clearest differentiator is the <b>etch-dwell lever driven by per-die CD</b>; only
+        US9214887 reads directly onto it.</p>
       </div>
     </div>
 
     <div class="contents">
       <div class="contents-h">Contents</div>
       <ol class="toc">
-        <li><b>PSS overview</b><i>p. 2</i></li>
-        <li><b>The ten closest patents</b><i>p. 3</i></li>
-        <li><b>Why each one matches</b><i>p. 5</i></li>
-        <li><b>The technology cluster</b><i>p. 9</i></li>
+        <li><b>The ten closest, in full</b><i>p. 2</i></li>
+        <li><b>The field, read as a whole</b><i>p. 9</i></li>
+        <li><b>Notes &amp; method</b><i>p. 12</i></li>
       </ol>
     </div>
   </div>
 
   <div class="basis">
-    <h2>Basis of rating</h2>
-    <p>Matches retrieved by vector search against Innovue's patent corpus; similarity is a cosine score, not a legal opinion on infringement or validity. Grade and percentile are against the full 1,433-patent pool. AI-assisted analysis; not legal or investment advice.</p>
+    <h2>About this report</h2>
+    <p>The ten matches and their full text are returned by Innovue's vector engine, ranked by semantic similarity against live TW and US patent data; each score is the closeness of that result to this input, as the engine returns it. The "why it matches" and the field read are written by TIS, AI-assisted and human-reviewed. A technical comparison, not a legal or freedom-to-operate opinion. Survey does not grade the input.</p>
   </div>
 
   <div class="foot">

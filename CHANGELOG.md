@@ -9,6 +9,14 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-06 15:17 +08:00** · Contact card photo runs full bleed under the form on every page, form inset on phones; css v50.
+- **2026-10-06 15:11 +08:00** · UV contact card background becomes the hangar photo (engineers and tilt-rotor UAV); css v49.
+- **2026-10-06 14:56 +08:00** · Ecosystem map becomes a one-screen horizon dial on the page, dark hub with the secondary logo; css v48.
+- **2026-10-06 13:57 +08:00** · Landscape reports and Press hidden (/reports/ redirects to Patent Strength Grading); nav labels link to their pages; shorter Ecosystem and About nav lines; neutrality commitments move to About, Protect and License link there; css v47, js v30.
+- **2026-10-06 13:23 +08:00** · FairTech becomes "Taiwan leading UAV manufacturer" site-wide, legal included; Ecosystem nav shows partner roles; visual-guide snapshot resynced.
+- **2026-10-06 13:07 +08:00** · Nav panels become columns under their own label with a photo header, so diagonal moves no longer swap menus; css v46, js v29.
+- **2026-10-06 12:34 +08:00** · Survey sample rebuilt without a grade: ten matches with score and why, new cover and page-1 renders, panel copy aligned.
+- **2026-10-06 12:27 +08:00** · Team review: every page ends in a contact form; Engage retired; ecosystem ring; Patent Strength Grading merges Signal and methodology; css v45, js v28.
 - **2026-10-03 15:18 +08:00** · Home trays mobile pass: CTA wraps at 320, anchors land under the nav, opening a tray scrolls its points into view; css v44, js v27.
 - **2026-10-02 09:12 +08:00** · Home pillars become folded trays (KSPs behind one pill each); Why TIS gets a summary line and grey tiles; asset versions bumped (css v43, js v26).
 - **2026-10-01 20:21 +08:00** · Home KV quieted: click-only slides, no stat strip or diagram; proof points move to slide 3; asset versions bumped (css v42, js v25).

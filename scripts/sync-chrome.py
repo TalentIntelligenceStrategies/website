@@ -29,51 +29,72 @@ NAV = [
         ('/sustain/#compliance', 'Compliance: two lanes', '合規：雙軌制'),
     ], [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
-        ('/engage/#phases', 'Engagement phases', '合作階段'),
     ]),
     ('protect', 'Protect', '防護', [
-        ('/protect/#why-neutral', 'Why a neutral advisor', '為何需要中立顧問'),
         ('/protect/#capabilities', 'Three capabilities', '三項核心能力'),
-        ('/protect/#filing-strategy', 'Taiwan & Asia filing strategy', '台灣與亞洲申請策略'),
     ], [
-        ('/reports/', 'Landscape reports', '專利布局報告'),
-        ('/engage/#bundle', 'Sustainment Bundle', '維運組合方案'),
+        # Landscape reports hidden 2026-10-06: none published yet, and they read as a
+        # separate product. Restore with /reports/ (see _hidden/reports-index.html).
     ]),
     ('license', 'License', '授權', [
+        # Licensing Platform moved here from Insights (team review 2026-10-06).
+        ('/product/licensing/', 'Licensing Platform', '泰然專利防護網', True),
         ('/license/#portfolio', 'TIS × Innovue UAV patent portfolio', 'TIS × Innovue 無人機專利組合'),
-        ('/license/#services', 'Licensing services', '授權服務'),
-        ('/license/#commitments', 'Our neutrality commitments', '我們的中立承諾'),
     ], [
         ('/why-taiwan/#patents', 'Taiwan patent picture', '台灣專利現況'),
     ]),
     ('ecosystem', 'Ecosystem', '生態系', [
-        ('/ecosystem/#suntek', 'Suntek Group / PG Union', 'Suntek Group / PG Union'),
-        ('/ecosystem/#fairtech', 'FairTech', '富蘭登科技'),
-        ('/ecosystem/#innovue', 'Innovue', 'Innovue'),
+        # Role labels, not partner names (2026-10-06): the capability lifter is unnamed in public copy.
+        ('/ecosystem/#suntek', 'Service capacity', '服務量能'),
+        ('/ecosystem/#fairtech', 'Capability lifting', '能力提升'),
+        ('/ecosystem/#innovue', 'IP technology', '智財技術'),
     ], [
         ('/ecosystem/#map', 'How it fits together', '整體架構'),
-        ('/engage/', 'Start an engagement', '開始合作'),
     ]),
     ('insights', 'Insights', '洞察', [
-        ('/reports/#reports', 'Landscape reports', '專利布局報告'),
-        ('/product/signal/methodology.html', 'SABCD rating', 'SABCD 評級方法'),
-        ('/product/signal/', 'Patent Intelligence SaaS', '泰然專利強度評級系統'),
-        ('/product/licensing/', 'Licensing Platform', '泰然專利防護網', True),
-    ], [
-        ('/reports/#press', 'Press', '新聞'),
-    ]),
+        # SABCD rating + Patent Intelligence SaaS merged into one page (team review 2026-10-06).
+        # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
+        ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
+        ('/product/signal/#method', 'How the grade is calculated', '評級是怎麼算出來的'),
+    ], []),
     ('about', 'About', '關於', [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
-        ('/about/#governance', 'Governance & neutrality', '治理與中立'),
+        # The one neutrality link in the nav (2026-10-06): About is the official home;
+        # Protect and License keep their sections, each ending in a CTA to it.
+        ('/about/#commitments', 'Neutrality commitments', '中立承諾'),
         ('/about/#board', 'Board of directors', '董事會'),
     ], [
-        ('/engage/', 'Engagement model', '合作模式'),
         ('/legal/disclosures.en.html', 'Disclosures', '揭露聲明'),
     ]),
 ]
 
 PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/license/',
-             'ecosystem': '/ecosystem/', 'insights': '/reports/', 'about': '/about/'}
+             'ecosystem': '/ecosystem/', 'insights': '/product/signal/', 'about': '/about/'}
+
+# Photo header at the top of each mega panel (nav style A2, chosen 2026-10-06 from
+# mro/mocks/nav-dropdowns/). The header is the section's page link: photo, name, one line.
+# key -> (image stem in assets/imagery/uv/, intrinsic height at 800w, object-position, EN, ZH).
+# Pillar lines are the approved sheet v0.5 one-liners (build.py PILLAR_COPY). Ecosystem and
+# About were shortened and split apart on 2026-10-06 (both had carried the same long TIS-role
+# line); Insights describes Patent Strength Grading. The object-position puts the
+# subject in the middle of the short, wide crop; every photo is cropped vertically.
+# Photos load on first intent (site.js swaps data-src), so they cost nothing at page load.
+NAV_HERO = {
+    'sustain':   ('sustain', 1156, '50% 68%', 'Local MRO capacity that keeps your contracts on track.', '在地化 MRO 能量，讓您的合約順利履約。'),
+    'protect':   ('protect', 993, '50% 68%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主動鎖住技術優勢。'),
+    'license':   ('license', 1156, '50% 30%', 'Flexible licensing that speeds up local market entry and partnerships.', '靈活的授權安排，加速在地市場與合作。'),
+    'ecosystem': ('ecosystem-hero', 447, '50% 80%', 'Three partners, brought in as your program grows.', '三家夥伴，隨您的專案成長逐步加入。'),
+    'insights':  ('protect-design-room', 597, '50% 80%', 'Know what a patent is worth before you file, license or defend it.', '在申請、授權或防禦之前，先知道一件專利的價值。'),
+    'about':     ('hero', 447, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '台灣無人載具製造商的生態系夥伴。'),
+}
+HERO_ARROW = '<svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
+
+def mega_hero(key, en, zh):
+    stem, h, pos, len_, lzh = NAV_HERO[key]
+    return (f'<a class="mega-hero" href="{PAGE_HREF[key]}">'
+            f'<img class="mega-hero__img" data-src="/assets/imagery/uv/{stem}-800.webp" alt="" width="800" height="{h}" decoding="async" style="object-position:{pos}">'
+            f'<span class="mega-hero__t"><span data-zh="{zh}">{en}</span>{HERO_ARROW}</span>'
+            f'<span class="mega-hero__d" data-zh="{lzh}">{esc(len_)}</span></a>')
 
 def esc(s): return s.replace('&', '&amp;')
 
@@ -85,10 +106,8 @@ FOOTER_ICONS = {
     '/ecosystem/': '<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',  # network
     '/about/': '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',  # box
     '/why-taiwan/': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',  # map-pin
-    '/engage/': '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',  # mail
     '/reports/': '<path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>',  # paperclip
-    '/product/signal/methodology.html': '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',  # chart-line
-    '/product/signal/': '<path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/>',  # layers
+    '/product/signal/': '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',  # chart-line
     '/product/licensing/': '<path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/>',
     'terms': '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
     'privacy': '<path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/>',
@@ -105,26 +124,29 @@ def link(l, cls, arrow=False):
     return (f'<a href="{href}" class="{cls}"{legal}><span data-zh="{zh}">{esc(en)}</span>{flag}'
             + (ARROW if arrow else '') + '</a>')
 
-def header():
+def header(contact='#contact'):
+    """contact: the Contact button's target. Pages that end in a form point at their own
+    #contact; pages without one (legal, 404, redirect stubs) send it to the homepage form."""
     items = []
     for key, en, zh, main, res in NAV:
         mains = '\n'.join(f'              <li>{link(l, "mega-link", True)}</li>' for l in main)
         ress = '\n'.join(f'              <li>{link(l, "mega-res-link")}</li>' for l in res)
-        items.append(f'''      <li class="nav-item" data-nav="{key}">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-{key}" aria-expanded="false" aria-controls="mega-{key}"><span data-zh="{zh}">{en}</span></button>
-        <div class="mega-panel" id="mega-{key}" role="region" aria-labelledby="nav-t-{key}">
-          <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="{PAGE_HREF[key]}"><span data-zh="{zh}">{en}</span>{ARROW}</a>
-            <ul class="mega-list">
-{mains}
-            </ul>
-          </div>
+        aside = f'''
           <div class="mega-aside">
             <p class="mega-eyebrow" data-zh="資源">Resources</p>
             <ul class="mega-res">
 {ress}
             </ul>
-          </div>
+          </div>''' if res else ''
+        items.append(f'''      <li class="nav-item" data-nav="{key}">
+        <a href="{PAGE_HREF[key]}" class="topnav-link nav-trigger" id="nav-t-{key}" aria-expanded="false" aria-controls="mega-{key}"><span data-zh="{zh}">{en}</span></a>
+        <div class="mega-panel" id="mega-{key}" role="region" aria-labelledby="nav-t-{key}">
+          <div class="mega-main">
+            {mega_hero(key, en, zh)}
+            <ul class="mega-list">
+{mains}
+            </ul>
+          </div>{aside}
         </div>
       </li>''')
     items = '\n'.join(items)
@@ -180,7 +202,7 @@ def header():
         </svg>
       </button>
 
-      <a href="/engage/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
+      <a href="{contact}" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
@@ -194,20 +216,23 @@ def header():
      clipped to the 64px bar. z-index 99 sits under the nav (100), over the veil (95). -->
 <div class="mega-scrim" id="mega-scrim" aria-hidden="true"></div>'''
 
-def drawer():
+def drawer(contact='#contact'):
     groups = []
     for key, en, zh, main, res in NAV:
         mains = '\n'.join(f'      {link(l, "mobile-sub-link")}' for l in main)
         ress = '\n'.join(f'      {link(l, "mobile-sub-link mobile-sub-link--res")}' for l in res)
-        groups.append(f'''    <button type="button" class="mobile-row-dropdown" id="m-t-{key}" data-nav="{key}" aria-expanded="false" aria-controls="m-sub-{key}">
-      <span data-zh="{zh}">{en}</span>
-      {CHEV}
-    </button>
-    <div id="m-sub-{key}" class="mobile-sublist">
-      <a href="{PAGE_HREF[key]}" class="mobile-sub-link mobile-sub-link--page"><span data-zh="{zh}">{en}</span>{ARROW}</a>
-{mains}
+        resblock = f'''
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
-{ress}
+{ress}''' if res else ''
+        # The label is the section's page link; the chevron alone expands the group (2026-10-06).
+        groups.append(f'''    <div class="mobile-row">
+      <a href="{PAGE_HREF[key]}" class="mobile-row-link"><span data-zh="{zh}">{en}</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-{key}" data-nav="{key}" aria-expanded="false" aria-controls="m-sub-{key}" aria-label="{en} links" data-zh-aria="{zh}選單">
+        {CHEV}
+      </button>
+    </div>
+    <div id="m-sub-{key}" class="mobile-sublist">
+{mains}{resblock}
     </div>''')
     groups = '\n'.join(groups)
     return f'''<div class="mobile-overlay" id="mobile-overlay"></div>
@@ -235,7 +260,7 @@ def drawer():
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
-    <a href="/engage/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
+    <a href="{contact}" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
   </div>
 </aside>'''
 
@@ -245,14 +270,13 @@ SEARCH_JUMP = [
     ('/license/', 'License', '授權', '<path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/>'),
     ('/ecosystem/', 'Ecosystem', '生態系', '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/>'),
     ('/why-taiwan/', 'Why Taiwan', '為何是台灣', '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
-    ('/reports/', 'Insights', '洞察', '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>'),
-    ('/product/signal/methodology.html', 'SABCD rating', 'SABCD 評級方法', '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
+    ('/product/signal/', 'Patent Strength Grading', '專利強度評級', '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
     ('/about/', 'About', '關於', '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
-    ('/engage/#contact', 'Contact', '聯絡我們', '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/>'),
+    ('#contact', 'Contact', '聯絡我們', '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/>'),
 ]
 
-def search():
-    rows = '\n'.join(f'''    <a href="{h}" class="search-link">
+def search(contact='#contact'):
+    rows = '\n'.join(f'''    <a href="{contact if h == '#contact' else h}" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true">{ico}</svg>
       <span data-zh="{zh}">{en}</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -264,7 +288,7 @@ def search():
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面、報告與新聞…" placeholder="Search pages, reports and press…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面…" placeholder="Search pages…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
@@ -275,8 +299,8 @@ def search():
 
 FOOTER_COLS = [
     ('Services', '服務', [('/sustain/', 'Sustain', '維護'), ('/protect/', 'Protect', '防護'), ('/license/', 'License', '授權')]),
-    ('Company', '公司', [('/ecosystem/', 'Ecosystem', '生態系'), ('/why-taiwan/', 'Why Taiwan', '為何是台灣'), ('/about/', 'About', '關於'), ('/engage/', 'Engage', '合作')]),
-    ('Insights', '洞察', [('/reports/', 'Reports & press', '報告與新聞'), ('/product/signal/methodology.html', 'SABCD rating', 'SABCD 評級方法'), ('/product/signal/', 'Patent Intelligence SaaS', '泰然專利強度評級系統'), ('/product/licensing/', 'Licensing Platform', '泰然專利防護網', True)]),
+    ('Company', '公司', [('/ecosystem/', 'Ecosystem', '生態系'), ('/why-taiwan/', 'Why Taiwan', '為何是台灣'), ('/about/', 'About', '關於')]),
+    ('Insights', '洞察', [('/product/signal/', 'Patent Strength Grading', '專利強度評級')]),
 ]
 
 def footer(lockup, inert):
@@ -346,7 +370,7 @@ PAGES = [
     ('index.html', False, False),
     ('about/index.html', False, False),
     ('patents/index.html', False, False),
-    ('reports/index.html', True, False),
+    ('reports/index.html', False, False),
     ('product/signal/index.html', True, False),
     ('product/signal/methodology.html', True, False),
     ('product/licensing/index.html', True, True),
@@ -372,14 +396,15 @@ def apply(path, lockup, inert, write):
     p = ROOT / path
     s = p.read_text(encoding='utf-8')
     orig = s
-    s = swap(s, r'<header class="topnav"', r'</header>(\n<!-- Mega-panel scrim\.(?s:.*?)-->\n<div class="mega-scrim"[^>]*></div>)?', header(), path + ' header')
-    s = swap(s, r'<div class="mobile-overlay"', r'</aside>', drawer(), path + ' drawer')
+    contact = '#contact' if 'id="contact"' in s else '/#contact'
+    s = swap(s, r'<header class="topnav"', r'</header>(\n<!-- Mega-panel scrim\.(?s:.*?)-->\n<div class="mega-scrim"[^>]*></div>)?', header(contact), path + ' header')
+    s = swap(s, r'<div class="mobile-overlay"', r'</aside>', drawer(contact), path + ' drawer')
     # search modal: from overlay to the modal's closing </div> at column 0
     m = re.search(r'<div class="search-overlay"', s)
     if not m: raise SystemExit(path + ': search not found')
     e = s.find('\n</div>', s.find('<div class="search-results">', m.start()))
     # results' own close is indented ("\n  </div>"), so the first column-0 close is the modal's
-    s = s[:m.start()] + search() + s[e + len('\n</div>'):]
+    s = s[:m.start()] + search(contact) + s[e + len('\n</div>'):]
     s = swap(s, r'<footer class="footer"', r'<div class="footer-baseline"[^>]*>\s*<div class="container">\s*<p class="footer-copy">[^<]*</p>\s*</div>\s*</div>', footer(lockup, inert), path + ' footer')
     if write and s != orig:
         p.write_text(s, encoding='utf-8')

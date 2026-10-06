@@ -542,8 +542,12 @@ make the next edit harder and neither leaves a trace of why.
   viewBox (eng ≈8.75:1, ch ≈3.74:1), themed/lang-switched via `--logo-secondary`. Below
   640px it falls back to the square submark (`aspect-ratio:1/1`, `height:32px`).
 - **Six section triggers** (2026-09-28): Sustain · Protect · License · Ecosystem · Insights
-  · About, right-aligned before the controls cluster, where the old links sat (`.nav-items` → `.nav-item` → `button.nav-trigger`,
-  14px/600, secondary colour, hover → `#000`). No chevrons. Each opens a **mega panel**.
+  · About, right-aligned before the controls cluster, where the old links sat (`.nav-items` → `.nav-item` → `a.nav-trigger`,
+  14px/600, secondary colour, hover → `#000`). No chevrons. Each label is a link to its
+  section page, the same target as the panel's photo header (2026-10-06): a click navigates,
+  hover (fine pointers) or ArrowDown opens the **mega panel**. Insights points at
+  `/product/signal/`. A panel with no resources drops its Resources block. In the drawer,
+  the label is the page link and a separate chevron button expands the group.
   Contents are the section map from `mro/website-page-map.md` §2 and live in one place:
   `scripts/sync-chrome.py`.
 - **Controls cluster**: language globe with the active code (`.lang-code`: `EN` / `中文`,
@@ -551,26 +555,39 @@ make the next edit harder and neither leaves a trace of why.
 - **Breakpoint 1080px**, not 980: six triggers + the Secondary wordmark + controls need
   ~1040px of row. At ≤1080 the triggers and the CTA hide and the hamburger shows.
 
-**Mega panel** (modelled on the reference supplied 2026-09-28).
+**Mega panel: an anchored column with a photo header** (style A2, 2026-10-06; chosen from
+five studied in `mro/mocks/nav-dropdowns/`, which replaced the 2026-09-28 full-width panel).
+The full-width panel put each section's links at the far left while the triggers sit on the
+right, so a diagonal from Protect toward its first link crossed Sustain and swapped the
+panel. A column under its own label makes the route straight down.
 
 - One `.mega-panel` per `.nav-item`, **directly after its trigger in the DOM**, absolutely
-  positioned against the fixed `.topnav` (`top:100%; left/right:12px`, bottom radius 16,
-  `--shadow-high`). Being a child of the item is what makes Tab run trigger → panel links →
-  next trigger, and what keeps hover continuous from trigger into panel.
-- **One surface, one tone** (polish 2026-09-29, replacing the two-tone 38% / grey-aside
-  panel). The panel is `--surface-page` end to end, continuous with the opaque bar, and its
-  height is set by its content (no `min-height`). Two columns, `2fr / minmax(220px,1fr)`:
-  `.mega-main` holds the section eyebrow and the anchor list, set **two-up** (one column at
-  ≤1240); `.mega-aside` holds "Resources" behind a 1px `--border-primary` hairline. **The
-  eyebrow is the page link** (`a.mega-eyebrow--page`, "Sustain →", 13px/600); there is no
-  "Overview" row, and every row below it is an anchor on that page. The trigger still only
-  opens the panel. The drawer mirrors this: each group opens with the page link
-  (`.mobile-sub-link--page`, bold), then its anchors at 17px.
-- Type is one step above the 14px triggers, not a display size: anchors `.mega-link` 16px/500,
-  resources `.mega-res-link` 14px/500 in `--text-secondary`, the "Resources" label 12px/600
-  `--text-secondary`. Rows are split by `--border-primary` hairlines, not ink rules; every row
-  is ≥44px. Why Taiwan (`/why-taiwan/`) sits under About and Sustain → Resources, not as a
-  seventh trigger.
+  positioned against the fixed `.topnav`: `top: calc(100% + 6px)`, 336px wide, radius 16,
+  `--shadow-high`, `--surface-page`. Being a child of the item is what makes Tab run trigger →
+  panel links → next trigger, and what keeps hover continuous from trigger into panel.
+- **Placement** (`site.js` `place()`, on open and on resize): `--px` lines the column's text up
+  with the label's text; if the column would pass the bar's right edge (About), it
+  right-aligns to the label instead. `--ox` sets the scale origin to that side.
+- **Photo header = the page link** (`a.mega-hero`, replacing the old `mega-eyebrow--page`).
+  It shows the section photo, the section name with an arrow, and one line, over a
+  bottom-weighted scrim. It is always dark and image-backed, so it uses the §1.3 `#000`/`#fff`
+  literals in both themes.
+  - **Lines:** the pillar one-liners (sheet v0.5) for Sustain/Protect/License, and each page's
+    hero sub-headline for Ecosystem/Insights/About.
+  - **Photos and crops:** both are set in `sync-chrome.py` `NAV_HERO`. Every photo is cropped
+    vertically; each has its own `object-position` so the subject clears the type (License:
+    the drone whole, stand included).
+  - **Loading:** photos load on first intent. `site.js` `prime()` swaps `data-src` on hover,
+    focus or open, so the nav adds no image weight to a page view.
+  - **Layering:** image, scrim and type sit on positive z-index layers. A negative-z image
+    did not paint in headless captures.
+- Below the header: the anchors in one column, split by `--border-primary` hairlines, then
+  "Resources" under a hairline. There is no "Overview" row. The drawer is unchanged: each
+  group opens with the page link (`.mobile-sub-link--page`), then its anchors at 17px.
+- Type is one step above the 14px triggers: header name 17px/700, line 13px; anchors
+  `.mega-link` 15px/500 (rows ≥44px); resources `.mega-res-link` 14px/500 in
+  `--text-secondary`; the "Resources" label 12px/600. Why Taiwan (`/why-taiwan/`) sits under
+  About and Sustain → Resources, not as a seventh trigger.
 - Open trigger: `aria-expanded="true"`, ink colour, a 2px ink underline on the bar's bottom
   edge. The bar turns opaque (`.topnav[data-mega-open]`). `.mega-scrim` dims the page lightly (`rgba(0,0,0,0.14)`); it sits
   **outside** the header because `.topnav`'s `backdrop-filter` would contain a fixed child,
@@ -580,8 +597,9 @@ make the next edit harder and neither leaves a trace of why.
   (`.mega-switching` suppresses the fade). Click toggles; a click on a hover-opened panel pins
   it. ArrowDown opens and focuses the first link. Esc closes and returns focus. Focus leaving
   the item, an outside click, the scrim, opening the language menu, scrolling past 64px
-  (unpinned only) and crossing the 1080 breakpoint all close it. Reduced motion: no fade or
-  slide.
+  (unpinned only) and crossing the 1080 breakpoint all close it. Motion: the panel scales in
+  from 0.97 at the label's edge over 160ms ease-out and closes over 100ms; the header photo
+  eases to 1.04 on hover. Reduced motion: no scale, no zoom, no transitions.
 - `aria-current="page"` is set by `site.js` on any panel or drawer link whose path is the
   current page (the arrow shows on it). There is still no active pill in the bar.
 
@@ -591,9 +609,11 @@ page's section expands (`fitDrawerDefault`), unless the reader has toggled one. 
 the language segment and the Contact CTA in its pinned foot (2026-08-27 rationale: the topnav
 globe is behind the drawer once it opens).
 
-**Contact routing** (2026-09-28): every contact chrome link (topnav CTA, drawer CTA, search
-"Contact") points at `/engage/`. This replaces the 2026-08-18 same-page-`#contact` rule; pages
-may still carry their own `#contact` form, but the chrome no longer targets it.
+**Contact routing** (2026-10-06): every page ends in its own `#contact` form (team review: no
+closing CTA band, and `/engage/` is retired to a redirect). The chrome's Contact links (topnav
+CTA, drawer CTA, search "Contact") point at the page's own `#contact`; pages without a form
+(404, legal, redirect stubs) point at `/#contact`. `sync-chrome.py` decides per page by looking
+for `id="contact"`. This replaces the 2026-09-28 everything-to-`/engage/` rule.
 
 `main` reserves `padding-top` for the fixed 64px nav; `scroll-padding-top:80px` keeps
 anchored jumps clear of it.
@@ -936,11 +956,10 @@ Cards only where a card is the true affordance. **No nested cards.**
 
 `.footer`: background `--surface-secondary`, `padding-block:68px`. `.footer-grid` =
 `1.4fr repeat(4, 1fr)`; `.footer-cols { display:contents }` dissolves the four link columns
-into that grid (2026-09-28): **Services** (Sustain, Protect, License) · **Company** (Ecosystem,
-About, Why Taiwan, Contact) · **Insights** (Reports & press, SABCD rating, Patent Intelligence
-SaaS, Licensing Platform) · **Legal** (`data-legal` modal hooks). Every link carries a 15px Lucide `.footer-ico` (survivors keep their old glyph; paths live in `FOOTER_ICONS` in `scripts/sync-chrome.py`). The identity
+into that grid (2026-10-06): **Services** (Sustain, Protect, License) ·
+**Company** (Ecosystem, Why Taiwan, About) · **Insights** (Patent Strength Grading) · **Legal** (`data-legal` modal hooks). Every link carries a 15px Lucide `.footer-ico` (survivors keep their old glyph; paths live in `FOOTER_ICONS` in `scripts/sync-chrome.py`). The identity
 column holds the newsletter block and the mark, **per pillar**: front-door pages show the TIS
-submark alone; Insights pages (reports, signal, methodology, licensing, badge) keep the
+submark alone; Insights pages (reports, signal, licensing, badge) keep the
 **TIS × Innovue** lockup (32px submark + 1px×32px divider + Innovue 103×36), per
 `visual-guide-snapshot.md` §Partner Credit by Pillar. A `.footer-baseline` band carries the
 centered copyright over an inset hairline.
@@ -2597,22 +2616,27 @@ Four things worth knowing before editing it:
   B `#0369A1`, C `#6D28D9`, D `#C2410C`. The June sample is green purely because it is an A.
   Never substitute a decorative gold.
 
-  **All three tiers carry a letter grade, the same subject, the same facts and the same
+  **Snapshot and Study carry a letter grade, the same subject, the same facts and the same
   metric row, so none of those can carry the difference between them.** The tier's chapter
-  block does:
+  block does. **Survey carries no grade at all** (since 2026-10-06): it takes drafts and ideas,
+  which cannot be scored, so its page 1 drops the grade cell, the PSS / rank / percentile
+  metric row and the 0.70 floor, and opens on the ten matches, each with the similarity score
+  as Innovue returns it and a TIS-authored "why it matches" on the row. Spec and canonical
+  row data: [documents/survey-sample-spec.md](documents/survey-sample-spec.md); copy bank:
+  [documents/survey-copy-kit.md](documents/survey-copy-kit.md).
 
   | Tier | Chapter block | Blurred silhouette |
   | --- | --- | --- |
   | Snapshot `A` | 8-pillar radar, paired with the rationale | soft circular mass, sparse page |
   | Study `B` | 8 pillar bars + top strengths / risks | hard dark band across the middle |
-  | Survey `BX` | 10 descending similarity rows | stepped ladder, right-hand bar column |
+  | Survey `BX` | 10 matches, each with its why + score | dense text column, right-hand score bars |
 
   Snapshot gets the radar and Study does not, because that is what their chapters are:
   Snapshot ch.3 is "Eight pillars at a glance", Study ch.3 is "Eight pillars, all 50 indicators". At-a-glance
   is a radar; the drill-down is per-pillar values. Giving both a radar was the first attempt
   and made the two thumbnails near-identical. For the same reason the facts grid appears on
   Snapshot and Study but not Survey — those two open on "Patent facts & family" and Survey
-  opens on "PSS overview".
+  opens on the ten matches.
 
   Change a cover and re-run the blur test at 260px with `blur(4px)`. If the three are not
   tellable apart, the thumbnail has stopped carrying information and is decoration.
@@ -2626,10 +2650,10 @@ Four things worth knowing before editing it:
 
   The sheet is a fixed-height flex column, so every block in it is `flex:none`. Without that
   a long page silently *compresses* its children instead of overflowing — which cropped the
-  Survey grade cell in half. Note that `.contents` carries `margin-top:auto`, which
+  old Survey grade cell in half. Note that `.contents` carries `margin-top:auto`, which
   absorbs all remaining slack and pins every total to exactly 1512: to read the real natural
   height, zero that margin first, then sum `.sheet`'s children. Current headroom is Snapshot 9px,
-  Study 42px, Survey 35px. A headline breaking to a third line costs ~50px and is the single
+  Study 42px, Survey 17px. A headline breaking to a third line costs ~50px and is the single
   most expensive thing that can happen to these sheets.
 
 - **One asset set serves both surfaces.** The same three renders are the blurred retrieve
@@ -2805,12 +2829,19 @@ And the rest:
   now closes the process panel, where it argues rather than decorates. The image is still in
   use on five other pages, so nothing is orphaned.
 
-The in-page anchors `#reports` and `#intake` are link targets from
-`methodology.html` — three of them now: both `.mth-reports` cards point at `#reports` and
-the exit button points at `#intake`. Don't rename either without fixing that page. The reverse dependency also exists now: `.sig-colophon`'s "How the pool is composed"
-exit points at `methodology.html#pool`, so that anchor is load-bearing (§16.3).
+**Patent Strength Grading (2026-10-06).** The page is now named Patent Strength Grading (專利強度評級) in
+public copy; "SABCD rating" and "Patent Intelligence SaaS" are retired as public names. `methodology.html`
+is folded in as `#method` (masthead + pipe-nav + the pinned stage, minus "weighted four ways") and
+the old URL is a redirect stub. Snapshot is retired: two reports (Study, Survey) in an
+`.offerings-grid--2`. `.sig-colophon` and the ledger foot now point at `#pool` / `#method` on this page.
+The intake legend reads "Patent status". Both sample panels carry a `.sig-sheet__wm` stamp and a
+`.sig-doc__disclaim` line ("Reference only. The final delivery will look different."). The page ends
+in the shared contact card (`data-source="patent-strength-grading"`, topic Insights preselected).
 
-### 16.3 Methodology — `product/signal/methodology.html`
+### 16.3 Methodology — now `product/signal/#method`
+
+> **Folded into the Signal page 2026-10-06** (§16.2); `methodology.html` is a redirect stub. The
+> stage notes below still describe the component; the exit cards and `#scenarios` are gone.
 
 Rebuilt 2026-08-26, twice. It answers one question, *how is the score calculated*, and
 carries nothing else. Three inbound links land here: the homepage hero's primary CTA, the
@@ -3180,7 +3211,7 @@ shared rule on `margin` and `align-self`; it simply never redeclared radius.
 
 ---
 
-### 16.5 UV front-door pages — Home, About, Sustain, Protect, License, Ecosystem, Why Taiwan, Engage, /ausa (2026-09-29, v2)
+### 16.5 UV front-door pages — Home, About, Sustain, Protect, License, Ecosystem, Why Taiwan, /ausa (2026-09-29, v2; team review 2026-10-06)
 
 Outcome-level, image-led pages: one idea per section, detail left to the conversation. Copy is
 written for the web but every claim traces to `mro/TIS_UV_Ecosystem_Repositioning_Proposal.md`
@@ -3192,26 +3223,30 @@ are generated by `mro/website-build/build.py` + `home_about.py`; edit there, not
 
   | Block | What it is | Used on |
   | --- | --- | --- |
-  | `.fd-hero` | full-bleed media field, headline low-left, optional `__figure` / `__meta` | every pillar page, Why Taiwan, Engage, About, Insights, /ausa (the shader heroes are retired) |
+  | `.fd-hero` | full-bleed media field, headline low-left, optional `__figure` / `__meta` | every pillar page, Why Taiwan, About, Insights, /ausa (the shader heroes are retired) |
   | `.fd-statement` | one large sentence (the h2) with its support to the side; `--quiet` for long ones | Home, Protect, About, /ausa |
   | `.fd-mosaic` / `.fd-tile` | four image tiles in a 7/5 · 5/7 offset | Sustain service package |
   | `.fd-band` / `.fd-figures` | full-bleed media with a heading and 2–3 large figures on a rule | Home why-Taiwan, Sustain network, Ecosystem FairTech |
-  | `.fd-steps` | a real sequence with a drawn rule (the only numbered block) | Sustain L0–L3, Engage phases |
+  | `.fd-steps` | a real sequence with a drawn rule (the only numbered block) | Sustain L0–L3 |
   | `.fd-lanes` | the two compliance lanes as one light/ink split | Sustain |
   | `.fd-feature` | 7/5 image + short text, `--rev` alternates, optional `.fd-fact` / `.fd-quote` | Home, Protect, License, Ecosystem, About |
-  | `.fd-rows` | large typographic rows for a short service list | Protect, License |
-  | `.fd-trio` | three short promises under an ink rule | License, Ecosystem, About |
-  | `.fd-offer` | one wide proposition card | Engage (Sustainment Bundle) |
-  | `.fd-close` | full-width ink close: one line, one action | pillar pages |
-  | `.fd-hub` | four linked entries under an ink rule, `.fd-trio` grammar | Insights (`/reports/#hub`) |
+  | `.fd-rows` | large typographic rows for a short service list | Protect, Why Taiwan |
+  | `.fd-trio` | three short promises under an ink rule | License, About |
+  | `.eco-dial` | the ecosystem as a horizon dial (`build.py` `eco_dial()`, picked from mro/mocks/ecosystem-map C2 2026-10-06; replaced `.eco-ring`): light stage on the page (`.eco-dial-sec`, bottom padding 0 so the floor line is the divider; dial width capped by viewport height minus the 64px nav); TIS a dark ink half-disc on the floor line carrying the light secondary EN logo; Sustain / Protect / License as tonal wedges (90° / 45° / 45°); partners as dot-field cards on needles into the wedge they serve (Innovue's needle is the Protect/License seam); UV makers lead at the apex, one contract falls into the hub. SVG is drawing only; every word is HTML placed by `--x`/`--y` from the same geometry; width capped by viewport height so head + dial fit one screen. Hover/focus on a partner lights its needle and wedge(s). ≤1120px it stacks | Ecosystem `#map` |
+  | `.fd-platform` | Licensing Platform intro: copy, the four real steps (numbered), CTA to `/product/licensing/`, and the step-2 render on a recessed panel | License `#platform` |
+  | `.fd-hub` | two linked entries under an ink rule, `.fd-trio` grammar | Insights (`/reports/#hub`) |
   | `.fd-trio--4` | the eight §11 neutrality principles, 4-up (2-up ≤1100) | License `#commitments` |
   | `.kv` | Home KV, sheet v0.5: three slides (position · why Taiwan · ecosystem), one kicker line each; APG tabbed carousel that moves only when a slide is picked. Slide 3 carries the proof points (rows 10, 12–14) under row 16's three partner layers, as text | Home |
   | `.ptray` | "Three pillars, one contract" as folded trays (`build.py` `pillar_trays()`, mock G 2026-10-02): a grey tray per pillar with label, approved one-liner at display size, photo on alternating sides and the pillar-page link; one "See the N points" pill (查看 N 項重點) unfolds the KSPs as white tiles in place. Tone and space separate, never hairlines. Trays open independently; `#sustain` / `#protect` / `#license` and the jump chips open one. An inline line sets `.is-js` before paint; site.js owns `aria-expanded` and `inert`. Without JS nothing folds. Phone: photo on top, tiles in one column | Home |
   | `.why-tiles` | Why TIS (`build.py` `why_tiles()`, mock C 2026-10-02): heading, a one-line summary and the CTA on the left, three tiles in the trays' neutral grey on the right; stacks under 1100px | Home |
-  | `.fd-ksp` | the approved KSPs as a 2-up list under ink rules; one builder (`ksp_grid`) and one copy table (`PILLAR_COPY`) so a KSP reads the same everywhere | Home tabs, Sustain `#local`, Protect `#requirements`, License `#services` |
+  | `.fd-ksp` | the approved KSPs as a 2-up list under ink rules; one builder (`ksp_grid`) and one copy table (`PILLAR_COPY`) so a KSP reads the same everywhere | Home trays only (the pillar-page copies were cut 2026-10-06 as duplicates of Home) |
 
   Reused unchanged: the Home shader `.hero` + `.proof-strip`, `.offer-card--ph` (pillar cards),
-  `.eco-map` (+ `.fd-map`), the reports carousel, the contact card, the About hero and board.
+  the reports carousel, the contact card, the About hero and board.
+- **Every page ends in the contact card** (team review 2026-10-06). `.fd-close`, `.fd-offer` and
+  `/engage/` are retired; `contact()` takes the page's heading and lead, preselects its pillar's
+  topic and always offers the NDA checkbox. The engineers-photo card (`.contact-card--uv`) carries a
+  deeper top scrim so three-line leads stay readable.
 - **Retired from the front door:** `.data-table`, `.spec-list`, `.rule-list`, `.phases`,
   `.cta-band`, `.mth-masthead` / `.mth-pipe-band`. The CSS stays (Insights pages use some).
 - **Variety rule.** No two adjacent sections share a block; no eyebrow above every section
@@ -3231,8 +3266,10 @@ are generated by `mro/website-build/build.py` + `home_about.py`; edit there, not
 - **License** keeps the portfolio and the licensing services visibly separate, and states the
   portfolio-is-not-MRO line wherever both appear (positioning.md §2).
 - **/ausa/** is `noindex`, absent from the sitemap and search, reached by QR only.
-  **/patents/** is a meta-refresh redirect to `/license/#portfolio`.
-- **Forms.** `#contact-form[data-source]` posts `source` = `contact`, `engage` or `ausa`.
+  **/patents/**, **/engage/** and **/product/signal/methodology.html** are meta-refresh redirects
+  (to `/license/#portfolio`, `/#contact` and `/product/signal/#method`), built by `build.py` `redirect()`.
+- **Forms.** `#contact-form[data-source]` posts `source` = `contact` (Home, About), the page key
+  (`sustain`, `protect`, `license`, `ecosystem`, `why-taiwan`, `ausa`) or `patent-strength-grading`.
 - **Home v0.5 (2026-10-01).** The homepage follows the team's approved sheet (`mro/website-copy-ledger.md`
   Part A; ZH verbatim). Order: `.kv` → `.ptray` → `#why-tis` (`.why-tiles`) → `#about-tis` (`.fd-feature` +
   `.fd-partners`) → contact. The KV never rotates on its own (hero mock A, 2026-10-01): no autoplay,

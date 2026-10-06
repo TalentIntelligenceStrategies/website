@@ -3,30 +3,28 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- Colours the mobile browser chrome to the page ground; light page. -->
 <meta name="theme-color" content="#FFFFFF" />
-<title data-zh-title="SABCD 評級方法 — 泰然專利強度評級系統">SABCD methodology — Patent Intelligence SaaS — TIS</title>
-<meta name="description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
-<link rel="canonical" href="https://tisglobalinc.com/product/signal/methodology.html" />
+<title data-zh-title="專利強度評級 — 泰然策略解密">Patent Strength Grading — TIS</title>
+<meta name="description" content="How a patent is graded now lives on the Patent Strength Grading page." />
+<meta name="robots" content="noindex" />
+<link rel="canonical" href="https://tisglobalinc.com/product/signal/" />
+<meta http-equiv="refresh" content="0; url=/product/signal/#method" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="TIS" />
-<meta property="og:url" content="https://tisglobalinc.com/product/signal/methodology.html" />
-<meta property="og:title" content="SABCD methodology — Patent Intelligence SaaS — TIS" />
-<meta property="og:description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
+<meta property="og:url" content="https://tisglobalinc.com/product/signal/" />
+<meta property="og:title" content="Patent Strength Grading — TIS" />
+<meta property="og:description" content="How a patent is graded now lives on the Patent Strength Grading page." />
 <meta property="og:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 <meta property="og:locale" content="en_US" />
-<!-- The page is bilingual on one URL: EN is the DOM text, 中文 lives in data-zh and
-     swaps client-side. Crawlers and unfurlers read the served HTML, so they only ever
-     see EN — this is the one honest signal available without separate /zh/ URLs. -->
 <meta property="og:locale:alternate" content="zh_TW" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="SABCD methodology — Patent Intelligence SaaS — TIS" />
-<meta name="twitter:description" content="How a patent's strength score is calculated: 50 indicators, eight pillars, in-pool percentile, and a grade from S to D." />
+<meta name="twitter:title" content="Patent Strength Grading — TIS" />
+<meta name="twitter:description" content="How a patent is graded now lives on the Patent Strength Grading page." />
 <meta name="twitter:image" content="https://tisglobalinc.com/designs/assets/imagery/og-uv.jpg" />
 <meta name="twitter:image:alt" content="TIS — Sustain · Protect · License. Taiwan’s ecosystem partner for unmanned-vehicle makers." />
 
@@ -39,7 +37,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=44">
+<link rel="stylesheet" href="/assets/build/styles.css?v=50">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -56,10 +54,8 @@
 </script>
 </head>
 
-<body>
-
-<a href="#main" class="skip-link">Skip to content</a>
-
+<body data-page="methodology">
+<a class="skip-link" href="#main" data-zh="跳至主要內容">Skip to content</a>
 <header class="topnav" role="banner">
   <div class="container topnav-inner">
     <a href="/" class="topnav-logo-link" aria-label="TIS — home" data-zh-aria="泰然策略解密 — 首頁">
@@ -71,10 +67,10 @@
     <nav class="topnav-links" aria-label="Primary" data-zh-aria="主要導覽">
       <ul class="nav-items">
       <li class="nav-item" data-nav="sustain">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-sustain" aria-expanded="false" aria-controls="mega-sustain"><span data-zh="維護">Sustain</span></button>
+        <a href="/sustain/" class="topnav-link nav-trigger" id="nav-t-sustain" aria-expanded="false" aria-controls="mega-sustain"><span data-zh="維護">Sustain</span></a>
         <div class="mega-panel" id="mega-sustain" role="region" aria-labelledby="nav-t-sustain">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/sustain/"><span data-zh="維護">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/sustain/"><img class="mega-hero__img" data-src="/assets/imagery/uv/sustain-800.webp" alt="" width="800" height="1156" decoding="async" style="object-position:50% 68%"><span class="mega-hero__t"><span data-zh="維護">Sustain</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在地化 MRO 能量，讓您的合約順利履約。">Local MRO capacity that keeps your contracts on track.</span></a>
             <ul class="mega-list">
               <li><a href="/sustain/#service-package" class="mega-link"><span data-zh="服務項目">Service package</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/sustain/#network" class="mega-link"><span data-zh="全台服務網">Island-wide network</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
@@ -86,40 +82,29 @@
             <p class="mega-eyebrow" data-zh="資源">Resources</p>
             <ul class="mega-res">
               <li><a href="/why-taiwan/" class="mega-res-link"><span data-zh="為何是台灣">Why Taiwan</span></a></li>
-              <li><a href="/engage/#phases" class="mega-res-link"><span data-zh="合作階段">Engagement phases</span></a></li>
             </ul>
           </div>
         </div>
       </li>
       <li class="nav-item" data-nav="protect">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-protect" aria-expanded="false" aria-controls="mega-protect"><span data-zh="防護">Protect</span></button>
+        <a href="/protect/" class="topnav-link nav-trigger" id="nav-t-protect" aria-expanded="false" aria-controls="mega-protect"><span data-zh="防護">Protect</span></a>
         <div class="mega-panel" id="mega-protect" role="region" aria-labelledby="nav-t-protect">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/protect/"><span data-zh="防護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/protect/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-800.webp" alt="" width="800" height="993" decoding="async" style="object-position:50% 68%"><span class="mega-hero__t"><span data-zh="防護">Protect</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在競品與空窗期面前，主動鎖住技術優勢。">Lock in your technology lead before competitors can move into the gap.</span></a>
             <ul class="mega-list">
-              <li><a href="/protect/#why-neutral" class="mega-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/protect/#capabilities" class="mega-link"><span data-zh="三項核心能力">Three capabilities</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/protect/#filing-strategy" class="mega-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-            </ul>
-          </div>
-          <div class="mega-aside">
-            <p class="mega-eyebrow" data-zh="資源">Resources</p>
-            <ul class="mega-res">
-              <li><a href="/reports/" class="mega-res-link"><span data-zh="專利布局報告">Landscape reports</span></a></li>
-              <li><a href="/engage/#bundle" class="mega-res-link"><span data-zh="維運組合方案">Sustainment Bundle</span></a></li>
             </ul>
           </div>
         </div>
       </li>
       <li class="nav-item" data-nav="license">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-license" aria-expanded="false" aria-controls="mega-license"><span data-zh="授權">License</span></button>
+        <a href="/license/" class="topnav-link nav-trigger" id="nav-t-license" aria-expanded="false" aria-controls="mega-license"><span data-zh="授權">License</span></a>
         <div class="mega-panel" id="mega-license" role="region" aria-labelledby="nav-t-license">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/license/"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/license/"><img class="mega-hero__img" data-src="/assets/imagery/uv/license-800.webp" alt="" width="800" height="1156" decoding="async" style="object-position:50% 30%"><span class="mega-hero__t"><span data-zh="授權">License</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="靈活的授權安排，加速在地市場與合作。">Flexible licensing that speeds up local market entry and partnerships.</span></a>
             <ul class="mega-list">
+              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/license/#services" class="mega-link"><span data-zh="授權服務">Licensing services</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/license/#commitments" class="mega-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
@@ -131,60 +116,50 @@
         </div>
       </li>
       <li class="nav-item" data-nav="ecosystem">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-ecosystem" aria-expanded="false" aria-controls="mega-ecosystem"><span data-zh="生態系">Ecosystem</span></button>
+        <a href="/ecosystem/" class="topnav-link nav-trigger" id="nav-t-ecosystem" aria-expanded="false" aria-controls="mega-ecosystem"><span data-zh="生態系">Ecosystem</span></a>
         <div class="mega-panel" id="mega-ecosystem" role="region" aria-labelledby="nav-t-ecosystem">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/ecosystem/"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/ecosystem/"><img class="mega-hero__img" data-src="/assets/imagery/uv/ecosystem-hero-800.webp" alt="" width="800" height="447" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="生態系">Ecosystem</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="三家夥伴，隨您的專案成長逐步加入。">Three partners, brought in as your program grows.</span></a>
             <ul class="mega-list">
-              <li><a href="/ecosystem/#suntek" class="mega-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/ecosystem/#fairtech" class="mega-link"><span data-zh="富蘭登科技">FairTech</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/ecosystem/#innovue" class="mega-link"><span data-zh="Innovue">Innovue</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#suntek" class="mega-link"><span data-zh="服務量能">Service capacity</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#fairtech" class="mega-link"><span data-zh="能力提升">Capability lifting</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#innovue" class="mega-link"><span data-zh="智財技術">IP technology</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
             <p class="mega-eyebrow" data-zh="資源">Resources</p>
             <ul class="mega-res">
               <li><a href="/ecosystem/#map" class="mega-res-link"><span data-zh="整體架構">How it fits together</span></a></li>
-              <li><a href="/engage/" class="mega-res-link"><span data-zh="開始合作">Start an engagement</span></a></li>
             </ul>
           </div>
         </div>
       </li>
       <li class="nav-item" data-nav="insights">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-insights" aria-expanded="false" aria-controls="mega-insights"><span data-zh="洞察">Insights</span></button>
+        <a href="/product/signal/" class="topnav-link nav-trigger" id="nav-t-insights" aria-expanded="false" aria-controls="mega-insights"><span data-zh="洞察">Insights</span></a>
         <div class="mega-panel" id="mega-insights" role="region" aria-labelledby="nav-t-insights">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/reports/"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/product/signal/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-design-room-800.webp" alt="" width="800" height="597" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="洞察">Insights</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在申請、授權或防禦之前，先知道一件專利的價值。">Know what a patent is worth before you file, license or defend it.</span></a>
             <ul class="mega-list">
-              <li><a href="/reports/#reports" class="mega-link"><span data-zh="專利布局報告">Landscape reports</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/product/signal/methodology.html" class="mega-link"><span data-zh="SABCD 評級方法">SABCD rating</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/product/signal/" class="mega-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-            </ul>
-          </div>
-          <div class="mega-aside">
-            <p class="mega-eyebrow" data-zh="資源">Resources</p>
-            <ul class="mega-res">
-              <li><a href="/reports/#press" class="mega-res-link"><span data-zh="新聞">Press</span></a></li>
+              <li><a href="/product/signal/" class="mega-link"><span data-zh="專利強度評級">Patent Strength Grading</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/#method" class="mega-link"><span data-zh="評級是怎麼算出來的">How the grade is calculated</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
         </div>
       </li>
       <li class="nav-item" data-nav="about">
-        <button type="button" class="topnav-link nav-trigger" id="nav-t-about" aria-expanded="false" aria-controls="mega-about"><span data-zh="關於">About</span></button>
+        <a href="/about/" class="topnav-link nav-trigger" id="nav-t-about" aria-expanded="false" aria-controls="mega-about"><span data-zh="關於">About</span></a>
         <div class="mega-panel" id="mega-about" role="region" aria-labelledby="nav-t-about">
           <div class="mega-main">
-            <a class="mega-eyebrow mega-eyebrow--page" href="/about/"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="mega-hero" href="/about/"><img class="mega-hero__img" data-src="/assets/imagery/uv/hero-800.webp" alt="" width="800" height="447" decoding="async" style="object-position:50% 35%"><span class="mega-hero__t"><span data-zh="關於">About</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="台灣無人載具製造商的生態系夥伴。">Taiwan's ecosystem partner for unmanned-vehicle makers.</span></a>
             <ul class="mega-list">
               <li><a href="/why-taiwan/" class="mega-link"><span data-zh="為何是台灣">Why Taiwan</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/about/#governance" class="mega-link"><span data-zh="治理與中立">Governance &amp; neutrality</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/about/#commitments" class="mega-link"><span data-zh="中立承諾">Neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/about/#board" class="mega-link"><span data-zh="董事會">Board of directors</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
             <p class="mega-eyebrow" data-zh="資源">Resources</p>
             <ul class="mega-res">
-              <li><a href="/engage/" class="mega-res-link"><span data-zh="合作模式">Engagement model</span></a></li>
               <li><a href="/legal/disclosures.en.html" class="mega-res-link" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a></li>
             </ul>
           </div>
@@ -231,7 +206,7 @@
         </svg>
       </button>
 
-      <a href="/engage/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
+      <a href="/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
@@ -245,6 +220,7 @@
      clipped to the 64px bar. z-index 99 sits under the nav (100), over the veil (95). -->
 <div class="mega-scrim" id="mega-scrim" aria-hidden="true"></div>
 
+<!-- Mobile drawer  -->
 <div class="mobile-overlay" id="mobile-overlay"></div>
 <aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu" data-zh-aria="選單">
   <div class="mobile-header">
@@ -254,82 +230,75 @@
     </button>
   </div>
   <nav class="mobile-list" aria-label="Primary mobile" data-zh-aria="主要導覽（行動版）">
-    <button type="button" class="mobile-row-dropdown" id="m-t-sustain" data-nav="sustain" aria-expanded="false" aria-controls="m-sub-sustain">
-      <span data-zh="維護">Sustain</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/sustain/" class="mobile-row-link"><span data-zh="維護">Sustain</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-sustain" data-nav="sustain" aria-expanded="false" aria-controls="m-sub-sustain" aria-label="Sustain links" data-zh-aria="維護選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-sustain" class="mobile-sublist">
-      <a href="/sustain/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="維護">Sustain</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       <a href="/sustain/#service-package" class="mobile-sub-link"><span data-zh="服務項目">Service package</span></a>
       <a href="/sustain/#network" class="mobile-sub-link"><span data-zh="全台服務網">Island-wide network</span></a>
       <a href="/sustain/#roadmap" class="mobile-sub-link"><span data-zh="能力路線圖">Capability roadmap</span></a>
       <a href="/sustain/#compliance" class="mobile-sub-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/why-taiwan/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="為何是台灣">Why Taiwan</span></a>
-      <a href="/engage/#phases" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作階段">Engagement phases</span></a>
     </div>
-    <button type="button" class="mobile-row-dropdown" id="m-t-protect" data-nav="protect" aria-expanded="false" aria-controls="m-sub-protect">
-      <span data-zh="防護">Protect</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/protect/" class="mobile-row-link"><span data-zh="防護">Protect</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-protect" data-nav="protect" aria-expanded="false" aria-controls="m-sub-protect" aria-label="Protect links" data-zh-aria="防護選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-protect" class="mobile-sublist">
-      <a href="/protect/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="防護">Protect</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      <a href="/protect/#why-neutral" class="mobile-sub-link"><span data-zh="為何需要中立顧問">Why a neutral advisor</span></a>
       <a href="/protect/#capabilities" class="mobile-sub-link"><span data-zh="三項核心能力">Three capabilities</span></a>
-      <a href="/protect/#filing-strategy" class="mobile-sub-link"><span data-zh="台灣與亞洲申請策略">Taiwan &amp; Asia filing strategy</span></a>
-      <p class="mobile-sub-label" data-zh="資源">Resources</p>
-      <a href="/reports/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="專利布局報告">Landscape reports</span></a>
-      <a href="/engage/#bundle" class="mobile-sub-link mobile-sub-link--res"><span data-zh="維運組合方案">Sustainment Bundle</span></a>
     </div>
-    <button type="button" class="mobile-row-dropdown" id="m-t-license" data-nav="license" aria-expanded="false" aria-controls="m-sub-license">
-      <span data-zh="授權">License</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/license/" class="mobile-row-link"><span data-zh="授權">License</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-license" data-nav="license" aria-expanded="false" aria-controls="m-sub-license" aria-label="License links" data-zh-aria="授權選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-license" class="mobile-sublist">
-      <a href="/license/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="授權">License</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
       <a href="/license/#portfolio" class="mobile-sub-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span></a>
-      <a href="/license/#services" class="mobile-sub-link"><span data-zh="授權服務">Licensing services</span></a>
-      <a href="/license/#commitments" class="mobile-sub-link"><span data-zh="我們的中立承諾">Our neutrality commitments</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/why-taiwan/#patents" class="mobile-sub-link mobile-sub-link--res"><span data-zh="台灣專利現況">Taiwan patent picture</span></a>
     </div>
-    <button type="button" class="mobile-row-dropdown" id="m-t-ecosystem" data-nav="ecosystem" aria-expanded="false" aria-controls="m-sub-ecosystem">
-      <span data-zh="生態系">Ecosystem</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/ecosystem/" class="mobile-row-link"><span data-zh="生態系">Ecosystem</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-ecosystem" data-nav="ecosystem" aria-expanded="false" aria-controls="m-sub-ecosystem" aria-label="Ecosystem links" data-zh-aria="生態系選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-ecosystem" class="mobile-sublist">
-      <a href="/ecosystem/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="生態系">Ecosystem</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      <a href="/ecosystem/#suntek" class="mobile-sub-link"><span data-zh="Suntek Group / PG Union">Suntek Group / PG Union</span></a>
-      <a href="/ecosystem/#fairtech" class="mobile-sub-link"><span data-zh="富蘭登科技">FairTech</span></a>
-      <a href="/ecosystem/#innovue" class="mobile-sub-link"><span data-zh="Innovue">Innovue</span></a>
+      <a href="/ecosystem/#suntek" class="mobile-sub-link"><span data-zh="服務量能">Service capacity</span></a>
+      <a href="/ecosystem/#fairtech" class="mobile-sub-link"><span data-zh="能力提升">Capability lifting</span></a>
+      <a href="/ecosystem/#innovue" class="mobile-sub-link"><span data-zh="智財技術">IP technology</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/ecosystem/#map" class="mobile-sub-link mobile-sub-link--res"><span data-zh="整體架構">How it fits together</span></a>
-      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="開始合作">Start an engagement</span></a>
     </div>
-    <button type="button" class="mobile-row-dropdown" id="m-t-insights" data-nav="insights" aria-expanded="false" aria-controls="m-sub-insights">
-      <span data-zh="洞察">Insights</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/product/signal/" class="mobile-row-link"><span data-zh="洞察">Insights</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-insights" data-nav="insights" aria-expanded="false" aria-controls="m-sub-insights" aria-label="Insights links" data-zh-aria="洞察選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-insights" class="mobile-sublist">
-      <a href="/reports/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="洞察">Insights</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-      <a href="/reports/#reports" class="mobile-sub-link"><span data-zh="專利布局報告">Landscape reports</span></a>
-      <a href="/product/signal/methodology.html" class="mobile-sub-link"><span data-zh="SABCD 評級方法">SABCD rating</span></a>
-      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a>
-      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
-      <p class="mobile-sub-label" data-zh="資源">Resources</p>
-      <a href="/reports/#press" class="mobile-sub-link mobile-sub-link--res"><span data-zh="新聞">Press</span></a>
+      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="專利強度評級">Patent Strength Grading</span></a>
+      <a href="/product/signal/#method" class="mobile-sub-link"><span data-zh="評級是怎麼算出來的">How the grade is calculated</span></a>
     </div>
-    <button type="button" class="mobile-row-dropdown" id="m-t-about" data-nav="about" aria-expanded="false" aria-controls="m-sub-about">
-      <span data-zh="關於">About</span>
-      <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    <div class="mobile-row">
+      <a href="/about/" class="mobile-row-link"><span data-zh="關於">About</span></a>
+      <button type="button" class="mobile-row-dropdown" id="m-t-about" data-nav="about" aria-expanded="false" aria-controls="m-sub-about" aria-label="About links" data-zh-aria="關於選單">
+        <svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </div>
     <div id="m-sub-about" class="mobile-sublist">
-      <a href="/about/" class="mobile-sub-link mobile-sub-link--page"><span data-zh="關於">About</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       <a href="/why-taiwan/" class="mobile-sub-link"><span data-zh="為何是台灣">Why Taiwan</span></a>
-      <a href="/about/#governance" class="mobile-sub-link"><span data-zh="治理與中立">Governance &amp; neutrality</span></a>
+      <a href="/about/#commitments" class="mobile-sub-link"><span data-zh="中立承諾">Neutrality commitments</span></a>
       <a href="/about/#board" class="mobile-sub-link"><span data-zh="董事會">Board of directors</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
-      <a href="/engage/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="合作模式">Engagement model</span></a>
       <a href="/legal/disclosures.en.html" class="mobile-sub-link mobile-sub-link--res" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a>
     </div>
   </nav>
@@ -347,7 +316,7 @@
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
-    <a href="/engage/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
+    <a href="/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
   </div>
 </aside>
 
@@ -358,7 +327,7 @@
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面、報告與新聞…" placeholder="Search pages, reports and press…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面…" placeholder="Search pages…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
   <div class="search-results">
@@ -388,14 +357,9 @@
       <span data-zh="為何是台灣">Why Taiwan</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/reports/" class="search-link">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-      <span data-zh="洞察">Insights</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
-    </a>
-    <a href="/product/signal/methodology.html" class="search-link">
+    <a href="/product/signal/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-      <span data-zh="SABCD 評級方法">SABCD rating</span>
+      <span data-zh="專利強度評級">Patent Strength Grading</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/about/" class="search-link">
@@ -403,7 +367,7 @@
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="/engage/#contact" class="search-link">
+    <a href="/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡我們">Contact</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
@@ -412,474 +376,12 @@
 </div>
 
 <main id="main">
-  <div class="container crumb-bar"><nav aria-label="Breadcrumb" data-zh-aria="導覽路徑"><p class="crumb"><a href="/reports/" data-zh="洞察">Insights</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="SABCD 評級方法">SABCD rating</span></p></nav></div>
-
-
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ Masthead — this page has NO .hero, and that is deliberate.           ║
-       ║ It is a reference document consulted under scrutiny, not a claim, so ║
-       ║ the h1 sits at .h-section scale rather than .pillar-title's hero     ║
-       ║ clamp — the same reasoning DESIGN.md gives .veil__title.             ║
-       ║ The pipeline below doubles as the page's jump-nav: the table of      ║
-       ║ contents IS the diagram, so the reader sees all five stages at once  ║
-       ║ and clicks into any of them. That is also why no row carries a       ║
-       ║ numbered eyebrow — the sequence lives here, once.                    ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <section class="section mth-masthead" aria-labelledby="mth-title">
+  <section class="section redirect-note">
     <div class="container">
-      <h1 class="mth-masthead__title" id="mth-title" data-reveal data-zh="評分是怎麼算出來的。">How the score is calculated.</h1>
-      <p class="mth-masthead__lede" data-reveal data-zh="50 項指標、八大支柱、一個 0–100 分的總分，以及 S 到 D 的評級。每一步都能追溯回一個可查核的數字。">50 indicators, eight pillars, one 0–100 score, and a grade from S to D. Every step traces back to a number you can check.</p>
-
-      <!-- Five stages, five anchors. Figures are mono (numerals); labels are sans
-           (they read as words — §2). Collapses to a vertical spine at 880px rather
-           than crushing five columns into a phone width. -->
-      </div>
-      <div class="mth-pipe-band">
-        <div class="container">
-          <nav class="mth-pipe" aria-label="How the score is calculated" data-zh-aria="評分的計算方式">
-        <a class="mth-pipe__step" href="#indicators">
-          <span class="mth-pipe__fig">50</span>
-          <span class="mth-pipe__label" data-zh="項指標">indicators</span>
-        </a>
-        <a class="mth-pipe__step" href="#pillars">
-          <span class="mth-pipe__fig">8</span>
-          <span class="mth-pipe__label" data-zh="大支柱">pillars</span>
-        </a>
-        <a class="mth-pipe__step" href="#pool">
-          <span class="mth-pipe__fig">1433</span>
-          <span class="mth-pipe__label" data-zh="件參考池">reference pool</span>
-        </a>
-        <a class="mth-pipe__step" href="#percentile">
-          <span class="mth-pipe__fig">0–100</span>
-          <span class="mth-pipe__label" data-zh="分池內百分位">in-pool percentile</span>
-        </a>
-        <a class="mth-pipe__step" href="#grade">
-          <span class="mth-pipe__fig">S–D</span>
-          <span class="mth-pipe__label" data-zh="評級">grade</span>
-        </a>
-      </nav>
-        </div>
-      </div>
-  </section>
-
-  <!-- ═══ 1 · Measure ═══════════════════════════════════════════════════════
-       The panel is the one place a reader can see the SHAPE of the paid
-       deliverable without getting it: the structure of an indicator row is
-       visible, the names are not. The redaction is the message, so the caption
-       has to say it is deliberate or it reads as a rendering bug.
-       Never name an individual indicator on this page — chapter 3 of the Study
-       report is what names all 50, and that is what it sells. ── -->
-  <!-- ╔═════════════════════════════════════════════════════════════════════╗
-       ║ The stage — six steps, one figure that pins and swaps.                ║
-       ║ These were six alternating .feature-row sections. They are one now,   ║
-       ║ and the six anchors moved onto the six steps: #pool is linked from    ║
-       ║ product/signal/index.html and from .sig-colophon, so it is           ║
-       ║ load-bearing and must keep resolving to a visible element.            ║
-       ║                                                                      ║
-       ║ Copy and figure are in different columns, so the reading order is six ║
-       ║ steps then six figures. That is why every <figure> is labelled by its ║
-       ║ step's own h2 — the adjacency that used to carry the association is   ║
-       ║ gone, so the association has to be stated.                           ║
-       ║                                                                      ║
-       ║ Markup default = the no-JS state: everything stacked, all six figures ║
-       ║ visible. site.js adds .is-live only when the pin will really apply.   ║
-       ╚═════════════════════════════════════════════════════════════════════╝ -->
-  <div class="mth-stage">
-    <div class="container mth-stage__grid">
-      <div class="mth-stage__steps">
-        <section class="mth-stage__step" id="indicators" data-step="0" aria-labelledby="mth-ind-title">
-          <p class="feature-row__num mth-label" data-zh="量測">Measure</p>
-          <h2 class="feature-row__title" id="mth-ind-title" data-reveal data-zh="量測什麼">What gets measured</h2>
-          <p data-zh="每件專利都會計算 50 項指標。多數由專利紀錄計算 — 引用、家族、請求項、日期、法律狀態。其餘由封閉資料庫的 AI 工具閱讀專利文本後評分。">50 indicators are computed for every patent. Most are calculated from the patent record: citations, family, claims, dates, legal status. The rest are graded by closed-database AI tools reading the patent text.</p>
-          <p data-zh="每一項指標都帶著三個數字：原始值、池內百分位，以及它在所屬支柱中的權重。景深報告會逐項列出全部 50 項與這三個數字。本頁不列出。">Each indicator carries three numbers: a raw value, its percentile in the pool, and its weight inside its pillar. The Study report lists all 50 with those three numbers each. This page does not.</p>
-        </section>
-        <section class="mth-stage__step" id="pillars" data-step="1" aria-labelledby="mth-pil-title">
-          <p class="feature-row__num mth-label" data-zh="歸組">Group</p>
-          <h2 class="feature-row__title" id="mth-pil-title" data-reveal data-zh-html data-zh="八大支柱，<br>50 項指標">Eight pillars,<br>50 indicators</h2>
-          <p data-zh="指標會聚合為八大支柱。每根支柱以加權平均彙整旗下指標的分數，支柱之間再各自獨立加權。">Indicators aggregate into eight pillars. Each pillar rolls up its own indicators as a weighted average, and the pillars are then weighted independently of each other.</p>
-          <p data-zh="分布並不平均，這本身就是資訊：文本品質與法律強度各有 8 項指標，網路中心性只有 4 項。">The distribution is not even, and that is itself information: Text Quality and Legal Strength carry eight indicators each, Network Centrality carries four.</p>
-        </section>
-        <section class="mth-stage__step" id="pool" data-step="2" aria-labelledby="mth-pool-title">
-          <p class="feature-row__num mth-label" data-zh="比較基準">Compare against</p>
-          <h2 class="feature-row__title" id="mth-pool-title" data-reveal data-zh="參考池是什麼">What the pool is</h2>
-          <p data-zh="分數是一個位置，所以它需要一個可以站定位置的集合。你的專利是拿來跟 1433 件由泰然與夥伴所持有的專利比較排名 — 這些專利我們同時也在做商業授權。">A score is a position, so it needs a set to hold a position in. Your patent is ranked against 1433 patents held by TIS and its partners, patents we also license commercially.</p>
-          <p data-zh="所以排名告訴你的是你相對於我們手上專利的位置，不是相對於全世界所有專利，也不是獨立的第三方基準。與其讓你自行假設，我們寧可講清楚。指標的原始值本身，則取自新穎的 1.8 億件專利資料庫。">So a rank tells you where you sit against our inventory, not against every patent in the world, and it is not an independent benchmark. We would rather say that plainly than have you assume otherwise. The indicator values themselves are computed from Innovue's 180M-patent database.</p>
-          <p data-zh="池子會隨著專利核准與失效重新排序。即使你的專利本身沒有任何改變，你的數字仍可能移動。">The pool re-ranks as patents are granted and lapse. Your number can move even when nothing about your patent has.</p>
-        </section>
-        <section class="mth-stage__step" id="percentile" data-step="3" aria-labelledby="mth-pct-title">
-          <p class="feature-row__num mth-label" data-zh="定位">Position</p>
-          <h2 class="feature-row__title" id="mth-pct-title" data-reveal data-zh="原始值如何變成位置">A raw value becomes a position</h2>
-          <p data-zh="每一項指標都以同一種方式正規化：把原始值拿到池內排名，取它的百分位。一件被前向引用 47 次的專利，分數不是 47，而是 47 在 1433 件之中的落點。">Every indicator is normalised the same way: rank the raw value inside the pool, take its percentile. A patent with 47 forward citations is not scored on 47. It is scored on where 47 falls among 1433.</p>
-          <p data-zh="全部只有一個基準。產業別會被記錄為描述性資訊，但不作為比較群組 — 半導體專利與生技專利在同一個池內排名。">There is one basis for all of it. Industry is recorded as descriptive metadata but is not a comparison cohort: a semiconductor patent and a biotech patent are ranked in the same pool.</p>
-        </section>
-        <section class="mth-stage__step" id="grade" data-step="4" aria-labelledby="mth-grade-title">
-          <p class="feature-row__num mth-label" data-zh="評級">Grade</p>
-          <h2 class="feature-row__title" id="mth-grade-title" data-reveal data-zh="百分位如何變成評級">A position becomes a letter</h2>
-          <p data-zh="加權後的支柱分數合成為一個 0–100 分的 PSS 總分，這個總分在池內的百分位再對應到五個評級之一。">The weighted pillar scores compose into one PSS on a 0–100 scale, and that score's percentile in the pool resolves to one of five grades.</p>
-          <p data-zh="占比是固定的：S 為池內前 15%，其後 A 20、B 30、C 20、D 15。實際的切分點會依參考池當下的分布校準，所以本頁列出占比，不列閾值。">The shares are fixed: S is the top 15% of the pool, then A 20, B 30, C 20, D 15. The exact cut-points are calibrated against the pool's live distribution, so this page gives the shares and not the thresholds.</p>
-        </section>
-        <section class="mth-stage__step" id="scenarios" data-step="5" aria-labelledby="mth-scen-title">
-          <h2 class="feature-row__title" id="mth-scen-title" data-reveal data-zh="同一件專利，四套權重">The same patent, weighted four ways</h2>
-          <p data-zh="支柱權重並非固定。同一組 50 項指標可以依你實際要回答的問題重新配權 — 授權導向、訴訟強度、投資併購、技術布局 — 並在每一套權重下各得一個分數。">Pillar weights are not fixed. The same 50 indicators can be reweighted for the question you are actually asking, licensing, litigation, M&amp;A, or portfolio strategy, and the patent gets a score under each.</p>
-          <p data-zh="在四套權重下都站得住的專利，強在通則；只有在訴訟強度下才突出的專利，強在特例。差距本身就是結論 — 這也是景深報告的第六章。">A patent that holds its position under all four is strong for a general reason. One that only scores under litigation weighting is strong for a specific one. The spread is the finding, and it is chapter six of the Study report.</p>
-        </section>
-      </div>
-      <div class="mth-stage__stage">
-        <figure class="mth-stage__fig" data-step="0" aria-labelledby="mth-ind-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-ind" role="presentation"><div class="mth-ind__head"><span class="mth-ind__col" data-zh="指標">Indicator</span><span class="mth-ind__col mth-ind__col--num" data-zh="原始值">Raw</span><span class="mth-ind__col mth-ind__col--num" data-zh="百分位">Pctl</span><span class="mth-ind__col mth-ind__col--num" data-zh="權重">Wt</span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:72%"></span><span class="mth-ind__num">47</span><span class="mth-ind__num mth-ind__num--muted">P82</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:58%"></span><span class="mth-ind__num">12</span><span class="mth-ind__num mth-ind__num--muted">P61</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:81%"></span><span class="mth-ind__num">6</span><span class="mth-ind__num mth-ind__num--muted">P94</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:64%"></span><span class="mth-ind__num">0.71</span><span class="mth-ind__num mth-ind__num--muted">P38</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:76%"></span><span class="mth-ind__num">23</span><span class="mth-ind__num mth-ind__num--muted">P55</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__more"><span class="mth-ind__more-k" data-zh="50 項中的另外 45 項，名稱與權重已遮蔽。">45 more of the 50, names and weights redacted.</span></div></div>
-              <p class="mth-panel__cap" data-zh-html data-zh="指標名稱已刻意遮蔽。重點在結構：50 項的每一項背後都是同樣這幾個數字。 <span class='mth-note'>示意數值</span>">Indicator names are redacted on purpose. The structure is the point: the same numbers sit behind every one of the 50. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="1" aria-labelledby="mth-pil-title">
-          <div class="mth-panel">
-              <svg class="mth-radar" viewBox="0 0 681 390" role="img" aria-label="How the 50 indicators distribute across the eight pillars: seven, eight, seven, five, eight, four, six and five" data-zh-aria="50 項指標在八大構面的分布：七、八、七、五、八、四、六、五">
-                <polygon class="mth-radar__ring" points="340.0,162.0 359.8,170.2 368.0,190.0 359.8,209.8 340.0,218.0 320.2,209.8 312.0,190.0 320.2,170.2"/><polygon class="mth-radar__ring" points="340.0,134.0 379.6,150.4 396.0,190.0 379.6,229.6 340.0,246.0 300.4,229.6 284.0,190.0 300.4,150.4"/><polygon class="mth-radar__ring" points="340.0,106.0 399.4,130.6 424.0,190.0 399.4,249.4 340.0,274.0 280.6,249.4 256.0,190.0 280.6,130.6"/><polygon class="mth-radar__ring" points="340.0,78.0 419.2,110.8 452.0,190.0 419.2,269.2 340.0,302.0 260.8,269.2 228.0,190.0 260.8,110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="78.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="452.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="302.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="228.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="110.8"/>
-                <polygon class="mth-radar__area" points="340.0,92.0 419.2,110.8 438.0,190.0 389.5,239.5 340.0,302.0 300.4,229.6 256.0,190.0 290.5,140.5"/>
-                <circle class="mth-radar__dot" cx="340.0" cy="92.0" r="4"/><circle class="mth-radar__dot" cx="419.2" cy="110.8" r="4"/><circle class="mth-radar__dot" cx="438.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="389.5" cy="239.5" r="4"/><circle class="mth-radar__dot" cx="340.0" cy="302.0" r="4"/><circle class="mth-radar__dot" cx="300.4" cy="229.6" r="4"/><circle class="mth-radar__dot" cx="256.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="290.5" cy="140.5" r="4"/><text class="mth-radar__lbl" x="340.0" y="50.0" text-anchor="middle" data-zh="書目計量">Citation Impact</text><text class="mth-radar__val" x="340.0" y="66.0" text-anchor="middle">P1 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="100.2" text-anchor="start" data-zh="法律強度">Legal Strength</text><text class="mth-radar__val" x="434.8" y="116.2" text-anchor="start">P2 &#183; 8</text><text class="mth-radar__lbl" x="474.0" y="195.0" text-anchor="start" data-zh="技術價值">Technical Value</text><text class="mth-radar__val" x="474.0" y="211.0" text-anchor="start">P3 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="289.8" text-anchor="start" data-zh="市場覆蓋">Market Coverage</text><text class="mth-radar__val" x="434.8" y="305.8" text-anchor="start">P4 &#183; 5</text><text class="mth-radar__lbl" x="340.0" y="341.0" text-anchor="middle" data-zh="文本品質">Text Quality</text><text class="mth-radar__val" x="340.0" y="357.0" text-anchor="middle">P5 &#183; 8</text><text class="mth-radar__lbl" x="245.2" y="289.8" text-anchor="end" data-zh="網路中心性">Network Centrality</text><text class="mth-radar__val" x="245.2" y="305.8" text-anchor="end">P6 &#183; 4</text><text class="mth-radar__lbl" x="206.0" y="195.0" text-anchor="end" data-zh="授權潛力">Licensing Potential</text><text class="mth-radar__val" x="206.0" y="211.0" text-anchor="end">P7 &#183; 6</text><text class="mth-radar__lbl" x="245.2" y="100.2" text-anchor="end" data-zh="前瞻價值">Forward-Looking Value</text><text class="mth-radar__val" x="245.2" y="116.2" text-anchor="end">P8 &#183; 5</text>
-              </svg>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="2" aria-labelledby="mth-pool-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--pool">
-                <div class="mth-field">
-                  <div class="mth-poolhero"><span class="mth-poolhero__num">1433</span>
-                    <span class="mth-poolhero__lbl" data-zh="件專利，組成參考池">patents in the reference pool</span></div>
-                  <div class="mth-field__img" role="img" aria-label="A field of 1433 marks with one highlighted, representing one patent&#39;s place in the reference pool" data-zh-aria="由 1433 個標記組成的圖示，其中一個為高亮，代表單一專利在參考池中的位置"></div>
-                </div>
-                <div class="mth-dist">
-                  <div class="mth-dist__lead"><span class="mth-dist__no">310</span><span class="mth-dist__den">/ 1433</span></div>
-                  <svg class="mth-hist" viewBox="0 0 278 168" role="img" aria-label="Where this patent sits in the pool&#39;s own distribution" data-zh-aria="此專利在專利池分布中的位置">
-                    <polygon class="mth-hist__mark" points="214.4,98.6 224.4,98.6 219.4,106.6"/>
-                    <rect class="mth-hist__bar" x="0.0" y="149.4" width="10" height="8.6" rx="2"/><rect class="mth-hist__bar" x="13.4" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="26.8" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="40.2" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="53.6" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="67.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar" x="80.4" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="93.8" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="107.2" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="120.6" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="134.0" y="30.0" width="10" height="128.0" rx="2"/><rect class="mth-hist__bar" x="147.4" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="160.8" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="174.2" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="187.6" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="201.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar mth-hist__bar--hi" x="214.4" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="227.8" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="241.2" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="254.6" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="268.0" y="149.4" width="10" height="8.6" rx="2"/>
-                  </svg>
-                  <p class="mth-dist__note" data-zh="在參考池自身分布中的位置。">Position in the pool&#39;s own distribution.</p>
-                </div>
-              </div>
-              <p class="mth-panel__cap" data-zh="1433 個標記，一個標記一件專利。最後一列沒有填滿 — 這是一個確切的數量，不是概數。">One mark per patent, 1433 of them. The last row is short because that is an exact count, not a round number.</p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="3" aria-labelledby="mth-pct-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--pct">
-                <div class="mth-arc">
-                  <svg class="mth-arc__svg" viewBox="0 0 210 210" role="img" aria-label="This indicator&#39;s percentile in the pool" data-zh-aria="此指標在專利池中的百分位">
-                    <path class="mth-arc__track" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8"/>
-                    <path class="mth-arc__fill" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8" stroke-dasharray="332 405"/>
-                  </svg>
-                  <div class="mth-arc__val">P82</div>
-                  <p class="mth-arc__cap" data-zh="池內百分位">Percentile in pool</p>
-                </div>
-                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="原始值 &#183; 前向引用">Raw value &#183; forward citations</span><span class="mth-read__v">47</span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="此指標的池內排名">Rank in pool for this indicator</span><span class="mth-read__v">258 <small>/ 1433</small></span></div></div>
-              </div>
-              <p class="mth-panel__cap" data-zh-html data-zh="排名的是位置，不是絕對值。 <span class='mth-note'>示意數值</span>">What gets ranked is the position, not the absolute value. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="4" aria-labelledby="mth-grade-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--grade">
-                <div class="mth-seal">
-                  <p class="mth-seal__top">PSS 62.17</p>
-                  <p class="mth-seal__letter">A</p>
-                  <p class="mth-seal__foot" data-zh="高價值核心">High-value core</p>
-                </div>
-                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="池內綜合百分位">Composite percentile in pool</span><span class="mth-read__v">78.4 <small data-zh="&#183; 前 21.6%">&#183; top 21.6%</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="池內排名">Rank in pool</span><span class="mth-read__v">310 <small>/ 1433</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="本評級在池內的占比">This grade&#39;s share of the pool</span><span class="mth-read__v">20%</span></div></div>
-              </div>
-              <div class="mth-shares"><div class="mth-shares__z mth-shares__z--d"><span class="mth-shares__fill"></span><span class="mth-shares__l">D</span><span class="mth-shares__n">15%</span></div><div class="mth-shares__z mth-shares__z--c"><span class="mth-shares__fill"></span><span class="mth-shares__l">C</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--b"><span class="mth-shares__fill"></span><span class="mth-shares__l">B</span><span class="mth-shares__n">30%</span></div><div class="mth-shares__z mth-shares__z--a mth-shares__z--here"><span class="mth-shares__fill"></span><span class="mth-shares__l">A</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--s"><span class="mth-shares__fill"></span><span class="mth-shares__l">S</span><span class="mth-shares__n">15%</span></div></div>
-              <p class="mth-panel__cap" data-zh="區塊寬度就是該評級在池內的占比。低到高，由左至右。">Zone width is that grade&#39;s share of the pool, lowest to highest, left to right.</p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="5" aria-labelledby="mth-scen-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <ul class="mth-scen" role="list"><li class="mth-scen__row"><span class="mth-scen__name" data-zh="授權導向">Licensing</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:71.8%"></span></span><span class="mth-scen__val">71.8</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="訴訟強度">Litigation</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:52.8%"></span></span><span class="mth-scen__val">52.8</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="投資併購">M&amp;A</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:65.4%"></span></span><span class="mth-scen__val">65.4</span></li><li class="mth-scen__row"><span class="mth-scen__name" data-zh="技術布局">Portfolio</span><span class="mth-scen__track"><span class="mth-scen__fill" style="width:58.1%"></span></span><span class="mth-scen__val">58.1</span></li></ul>
-              <div class="mth-scen__axis"><span class="mth-scen__ticks">
-                <span class="mth-scen__tick">0</span><span class="mth-scen__tick">50</span><span class="mth-scen__tick">100</span>
-              </span></div>
-              <div class="mth-scen__spread">
-                <span class="mth-scen__name" data-zh="差距">Spread</span>
-                <span class="mth-scen__brkline"><span class="mth-scen__brk" style="left:52.8%;width:19.0%"></span></span>
-                <span class="mth-scen__val">19</span>
-              </div>
-              <p class="mth-panel__cap" data-zh-html data-zh="四套權重下的差距 19 分，就是這件專利的穩定度。 <span class='mth-note'>示意數值</span>">A 19-point spread across the four is this patent&#39;s stability read. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
-            </div>
-        </figure>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ Exit · the two reports this method produces ══════════════════════
-       Replaces a generic "See a sample report" button. Only two of the three
-       reports are built on PSS: Snapshot (the grade) and Study (the grade plus
-       all 50 indicators). Survey is a vector-similarity search against a larger
-       index and never computes a PSS, so sending a reader who just learned the
-       method to a set of three misrepresents what the method produces.
-
-       Cards are <button>s opening the sample panels in place, the same affordance
-       the Signal page's cards carry — see the overlay at the foot of this page.
-       They were <a href="/product/signal/#reports"> until 2026-08-27, and BOTH
-       pointed at that one href: the label said "See sample report" and neither card
-       opened a sample. It dropped the reader on a band of three cards, having just
-       been told the method produces two, and made them re-find and re-click the one
-       they had already chosen.
-
-       Card strings are the Signal page's reviewed EN + ZH verbatim. Prices are
-       deliberately absent: price is off-topic on a methodology page, and
-       product/signal/index.html already warns that the three figures must stay
-       in step with the intake chips and the deposit line. A third copy would be
-       a third thing to keep synced. ── -->
-  <section class="section mth-exit" aria-labelledby="mth-exit-title">
-    <div class="container">
-      <h2 class="mth-exit__line" id="mth-exit-title" data-reveal data-zh="這套方法產出兩種報告。">The method produces two reports.</h2>
-      <p class="mth-exit__note" data-zh="特寫與景深都建立在這套評分之上。廣角回答的是另一個問題 — 市場上最相近的十件專利 — 不使用 PSS。">Snapshot and Study are both built on this scoring. Survey answers a different question, the ten closest patents on the market, and does not compute a PSS.</p>
-
-      <div class="mth-reports">
-        <button type="button" class="offer-card offer-card--snapshot"
-                data-report="a" aria-expanded="false" aria-controls="sig-panel-a">
-          <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="評等">The grade</span>
-            <span class="offer-card-title" data-zh="特寫報告">Snapshot Report</span>
-            <span class="offer-card-desc" data-zh="SABCD 等級、八大支柱雷達，以及在全 1433 件專利池中的排名。僅適用已核准或已公開專利。">An SABCD grade and your rank across the whole 1433-patent pool. Granted or published only.</span>
-            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </span>
-          </span>
-        </button>
-
-        <button type="button" class="offer-card offer-card--study"
-                data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
-          <span class="offer-card-body">
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
-            <span class="offer-card-title" data-zh="景深報告">Study Report</span>
-            <span class="offer-card-desc" data-zh="含特寫全部，再加 50 項指標逐項分析、強弱項 Top 10、跨方案穩定性與授權策略建議。">Everything in Snapshot, plus all 50 indicators, top strengths, risks and licensing strategy.</span>
-            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </span>
-          </span>
-        </button>
-      </div>
-
-      <div class="mth-exit__actions">
-        <a href="/engage/#contact" class="btn btn-primary btn-lg" data-zh="開放訂購時通知我">Get notified when orders open</a>
-      </div>
+      <h1 class="mth-masthead__title" data-zh="此頁面已移動。">This page has moved.</h1>
+      <p class="mth-masthead__lede"><a href="/product/signal/#method" data-zh="前往專利強度評級">Go to Patent Strength Grading</a></p>
     </div>
   </section>
-
-  <section class="contact" id="contact" aria-labelledby="contact-heading">
-    <div class="container">
-      <div class="contact-card contact-card--venture">
-
-        <aside class="contact-overlay">
-          <div class="contact-overlay-top">
-            <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
-            <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們你的需求。">From one patent to a whole portfolio, tell us what you need.</p>
-          </div>
-        </aside>
-
-        <!-- DOM order IS the visual order, so the screen-reader pass matches the
-             page: two full-width rows, then Email and the UBN paired on the last.
-             Office hours and the address are single long strings that break badly in
-             a half-width column, so each takes a row of its own (.contact-meta--wide).
-             Email and the UBN are both short, so they share one.
-             The address and UBN are published for payment-gateway verification — the
-             site named neither a street address nor an entity number before this. The
-             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
-        <dl class="contact-overlay-meta">
-          <div class="contact-meta contact-meta--wide">
-            <dt data-zh="服務時間">Office hours</dt>
-            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
-          </div>
-          <div class="contact-meta contact-meta--wide">
-            <dt data-zh="地址">Address</dt>
-            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-          </div>
-          <div class="contact-meta">
-            <dt data-zh="電子郵件">Email</dt>
-            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-          </div>
-          <div class="contact-meta">
-            <dt data-zh="統一編號">UBN</dt>
-            <dd class="contact-meta__num">60331107</dd>
-          </div>
-        </dl>
-
-        <div class="contact-panel">
-          <form class="contact-form" id="contact-form" novalidate>
-            <div class="contact-row">
-              <div class="field">
-                <label for="contact-name"><span data-zh="姓名">Full name</span><span class="field-req" aria-hidden="true"> *</span></label>
-                <input id="contact-name" name="name" type="text" aria-required="true" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
-              </div>
-              <div class="field">
-                <label for="contact-title" data-zh="職稱">Job title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
-              </div>
-            </div>
-            <div class="contact-row">
-              <div class="field">
-                <label for="contact-email"><span data-zh="電子郵件">Email</span><span class="field-req" aria-hidden="true"> *</span></label>
-                <input id="contact-email" name="email" type="email" aria-required="true" autocomplete="email" placeholder="name@company.com" />
-              </div>
-              <div class="field">
-                <label for="contact-phone" data-zh="電話">Phone</label>
-                <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+886 2 1234 5678" />
-              </div>
-            </div>
-            <div class="field">
-              <label for="contact-org" data-zh="機構">Organisation</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
-            </div>
-
-            <fieldset class="contact-topics">
-              <legend data-zh="主題">Topic</legend>
-              <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="topic" value="sustain" /><span data-zh="維護">Sustain</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="protect" /><span data-zh="防護">Protect</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="license" /><span data-zh="授權">License</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="insights" /><span data-zh="洞察">Insights</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="media" /><span data-zh="媒體採訪">Media</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="other" /><span data-zh="其他">Other</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field">
-              <label for="contact-message"><span data-zh="你的需求">What you need</span><span class="field-req" aria-hidden="true"> *</span></label>
-              <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述你的需求…"></textarea>
-              <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
-            </div>
-            <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
-            </div>
-          </form>
-
-          <div class="contact-success" id="contact-success" role="status" aria-live="polite">
-            <span class="check-pill" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-            </span>
-            <div>
-              <h3 data-zh="訊息已送出。">Message sent.</h3>
-              <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Report sample overlay — the same FLIP-morph panels the Signal page opens,
-       minus Survey and minus the prices.
-
-       Two panels, because the section above is the two PSS-backed reports; a Survey
-       panel here would contradict the copy that just excluded it.
-
-       No .sig-xprice: the no-prices rule for this page (see the section comment above)
-       applies inside the panel as much as on the card. That leaves .sig-xbanner__buy
-       holding one child, which it handles at both breakpoints — column on desktop, row
-       under 760 — so no CSS accommodation was needed.
-
-       The CTA is an <a>, not the Signal page's <button>: there is no intake form on this
-       page to fill, so it navigates and hands the choice over in the query string. The
-       site.js handler is bound to button.sig-xcta specifically so it does not swallow it.
-
-       Strings are the Signal page's reviewed EN + ZH verbatim, same as the cards.
-       "Order this report / 訂購此報告" is the one string that is not: "Choose this
-       report" describes selecting in place, which is not what this does. ── -->
-  <div class="sig-xoverlay" id="sig-xoverlay" data-open="false">
-    <div class="sig-xbackdrop" id="sig-xbackdrop" aria-hidden="true"></div>
-
-    <!-- Panel A · Snapshot -->
-    <div class="sig-xpanel" id="sig-panel-a" role="dialog" aria-modal="true" aria-labelledby="sig-panel-a-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-      <div class="sig-xpanel__scroll">
-        <div class="sig-xbanner">
-          <picture><source type="image/webp" srcset="/assets/imagery/signal/short_report-400.webp 400w, /assets/imagery/signal/short_report-800.webp 800w, /assets/imagery/signal/short_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/short_report.jpg" alt="" loading="lazy" decoding="async" width="1600" height="2316"></picture>
-          <div class="sig-xbanner__inner">
-            <div class="sig-xbanner__copy">
-              <span class="sig-xcard__kind" data-zh="評等">The grade</span>
-              <h2 id="sig-panel-a-title" data-zh="特寫報告">Snapshot Report</h2>
-              <p class="sig-xpanel__lede" data-zh="分數、SABCD 等級，以及在全 1433 件專利池中的排名 — 一目了然。">A score, an SABCD grade, and where the patent ranks in the full 1433-patent pool — at a glance.</p>
-            </div>
-            <div class="sig-xbanner__buy">
-              <a class="btn btn-primary sig-xcta" href="/product/signal/?report=a-short#intake" data-zh="訂購此報告">Order this report</a>
-            </div>
-          </div>
-        </div>
-        <div class="sig-xpanel__body">
-          <div class="sig-doc">
-            <div class="sig-doc__bar">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-              <span class="sig-doc__name">TIS_Snapshot_Report_US9876543.pdf</span>
-              <span class="sig-doc__meta" data-zh-html data-zh="<strong>8 頁</strong> · 4 節 · 含浮水印"><strong>8 pages</strong> · 4 sections · watermarked</span>
-            </div>
-            <div class="sig-doc__stage">
-              <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-score.png" alt="Sample Snapshot report, cover sheet" data-zh-alt="特寫報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
-                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
-              </figure>
-              <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-score-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-score-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-score-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-score.png" alt="Sample Snapshot report, first page — SABCD grade, PSS score, rank and percentile, patent facts, and the 8-pillar radar" data-zh-alt="特寫報告範例，首頁 — SABCD 評級、PSS 分數、排名與百分位、專利資訊，以及八大構面雷達圖" loading="lazy" width="1136" height="1512" ></picture>
-                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 8 頁</strong> · 等級、分數、池內排名與八大支柱"><strong>Page 1 of 8</strong> · the grade, the score, the rank in the pool, and the eight pillars</figcaption>
-              </figure>
-              <div class="sig-doc__rest">
-                <p data-zh="此處為封面與第 1 頁。完整 8 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 8 pages arrive as a watermarked PDF.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Panel B · Study -->
-    <div class="sig-xpanel" id="sig-panel-b" role="dialog" aria-modal="true" aria-labelledby="sig-panel-b-title" hidden>
-      <button type="button" class="sig-xclose" aria-label="Close" data-zh-aria="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
-      <div class="sig-xpanel__scroll">
-        <div class="sig-xbanner">
-          <picture><source type="image/webp" srcset="/assets/imagery/signal/long_report-400.webp 400w, /assets/imagery/signal/long_report-800.webp 800w, /assets/imagery/signal/long_report-1600.webp 1600w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xbanner__img" src="/assets/imagery/signal/long_report.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1243"></picture>
-          <div class="sig-xbanner__inner">
-            <div class="sig-xbanner__copy">
-              <span class="sig-xcard__kind" data-zh="佐證">The evidence</span>
-              <h2 id="sig-panel-b-title" data-zh="景深報告">Study Report</h2>
-              <p class="sig-xpanel__lede" data-zh="完整七章報告 — 專利基本資料、八大支柱雷達、50 項指標、跨方案穩定性，與授權策略建議。">The full seven-chapter report — patent facts, the 8-pillar radar, all 50 indicators, cross-scenario stability, and licensing-strategy guidance.</p>
-            </div>
-            <div class="sig-xbanner__buy">
-              <a class="btn btn-primary sig-xcta" href="/product/signal/?report=b-long#intake" data-zh="訂購此報告">Order this report</a>
-            </div>
-          </div>
-        </div>
-        <div class="sig-xpanel__body">
-          <div class="sig-doc">
-            <div class="sig-doc__bar">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-              <span class="sig-doc__name">TIS_Study_Report_US9876543.pdf</span>
-              <span class="sig-doc__meta" data-zh-html data-zh="<strong>24 頁</strong> · 7 章 · 含浮水印"><strong>24 pages</strong> · 7 chapters · watermarked</span>
-            </div>
-            <div class="sig-doc__stage">
-              <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="Sample Study report, cover sheet" data-zh-alt="景深報告範例，封面" loading="lazy" width="1136" height="1512" ></picture>
-                <figcaption class="sig-sheet__cap" data-zh="封面">Cover</figcaption>
-              </figure>
-              <figure class="sig-sheet">
-                <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-p1-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-p1-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-p1-full-1136.webp 1136w" sizes="(max-width: 640px) 100vw, 720px"><img class="sig-xreport" src="/assets/imagery/signal-reports/signal-report-p1-full.png" alt="Sample Study report, first page — SABCD grade, patent facts, the eight pillars scored, and the top indicators and risks" data-zh-alt="景深報告範例，首頁 — SABCD 評級、專利資訊、八大構面評分，以及主要指標與風險" loading="lazy" width="1136" height="1512" ></picture>
-                <figcaption class="sig-sheet__cap" data-zh-html data-zh="<strong>第 1 頁，共 24 頁</strong> · 等級、八大支柱分數，以及主要強項與風險"><strong>Page 1 of 24</strong> · the grade, all eight pillars scored, and the leading strengths and risks</figcaption>
-              </figure>
-              <div class="sig-doc__rest">
-                <p data-zh="此處為封面與第 1 頁。完整 24 頁報告以含浮水印 PDF 交付。">You are looking at the cover and page 1. The full 24 pages arrive as a watermarked PDF.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
 </main>
 
   <footer class="footer" role="contentinfo">
@@ -897,9 +399,7 @@
             </form>
           </div>
           <div class="footer-logo-row">
-            <span class="footer-logo" aria-hidden="true"></span>
-            <span class="footer-divider" aria-hidden="true"></span>
-            <span class="footer-innovue" role="img" aria-label="Innovue"></span>
+            <span class="footer-logo" role="img" aria-label="TIS" data-zh-aria="泰然策略解密"></span>
           </div>
         </div>
 
@@ -918,16 +418,12 @@
               <li><a href="/ecosystem/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg><span data-zh="生態系">Ecosystem</span></a></li>
               <li><a href="/why-taiwan/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span data-zh="為何是台灣">Why Taiwan</span></a></li>
               <li><a href="/about/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg><span data-zh="關於">About</span></a></li>
-              <li><a href="/engage/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span data-zh="合作">Engage</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
             <h2 data-zh="洞察">Insights</h2>
             <ul>
-              <li><a href="/reports/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></svg><span data-zh="報告與新聞">Reports &amp; press</span></a></li>
-              <li><a href="/product/signal/methodology.html" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="SABCD 評級方法">SABCD rating</span></a></li>
-              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z"/><path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845"/></svg><span data-zh="泰然專利強度評級系統">Patent Intelligence SaaS</span></a></li>
-              <li><a href="/product/licensing/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a></li>
+              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="專利強度評級">Patent Strength Grading</span></a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -949,8 +445,6 @@
     </div>
   </div>
 
-
-
 <!-- Legal modal — components.md §Modal (xl 800). One shell per page; the three
      documents are fetched from /legal/ on open. See site.js "Legal modal". -->
 <div class="lgl-overlay" id="legal-overlay" data-open="false" role="dialog" aria-modal="true" aria-labelledby="legal-title">
@@ -963,11 +457,11 @@
   </div>
 </div>
 
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
 <div id="lang-overlay" aria-hidden="true">
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=27" defer></script>
-
+<script src="/assets/build/site.js?v=30" defer></script>
 </body>
 </html>

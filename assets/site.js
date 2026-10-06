@@ -460,12 +460,12 @@
   document.querySelectorAll('.nav-item[data-nav]').forEach(li => {
     if (li.dataset.nav === currentSection) li.querySelector('.nav-trigger')?.setAttribute('data-current', 'true');
   });
-  document.querySelectorAll('.mega-link, .mega-res-link, .mega-eyebrow--page, .mobile-sub-link').forEach(a => {
+  document.querySelectorAll('.mega-link, .mega-res-link, .mega-hero, .mobile-sub-link, .mobile-row-link').forEach(a => {
     const u = new URL(a.getAttribute('href'), location.origin);
     if (!u.hash && u.pathname.replace(/index\.html$/, '') === here) a.setAttribute('aria-current', 'page');
   });
 
-  // ──────────────── Mega nav — six disclosure triggers, one open panel ────────────────
+  // ──────────────── Mega nav — six section links, one open panel ────────────────
   // Disclosure pattern (button[aria-expanded] → region of plain links), not role="menu":
   // the panels hold ordinary navigation links, and menu semantics would make screen
   // readers announce them as application commands and hijack the arrow keys.
@@ -483,6 +483,24 @@
       if (openTimer)  { clearTimeout(openTimer);  openTimer  = null; }
       if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
     };
+    // Nav style A2 (2026-10-06): each panel is a column under its own label. Place it so
+    // its text lines up with the label's text (label padding 12px; panel padding 20px +
+    // 1px border); near the right edge, right-align it instead and scale from that side.
+    const place = (item) => {
+      const { trigger, panel } = parts(item);
+      const T = topnav.getBoundingClientRect(), b = trigger.getBoundingClientRect();
+      const w = panel.offsetWidth;
+      let x = b.left - T.left + 12 - 21, origin = 'left';
+      if (x + w > T.width - 12) { x = b.right - T.left - 12 + 21 - w; origin = 'right'; }
+      panel.style.setProperty('--px', Math.max(12, x) + 'px');
+      panel.style.setProperty('--ox', origin);
+    };
+    // The header photo is fetched on first intent (hover, focus or open), not at page
+    // load: six nav photos would otherwise ride along on every page view.
+    const prime = (item) => {
+      const img = item.querySelector('.mega-hero__img[data-src]');
+      if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
+    };
     const hide = (item) => {
       const { trigger, panel } = parts(item);
       trigger.setAttribute('aria-expanded', 'false');
@@ -498,6 +516,8 @@
         hide(current);
       }
       const { trigger, panel } = parts(item);
+      prime(item);
+      place(item);
       trigger.setAttribute('aria-expanded', 'true');
       panel.dataset.open = 'true';
       current = item;
@@ -525,6 +545,7 @@
       // gap between trigger and panel edge is covered by the close delay.
       item.addEventListener('pointerenter', (e) => {
         if (e.pointerType !== 'mouse' || !hoverFine.matches) return;
+        prime(item);
         if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
         if (current === item) return;
         if (current) { open(item); return; }      // already browsing: swap at once
@@ -536,13 +557,9 @@
         if (current !== item || pinned) return;
         closeTimer = setTimeout(() => { closeTimer = null; closeMega(); }, 200);
       });
-      // Click toggles. A click on a panel that hover already opened pins it rather than
-      // shutting it — the reader clicked because they wanted it, not to dismiss it.
-      trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (current === item && pinned) closeMega();
-        else open(item, { pin: true });
-      });
+      // The label is the section's page link (2026-10-06): a click navigates, the same
+      // place as the panel's photo header. Hover (fine pointers) and ArrowDown open the panel.
+      trigger.addEventListener('click', () => closeMega());
       trigger.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -551,6 +568,7 @@
           if (first) first.focus();
         }
       });
+      trigger.addEventListener('focus', () => prime(item));
       // Focus leaving the item entirely (Tab past the last panel link) closes it.
       item.addEventListener('focusout', (e) => {
         if (current === item && e.relatedTarget && !item.contains(e.relatedTarget)) closeMega();
@@ -571,6 +589,7 @@
     // The triggers are display:none below the drawer breakpoint — never leave a panel
     // open (and the scrim up) on a layout that cannot reach its trigger.
     matchMedia('(max-width: 1080px)').addEventListener('change', (e) => { if (e.matches) closeMega(); });
+    window.addEventListener('resize', () => { if (current) place(current); }, { passive: true });
     langTrigger.addEventListener('click', () => closeMega());
   }
 
@@ -852,9 +871,9 @@
   // nothing on screen at load ever blinks out, and nothing at all is hidden without
   // JS, under reduced motion, or without IntersectionObserver.
   const fdTargets = [
-    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .fd-map, .fd-close .container, .fd-commit__quote, .fd-band__inner > div:first-child, .fd-note, .fd-pending'],
+    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .eco-ring, .fd-platform__body, .fd-commit__quote, .fd-band__inner > div:first-child, .fd-note, .fd-pending'],
     ['list', '.fd-mosaic, .fd-steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners, .fd-ksp'],
-    ['clip', '.fd-frame, .fd-offer > .fd-ph'],
+    ['clip', '.fd-frame, .fd-offer > .fd-ph, .fd-platform__shot'],
     ['settle', '.fd-band > .fd-ph'],
   ];
   const fdCount = (b) => {
@@ -1044,7 +1063,7 @@
   }
 
   // ──────────────── Methodology stage — the figure pins and swaps (DESIGN.md §16.3) ────────────────
-  // Guarded so it no-ops on every page but product/signal/methodology.html.
+  // Guarded so it no-ops on every page but product/signal/ (methodology folded in 2026-10-06).
   //
   // .is-live means ACTUALLY PINNED, not "the script ran". The stage only pins above
   // 980px wide and only on a viewport tall enough to hold the card (the tallest of

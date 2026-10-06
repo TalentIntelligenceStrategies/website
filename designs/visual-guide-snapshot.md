@@ -255,7 +255,7 @@ Canonical implementation: [`../website/index.html`](../website/index.html) — s
 | Surface | Partner credited | Form |
 |---|---|---|
 | **Front door** — Home, About, Ecosystem overview, `/ausa`, AUSA deck cover, leave-behind front, business cards, letterheads, booth | None in the mark | **Secondary** logo, TIS only. Partners are named in prose next to the pillar they serve. |
-| **Sustain** (MRO and sustainment) | **Suntek Group / PG Union** (service capacity); **FairTech** (capability lifter, trainer) | Names in text. **Logos: not used — open.** |
+| **Sustain** (MRO and sustainment) | **Suntek Group / PG Union** (service capacity); **Taiwan leading UAV manufacturer** — FairTech, unnamed (capability lifter, trainer) | Names / descriptor in text. **Logos: not used — open.** |
 | **Protect** (patent consulting) | **Innovue** (database and analytics) | Name in text; §Co-Branded Lockup allowed where the claim is the database. |
 | **License** (UAV portfolio + licensing services) | **Innovue** (portfolio co-applicant) | Name in text; §Co-Branded Lockup allowed on the portfolio block. |
 | **Insights** (SABCD, Licensing Platform, Patent Intelligence SaaS, reports) | **Innovue** | "Powered by Innovue" — Primary logo, §Co-Branded Lockup, footer lockup, as before. |
@@ -263,14 +263,14 @@ Canonical implementation: [`../website/index.html`](../website/index.html) — s
 
 **Rules**
 
-- **"Powered by" is Innovue-only and Insights / product-UI-only.** Never "Powered by Suntek", "Powered by FairTech", or "Powered by" on a front-door or Sustain surface.
+- **"Powered by" is Innovue-only and Insights / product-UI-only.** Never "Powered by Suntek", "Powered by Taiwan leading UAV manufacturer", or "Powered by" on a front-door or Sustain surface.
 - **Never merge partners.** On pages that span pillars (Home, Ecosystem, the AUSA deck), each partner sits beside its own pillar. No single "partners" row implying every partner stands behind every service.
-  - **The homepage ecosystem diagram and partner introduction** (sheet v0.5) may show all three partners in one figure, because each sits in its own labelled layer: service capacity = Suntek Group / PG Union, capability lifting = FairTech, IP services = TIS × Innovue. They feed TIS as orchestrator, which delivers Sustain · Protect · License.
+  - **The homepage ecosystem diagram and partner introduction** (sheet v0.5) may show all three partners in one figure, because each sits in its own labelled layer: service capacity = Suntek Group / PG Union, capability lifting = Taiwan leading UAV manufacturer, IP services = TIS × Innovue. They feed TIS as orchestrator, which delivers Sustain · Protect · License.
   - The TIS × Innovue patent portfolio sits in a **dashed frame**, as a separate asset (the separation rule, `positioning.md` §2).
   - Names in text only. No partner logos, and no Innovue lockup on the front door.
 - **Footer.** Front-door pages carry the TIS submark alone in the footer; the TIS|Innovue footer lockup stays on Insights pages ([`components.md`](./components.md) §Footer).
 - **Service-partner logos** (Suntek Group, PG Union, FairTech) are **not used** until approved. Names are cleared; logos are an open item.
-- **FairTech** is named as trainer and maintenance specialist only — never as a UAV maker, and its own products never appear.
+- **FairTech is not named publicly** (2026-10-06): it appears as "Taiwan leading UAV manufacturer" / 台灣領先無人機製造商, verbatim, in its role as capability lifter and trainer. Its own products never appear. Nav and other short labels use the role ("Capability lifting" / 能力提升), not the descriptor.
 
 When-to-apply logic in copy: [`brand-voice.md`](./brand-voice.md) §7.
 

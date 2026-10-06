@@ -34,8 +34,7 @@ const OUT  = join(ROOT, 'assets/build/search-index.json');
 /* label is what a result row shows as its page; veiled pages link to the root. */
 const PAGES = [
   { file: 'index.html',                      url: '/',                                 en: 'Home',                    zh: '首頁' },
-  { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Intelligence SaaS', zh: '泰然專利強度評級系統' },
-  { file: 'product/signal/methodology.html', url: '/product/signal/methodology.html',  en: 'SABCD Methodology',       zh: 'SABCD 評級方法' },
+  { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Strength Grading', zh: '專利強度評級' },
   { file: 'product/licensing/index.html',    url: '/product/licensing/',               en: 'Licensing Platform',      zh: '泰然專利防護網', veil: true },
   { file: 'product/licensing/badge.html',    url: '/product/licensing/badge.html',     en: 'Verified License Badge',  zh: '授權認證標章', veil: true },
   { file: 'sustain/index.html',              url: '/sustain/',                         en: 'Sustain',                 zh: '維運' },
@@ -43,8 +42,6 @@ const PAGES = [
   { file: 'license/index.html',              url: '/license/',                         en: 'License',                 zh: '授權' },
   { file: 'ecosystem/index.html',            url: '/ecosystem/',                       en: 'Ecosystem',               zh: '生態系' },
   { file: 'why-taiwan/index.html',           url: '/why-taiwan/',                      en: 'Why Taiwan',              zh: '為何是台灣' },
-  { file: 'engage/index.html',               url: '/engage/',                          en: 'Engage',                  zh: '合作' },
-  { file: 'reports/index.html',              url: '/reports/',                         en: 'Insights',                zh: '洞察' },
   { file: 'about/index.html',                url: '/about/',                           en: 'About',                   zh: '關於' },
 ];
 
