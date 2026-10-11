@@ -35,7 +35,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=58">
+<link rel="stylesheet" href="/assets/build/styles.css?v=61">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -386,15 +386,7 @@
         <div class="pillar-actions"><a href="#contact" class="btn btn-lg btn-primary" data-zh="預約範疇評估會談">Request a scoping conversation</a></div>
       </div>
     </div>
-    <div class="container"><div class="fd-ph fd-ph--img fd-hero__band" style="--fd-pos-m:68% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-field-400.webp 400w, /assets/imagery/uv/sustain-field-800.webp 800w, /assets/imagery/uv/sustain-field-1152.webp 1152w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-field.jpg" alt="" width="1152" height="928" fetchpriority="high" decoding="async"></picture></div></div>
-  </section>
-  <section class="fd-section" id="problem" aria-labelledby="problem-h">
-    <div class="container">
-      <div class="fd-statement fd-statement--quiet">
-        <h2 class="fd-statement__text" id="problem-h" data-zh="沒有在地維運夥伴的每一週，都是交期風險、保固曝險，以及客戶對妥善率的追問。">Every week without a local sustainment partner is a week of lead-time risk, warranty exposure and readiness questions from your customer.</h2>
-        <div class="fd-statement__aside"><p data-zh="您已有系統部署在台灣，或即將有訂單把系統帶到這裡。">You have systems fielded in Taiwan, or an order that will put them there.</p><p data-zh="自建團隊需要一年，而您沒有這一年。">Building your own organisation takes a year you don't have.</p></div>
-      </div>
-    </div>
+    <div class="container"><figure class="fd-hero__fig"><div class="fd-ph fd-ph--img fd-hero__band" style="--fd-pos-m:68% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-field-400.webp 400w, /assets/imagery/uv/sustain-field-800.webp 800w, /assets/imagery/uv/sustain-field-1152.webp 1152w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-field.jpg" alt="" width="1152" height="928" fetchpriority="high" decoding="async"></picture></div><figcaption class="fd-hero__cap" id="problem"><h2 class="fd-hero__cap-st" id="problem-h" data-zh="沒有在地維運夥伴的每一週，都是交期風險、保固曝險，以及客戶對妥善率的追問。">Every week without a local sustainment partner is a week of lead-time risk, warranty exposure and readiness questions from your customer.</h2><div class="fd-hero__cap-aside"><p data-zh="您已有系統部署在台灣，或即將有訂單把系統帶到這裡。">You have systems fielded in Taiwan, or an order that will put them there.</p><p data-zh="自建團隊需要一年，而您沒有這一年。">Building your own organisation takes a year you don't have.</p></div></figcaption></figure></div>
   </section>
   <section class="fd-section" id="service-package" aria-labelledby="service-package-h">
     <div class="container">
@@ -426,27 +418,21 @@
       </div>
     </div>
   </section>
-  <section class="fd-band" id="network" aria-labelledby="network-h">
-    <div class="fd-ph fd-ph--img " style="--fd-pos:0% 50%; --fd-pos-m:60% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-network-night-400.webp 400w, /assets/imagery/uv/sustain-network-night-800.webp 800w, /assets/imagery/uv/sustain-network-night-1376.webp 1376w" sizes="(max-aspect-ratio: 16/9) 165vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-network-night.jpg" alt="" width="1376" height="768" loading="lazy" decoding="async"></picture></div>
-    <div class="container fd-band__inner">
-      <div>
-        <p class="fd-band__label" data-zh="服務量能">Service capacity</p>
-        <h2 class="fd-h2" id="network-h" data-zh="今日即覆蓋全台">Island-wide today</h2>
-        <p class="fd-lead" data-zh="服務量能來自 Suntek Group，以 PG Union Corp 為首：全國經銷網路、完整服務的維修廠，以及集團零件物流。">Service capacity comes from Suntek Group, with PG Union Corp first: a nationwide dealer network, full-service workshops and group-wide parts logistics.</p>
-      </div>
-      <div>
-        <ul class="fd-figures" style="--fd-cols:2"><li><b data-zh="30 年以上">30+</b><span data-zh="在台灣的在地服務經驗">years of local service operations in Taiwan</span></li><li><b data-zh="9">9</b><span data-zh="家公司，橫跨 Suntek Group 五大事業線">companies across Suntek Group's five business lines</span></li></ul>
-        
-      </div>
+  <section class="fd-section fd-band fd-band--tall" id="network" aria-labelledby="network-h">
+    <div class="container">
+      <ul class="fd-figures" role="list">
+        <li class="fd-band__head"><p class="fd-band__label" data-zh="服務量能">Service capacity</p><h2 class="fd-h2" id="network-h" data-zh="今日即覆蓋全台">Island-wide today</h2><p class="fd-lead" data-zh="服務量能來自 Suntek Group，以 PG Union Corp 為首：全國經銷網路、完整服務的維修廠，以及集團零件物流。">Service capacity comes from Suntek Group, with PG Union Corp first: a nationwide dealer network, full-service workshops and group-wide parts logistics.</p></li>
+        <li class="fd-band__photo" aria-hidden="true"><div class="fd-ph fd-ph--img fd-band__media" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-network-night-400.webp 400w, /assets/imagery/uv/sustain-network-night-800.webp 800w, /assets/imagery/uv/sustain-network-night-1376.webp 1376w" sizes="(max-width: 900px) 100vw, 50vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-network-night.jpg" alt="" width="1376" height="768" loading="lazy" decoding="async"></picture></div></li>
+        <li class="fd-band__fig"><b data-zh="30 年以上">30+</b><span data-zh="在台灣的在地服務經驗">years of local service operations in Taiwan</span></li><li class="fd-band__fig"><b data-zh="9">9</b><span data-zh="家公司，橫跨 Suntek Group 五大事業線">companies across Suntek Group's five business lines</span></li>
+      </ul>
     </div>
   </section>
   <section class="fd-section" id="roadmap" aria-labelledby="roadmap-h">
     <div class="container">
-      <div class="fd-head">
-        <h2 class="fd-h2" id="roadmap-h" data-zh="服務夥伴如何達到無人載具等級">How a service partner becomes UV-grade</h2>
-        <p class="fd-lead" data-zh="受託能力提升方台灣領先無人機製造商逐級帶動每個場域。在場域達標之前，較深層的維修交由台灣領先無人機製造商執行，適用同一份 SLA。">Taiwan leading UAV manufacturer, the contracted capability lifter, brings each facility up level by level. Until a site qualifies, deeper work goes to Taiwan leading UAV manufacturer under the same SLA.</p>
+      <div class="fd-stair">
+        <div class="fd-stair__head"><h2 class="fd-h2" id="roadmap-h" data-zh-html data-zh="服務夥伴如何&lt;br&gt;達到無人載具等級">How a service partner becomes UV-grade</h2><p class="fd-lead fd-stair__lead" data-zh="受託能力提升方台灣領先無人機製造商逐級帶動每個場域。">Taiwan leading UAV manufacturer, the contracted capability lifter, brings each facility up level by level.</p></div>
+        <ol class="fd-stair__steps" role="list"><li class="fd-stair__step" style="--i:0"><div class="fd-stair__body"><span class="fd-stair__k" data-zh="L0">L0</span><h3 class="fd-stair__t" data-zh="基礎" id="baseline">Baseline</h3><p class="fd-stair__d" data-zh="維修廠、零件物流、通關與全台派工。">Workshop, parts logistics, customs and island-wide dispatch.</p></div></li><li class="fd-stair__step" style="--i:1"><div class="fd-stair__body"><span class="fd-stair__k" data-zh="L1">L1</span><h3 class="fd-stair__t" data-zh="線上維修" id="line-maintenance">Line maintenance</h3><p class="fd-stair__d" data-zh="經台灣領先無人機製造商認證的技術人員，執行檢查、保養與零件更換。">Technicians certified by Taiwan leading UAV manufacturer for inspection, servicing and part swaps.</p></div></li><li class="fd-stair__step" style="--i:2"><div class="fd-stair__body"><span class="fd-stair__k" data-zh="L2">L2</span><h3 class="fd-stair__t" data-zh="元件診斷" id="component-diagnostics">Component diagnostics</h3><p class="fd-stair__d" data-zh="測試台、失效分析與組態管理。">Test benches, failure analysis and configuration control.</p></div></li><li class="fd-stair__step" style="--i:3"><div class="fd-stair__body"><span class="fd-stair__k" data-zh="L3">L3</span><h3 class="fd-stair__t" data-zh="廠級維修" id="depot-level-repair">Depot-level repair</h3><p class="fd-stair__d" data-zh="航電、電子與複合材料的自行維修與大修。">Avionics, electronics and composite repair and overhaul in-house.</p></div></li></ol>
       </div>
-      <ol class="fd-steps" style="--fd-cols:4" role="list"><li class="fd-step"><span class="fd-step__k" data-zh="L0">L0</span><h3 class="fd-step__t" data-zh="基礎" id="baseline">Baseline</h3><p class="fd-step__d" data-zh="維修廠、零件物流、通關與全台派工。">Workshop, parts logistics, customs and island-wide dispatch.</p></li><li class="fd-step"><span class="fd-step__k" data-zh="L1">L1</span><h3 class="fd-step__t" data-zh="線上維修" id="line-maintenance">Line maintenance</h3><p class="fd-step__d" data-zh="經台灣領先無人機製造商認證的技術人員，執行檢查、保養與零件更換。">Technicians certified by Taiwan leading UAV manufacturer for inspection, servicing and part swaps.</p></li><li class="fd-step"><span class="fd-step__k" data-zh="L2">L2</span><h3 class="fd-step__t" data-zh="元件診斷" id="component-diagnostics">Component diagnostics</h3><p class="fd-step__d" data-zh="測試台、失效分析與組態管理。">Test benches, failure analysis and configuration control.</p></li><li class="fd-step"><span class="fd-step__k" data-zh="L3">L3</span><h3 class="fd-step__t" data-zh="廠級維修" id="depot-level-repair">Depot-level repair</h3><p class="fd-step__d" data-zh="航電、電子與複合材料的自行維修與大修。">Avionics, electronics and composite repair and overhaul in-house.</p></li></ol>
     </div>
   </section>
   <section class="fd-section" id="compliance" aria-labelledby="compliance-h">
@@ -456,10 +442,10 @@
         <p class="fd-lead" data-zh="我們依您的許可來規劃合作，而不是反過來。">We structure the engagement around your licence, not the other way round.</p>
       </div>
       <div class="fd-lanes">
-        <div class="fd-lane"><p class="fd-lane__k" data-zh="A 軌">Lane A</p><div><h3 class="fd-lane__t" data-zh="商用與軍民兩用" id="commercial-and-dual-use">Commercial and dual-use</h3><p class="fd-lane__d" data-zh="許可或豁免確認後即啟動。">Work starts once your licence or exemption is confirmed.</p></div></div>
-        <div class="fd-lane fd-lane--ink"><p class="fd-lane__k" data-zh="B 軌">Lane B</p><div><h3 class="fd-lane__t" data-zh="國防品項" id="defense-articles">Defense articles</h3><p class="fd-lane__d" data-zh="僅於您的技術協助協議（TAA）生效後啟動。">Work starts only once your Technical Assistance Agreement (TAA) is in force.</p></div></div>
+        <div class="fd-lane fd-lane--img"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-lane-a-400.webp 400w, /assets/imagery/uv/sustain-lane-a-800.webp 800w, /assets/imagery/uv/sustain-lane-a-1376.webp 1376w" sizes="(max-width: 760px) 100vw, 50vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-lane-a.jpg" alt="" width="1376" height="768" loading="lazy" decoding="async"></picture><p class="fd-lane__k" data-zh="A 軌">Lane A</p><div><h3 class="fd-lane__t" data-zh="商用與軍民兩用" id="commercial-and-dual-use">Commercial and dual-use</h3><p class="fd-lane__d" data-zh="許可或豁免確認後即啟動。">Work starts once your licence or exemption is confirmed.</p></div></div>
+        <div class="fd-lane fd-lane--ink fd-lane--img"><picture><source type="image/webp" srcset="/assets/imagery/uv/sustain-lane-b-400.webp 400w, /assets/imagery/uv/sustain-lane-b-800.webp 800w, /assets/imagery/uv/sustain-lane-b-1376.webp 1376w" sizes="(max-width: 760px) 100vw, 50vw"><img class="fd-ph__img" src="/assets/imagery/uv/sustain-lane-b.jpg" alt="" width="1376" height="768" loading="lazy" decoding="async"></picture><p class="fd-lane__k" data-zh="B 軌">Lane B</p><div><h3 class="fd-lane__t" data-zh="國防品項" id="defense-articles">Defense articles</h3><p class="fd-lane__d" data-zh="僅於您的技術協助協議（TAA）生效後啟動。">Work starts only once your Technical Assistance Agreement (TAA) is in force.</p></div></div>
       </div>
-      <p class="fd-note" data-zh="每項合作在範疇評估時歸入其中一軌；具體分類依各專案確認。">Each engagement is assigned a lane at scoping. Classifications are confirmed per program.</p>
+
     </div>
   </section>
   <section class="contact" id="contact" aria-labelledby="contact-heading">
@@ -630,6 +616,6 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=34" defer></script>
+<script src="/assets/build/site.js?v=37" defer></script>
 </body>
 </html>

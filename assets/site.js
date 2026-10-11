@@ -885,10 +885,9 @@
   // nothing on screen at load ever blinks out, and nothing at all is hidden without
   // JS, under reduced motion, or without IntersectionObserver.
   const fdTargets = [
-    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .eco-ring, .fd-platform__body, .fd-commit__quote, .fd-band__inner > div:first-child, .fd-note, .fd-pending'],
-    ['list', '.fd-mosaic, .fd-steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners, .fd-ksp'],
+    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .eco-ring, .fd-platform__body, .fd-commit__quote, .fd-note, .fd-pending'],
+    ['list', '.fd-mosaic, .fd-stair__steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners, .fd-ksp'],
     ['clip', '.fd-frame, .fd-offer > .fd-ph, .fd-platform__shot'],
-    ['settle', '.fd-band > .fd-ph'],
   ];
   const fdCount = (b) => {
     // One number per figure ("48,750", "×21", "30+", "180M"); "9 of 16" and the
@@ -1429,6 +1428,26 @@
     }
   };
 
+  // ──────────────── PSG figure tray — prev/next ────────────────
+  // /product/signal/ #figures: five tiles in a scroll-snap row. The buttons move one tile
+  // and disable at either end; swipe and keyboard scrolling work without them (the track
+  // is focusable). Reduced motion jumps instead of gliding.
+  const psgTrack = document.querySelector('.psg-track');
+  if (psgTrack) {
+    const psgBtns = [...document.querySelectorAll('.psg-nav__btn')];
+    const psgStep = () => (psgTrack.querySelector('.psg-tile')?.getBoundingClientRect().width || 400) + 12;
+    const psgSync = () => {
+      const max = psgTrack.scrollWidth - psgTrack.clientWidth - 2;
+      psgBtns.forEach(b => { b.disabled = b.dataset.dir === '-1' ? psgTrack.scrollLeft <= 2 : psgTrack.scrollLeft >= max; });
+    };
+    psgBtns.forEach(b => b.addEventListener('click', () => {
+      psgTrack.scrollBy({ left: psgStep() * +b.dataset.dir, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }));
+    psgTrack.addEventListener('scroll', psgSync, { passive: true });
+    addEventListener('resize', psgSync);
+    psgSync();
+  }
+
   // ──────────────── Contact form → `contact` tab ────────────────
   // The markup carries `novalidate` and no `required` attributes, so validation
   // belongs here. Until now an entirely empty form reported success.
@@ -1453,6 +1472,23 @@
         showFormError(contactForm, invalid);
         flagField(contactForm, contactForm.querySelector(`[name="${bad}"]`));
         return;
+      }
+
+      // Patent Strength Grading: the request fields have no columns in the Front Desk
+      // sheet's contact tab (its headers are fixed), so they ride in front of the message
+      // as one line, plus the idea on its own. Values are mapped to stable English so a
+      // row reads the same whatever language the visitor used. Only the input the chosen
+      // status calls for is read: the other two keep whatever was typed before a switch.
+      if (payload.source === 'patent-strength-grading') {
+        const STATUS = { granted: 'Granted / published', pending: 'Pending draft', idea: 'Just an idea' };
+        const REPORT = { 'b-long': 'Study', 'b-advanced': 'Survey', unsure: 'Not sure yet' };
+        const type = payload['input-type'] || 'granted';
+        const parts = ['[PSG] Status: ' + (STATUS[type] || type), 'Report: ' + (REPORT[payload.report] || 'Not sure yet')];
+        if (type === 'granted' && payload.patent) parts.push('Patent: ' + payload.patent);
+        if (type === 'pending' && payload.application) parts.push('Application: ' + payload.application);
+        parts.push('NDA: ' + (payload.nda === 'yes' ? 'yes' : 'no'));
+        const idea = type === 'idea' && payload.idea ? '\nIdea: ' + payload.idea : '';
+        payload.message = parts.join(' · ') + idea + '\n\n' + payload.message;
       }
 
       const succeed = () => {
@@ -2606,7 +2642,8 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
   // "Choose this report" for Snapshot or Study while the form sat on "Just an idea"
   // would appear to do nothing at all.
   function selectReport(value){
-    const form = document.getElementById('intake-form');
+    // The merged request form (2026-10-11); the separate #intake-form went with the hold.
+    const form = document.getElementById('contact-form');
     const radio = form && form.querySelector('input[name="report"][value="' + value + '"]');
     if (!radio) return false;
     if (radio.dataset.requires === 'granted'){

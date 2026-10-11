@@ -9,6 +9,10 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-12 05:41 +08:00** · Patent Strength Grading opens case by case: coming-soon removed, method/figures/steps/request rebuilt in front-door v2; privacy section and Licensing ticker updated; styles v61, site.js v37 (local, unpushed).
+- **2026-10-12 04:52 +08:00** · Sustain roadmap becomes a framed four-step stair with a shorter lead (routing sentence dropped), replacing the L0–L3 rail; styles v60, site.js v36.
+- **2026-10-12 03:49 +08:00** · Sustain compliance lanes carry a part close-up each, black and white at rest and colour on hover; Sustain and About statements now sit in a caption plate under the hero photo; Signal hero gets its report photo.
+- **2026-10-12 02:10 +08:00** · Bands (Sustain network, Why Taiwan demand, Ecosystem FairTech) become a ruled bento grid with centred photos, about 25% shorter; styles v59, site.js v35.
 - **2026-10-11 23:01 +08:00** · Innovue images: License portfolio frame shows the UAV parts still life, Ecosystem Innovue frame a daylit server aisle; Sustain band, About Why Taiwan frame and Why Taiwan hero show Taiwan at night from orbit; About hero shows a program review; Why Taiwan demand band shows a parts line; full-width bands keep the subject crop up to 1100px.
 - **2026-10-11 10:42 +08:00** · Home hero: copy centred left, 7s desktop autoplay with pause, realigned partner strip, separation note removed, 21×.
 - **2026-10-11 08:51 +08:00** · Inner-page hero rebuilt as ground and band: smaller headline, hairline rail, photo band below, visible placeholders; Home untouched.

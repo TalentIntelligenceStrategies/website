@@ -42,7 +42,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=56">
+<link rel="stylesheet" href="/assets/build/styles.css?v=61">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -61,6 +61,9 @@
 <!-- ═══════════════════════════════════════════════════════════════════════
      Signal page — page-scoped styles ONLY. Everything else is the shared
      homepage system in /assets/styles.css (per website/DESIGN.md).
+     SUPERSEDED IN PART 2026-10-11: the proof grid, the intake card and the retrieve
+     card below are history; see the dated note at the top of the <style> block. The
+     notes that follow are kept as the record of how this block got here.
      Two things are page-scoped because the homepage system has no equivalent:
      (1) the imagery behind the report + contact cards — a signal gradient full-bleed
          across the retrieve card, and reports.jpg framed in the left column of the
@@ -148,6 +151,15 @@
      condition attached to the exception.
      ═══════════════════════════════════════════════════════════════════════ -->
 <style>
+  /* 2026-10-11 · orders opened case by case. The proof ledger, the three-phase process,
+     the intake card and the retrieve card left with the hold, and with them every rule
+     for .sig-proof*, .sig-ledger*, .sig-colophon, .sig-pool-line*, .sig-facts, .sig-fact*,
+     .sig-credit (its corner-set version), .sig-phases*, .sig-phase*, .sig-due*, .sig-notes,
+     .sig-rt__head and the .contact-card--sig-intake / --sig-retrieve treatments. What
+     replaced them is front-door v2 grammar and lives in styles.css ("FRONT DOOR v2 · PSG").
+     Still here: the report cards, the retrieve result internals (.sig-lookup, .sig-rt__*,
+     .sig-status), the seller fine print, the segmented status control, the disabled-chip
+     rule the report gate uses, and .sig-callout. */
   :root{
     --sig-blue: var(--score-b-vivid);   /* #0EA5E9 */
     --sig-blue-deep: #0369A1;           /* --score-b light text token */
@@ -199,593 +211,6 @@
      would run to four lines. Scoped to #reports so the homepage keeps its own. */
   @media (max-width: 1280px){ #reports .offerings-grid{ grid-template-columns:1fr; } }
 
-  /* ── Proof + process — a stacked head, then two full-width panels ──────────────
-     What this replaced (2026-08-25): a two-column header whose right column stacked a
-     72px pool numeral, a 14px Innovue credit and a .btn-secondary with space-between,
-     over an asymmetric three-panel grid — wide black ledger, tall wash process
-     spanning both rows, photographic trade card.
-
-     Three things drove the rebuild.
-
-     1. The header's h2 took the full .h-section display step while its own peer
-        ("Three reports.", inside .section.offerings twelve hundred pixels above) took
-        the reduced one. Two sibling dividers read as different levels of the
-        hierarchy — an accident of one section borrowing .offerings for its card grid,
-        never a decision. The dek diverged too: 58ch against the base 44ch, a wider
-        head gap, and text-wrap:balance where its peer had none.
-     2. The right column stacked three unrelated registers aligned to nothing.
-     3. 1433 sat in that column while the ledger's own notes described it twice: it is
-        the denominator 0–100 is percentile-ranked against, and the pool SABCD
-        discretises. It belongs in the ledger.
-
-     Now: .section-head carries the pair — its h2 rule already resolves to
-     clamp(24px,2.8vw,36px)/600/-0.015em/1.15 and outranks .h-section on BOTH
-     specificity (0,1,1 vs 0,1,0) and source order (styles.css 4012 vs 414), and the
-     dek inherits .section-dek's own 44ch, so matching the peer costs no CSS at all.
-     Do not add a max-width here; that is what broke the match.
-
-     The pool figure heads the ledger and the four facts run as ONE row —
-     50 → 8 → 0–100 → SABCD, input to output. That row is why the tracked-caps
-     "THE PSS PIPELINE" kicker is gone: the ordering states it, and the <ol> keeps its
-     label as an .sr-only <h3> so aria-labelledby and the list semantics survive.
-
-     The trade card is retired and its human + AI line closes the process it actually
-     describes. --sig-spring went with it — that card's hover was its only consumer. ── */
-
-  /* Head — claim + dek left, the pool colophon right. .section-head is a flex row with
-     align-items:end and flex-wrap, so the colophon seats on the dek's floor for free
-     and drops below it when the row runs out of room. */
-  .sig-colophon{
-    flex:0 1 clamp(280px, 32%, 400px);
-    border-left:1px solid var(--border-secondary);
-    padding-left:clamp(20px, 2vw, 32px);
-    display:flex; flex-direction:column; gap:16px; align-items:flex-start;
-  }
-  /* States what the reference pool actually is. The wording tracks
-     legal/disclosures.en.html §"A rating is a position, not a verdict", but the link
-     goes to the methodology page, not the disclosures modal. The section claims a score
-     you can trace to the number, which is hollow if the denominator is vague, so naming
-     it is the claim's evidence, not a caveat. */
-  .sig-colophon p{
-    margin:0;
-    font-size:15px; line-height:1.55;
-    color:var(--text-secondary);
-    text-wrap:pretty;
-  }
-
-  /* ── The PSS ledger ─────────────────────────────────────────────────────────────
-     Mono tabular numerals are legitimate: the content literally is scoring metadata.
-     Labels sit BESIDE their numerals and are deliberately NOT aligned to a common
-     column across the four — the widest value is five mono glyphs and the narrowest
-     one, so a shared track strands "8" ~90px from its own label and the pair stops
-     reading as a phrase. The notes' common left edge carries the column instead. ── */
-  .sig-ledger{
-    position:relative;                         /* carries the corner-set credit */
-    background:#000;                           /* matches .about-card / .partner-band */
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:16px;
-    padding:clamp(26px, 2.6vw, 40px) clamp(24px, 2.6vw, 36px);
-    color:#fff;
-  }
-  /* In dark theme the page surface is #0E0E0E, so a #000 card is defined only by its
-     hairline. .about-card gets away with it because its image defines the edges; this
-     card is all type, so lift the edge. */
-  [data-theme="dark"] .sig-ledger{ border-color:rgba(255,255,255,0.16); }
-
-  /* "Powered by Innovue" — the credit text verbatim, no variations
-     (visual-guide-snapshot.md §Innovue Co-Branding). Corner-set, and deliberately NOT
-     a bordered chip: that spec defines exactly two constructions, this credit and the
-     submark|divider|logo lockup, and a badge is neither. Absolute so it can never push
-     the pool figure off the panel's top edge.
-     This is the section's ONLY Innovue credit. It carried three — here, in the dek,
-     and in the Produce phase — against brand-voice §7's "once at the top, then TIS
-     voice takes over." */
-  .sig-credit{
-    position:absolute;
-    top:clamp(26px, 2.6vw, 40px);
-    right:clamp(24px, 2.6vw, 36px);
-    margin:0;
-    display:inline-flex; align-items:baseline; gap:0.4em;
-    /* 17px, up 30% from 13px. .innovue-wordmark is sized in em (0.72em tall,
-       5.27em wide), so the mark scales with the text and needs no separate rule. */
-    font-size:17px; line-height:1;
-    color:rgba(255,255,255,0.62);              /* 8.1:1 on #000 */
-  }
-  /* .innovue-wordmark only swaps to its light SVG under [data-theme="dark"], so on this
-     #000 card in LIGHT theme it would paint Innovue Blue on black. Pin it theme-agnostically;
-     the dark rule's brightness(1.6) is tuned for the page ground, not for #000. */
-  .sig-ledger .innovue-wordmark{
-    background-image:url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
-  }
-  [data-theme="dark"] .sig-ledger .innovue-wordmark{ filter:none; }
-
-  /* Equal air on both sides of the hairline — it read as crowding the figure above it
-     when the padding was 20–26 against a 24–32 margin. padding-right keeps the two-line
-     pool label clear of the corner credit at every width. */
-  .sig-ledger__lockup{
-    padding-bottom:clamp(26px, 2.6vw, 34px);
-    margin-bottom:clamp(26px, 2.6vw, 34px);
-    /* Reserve for the corner credit, which at 17px measures ~178px ("Powered by" +
-       0.4em + a 5.27em mark). The old 150px floor was sized for the 13px credit and
-       the label collided with the mark between ~640 and 880. */
-    padding-right:clamp(196px, 19vw, 280px);
-    border-bottom:1px solid rgba(255,255,255,0.12);
-  }
-  /* `last baseline` puts a wrapped label's SECOND line on the numeral's baseline, so the
-     two share one floor. flex-end is the fallback for engines without it — declaration
-     order matters, keep it above. */
-  .sig-pool-line{
-    display:flex; margin:0;
-    align-items:flex-end;
-    align-items:last baseline;
-    flex-wrap:wrap;
-    gap:12px 14px;
-  }
-  .sig-pool-line__num{
-    font-family:var(--font-mono);
-    /* Above .sig-fact__num's clamp(32px,3.2vw,46px) on purpose: this figure heads the
-       panel and the four facts sit under it, so it has to out-scale them, not tie. */
-    font-size:clamp(38px, 3.8vw, 54px);
-    /* 600, not 700 — Inconsolata ships 400/500/600 only, so 700 is synthetic bold and
-       at this size the smearing shows. */
-    font-weight:600;
-    line-height:1;
-    letter-spacing:-0.02em;
-    color:#fff;
-    font-variant-numeric:tabular-nums;
-    /* Reserve the full 4-digit box so the count-up cannot shove the label sideways.
-       tabular-nums fixes digit WIDTH, not digit COUNT. */
-    min-width:4ch;
-  }
-  /* The break after "patents" is a hard <br>, not a measure — the two halves name
-     two different things (whose patents / what they are) and should not re-flow.
-     It needs data-zh-html on the span or site.js strips it at first paint. The
-     max-width is only a guard against a third line if the copy grows. */
-  .sig-pool-line__label{
-    font-size:14px; line-height:1.35;
-    color:rgba(255,255,255,0.72);
-    max-width:30ch;
-  }
-
-  /* One row, left to right: 50 → 8 → 0–100 → SABCD is the pipeline, input to output.
-     Only possible because the panel is full width now; in the old 1.75fr column four
-     cells were ~180px and the notes shredded. */
-  .sig-facts{
-    list-style:none; margin:0; padding:0;
-    display:grid;
-    grid-template-columns:repeat(4, minmax(0, 1fr));
-    column-gap:clamp(24px, 3vw, 52px);
-    row-gap:clamp(24px, 2.6vw, 34px);
-  }
-  .sig-fact{
-    display:grid;
-    grid-template-columns:max-content minmax(0, 1fr);
-    column-gap:clamp(12px, 1.2vw, 16px);
-    row-gap:6px;
-    align-items:end;
-    align-items:last baseline;
-  }
-  .sig-fact__num{
-    font-family:var(--font-mono);
-    font-size:clamp(32px, 3.2vw, 46px);
-    font-weight:600;
-    line-height:1;
-    letter-spacing:-0.01em;
-    color:#fff;
-    font-variant-numeric:tabular-nums;
-  }
-  /* SABCD reads white like the other three. It was the page's one vivid --sig-blue;
-     as the terminal fact its POSITION already marks it as the output, so the colour was
-     doing a second job the ordering had covered. --sig-blue stays live elsewhere on this
-     page (the retrieve status timeline, report-card focus rings). */
-  .sig-fact--out .sig-fact__num{ color:#fff; }
-  .sig-fact__label{
-    font-size:14px; line-height:1.35;
-    color:rgba(255,255,255,0.72);
-  }
-  /* Full cell width from the numeral's left edge — the cell is the measure. `balance`,
-     not `pretty`: these run two lines and pretty only guards the last against an orphan,
-     leaving the first full and the second short. */
-  .sig-fact__note{
-    grid-column:1 / -1;
-    margin:0;
-    font-size:13px; line-height:1.55;
-    letter-spacing:0.01em;                     /* light-on-dark compensation */
-    color:rgba(255,255,255,0.58);              /* 6.1:1 on #000 */
-    text-wrap:balance;
-  }
-  .sig-ledger__foot{
-    display:flex; justify-content:flex-end;
-    margin-top:clamp(26px, 2.6vw, 34px);
-  }
-
-  /* ── The process, three phases across ───────────────────────────────────────────
-     No longer a card. It was a --surface-accent-signal-wash panel beside the ledger;
-     out of the panel it is page content with its own section head, so the block carries
-     no background, border, radius or padding of its own — the hairlines between phases
-     are the only structure it needs.
-
-     No blue anywhere in it either. The phase name took --surface-accent-signal-text to
-     separate it from the title; size and weight do that job now, so the pair runs
-     secondary over primary ink. Chip ink follows.
-
-     The card is light grey. body carries a faint 32px graph-paper grid that solid
-     surfaces cover, so the fill both defines the card and quiets the ground under it;
-     the hairline and the 20px corner are the ledger's own, so the two blocks sit in the
-     same family down the page. The section head stays OUTSIDE the card, matching the
-     proof section above (head on the page ground, panel beneath it).
-
-     The payment chip tracks the card, and it has now flipped twice: white on the old
-     wash, --surface-tertiary for the brief white-card version, white again here. The
-     rule behind it is the only thing worth remembering — the chip fill must never equal
-     the card fill, or the pill disappears.
-
-     role="list" on the <ol> is REQUIRED: list-style:none makes WebKit strip list
-     semantics, and with no visible ordinals the role is the only channel left carrying
-     sequence. Phase names are <h3> under the section's own <h2>. (They were <h4>; that
-     skipped a level, so a screen reader's heading list read them as nested one deeper
-     than they are. Corrected 2026-08-28 — styling is by .sig-phase__name, not by tag.) ── */
-
-  .sig-phases{
-    background:var(--surface-tertiary);
-    border:1px solid var(--border-secondary);
-    border-radius:16px;
-    padding:clamp(26px, 2.6vw, 38px) clamp(22px, 2.2vw, 32px);
-  }
-
-  /* A row cannot develop the vertical slack the old spanning column did. The negative
-     margin pulls each rule into the middle of the gap rather than hard against its
-     own column's text. */
-  .sig-phases__list{
-    list-style:none; margin:0; padding:0;
-    display:grid;
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-    gap:clamp(24px, 3vw, 44px);
-  }
-  .sig-phase{ padding:0; }
-  .sig-phase + .sig-phase{
-    border-left:1px solid var(--border-tertiary);
-    padding-left:clamp(24px, 3vw, 44px);
-    margin-left:calc(-1 * clamp(24px, 3vw, 44px) / 2);
-  }
-  /* Phase name — sentence case. Size and weight separate it from the title beneath,
-     not hue: it sits 3.5px smaller over primary ink at the same weight. */
-  .sig-phase__name{
-    margin:0 0 6px;
-    font-family:var(--font-sans);
-    font-size:13.5px; font-weight:600;
-    line-height:1.3; letter-spacing:0.01em;
-    text-transform:none;
-    color:var(--text-secondary);               /* 9.7:1 on the page ground */
-  }
-  .sig-phase__title{
-    margin:0 0 6px;
-    display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 10px;
-    font-size:17px;
-    font-weight:600;
-    line-height:1.35;
-    color:var(--text-primary);                 /* 16.1:1 on the page ground */
-  }
-  /* Payment chip — the two-stage structure, carried by a label rather than by hue
-     (WCAG 1.4.1), which is why dropping the accent costs it nothing. The fill has to
-     differ from the card's: on the --surface-tertiary card it goes back to white, where
-     --text-secondary measures 9.7:1. */
-  .sig-phase__chip{
-    flex:none;
-    padding:2px 8px;
-    border-radius:9999px;
-    /* Fill stays --surface-page: this chip sits on a --surface-tertiary card, so
-       white is already the direction that separates it (1.13:1) and darkening it
-       would drop that to 1.09. The hairline is what was missing — --border-secondary
-       reads 1.10:1 against the card, --border-tertiary 1.32. */
-    background:var(--surface-page);
-    border:1px solid var(--border-tertiary);
-    color:var(--text-secondary);
-    font-size:11px;
-    font-weight:600;
-    line-height:16px;
-    letter-spacing:0.04em;
-    white-space:nowrap;
-  }
-  /* `balance` for the same reason as .sig-fact__note. The measure is now the column,
-     not 46ch: three phases across at 1440 give ~420px cells, and a 46ch cap inside
-     one left a short second column against a full first. */
-  .sig-phase__desc{
-    margin:0;
-    font-size:13.5px;
-    line-height:1.6;
-    color:var(--text-secondary);               /* 8.3:1 on the wash */
-    text-wrap:balance;
-    overflow-wrap:break-word;                  /* guard: mixed-script ZH at 390px */
-  }
-  .sig-phases__foot{
-    display:flex; align-items:flex-end; justify-content:space-between;
-    gap:clamp(24px, 3vw, 44px); flex-wrap:wrap;
-    margin-top:clamp(28px, 2.8vw, 38px);
-    padding-top:clamp(24px, 2.4vw, 30px);
-    border-top:1px solid var(--border-tertiary);
-  }
-  /* The human + AI trade-off, retired from the image card it used to caption. It argues
-     about how the report is produced, so it closes the sequence that produces it. */
-  .sig-phases__trade{
-    margin:0;
-    flex:1 1 460px; min-width:0;
-    font-size:14px; line-height:1.6;
-    color:var(--text-secondary);
-    text-wrap:pretty;
-  }
-  .sig-phases__foot .btn{ flex:0 0 auto; }
-
-  /* Scoped-shared: the base .arrow-link is uppercase / 0.10em tracked / 700
-     (styles.css:2005) and only .about-card .arrow-link overrides it to sentence case.
-     Both exits here take the sentence-case register — deleting two tracked-caps kickers
-     and then reintroducing tracked caps in the links that replace them would undo the
-     point. The ledger's own colour must be white: .arrow-link ships --text-primary
-     (#252525), which on #000 is unreadable. */
-  .sig-colophon .arrow-link,
-  .sig-ledger .arrow-link{
-    text-transform:none;
-    letter-spacing:-0.005em;
-    font-size:13px;
-    font-weight:600;
-  }
-  .sig-ledger .arrow-link{ color:#fff; }
-  .sig-ledger .arrow-link:hover{ color:rgba(255,255,255,0.72); }
-
-  /* ── Motion. The phases rise; the ledger does not move, because a row of numerals
-     staggering in reads as a slot machine and resamples mono glyphs mid-transition.
-     Every hidden base state is gated on `scripting: enabled` — DESIGN.md §14 is explicit
-     that content must never be gated invisible on JS failure. ── */
-  @media (scripting: enabled){
-    .sig-phase[data-reveal]{
-      opacity:0;
-      transform:translateY(8px);
-    }
-  }
-  /* No nth-child delays — the observer fires per element as each crosses the threshold,
-     so scroll cadence IS the stagger. */
-  .sig-phase[data-reveal]{
-    transition:opacity 380ms var(--ease-card), transform 380ms var(--ease-card);
-  }
-  .sig-phase[data-reveal].is-revealed{ opacity:1; transform:none; }
-
-  /* ── Responsive. 1100 folds the fact row to 2×2 before the cells reach the width where
-     "0–100" stops fitting beside its label; 880 stacks the process and re-hangs the
-     colophon's rule as a top border; 560 un-pins the corner credit so it cannot sit on
-     top of the pool figure. All three are scale values (DESIGN.md §3.1). The old 960px
-     branch went with .sig-proof__head. ── */
-  @media (max-width: 1100px){
-    .sig-facts{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 880px){
-    .sig-colophon{
-      flex-basis:100%;
-      border-left:0;
-      border-top:1px solid var(--border-secondary);
-      padding:20px 0 0;
-    }
-    .sig-phases__list{ grid-template-columns:1fr; gap:0; }
-    .sig-phase{ padding:clamp(18px, 1.8vw, 22px) 0; }
-    .sig-phase:first-child{ padding-top:0; }
-    .sig-phase:last-child{ padding-bottom:0; }
-    .sig-phase + .sig-phase{
-      border-left:0;
-      border-top:1px solid var(--border-tertiary);
-      padding-left:0;
-      margin-left:0;
-    }
-    .sig-ledger{ padding:26px 22px; }
-    .sig-phases{ padding:28px 22px; }
-  }
-  @media (max-width: 560px){
-    .sig-credit{ position:static; margin-bottom:20px; }
-    .sig-ledger__lockup{ padding-right:0; }
-    .sig-facts{ grid-template-columns:1fr; row-gap:22px; }
-    .sig-phase__desc{ font-size:13px; max-width:none; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .sig-phase[data-reveal],
-    .sig-phase[data-reveal].is-revealed{
-      opacity:1; transform:none; transition:none;
-    }
-  }
-
-  /* Intake's section divider. .contact has no padding of its own — .contact-card
-     carries margin-block:var(--space-section) — so the head takes that top margin and
-     the card drops its own, or the two stack into ~2x the intended gap. */
-  #intake .section-head{ margin-block-start:var(--space-section); }
-  #intake .section-head + .contact-card{ margin-block-start:0; }
-
-  /* ── Contact cards — swap the overlay image for signal-toned imagery; the
-     retrieve card flips so the form sits left. Everything else is the shared
-     .contact-card component. ── */
-  /* Retrieve keeps the full-bleed treatment: a single image stretched across the
-     WHOLE card (behind both the heading side AND the white form panel), with the
-     overlay's own image + scrim killed so there is no column seam. The heading
-     stays legible with a text-shadow, not a scrim; the form stays legible because
-     .contact-panel is already a solid white elevated card over the image. */
-  .contact-card--sig-retrieve{
-    background:var(--surface-inverse) url('/assets/imagery/signal/signal-cool-rot.jpg') center/cover no-repeat;
-    background:var(--surface-inverse) image-set(url('/assets/imagery/signal/signal-cool-rot-640.webp') type('image/webp'),
-                                               url('/assets/imagery/signal/signal-cool-rot.jpg') type('image/jpeg')) center/cover no-repeat;
-  }
-
-  /* Intake takes the HOMEPAGE treatment instead (index.html .contact-card--venture):
-     the image is framed in the LEFT overlay column only, and the card's black base —
-     which is also reports.jpg's own background — fills the rest, so the area behind
-     the floating white panel reads as a seamless extension of the image rather than
-     a second crop of it. Only the URL changes here; the scrim (::after), the measure
-     and the meta row are all the shared component's. */
-  .contact-card--sig-intake .contact-overlay::before{
-    background:url('/assets/imagery/coremap/reports.jpg') center / cover no-repeat, #000;
-  }
-  /* Phones: the 800w WebP (38 KB) covers the stacked card; the 176 KB JPG stays for wide columns. */
-  @media (max-width: 760px){
-    .contact-card--sig-intake .contact-overlay::before{
-      background:url('/assets/imagery/coremap/reports-800.webp') center / cover no-repeat, #000;
-    }
-  }
-  /* The shared scrim ramps to 0.55 at the foot because venture.jpg is already black
-     down there. reports.jpg is not — its brightest arm sweeps the bottom-left, exactly
-     under the meta row — so steepen the last third for this card only. The middle band
-     stays fully open, which is where the swirl actually reads. */
-  .contact-card--sig-intake .contact-overlay::after{
-    background:linear-gradient(180deg,
-      rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.88) 100%);
-  }
-
-  /* ── The card holds the homepage card's exact height, at every width ──────────
-     Not a pinned pixel table: the homepage's own height is
-       #contact-form  +  2 × .contact-panel padding  +  2 × .contact-panel margin
-     and the last two are the vw clamps from styles.css, so restating the formula
-     tracks it through every width instead of at four sampled ones. Verified against
-     .contact-card--venture: 720@881 · 724@1024 · 742@1280 · 698@1320 · 708@1440 ·
-     718@1600 · 721@1920, all exact.
-
-     Only #contact-form's own height is a literal, and it takes one step: the
-     homepage's six inquiry chips sit on three rows up to 1298px and two rows from
-     1299px, so 640 → 593 there. Measured, not guessed — 1298 is 640, 1299 is 593.
-
-     If the homepage's inquiry chips or field count ever change, these two numbers go
-     stale and the cards drift apart. That is the cost of "exactly"; re-measure
-     #contact-form on index.html and update the two literals.
-
-     `height`, not `min-height`. A minimum is a floor, and a floor caps nothing — the
-     grid row still sized to the tallest input state and the textareas below never had
-     to give ground, so the idea state ran 48px past the homepage. A definite height
-     makes the row definite, which makes the panel definite, which is what lets the
-     form's flex split actually resolve. The textareas carry ~90px of give before their
-     min-height binds, which is the headroom against a legend wrapping or a larger
-     default font size.
-
-     Below 881px the shared component collapses to one column and the panel goes
-     full-bleed, so the height is content-driven there and this must not apply. ── */
-  @media (min-width: 881px){
-    .contact-card--sig-intake{
-      height:calc(640px + 2 * clamp(26px, 2.4vw, 40px) + 2 * clamp(14px, 1.6vw, 24px));
-      /* A definite height on the grid container is not enough: an auto row still sizes
-         to its content and simply overflows it — and .contact-card is overflow:hidden,
-         so the excess was being CLIPPED (the submit button lost its bottom edge in the
-         idea state) rather than squeezed. minmax(0,1fr) pins the row to the container,
-         which is what pushes the constraint down to the panel, the form, and finally
-         the two textareas that are meant to absorb it. */
-      /* `1fr auto`, not the single `minmax(0, 1fr)` this was until 2026-08-29.
-         .contact-overlay-meta became a direct child of .contact-card (so a phone can
-         read banner -> form -> details), which means the card needs the second, auto
-         row the shared stylesheet declares. Left at one row the meta created an
-         implicit row below it, the overlay stopped spanning the card, and the coremap
-         photo ended 218px short with the deposit figure sitting on bare black.
-         The first row still carries the height constraint that the comment above
-         describes — minmax(0,1fr) and 1fr floor identically here because .contact-panel
-         sets min-height:0 itself. */
-      grid-template-rows:1fr auto;
-    }
-    /* The panel fills that height rather than floating centred in it — the homepage
-       panel does the same (670 of 718 at 1600, the balance being its own margin), so
-       stretching is what matches, not a compact card centred in dead space. */
-    .contact-card--sig-intake .contact-panel{
-      align-self:stretch;
-      display:flex;
-      flex-direction:column;
-      min-height:0;   /* flex/grid items floor at min-content unless told otherwise */
-    }
-    /* The form fills the panel, but the slack does NOT go into the gaps: the gap
-       stays the shared 18px, so the field rhythm is byte-identical to the homepage
-       form. Spreading it instead (justify-content:space-between) matched the card's
-       height while missing its spacing, which is what made the form read sparse —
-       same box, wrong rhythm. */
-    .contact-card--sig-intake .contact-form{ flex:1; min-height:0; }
-
-    /* The two textareas are the form's springs — they are the only fields with no
-       natural height, so they take the leftover and every fixed field above them
-       holds still. flex-basis:0 is doing the real work: it keeps them out of the
-       base sum, so the leftover is always positive and simply gets split, rather
-       than the form having to claw height back out of them. (basis:0 with grow but
-       no usable shrink was the earlier bug — the notes field could grow into slack
-       but could not give it back, so the idea state ran 48px past the homepage
-       height.) Everything else is shrink:0: nothing above them may give ground,
-       which is what keeps the field cadence identical to the homepage's. */
-    .contact-card--sig-intake .contact-form > *{ flex-shrink:0; }
-    .contact-card--sig-intake .sig-notes,
-    .contact-card--sig-intake .field[data-input-for="idea"]{ flex:1 1 0%; min-height:0; }
-    .contact-card--sig-intake .sig-notes textarea,
-    .contact-card--sig-intake .field[data-input-for="idea"] textarea{
-      flex:1;
-      min-height:52px;   /* ~2 rows; the split lands well above this, so it never binds */
-    }
-  }
-  @media (min-width: 1299px){
-    .contact-card--sig-intake{
-      height:calc(593px + 2 * clamp(26px, 2.4vw, 40px) + 2 * clamp(14px, 1.6vw, 24px));
-    }
-  }
-
-  /* The shared lead measure (15.483rem) is pinned to keep "Get in touch." wrapping
-     identically on the seven other pages that carry it. This lead is 90 characters,
-     not 20, and at that measure it breaks four ways with "AI." orphaned on the last
-     line. Widened here only. */
-  .contact-card--sig-intake .contact-overlay-top .contact-lead{ max-width:19rem; }
-
-  /* ══ Retrieve — one centred column, not the two-column contact card ═══════════
-     Intake asks for things; retrieve GIVES something back, and what it gives has no
-     fixed size — a status line, or a status line plus a locked report and a seven-
-     chapter outline. A 5fr/6fr split has nowhere to put that. So the card keeps the
-     shared frame (radius, shadow, the full-bleed gradient) and drops the columns:
-     heading centred, a lookup bar under it, and the result growing beneath that.
-     ═════════════════════════════════════════════════════════════════════════════ */
-  .contact-card--sig-retrieve{
-    display:block;                 /* not the shared 2-col grid */
-    padding:clamp(32px, 4vw, 56px) clamp(20px, 2.6vw, 40px) clamp(28px, 3.2vw, 48px);
-    /* The card grows from ~370px to ~900px when a result opens. `cover` on a centred
-       image re-frames the whole thing mid-interaction, exactly when the user is
-       looking at it; anchoring to the top means the band behind the heading holds
-       still and the card simply grows downward into more image. */
-    background-position:center top;
-    text-align:center;
-  }
-  /* signal-cool-rot is signal-cool turned 180°, so the deep blue is at the TOP, under
-     the heading, and the pale cyan at the foot. That is the right way up for this card:
-     white heading copy lands on the dark end by itself. The scrim survives only as
-     insurance — the image's dark corner is top-RIGHT, so the left half of a centred
-     heading still crosses mid-blue — at roughly a third of its previous strength. */
-  .contact-card--sig-retrieve::before{
-    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-    background:linear-gradient(180deg,
-      rgba(6,12,32,0.22) 0%, rgba(6,12,32,0.10) 30%, rgba(6,12,32,0) 50%);
-  }
-  .contact-card--sig-retrieve > *{ position:relative; z-index:1; }
-
-  .sig-rt__head{
-    max-width:34rem; margin:0 auto clamp(22px, 2.4vw, 32px);
-    text-shadow:0 1px 16px rgba(6,12,32,.45);
-  }
-  .sig-rt__head h2{
-    font-size:clamp(28px, 3.2vw, 44px);
-    font-weight:600; letter-spacing:-0.02em; line-height:1.1;
-    margin:0 0 14px; color:#FFFFFF;
-  }
-  .sig-rt__head .contact-lead{ max-width:32rem; margin-inline:auto; }
-
-  /* Lookup bar — the shared .contact-panel skin, centred and capped rather than
-     column-bound. Email · code · button on one line: this is a return visit with a
-     letter open beside it, so it should read as one action, not a form to fill in. */
-  .contact-card--sig-retrieve .contact-panel{
-    max-width:920px;
-    /* 48px == the footprint of the sample-codes chip that used to sit here (14px
-       margin + ~34px chip). Held deliberately: the chip was pulled without resizing
-       the card, and this is also the gap the result panel opens into. */
-    margin:0 auto 48px;
-    align-self:auto;
-    text-align:left;
-    /* Re-declare the full radius. The shared component's @media (max-width:880px)
-       branch sets `border-radius: 0 0 18px 18px` because THERE the panel butts flush
-       against .contact-overlay above it, so square top corners are correct. This card
-       is display:block with a centred, floating bar and nothing above it — the flat
-       top edge read as a bug. This selector already beat that rule on margin and
-       align-self but never redeclared radius, so the 0 0 18 18 survived. */
-    border-radius:16px;
-  }
   .sig-lookup{ display:grid; grid-template-columns:1fr 1fr auto; gap:16px; align-items:end; }
   .sig-lookup .btn{ height:50px; }            /* == the .field input height beside it */
   @media (max-width: 640px){
@@ -929,23 +354,6 @@
     .sig-rt__reveal{ transition:none; }
   }
 
-  /* Deposit figure in the intake overlay. Same composed numeral as the report cards
-     and the panel banners, so the amount you will be charged is set at the same scale
-     as the price that produced it. White on the card's own dark ground.
-     The empty state is a sentence, not a number, so it drops back to the .contact-meta
-     dd size — a 36px "Select a report" reads as a headline. The block keeps its slot
-     either way; only the type size changes. */
-  /* Qualified with .contact-meta dd on purpose. The shared component sets
-     `.contact-meta dd { font-size:15px }` — specificity (0,1,1) — so a bare `.sig-due`
-     at (0,1,0) loses no matter what order it appears in, and the figure silently stayed
-     at label size. Matching the element+class shape is what makes the clamp apply. */
-  .contact-meta dd.sig-due{ font-family:var(--font-sans); font-size:clamp(30px,2.8vw,40px); font-weight:700;
-    letter-spacing:-0.03em; line-height:1; font-variant-numeric:tabular-nums; color:#FFFFFF; }
-  .sig-due__unit{ font-size:0.42em; font-weight:500; letter-spacing:0; vertical-align:0.95em; margin-right:0.06em; }
-  /* The placeholder keeps the numeral's size and drops only in tone, so the block
-     reads as "a number goes here" rather than as a value of its own. */
-  .contact-meta dd.sig-due--empty{ color:rgba(255,255,255,0.40); }
-
   /* Seller identity under the amount. Fine print by construction: it is the answer to
      a question nobody asked until they were about to pay, so it sits below the figure,
      behind a hairline, at label size. The hairline is the whole hierarchy here — without
@@ -973,7 +381,7 @@
        methodology.html's cards take the shared .offer-card:focus-visible. ── */
   .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
     color:var(--text-tertiary); font-family:'Inconsolata', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
-  @media (max-width: 760px){ .sig-mockflag, .sig-phase__chip{ font-size:12px; } }  /* 12px phone floor (DESIGN.md) */
+  @media (max-width: 760px){ .sig-mockflag{ font-size:12px; } }  /* 12px phone floor (DESIGN.md) */
   .offer-card[data-report]:focus-visible{ outline:2px solid var(--sig-blue); outline-offset:3px; }
 
   /* ── Intake input-type selector — one segmented track, not three loose pills.
@@ -1376,10 +784,10 @@
       <div class="fd-hero__aside">
         <p class="fd-hero__meta" data-zh="專利強度評級">Patent Strength Grading</p>
         <p class="fd-hero__sub" data-zh="帶著已核准專利、申請中草稿，或僅是一個想法。拿回一份逐項可追溯的強度報告，或市場上最相關的十件專利。">Bring a granted patent, a pending draft, or just an idea. Get back a strength report you can trace line by line, or the ten patents that matter most.</p>
-        <div class="pillar-actions"><a href="#contact" class="btn btn-lg btn-primary" data-zh="開放訂購時通知我">Get notified when orders open</a><a href="#reports" class="btn btn-lg btn-secondary" data-zh="看報告樣張">See a sample report</a></div>
+        <div class="pillar-actions"><a href="#contact" class="btn btn-lg btn-primary" data-zh="委託報告">Request a report</a><a href="#reports" class="btn btn-lg btn-secondary" data-zh="看報告樣張">See a sample report</a></div>
       </div>
     </div>
-    <div class="container"><div class="fd-ph fd-hero__band" aria-hidden="true"><span class="fd-ph__cap"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg><span data-zh="圖像：專利強度評級表">Image: patent-strength ledger</span></span></div></div>
+    <div class="container"><div class="fd-ph fd-ph--img fd-hero__band" style="--fd-pos-m:53% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/signal-hero-400.webp 400w, /assets/imagery/uv/signal-hero-800.webp 800w, /assets/imagery/uv/signal-hero-1376.webp 1376w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/signal-hero.jpg" alt="" width="1376" height="768" fetchpriority="high" decoding="async"></picture></div></div>
   </section>
   </div>
 
@@ -1398,19 +806,13 @@
              data-zh swap writes textContent and would destroy it on the first EN→ZH toggle.
              EN drops the "US" prefix — a bare $ carries it. ZH keeps NT$: in Taiwan a bare
              $ reads as NTD, so dropping it would make the two currencies indistinguishable.
-             2026-09-30: prices are withheld while orders are on hold — each price slot
-             reads "Pricing on request" in the eyebrow style until ordering reopens.
-             Prices were placeholder list prices, published so the products carry a visible
-             price tag for payment-gateway verification. EN shows USD, ZH shows the TWD
-             list price — the currency swaps with the language via data-zh, the same
-             mechanism every other string on the page uses. The ladder is ascending in DOM
-             order, so the cards need no reordering. Keep these three in step with the
-             intake chips below and with the deposit line on the intake card. -->
+             2026-10-11: orders are open, case by case, so each price slot reads
+             "Quoted per case" in the eyebrow style; the panel banners say the same. -->
         <button type="button" class="offer-card offer-card--sigB" data-report="b" aria-expanded="false" aria-controls="sig-panel-b">
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="佐證">The evidence</span>
             <span class="offer-card-title" data-zh="景深報告">Study Report</span>
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="價格請洽詢">Pricing on request</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="依個案報價">Quoted per case</span>
             <span class="offer-card-desc" data-zh="S 到 D 的評級與在 1433 件專利池中的排名，加上 50 項指標逐項分析、強弱項 Top 10 與授權策略建議。僅適用已核准或已公開專利。">A grade from S to D and your rank in the 1433-patent pool, plus all 50 indicators, top strengths, risks and licensing strategy. Granted or published only.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1422,7 +824,7 @@
           <span class="offer-card-body">
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="場域">The field</span>
             <span class="offer-card-title" data-zh="廣角報告">Survey Report</span>
-            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="價格請洽詢">Pricing on request</span>
+            <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="依個案報價">Quoted per case</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可 — 連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
             <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1434,547 +836,172 @@
     </div>
   </section>
 
-  <!-- ── 3 · Proof + process — claim and denominator left, argument right, then an
-       asymmetric three-panel grid ──────────────────────────────────────────────
-       Composition: the decomposition of the score IS this section's proof, so it
-       takes the widest and darkest cell (four facts, 2×2). The purchase process is
-       secondary and runs down the narrow column beside it. The human + AI caption
-       card closes the wide column.
-
-       One black panel, then the process on the page ground. Superseded twice: first a
-       three-black-cards band that read as one heavy slab, then black ink + cool wash +
-       photographic, which is where the --surface-accent-signal-wash card and the
-       trade-card image came from. Both are gone.
-
-       There is no blue left in this section at all (2026-08-25). The ledger stays black
-       for contrast and hierarchy, not to host an accent: SABCD reads white like the
-       other three facts, and the process runs secondary over primary ink with no wash
-       behind it. --sig-blue is still live further down the page (retrieve status
-       timeline, report-card focus rings).
-
-       The two-stage payment structure is carried by the two chips inside phases 01
-       and 03. The retired 7-beat timeline said it with accented nodes and a pair of
-       PAYMENT chips; the chips now name the amounts outright. Don't drop them.
-
-       Counters (1433 / 50 / 8) drive from site.js; 0–100 and SABCD are static. The
-       pool counter carries data-sep="none" — a separator inside a display numeral
-       this large reads as punctuation, not scale. The prose used to keep "1,433";
-       it does not any more. The number is written 1433 everywhere on the site now,
-       which is also how PRD v0.7 writes it. ── -->
-  <section class="section" aria-labelledby="proof-heading">
+  <!-- ── 3 · Method, figures, steps, request (2026-10-11) ───────────────────────
+       Orders opened case by case: fill out the form and TIS gets back to you. The PSS
+       ledger, the pinned method stage, the three-phase process and the held intake and
+       retrieve cards went with the hold. All four sections below are front-door v2
+       blocks (styles.css "FRONT DOOR v2 · PSG", DESIGN.md §16.2), monochrome by decision.
+         #method   bento: the pool (ink) beside a greyscale photo, then the four steps.
+                   #pool / #indicators / #pillars / #percentile / #grade are the cells,
+                   so methodology.html's redirect to #method and old deep links resolve.
+         #figures  the five method figures as numbered tiles in a tray, prev/next in
+                   site.js. Same illustrative patent throughout (US10148981).
+         #how      three steps in the bento's frame; dek right of the h2.
+         #contact  the retrieve bar (ids unchanged; the lookup script at the foot of the
+                   page drives it), then the shared contact card carrying the merged
+                   request form. data-source="patent-strength-grading"; site.js folds
+                   the request fields into the message line, because the Front Desk
+                   sheet's contact tab has fixed columns. ── -->
+  <div class="ab">
+  <section class="fd-section psg" id="method" aria-labelledby="method-heading">
     <div class="container">
-      <div class="sig-proof">
+      <div class="fd-head"><h2 class="fd-h2" id="method-heading" data-zh="評級是怎麼算出來的。">How the grade is calculated.</h2><p class="fd-lead" data-zh="50 項指標、八大支柱、一個 0–100 分的總分，以及 S 到 D 的評級。每一步都能追溯回一個可查核的數字。">50 indicators, eight pillars, one 0–100 score, and a grade from S to D. Every step traces back to a number you can check.</p></div>
+      <div class="psg-bento">
+        <div class="psg-cell psg-cell--pool" id="pool">
+          <p class="sig-credit" data-zh-html data-zh="Powered by <span class='innovue-wordmark' role='img' aria-label='Innovue'></span>">Powered by <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></p>
+          <p class="psg-cell__fig psg-cell__fig--pool"><b>1433</b><span data-zh-html data-zh="件 TIS 與夥伴專利，<br>組成參考池">TIS and partner patents<br>in the reference pool</span></p>
+          <p class="psg-cell__d" data-zh="您的專利與泰然及夥伴持有的 1433 件專利比較排名，這些專利我們同時也在授權。不是全世界的專利，也不是獨立的第三方基準。">Your patent is ranked against 1433 patents held by TIS and its partners, which we also license. Not every patent in the world, and not an independent benchmark.</p>
+          
+        </div>
+        <div class="psg-cell psg-cell--photo" aria-hidden="true">
+          <picture><source type="image/webp" srcset="/assets/imagery/signal/long_report-800.webp 800w, /assets/imagery/signal/long_report-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 50vw"><img src="/assets/imagery/signal/long_report.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1243"></picture>
+        </div>
+        <div class="psg-cell psg-cell--ind" id="indicators">
+            <p class="psg-cell__fig"><b>50</b><span data-zh="項指標">indicators</span></p>
+            <h3 class="psg-cell__t" id="indicators-t" data-zh="量測什麼">What gets measured</h3>
+            <p class="psg-cell__d" data-zh="多數由專利紀錄計算：引用、家族、請求項、日期、法律狀態。其餘由封閉資料庫的 AI 工具閱讀專利文本後評分。">Most come from the patent record: citations, family, claims, dates, legal status. The rest are graded by closed-database AI tools reading the text.</p>
+            
+          </div>
+        <div class="psg-cell psg-cell--pil" id="pillars">
+            <p class="psg-cell__fig"><b>8</b><span data-zh="大支柱">pillars</span></p>
+            <h3 class="psg-cell__t" id="pillars-t" data-zh="八大支柱，各自加權">Eight pillars, weighted apart</h3>
+            <p class="psg-cell__d" data-zh="指標聚合為八大支柱，各自獨立加權。文本品質與法律強度各有 8 項指標，網路中心性只有 4 項。">Indicators roll up into eight pillars, each weighted independently. Text Quality and Legal Strength carry eight indicators each; Network Centrality carries four.</p>
+            
+          </div>
+        <div class="psg-cell psg-cell--pct" id="percentile">
+            <p class="psg-cell__fig"><b>0–100</b><span data-zh="分池內百分位">in-pool percentile</span></p>
+            <h3 class="psg-cell__t" id="percentile-t" data-zh="原始值如何變成位置">A raw value becomes a position</h3>
+            <p class="psg-cell__d" data-zh="每個原始值都換算成池內百分位。前向引用 47 次，計分的是 47 在 1433 件之中的落點。">Every raw value becomes its percentile in the pool. 47 forward citations is scored on where 47 falls among 1433.</p>
+            
+          </div>
+        <div class="psg-cell psg-cell--grade" id="grade">
+            <p class="psg-cell__fig"><b>S–D</b><span data-zh="評級">grade</span></p>
+            <h3 class="psg-cell__t" id="grade-t" data-zh="百分位如何變成評級">A position becomes a letter</h3>
+            <p class="psg-cell__d" data-zh="加權總分的池內百分位對應到評級：S 為前 15%，其後 A 20、B 30、C 20、D 15。">The weighted score's percentile resolves to a grade. S is the top 15%, then A 20, B 30, C 20, D 15.</p>
+            
+          </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Head — the claim and its argument left, the pool colophon right.
-             The h2 carries .h-section ONLY so the shared [data-reveal] transition rules
-             in styles.css still match it; the size comes from .section-head h2, which
-             outranks .h-section on specificity and source order and already resolves to
-             the same step "Three reports." uses above. Do not add a max-width to the dek
-             either — it inherits .section-dek's 44ch, and overriding that is what made
-             the two dividers read as different levels. -->
-        <header class="section-head">
+  <section class="fd-section psg psg-figsec" id="figures" aria-labelledby="figs-heading">
+    <div class="container">
+      <div class="psg-tray">
+        <div class="psg-tray__head">
           <div>
-            <h2 id="proof-heading" class="h-section" data-reveal data-zh="每一分數，都能追溯回原始數據。">A patent score you can trace all the way to the number.</h2>
-            <p class="section-dek" data-reveal data-zh-html data-zh="為製造商與智財法務而做的專利評估：<br>您要能為那個數字辯護，而不只是引用它。">Patent intelligence for makers and IP counsel<br>who have to defend a number, not just quote one.</p>
+            <h2 class="psg-tray__h" id="figs-heading" data-zh="每一步，套在同一件專利上。">Each step, on one patent.</h2>
           </div>
-          <!-- Names what the reference pool actually is, per legal/disclosures.en.html
-               §"A rating is a position, not a verdict". The section claims a score
-               traceable to the number,
-               which is hollow if the denominator is vague, so this is the claim's
-               evidence rather than a caveat. data-zh sits on the inner <span> of the
-               link, never on the <a>: site.js:178 calls applyLang() at first paint and
-               writes textContent, which would delete the sibling <svg>.
-
-               The exit goes to #pool on this page, NOT the disclosures
-               modal. It carries no data-legal, and it must not: site.js has a delegated
-               [data-legal] listener that preventDefault()s the click and opens the modal
-               instead of navigating. -->
-          <div class="sig-colophon">
-            <p data-zh-html data-zh="TIS 也對外授權池內的專利。排名是<br>在池內的位置，不是與全世界專利相比的排名。">TIS licenses patents from this pool. A rank is<br>a position inside it, not a rank against every patent.</p>
-            <a href="#pool" class="arrow-link"><span data-zh="參考池如何組成">How the pool is composed</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <div class="psg-nav">
+            <button type="button" class="psg-nav__btn" data-dir="-1" aria-label="Previous figure" data-zh-aria="上一張"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 19l-7-7 7-7"/></svg></button>
+            <button type="button" class="psg-nav__btn" data-dir="1" aria-label="Next figure" data-zh-aria="下一張"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
           </div>
-        </header>
-
-          <!-- ── Panel 1 · the PSS ledger — the pool figure heads it, then the four
-               facts as one row. 1433 is the denominator the 0–100 note and the SABCD
-               note both refer to, so it lives here rather than in the header.
-
-               data-zh must never land on .sig-pool-line__num or any ancestor whose
-               textContent the swapper rewrites — it would delete the .counter child.
-               Only the label carries it; the numeral carries none, and the markup text
-               is the no-JS value so it must keep matching data-target.
-
-               The <ol>'s label is an .sr-only <h3>, not the retired tracked-caps
-               kicker: the row's own left-to-right ordering states the pipeline, and
-               aria-labelledby still needs a node to point at. ── -->
-          <div class="sig-ledger">
-            <p class="sig-credit" data-zh-html data-zh="Powered by <span class='innovue-wordmark' role='img' aria-label='Innovue'></span>">Powered by <span class="innovue-wordmark" role="img" aria-label="Innovue"></span></p>
-
-            <div class="sig-ledger__lockup">
-              <p class="sig-pool-line">
-                <span class="sig-pool-line__num"><span class="counter" data-target="1433" data-sep="none">1433</span></span>
-                <span class="sig-pool-line__label" data-zh-html data-zh="件 TIS 與夥伴專利，組成參考池">TIS and partner patents<br>in the reference pool</span>
-              </p>
+        </div>
+        <ol class="psg-track" role="list" tabindex="0" aria-labelledby="figs-heading"><li class="psg-tile">
+            <h3 class="psg-tile__t" id="fig-indicators"><span class="psg-tile__n" aria-hidden="true">1</span><span data-zh="量測什麼">What gets measured</span></h3>
+            <figure class="psg-fig psg-fig--indicators" aria-labelledby="indicators-cap">
+            <table class="psg-ind">
+              <thead><tr><th scope="col" data-zh="指標">Indicator</th><th scope="col" data-zh="原始值">Raw value</th><th scope="col" data-zh="百分位">Percentile</th></tr></thead>
+              <tbody><tr><td><span class="psg-ind__bar" style="--w:72%"></span><span class="sr-only" data-zh="名稱已遮蔽">Name redacted</span></td><td class="psg-ind__raw">47</td><td class="psg-ind__p">P82</td></tr><tr><td><span class="psg-ind__bar" style="--w:56%"></span><span class="sr-only" data-zh="名稱已遮蔽">Name redacted</span></td><td class="psg-ind__raw">12</td><td class="psg-ind__p">P61</td></tr><tr><td><span class="psg-ind__bar" style="--w:84%"></span><span class="sr-only" data-zh="名稱已遮蔽">Name redacted</span></td><td class="psg-ind__raw">6</td><td class="psg-ind__p">P94</td></tr><tr><td><span class="psg-ind__bar" style="--w:60%"></span><span class="sr-only" data-zh="名稱已遮蔽">Name redacted</span></td><td class="psg-ind__raw">0.71</td><td class="psg-ind__p">P38</td></tr><tr><td><span class="psg-ind__bar" style="--w:78%"></span><span class="sr-only" data-zh="名稱已遮蔽">Name redacted</span></td><td class="psg-ind__raw">23</td><td class="psg-ind__p">P55</td></tr></tbody>
+            </table>
+            <figcaption class="psg-fig__cap" id="indicators-cap" data-zh="50 項指標，每一項都有原始值與池內百分位。">Every one of the 50 carries a raw value and its percentile in the pool.</figcaption>
+          </figure>
+          </li><li class="psg-tile">
+            <h3 class="psg-tile__t" id="fig-pillars"><span class="psg-tile__n" aria-hidden="true">2</span><span data-zh="八大支柱，各自加權">Eight pillars, weighted apart</span></h3>
+            <figure class="psg-fig psg-fig--pillars" aria-labelledby="pillars-cap">
+            <ol class="psg-pil" role="list"><li><span class="psg-pil__name" data-zh="引用影響力">Citation Impact</span><span class="psg-pil__dots" style="--n:7" aria-hidden="true"></span><span class="psg-pil__n">7</span></li><li><span class="psg-pil__name" data-zh="法律強度">Legal Strength</span><span class="psg-pil__dots" style="--n:8" aria-hidden="true"></span><span class="psg-pil__n">8</span></li><li><span class="psg-pil__name" data-zh="技術價值">Technical Value</span><span class="psg-pil__dots" style="--n:7" aria-hidden="true"></span><span class="psg-pil__n">7</span></li><li><span class="psg-pil__name" data-zh="市場覆蓋">Market Coverage</span><span class="psg-pil__dots" style="--n:5" aria-hidden="true"></span><span class="psg-pil__n">5</span></li><li><span class="psg-pil__name" data-zh="文本品質">Text Quality</span><span class="psg-pil__dots" style="--n:8" aria-hidden="true"></span><span class="psg-pil__n">8</span></li><li><span class="psg-pil__name" data-zh="網路中心性">Network Centrality</span><span class="psg-pil__dots" style="--n:4" aria-hidden="true"></span><span class="psg-pil__n">4</span></li><li><span class="psg-pil__name" data-zh="授權潛力">Licensing Potential</span><span class="psg-pil__dots" style="--n:6" aria-hidden="true"></span><span class="psg-pil__n">6</span></li><li><span class="psg-pil__name" data-zh="前瞻價值">Forward-Looking Value</span><span class="psg-pil__dots" style="--n:5" aria-hidden="true"></span><span class="psg-pil__n">5</span></li></ol>
+            <figcaption class="psg-fig__cap" id="pillars-cap" data-zh="刻意不平均：法律強度與文本品質各 8 項，網路中心性只有 4 項。">Uneven on purpose: Legal Strength and Text Quality carry 8, Network Centrality 4.</figcaption>
+          </figure>
+          </li><li class="psg-tile">
+            <h3 class="psg-tile__t" id="fig-pool"><span class="psg-tile__n" aria-hidden="true">3</span><span data-zh="參考池是什麼">What the pool is</span></h3>
+            <figure class="psg-fig psg-fig--pool" aria-labelledby="pool-cap">
+            <div class="psg-pool">
+              <p class="psg-big"><b>310</b><span data-zh="名，池內共 1433 件">of 1433 in the pool</span></p>
+              <div class="psg-field" role="img" aria-label="1433 marks, one per patent in the pool; one is highlighted" data-zh-aria="1433 個標記，一個代表池內一件專利，其中一個為高亮"><span class="psg-field__you"></span></div>
             </div>
-
-            <h3 class="sr-only" id="sig-pipeline-label" data-zh="PSS 評分管線">The PSS pipeline</h3>
-            <ol class="sig-facts" role="list" aria-labelledby="sig-pipeline-label">
-
-              <li class="sig-fact">
-                <span class="sig-fact__num"><span class="counter" data-target="50">50</span></span>
-                <span class="sig-fact__label" data-zh="項可追溯指標">traceable indicators</span>
-                <p class="sig-fact__note" data-zh="每支柱 4–8 項，各有原值、百分位與權重。">Each carries a raw value, a percentile and a weight — 4–8 per pillar.</p>
-              </li>
-
-              <li class="sig-fact">
-                <span class="sig-fact__num"><span class="counter" data-target="8">8</span></span>
-                <span class="sig-fact__label" data-zh="大強度支柱">strength pillars</span>
-                <p class="sig-fact__note" data-zh="引用、法律、技術、市場等八項，各自獨立加權。">Citation, legal, technical, market and four more, independently weighted.</p>
-              </li>
-
-              <!-- "benchmark" and "cross-industry" are gone from this note on purpose.
-                   legal/disclosures.en.html states the pool is "not an independent
-                   third-party benchmark", and the marketing copy cannot contradict the
-                   disclosure it links to. -->
-              <li class="sig-fact">
-                <span class="sig-fact__num">0–100</span>
-                <span class="sig-fact__label" data-zh="分客觀分數">objective score</span>
-                <p class="sig-fact__note" data-zh="在參考池內的百分位。不是絕對的品質量測。">A percentile position inside the reference pool. Not an absolute measure.</p>
-              </li>
-
-              <li class="sig-fact sig-fact--out">
-                <span class="sig-fact__num">S–D</span>
-                <span class="sig-fact__label" data-zh="評級">grade</span>
-                <p class="sig-fact__note" data-zh-html data-zh="全池百分位的分級。<br>S 為前 15%。">A discretisation of pool percentile.<br>S is the top 15%.</p>
-              </li>
-
-            </ol>
-
-            <div class="sig-ledger__foot">
-              <a href="#method" class="arrow-link"><span data-zh="看評級如何計算">See how the grade is calculated</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <figcaption class="psg-fig__cap" id="pool-cap" data-zh="一個標記代表一件專利。最後一列沒有填滿，因為這是確切數量，不是概數。">One mark per patent. The short last row is an exact count, not a round number.</figcaption>
+          </figure>
+          </li><li class="psg-tile">
+            <h3 class="psg-tile__t" id="fig-percentile"><span class="psg-tile__n" aria-hidden="true">4</span><span data-zh="原始值如何變成位置">A raw value becomes a position</span></h3>
+            <figure class="psg-fig psg-fig--percentile" aria-labelledby="percentile-cap">
+            <div class="psg-pct">
+              <p class="psg-big"><b>P82</b><span data-zh="47 次前向引用，在池內的百分位">47 forward citations, as a percentile in the pool</span></p>
+              <div class="psg-posset">
+                <p class="psg-posset__head" aria-hidden="true"><span data-zh="原始值">Raw value</span><span data-zh="池內位置">Position in the pool</span><span data-zh="百分位">Percentile</span></p>
+                <ol class="psg-poslist" role="list" aria-label="Three indicators placed on a 0 to 100 scale: 47 at P82, 12 at P61, 6 at P94" data-zh-aria="三項指標在 0 到 100 刻度上的位置：47 在 P82、12 在 P61、6 在 P94"><li class="psg-pos is-lead" style="--v:82%">
+                <span class="psg-pos__raw">47</span>
+                <span class="psg-pos__track" aria-hidden="true"><span class="psg-pos__fill"></span><span class="psg-pos__mark"></span></span>
+                <b class="psg-pos__p">P82</b>
+              </li><li class="psg-pos" style="--v:61%">
+                <span class="psg-pos__raw">12</span>
+                <span class="psg-pos__track" aria-hidden="true"><span class="psg-pos__fill"></span><span class="psg-pos__mark"></span></span>
+                <b class="psg-pos__p">P61</b>
+              </li><li class="psg-pos" style="--v:94%">
+                <span class="psg-pos__raw">6</span>
+                <span class="psg-pos__track" aria-hidden="true"><span class="psg-pos__fill"></span><span class="psg-pos__mark"></span></span>
+                <b class="psg-pos__p">P94</b>
+              </li></ol>
+                <p class="psg-ticks" aria-hidden="true"><span></span><span class="psg-ticks__scale"><span>0</span><span>50</span><span>100</span></span><span></span></p>
+              </div>
             </div>
-          </div>
+            <figcaption class="psg-fig__cap" id="percentile-cap" data-zh="原始值依其在 1433 件之中的落點計分，而不是看數字大小。">A raw value is scored by where it falls among 1433, not by its size.</figcaption>
+          </figure>
+          </li><li class="psg-tile">
+            <h3 class="psg-tile__t" id="fig-grade"><span class="psg-tile__n" aria-hidden="true">5</span><span data-zh="百分位如何變成評級">A position becomes a letter</span></h3>
+            <figure class="psg-fig psg-fig--grade" aria-labelledby="grade-cap">
+            <div class="psg-grade">
+              <p class="psg-grade__seal"><b>A</b><span data-zh="高價值核心">High-value core</span></p>
+              <dl class="psg-read">
+                <div><dt>PSS</dt><dd>62.17</dd></div>
+                <div><dt data-zh="池內綜合百分位">Composite percentile</dt><dd>78.4 <small data-zh="前 21.6%">top 21.6%</small></dd></div>
+                <div><dt data-zh="池內排名">Rank in pool</dt><dd>310 <small>/ 1433</small></dd></div>
+              </dl>
+              <ol class="psg-zones" role="list" aria-label="Share of the pool per grade, low to high: D 15%, C 20%, B 30%, A 20%, S 15%" data-zh-aria="各評級在池內的占比，由低到高：D 15%、C 20%、B 30%、A 20%、S 15%"><li class="psg-zone" style="--w:15"><b>D</b><span>15%</span></li><li class="psg-zone" style="--w:20"><b>C</b><span>20%</span></li><li class="psg-zone" style="--w:30"><b>B</b><span>30%</span></li><li class="psg-zone is-you" style="--w:20"><b>A</b><span>20%</span></li><li class="psg-zone" style="--w:15"><b>S</b><span>15%</span></li></ol>
+            </div>
+            <figcaption class="psg-fig__cap" id="grade-cap" data-zh="區塊寬度即該評級在池內的占比，由低到高。">Zone width is each grade's share of the pool, lowest to highest.</figcaption>
+          </figure>
+          </li></ol>
       </div>
     </div>
   </section>
 
-  <!-- ── 3a · The method — folded in from methodology.html (team review 2026-10-06),
-       which now redirects here. The pipe-nav and the pinned stage are unchanged; the
-       "weighted four ways" step is gone, and the step headings drop to h3 under this
-       section's h2. #pool, #indicators, #pillars, #percentile and #grade keep resolving. ── -->
-  <section class="section mth-masthead" id="method" aria-labelledby="method-heading">
+  <section class="fd-section psg-how" id="how" aria-labelledby="process-heading">
     <div class="container">
-      <h2 class="mth-masthead__title" id="method-heading" data-reveal data-zh="評級是怎麼算出來的。">How the grade is calculated.</h2>
-      <p class="mth-masthead__lede" data-reveal data-zh="50 項指標、八大支柱、一個 0–100 分的總分，以及 S 到 D 的評級。每一步都能追溯回一個可查核的數字。">50 indicators, eight pillars, one 0–100 score, and a grade from S to D. Every step traces back to a number you can check.</p>
-    </div>
-      <div class="mth-pipe-band">
-        <div class="container">
-          <nav class="mth-pipe" aria-label="How the score is calculated" data-zh-aria="評分的計算方式">
-        <a class="mth-pipe__step" href="#indicators">
-          <span class="mth-pipe__fig">50</span>
-          <span class="mth-pipe__label" data-zh="項指標">indicators</span>
-        </a>
-        <a class="mth-pipe__step" href="#pillars">
-          <span class="mth-pipe__fig">8</span>
-          <span class="mth-pipe__label" data-zh="大支柱">pillars</span>
-        </a>
-        <a class="mth-pipe__step" href="#pool">
-          <span class="mth-pipe__fig">1433</span>
-          <span class="mth-pipe__label" data-zh="件參考池">reference pool</span>
-        </a>
-        <a class="mth-pipe__step" href="#percentile">
-          <span class="mth-pipe__fig">0–100</span>
-          <span class="mth-pipe__label" data-zh="分池內百分位">in-pool percentile</span>
-        </a>
-        <a class="mth-pipe__step" href="#grade">
-          <span class="mth-pipe__fig">S–D</span>
-          <span class="mth-pipe__label" data-zh="評級">grade</span>
-        </a>
-      </nav>
-        </div>
-      </div>
-  </section>
-  <div class="mth-stage">
-    <div class="container mth-stage__grid">
-      <div class="mth-stage__steps">
-        <section class="mth-stage__step" id="indicators" data-step="0" aria-labelledby="mth-ind-title">
-          <p class="feature-row__num mth-label" data-zh="量測">Measure</p>
-          <h3 class="feature-row__title" id="mth-ind-title" data-reveal data-zh="量測什麼">What gets measured</h3>
-          <p data-zh="每件專利都會計算 50 項指標。多數由專利紀錄計算 — 引用、家族、請求項、日期、法律狀態。其餘由封閉資料庫的 AI 工具閱讀專利文本後評分。">50 indicators are computed for every patent. Most are calculated from the patent record: citations, family, claims, dates, legal status. The rest are graded by closed-database AI tools reading the patent text.</p>
-          <p data-zh="每一項指標都帶著三個數字：原始值、池內百分位，以及它在所屬支柱中的權重。景深報告會逐項列出全部 50 項與這三個數字。本頁不列出。">Each indicator carries three numbers: a raw value, its percentile in the pool, and its weight inside its pillar. The Study report lists all 50 with those three numbers each. This page does not.</p>
-        </section>
-        <section class="mth-stage__step" id="pillars" data-step="1" aria-labelledby="mth-pil-title">
-          <p class="feature-row__num mth-label" data-zh="歸組">Group</p>
-          <h3 class="feature-row__title" id="mth-pil-title" data-reveal data-zh-html data-zh="八大支柱，<br>50 項指標">Eight pillars,<br>50 indicators</h3>
-          <p data-zh="指標會聚合為八大支柱。每根支柱以加權平均彙整旗下指標的分數，支柱之間再各自獨立加權。">Indicators aggregate into eight pillars. Each pillar rolls up its own indicators as a weighted average, and the pillars are then weighted independently of each other.</p>
-          <p data-zh="分布並不平均，這本身就是資訊：文本品質與法律強度各有 8 項指標，網路中心性只有 4 項。">The distribution is not even, and that is itself information: Text Quality and Legal Strength carry eight indicators each, Network Centrality carries four.</p>
-        </section>
-        <section class="mth-stage__step" id="pool" data-step="2" aria-labelledby="mth-pool-title">
-          <p class="feature-row__num mth-label" data-zh="比較基準">Compare against</p>
-          <h3 class="feature-row__title" id="mth-pool-title" data-reveal data-zh="參考池是什麼">What the pool is</h3>
-          <p data-zh="分數是一個位置，所以它需要一個可以站定位置的集合。您的專利是拿來跟 1433 件由泰然與夥伴所持有的專利比較排名 — 這些專利我們同時也在做商業授權。">A score is a position, so it needs a set to hold a position in. Your patent is ranked against 1433 patents held by TIS and its partners, patents we also license commercially.</p>
-          <p data-zh="所以排名告訴您的是您相對於我們手上專利的位置，不是相對於全世界所有專利，也不是獨立的第三方基準。與其讓您自行假設，我們寧可講清楚。指標的原始值本身，則取自新穎的 1.8 億件專利資料庫。">So a rank tells you where you sit against our inventory, not against every patent in the world, and it is not an independent benchmark. We would rather say that plainly than have you assume otherwise. The indicator values themselves are computed from Innovue's 180M-patent database.</p>
-          <p data-zh="池子會隨著專利核准與失效重新排序。即使您的專利本身沒有任何改變，您的數字仍可能移動。">The pool re-ranks as patents are granted and lapse. Your number can move even when nothing about your patent has.</p>
-        </section>
-        <section class="mth-stage__step" id="percentile" data-step="3" aria-labelledby="mth-pct-title">
-          <p class="feature-row__num mth-label" data-zh="定位">Position</p>
-          <h3 class="feature-row__title" id="mth-pct-title" data-reveal data-zh="原始值如何變成位置">A raw value becomes a position</h3>
-          <p data-zh="每一項指標都以同一種方式正規化：把原始值拿到池內排名，取它的百分位。一件被前向引用 47 次的專利，分數不是 47，而是 47 在 1433 件之中的落點。">Every indicator is normalised the same way: rank the raw value inside the pool, take its percentile. A patent with 47 forward citations is not scored on 47. It is scored on where 47 falls among 1433.</p>
-          <p data-zh="全部只有一個基準。產業別會被記錄為描述性資訊，但不作為比較群組 — 半導體專利與生技專利在同一個池內排名。">There is one basis for all of it. Industry is recorded as descriptive metadata but is not a comparison cohort: a semiconductor patent and a biotech patent are ranked in the same pool.</p>
-        </section>
-        <section class="mth-stage__step" id="grade" data-step="4" aria-labelledby="mth-grade-title">
-          <p class="feature-row__num mth-label" data-zh="評級">Grade</p>
-          <h3 class="feature-row__title" id="mth-grade-title" data-reveal data-zh="百分位如何變成評級">A position becomes a letter</h3>
-          <p data-zh="加權後的支柱分數合成為一個 0–100 分的 PSS 總分，這個總分在池內的百分位再對應到五個評級之一。">The weighted pillar scores compose into one PSS on a 0–100 scale, and that score's percentile in the pool resolves to one of five grades.</p>
-          <p data-zh="占比是固定的：S 為池內前 15%，其後 A 20、B 30、C 20、D 15。實際的切分點會依參考池當下的分布校準，所以本頁列出占比，不列閾值。">The shares are fixed: S is the top 15% of the pool, then A 20, B 30, C 20, D 15. The exact cut-points are calibrated against the pool's live distribution, so this page gives the shares and not the thresholds.</p>
-        </section>
-      </div>
-      <div class="mth-stage__stage">
-        <figure class="mth-stage__fig" data-step="0" aria-labelledby="mth-ind-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-ind" role="presentation"><div class="mth-ind__head"><span class="mth-ind__col" data-zh="指標">Indicator</span><span class="mth-ind__col mth-ind__col--num" data-zh="原始值">Raw</span><span class="mth-ind__col mth-ind__col--num" data-zh="百分位">Pctl</span><span class="mth-ind__col mth-ind__col--num" data-zh="權重">Wt</span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:72%"></span><span class="mth-ind__num">47</span><span class="mth-ind__num mth-ind__num--muted">P82</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:58%"></span><span class="mth-ind__num">12</span><span class="mth-ind__num mth-ind__num--muted">P61</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:81%"></span><span class="mth-ind__num">6</span><span class="mth-ind__num mth-ind__num--muted">P94</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:64%"></span><span class="mth-ind__num">0.71</span><span class="mth-ind__num mth-ind__num--muted">P38</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__row"><span class="mth-ind__redact" style="width:76%"></span><span class="mth-ind__num">23</span><span class="mth-ind__num mth-ind__num--muted">P55</span><span class="mth-ind__redact mth-ind__redact--wt"></span></div><div class="mth-ind__more"><span class="mth-ind__more-k" data-zh="50 項中的另外 45 項，名稱與權重已遮蔽。">45 more of the 50, names and weights redacted.</span></div></div>
-              <p class="mth-panel__cap" data-zh-html data-zh="指標名稱已刻意遮蔽。重點在結構：50 項的每一項背後都是同樣這幾個數字。 <span class='mth-note'>示意數值</span>">Indicator names are redacted on purpose. The structure is the point: the same numbers sit behind every one of the 50. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="1" aria-labelledby="mth-pil-title">
-          <div class="mth-panel">
-              <svg class="mth-radar" viewBox="0 0 681 390" role="img" aria-label="How the 50 indicators distribute across the eight pillars: seven, eight, seven, five, eight, four, six and five" data-zh-aria="50 項指標在八大構面的分布：七、八、七、五、八、四、六、五">
-                <polygon class="mth-radar__ring" points="340.0,162.0 359.8,170.2 368.0,190.0 359.8,209.8 340.0,218.0 320.2,209.8 312.0,190.0 320.2,170.2"/><polygon class="mth-radar__ring" points="340.0,134.0 379.6,150.4 396.0,190.0 379.6,229.6 340.0,246.0 300.4,229.6 284.0,190.0 300.4,150.4"/><polygon class="mth-radar__ring" points="340.0,106.0 399.4,130.6 424.0,190.0 399.4,249.4 340.0,274.0 280.6,249.4 256.0,190.0 280.6,130.6"/><polygon class="mth-radar__ring" points="340.0,78.0 419.2,110.8 452.0,190.0 419.2,269.2 340.0,302.0 260.8,269.2 228.0,190.0 260.8,110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="78.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="110.8"/><line class="mth-radar__spoke" x1="340" y1="190" x2="452.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="419.2" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="340.0" y2="302.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="269.2"/><line class="mth-radar__spoke" x1="340" y1="190" x2="228.0" y2="190.0"/><line class="mth-radar__spoke" x1="340" y1="190" x2="260.8" y2="110.8"/>
-                <polygon class="mth-radar__area" points="340.0,92.0 419.2,110.8 438.0,190.0 389.5,239.5 340.0,302.0 300.4,229.6 256.0,190.0 290.5,140.5"/>
-                <circle class="mth-radar__dot" cx="340.0" cy="92.0" r="4"/><circle class="mth-radar__dot" cx="419.2" cy="110.8" r="4"/><circle class="mth-radar__dot" cx="438.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="389.5" cy="239.5" r="4"/><circle class="mth-radar__dot" cx="340.0" cy="302.0" r="4"/><circle class="mth-radar__dot" cx="300.4" cy="229.6" r="4"/><circle class="mth-radar__dot" cx="256.0" cy="190.0" r="4"/><circle class="mth-radar__dot" cx="290.5" cy="140.5" r="4"/><text class="mth-radar__lbl" x="340.0" y="50.0" text-anchor="middle" data-zh="書目計量">Citation Impact</text><text class="mth-radar__val" x="340.0" y="66.0" text-anchor="middle">P1 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="100.2" text-anchor="start" data-zh="法律強度">Legal Strength</text><text class="mth-radar__val" x="434.8" y="116.2" text-anchor="start">P2 &#183; 8</text><text class="mth-radar__lbl" x="474.0" y="195.0" text-anchor="start" data-zh="技術價值">Technical Value</text><text class="mth-radar__val" x="474.0" y="211.0" text-anchor="start">P3 &#183; 7</text><text class="mth-radar__lbl" x="434.8" y="289.8" text-anchor="start" data-zh="市場覆蓋">Market Coverage</text><text class="mth-radar__val" x="434.8" y="305.8" text-anchor="start">P4 &#183; 5</text><text class="mth-radar__lbl" x="340.0" y="341.0" text-anchor="middle" data-zh="文本品質">Text Quality</text><text class="mth-radar__val" x="340.0" y="357.0" text-anchor="middle">P5 &#183; 8</text><text class="mth-radar__lbl" x="245.2" y="289.8" text-anchor="end" data-zh="網路中心性">Network Centrality</text><text class="mth-radar__val" x="245.2" y="305.8" text-anchor="end">P6 &#183; 4</text><text class="mth-radar__lbl" x="206.0" y="195.0" text-anchor="end" data-zh="授權潛力">Licensing Potential</text><text class="mth-radar__val" x="206.0" y="211.0" text-anchor="end">P7 &#183; 6</text><text class="mth-radar__lbl" x="245.2" y="100.2" text-anchor="end" data-zh="前瞻價值">Forward-Looking Value</text><text class="mth-radar__val" x="245.2" y="116.2" text-anchor="end">P8 &#183; 5</text>
-              </svg>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="2" aria-labelledby="mth-pool-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--pool">
-                <div class="mth-field">
-                  <div class="mth-poolhero"><span class="mth-poolhero__num">1433</span>
-                    <span class="mth-poolhero__lbl" data-zh="件專利，組成參考池">patents in the reference pool</span></div>
-                  <div class="mth-field__img" role="img" aria-label="A field of 1433 marks with one highlighted, representing one patent&#39;s place in the reference pool" data-zh-aria="由 1433 個標記組成的圖示，其中一個為高亮，代表單一專利在參考池中的位置"></div>
-                </div>
-                <div class="mth-dist">
-                  <div class="mth-dist__lead"><span class="mth-dist__no">310</span><span class="mth-dist__den">/ 1433</span></div>
-                  <svg class="mth-hist" viewBox="0 0 278 168" role="img" aria-label="Where this patent sits in the pool&#39;s own distribution" data-zh-aria="此專利在專利池分布中的位置">
-                    <polygon class="mth-hist__mark" points="214.4,98.6 224.4,98.6 219.4,106.6"/>
-                    <rect class="mth-hist__bar" x="0.0" y="149.4" width="10" height="8.6" rx="2"/><rect class="mth-hist__bar" x="13.4" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="26.8" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="40.2" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="53.6" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="67.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar" x="80.4" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="93.8" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="107.2" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="120.6" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="134.0" y="30.0" width="10" height="128.0" rx="2"/><rect class="mth-hist__bar" x="147.4" y="33.4" width="10" height="124.6" rx="2"/><rect class="mth-hist__bar" x="160.8" y="43.1" width="10" height="114.9" rx="2"/><rect class="mth-hist__bar" x="174.2" y="57.7" width="10" height="100.3" rx="2"/><rect class="mth-hist__bar" x="187.6" y="75.0" width="10" height="83.0" rx="2"/><rect class="mth-hist__bar" x="201.0" y="92.9" width="10" height="65.1" rx="2"/><rect class="mth-hist__bar mth-hist__bar--hi" x="214.4" y="109.6" width="10" height="48.4" rx="2"/><rect class="mth-hist__bar" x="227.8" y="124.0" width="10" height="34.0" rx="2"/><rect class="mth-hist__bar" x="241.2" y="135.3" width="10" height="22.7" rx="2"/><rect class="mth-hist__bar" x="254.6" y="143.7" width="10" height="14.3" rx="2"/><rect class="mth-hist__bar" x="268.0" y="149.4" width="10" height="8.6" rx="2"/>
-                  </svg>
-                  <p class="mth-dist__note" data-zh="在參考池自身分布中的位置。">Position in the pool&#39;s own distribution.</p>
-                </div>
-              </div>
-              <p class="mth-panel__cap" data-zh="1433 個標記，一個標記一件專利。最後一列沒有填滿 — 這是一個確切的數量，不是概數。">One mark per patent, 1433 of them. The last row is short because that is an exact count, not a round number.</p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="3" aria-labelledby="mth-pct-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--pct">
-                <div class="mth-arc">
-                  <svg class="mth-arc__svg" viewBox="0 0 210 210" role="img" aria-label="This indicator&#39;s percentile in the pool" data-zh-aria="此指標在專利池中的百分位">
-                    <path class="mth-arc__track" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8"/>
-                    <path class="mth-arc__fill" d="M 44.2 165.8 A 86 86 0 1 1 165.8 165.8" stroke-dasharray="332 405"/>
-                  </svg>
-                  <div class="mth-arc__val">P82</div>
-                  <p class="mth-arc__cap" data-zh="池內百分位">Percentile in pool</p>
-                </div>
-                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="原始值 &#183; 前向引用">Raw value &#183; forward citations</span><span class="mth-read__v">47</span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="此指標的池內排名">Rank in pool for this indicator</span><span class="mth-read__v">258 <small>/ 1433</small></span></div></div>
-              </div>
-              <p class="mth-panel__cap" data-zh-html data-zh="排名的是位置，不是絕對值。 <span class='mth-note'>示意數值</span>">What gets ranked is the position, not the absolute value. <span class="mth-note" data-zh="示意數值">Illustrative values</span></p>
-            </div>
-        </figure>
-        <figure class="mth-stage__fig" data-step="4" aria-labelledby="mth-grade-title">
-          <div class="mth-panel">
-              <div class="mth-subj"><span class="mth-subj__no">US10148981</span><span class="mth-subj__own" data-zh="Vivid Imaging Systems">Vivid Imaging Systems</span></div>
-              <div class="mth-split mth-split--grade">
-                <div class="mth-seal">
-                  <p class="mth-seal__top">PSS 62.17</p>
-                  <p class="mth-seal__letter">A</p>
-                  <p class="mth-seal__foot" data-zh="高價值核心">High-value core</p>
-                </div>
-                <div class="mth-read"><div class="mth-read__row"><span class="mth-read__k" data-zh="池內綜合百分位">Composite percentile in pool</span><span class="mth-read__v">78.4 <small data-zh="&#183; 前 21.6%">&#183; top 21.6%</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="池內排名">Rank in pool</span><span class="mth-read__v">310 <small>/ 1433</small></span></div><div class="mth-read__row"><span class="mth-read__k" data-zh="本評級在池內的占比">This grade&#39;s share of the pool</span><span class="mth-read__v">20%</span></div></div>
-              </div>
-              <div class="mth-shares"><div class="mth-shares__z mth-shares__z--d"><span class="mth-shares__fill"></span><span class="mth-shares__l">D</span><span class="mth-shares__n">15%</span></div><div class="mth-shares__z mth-shares__z--c"><span class="mth-shares__fill"></span><span class="mth-shares__l">C</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--b"><span class="mth-shares__fill"></span><span class="mth-shares__l">B</span><span class="mth-shares__n">30%</span></div><div class="mth-shares__z mth-shares__z--a mth-shares__z--here"><span class="mth-shares__fill"></span><span class="mth-shares__l">A</span><span class="mth-shares__n">20%</span></div><div class="mth-shares__z mth-shares__z--s"><span class="mth-shares__fill"></span><span class="mth-shares__l">S</span><span class="mth-shares__n">15%</span></div></div>
-              <p class="mth-panel__cap" data-zh="區塊寬度就是該評級在池內的占比。低到高，由左至右。">Zone width is that grade&#39;s share of the pool, lowest to highest, left to right.</p>
-            </div>
-        </figure>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ── 3b · How it works — its own section now, not a panel inside the proof grid.
-       It was a --surface-accent-signal-wash card in the right column; out of the card it
-       is page content, so it takes a .section-head like every other divider on this page
-       (36/600 heading, 44ch dek) instead of the 17px in-panel heading it used to carry.
-       The three-across phase row itself is unchanged.
-
-       The two-stage payment is carried by the chips (10% / 90%) in the first and last
-       phase — the retired timeline said it with accented nodes; don't quietly drop them. -->
-  <section class="section" aria-labelledby="process-heading">
-    <div class="container">
-
-      <header class="section-head">
-        <div>
-          <h2 id="process-heading" class="h-section" data-reveal data-zh="如何進行。">How it works.</h2>
-          <p class="section-dek" data-reveal data-zh-html data-zh="三個步驟。付訂金啟動，<br>尾款在您下載時才付。">Three steps. A deposit starts the work,<br>and the balance is due only when you download.</p>
-        </div>
-      </header>
-
-      <div class="sig-phases">
-        <ol class="sig-phases__list" role="list" aria-labelledby="process-heading">
-
-              <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="送件" id="submit">Submit</h3>
-                <p class="sig-phase__title">
-                  <span data-zh="選報告，上傳資料">Pick a report, add your input</span>
-                  <span class="sig-phase__chip" data-zh="訂金">Deposit</span>
-                </p>
-                <p class="sig-phase__desc" data-zh="專利號、申請中草稿，或一段想法的描述。刷卡付訂金即啟動作業，格式錯誤或查無資料會提前擋下。您會收到一封含登錄碼的確認信。">A patent number, a pending draft, or a description of the idea. A card deposit starts the work, and bad input is caught before it. You get a confirmation email carrying a registration code.</p>
-              </li>
-
-              <!-- Innovue removed from this description: it was the third credit in one
-                   section, against brand-voice §7. The corner credit on the ledger is
-                   the section's single attribution now. -->
-              <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="產出" id="produce">Produce</h3>
-                <p class="sig-phase__title">
-                  <span data-zh="TIS 人工 + AI 產出報告">TIS produces your report</span>
-                </p>
-                <p class="sig-phase__desc" data-zh="跑 PSS 或向量比對，再由 AI 協作撰寫。以小時 / 日計，不是以週計。完成後 email 通知您，報告本身留在頁面上。">We run the scoring or the match, then write it up with AI. Hours to days, not weeks. We email you when it is ready; the report itself stays on the site.</p>
-              </li>
-
-              <li class="sig-phase" data-reveal>
-                <h3 class="sig-phase__name" data-zh="取件" id="retrieve-2">Retrieve</h3>
-                <p class="sig-phase__title">
-                  <span data-zh="驗證、預覽，再下載">Verify, preview, then download</span>
-                  <span class="sig-phase__chip" data-zh="尾款">Balance</span>
-                </p>
-                <p class="sig-phase__desc" data-zh="以信箱加登錄碼免費預覽各章節將涵蓋的內容全貌，而非摘錄。付尾款後下載含浮水印 PDF，日後憑同一組憑證永久取回。">Your email and code open a free outline of what every chapter covers, not excerpts. Settle the balance to download the watermarked PDF, retrievable forever with the same credentials.</p>
-              </li>
-
-            </ol>
-
-            <!-- The human + AI trade-off, retired from the image card it used to caption.
-                 It argues about how the report is produced, so it closes the sequence that
-                 produces it. CTA copy is byte-identical to the hero's primary CTA. -->
-            <div class="sig-phases__foot">
-              <p class="sig-phases__trade" data-zh-html data-zh="報告由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。這是刻意的取捨：<br>投入實際作業時間，換來黑箱工具達不到的準度，並且仍遠快於傳統顧問的 1–4 週。">Reports are produced by <strong>TIS analysts working with AI</strong>, not an automated pipeline. That is a deliberate trade:<br>real working time buys precision a black-box tool cannot reach, and it still lands far faster than the 1–4 weeks of a traditional consultant.</p>
-              <a href="#contact" class="btn btn-primary" data-zh="開放訂購時通知我">Get notified when orders open</a>
-            </div>
-      </div>
+      <div class="fd-head psg-how__head"><h2 class="fd-h2" id="process-heading" data-zh="如何進行。">How it works.</h2><div class="psg-how__dek"><p data-zh-html data-zh="每一件都依個案處理，由 <strong>TIS 人工 + AI</strong> 產出，而非自動化流程。">Every request is handled case by case, by <strong>TIS analysts working with AI</strong>, not an automated pipeline.</p><p data-zh="填表後，我們會與您聯繫。">Fill out the form and we get back to you.</p></div></div>
+      <ol class="psg-steps" role="list"><li class="psg-steps__i"><h3 class="psg-steps__t" id="submit" data-zh="送件">Send</h3><p class="psg-steps__d" data-zh="專利號、申請中草稿或一段想法描述，以及您要的報告。">A patent number, a pending draft or a description of the idea, and the report you want.</p></li><li class="psg-steps__i"><h3 class="psg-steps__t" id="quote" data-zh="報價">Scope and quote</h3><p class="psg-steps__d" data-zh="兩個工作天內回覆範疇與該案報價；如需保密協議，先簽再談。">We reply within two business days with the scope and a price for your case. NDA first if you need one.</p></li><li class="psg-steps__i"><h3 class="psg-steps__t" id="deliver" data-zh="交付">Deliver</h3><p class="psg-steps__d" data-zh="由 TIS 人工 + AI 產出，以小時 / 日計，不是以週計。憑信箱與登錄碼在本頁取件。">TIS analysts working with AI produce the report in hours to days, not weeks. Retrieve it here with your email and code.</p></li></ol>
     </div>
   </section>
 
-  <!-- ── 4 · Intake — homepage contact-card treatment, reports.jpg framed left ── -->
-  <section class="contact" id="intake" aria-labelledby="intake-heading">
+  <section class="contact" id="contact" aria-labelledby="contact-heading">
     <div class="container">
-
-      <!-- Section divider, peer to "Three reports." and the proof head above it — same
-           .section-head, so the same 36/600 step and 44ch dek without a line of CSS.
-           The card KEEPS its own h2: this names the section, that instructs the form,
-           which is how #contact works on the homepage.
-
-           aria-labelledby still points at the card's #intake-heading, not this one.
-           "Choose a report, upload your input." is the more descriptive accessible name
-           for the section, and "Get started." carries no information on its own — which
-           is also why the dek has to do the work here. -->
-      <header class="section-head">
-        <div>
-          <h2 class="h-section" data-reveal data-zh="開始吧。" id="get-started">Get started.</h2>
-          <p class="section-dek" data-reveal data-zh-html data-zh="已核准專利、申請中草稿，或僅是一個想法。<br>三種都是有效的輸入。">A granted patent, a pending draft, or just an idea.<br>All three are valid inputs.</p>
+      <div class="psg-rt" id="retrieve" aria-labelledby="retrieve-heading" role="region">
+        <div class="psg-rt__head">
+          <h2 id="retrieve-heading" data-zh="已委託？憑登錄碼取件。">Already ordered? Retrieve your report.</h2>
+          <p class="contact-lead" data-zh="登錄碼附在確認委託的信中。輸入信箱與登錄碼，即可查進度、預覽或下載。">Your registration code comes in the email that confirms your order. Enter it with your email to check status, preview or download.</p>
         </div>
-      </header>
-
-      <div class="contact-card contact-card--sig-intake">
-
-        <aside class="contact-overlay">
-          <div class="contact-overlay-top">
-            <h2 id="intake-heading" data-zh-html data-zh="選報告類型，<br>上傳資料。">Choose a report,<br>upload your input.</h2>
-            <!-- The lead used to restate the whole 10% / 90% / registration-code flow.
-                 The how-it-works panel above and the email note below both already carry
-                 it, so it says what comes back instead — the one thing neither does. -->
-            <p class="contact-lead" data-zh="一份逐項可追溯的強度報告，或它所處的競爭地景，由人工 + AI 產出。">A strength report you can trace line by line, or the competitive landscape the patent lands in, produced by people working with AI.</p>
-          </div>
-          <!-- Same dl the homepage card carries under "Get in touch.", one item instead
-               of two: the only thing worth stating at the foot is what leaves your card
-               today. The rest of the payment flow is below the fold of this column. -->
-          <!-- One block, not two. "Pay today / 10% deposit" and "Amount due / $150" were
-               two pairs saying one thing, and the percentage was the loud half while the
-               figure — the number that actually leaves the card — was set at label size.
-               Folded into a single item whose label carries the terms and whose value is
-               the amount, at the same scale as the price on the report cards.
-               Filled by the gate script at the foot of the page. data-zh-html, because
-               the filled state carries a unit <span>; the script writes data-zh beside
-               the visible text so a later language swap still resolves. -->
-        </aside>
-
-        <dl class="contact-overlay-meta">
-          <div class="contact-meta contact-meta--wide">
-            <dt data-zh="價格">Price</dt>
-            <dd id="intake-deposit" data-zh="價格請洽詢">Pricing on request</dd>
-          </div>
-          <!-- Seller identity. Published here rather than in the footer because this is
-               the only page that sells and the only one with no contact panel, and a
-               payment gateway checking a priced product wants the seller named beside
-               the price. It joins the SAME dl as the amount on purpose: the two are one
-               pair of transaction facts — what you pay, and who you are paying — and the
-               dl already carries .contact-overlay-meta::before, the plinth that holds
-               contrast over the bright arm of reports.jpg. A sibling below the dl would
-               sit outside that scrim.
-               The full legal name, not the shorthand: a gateway matches the name it is
-               shown against the UBN's registration. See visual-guide.md §Name Usage,
-               which was widened for exactly this surface. -->
-          <div class="contact-meta contact-meta--wide sig-seller">
-            <dt class="sr-only" data-zh="銷售方">Sold by</dt>
-            <dd>
-              <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies MRO Global Inc.</span>
-              <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
-              <span><span data-zh="統一編號">UBN</span> 60331107</span>
-            </dd>
-          </div>
-        </dl>
-
-        <div class="contact-panel">
-          <!-- 2026-09-30 hold: orders are closed. The form stays in the markup for when
-               ordering reopens, but it is inert (no focus, no clicks, out of the a11y
-               tree) and every control carries `disabled`; this notice says why. To reopen:
-               remove this notice, `inert` and the `disabled` attributes, and restore the
-               submit label. -->
-          <p class="lgl-notice" id="intake-hold" role="note" data-zh-html data-zh="<strong>訂購即將開放。</strong>請在<a href='#contact'>聯絡表單</a>留下電子郵件，開放時我們會通知您。"><strong>Orders open soon.</strong> Leave your email in the <a href="#contact">contact form</a> and we'll tell you when they do.</p>
-          <form class="contact-form" id="intake-form" novalidate inert aria-disabled="true">
-
-            <!-- Input type — a segmented track rather than pills, because it is a mode
-                 switch: exactly one of the three inputs below renders, and this is which.
-                 Labelled "Patent status" (team review 2026-10-06; was "Your input type").
-                 Defaults to `granted`, the only type that leaves both reports open,
-                 so the form opens unrestricted and on its most common case. -->
-            <fieldset class="contact-topics">
-              <legend data-zh="專利狀態">Patent status</legend>
-              <div class="sig-seg">
-                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="granted" checked /><span data-zh="已核准 / 已公開">Granted / published</span></label>
-                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="pending" /><span data-zh="申請中草稿">Pending draft</span></label>
-                <label class="sig-seg__opt"><input disabled type="radio" name="input-type" value="idea" /><span data-zh="純想法">Just an idea</span></label>
-              </div>
-            </fieldset>
-
-            <!-- Report choice is gated by the input type above (PRD v0.7 F-ROUTE /
-                 §8.2.1): a full PSS ranking needs a published patent's citation,
-                 family and legal record, so a pending draft or a bare idea can only
-                 take Survey. The note carries the rule in copy — it is the
-                 contract; the disabling below is the convenience. It appears only when
-                 the rule actually bites, so the default state pays nothing for it. -->
-            <fieldset class="contact-topics" aria-describedby="intake-gate-note">
-              <legend data-zh="報告類型">Report</legend>
-              <div class="topic-chips">
-                <label class="topic-chip"><input disabled type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深報告">Study Report</span></label>
-                <label class="topic-chip"><input disabled type="radio" name="report" value="b-advanced" /><span data-zh="廣角報告">Survey Report</span></label>
-              </div>
-              <p class="sig-callout" id="intake-gate-note" hidden data-zh="景深報告需要已公開專利；草稿或想法請選廣角報告。">Study needs a published patent. A draft or an idea takes Survey.</p>
-            </fieldset>
-
-            <!-- One input per type (PRD v0.7 §8.2.1 + build handoff §2): a patent number
-                 for a granted or published patent, the PDF for a pending draft, free text
-                 for an idea. It sits after the report choice so the two selections read as
-                 one block — pick what you have, pick what you want — and data entry starts
-                 only once both are settled, which is also the heading's order. All three
-                 ship in the markup; the script at the foot of the page hides the two the
-                 chosen type doesn't call for. With JS off all three stay reachable and
-                 labelled — the same no-JS stance the report gating takes. -->
-            <div class="field" data-input-for="granted">
-              <label for="intake-input" data-zh="專利號">Patent number</label>
-              <input disabled id="intake-input" name="input" type="text" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
-            </div>
-            <div class="field" data-input-for="pending">
-              <label for="intake-file" data-zh="上傳草稿 / 說明書（PDF）">Upload the draft or specification (PDF)</label>
-              <input disabled id="intake-file" name="file" type="file" accept="application/pdf" />
-            </div>
-            <div class="field" data-input-for="idea">
-              <label for="intake-desc" data-zh="描述您的技術想法">Describe your technical idea</label>
-              <textarea disabled id="intake-desc" name="desc" rows="3" data-zh-placeholder="描述您的技術想法…" placeholder="Describe your technical idea…"></textarea>
-            </div>
-
-            <div class="field">
-              <label for="intake-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-              <input disabled id="intake-email" name="email" type="email" placeholder="name@company.com" />
-              <p class="sig-callout" data-zh-html data-zh="用於寄送確認信與完成通知；<strong>報告不會寄到此信箱</strong>。">Used for your confirmation email and completion notice. <strong>The report is not emailed here.</strong></p>
-            </div>
-
-            <!-- 備註, the last field on the build handoff's §2 table that wasn't built.
-                 Optional, and deliberately last: this is a concierge flow, so the thing
-                 the fixed fields can't capture — a deadline, a deal stage, what the
-                 report is feeding — is worth somewhere to land. It is also the field
-                 that flexes (see .sig-notes above); rows="2" is only the no-flex floor. -->
-            <div class="field sig-notes">
-              <label for="intake-notes" data-zh="備註（選填）">Notes (optional)</label>
-              <textarea disabled id="intake-notes" name="notes" rows="2" data-zh-placeholder="時程、決策背景，或任何我們該知道的事…" placeholder="Timing, the decision this feeds, anything we should know…"></textarea>
-            </div>
-
-            <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" disabled data-zh="即將開放訂購">Orders open soon</button>
-            </div>
-          </form>
-
-          <div class="contact-success" id="intake-success" role="status" aria-live="polite">
-            <span class="check-pill" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-            </span>
-            <div>
-              <h3 data-zh="已送出。">Submitted.</h3>
-              <p data-zh="您會收到含登錄碼的確認信。">You'll receive a confirmation email with your registration code.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── 5 · Retrieve — one centred column; the result opens inside the card ──────
-       This is the return visit: the customer already paid the deposit, has the
-       confirmation email open, and wants status / preview / download. So the card
-       leads with one action (email + code + Look up on a line) and keeps the rest of
-       its height in reserve for whatever comes back. ─────────────────────────────── -->
-  <section class="contact" id="retrieve" aria-labelledby="retrieve-heading">
-    <div class="container">
-      <div class="contact-card contact-card--sig-retrieve">
-
-        <div class="sig-rt__head">
-          <h2 id="retrieve-heading" data-zh-html data-zh="憑信箱 +<br>登錄碼取件。">Retrieve with your email + registration code.</h2>
-          <p class="contact-lead" data-zh="點確認信中的連結，或輸入登錄碼，即可驗證身分、查進度、預覽或下載。">Follow the link in your confirmation email or enter your registration code to verify, check status, preview, or download.</p>
-          <p class="lgl-notice" id="retrieve-hold" role="note" data-zh="取件會在訂購開放後啟用。">Retrieval opens when orders do.</p>
-        </div>
-
-        <div class="contact-panel">
-          <form class="contact-form" id="retrieve-form" novalidate inert aria-disabled="true" aria-describedby="retrieve-hold">
+        <div class="contact-panel psg-rt__panel"><form class="contact-form" id="retrieve-form" novalidate>
             <div class="sig-lookup">
               <div class="field">
                 <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-                <input disabled id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
+                <input id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
               </div>
               <div class="field">
                 <label for="retrieve-code" data-zh="登錄碼">Registration code</label>
-                <input disabled id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
+                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
               </div>
-              <button disabled type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
             </div>
-          </form>
-        </div>
-
-        <!-- The sample codes used to print here. Pulled from the page 2026-08-13, kept
-             here because they are still the only way to exercise the F-STATUS outcomes
-             on a site with no backend. One per report tier, plus one still in production:
-               complete        R4TX-8HJW-2N   → SIG-B-20260805-001,  Study
-               complete        M9VD-3KPY-7B   → SIG-BX-20260810-004, Survey
-               in production   H3WN-6QFT-8C   → SIG-B-20260817-001,  Study
-             Any email; the match is case-insensitive and ignores spaces and hyphens.
-             Their vertical space is held by .contact-panel's margin-bottom below, so
-             removing them did not resize the card. -->
-
-        <!-- §8.8.0b AC-2: a mismatch must not say WHICH half was wrong (防猜). -->
+          </form></div>
         <p class="sig-rt__error" id="retrieve-error" role="alert" hidden data-zh="查無相符的紀錄。請對照確認信再確認一次。">No matching record. Check both against your confirmation email.</p>
-
         <div class="sig-rt__reveal" id="retrieve-reveal" data-open="false">
           <div>
             <div class="sig-rt__panel" role="status" aria-live="polite">
@@ -1987,7 +1014,7 @@
               <ol class="sig-status" id="rt-status">
                 <li data-state="done">
                   <span class="sig-status__name" data-zh="已收件">Received</span>
-                  <span class="sig-status__note" data-zh="訂金已付，作業啟動">Deposit paid, work started</span>
+                  <span class="sig-status__note" data-zh="已確認報價，作業啟動">Quote accepted, work started</span>
                 </li>
                 <li data-state="done">
                   <span class="sig-status__name" data-zh="處理中">In production</span>
@@ -1995,39 +1022,23 @@
                 </li>
                 <li data-state="done">
                   <span class="sig-status__name" data-zh="已完成">Complete</span>
-                  <span class="sig-status__note" data-zh="可預覽大綱，付尾款下載">Preview free, pay to download</span>
+                  <span class="sig-status__note" data-zh="可免費預覽，付清後下載">Preview free, download once settled</span>
                 </li>
               </ol>
-
-              <!-- Everything below is gated on 完成 (§8.8.0b AC-3) — an in-production
-                   order gets the status track and nothing else. -->
               <div id="rt-done">
                 <div class="sig-rt__preview">
                   <div>
                     <div class="sig-rt__page">
                       <span class="sig-rt__lock">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-                        <span data-zh="付清尾款後開放">Opens once the balance is paid</span>
+                        <span data-zh="付清款項後開放">Opens once the invoice is settled</span>
                       </span>
                       <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 273px, (max-width: 1100px) 273px, 273px"><img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" ></picture>
                     </div>
                     <p class="sig-rt__pagemeta" id="rt-pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
                   </div>
-
-                  <!-- One outline per tier, all three in the markup rather than injected.
-                       site.js collects its i18n elements ONCE at init, so anything added
-                       later is invisible to the language switcher — a built list would
-                       render correctly and then refuse to translate. Static markup keeps
-                       every string on the normal data-zh path; the JS only flips `hidden`.
-                       Tiers map to the order number's TIER field (PRD §8.8.0c): A / B / BX. -->
                   <div class="sig-rt__outline">
                     <h4 data-zh="報告涵蓋範圍（免費預覽）">What the report covers — free preview</h4>
-
-                    <!-- BX · Survey. Carries NO grade, PSS, pool rank or percentile: it takes
-                         drafts and ideas, which cannot be scored (documents/survey-sample-spec.md).
-                         Item 1 is page 1 of its render; items 2–4 are the three sections in that
-                         page's printed contents. If one changes, change both or the free
-                         preview stops describing the thing it previews. -->
                     <ol class="sig-rt__chapters" data-tier="BX" hidden>
                       <li>
                         <span data-zh="最相近的十件與比對原因">The ten closest, and why</span>
@@ -2046,8 +1057,6 @@
                         <span class="sig-rt__chnote" data-zh="比對結果如何取得；屬技術比較，非法律意見">How matches are retrieved; a technical comparison, not a legal opinion</span>
                       </li>
                     </ol>
-
-                    <!-- B · Study. Chapter names are PRD §8.6.1 F-06 verbatim, not paraphrased. -->
                     <ol class="sig-rt__chapters" data-tier="B">
                       <li>
                         <span data-zh="專利基本資料">Patent facts &amp; family</span>
@@ -2079,7 +1088,7 @@
                       </li>
                     </ol>
                     <div class="sig-rt__pay">
-                      <button disabled type="button" class="btn btn-primary btn-lg" data-zh="付尾款 → 下載完整報告">Pay the balance → download</button>
+                      <button type="button" class="btn btn-primary btn-lg" data-zh="下載完整報告">Download the full report</button>
                     </div>
                   </div>
                 </div>
@@ -2088,60 +1097,66 @@
             </div>
           </div>
         </div>
-
       </div>
-    </div>
-  </section>
-
-  <!-- ── 6 · Contact — the page ends in the form, like every page (team review 2026-10-06). ── -->
-  <section class="contact" id="contact" aria-labelledby="contact-heading">
-    <div class="container">
-      <div class="contact-card contact-card--venture">
-
+      <div class="contact-card contact-card--venture" id="intake">
         <aside class="contact-overlay">
-          <div class="contact-overlay-top">
-            <h2 id="contact-heading" data-zh="開放訂購時通知我。">Get notified when orders open.</h2>
-            <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您需要評級的內容。可簽署保密協議。">From one patent to a whole portfolio, tell us what you need graded. NDA available.</p>
-          </div>
+          <div class="contact-overlay-top"><h2 id="contact-heading" data-zh="委託報告。">Request a report.</h2><p class="contact-lead" data-zh="從一件專利到整個專利組合：告訴我們您手上有什麼、需要哪一種報告，我們依個案報價。可簽署保密協議。">One patent or a whole portfolio: tell us what you have and which report you need, and we quote the case. NDA available.</p></div>
         </aside>
-
-        <!-- DOM order IS the visual order, so the screen-reader pass matches the
-             page: two full-width rows, then Email and the UBN paired on the last.
-             Office hours and the address are single long strings that break badly in
-             a half-width column, so each takes a row of its own (.contact-meta--wide).
-             Email and the UBN are both short, so they share one.
-             The address and UBN are published for payment-gateway verification — the
-             site named neither a street address nor an entity number before this. The
-             UBN is language-neutral digits, so only its <dt> carries data-zh. -->
         <dl class="contact-overlay-meta">
           <div class="contact-meta contact-meta--wide">
-            <dt data-zh="服務時間">Office hours</dt>
-            <dd data-zh="台北 (UTC+8) · 週一至週五 09:00–18:00">Taipei (UTC+8) · Mon–Fri 09:00–18:00</dd>
+            <dt data-zh="價格">Price</dt>
+            <dd data-zh="依個案報價">Quoted per case</dd>
           </div>
-          <div class="contact-meta contact-meta--wide">
-            <dt data-zh="地址">Address</dt>
-            <dd data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</dd>
-          </div>
-          <div class="contact-meta">
-            <dt data-zh="電子郵件">Email</dt>
-            <dd><a href="mailto:contact@tisglobalinc.com">contact@tisglobalinc.com</a></dd>
-          </div>
-          <div class="contact-meta">
-            <dt data-zh="統一編號">UBN</dt>
-            <dd class="contact-meta__num">60331107</dd>
+          <div class="contact-meta contact-meta--wide sig-seller">
+            <dt class="sr-only" data-zh="銷售方">Sold by</dt>
+            <dd>
+              <span class="sig-seller__name" data-zh="泰然策略解密股份有限公司">Talent Intelligence Strategies MRO Global Inc.</span>
+              <span data-zh="100 台北市中正區青島東路4之8號">No. 4-8, Qingdao E. Rd., Zhongzheng Dist., Taipei City 100, Taiwan</span>
+              <span><span data-zh="統一編號">UBN</span> 60331107</span>
+            </dd>
           </div>
         </dl>
-
         <div class="contact-panel">
-          <form class="contact-form" id="contact-form" data-source="patent-strength-grading" novalidate>
+          <form class="contact-form psg-form" id="contact-form" data-source="patent-strength-grading" novalidate>
+            <input type="hidden" name="topic" value="insights" />
+            <fieldset class="contact-topics">
+              <legend data-zh="專利狀態">Patent status</legend>
+              <div class="sig-seg">
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="granted" checked /><span data-zh="已核准 / 已公開">Granted / published</span></label>
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="pending" /><span data-zh="申請中草稿">Pending draft</span></label>
+                <label class="sig-seg__opt"><input type="radio" name="input-type" value="idea" /><span data-zh="純想法">Just an idea</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="contact-topics" aria-describedby="intake-gate-note">
+              <legend data-zh="報告類型">Report</legend>
+              <div class="topic-chips">
+                <label class="topic-chip"><input type="radio" name="report" value="b-long" data-requires="granted" /><span data-zh="景深報告">Study Report</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="b-advanced" /><span data-zh="廣角報告">Survey Report</span></label>
+                <label class="topic-chip"><input type="radio" name="report" value="unsure" checked /><span data-zh="尚未決定">Not sure yet</span></label>
+              </div>
+              <p class="sig-callout" id="intake-gate-note" hidden data-zh="景深報告需要已公開專利；草稿或想法請選廣角報告。">Study needs a published patent. A draft or an idea takes Survey.</p>
+            </fieldset>
+            <div class="field" data-input-for="granted">
+              <label for="intake-input" data-zh="專利號">Patent number</label>
+              <input id="intake-input" name="patent" type="text" spellcheck="false" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
+            </div>
+            <div class="field" data-input-for="pending" hidden>
+              <label for="intake-app" data-zh="申請號（如已提出）">Application number, if filed</label>
+              <input id="intake-app" name="application" type="text" spellcheck="false" data-zh-placeholder="如 TW 113104567" placeholder="e.g. TW 113104567" />
+              <p class="field-hint" data-zh="簽署保密協議後，我們再向您索取草稿。">We ask for the draft once an NDA is in place.</p>
+            </div>
+            <div class="field" data-input-for="idea" hidden>
+              <label for="intake-desc" data-zh="描述您的技術想法">Describe your technical idea</label>
+              <textarea id="intake-desc" name="idea" rows="3" data-zh-placeholder="一兩段即可，不必含技術細節…" placeholder="A paragraph or two is enough, no technical detail needed…"></textarea>
+            </div>
             <div class="contact-row">
               <div class="field">
                 <label for="contact-name"><span data-zh="姓名">Full name</span><span class="field-req" aria-hidden="true"> *</span></label>
                 <input id="contact-name" name="name" type="text" aria-required="true" autocomplete="name" placeholder="e.g. Alexander Chen" data-zh-placeholder="例如：陳建宏" />
               </div>
               <div class="field">
-                <label for="contact-title" data-zh="職稱">Job title</label>
-                <input id="contact-title" name="title" type="text" autocomplete="organization-title" placeholder="e.g. VP, Legal" data-zh-placeholder="例如：法務副總" />
+                <label for="contact-org" data-zh="機構">Organisation</label>
+                <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
               </div>
             </div>
             <div class="contact-row">
@@ -2155,46 +1170,29 @@
               </div>
             </div>
             <div class="field">
-              <label for="contact-org" data-zh="機構">Organisation</label>
-              <input id="contact-org" name="org" type="text" autocomplete="organization" placeholder="Company" data-zh-placeholder="公司名稱" />
-            </div>
-
-            <fieldset class="contact-topics">
-              <legend data-zh="主題">Topic</legend>
-              <div class="topic-chips">
-                <label class="topic-chip"><input type="radio" name="topic" value="sustain" /><span data-zh="維護">Sustain</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="protect" /><span data-zh="防護">Protect</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="license" /><span data-zh="授權">License</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="insights" checked /><span data-zh="洞察">Insights</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="media" /><span data-zh="媒體採訪">Media</span></label>
-                <label class="topic-chip"><input type="radio" name="topic" value="other" /><span data-zh="其他">Other</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field">
               <label for="contact-message"><span data-zh="您的需求">What you need</span><span class="field-req" aria-hidden="true"> *</span></label>
-              <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述您的需求…"></textarea>
+              <textarea id="contact-message" name="message" rows="3" aria-required="true" aria-describedby="contact-message-hint" placeholder="Timing, the decision this feeds, anything we should know…" data-zh-placeholder="時程、決策背景，或任何我們該知道的事…"></textarea>
               <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
             </div>
+            <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出委託">Send request</button>
             </div>
           </form>
-
           <div class="contact-success" id="contact-success" role="status" aria-live="polite">
             <span class="check-pill" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
             </span>
             <div>
-              <h3 data-zh="訊息已送出。">Message sent.</h3>
-              <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
+              <h3 data-zh="委託已送出。">Request sent.</h3>
+              <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆範疇與報價。">We reply by email within two business days with the scope and a quote.</p>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
+</div>
 
   <!-- ── Report sample overlay — FLIP-morph panels opened by the report cards ── -->
   <div class="sig-xoverlay" id="sig-xoverlay" data-open="false">
@@ -2213,7 +1211,7 @@
               <p class="sig-xpanel__lede" data-zh="完整報告：專利基本資料、八大支柱、50 項指標、強弱項，與授權策略建議。">The full report: patent facts, the eight pillars, all 50 indicators, strengths and risks, and licensing-strategy guidance.</p>
             </div>
             <div class="sig-xbanner__buy">
-              <span class="sig-xcard__kind" data-zh="價格請洽詢">Pricing on request</span>
+              <span class="sig-xcard__kind" data-zh="依個案報價">Quoted per case</span>
               <button type="button" class="btn btn-primary sig-xcta" data-report="b-long" data-zh="選擇此報告">Choose this report</button>
             </div>
           </div>
@@ -2259,7 +1257,7 @@
               <p class="sig-xpanel__lede" data-zh="與您的輸入最相近的十件專利，各附相似度分數與比對原因。已核准專利、草稿，甚至只是一個想法都能輸入。廣角描繪的是整個場域，不為您的專利評級。">The ten patents closest to your input, each with a similarity score and a read on why it matches. Works from a granted patent, a draft, or just an idea. Survey maps the field; it doesn't grade your patent.</p>
             </div>
             <div class="sig-xbanner__buy">
-              <span class="sig-xcard__kind" data-zh="價格請洽詢">Pricing on request</span>
+              <span class="sig-xcard__kind" data-zh="依個案報價">Quoted per case</span>
               <button type="button" class="btn btn-primary sig-xcta" data-report="b-advanced" data-zh="選擇此報告">Choose this report</button>
             </div>
           </div>
@@ -2376,76 +1374,37 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=32" defer></script>
+<script src="/assets/build/site.js?v=37" defer></script>
 
-<!-- Intake routing — PRD v0.7 F-ROUTE / §8.2.1 AC-6. The input type drives two things.
-
-     (1) Which input renders. The type already answers "patent number, PDF, or free
-     text?", so asking all three at once asked the user to answer it twice — once in
-     the chips, once by picking a field. Only the matching one stays.
-
-     (2) Which reports are offered. A full PSS ranking needs a published patent's
-     citation, family and legal record, so Study (marked
-     data-requires="granted") is offered only for a granted / published patent;
-     pending drafts and bare ideas leave Survey. The radio values
-     (a-short / b-long / b-advanced) intentionally keep the PRD's A / B / BX tier
-     codes and outlive every renaming of the visible labels — this is the third set.
-
-     Progressive enhancement: with no JS, all three inputs stay visible and every
-     report stays selectable, so nothing is unreachable — an invalid pair is then
-     rejected server-side. With JS on the invalid reports are disabled, announced as
-     such, and #intake-gate-note states the rule in copy (it is the fieldset's
-     aria-describedby). -->
+<!-- Request form routing (PRD v0.7 F-ROUTE / §8.2.1). The patent status picks which input
+     shows and gates the report: a full PSS ranking needs a published patent's citation,
+     family and legal record, so a pending draft or a bare idea can only take Survey. The
+     rule is stated in copy (#intake-gate-note, the fieldset's aria-describedby); disabling
+     Study is the convenience. A gated choice falls back to "Not sure yet" rather than to
+     nothing. Without JS all three inputs stay visible and labelled, and every report stays
+     selectable; the request is read by a person either way. -->
 <script>
   (() => {
-    const form = document.getElementById('intake-form');
+    const form = document.getElementById('contact-form');
     if (!form) return;
-
-    // Orders are not open, and nothing on this form is wired to an endpoint. Without
-    // this guard the form's native GET would reload the page with the patent number,
-    // the unfiled-idea description, the notes and the email in the query string —
-    // browser history and host request logs. That is the opposite of what
-    // legal/privacy §What we collect promises about this material, so the submit is
-    // inert until there is somewhere for it to go.
-    form.addEventListener('submit', (e) => { e.preventDefault(); });
-
-    const inputTypes = [...form.querySelectorAll('input[name="input-type"]')];
+    const types = [...form.querySelectorAll('input[name="input-type"]')];
     const gated = [...form.querySelectorAll('input[name="report"][data-requires="granted"]')];
-    const fields = [...form.querySelectorAll('.field[data-input-for]')];
+    const unsure = form.querySelector('input[name="report"][value="unsure"]');
+    const fields = [...form.querySelectorAll('[data-input-for]')];
     const note = form.querySelector('#intake-gate-note');
-    if (!inputTypes.length) return;
-
-    // The deposit figure that used to live here is gone: prices are withheld while
-    // orders are on hold (2026-09-30), and #intake-deposit is static copy now.
-    const reports = [...form.querySelectorAll('input[name="report"]')];
-    // On hold the form is inert and every control is disabled in the markup; the gate
-    // below must not re-enable the two gated reports.
-    const held = form.hasAttribute('inert');
-
+    if (!types.length) return;
     const sync = () => {
-      const chosen = inputTypes.find(r => r.checked);
-      // Markup checks `granted`, so `chosen` is only ever null if that attribute is
-      // dropped; fall back to it rather than opening in a restricted state.
-      const type = chosen ? chosen.value : 'granted';
+      const type = (types.find(r => r.checked) || {}).value || 'granted';
       const allow = type === 'granted';
-
-      // `hidden` rather than a class, so the label and its control leave the a11y
-      // tree together and the two inactive inputs stop taking tab stops.
-      fields.forEach(field => { field.hidden = field.dataset.inputFor !== type; });
-
-      gated.forEach(radio => {
-        radio.disabled = held || !allow;
-        // A checked-then-disabled radio still submits its value in some engines, and
-        // would in any case leave an impossible pairing visibly selected. Clear it.
-        if (!allow && radio.checked) radio.checked = false;
+      // `hidden`, so the label and its control leave the a11y tree and the tab order together.
+      fields.forEach(f => { f.hidden = f.dataset.inputFor !== type; });
+      gated.forEach(r => {
+        r.disabled = !allow;
+        if (!allow && r.checked) { r.checked = false; if (unsure) unsure.checked = true; }
       });
-
       if (note) note.hidden = allow;
-
     };
-
-    inputTypes.forEach(radio => radio.addEventListener('change', sync));
-    reports.forEach(radio => radio.addEventListener('change', sync));
+    types.forEach(r => r.addEventListener('change', sync));
     sync();
   })();
 </script>
@@ -2492,8 +1451,8 @@
         order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 2, done: true, tier: 'BX',
         kind: { en: 'Survey', zh: '廣角' }
       },
-      // Still mid-production: the state a customer meets right after paying the deposit.
-      // AC-1 gives status only — no outline, no preview, no balance CTA.
+      // Still mid-production: the state a customer meets once the quote is accepted and work has started.
+      // AC-1 gives status only — no outline, no preview, no download.
       'H3WN6QFT8C': {
         order: 'SIG-B-20260817-001', date: '2026-08-17', step: 1, done: false, tier: 'B',
         kind: { en: 'Study', zh: '景深' }
