@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-11 23:01 +08:00** · Innovue images: License portfolio frame shows the UAV parts still life, Ecosystem Innovue frame a daylit server aisle; Sustain band, About Why Taiwan frame and Why Taiwan hero show Taiwan at night from orbit; About hero shows a program review; Why Taiwan demand band shows a parts line; full-width bands keep the subject crop up to 1100px.
 - **2026-10-11 10:42 +08:00** · Home hero: copy centred left, 7s desktop autoplay with pause, realigned partner strip, separation note removed, 21×.
 - **2026-10-11 08:51 +08:00** · Inner-page hero rebuilt as ground and band: smaller headline, hairline rail, photo band below, visible placeholders; Home untouched.
 - **2026-10-11 08:16 +08:00** · Home KV slide 3: kicker restored and headline shortened to one line of claims (pending team sign-off).

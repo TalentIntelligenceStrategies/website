@@ -108,6 +108,14 @@ const namedVariants = () => {
 };
 const named = namedVariants();
 const all = walk(SRC);
+/* A source whose variant is named somewhere is in use even if nothing names the source
+   itself: the mega-menu cards load `<stem>-800.webp` only. Without this, retiring the
+   last <img src> of a source pruned the variants the menu still loads (hero-800.webp,
+   2026-10-11). */
+for (const p of all) {
+  const stem = join(dirname(p), basename(p, extname(p)));
+  for (const f of named) if (f.startsWith(stem + '-') && /^-\d+\.webp$/.test(f.slice(stem.length))) { inUse.add(p); break; }
+}
 const sources = all.filter((p) => inUse.has(p));
 const skippedOrphans = all.length - sources.length;
 
