@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=46">
+<link rel="stylesheet" href="/assets/build/styles.css?v=56">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -115,7 +115,7 @@
         <button type="button" class="topnav-link nav-trigger" id="nav-t-license" aria-expanded="false" aria-controls="mega-license"><span data-zh="授權">License</span></button>
         <div class="mega-panel" id="mega-license" role="region" aria-labelledby="nav-t-license">
           <div class="mega-main">
-            <a class="mega-hero" href="/license/"><img class="mega-hero__img" data-src="/assets/imagery/uv/license-800.webp" alt="" width="800" height="1156" decoding="async" style="object-position:50% 30%"><span class="mega-hero__t"><span data-zh="授權">License</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="靈活的授權安排，加速在地市場與合作。">Flexible licensing that speeds up local market entry and partnerships.</span></a>
+            <a class="mega-hero" href="/license/"><img class="mega-hero__img" data-src="/assets/imagery/uv/license-800.webp" alt="" width="800" height="1156" decoding="async" style="object-position:50% 30%"><span class="mega-hero__t"><span data-zh="授權">License</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="讓您的專利帶來收入，也協助您取得在台灣需要的授權。">Make your patents earn, and secure the licences you need in Taiwan with us.</span></a>
             <ul class="mega-list">
               <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
@@ -409,16 +409,15 @@
        ╚═════════════════════════════════════════════════════════════════════╝ -->
   <div class="ab">
   <section class="fd-hero" aria-labelledby="page-title">
-    <div class="fd-ph fd-ph--img " aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/protect-design-room-400.webp 400w, /assets/imagery/uv/protect-design-room-800.webp 800w, /assets/imagery/uv/protect-design-room-1200.webp 1200w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/protect-design-room.jpg" alt="" width="1200" height="896" fetchpriority="high" decoding="async"></picture></div>
-    <div class="container fd-hero__inner">
-      <div><p class="crumb crumb--on-dark"><a href="/" data-zh="首頁">Home</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="洞察">Insights</span></p></div>
-      <div class="fd-hero__body">
-        
-        <h1 class="fd-hero__title" id="page-title" data-zh="洞察">Insights</h1>
+    <div class="fd-hero__rail"><div class="container"><p class="crumb"><a href="/" data-zh="首頁">Home</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="洞察">Insights</span></p></div></div>
+    <div class="container fd-hero__head">
+      <h1 class="fd-hero__title" id="page-title" data-zh="洞察">Insights</h1>
+      <div class="fd-hero__aside">
         <p class="fd-hero__sub" data-zh="TIS 的研究、評級與專利情報，以及公司動態。">Research, ratings, patent intelligence and company news.</p>
         <div class="pillar-actions"><a href="#hub" class="btn btn-lg btn-primary" data-zh="瀏覽研究與產品">Browse research and products</a></div>
       </div>
     </div>
+    <div class="container"><div class="fd-ph fd-ph--img fd-hero__band" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/protect-design-room-400.webp 400w, /assets/imagery/uv/protect-design-room-800.webp 800w, /assets/imagery/uv/protect-design-room-1200.webp 1200w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/protect-design-room.jpg" alt="" width="1200" height="896" fetchpriority="high" decoding="async"></picture></div></div>
   </section>
   </div>
 
@@ -583,7 +582,7 @@
         <aside class="contact-overlay">
           <div class="contact-overlay-top">
             <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
-            <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們你的需求。">From one patent to a whole portfolio, tell us what you need.</p>
+            <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
         </aside>
 
@@ -654,8 +653,8 @@
             </fieldset>
 
             <div class="field">
-              <label for="contact-message"><span data-zh="你的需求">What you need</span><span class="field-req" aria-hidden="true"> *</span></label>
-              <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述你的需求…"></textarea>
+              <label for="contact-message"><span data-zh="您的需求">What you need</span><span class="field-req" aria-hidden="true"> *</span></label>
+              <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述您的需求…"></textarea>
               <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
             </div>
             <div class="contact-actions">
@@ -687,7 +686,7 @@
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>

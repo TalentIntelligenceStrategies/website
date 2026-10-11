@@ -126,6 +126,8 @@
   async function initLenis() {
     if (!OWN_ORIGIN) return null;                 // capital.tisglobalinc.com
     if (document.body.dataset.veil) return null;  // DESIGN.md §17 — deliberately covered
+    // Touch-only devices: syncTouch is off, so Lenis would run a per-frame loop for nothing.
+    if (matchMedia('(pointer: coarse) and (hover: none)').matches) return null;
     try {
       const { default: Lenis } = await import('/assets/build/lenis.js');
       lenis = new Lenis({
@@ -622,6 +624,7 @@
   // scroll offset is carried on `top` and restored on release. Without that, closing
   // the drawer on an iPhone returns you to the top of the page.
   const landmarksOf = () => [
+    document.querySelector('.topnav'),
     document.querySelector('main'),
     document.querySelector('.footer'),
     document.querySelector('.footer-baseline')
@@ -788,6 +791,17 @@
     if (b && ts.every(x => (t + ' ' + b).includes(x))) return 30;
     return 0;
   };
+  // In ZH, a Latin query ("patent", "MRO") should still find the English fields.
+  const scoreAny = (entry, q, ts) => {
+    const s = score(entry, q, ts);
+    if (s || !zhNow() || !entry.zt) return s;
+    const t = (entry.t || '').toLowerCase(), b = (entry.b || '').toLowerCase();
+    const bonus = entry.page ? 8 : 0;
+    if (t.includes(q)) return 90 + bonus - Math.min(t.length, 60) / 100;
+    if (ts.every(x => t.includes(x))) return 50 + bonus;
+    if (b && ts.every(x => (t + ' ' + b).includes(x))) return 20;
+    return 0;
+  };
 
   const ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
   const esc = (x) => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -817,7 +831,7 @@
     if (sInput.value.trim().toLowerCase() !== q) return;      // superseded while fetching
     const ts = terms(q);
     const rows = data.e
-      .map(e => ({ e, page: data.pages[e.p], s: score(e, q, ts) }))
+      .map(e => ({ e, page: data.pages[e.p], s: scoreAny(e, q, ts) }))
       .filter(r => r.s > 0)
       .sort((a, b) => b.s - a.s)
       .slice(0, 12);
@@ -915,15 +929,21 @@
   }
 
   // ──────────────── Home v0.5 — KV carousel (APG tabbed carousel) ────────────────
-  // styles.css "HOME v0.5" owns the looks. The KV moves only when the reader picks a
-  // slide: no autoplay, no timer, no pause control (hero mock A, 2026-10-01). Arrow keys,
-  // Home and End move between the tabs. Without JS the tabs stay hidden and slide 1
-  // shows alone.
+  // styles.css "HOME v0.5" owns the looks. Arrow keys, Home and End move between the tabs.
+  // Timing (hero round 2, 2026-10-11; replaces 2026-10-01's "never rotates"): on desktop
+  // (>760px, no reduced motion) the KV advances every DWELL ms and loops; the active tab's
+  // rule fills over the same span (CSS, keyed on data-playing). It pauses while the pointer
+  // is over it, focus is inside it, it is off-screen or the tab is hidden, and it STOPS for
+  // good once the reader picks a slide (click, key, swipe) or presses pause, which is the
+  // WCAG 2.2.2 control. Phones keep tap/swipe only. Without JS the tabs and the button stay
+  // hidden and slide 1 shows alone.
   const kvEl = document.getElementById('kv');
   if (kvEl) {
     const tabs = Array.from(kvEl.querySelectorAll('.kv__tab'));
     const slides = Array.from(kvEl.querySelectorAll('.kv__slide'));
     const layers = Array.from(kvEl.querySelectorAll('.kv__media'));
+    const slidesEl = kvEl.querySelector('.kv__slides');
+    const pauseBtn = kvEl.querySelector('.kv__pause');
     kvEl.querySelector('.kv__tabs').hidden = false;
     let cur = 0;
     const show = (n, focus) => {
@@ -934,21 +954,97 @@
       kvEl.dataset.active = String(cur);
       if (focus) tabs[cur].focus();
     };
-    tabs.forEach((t, k) => t.addEventListener('click', () => show(k)));
+
+    // ── timer ──
+    const DWELL = 7000;   // = --kv-dwell in styles.css
+    const desktop = matchMedia('(min-width: 761px)');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)');
+    let timer = null, startedAt = 0, left = DWELL;
+    let stopped = false;                         // the reader took over: never resume on our own
+    const holds = new Set();                     // hover / focus / offscreen / hidden
+    const allowed = () => desktop.matches && !calm.matches;
+    const clear = () => { clearTimeout(timer); timer = null; };
+    // Every (re)start goes through run(), so run() banks the time already spent first. Without
+    // this a redundant release (focus leaving when it was never held, the observer's first
+    // callback) restarted the full DWELL while the CSS fill kept its own clock: the rule
+    // finished at 7s and the slide changed at 11s.
+    const bank = () => { if (timer) left = Math.max(0, left - (performance.now() - startedAt)); clear(); };
+    const tick = () => { timer = null; left = DWELL; show(cur + 1); run(); };
+    const run = () => {
+      bank();
+      if (stopped || !allowed()) { delete kvEl.dataset.playing; slidesEl.setAttribute('aria-live', 'polite'); return; }
+      slidesEl.setAttribute('aria-live', 'off');   // APG: an auto-rotating carousel must not announce every slide
+      if (holds.size) { kvEl.dataset.playing = 'paused'; return; }
+      kvEl.dataset.playing = 'run';
+      startedAt = performance.now();
+      timer = setTimeout(tick, left);
+    };
+    const hold = (why) => { if (!holds.has(why)) { holds.add(why); run(); } };
+    const release = (why) => { if (holds.delete(why)) run(); };
+    const labels = { en: ['Pause slides', 'Play slides'], zh: ['暫停輪播', '播放輪播'] };
+    const syncBtn = () => {
+      if (!pauseBtn) return;
+      pauseBtn.hidden = !allowed();
+      // The label says what the button will do; no aria-pressed as well, or a screen reader
+      // reads the stopped state as "Play slides, toggle button, pressed".
+      pauseBtn.toggleAttribute('data-stopped', stopped);
+      const l = labels[document.documentElement.lang === 'zh-Hant' ? 'zh' : 'en'];
+      pauseBtn.setAttribute('aria-label', l[stopped ? 1 : 0]);
+    };
+    const stop = () => { stopped = true; clear(); run(); syncBtn(); };
+    if (pauseBtn) pauseBtn.addEventListener('click', () => {
+      if (stopped) { stopped = false; left = DWELL; holds.delete('focus'); run(); }
+      else stop();
+      syncBtn();
+    });
+    // Re-keying the fill: the rule animates on the selected tab, so restarting the timer on a
+    // new slide restarts it too. A resumed pause continues from where both left off.
+    // Hover pauses only over the words and the controls, not the photograph: a cursor parked
+    // on the picture would otherwise mean the KV never moves. The copy and bar boxes span the
+    // full width, so test the element under the pointer, not the box it sits in.
+    const READ = '.kv__kicker, .kv__title, .kv__figs li, .pillar-actions > *, .kv__tabs';   // not the pause button: pressing play must visibly play
+    kvEl.addEventListener('pointerover', (e) => { e.target.closest(READ) ? hold('hover') : release('hover'); });
+    kvEl.addEventListener('pointerleave', () => release('hover'));
+    kvEl.addEventListener('focusin', (e) => { if (e.target !== pauseBtn) hold('focus'); });
+    kvEl.addEventListener('focusout', (e) => { if (!kvEl.contains(e.relatedTarget)) release('focus'); });
+    new IntersectionObserver(([en]) => { en.isIntersecting ? release('offscreen') : hold('offscreen'); }, { threshold: 0.25 }).observe(kvEl);
+    document.addEventListener('visibilitychange', () => { document.hidden ? hold('hidden') : release('hidden'); });
+    const recheck = () => { syncBtn(); run(); };
+    desktop.addEventListener('change', recheck);
+    calm.addEventListener('change', recheck);
+
+    tabs.forEach((t, k) => t.addEventListener('click', () => { stop(); show(k); }));
     kvEl.querySelector('.kv__tabs').addEventListener('keydown', (e) => {
       const to = { ArrowRight: cur + 1, ArrowLeft: cur - 1, Home: 0, End: slides.length - 1 }[e.key];
       if (to === undefined) return;
-      e.preventDefault(); show(to, true);
+      e.preventDefault(); stop(); show(to, true);
     });
-    // aria-roledescription has no data-zh-* handler; follow <html lang> here.
+    // Phones: a horizontal swipe on the slide changes it, as the tabs would. Mostly-
+    // horizontal and ≥48px only, so a vertical page scroll never flips a slide.
+    let sx = null, sy = 0;
+    slidesEl.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) { sx = null; return; }
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, { passive: true });
+    slidesEl.addEventListener('touchend', (e) => {
+      if (sx === null) return;
+      const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      sx = null;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      const to = cur + (dx < 0 ? 1 : -1);
+      if (to >= 0 && to < slides.length) { stop(); show(to); }   // a swipe stops at the ends; only the tabs wrap
+    }, { passive: true });
+    // aria-roledescription has no data-zh-* handler; follow <html lang> here (and the button label).
     const rdEls = [kvEl, ...slides];
     rdEls.forEach(el => { el.dataset.rdEn = el.getAttribute('aria-roledescription'); });
     const syncRd = () => {
       const zh = document.documentElement.lang === 'zh-Hant';
       rdEls.forEach(el => el.setAttribute('aria-roledescription', zh ? el.dataset.rdZh : el.dataset.rdEn));
+      syncBtn();
     };
     syncRd();
     new MutationObserver(syncRd).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    run();
   }
 
   // ──────────────── Home — pillar trays (disclosure, one pill per tray) ────────────────
@@ -1352,7 +1448,7 @@
       const [invalid, bad] =
         !payload.name                       ? [t('Please enter your name.', '請填寫姓名。'), 'name'] :
         !EMAIL_RE.test(payload.email || '') ? [t('Please enter a valid email address.', '請填寫有效的電子郵件。'), 'email'] :
-        !payload.message                    ? [t('Please tell us briefly what you need.', '請簡述你的需求。'), 'message'] : ['', null];
+        !payload.message                    ? [t('Please tell us briefly what you need.', '請簡述您的需求。'), 'message'] : ['', null];
       if (invalid) {
         showFormError(contactForm, invalid);
         flagField(contactForm, contactForm.querySelector(`[name="${bad}"]`));
@@ -1417,7 +1513,7 @@
       nlBlock.classList.remove('is-error');
       primeCheck(nlForm.querySelector('.icon-check'));
       nlBlock.classList.add('is-success');
-      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，謝謝你');
+      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，謝謝您');
       nlInput.value = '';
       // Cross-suppress the IP-intel drop popup — already engaged via footer.
       markMktSeen();
@@ -1699,6 +1795,7 @@
     // not keep; inert is what actually stops focus reaching the page behind, and it
     // is a content attribute, so it holds without JS once set.
     const landmarks = () => [
+      document.querySelector('.topnav'),   // same set as landmarksOf(): the header is background too
       document.querySelector('main'),
       document.querySelector('.footer'),
       document.querySelector('.footer-baseline')

@@ -74,7 +74,7 @@ PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/licens
 # Photo header at the top of each mega panel (nav style A2, chosen 2026-10-06 from
 # mro/mocks/nav-dropdowns/). The header is the section's page link: photo, name, one line.
 # key -> (image stem in assets/imagery/uv/, intrinsic height at 800w, object-position, EN, ZH).
-# Pillar lines are the approved sheet v0.5 one-liners (build.py PILLAR_COPY). Ecosystem and
+# Pillar lines are the approved sheet v1 one-liners (build.py PILLAR_COPY). Ecosystem and
 # About were shortened and split apart on 2026-10-06 (both had carried the same long TIS-role
 # line); Insights describes Patent Strength Grading. The object-position puts the
 # subject in the middle of the short, wide crop; every photo is cropped vertically.
@@ -82,10 +82,10 @@ PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/licens
 NAV_HERO = {
     'sustain':   ('sustain', 1156, '50% 68%', 'Local MRO capacity that keeps your contracts on track.', '在地化 MRO 能量，讓您的合約順利履約。'),
     'protect':   ('protect', 993, '50% 68%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主動鎖住技術優勢。'),
-    'license':   ('license', 1156, '50% 30%', 'Flexible licensing that speeds up local market entry and partnerships.', '靈活的授權安排，加速在地市場與合作。'),
+    'license':   ('license', 1156, '50% 30%', 'Make your patents earn, and secure the licences you need in Taiwan with us.', '讓您的專利帶來收入，也協助您取得在台灣需要的授權。'),
     'ecosystem': ('ecosystem-hero', 447, '50% 80%', 'Three partners, brought in as your program grows.', '三家夥伴，隨您的專案成長逐步加入。'),
     'insights':  ('protect-design-room', 597, '50% 80%', 'Know what a patent is worth before you file, license or defend it.', '在申請、授權或防禦之前，先知道一件專利的價值。'),
-    'about':     ('hero', 447, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '台灣無人載具製造商的生態系夥伴。'),
+    'about':     ('hero', 447, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '無人載具製造商在台灣的生態系夥伴。'),
 }
 HERO_ARROW = '<svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
 
@@ -342,7 +342,7 @@ def footer(lockup, inert):
           <div class="footer-nl-block" id="footer-nl-block">
             <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="你的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>

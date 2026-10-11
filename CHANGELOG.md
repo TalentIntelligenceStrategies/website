@@ -9,6 +9,15 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-11 10:42 +08:00** · Home hero: copy centred left, 7s desktop autoplay with pause, realigned partner strip, separation note removed, 21×.
+- **2026-10-11 08:51 +08:00** · Inner-page hero rebuilt as ground and band: smaller headline, hairline rail, photo band below, visible placeholders; Home untouched.
+- **2026-10-11 08:16 +08:00** · Home KV slide 3: kicker restored and headline shortened to one line of claims (pending team sign-off).
+- **2026-10-10 04:54 +08:00** · Home hero headline-led on all sizes: sub-paragraphs and slide links removed; proof strip under the hero everywhere.
+- **2026-10-10 04:23 +08:00** · Home de-templated: no decorative indexes, ruled Why TIS, phone proof strip under the hero, full-width stacked prose.
+- **2026-10-10 04:14 +08:00** · Spacing and hierarchy polish: wrapped buttons, hero type floor, phone tab rule, contact gap, ZH phrase breaks, 404 padding.
+- **2026-10-09 08:47 +08:00** · Site health + mobile pass: closed menus out of tab order, hero tabs on top, WebP trays, 44px targets, orphan images removed.
+- **2026-10-06 22:41 +08:00** · Site-wide v1 concept pass: 您 register everywhere, 服務量能, v1 points on Protect and License pages, descriptor-only capability lifter.
+- **2026-10-06 22:19 +08:00** · Home Protect and License trays and License nav line move to copy sheet v1; License now three points.
 - **2026-10-06 15:17 +08:00** · Contact card photo runs full bleed under the form on every page, form inset on phones; css v50.
 - **2026-10-06 15:11 +08:00** · UV contact card background becomes the hangar photo (engineers and tilt-rotor UAV); css v49.
 - **2026-10-06 14:56 +08:00** · Ecosystem map becomes a one-screen horizon dial on the page, dark hub with the secondary logo; css v48.
