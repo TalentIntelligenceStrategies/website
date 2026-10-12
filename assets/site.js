@@ -1584,7 +1584,7 @@
 
   // ──────────────── Newsletter corner popup — components.md §Newsletter corner popup ────────────────
   // Non-modal corner card (a bottom sheet ≤768px) with the page left live behind it: no
-  // lockPage(), no inert, no focus steal. Mounted on six front-door pages by build.py.
+  // lockPage(), no inert, no focus steal. Mounted on Home only (home_about.py).
   //
   // Polite trigger (2026-10-12 audit, POP-01..03). The 45s timer starts only once the reader
   // has scrolled past the hero; 50% scroll still opens it early. It never opens while the
