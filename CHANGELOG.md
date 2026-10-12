@@ -9,6 +9,11 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-12 08:09 +08:00** · Newsletter popup is now an email-only corner card (Sustain · Protect · License, parts photo) on the six front-door pages; removed from Licensing; styles v79, site.js v39.
+- **2026-10-12 07:24 +08:00** · Protect: the retainer statement now sits on a gimbal photo strip with its proof rows below; styles v77.
+- **2026-10-12 07:23 +08:00** · Signal: removed the retrieve-your-report bar (front-end mock, no backend) with its lookup script and styles; request form unchanged.
+- **2026-10-12 06:43 +08:00** · License: headline on two lines, hero sub and services lead balanced (lead flush right); portfolio copy pinned to the photo edges, NDA field-list pill removed, portfolio separation line unbolded, "Sustain customer" now "use our MRO services" (also Home); Licensing Platform keeps License active in the nav; Protect hero sub balanced on three lines, commitments section folded into the portfolio block (promise + neutrality link); styles v72, site.js v38.
+- **2026-10-12 06:38 +08:00** · Protect #capabilities head: Diagnostic Sprint line moves under the heading as subtext, Innovue lead balanced on the right; styles v66.
 - **2026-10-12 05:41 +08:00** · Patent Strength Grading opens case by case: coming-soon removed, method/figures/steps/request rebuilt in front-door v2; privacy section and Licensing ticker updated; styles v61, site.js v37 (local, unpushed).
 - **2026-10-12 04:52 +08:00** · Sustain roadmap becomes a framed four-step stair with a shorter lead (routing sentence dropped), replacing the L0–L3 rail; styles v60, site.js v36.
 - **2026-10-12 03:49 +08:00** · Sustain compliance lanes carry a part close-up each, black and white at rest and colour on hover; Sustain and About statements now sit in a caption plate under the hero photo; Signal hero gets its report photo.

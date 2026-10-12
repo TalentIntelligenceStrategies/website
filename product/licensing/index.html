@@ -40,7 +40,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=61">
+<link rel="stylesheet" href="/assets/build/styles.css?v=79">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -1823,7 +1823,6 @@ a, button, .howit-card, .acc-trigger, .btn {
             <ul class="mega-list">
               <li><a href="/why-taiwan/" class="mega-link"><span data-zh="為何是台灣">Why Taiwan</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/about/#commitments" class="mega-link"><span data-zh="中立承諾">Neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/about/#board" class="mega-link"><span data-zh="董事會">Board of directors</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
@@ -1966,7 +1965,6 @@ a, button, .howit-card, .acc-trigger, .btn {
     <div id="m-sub-about" class="mobile-sublist">
       <a href="/why-taiwan/" class="mobile-sub-link"><span data-zh="為何是台灣">Why Taiwan</span></a>
       <a href="/about/#commitments" class="mobile-sub-link"><span data-zh="中立承諾">Neutrality commitments</span></a>
-      <a href="/about/#board" class="mobile-sub-link"><span data-zh="董事會">Board of directors</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/legal/disclosures.en.html" class="mobile-sub-link mobile-sub-link--res" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a>
     </div>
@@ -2045,68 +2043,6 @@ a, button, .howit-card, .acc-trigger, .btn {
   </div>
 </div>
 
-<!-- IP intelligence drop popup — components.md §IP intelligence drop popup (variant F · top hero band, ~520px). Trigger: 45s OR 50% scroll, whichever first; 30-day localStorage suppression. -->
-<div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mkt-headline">
-  <div class="mkt-card with-hero" id="mkt-card">
-    <div class="mkt-img" aria-hidden="true"></div>
-    <button class="mkt-close" type="button" aria-label="Close" data-zh-aria="關閉" data-mkt-close>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-    <div class="mkt-band">
-      <h2 id="mkt-headline" data-zh="重要的專利動態。">The patent moves that matter.</h2>
-      <p data-zh="一年四份簡報。評級精選，非匯總。">Four briefs a year — rated, not just aggregated.</p>
-    </div>
-    <div class="mkt-body">
-      <form class="mkt-form" id="mkt-form" novalidate>
-        <div class="field-row">
-          <div class="field">
-            <span class="lbl"><span data-zh="角色">Role</span> <span class="opt" data-zh="· 選填">· optional</span></span>
-            <div class="brand-select" data-name="role">
-              <button class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span class="brand-select-label placeholder" data-zh="請選擇…">Select…</span>
-                <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
-              </button>
-              <div class="brand-select-menu" role="listbox">
-                <div class="brand-select-item" role="option" data-value="founder"><span data-zh="創辦人 / 高階主管">Founder / C-suite</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="legal"><span data-zh="智財 / 法務">IP / Legal</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="rnd"><span data-zh="研發 / 工程">R&amp;D / Engineering</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="procurement"><span data-zh="供應鏈 / 採購">Supply chain / Procurement</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="other"><span data-zh="其他">Other</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <span class="lbl"><span data-zh="產業">Industry</span> <span class="opt" data-zh="· 選填">· optional</span></span>
-            <div class="brand-select" data-name="industry">
-              <button class="brand-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span class="brand-select-label placeholder" data-zh="所有產業">All Industries</span>
-                <span class="brand-select-chevron"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
-              </button>
-              <div class="brand-select-menu" role="listbox">
-                <div class="brand-select-item" role="option" data-value="electronics"><span data-zh="電子">Electronics</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="mechanical"><span data-zh="機械">Mechanical</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="green"><span data-zh="綠能">Green Energy</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="biomedical"><span data-zh="生醫">Biomedical</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-                <div class="brand-select-item" role="option" data-value="materials"><span data-zh="材料">Materials</span><span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="field">
-          <span class="lbl" data-zh="工作信箱">Work email</span>
-          <input class="input" type="email" name="email" required placeholder="you@company.com" aria-label="Work email" data-zh-aria="公司電子郵件" />
-        </div>
-      </form>
-    </div>
-    <div class="mkt-foot">
-      <button class="btn btn-primary mkt-cta" type="submit" form="mkt-form" data-zh="訂閱下一份簡報">Get the next brief</button>
-      <p class="mkt-fine">
-        <span data-zh="每季一封信。">One email per quarter.</span>
-        <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a>
-      </p>
-    </div>
-  </div>
-</div>
 
   <!-- ── Page state: coming soon  (DESIGN.md §17) ──
        Covers the page while the product is not open. CSS-only by contract: no
@@ -3038,7 +2974,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=37" defer></script>
+<script src="/assets/build/site.js?v=39" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.

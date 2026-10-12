@@ -93,8 +93,8 @@
 
   let lenis = null;
 
-  // Four independent overlays lock the body (drawer/search, legal dialog, newsletter
-  // popup, Signal panel). They cannot each own Lenis's run state — nesting two would
+  // Three independent overlays lock the body (drawer/search, legal dialog, Signal
+  // panel; the newsletter popup stopped locking when it went non-modal, 2026-10-12). They cannot each own Lenis's run state — nesting two would
   // let the first to close start scrolling under the second — so they share a depth.
   let scrollPauseDepth = 0;
   const pauseScroll  = () => { if (scrollPauseDepth++ === 0) lenis && lenis.stop(); };
@@ -449,7 +449,8 @@
   const sectionOf = (path) => {
     if (/^\/sustain\//.test(path)) return 'sustain';
     if (/^\/protect\//.test(path)) return 'protect';
-    if (/^\/(license|patents)\//.test(path)) return 'license';
+    // Licensing Platform sits under License since team review 2026-10-06.
+    if (/^\/(license|patents|product\/licensing)\//.test(path)) return 'license';
     if (/^\/ecosystem\//.test(path)) return 'ecosystem';
     if (/^\/(reports|product)\//.test(path)) return 'insights';
     if (/^\/(about|engage|why-taiwan)\//.test(path)) return 'about';
@@ -1635,8 +1636,11 @@
   });
   document.addEventListener('click', () => closeAllBrandSelects());
 
-  // ──────────────── IP intelligence drop popup — components.md §IP intelligence drop popup ────────────────
+  // ──────────────── Newsletter corner popup — components.md §Newsletter corner popup ────────────────
   // Trigger: 45s OR 50% scroll, whichever fires first. 30-day localStorage suppression.
+  // Non-modal since 2026-10-12: a corner card (a bottom sheet on phones) with the page left
+  // live behind it. So no lockPage(), no inert, and no focus steal: a reader mid-sentence
+  // keeps their place. Mounted on the six front-door pages by mro/website-build/build.py.
   const mkt = document.getElementById('mkt-overlay');
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
@@ -1702,29 +1706,25 @@
       opened = true;
       clearTimeout(timer);
       window.removeEventListener('scroll', onScroll);
-      lastFocus = document.activeElement;
       mkt.classList.add('is-open');
       mkt.setAttribute('aria-hidden', 'false');
-      // lockPage(), not `body.style.overflow = 'hidden'`. Two reasons, both mobile:
-      // iOS Safari keeps scrolling the document behind an overflow-hidden body (the
-      // reason nav-lock uses position:fixed with the offset carried on `top`), and
-      // lockPage also inerts <main> and the footer — without which this aria-modal
-      // dialog left the entire page behind it readable and tabbable. #mkt-overlay is a
-      // sibling of <main>, not a descendant, so it is not inerted by its own lock.
-      // lockPage calls pauseScroll itself; a second call here would not be balanced by
-      // closePopup, because unlockPage only resumes on the lenis path.
-      lockPage();
+      // Seen on display, not on submit: a visitor who closes it is not asked again for
+      // 30 days. No lockPage() and no focus move — see the header above.
       markMktSeen();
-      const email = mktCard.querySelector('input[type="email"]');
-      if (email) setTimeout(() => email.focus(), 50);
     }
 
     function closePopup() {
+      // Hand focus back only if the reader had moved into the card; otherwise it was never
+      // taken, and moving it now would yank them out of whatever they were doing.
+      const inside = mktCard.contains(document.activeElement);
       mkt.classList.remove('is-open');
       mkt.setAttribute('aria-hidden', 'true');
-      unlockPage();
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      if (inside && lastFocus && lastFocus.focus) lastFocus.focus();
     }
+    // Remember where focus came from the first time the reader enters the card.
+    mktCard.addEventListener('focusin', (e) => {
+      if (!mktCard.contains(e.relatedTarget)) lastFocus = e.relatedTarget;
+    });
 
     // Privacy in the fine print. The legal dialog is a separate overlay and it inerts
     // only <main> and the footer — this popup sits outside both, so the two would stack.
@@ -1735,8 +1735,8 @@
     });
 
     function showSuccess() {
-      // Drop layout-modifying class so success renders centered without the hero image.
-      mktCard.classList.remove('with-hero');
+      // The photo and plate go with the old innerHTML; .mkt-card:has(.mkt-success) in
+      // styles.css shrinks the card to the plain success block.
       // Built after init, so this heading isn't in the static i18nEls NodeList
       // and won't follow a later language toggle. Resolving it through t() at
       // creation is the correct fix — the modal is dismissed long before that

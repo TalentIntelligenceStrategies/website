@@ -5,7 +5,7 @@ Read-only snapshot mirrors of the TIS brand `.md`s. Reference material for build
 ## What lives here
 
 - **`primitives-snapshot.md`** — read-only mirror of `TIS/brand/primitives.md` (atomic UI elements: Button, Input, Toggle, Tooltip, Stat card, Image frame, Chip family with Status chip + Signal dot subsections).
-- **`components-snapshot.md`** — read-only mirror of `TIS/brand/components.md` (composed components: Modal, Top nav, Footer, Tabs, etc., AND surface-specific compositions like Patent card / Pillar / Verified License Badge / IP intelligence drop popup with `Surfaces:` tag annotating who uses each).
+- **`components-snapshot.md`** — read-only mirror of `TIS/brand/components.md` (composed components: Modal, Top nav, Footer, Tabs, etc., AND surface-specific compositions like Patent card / Pillar / Verified License Badge / Newsletter corner popup with `Surfaces:` tag annotating who uses each).
 - **`design-tokens-snapshot.md`** — read-only mirror of `TIS/brand/design-tokens.md` (color, type, motion, semantic tokens).
 - **`visual-guide-snapshot.md`** — read-only mirror of `TIS/brand/visual-guide.md` (logo, identity, name usage, badge construction).
 - **`previews/`** — `components-preview.html` (the component catalog preview). Hero exploration HTMLs (blueprint / pattern) were moved to `brand/archive/previews/` upstream and intentionally aren't mirrored here. Asset paths reference `../assets/` which now resolves to `designs/assets/` below — previews render correctly when opened in a browser.

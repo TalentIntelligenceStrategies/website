@@ -62,7 +62,6 @@ NAV = [
         # The one neutrality link in the nav (2026-10-06): About is the official home;
         # Protect and License keep their sections, each ending in a CTA to it.
         ('/about/#commitments', 'Neutrality commitments', '中立承諾'),
-        ('/about/#board', 'Board of directors', '董事會'),
     ], [
         ('/legal/disclosures.en.html', 'Disclosures', '揭露聲明'),
     ]),

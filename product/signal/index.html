@@ -42,7 +42,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=61">
+<link rel="stylesheet" href="/assets/build/styles.css?v=79">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -157,9 +157,10 @@
      .sig-credit (its corner-set version), .sig-phases*, .sig-phase*, .sig-due*, .sig-notes,
      .sig-rt__head and the .contact-card--sig-intake / --sig-retrieve treatments. What
      replaced them is front-door v2 grammar and lives in styles.css ("FRONT DOOR v2 · PSG").
-     Still here: the report cards, the retrieve result internals (.sig-lookup, .sig-rt__*,
-     .sig-status), the seller fine print, the segmented status control, the disabled-chip
-     rule the report gate uses, and .sig-callout. */
+     2026-10-11 later: the retrieve bar left too (it was a front-end mock with no backend),
+     taking .sig-lookup, .sig-rt__*, .sig-status and .sig-mockflag with it.
+     Still here: the report cards, the seller fine print, the segmented status control,
+     the disabled-chip rule the report gate uses, and .sig-callout. */
   :root{
     --sig-blue: var(--score-b-vivid);   /* #0EA5E9 */
     --sig-blue-deep: #0369A1;           /* --score-b light text token */
@@ -211,149 +212,6 @@
      would run to four lines. Scoped to #reports so the homepage keeps its own. */
   @media (max-width: 1280px){ #reports .offerings-grid{ grid-template-columns:1fr; } }
 
-  .sig-lookup{ display:grid; grid-template-columns:1fr 1fr auto; gap:16px; align-items:end; }
-  .sig-lookup .btn{ height:50px; }            /* == the .field input height beside it */
-  @media (max-width: 640px){
-    .sig-lookup{ grid-template-columns:1fr; }
-    .sig-lookup .btn{ width:100%; }
-  }
-  /* Sits BELOW the scrim's fade, on whatever the gradient happens to be doing at that
-     height — which varies with the card's own height, and the card's height changes as
-     the result opens. So it carries its own ground rather than depending on the image. */
-  .sig-rt__error{
-    display:block; width:fit-content; margin:14px auto 0; padding:7px 14px;
-    border-radius:9999px; background:rgba(6,12,32,0.62);
-    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
-    font-size:13.5px; line-height:1.5; color:#FFFFFF;
-  }
-  .sig-rt__error[hidden]{ display:none; }
-
-  /* Result — grid-template-rows 0fr→1fr animates to the panel's OWN height, so the
-     reveal never has to guess a max-height and never clips a taller state. */
-  .sig-rt__reveal{
-    display:grid; grid-template-rows:0fr;
-    transition:grid-template-rows 420ms var(--ease-card);
-  }
-  .sig-rt__reveal[data-open="true"]{ grid-template-rows:1fr; }
-  .sig-rt__reveal > div{ overflow:hidden; min-height:0; }
-  .sig-rt__panel{
-    max-width:920px; margin:clamp(18px, 2vw, 26px) auto 0;
-    padding:clamp(22px, 2.4vw, 32px);
-    background:var(--surface-elevated); border-radius:16px; box-shadow:var(--shadow-high);
-    text-align:left;
-  }
-
-  /* Order line */
-  .sig-rt__order{
-    display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:space-between; align-items:baseline;
-    padding-bottom:16px; border-bottom:1px solid var(--border-primary);
-  }
-  .sig-rt__order h3{
-    margin:0; font-size:15px; font-weight:600; letter-spacing:-0.01em; color:var(--text-primary);
-  }
-  /* Programmatic focus target (the script moves focus here on a successful lookup) —
-     the user never tabbed to it, so a focus ring would be noise. Keyboard focus keeps
-     its ring via :focus-visible, which a scripted .focus() does not set. */
-  .sig-rt__order h3:focus{ outline:none; }
-  .sig-rt__order h3:focus-visible{ outline:2px solid var(--border-focus); outline-offset:3px; }
-  .sig-rt__order .sig-rt__no{ font-family:var(--font-mono); }
-  .sig-rt__order p{ margin:0; font-size:13px; color:var(--text-tertiary); }
-
-  /* Status track — three steps, PRD §8.8.0b AC-1 (收件 / 處理中 / 完成). Reached state
-     is filled, current is ringed, pending is hollow; the label carries the state in
-     words as well, so the dot is never the only signal. */
-  .sig-status{
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:0;
-    margin:20px 0 4px; padding:0; list-style:none;
-  }
-  .sig-status li{ position:relative; padding-top:22px; padding-right:12px; }
-  .sig-status li::before{         /* connector, drawn behind the dot */
-    content:""; position:absolute; top:5px; left:0; right:0; height:2px;
-    background:var(--border-tertiary);
-  }
-  .sig-status li:last-child::before{ right:auto; width:12px; }
-  .sig-status li::after{          /* the dot */
-    content:""; position:absolute; top:0; left:0; width:12px; height:12px;
-    border-radius:9999px; background:var(--surface-page);
-    box-shadow:inset 0 0 0 2px var(--border-tertiary);
-  }
-  .sig-status li[data-state="done"]::before{ background:var(--sig-blue); }
-  .sig-status li[data-state="done"]::after{
-    background:var(--sig-blue); box-shadow:inset 0 0 0 2px var(--sig-blue);
-  }
-  .sig-status li[data-state="now"]::after{
-    background:var(--surface-page); box-shadow:inset 0 0 0 3px var(--sig-blue);
-  }
-  .sig-status li[data-state="now"]::before{
-    background:linear-gradient(to right, var(--sig-blue) 50%, var(--border-tertiary) 50%);
-  }
-  .sig-status__name{ display:block; font-size:13px; font-weight:600; color:var(--text-tertiary); }
-  .sig-status li[data-state="done"] .sig-status__name,
-  .sig-status li[data-state="now"] .sig-status__name{ color:var(--text-primary); }
-  .sig-status__note{ display:block; margin-top:2px; font-size:12px; color:var(--text-tertiary); }
-
-  /* Preview — locked page beside the chapter scope. The blur is the point: PRD
-     §8.8.0b AC-3 gives away the report's SHAPE for free (各章節將涵蓋內容之全貌),
-     never its content, so the page must read as a real document and stay unreadable.
-     aria-hidden because the outline list beside it is the accessible equivalent. */
-  /* 260px, not 200: the page is the artefact being bought, and at 200 it read as a
-     chip beside the outline rather than as a document. 260×346 against a 564px text
-     column still leaves every chapter scope-line on one line at 1440. */
-  .sig-rt__preview{ display:grid; grid-template-columns:260px minmax(0, 1fr); gap:clamp(20px, 2.4vw, 32px); margin-top:24px; }
-  @media (max-width: 700px){
-    /* minmax(0,1fr), not 1fr: a bare 1fr floors at the track's min-content, and at 390px
-       the outline's longest scope-line pushed that 14px past the column. */
-    .sig-rt__preview{ grid-template-columns:minmax(0, 1fr); }
-    .sig-rt__page{ max-width:260px; }
-  }
-  .sig-rt__page{ position:relative; overflow:hidden; border-radius:12px; border:1px solid var(--border-primary); }
-  /* Blurred enough that no figure or sentence survives, light enough that the page's
-     STRUCTURE does — header band, the score block, the radar. That is the whole trade
-     the free preview is making: shape yes, content no. scale() hides the soft edge the
-     blur leaves at the frame. */
-  .sig-rt__page img{ display:block; width:100%; height:auto; filter:blur(4px) saturate(0.75); transform:scale(1.06); }
-  .sig-rt__page::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.46));
-  }
-  .sig-rt__lock{
-    position:absolute; z-index:1; left:50%; top:50%; transform:translate(-50%,-50%);
-    display:flex; align-items:center; gap:6px;
-    padding:7px 12px; border-radius:9999px;
-    background:var(--surface-inverse); color:var(--text-inverse);
-    font-size:11.5px; font-weight:600; white-space:nowrap;
-  }
-  .sig-rt__lock svg{ width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; }
-  .sig-rt__pagemeta{ margin:8px 0 0; font-size:12px; line-height:1.5; color:var(--text-tertiary); }
-
-  .sig-rt__outline h4{
-    margin:0 0 12px; font-size:12px; font-weight:600; letter-spacing:0.02em; color:var(--text-secondary);
-  }
-  .sig-rt__chapters{ margin:0; padding:0; list-style:none; counter-reset:ch; }
-  .sig-rt__chapters li{
-    counter-increment:ch;
-    display:grid; grid-template-columns:22px 1fr; gap:2px 10px;
-    padding:7px 0; border-top:1px solid var(--border-primary);
-    font-size:13.5px; line-height:1.45; color:var(--text-primary);
-  }
-  .sig-rt__chapters li:first-child{ border-top:0; padding-top:0; }
-  /* Only the numeral is generated content — it is decorative (the list is already
-     ordered) so nothing is lost if a screen reader skips it. The chapter name and its
-     scope line are real elements, because CSS content:attr() cannot be translated by
-     the language switcher and is read inconsistently by assistive tech. */
-  .sig-rt__chapters li::before{
-    content:counter(ch); grid-column:1; grid-row:1;
-    font-family:var(--font-mono); font-size:12px; color:var(--sig-blue-deep);
-  }
-  .sig-rt__chapters li > span{ grid-column:2; }
-  .sig-rt__chnote{ font-size:12.5px; color:var(--text-tertiary); }
-  .sig-rt__pay{ margin-top:24px; }
-  .sig-rt__pay .btn{ width:100%; }
-
-  @media (prefers-reduced-motion: reduce){
-    .sig-rt__reveal{ transition:none; }
-  }
-
   /* Seller identity under the amount. Fine print by construction: it is the answer to
      a question nobody asked until they were about to pay, so it sits below the figure,
      behind a hairline, at label size. The hairline is the whole hierarchy here — without
@@ -370,18 +228,13 @@
     font-size:12.5px; font-weight:400; line-height:1.45; color:rgba(255,255,255,0.72); }
   .sig-seller__name{ font-weight:600; color:rgba(255,255,255,0.92); }
 
-  /* ── The two rules the overlay move left behind (2026-08-27) ─────────────
+  /* ── The rule the overlay move left behind (2026-08-27) ──────────────────
      The .sig-x* / .sig-doc / .sig-sheet set that used to sit here moved to
-     styles.css when methodology.html started opening the same panels. These two
-     were interleaved in that range and are NOT part of the dialog:
-     · .sig-mockflag is the retrieve widget's "mock" pill (.sig-rt__pagemeta and
-       the flag() template at the foot of the page).
+     styles.css when methodology.html started opening the same panels. This one
+     was interleaved in that range and is NOT part of the dialog:
      · the trigger card's focus ring resolves --sig-blue, a variable declared in
        this block, so promoting it would mean promoting the variable too.
        methodology.html's cards take the shared .offer-card:focus-visible. ── */
-  .sig-mockflag{ display:inline-block; padding:1px 7px; border-radius:9999px; background:var(--surface-tertiary);
-    color:var(--text-tertiary); font-family:'Inconsolata', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
-  @media (max-width: 760px){ .sig-mockflag{ font-size:12px; } }  /* 12px phone floor (DESIGN.md) */
   .offer-card[data-report]:focus-visible{ outline:2px solid var(--sig-blue); outline-offset:3px; }
 
   /* ── Intake input-type selector — one segmented track, not three loose pills.
@@ -551,7 +404,6 @@
             <ul class="mega-list">
               <li><a href="/why-taiwan/" class="mega-link"><span data-zh="為何是台灣">Why Taiwan</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/about/#commitments" class="mega-link"><span data-zh="中立承諾">Neutrality commitments</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/about/#board" class="mega-link"><span data-zh="董事會">Board of directors</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
@@ -694,7 +546,6 @@
     <div id="m-sub-about" class="mobile-sublist">
       <a href="/why-taiwan/" class="mobile-sub-link"><span data-zh="為何是台灣">Why Taiwan</span></a>
       <a href="/about/#commitments" class="mobile-sub-link"><span data-zh="中立承諾">Neutrality commitments</span></a>
-      <a href="/about/#board" class="mobile-sub-link"><span data-zh="董事會">Board of directors</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/legal/disclosures.en.html" class="mobile-sub-link mobile-sub-link--res" data-legal="disclosures"><span data-zh="揭露聲明">Disclosures</span></a>
     </div>
@@ -847,10 +698,9 @@
          #figures  the five method figures as numbered tiles in a tray, prev/next in
                    site.js. Same illustrative patent throughout (US10148981).
          #how      three steps in the bento's frame; dek right of the h2.
-         #contact  the retrieve bar (ids unchanged; the lookup script at the foot of the
-                   page drives it), then the shared contact card carrying the merged
-                   request form. data-source="patent-strength-grading"; site.js folds
-                   the request fields into the message line, because the Front Desk
+         #contact  the shared contact card carrying the merged request form (the
+                   retrieve bar above it was removed 2026-10-11; it had no backend).
+                   data-source="patent-strength-grading"; site.js folds the request fields into the message line, because the Front Desk
                    sheet's contact tab has fixed columns. ── -->
   <div class="ab">
   <section class="fd-section psg" id="method" aria-labelledby="method-heading">
@@ -983,121 +833,6 @@
 
   <section class="contact" id="contact" aria-labelledby="contact-heading">
     <div class="container">
-      <div class="psg-rt" id="retrieve" aria-labelledby="retrieve-heading" role="region">
-        <div class="psg-rt__head">
-          <h2 id="retrieve-heading" data-zh="已委託？憑登錄碼取件。">Already ordered? Retrieve your report.</h2>
-          <p class="contact-lead" data-zh="登錄碼附在確認委託的信中。輸入信箱與登錄碼，即可查進度、預覽或下載。">Your registration code comes in the email that confirms your order. Enter it with your email to check status, preview or download.</p>
-        </div>
-        <div class="contact-panel psg-rt__panel"><form class="contact-form" id="retrieve-form" novalidate>
-            <div class="sig-lookup">
-              <div class="field">
-                <label for="retrieve-email" data-zh="聯絡 / 通知信箱">Contact / notification email</label>
-                <input id="retrieve-email" name="email" type="email" autocomplete="email" placeholder="name@company.com" />
-              </div>
-              <div class="field">
-                <label for="retrieve-code" data-zh="登錄碼">Registration code</label>
-                <input id="retrieve-code" name="code" type="text" spellcheck="false" placeholder="K7P2-9XQR-4M" />
-              </div>
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="查詢">Look up</button>
-            </div>
-          </form></div>
-        <p class="sig-rt__error" id="retrieve-error" role="alert" hidden data-zh="查無相符的紀錄。請對照確認信再確認一次。">No matching record. Check both against your confirmation email.</p>
-        <div class="sig-rt__reveal" id="retrieve-reveal" data-open="false">
-          <div>
-            <div class="sig-rt__panel" role="status" aria-live="polite">
-
-              <div class="sig-rt__order">
-                <h3 tabindex="-1" id="retrieve-result-heading"><span class="sig-rt__no" id="rt-order">SIG-B-20260805-001</span> · <span id="rt-kind" data-zh="景深">Study</span></h3>
-                <p><span data-zh="送出日">Submitted</span> <span id="rt-date">2026-08-05</span></p>
-              </div>
-
-              <ol class="sig-status" id="rt-status">
-                <li data-state="done">
-                  <span class="sig-status__name" data-zh="已收件">Received</span>
-                  <span class="sig-status__note" data-zh="已確認報價，作業啟動">Quote accepted, work started</span>
-                </li>
-                <li data-state="done">
-                  <span class="sig-status__name" data-zh="處理中">In production</span>
-                  <span class="sig-status__note" data-zh="新穎資料 + 人工 + AI">Innovue data, human + AI</span>
-                </li>
-                <li data-state="done">
-                  <span class="sig-status__name" data-zh="已完成">Complete</span>
-                  <span class="sig-status__note" data-zh="可免費預覽，付清後下載">Preview free, download once settled</span>
-                </li>
-              </ol>
-              <div id="rt-done">
-                <div class="sig-rt__preview">
-                  <div>
-                    <div class="sig-rt__page">
-                      <span class="sig-rt__lock">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-                        <span data-zh="付清款項後開放">Opens once the invoice is settled</span>
-                      </span>
-                      <picture><source type="image/webp" srcset="/assets/imagery/signal-reports/signal-report-cover-full-400.webp 400w, /assets/imagery/signal-reports/signal-report-cover-full-800.webp 800w, /assets/imagery/signal-reports/signal-report-cover-full-1136.webp 1136w" sizes="(max-width: 640px) 273px, (max-width: 1100px) 273px, 273px"><img id="rt-page-img" src="/assets/imagery/signal-reports/signal-report-cover-full.png" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1136" height="1512" ></picture>
-                    </div>
-                    <p class="sig-rt__pagemeta" id="rt-pagemeta" data-zh-html data-zh="7 章 · 含浮水印 PDF <span class='sig-mockflag'>示意</span>">7 chapters · watermarked PDF <span class="sig-mockflag">mock</span></p>
-                  </div>
-                  <div class="sig-rt__outline">
-                    <h4 data-zh="報告涵蓋範圍（免費預覽）">What the report covers — free preview</h4>
-                    <ol class="sig-rt__chapters" data-tier="BX" hidden>
-                      <li>
-                        <span data-zh="最相近的十件與比對原因">The ten closest, and why</span>
-                        <span class="sig-rt__chnote" data-zh="每件的專利號、標題、專利權人、IPC、年份、相似度分數與比對原因">Number, title, owner, IPC, year, similarity score and why each one matches</span>
-                      </li>
-                      <li>
-                        <span data-zh="十件完整解析">The ten closest, in full</span>
-                        <span class="sig-rt__chnote" data-zh="逐件深入說明，以其請求項為依據">A longer read of each match, grounded in its claims</span>
-                      </li>
-                      <li>
-                        <span data-zh="整體場域解讀">The field, read as a whole</span>
-                        <span class="sig-rt__chnote" data-zh="十件的共同點、分歧處，以及持有者">Where the ten group together, where they diverge, and who holds them</span>
-                      </li>
-                      <li>
-                        <span data-zh="說明與方法">Notes &amp; method</span>
-                        <span class="sig-rt__chnote" data-zh="比對結果如何取得；屬技術比較，非法律意見">How matches are retrieved; a technical comparison, not a legal opinion</span>
-                      </li>
-                    </ol>
-                    <ol class="sig-rt__chapters" data-tier="B">
-                      <li>
-                        <span data-zh="專利基本資料">Patent facts &amp; family</span>
-                        <span class="sig-rt__chnote" data-zh="專利號、國家、專利權人、主 IPC、申請日、公告日、法律狀態、請求項數、家族國家">Number, jurisdiction, owner, IPC, dates, claims, family</span>
-                      </li>
-                      <li>
-                        <span data-zh="PSS 總覽">PSS overview</span>
-                        <span class="sig-rt__chnote" data-zh="PSS 總分、S 到 D 的評級、1433 池內排名、百分位">Score, grade from S to D, rank in the 1433-patent pool, percentile</span>
-                      </li>
-                      <li>
-                        <span data-zh="八大支柱深度分析">Eight pillars, all 50 indicators</span>
-                        <span class="sig-rt__chnote" data-zh="P1–P8 逐一展開：各指標名稱、原始值、正規化分數、百分位、權重">P1–P8 opened up: every indicator, weight and percentile</span>
-                      </li>
-                      <li>
-                        <span data-zh="強項亮點 Top 10">Top 10 strengths</span>
-                        <span class="sig-rt__chnote" data-zh="50 項指標中百分位最高的 10 項，含原始值">The 10 highest-percentile indicators, with raw values</span>
-                      </li>
-                      <li>
-                        <span data-zh="風險弱項 Top 10">Top 10 risks</span>
-                        <span class="sig-rt__chnote" data-zh="百分位最低的 10 項，同樣處理">The 10 lowest, same treatment</span>
-                      </li>
-                      <li>
-                        <span data-zh="跨方案穩定性分析">Cross-scenario stability</span>
-                        <span class="sig-rt__chnote" data-zh="同一專利在授權導向 / 訴訟強度 / 投資併購 / 技術布局四種場景下的分數">The same patent scored for licensing, litigation, M&amp;A and portfolio</span>
-                      </li>
-                      <li>
-                        <span data-zh="綜合評估與行動建議">Assessment &amp; licensing strategy</span>
-                        <span class="sig-rt__chnote" data-zh="授權策略目標、需補強市場、風險提示、具體行動建議">Licensing targets, gaps to close, risks, and what to do next</span>
-                      </li>
-                    </ol>
-                    <div class="sig-rt__pay">
-                      <button type="button" class="btn btn-primary btn-lg" data-zh="下載完整報告">Download the full report</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="contact-card contact-card--venture" id="intake">
         <aside class="contact-overlay">
           <div class="contact-overlay-top"><h2 id="contact-heading" data-zh="委託報告。">Request a report.</h2><p class="contact-lead" data-zh="從一件專利到整個專利組合：告訴我們您手上有什麼、需要哪一種報告，我們依個案報價。可簽署保密協議。">One patent or a whole portfolio: tell us what you have and which report you need, and we quote the case. NDA available.</p></div>
@@ -1374,7 +1109,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=37" defer></script>
+<script src="/assets/build/site.js?v=39" defer></script>
 
 <!-- Request form routing (PRD v0.7 F-ROUTE / §8.2.1). The patent status picks which input
      shows and gates the report: a full PSS ranking needs a published patent's citation,
@@ -1406,122 +1141,6 @@
     };
     types.forEach(r => r.addEventListener('change', sync));
     sync();
-  })();
-</script>
-
-<!-- Retrieve lookup — PRD v0.7 §8.8.0b F-STATUS, front-end only. There is no backend
-     on this site, so two sample orders stand in for the two outcomes the spec defines:
-     an order still in production (AC-1: status only) and a finished one (AC-3: free
-     outline preview + the balance CTA). Everything the real endpoint would return is
-     in the markup already; this only picks which parts are shown.
-
-     AC-2 is the one rule that is a security property rather than a convenience: a
-     mismatch must not reveal which half was wrong, or the form becomes an oracle for
-     enumerating codes. Hence one message for every failure, and no email check at all
-     — any email is accepted, so nothing here can confirm an address exists either. -->
-<script>
-  (() => {
-    const form = document.getElementById('retrieve-form');
-    const reveal = document.getElementById('retrieve-reveal');
-    if (!form || !reveal) return;
-
-    const errorEl = document.getElementById('retrieve-error');
-    const doneEl  = document.getElementById('rt-done');
-    const steps   = [...document.querySelectorAll('#rt-status li')];
-    const heading = document.getElementById('retrieve-result-heading');
-
-    // Keyed by registration code. `en`/`zh` pairs stay parallel to the data-zh
-    // convention the rest of the page uses, since the language switcher only rewrites
-    // markup it can see.
-    //
-    // Codes follow PRD §8.8.0c: an opaque random base32 access token, 8–12 characters,
-    // deliberately NOT derivable from the order number (訂單編號 = internal traceability,
-    // registration code = external access token, kept unrelated to defeat enumeration).
-    // Confusable glyphs 0/O/1/I/L are excluded, which is why none appear below. The
-    // submit handler strips spaces and hyphens, so the grouping is presentation only.
-    //
-    // `tier` selects both the outline list and the thumbnail; it matches the TIER field
-    // of the order number above it (A / B / BX), so the two can never drift apart.
-    const ORDERS = {
-      'R4TX8HJW2N': {
-        order: 'SIG-B-20260805-001', date: '2026-08-05', step: 2, done: true, tier: 'B',
-        kind: { en: 'Study', zh: '景深' }
-      },
-      'M9VD3KPY7B': {
-        order: 'SIG-BX-20260810-004', date: '2026-08-10', step: 2, done: true, tier: 'BX',
-        kind: { en: 'Survey', zh: '廣角' }
-      },
-      // Still mid-production: the state a customer meets once the quote is accepted and work has started.
-      // AC-1 gives status only — no outline, no preview, no download.
-      'H3WN6QFT8C': {
-        order: 'SIG-B-20260817-001', date: '2026-08-17', step: 1, done: false, tier: 'B',
-        kind: { en: 'Study', zh: '景深' }
-      }
-    };
-
-    // Per-tier preview: which first page to blur, and how the deliverable is counted.
-    // "chapters" only for B — that is what PRD §8.6.1 calls them (七章節); the other two
-    // are sections, and saying chapters everywhere would overstate the shorter tiers.
-    // The thumbnail is the COVER SHEET, not the graded interior page. The interior page
-    // carried a radar / bar band / ladder that told the three tiers apart through the
-    // blur; a cover has none of that, so the outline beside it is what identifies the
-    // tier now. Deliberate trade, not an oversight — see DESIGN.md.
-    const TIERS = {
-      B:  { img: 'signal-report-cover-full.png',
-            meta: { en: '7 chapters · watermarked PDF',  zh: '7 章 · 含浮水印 PDF' } },
-      BX: { img: 'signal-report-cover-landscape.png',
-            meta: { en: '3 sections · watermarked PDF',  zh: '3 節 · 含浮水印 PDF' } }
-    };
-    const MOCK = { en: 'mock', zh: '示意' };
-
-    const outlines = [...document.querySelectorAll('.sig-rt__chapters[data-tier]')];
-    const pageImg  = document.getElementById('rt-page-img');
-    const pageMeta = document.getElementById('rt-pagemeta');
-
-    const isZh = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const code = (document.getElementById('retrieve-code').value || '')
-        .trim().toUpperCase().replace(/[\s-]/g, '');   // letter-transcription slips
-      const hit = ORDERS[code];
-
-      if (!hit) {
-        reveal.dataset.open = 'false';
-        if (errorEl) errorEl.hidden = false;
-        return;
-      }
-      if (errorEl) errorEl.hidden = true;
-
-      document.getElementById('rt-order').textContent = hit.order;
-      document.getElementById('rt-date').textContent = hit.date;
-      const kindEl = document.getElementById('rt-kind');
-      kindEl.textContent = isZh() ? hit.kind.zh : hit.kind.en;
-      kindEl.setAttribute('data-zh', hit.kind.zh);   // survives a later language switch
-
-      // Preview swaps with the tier. Both elements exist in the markup at init, so the
-      // language switcher already tracks them — setting data-zh alongside the visible
-      // text is what keeps a later swap correct, same trick as kindEl above.
-      const tier = TIERS[hit.tier];
-      if (tier) {
-        outlines.forEach(ol => { ol.hidden = ol.dataset.tier !== hit.tier; });
-        pageImg.src = '/assets/imagery/signal-reports/' + tier.img;
-        const flag = c => `<span class="sig-mockflag">${c}</span>`;
-        pageMeta.innerHTML     = `${isZh() ? tier.meta.zh : tier.meta.en} ${flag(isZh() ? MOCK.zh : MOCK.en)}`;
-        pageMeta.dataset.zh    = `${tier.meta.zh} ${flag(MOCK.zh)}`;
-      }
-
-      // step = index of the CURRENT stage; everything before it is done.
-      steps.forEach((li, i) => {
-        li.dataset.state = i < hit.step ? 'done' : (i === hit.step ? 'now' : 'todo');
-      });
-
-      doneEl.hidden = !hit.done;
-      reveal.dataset.open = 'true';
-      // Focus the result rather than scrolling to it: the browser scrolls as much as
-      // it needs to, and keyboard / screen-reader users land on what just appeared.
-      heading.focus({ preventScroll: false });
-    });
   })();
 </script>
 

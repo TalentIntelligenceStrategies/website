@@ -2,7 +2,7 @@
 
 # TIS Components
 
-Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website (front door: Sustain · Protect · License) and two Insights products — the Patent Intelligence SaaS and the Licensing Platform. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, IP intelligence drop popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
+Composed components catalog across the three downstream surfaces that consume the TIS brand system: the marketing website (front door: Sustain · Protect · License) and two Insights products — the Patent Intelligence SaaS and the Licensing Platform. Components are built from primitives (see [primitives.md](./primitives.md)) — they include both shared composed elements (Modal, Top nav, Footer, Tabs) and surface-specific compositions (Patent card, Pillar, Newsletter corner popup, Verified License Badge). The `Surfaces:` line on each entry says who uses it. Each consumer repo carries a read-only `components-snapshot.md` mirror of this file.
 
 > Components compose primitives + semantic tokens from [`design-tokens.md`](./design-tokens.md) via **material presets** (see §7.3 there). For logo / co-branding / badge identity, see [`visual-guide.md`](./visual-guide.md).
 
@@ -864,41 +864,34 @@ Choose a Sheet over a Modal when content is long-scrolling, when the user needs 
 
 ---
 
-## IP intelligence drop popup
+## Newsletter corner popup
 
-Marketing-site lead-capture overlay. Hybrid newsletter signup + soft self-segmentation: captures email (required) plus optional Role + Industry so subscribers self-segment without the friction of a demo gate. Trigger candidates: 50% scroll on home or pillar pages, 45-second time-on-site, or exit-intent — rate-limited to once per visitor per 30 days.
+Marketing-site newsletter signup that slides into the bottom-right corner. Email only; the page behind it stays live (non-modal). Trigger: 45 seconds on the page or 50% scroll, whichever comes first, at most once per visitor per 30 days; a footer-newsletter signup suppresses it too. Replaced the IP intelligence drop popup (F hero band / G side panel, Role + Industry selects) on 2026-10-12.
 
-- **Consumes:** `surface-page`, `surface-secondary`, `surface-tertiary`, `surface-inverse`, `border-primary`, `border-tertiary`, `text-primary`, `text-secondary`, `text-tertiary`, `text-quaternary`, `text-inverse`, `success-bg`, `success-fg`, shadow `high`; the overlay backdrop is `rgba(0,0,0,0.55)` + `backdrop-filter: blur(4px)`. Form fields use §Input and §Select (the brand dropdown, not the native `<select>`)
-- **Surfaces:** marketing website (home, pillar pages)
-- **Variants:** **F** top hero band (image above editorial, ~520px wide) · **G** side panel (image left 240px, form right ~480px, ~720px wide)
-- **States:** entering · open · exiting · success (post-submit confirmation card)
+- **Consumes:** `surface-page`, `surface-recessed`, `surface-tertiary`, `surface-inverse`, `border-primary`, `border-tertiary`, `border-focus`, `text-primary`, `text-secondary`, `text-tertiary`, `text-quaternary`, `text-inverse`, `success-bg`, `success-fg`, shadow `high`. No backdrop, no scrim over the photo. Form atoms per §Input and §Button primary
+- **Surfaces:** marketing website, front door (Home, Sustain, Protect, License, Ecosystem, Why Taiwan). Not About, AUSA or Insights pages
+- **Variants:** one: **Tall plate** (desktop corner card) · bottom sheet below 560px
+- **States:** entering · open · success · closed
 
-Both variants share a single card primitive (`mkt-card`, radius 20, shadow `high`, background `surface-page`, `overflow: hidden`) and the same form atoms; they differ only in image placement.
+**Card.** `mkt-card`, 380×520 (aspect locked, `min(380px, 100vw − 48px)` wide), radius 20, `overflow: hidden`, shadow `high` plus a 1px `border-primary` ring. Pinned 24px from the bottom-right viewport corner. The photo (`mkt-media`) fills the whole card with `object-fit: cover`; it is a cropped flat-lay of a disassembled fixed-wing UAV (`disassembled-drone-v1`, top 18% removed so no window or table edge shows).
 
-**Variant F · top hero band.** `mkt-card.with-hero`, max-width 520. The image (`mkt-img`, height 160, `border-radius: 0` so it spans the rounded card top edge under `overflow: hidden`) sits at the top of the card. Below: `mkt-band` (padding 32×32×0) with the headline at sans 22 / 600 / line-height 1.25 / `text-primary` and a one-line subhead at sans 14 / 400 / `text-secondary`. **No eyebrow line above the headline** — the hero image carries the marketing register, the headline is the editorial hook.
+**Plate.** `mkt-main`, a solid `surface-page` sheet inset 12px from the card's left, right and bottom edges, radius 14, padding 20, shadow `high`. It reads as a sheet of paper laid among the parts. Stack, gap 16: headline (sans 19 / 600 / line-height 1.22 / −0.015em), subhead (sans 13 / `text-secondary` / `text-wrap: balance`), form row, fine print. No eyebrow.
 
-**Variant G · side panel.** `mkt-card.split`, max-width 720, `display: grid; grid-template-columns: 240px 1fr`. The left column is the `mkt-img` (`min-height: 100%`); the right column is `mkt-main` carrying the band + form + foot stack as `flex-direction: column`. Padding values shift to 28×28×0 / 20×28×8 / 16×28×24 to match the narrower form column. No eyebrow line, same as F.
+**Copy.** Headline is the locked tagline **Sustain · Protect · License** / 維護 · 防護 · 授權 (`positioning.md` §3). Subhead: "Updates from TIS, Taiwan's ecosystem partner for unmanned-vehicle makers." / 台灣無人載具生態系夥伴 TIS 的最新動態。 Button `Subscribe` / 訂閱; fine print `Occasional email.` / 不定期寄送。 + Privacy link.
 
-**Form (shared).** Inside `mkt-body` (padding 24×32×8 on F; 20×28×8 on G), the form is a `flex-direction: column; gap: 14` stack of three rows:
+**Form.** One row: email input (height 44, radius 12, 16px text so iOS does not zoom; label `Work email` visually hidden) and §Button primary `Subscribe` with a trailing arrow. Focus: `border-focus` plus a 3px 22% `border-focus` ring.
 
-1. A `field-row.cols-2` (`display: grid; grid-template-columns: 1fr 1fr; gap: 12`) carrying **Role** (optional) and **Industry** (optional) side-by-side, each rendered as a §Select using the brand dropdown — custom trigger + styled menu, **not** the native `<select>` (per §Select).
-2. A single **Work email** input, required (per §Input box variant).
+**Close.** 32×32 round `surface-page` button with a 1px `border-primary` ring, top-right of the card over the photo. Hover `surface-tertiary` / `text-primary`.
 
-Role and Industry are NOT wrapped in a tinted band — they sit in the flat form area between the headline and the email. Optional flags read `Role · optional` with the `· optional` set in `text-quaternary` / weight 500 / non-uppercase to keep the label clean.
+**Phones (≤560px).** Bottom sheet: full width, radius 20 20 0 0, `surface-recessed` ground. The photo becomes a 190px band on top and the plate overlaps its lower edge by 44px; the safe-area inset pads the bottom.
 
-**Foot.** `mkt-foot` (padding 16×32×24 on F; 16×28×24 on G) carries the primary `Get the next brief` button — full-width §Button primary with `btn-block` — and a fine-print line beneath it: mono 11 / `text-tertiary` / line-height 1.5 / +0.02em, with the privacy link in `text-secondary` underline.
+**Success state.** The card body is replaced by the shared success block (56×56 `success-bg` seal with a drawn check, sans 20 / 600 `You're on the list.`), in a 360px card.
 
-**Close.** `mkt-close` button at top:14 right:14 — 32×32 hit area, radius 8, `text-tertiary` color; hovers to `surface-tertiary` / `text-primary`. On the F variant the close button gets a translucent white backdrop (`rgba(255,255,255,0.85)`) so it stays legible over the dark hero image.
+**Motion.** Card enters 520ms ease-out-quint `translateY(24px)` + opacity; the photo settles from `scale(1.06)` over 1400ms; the plate lifts 12px with a 160ms delay. Phones slide the sheet up from 100%. Reduced motion: no animation.
 
-**Image content.** Until real assets ship, the `mkt-img` is a CSS-only patent-grid placeholder — `surface-inverse` (n10) anchor with a `radial-gradient` dot grid at 14×14 and a soft inverse-tint overlay (`linear-gradient(180deg, transparent 30%, rgba(37,37,37,0.55))` on F's top-hero; diagonal `linear-gradient(135deg, transparent 40%, rgba(37,37,37,0.65))` on G's side panel). Swap to a real image when the asset is ready — keep `overflow: hidden` on the card so the image inherits the rounded corners.
+**Accessibility.** `role="dialog"`, `aria-modal="false"`, labelled by the headline. No page lock, no focus steal (a reader mid-sentence keeps their place). Escape or the close button dismisses; focus returns to where it was only if it had moved into the card.
 
-**Success state.** On submit, the card content is replaced by a centered success block: 56×56 seal with background `success-bg` / color `success-fg` carrying a check glyph; sans 20 / 600 headline (`You're on the list.`); sans 14 / `text-secondary` body line with `max-width: 340`. The variant's layout-modifying classes (`split` / `with-hero`) are dropped on submit so the success state always renders in the standard centered form regardless of source variant.
-
-**Motion.** Overlay fade-in 150ms linear; card enter 250ms emphasized, `translateY(12px → 0)` + `scale(0.98 → 1)` + opacity 0 → 1; close drops the overlay with the inverse 150ms exit. Honors the global reduced-motion rule.
-
-**Dismissal.** Overlay click outside the card, Escape, or the close-X. The success state retains a close-X that dismisses normally.
-
-Pairs with §Footer (the marketing-site newsletter signup is the permanent always-on peer of this rate-limited overlay) and §Select (the canonical dropdown applied to Role + Industry).
+Pairs with §Footer (the always-on newsletter peer; both post to the same `newsletter` capture, distinguished by `source`).
 
 ---
 
