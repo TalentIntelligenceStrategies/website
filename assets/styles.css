@@ -122,6 +122,7 @@ picture { display: contents; }
   --text-on-ink:            #FFFFFF;
   --edge-ink:               transparent;
   --edge-window:            transparent;
+  --edge-photo:             rgba(37,37,37,0.10);   /* light-theme hairline round a photo, so a pale frame does not bleed into the page */
   --surface-inverse-hover:  #292524;
   --surface-translucent:    rgba(0,0,0,0.05);
   --surface-page-translucent: rgba(255,255,255,0.70);
@@ -433,7 +434,9 @@ picture { display: contents; }
 /* ───────── Reset ───────── */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html { scroll-padding-top: 80px; }
+/* Anchor jumps glide only for readers who have not asked for less motion (A11Y-14). */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 /* Stop mobile text autosizing (2026-08-29). iOS Safari and Chrome Android inflate text
    inside a block WIDER THAN THE VIEWPORT — "font boosting" — and the default is `auto`,
    which this stylesheet had never overridden. The announce ticker is exactly that shape:
@@ -642,25 +645,13 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   line-height: 1.15;
 }
 
-/* Section heading + dek scroll reveal — subtle fade + rise. Shares the
-   [data-reveal] IntersectionObserver in site.js (adds .is-revealed). Dek trails
-   the heading by 70ms so the pair reads top-down. Entering → ease-out curve. */
-.h-section[data-reveal],
-.section-dek[data-reveal] {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.h-section[data-reveal].is-revealed,
-.section-dek[data-reveal].is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity var(--dur-panel) var(--ease-reveal), transform var(--dur-panel) var(--ease-reveal);
-}
-.section-dek[data-reveal].is-revealed { transition-delay: 70ms; }
-@media (prefers-reduced-motion: reduce) {
-  .h-section[data-reveal],
-  .section-dek[data-reveal] { opacity: 1; transform: none; }
-}
+/* [data-reveal] scroll reveal. Visible by default (2026-10-12 audit, MOTION-03): site.js
+   adds .rv-pre only to elements that start below the fold, and swaps it for .is-revealed
+   when they scroll in, so nothing is ever hidden without JS, above the fold, or under
+   reduced motion. Same distance, duration and curve as the front-door rise ([data-fd]).
+   capital.tisglobalinc.com styles its own [data-reveal] blocks and keys on .is-revealed. */
+[data-reveal] { transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal); }
+[data-reveal].rv-pre { opacity: 0; transform: translateY(16px); }
 
 /* ───────── Top nav ───────── */
 .topnav {
@@ -1021,7 +1012,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 }
 .mega-hero__arrow {
   width: 15px; height: 15px; flex: none;
-  stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-out);
 }
 .mega-hero__d {
@@ -1047,7 +1038,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .mega-arrow {
   flex: none; margin-left: auto;
   width: 16px; height: 16px;
-  stroke: currentColor; fill: none; stroke-width: 1.6;
+  stroke: currentColor; fill: none; stroke-width: 1.5;
   stroke-linecap: round; stroke-linejoin: round;
   opacity: 0; transform: translateX(-6px);
   transition: opacity var(--dur-base) linear, transform var(--dur-base) var(--ease-out);
@@ -1125,7 +1116,9 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   padding: 6px 0 18px;
   border-bottom: 1px solid var(--border-primary);
 }
-.mobile-sublist[data-open="true"] { display: flex; }
+.mobile-sublist[data-open="true"] { display: flex; animation: mobile-sub-in var(--dur-base) var(--ease-out); }
+/* The group opens with the chevron instead of snapping beside it (MOTION-13). */
+@keyframes mobile-sub-in { from { opacity: 0; transform: translateY(-4px); } }
 .mobile-list .mobile-sub-link {
   display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px;
   min-height: 44px;
@@ -2282,12 +2275,6 @@ main { padding-top: 64px; }
    and neon next to the amber's warmer core; a step deeper plus the glow reads
    solid without changing the pulse rhythm. */
 .ticker-pulse--signal { box-shadow: 0 0 6px rgba(2, 132, 199, 0.85); }
-/* Stop the halo pulsing. Must sit after the base ::before above: both are (0,1,0)
-   plus a pseudo-element, so source order decides, and declared up with the other
-   reduced-motion rules it lost and the halo kept animating. */
-@media (prefers-reduced-motion: reduce) {
-  .ticker-pulse::before { animation: none; }
-}
 /* Inverted bar (dark theme): #0284C7 is only ~3.9:1 on near-white, so the dot
    steps down to #0A72B0 (5.19:1). The glow is dropped rather than dimmed — a
    glow only reads as a glow on a dark ground; on a light one it is a smudge. */
@@ -2449,10 +2436,6 @@ main { padding-top: 64px; }
   transform: scale(1.08);
   transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
   will-change: transform, opacity;
-}
-/* Reduced motion — no zoom in or out; image just shows. */
-@media (prefers-reduced-motion: reduce) {
-  .report-card-media { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .report-carousel-track { scroll-behavior: auto; }
@@ -2616,7 +2599,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   flex: none; margin-top: calc((1.45em - 15px) / 2);
   width: 15px; height: 15px;
   stroke: var(--text-tertiary); fill: none;
-  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
   transition: stroke var(--dur-fast) linear;
 }
 .footer-col a:hover .footer-ico { stroke: var(--text-primary); }
@@ -3203,10 +3186,6 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
 }
 .contact-meta a:focus-visible::after,
 .contact-email:focus-visible::after { transform: scaleX(1); }
-@media (prefers-reduced-motion: reduce) {
-  .contact-meta a::after,
-  .contact-email::after { transition: none; }
-}
 /* The meta is 1-up on phones (see the <=880px block). It sits under the form on its
    own flat ground rather than inside the intro column, so it has the full card width
    to work with.
@@ -3562,8 +3541,14 @@ svg.is-primed polyline {
 }
 
 /* ───────── Reduced motion ───────── */
+/* One global switch: movement off. Per-component reduce blocks exist only where the end
+   state differs (MOTION-16). Overlays and the KV cross-fade keep a short opacity fade, which
+   is not motion, so the drawer, search, dialogs and slides no longer pop. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+  :is(.mobile-drawer, .mobile-overlay, .search-modal, .search-overlay, .lgl-overlay, .mega-panel, .kv__media) {
+    transition-property: opacity, visibility !important; transition-duration: var(--dur-base) !important;
+  }
 }
 
 /* ───────── Skip link ───────── */
@@ -3863,7 +3848,7 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
 
    §Modal has been specced since the component system was written and was never
    built here: the site carries six bespoke overlays (.search-modal, .mobile-drawer,
-   .mkt-overlay, .pat-modal, .sig-xpanel, #lang-overlay) and no shared dialog at all.
+   .mkt-overlay, .pat-modal, .sig-xpanel) and no shared dialog at all.
    Terms / Privacy / Disclosures open from the footer of all 8 pages, so by DESIGN.md
    §0.3 this is reusable by definition and belongs here rather than in 8 page-local
    <style> blocks.
@@ -3889,7 +3874,9 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
   -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   animation: lgl-overlay-in var(--dur-base) linear;
 }
-.lgl-overlay[data-open="true"] { display: flex; }
+.lgl-overlay[data-open="true"], .lgl-overlay[data-open="closing"] { display: flex; }
+.lgl-overlay[data-open="closing"] { animation: lgl-overlay-out var(--dur-base) var(--ease-out) both; }
+@keyframes lgl-overlay-out { to { opacity: 0; } }
 @keyframes lgl-overlay-in { from { opacity: 0; } to { opacity: 1; } }
 
 .lgl-dialog {
@@ -4166,7 +4153,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-form .input::placeholder { color: var(--text-quaternary); }
 .mkt-cta { flex: none; height: 44px; padding: 0 16px; gap: 8px; font-size: 12px; border: 0; cursor: pointer; }
 .mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
-.mkt-cta:hover svg { transform: translateX(2px); }
+@media (hover: hover) and (pointer: fine) { .mkt-cta:hover svg { transform: translateX(3px); } }
 .mkt-fine { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
 .mkt-fine a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
 
@@ -4269,37 +4256,11 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-success .seal svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .mkt-success h3 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 0; }
 
-@media (prefers-reduced-motion: reduce) {
-  .mkt-card, .mkt-img, .mkt-main, .brand-select-menu { animation: none; }
-}
 
-/* ───────── Language toggle overlay — Shimmer cube
-   Plays on user EN<->ZH swap as a brand-mark transition. Skipped on
-   first paint and when prefers-reduced-motion: reduce. The overlay
-   uses theme tokens so it works in light + dark; cube fill follows
-   currentColor (= var(--text-primary)). ───── */
-#lang-overlay {
-  position: fixed; inset: 0; z-index: 999;
-  display: grid; place-items: center;
-  background: var(--surface-page);
-  color: var(--text-primary);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-base) linear;
-}
-#lang-overlay[data-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
-}
-#lang-cube {
-  width: clamp(44px, 7.2vmin, 70px);
-  aspect-ratio: 1;
-}
-#lang-cube svg { width: 100%; height: 100%; display: block; }
-#lang-cube polygon { fill: currentColor; stroke: currentColor; }
-@media (prefers-reduced-motion: reduce) {
-  #lang-overlay { display: none; }
-}
+/* ───────── Language swap — the page content dips for ~100ms while site.js swaps the
+   text (MOTION-11). The chrome stays put; nothing blocks input. ───── */
+main, .footer { transition: opacity 100ms var(--ease-out); }
+.lang-swapping main, .lang-swapping .footer { opacity: 0.35; }
 
 /* ═════════════════════════════════════════════════════════════════════
    Page state — the veil            (DESIGN.md §17)
@@ -4324,7 +4285,7 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
 /* z-index 95 is the only free band. It covers everything inside <main> — the
    licensing page lifts its announce bar to 90 — while leaving every chrome
    overlay above it: .topnav 100, .mobile-drawer 700, .search-modal 900,
-   .mkt-overlay 600, #lang-overlay 999, .lgl-overlay 1100. The nav staying usable is deliberate:
+   .mkt-overlay 600, .lgl-overlay 1100. The nav staying usable is deliberate:
    a sealed page with no nav traps the visitor, and the language toggle lives
    there, so covering it would leave a ZH reader stuck in English.
 
@@ -4907,9 +4868,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   /* Lift the resting shadow into a soft warm-tinted glow for the showcase. */
   box-shadow:0 18px 48px -12px rgba(0,0,0,0.18), 0 6px 16px rgba(0,0,0,0.08);
 }
-.badge-stage .seal-pill.badge-tilt:hover{
+@media (hover: hover) and (pointer: fine) { .badge-stage .seal-pill.badge-tilt:hover{
   box-shadow:0 32px 70px -14px rgba(0,0,0,0.28), 0 12px 28px rgba(0,0,0,0.14);
-}
+} }
 
 /* Specular sheen — a soft moving highlight clipped to the pill. JS updates
    --sx/--sy to the cursor position; an idle keyframe drifts it at rest. */
@@ -4994,12 +4955,12 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   content: ""; position: absolute; inset: 0; z-index: -2;
   background-size: cover; background-repeat: no-repeat; background-position: center;
   transform-origin: center;
-  opacity: 0;
-  transform: rotate(var(--img-rot)) scale(1.08);
+  transform: rotate(var(--img-rot)) scale(1);
   transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
-  will-change: transform, opacity;
 }
-.offer-card.is-in::before { opacity: 1; transform: rotate(var(--img-rot)) scale(1); }
+/* Visible by default; only a below-the-fold card waits for its reveal (MOTION-03), and only
+   that card holds a compositor layer meanwhile (MOTION-23). */
+.offer-card.rv-pre::before { opacity: 0; transform: rotate(var(--img-rot)) scale(1.08); will-change: transform, opacity; }
 .offer-card--reports::before   {
   background-image: url('/assets/imagery/coremap/reports.jpg');
   background-image: image-set(url('/assets/imagery/coremap/reports-800.webp') type('image/webp'),
@@ -5120,12 +5081,12 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .offer-card-more svg {
   width: 16px; height: 16px; stroke: currentColor; fill: none;
-  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-reveal);
 }
 @media (hover: hover) and (pointer: fine) {
   .offer-card:hover { box-shadow: var(--shadow-high); transform: translateY(-2px); }
-  .offer-card:hover .offer-card-more svg { transform: translateX(4px); }
+  .offer-card:hover .offer-card-more svg { transform: translateX(3px); }
   /* Hover zoom — scales the image up from its settled rest (1 → 1.06). Gated on
      .is-in so it never fights the entry reveal, and composed with --img-rot. */
   .offer-card.is-in:hover::before { transform: rotate(var(--img-rot)) scale(1.06); }
@@ -5410,10 +5371,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 /* Source crops: Jackson sits small in his circle; Steven's circle sits in a grey box. */
 .fd-board__img--jackson { transform: scale(1.213) translateY(-3%); }
 .fd-board__img--steven { transform: scale(1.1); }
-@media (hover: hover) { .fd-board__p:hover img { filter: none; } }
+@media (hover: hover) and (pointer: fine) { .fd-board__p:hover img { filter: none; } }
 .fd-board__p:focus-within img { filter: none; }
 @media (hover: none) { .fd-board__c img { filter: none; } }
-@media (prefers-reduced-motion: reduce) { .fd-board__c img { transition: none; } }
 .fd-board__t { display: grid; gap: 4px; min-width: 0; }
 .fd-board__t b { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; color: var(--text-primary); }
 .fd-board__role { font-size: 14px; line-height: 1.4; color: var(--text-secondary); }
@@ -5435,11 +5395,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
      unconditionally, matching .h-section[data-reveal] in styles.css and the
      block this replaced: with JS off the section stays hidden. Site-wide
      behaviour, not this page's to change. ── */
-.ab [data-reveal] { opacity: 0; transform: translateY(14px); }
-.ab [data-reveal].is-revealed {
-  opacity: 1; transform: none;
-  transition: opacity var(--dur-panel) var(--ease-reveal), transform var(--dur-panel) var(--ease-reveal);
-}
+/* (.ab [data-reveal] now uses the shared visible-by-default rule above.) */
 @media (prefers-reduced-motion: reduce) {
   .ab [data-reveal] { opacity: 1; transform: none; }
 }
@@ -5732,9 +5688,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .eco-dial__t { font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--dial-on); text-wrap: balance; }
 .eco-dial__d { font-size: 13px; line-height: 1.45; color: var(--dial-mute); }
 
-@media (prefers-reduced-motion: reduce) {
-  .eco-dial__s, .eco-dial__needle, .eco-dial__bracket, .eco-dial__tip, .eco-dial__pillar, .eco-dial__link, .eco-dial__link::before { transition: none; }
-}
 
 /* ── Narrow: no dial (the partner cards need the corners beside the rim). The stage stays
       on the page ground; makers, contract, hub, pillars, partners stack top-down. ── */
@@ -6075,9 +6028,12 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   width: fit-content; justify-self: start; align-self: flex-start;   /* hit area hugs the label */
   font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
 }
-.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
-.fd-link:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-.fd-link:hover svg { transform: translateX(4px); }
+.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
+/* One inline-link recipe (MOTION-06): underline at 4px offset, arrow 3px on --dur-base,
+   mirrored on keyboard focus. */
+.fd-link:is(:hover, :focus-visible) span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.fd-link:focus-visible svg { transform: translateX(3px); }
+@media (hover: hover) and (pointer: fine) { .fd-link:hover svg { transform: translateX(3px); } }
 
 /* ── Statement — one sentence, set large, with its support to the side. ── */
 .fd-statement {
@@ -6461,14 +6417,15 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 38%);
   mask-image: linear-gradient(90deg, transparent 0%, black 38%);
   filter: grayscale(1) contrast(1.04);
-  transition: filter var(--dur-reveal) var(--ease-out), transform var(--dur-media) var(--ease-out);
+  /* A hover, so interface timing: filter on a large photo is paint-heavy (MOTION-17). */
+  transition: filter var(--dur-panel) var(--ease-out), transform var(--dur-panel) var(--ease-out);
   transform-origin: 100% 50%;
 }
 /* Dark theme: Lane A's pale sky would glow as a white slab on the dark card. */
 [data-theme="dark"] .fd-lane--img:not(.fd-lane--ink) .fd-ph__img { filter: grayscale(1) brightness(0.6); }
 .fd-lane--img .fd-lane__t { max-width: 12ch; }
 .fd-lane--img .fd-lane__d { max-width: 30ch; }
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .fd-lane--img:hover .fd-ph__img { filter: grayscale(0) contrast(1); transform: scale(1.03); }
   [data-theme="dark"] .fd-lane--img:not(.fd-lane--ink):hover .fd-ph__img { filter: grayscale(0) brightness(0.72); }
 }
@@ -6532,7 +6489,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .fd-partner-link { display: inline-flex; align-items: center; gap: 7px; color: var(--text-primary); text-decoration: none; }
 .fd-partner-link svg {
   width: 15px; height: 15px; flex: none; stroke: var(--text-secondary); fill: none;
-  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-out), stroke var(--dur-base) var(--ease-out);
 }
 .fd-partner-link:hover b, .fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
@@ -6726,7 +6683,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .kv[data-playing] .kv__tab[aria-selected="true"]::before { animation: kv-fill var(--kv-dwell) linear both; }
 .kv[data-playing="paused"] .kv__tab[aria-selected="true"]::before { animation-play-state: paused; }
 @keyframes kv-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@media (hover: hover) { .kv__tab:hover { color: #FFFFFF; } }
+@media (hover: hover) and (pointer: fine) { .kv__tab:hover { color: #FFFFFF; } }
 .kv__tab:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); border-radius: 4px; }
 /* Pause / play (WCAG 2.2.2). 44px target; the icon's centre sits on the tab labels' line. */
 .kv__pause {
@@ -6738,7 +6695,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .kv__pause svg { width: 14px; height: 14px; fill: currentColor; }
 .kv__play-i, .kv__pause[data-stopped] .kv__pause-i { display: none; }
 .kv__pause[data-stopped] .kv__play-i { display: block; }
-@media (hover: hover) { .kv__pause:hover { color: #FFFFFF; } }
+@media (hover: hover) and (pointer: fine) { .kv__pause:hover { color: #FFFFFF; } }
 .kv__pause:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); }
 
 /* Phone: one slide at a time, so the KV is as tall as the slide in view, not the tallest
@@ -6746,6 +6703,10 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    control either. Changing slide is the reader's own tap, so the reflow is expected. */
 @media (max-width: 768px) {
   .kv__slide:not(.is-active) { display: none; }
+  /* Copy and photo change together on phones: a short entrance on the new slide, and the
+     photo cross-fade cut to match (MOTION-18). */
+  .kv__slide.is-active { animation: kv-slide-in var(--dur-base) var(--ease-out); }
+  .kv__media { transition-duration: var(--dur-base); }
   /* Tabs ride the top of the hero, copy the foot. With the tabs under a slide of variable
      height, slide 3 pushed them ~160px under the finger that had just tapped one. */
   .kv { grid-template-rows: auto minmax(0, 1fr); }
@@ -6879,9 +6840,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   /* A slide change: its photograph settles behind the copy. */
   .kv__media.is-active .fd-ph__img { animation: fd-settle 6000ms var(--ease-out) both; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .kv__media, .kv__slide, .kv__slide.is-active { transition: none; }
-}
 
 .fd-links { display: flex; flex-wrap: wrap; gap: 0 28px; margin: 0; }
 
@@ -6906,8 +6864,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   --pt-ch-gap: clamp(20px, 2.4vw, 36px);
   /* motion: open slower than close; the drawer curve settles, ease-out answers */
   --pt-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --pt-open: 420ms;
-  --pt-close: 240ms;
+  --pt-open: var(--dur-panel);   /* disclosures on the shared scale (MOTION-12/13) */
+  --pt-close: var(--dur-base);
   --pt-stagger: 45ms;
 }
 
@@ -7219,26 +7177,31 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    IntersectionObserver exists. Without JS, with reduced motion, or in a headless
    render, every block is simply there.
    ═════════════════════════════════════════════════════════════════════════ */
-@keyframes fd-rise { from { opacity: 0; transform: translateY(18px); } }
+/* One reveal recipe site-wide (MOTION-02): 16px rise, --dur-reveal on --ease-reveal, 70ms
+   stagger. The hero, which a reader sees on every navigation, is a short 8px fade instead
+   (MOTION-17). */
+@keyframes fd-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes fd-hero-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes kv-slide-in { from { opacity: 0; } }
 @keyframes fd-settle { from { transform: scale(1.06); } }
 @media (prefers-reduced-motion: no-preference) {
-  .fd-hero__head { animation: fd-rise var(--dur-reveal) var(--ease-out) both; }
-  .fd-hero__band { animation: fd-rise var(--dur-reveal) var(--ease-out) 80ms both; }
+  .fd-hero__head { animation: fd-hero-in var(--dur-panel) var(--ease-out) both; }
+  .fd-hero__band { animation: fd-hero-in var(--dur-panel) var(--ease-out) 60ms both; }
 
-  [data-fd="rise"] { transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
-  [data-fd="rise"].fd-pre { opacity: 0; transform: translateY(18px); }
+  [data-fd="rise"] { transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal); }
+  [data-fd="rise"].fd-pre { opacity: 0; transform: translateY(16px); }
 
   [data-fd="list"] > * {
-    transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+    transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
     transition-delay: calc(var(--fd-i, 0) * 70ms);
   }
-  [data-fd="list"].fd-pre > * { opacity: 0; transform: translateY(14px); }
+  [data-fd="list"].fd-pre > * { opacity: 0; transform: translateY(16px); }
 
-  [data-fd="clip"] { transition: clip-path var(--dur-media) var(--ease-out); }
+  [data-fd="clip"] { transition: clip-path var(--dur-reveal) var(--ease-reveal); }
   [data-fd="clip"].fd-pre { clip-path: inset(6% 6% 6% 6% round 20px); }
 
   /* The stair: the steps rise in turn, a little further than a list, timed as the old rail. */
-  .fd-stair__steps > * { transition-delay: calc(200ms + var(--fd-i, 0) * 90ms); }
+  .fd-stair__steps > * { transition-delay: calc(120ms + var(--fd-i, 0) * 70ms); }
   .fd-stair__steps.fd-pre > * { transform: translateY(24px); }
 }
 
@@ -7260,6 +7223,11 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   outline: 1px solid var(--edge-window); outline-offset: -1px;
 }
 [data-theme="dark"] :is(.fd-hero, .hero) { box-shadow: 0 1px 0 var(--edge-window); }
+/* Light theme: the same window edge in ink, so pale photographs (workbench, gimbal strip,
+   sky lane) keep their frame on the white page (MOTION-20). */
+[data-theme="light"] :is(.fd-ph--img, .fd-tile, .ptray__media, .fd-strip__ph, .fd-platform__shot img) {
+  outline: 1px solid var(--edge-photo); outline-offset: -1px;
+}
 /* Page grid: the light rule draws ink lines at 0.024, which vanish on graphite. */
 [data-theme="dark"] body::before {
   background-image:
@@ -7507,4 +7475,3 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .psg-pil__n { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* the dots carry the count */
   .psg-ind th + th, .psg-ind td + td { padding-left: 16px; }
 }
-@media (prefers-reduced-motion: reduce) { .psg-nav__btn { transition: none; } }

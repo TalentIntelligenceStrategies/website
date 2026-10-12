@@ -1137,16 +1137,23 @@ their own literal durations.
 
 ### 10.2 What moves, and where
 
+**One reveal recipe** (2026-10-12): 16px rise, `--dur-reveal` on `--ease-reveal`, 70ms stagger,
+the same observer threshold everywhere; the page hero is a short 8px fade at `--dur-panel`
+because a reader sees it on every navigation. Reveal targets are chosen per component type
+(every card grid is a staggered list), not per page. Transform and shadow hovers live inside
+`@media (hover: hover) and (pointer: fine)`; colour-only hovers may stay ungated. Under
+reduced motion movement is off but overlays and the KV keep a short opacity fade, and
+anchor jumps and Lenis do not glide. A theme flip suppresses transitions for one frame.
+
 | Motion | Where | Owner | Reduced motion |
 |---|---|---|---|
 | Front-door reveals: `rise`, `list` (stagger via `--fd-i`), `clip` | every front-door page | `site.js` "Front door v2" sets `[data-fd]` + `.fd-pre` only below the fold | nothing is hidden |
 | Figure count-up | `.fd-figures b` | `site.js` `fdCount` (`COUNT_MS` 1200, linear) | static number |
-| `[data-reveal]` fade-rise | Signal, AUSA, and capital.tisglobalinc.com | `site.js` scroll-reveal | resolved state |
-| Offer-card image settle | Signal report cards | `site.js` offer-card reveal | resolved state |
+| `[data-reveal]` fade-rise and offer-card photo settle | Signal, AUSA, and capital.tisglobalinc.com | `site.js` scroll-reveal: visible by default, `.rv-pre` only below the fold, then `.is-revealed` / `.is-in` | resolved state |
 | Home KV carousel | `index.html` | `site.js` KV block: 7s dwell, pauses on hover / focus / off-screen / hidden tab, stop button; no autoplay on phones | no rotation |
 | Pillar tray disclosure | Home | `site.js` + `.ptray` (`--pt-open` / `--pt-close`) | instant |
 | Mega panels, drawer, search, legal dialog, newsletter popup | chrome | CSS transitions on `--dur-base` / `--dur-panel` | opacity only |
-| Language swap veil | every page | `#lang-overlay` | swap without the veil |
+| Language swap | every page | `.lang-swapping` dips `main` and the footer to 0.35 for ~100ms around the text swap (the 2.2s brand-cube veil was removed 2026-10-12) | instant swap |
 | Smooth scroll | desktop fine pointers | Lenis (`assets/build/lenis.js`, lazy) | off |
 | ScrollTrigger timeline | `product/licensing/` (sealed) | GSAP | reduced branch required |
 
