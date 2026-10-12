@@ -937,7 +937,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   border: 0; border-radius: var(--r-sm); background: transparent; color: var(--text-secondary);
   opacity: 0; cursor: pointer;
 }
-.nav-sub:focus-visible, .nav-sub[aria-expanded="true"] { opacity: 1; }
+.nav-sub:focus-visible { opacity: 1; }   /* keyboard only: never shown when a panel opens on hover */
 .nav-sub svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 .nav-sub[aria-expanded="true"] svg { transform: rotate(180deg); }
 /* Current section (components.md §Top nav · Current section): the open-state underline
