@@ -913,7 +913,7 @@
   // ──────────────── Home v0.5 — KV carousel (APG tabbed carousel) ────────────────
   // styles.css "HOME v0.5" owns the looks. Arrow keys, Home and End move between the tabs.
   // Timing (hero round 2, 2026-10-11; replaces 2026-10-01's "never rotates"): on desktop
-  // (>760px, no reduced motion) the KV advances every DWELL ms and loops; the active tab's
+  // (>768px, no reduced motion) the KV advances every DWELL ms and loops; the active tab's
   // rule fills over the same span (CSS, keyed on data-playing). It pauses while the pointer
   // is over it, focus is inside it, it is off-screen or the tab is hidden, and it STOPS for
   // good once the reader picks a slide (click, key, swipe) or presses pause, which is the
@@ -939,7 +939,7 @@
 
     // ── timer ──
     const DWELL = 7000;   // = --kv-dwell in styles.css
-    const desktop = matchMedia('(min-width: 761px)');
+    const desktop = matchMedia('(min-width: 769px)');
     const calm = matchMedia('(prefers-reduced-motion: reduce)');
     let timer = null, startedAt = 0, left = DWELL;
     let stopped = false;                         // the reader took over: never resume on our own
