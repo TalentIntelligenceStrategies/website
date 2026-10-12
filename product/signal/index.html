@@ -41,7 +41,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=88">
+<link rel="stylesheet" href="/assets/build/styles.css?v=89">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -631,13 +631,13 @@
     </div>
     <div class="container"><div class="fd-ph fd-ph--img fd-hero__band" style="--fd-pos-m:53% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/signal-hero-400.webp 400w, /assets/imagery/uv/signal-hero-800.webp 800w, /assets/imagery/uv/signal-hero-1376.webp 1376w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/signal-hero.jpg" alt="" width="1376" height="768" fetchpriority="high" decoding="async"></picture></div></div>
   </section>
-  </div>
 
-  <!-- ── 2 · Reports — two value-cards (offerings pattern). Snapshot retired 2026-10-06 (team review). ── -->
-  <section class="section offerings" id="reports" aria-labelledby="reports-heading">
+  <!-- ── 2 · Reports — two value-cards. Snapshot retired 2026-10-06 (team review). On the
+       front-door rhythm since 2026-10-12 (audit SPACE-09): fd-section + the split fd-head,
+       instead of the legacy .section / .h-section stack. ── -->
+  <section class="fd-section" id="reports" aria-labelledby="reports-heading">
     <div class="container">
-      <h2 id="reports-heading" class="h-section" data-reveal data-zh="兩種報告。">Two reports.</h2>
-      <p class="section-dek" data-reveal data-zh-html data-zh="同一件專利，兩種視角：<br>評級背後的佐證，以及它所處的場域。">One patent, two frames:<br>the evidence behind its grade, and the field around it.</p>
+      <div class="fd-head"><h2 class="fd-h2" id="reports-heading" data-zh="兩種報告。">Two reports.</h2><p class="fd-lead" data-zh="同一件專利，兩種視角：評級背後的佐證，以及它所處的場域。">One patent, two frames: the evidence behind its grade, and the field around it.</p></div>
       <div class="offerings-grid offerings-grid--2">
 
         <!-- Both cards (three until Snapshot was retired, 2026-10-06) carry the same price treatment: .offer-card-price, a composed
@@ -693,7 +693,6 @@
                    retrieve bar above it was removed 2026-10-11; it had no backend).
                    data-source="patent-strength-grading"; site.js folds the request fields into the message line, because the Front Desk
                    sheet's contact tab has fixed columns. ── -->
-  <div class="ab">
   <section class="fd-section psg" id="method" aria-labelledby="method-heading">
     <div class="container">
       <div class="fd-head"><h2 class="fd-h2" id="method-heading" data-zh="評級是怎麼算出來的。">How the grade is calculated.</h2><p class="fd-lead" data-zh="50 項指標、八大支柱、一個 0–100 分的總分，以及 S 到 D 的評級。每一步都能追溯回一個可查核的數字。">50 indicators, eight pillars, one 0–100 score, and a grade from S to D. Every step traces back to a number you can check.</p></div>
@@ -1102,7 +1101,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=42" defer></script>
+<script src="/assets/build/site.js?v=43" defer></script>
 
 <!-- Request form routing (PRD v0.7 F-ROUTE / §8.2.1). The patent status picks which input
      shows and gates the report: a full PSS ranking needs a published patent's citation,

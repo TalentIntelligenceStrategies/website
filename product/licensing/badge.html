@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=88">
+<link rel="stylesheet" href="/assets/build/styles.css?v=89">
 
 <style>
   /* Page-scoped scaffolding — #display 4-up image row (one per display surface).
@@ -714,9 +714,11 @@
               <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述您的需求…"></textarea>
               <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
             </div>
+            <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
             </div>
+            <p class="form-fine"><span data-zh="我們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </form>
 
           <div class="contact-success" id="contact-success" role="status" aria-live="polite">
@@ -818,7 +820,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=42" defer></script>
+<script src="/assets/build/site.js?v=43" defer></script>
 
 </body>
 </html>

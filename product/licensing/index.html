@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=88">
+<link rel="stylesheet" href="/assets/build/styles.css?v=89">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -544,8 +544,9 @@ body, .section p, .faq-list .acc-content p {
   max-width: var(--tis-copy-max-width);
 }
 
-/* Button typography — Stripe ctaFont = 425/15px/1.6, applied in Urbanist 500. */
-.btn, .btn-primary, .btn-secondary {
+/* Button typography — Stripe ctaFont = 425/15px/1.6, applied in Urbanist 500. Not inside
+   the shared contact form, which keeps the site's button so every form matches (POP-12). */
+:is(.btn, .btn-primary, .btn-secondary):not(.contact-form *) {
   font-weight: 500;
   font-size: 15px;
   line-height: 1.6;
@@ -2776,9 +2777,11 @@ a, button, .howit-card, .acc-trigger, .btn {
               <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述您的需求…"></textarea>
               <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
             </div>
+            <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
             </div>
+            <p class="form-fine"><span data-zh="我們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </form>
 
           <div class="contact-success" id="contact-success" role="status" aria-live="polite">
@@ -2885,7 +2888,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=42" defer></script>
+<script src="/assets/build/site.js?v=43" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.

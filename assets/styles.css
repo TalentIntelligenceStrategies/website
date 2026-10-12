@@ -267,6 +267,15 @@ picture { display: contents; }
   /* Focus ring — §5: 2px at 2px (3px on image-backed cards). */
   --focus-w:   2px;
   --focus-off: 2px;
+  /* One page grid for every two-column split (2026-10-12 audit, SPACE-01): text or heading
+     left, aside right, so every right-hand column starts on the same edge as the hero's. */
+  --fd-split:     minmax(0, 7fr) minmax(0, 5fr);
+  --fd-split-rev: minmax(0, 5fr) minmax(0, 7fr);   /* only where an image takes the larger cell */
+  --fd-split-gap: clamp(32px, 5vw, 96px);
+  /* Padding inside every ruled-frame cell, tray and tile (SPACE-03): heads included, so a
+     head and its cells share one inner edge. The ink lane is the one larger step. */
+  --fd-cell:    clamp(24px, 2.4vw, 36px);
+  --fd-cell-lg: clamp(28px, 3.2vw, 48px);
 }
 
 /* ───────── Tokens — dark (homepage-scope, not yet in design-tokens.md) ───────── */
@@ -2451,6 +2460,9 @@ main { padding-top: 64px; }
   text-decoration: none;
 }
 .nf-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (min-width: 641px) {
+  .nf-list li { display: grid; grid-template-columns: 12rem minmax(0, 1fr); column-gap: 24px; }
+}
 .nf-list li > span {
   font-size: 15px;
   line-height: 1.5;
@@ -2479,12 +2491,12 @@ main { padding-top: 64px; }
 @media (max-width: 980px) {
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
 }
-/* Homepage only: inset the footer block so it lines up with the contact card's
-   panel padding directly above it (clamp matches .contact-overlay). Column gaps
-   are unchanged — only the whole block shifts inward equally on both sides. */
-body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
+/* Every page that ends in the contact card: inset the footer block so it lines up with
+   the card's panel padding directly above it (clamp matches .contact-overlay). The
+   baseline hairline below takes the same inset, so columns and rule share one edge. */
+body:has(.contact-card) .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 @media (max-width: 980px) {
-  body[data-page="home"] .footer-grid { padding-inline: 0; }
+  body:has(.contact-card) .footer-grid { padding-inline: 0; }
 }
 /* Homepage: copyright is its own compact final line BELOW the footer — a separate
    band continuing the footer surface, so the footer's own spacing stays untouched.
@@ -2493,13 +2505,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   background: var(--surface-secondary);
 }
 .footer-baseline .footer-copy {
-  margin-inline: clamp(32px, 4vw, 56px);
   padding-block: 20px;
   border-top: 1px solid var(--border-primary);
   text-align: center;
 }
+body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32px, 4vw, 56px); }
 @media (max-width: 980px) {
-  .footer-baseline .footer-copy { margin-inline: 0; }
+  body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: 0; }
 }
 /* Footer co-branded lockup — visual-guide.md §Co-Branded Lockup */
 .footer-logo-row {
@@ -2803,7 +2815,9 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   overflow: hidden;
   display: grid;
   grid-template-columns: 5fr 6fr;
-  margin-block: var(--space-section);  /* gap above/below matches every other section */
+  /* Above: the section's own full step. Below: half a front-door step before the footer
+     (SPACE-20), so the page's largest block does not close on its smallest gap. */
+  margin-block: var(--space-section) clamp(40px, 5vw, 76px);
   border-radius: var(--r-frame);
   background: #000;                    /* matches venture.jpg's pure-black background */
   box-shadow: var(--shadow-medium);
@@ -2865,10 +2879,12 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
    child now carries a measure in its own type size, so both scale correctly. */
 .contact-overlay-top { max-width: none; }
 .contact-overlay h2 {
-  font-size: clamp(28px, 3.2vw, 44px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  /* The same h2 as every section above it (TYPE-03): size, weight, tracking, balance. */
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
   line-height: 1.1;
+  text-wrap: balance;
   margin: 0 0 16px;
   color: #FFFFFF;
   max-width: 20ch;              /* measured in the heading's own type, so it scales */
@@ -2879,11 +2895,10 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: rgba(255,255,255,0.82);
   margin: 0;
 }
-/* 15.483rem == the 247.728px the lead used to inherit from the block's 26ch of
-   16px text. Pinned in rem, not ch, because the lead's own size is a vw clamp —
-   a ch measure here would drift with viewport and re-wrap every "Get in touch."
-   lead on the seven other pages that share this component. */
-.contact-overlay-top .contact-lead { max-width: 15.483rem; }
+/* A reading measure, not the old 248px pin that broke every lead into 3-4 short lines
+   (TYPE-15). Pretty in English, balance in Chinese (no stranded 協/議). */
+.contact-overlay-top .contact-lead { max-width: 36ch; text-wrap: pretty; }
+[lang="zh-Hant"] .contact-overlay-top .contact-lead { text-wrap: balance; }
 /* Three tracks for two columns of content. The third is a slack absorber, and it is
    what makes the layout hold: the two full-width rows (office hours, address) span
    1 / -1, and a spanning item contributes its width to every track it crosses. With
@@ -3209,6 +3224,11 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   /* Superseded 2026-10-06: the photo now runs under the whole stacked card, so the
      panel no longer butts into neighbours. It insets 12px and rounds all four corners. */
   .contact-panel { align-self: stretch; margin: 0 12px; border-radius: var(--r-inner); }
+}
+/* Phones: card, panel inset and panel padding stacked to 116px of a 320px screen (MOB-03).
+   The panel meets the card edge and keeps one 20px inset, so inputs get ~280px at 320. */
+@media (max-width: 560px) {
+  .contact-panel { margin: 0; padding: 20px; border-radius: 0; box-shadow: none; }
 }
 .contact-form {
   display: flex; flex-direction: column; gap: 18px;
@@ -5321,7 +5341,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .fd-board {
   position: relative; list-style: none;
   margin: -76px 0 0; padding: 0 clamp(12px, 1.4vw, 20px);   /* = the strip's --ride (a sibling, so not inherited) */
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
 }
 .fd-board__p {
   display: flex; align-items: center; gap: 16px; min-width: 0; min-height: 152px;
@@ -5356,7 +5376,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-board { margin-top: -48px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fd-board__p { min-height: 0; padding-block: 16px; }
 }
-@media (max-width: 480px) { .fd-board { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .fd-board { grid-template-columns: 1fr; padding-inline: 0; } }
 
 /* ── Reveals. site.js adds .is-revealed via IntersectionObserver. Gated
      unconditionally, matching .h-section[data-reveal] in styles.css and the
@@ -5756,7 +5776,6 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   /* Spacing scale (brand/design-tokens.md §7.2, 2026-10-12): fixed steps on the 4px grid,
      plus the fluid roles every front-door block shares. */
   --fd-s1: 8px;  --fd-s2: 12px;  --fd-s3: 16px;  --fd-s4: 24px;  --fd-s5: 32px;
-  --fd-cell:     clamp(24px, 2.4vw, 36px);   /* padding inside a frame cell, tray, tile */
   --fd-head-gap: clamp(32px, 4vw, 56px);     /* section heading → its content */
 }
 
@@ -5836,8 +5855,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-hero__aside > .fd-hero__meta { margin-bottom: var(--fd-hero-gap); color: var(--text-secondary); }
 
 .fd-hero__head {
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(32px, 5vw, 96px); align-items: start;
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: var(--fd-split-gap); align-items: start;
   padding-top: var(--fd-hero-pad);
 }
 /* 34px floor = DESIGN.md §2's measured phone hero floor (ZH clears 320px). The 56px
@@ -5888,7 +5907,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-hero__band {
   margin-top: var(--fd-hero-pad);
   aspect-ratio: 3 / 1; max-height: 480px; width: 100%;
-  border-radius: var(--r-inner);
+  border-radius: var(--r-frame);
 }
 .fd-hero__band.fd-ph--img .fd-ph__img { object-position: 50% 50%; filter: saturate(0.86); }
 /* Caption plate (Sustain #problem, About #who; mock E, 2026-10-11): a plate fixed to the
@@ -5897,13 +5916,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    one step under the hero sub: statement at the sub's size but weight 500, aside 14px
    secondary, scope rows 13px labels, so the caption never outranks the hero copy. */
 .fd-hero__fig { margin: var(--fd-hero-pad) 0 0; }
-.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: var(--r-inner) var(--r-inner) 0 0; }
+.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: var(--r-frame) var(--r-frame) 0 0; }
 .fd-hero__cap {
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 12px clamp(32px, 5vw, 96px); align-items: start;
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: 12px var(--fd-split-gap); align-items: start;
   padding-block: clamp(18px, 1.8vw, 24px) clamp(20px, 2vw, 28px);
   background: var(--surface-secondary); border: 1px solid var(--border-secondary); border-top: 0;
-  border-radius: 0 0 var(--r-inner) var(--r-inner);
+  border-radius: 0 0 var(--r-frame) var(--r-frame);
 }
 .fd-hero__cap-st {
   margin: 0; padding-inline-start: clamp(18px, 2vw, 28px); max-width: 52ch;
@@ -5911,8 +5930,6 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   color: var(--text-primary); text-wrap: balance;
 }
 .fd-hero__cap-aside { padding-inline-end: clamp(18px, 2vw, 28px); }
-/* Sustain #problem (2026-10-11): each aside line sits flush to the plate's right edge. */
-@media (min-width: 901px) { #problem .fd-hero__cap-aside { justify-self: end; text-align: end; } }
 .fd-hero__cap-aside > p {
   margin: 0; max-width: 46ch; font-size: 14px; line-height: 1.55;
   color: var(--text-secondary); text-wrap: balance;
@@ -5929,8 +5946,6 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-hero__cap { grid-template-columns: minmax(0, 1fr); padding-inline: 18px; }
   .fd-hero__cap-st, .fd-hero__cap-aside { padding-inline: 0; }
 }
-/* Last in its wrapper (Signal, where a plain .section follows): close with the hero's own step. */
-.fd-hero:last-child { padding-bottom: calc(var(--fd-section) * 0.6); }
 /* The Ecosystem dial trims its own top pad to fit one viewport; after the hero's band it
    takes the same step as every other first section. */
 .ab .fd-hero + .fd-section.eco-dial-sec { padding-top: var(--fd-section); }
@@ -5979,22 +5994,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* With a lead, the head splits: heading left, lead right on its baseline — the
    lead answers the heading instead of queueing under it. */
 .fd-head:has(.fd-lead) {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 20px clamp(32px, 5vw, 96px); align-items: end;
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: 20px var(--fd-split-gap); align-items: end;
 }
-.fd-head:has(.fd-lead) .fd-lead { margin: 0; }
+/* One head pattern everywhere: the lead starts on the shared right-column edge, reads
+   left-aligned, and balances so a two-line lead does not end on a stub. */
+.fd-head:has(.fd-lead) .fd-lead { margin: 0; text-wrap: balance; }
 @media (max-width: 900px) { .fd-head:has(.fd-lead) { grid-template-columns: 1fr; } }
-/* Sustain #service-package and #compliance: balance evens each two-line lead (they read
-   as one long line and a stub), and while the head is split the lead sits flush to the
-   trailing edge, closing on the same edge as the content below (2026-10-11; License
-   #services 2026-10-12). Logical
-   end, so it mirrors with the writing direction; stacked, it keeps the start edge. */
-#service-package .fd-lead, #compliance .fd-lead, #protection .fd-lead, #services .fd-lead, #capabilities .fd-lead { text-wrap: balance; }
-@media (min-width: 901px) {
-  #service-package .fd-lead, #compliance .fd-lead, #protection .fd-lead, #services .fd-lead, #capabilities .fd-lead { justify-self: end; text-align: end; }
-  /* Protect #protection: the lead's top meets the heading's top (2026-10-11). */
-  #protection .fd-head, #capabilities .fd-head, #services .fd-head { align-items: start; }
-}
 .fd-note {
   margin: clamp(28px, 3.4vw, 44px) 0 0; max-width: 70ch;
   font-size: 15px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty;
@@ -6002,6 +6008,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-note strong { color: var(--text-primary); font-weight: 600; }
 .fd-link {
   display: inline-flex; align-items: center; gap: 8px; margin-top: clamp(24px, 2.8vw, 32px);
+  width: fit-content; justify-self: start; align-self: flex-start;   /* hit area hugs the label */
   font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
 }
 .fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
@@ -6010,8 +6017,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 
 /* ── Statement — one sentence, set large, with its support to the side. ── */
 .fd-statement {
-  display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 96px); align-items: end;
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: var(--fd-split-gap); align-items: end;
 }
 .fd-statement__text {
   margin: 0; max-width: 22ch;
@@ -6020,7 +6027,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   color: var(--text-primary); text-wrap: balance;
 }
 [lang="zh-Hant"] .fd-statement__text { letter-spacing: 0; line-height: 1.3; max-width: 16em; }
-.fd-statement--quiet .fd-statement__text { font-size: var(--ab-pull); line-height: 1.25; max-width: 32ch; font-weight: 600; }
+.fd-statement--quiet .fd-statement__text { font-size: var(--ab-h2); line-height: 1.15; max-width: 24ch; font-weight: 700; letter-spacing: -0.028em; }
 .fd-statement__aside > p {
   margin: 0; max-width: 40ch;
   /* Short support copy: balance so each paragraph breaks into even lines rather
@@ -6055,8 +6062,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    claim column by one and stranded the stop on a line of its own. */
 [lang="zh-Hant"] .fd-strip__h { max-width: none; font-size: clamp(18px, 2.3vw, 34px); letter-spacing: 0; line-height: 1.3; word-break: keep-all; overflow-wrap: anywhere; }
 .fd-strip__row {
-  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(32px, 5vw, 96px); margin-top: clamp(24px, 2.6vw, 40px);
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: var(--fd-split-gap); margin-top: clamp(24px, 2.6vw, 40px);
 }
 .fd-strip__lead { margin: 0; max-width: 34ch; font-size: var(--ab-lead); line-height: 1.5; color: var(--text-primary); text-wrap: balance; }
 .fd-strip__aside { display: grid; grid-template-columns: 1fr 1fr; gap: 16px clamp(24px, 3vw, 48px); align-content: start; }
@@ -6161,7 +6168,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   position: relative; grid-column: span 5;
   min-height: clamp(300px, 30vw, 440px);
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding: clamp(22px, 2.4vw, 32px);
+  padding: var(--fd-cell);
   border-radius: var(--r-frame); color: #FFFFFF;
 }
 .fd-tile:nth-child(4n+1), .fd-tile:nth-child(4n+4) { grid-column: span 7; }
@@ -6196,7 +6203,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   gap: 1px; background: var(--border-secondary);
   border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
-.fd-band .fd-figures > li { background: var(--surface-page); padding: clamp(24px, 2.6vw, 40px); }
+.fd-band .fd-figures > li { background: var(--surface-page); padding: var(--fd-cell); }
 .fd-band__head { grid-column: 1 / 3; }
 .fd-band__label { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: var(--text-secondary); }
 .fd-band .fd-figures > .fd-band__photo { grid-column: 3 / 5; position: relative; min-height: 300px; padding: 0; }
@@ -6286,13 +6293,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
       stair's empty corner over L0–L1 (two rises clear a two-line heading and lead);
       below that it stacks above the stair, still inside the frame. ── */
 .fd-stair {
-  --rise: clamp(36px, 4.2vw, 64px); --base: clamp(190px, 16vw, 230px); --pad: clamp(24px, 2.4vw, 36px);
+  --rise: clamp(36px, 4.2vw, 64px); --base: clamp(190px, 16vw, 230px); --pad: var(--fd-cell);
   /* clip, not hidden: hidden makes the stair a scroll container, and the inline image's
      view() timeline in its h2 then tracks the stair instead of the page and never plays. */
   border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: clip;
   background: var(--surface-page);
 }
-.fd-stair__head { padding: clamp(24px, 3vw, 44px); }
+.fd-stair__head { padding: var(--fd-cell); }
 .fd-stair .fd-h2 { max-width: 22ch; }
 [lang="zh-Hant"] .fd-stair .fd-h2 { max-width: none; }
 /* The lead introduces the stair: body-lead size, one step below the 26px step titles
@@ -6349,7 +6356,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-lane {
   min-height: clamp(260px, 26vw, 360px);
   display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
-  padding: clamp(28px, 3.4vw, 52px);
+  padding: var(--fd-cell-lg);
   background: var(--surface-secondary);
 }
 .fd-lane--ink { background: var(--surface-ink); box-shadow: inset 0 0 0 1px var(--edge-ink); }
@@ -6409,10 +6416,10 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 
 /* ── Feature — a large image beside a short block of text; alternates. ── */
 .fd-feature {
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(32px, 5vw, 96px); align-items: center;
+  display: grid; grid-template-columns: var(--fd-split);
+  gap: var(--fd-split-gap); align-items: center;
 }
-.fd-feature--rev { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.fd-feature--rev { grid-template-columns: var(--fd-split-rev); }
 .fd-feature--rev > .fd-frame { order: 2; }
 .fd-feature__label { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: var(--text-secondary); }
 .fd-feature .fd-h2 { max-width: 16ch; }
@@ -6489,13 +6496,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
 .fd-pledge__head {
-  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 64px); align-items: end;
-  background: var(--surface-page); padding: clamp(28px, 3.2vw, 48px);
+  display: grid; grid-template-columns: var(--fd-split); gap: 20px var(--fd-split-gap); align-items: end;
+  background: var(--surface-page); padding: var(--fd-cell);
 }
 .fd-pledge__head .fd-h2 { max-width: 14ch; }
 .fd-pledge__lead { margin: 0; max-width: 52ch; font-size: var(--ab-lead); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
 .fd-pledge__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
-.fd-pledge__i { display: grid; grid-template-rows: auto 1fr; row-gap: 14px; min-width: 0; background: var(--surface-page); padding: clamp(24px, 2.4vw, 36px); }
+.fd-pledge__i { display: grid; grid-template-rows: auto 1fr; row-gap: 14px; min-width: 0; background: var(--surface-page); padding: var(--fd-cell); }
 .fd-pledge__t { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
 .fd-pledge__d { margin: 0; max-width: 36ch; font-size: 15.5px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 [lang="zh-Hant"] .fd-pledge__d { line-height: 1.8; }
@@ -6512,9 +6519,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-hero__fig .fd-hero__band { margin-top: 0; }
 }
 @media (max-width: 560px) {
-  .fd-hero__band { aspect-ratio: 4 / 3; border-radius: var(--r-inner); }
-  .fd-hero__fig .fd-hero__band { border-radius: var(--r-inner) var(--r-inner) 0 0; }
-  .fd-hero__cap { border-radius: 0 0 var(--r-inner) var(--r-inner); }
+  .fd-hero__band { aspect-ratio: 4 / 3; border-radius: var(--r-frame); }
+  .fd-hero__fig .fd-hero__band { border-radius: var(--r-frame) var(--r-frame) 0 0; }
+  .fd-hero__cap { border-radius: 0 0 var(--r-frame) var(--r-frame); }
   .fd-hero__band.fd-ph--img .fd-ph__img { object-position: var(--fd-pos-m, 50% 50%); }
   .fd-hero .pillar-actions { flex-direction: column; align-items: stretch; }
   .fd-hero .pillar-actions .btn { white-space: normal; text-align: center; line-height: 1.3; padding-inline: 20px; text-wrap: balance; }
@@ -6676,6 +6683,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    of four; 761–1260: two-up (four across needs ≥1261: the bold partner name is 240px); phones: the cells swipe, the next one peeking to say "more".
    The portfolio/MRO separation note was removed by decision 2026-10-11 (copy ledger). ── */
 .kv-proof { padding: 32px 0 40px; border-bottom: 1px solid var(--border-tertiary); }
+/* The strip's own bottom pad counts toward the first step, so Home's first section starts
+   the same distance below its hero as every inner page's (SPACE-10). */
+.kv-proof + .ab > .fd-section:first-child { padding-top: calc(var(--fd-section) - 40px); }
 .kv-proof__list {
   --kvp-cols: 4; --kvp-pad: clamp(20px, 2.2vw, 32px);
   list-style: none; margin: 0; padding: 0;
@@ -6707,6 +6717,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 @media (max-width: 760px) {
   .kv-proof { padding: 28px 0 24px; }
+  .kv-proof + .ab > .fd-section:first-child { padding-top: calc(var(--fd-section) - 24px); }
   .kv-proof__list {
     margin: 0 -20px; padding: 0 20px;
     grid-template-columns: none; grid-template-rows: repeat(3, auto); grid-auto-flow: column; grid-auto-columns: 84%;
@@ -6740,9 +6751,10 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    white tiles on grey, always open. No .ptray ancestor, so the fold rules never apply.
    Tone and space separate the points; the page's ruled sections sit either side. */
 .fd-tray {
-  --pt-radius: var(--r-inner); --pt-pad: clamp(24px, 2.4vw, 36px); --pt-gap: clamp(12px, 1.4vw, 20px);
-  --pt-tile: var(--surface-page);
-  padding: clamp(16px, 2.2vw, 32px); background: var(--surface-tertiary); border-radius: var(--r-frame);
+  --pt-radius: var(--r-inner); --pt-pad: var(--fd-cell); --pt-gap: clamp(12px, 1.4vw, 20px);
+  --pt-tile: var(--surface-page); --pt-tray-r: var(--r-frame); --pt-tray-pad: clamp(16px, 2.2vw, 32px);
+  /* Same tray spec as Home's .ptray (SPACE-06): one radius and padding, read from the vars. */
+  padding: var(--pt-tray-pad); background: var(--surface-tertiary); border-radius: var(--pt-tray-r);
 }
 .fd-tray .ptray__pts { padding: 0; }
 .fd-tray .ptray__pt-t { margin-bottom: 12px; font-size: clamp(19px, 1.6vw, 22px); font-weight: 700; letter-spacing: -0.015em; }
@@ -6763,12 +6775,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 /* Foot: one line closing the frame, full width under the cells (Diagnostic Sprint, 2026-10-11). */
 .fd-bento__foot {
-  margin: 0; padding: 18px clamp(24px, 2.4vw, 36px); background: var(--surface-page);
+  margin: 0; padding: 18px var(--fd-cell); background: var(--surface-page);
   font-size: 15px; font-weight: 600; line-height: 1.6; color: var(--text-secondary); text-align: center; text-wrap: balance;
 }
 .fd-bento__i {
   display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; min-width: 0;
-  background: var(--surface-page); padding: clamp(24px, 2.4vw, 36px);
+  background: var(--surface-page); padding: var(--fd-cell);
 }
 .fd-bento__n { display: block; margin-bottom: 24px; font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .fd-bento__t { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
@@ -6801,7 +6813,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
       clash against the grey trays, 2026-10-02). ── */
 .ptray, .why-tiles {
   --pt-radius: var(--r-inner);
-  --pt-pad: clamp(24px, 2.4vw, 36px);
+  --pt-pad: var(--fd-cell);
   --pt-gap: clamp(12px, 1.4vw, 20px);
   --pt-tray: var(--surface-tertiary);
   --pt-tile: var(--surface-page);
@@ -7080,7 +7092,10 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .ptray__pts, .ptray__pts--3 { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
-  .ptray, .why-tiles { --pt-tray-r: 16px; --pt-tray-pad: 10px; --pt-pad: 20px; }
+  .ptray, .why-tiles { --pt-tray-r: var(--r-frame); --pt-tray-pad: 10px; --pt-pad: 20px; }
+  /* Phones: an always-open tray is a card holding cards, which left ~200px of text at 320
+     (MOB-11). Drop the tray surface; the tiles sit on the page in the tray's grey. */
+  .fd-tray { --pt-pad: 20px; --pt-tile: var(--surface-tertiary); padding: 0; background: none; }
   .ptray__lede { padding: 14px 20px 10px; }   /* lines the promise up with the tile text (10 tray + 20 tile) */
   .ptray__line { font-size: clamp(23px, 7.2vw, 28px); }
   /* ZH: sized so each clause fits a line at 320 (10 characters); strict keeps 。，attached. */
@@ -7197,7 +7212,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    so it follows the theme. Mocks: mro/mocks/signal-r1 (rounds 1–4, F · T2).
    ═════════════════════════════════════════════════════════════════════════ */
 .psg {
-  --psg-pad: clamp(24px, 2.6vw, 40px);
+  --psg-pad: var(--fd-cell);
   --psg-fig: clamp(36px, 3.4vw, 52px);
   --psg-label: 14px;
 }
@@ -7340,9 +7355,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* ── #how · head and the three steps in a ruled frame ─────────────────────── */
 /* h2 left, dek right on the h2's first baseline, anchored to the frame's right edge. The
    dek is at the body step (17), not the lead step (22): three lines at 22 outweighed the h2. */
-.psg-how__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px clamp(32px, 5vw, 96px); align-items: first baseline; }
-.psg-how__dek { justify-self: end; text-align: end; }
-.psg-how__dek p { margin: 0 0 0 auto; max-width: 44ch; font-size: 17px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+.psg-how__head { display: grid; grid-template-columns: var(--fd-split); gap: 16px var(--fd-split-gap); align-items: end; }
+.psg-how__dek p { margin: 0; max-width: 44ch; font-size: 17px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
 [lang="zh-Hant"] .psg-how__dek p { max-width: none; }   /* 44ch is a Latin measure; the ZH sentence fits the column */
 .psg-how__dek p + p { margin-top: 8px; }
 .psg-how__dek strong { color: var(--text-primary); font-weight: 600; }
@@ -7353,12 +7367,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 .psg-steps__i {
   position: relative; display: flex; flex-direction: column; min-height: clamp(220px, 20vw, 280px);
-  padding: clamp(28px, 3vw, 44px); background: var(--surface-page);
+  padding: var(--fd-cell); background: var(--surface-page);
 }
 .psg-steps__i:last-child { background: var(--surface-secondary); }
 /* a chevron on each dividing rule, pointing on */
 .psg-steps__i + .psg-steps__i::after {
-  content: ""; position: absolute; left: -7px; top: calc(clamp(28px, 3vw, 44px) + 14px); width: 12px; height: 12px;
+  content: ""; position: absolute; left: -7px; top: calc(var(--fd-cell) + 14px); width: 12px; height: 12px;
   background: var(--surface-page); border-top: 1px solid var(--border-secondary); border-right: 1px solid var(--border-secondary);
   transform: rotate(45deg);
 }
@@ -7366,7 +7380,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .psg-steps__d { margin: auto 0 0; padding-top: 24px; max-width: 34ch; font-size: 17px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 
 .psg-form [data-input-for][hidden] { display: none; }
-.psg-form .field-hint { margin: 2px 0 0; font-size: 13px; line-height: 1.55; }
+.psg-form .field-hint { margin: 2px 0 0; }   /* type comes from the shared .field-hint */
 .psg-form .sig-seg { max-width: 100%; }
 
 /* ── PSG · responsive (each block above its own overrides, §3.2) ──────────── */
@@ -7391,7 +7405,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 @media (max-width: 800px) {
   .psg-steps { grid-template-columns: 1fr; }
   .psg-steps__i { min-height: 0; }
-  .psg-steps__i + .psg-steps__i::after { left: clamp(28px, 3vw, 44px); top: -7px; transform: rotate(135deg); }
+  .psg-steps__i + .psg-steps__i::after { left: var(--fd-cell); top: -7px; transform: rotate(135deg); }
   .psg-steps__d { padding-top: 12px; }
 }
 @media (max-width: 640px) {
