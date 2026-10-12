@@ -408,6 +408,21 @@ picture { display: contents; }
 [lang="zh-Hant"] .offer-card-desc {
   text-wrap: balance;
 }
+/* The front-door short copy runs 2-5 lines and stranded one or two characters, often half
+   a compound (協/議。, 授/權。), in about 30 places (2026-10-12 audit, TYPE-10). Balance
+   evens the lines; strict line-break keeps closing punctuation off a line start. */
+[lang="zh-Hant"] :is(.fd-hero__sub, .fd-lead, .fd-tile__d, .fd-stair__d, .fd-lane__d, .fd-bento__d,
+  .fd-pledge__d, .fd-row__d, .fd-note, .fd-band__foot, .fd-band__fig span, .why-tiles__d, .ptray__pt-d,
+  .psg-cell__d, .psg-steps__d, .contact-lead, .fd-fact span, .veil__body) {
+  text-wrap: balance; line-break: strict;
+}
+/* CJK display lines drop the negative tracking and open the leading (TYPE-13), as the hero
+   title, KV title and statement already did. */
+[lang="zh-Hant"] :is(.fd-h2, .contact-overlay h2, .fd-lane__t, .fd-tile__t, .fd-row__t, .fd-stair__t,
+  .psg-steps__t, .psg-tray__h, .why-tiles__t, .fd-bento__t, .fd-pledge__t, .ptray__pt-t, .psg-cell__t) {
+  letter-spacing: 0; line-height: 1.3;
+}
+[lang="zh-Hant"] .btn { letter-spacing: 0.04em; }
 
 /* Center text within the JS-locked EN min-width footprint so the shorter CH form
    sits centered in its EN-sized box. .topnav-cta inherits centering from .btn. */
@@ -768,8 +783,11 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   display: inline-flex; align-items: center; justify-content: center;
   font-family: inherit;
   font-weight: 700;
-  letter-spacing: 0.10em;
+  /* Sentence-case labels up to ~37 characters: light tracking, not the 0.10em of a short
+     caps label (TYPE-19). The nav CTA keeps its own. */
+  letter-spacing: 0.02em;
   line-height: 1;
+  padding: 10px 18px; font-size: 12px;   /* the compact size (nav CTA); .btn-lg is the page size */
   border-radius: var(--r-inner);
   transition: background var(--dur-fast) linear, color var(--dur-fast) linear, transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) linear;
   white-space: nowrap;
@@ -778,8 +796,6 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .btn-primary {
   background: var(--surface-inverse);
   color: var(--text-inverse);
-  padding: 10px 18px;
-  font-size: 12px;
 }
 .btn-primary:hover { background: var(--surface-inverse-hover); }
 .btn-lg {
@@ -791,9 +807,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .btn-secondary {
   background: var(--surface-tertiary);
   color: var(--text-primary);
-  padding: 18px 28px;
-  font-size: 14px;
-}
+}   /* size comes from .btn / .btn-lg, never from the variant (TYPE-18) */
 .btn-secondary:hover { background: var(--surface-quaternary); }
 
 .topnav-mobile-trigger {
@@ -2582,14 +2596,16 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   display: flex; flex-direction: column; gap: 11px;
 }
 .footer-col a {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 14px;
+  /* Icon on the first line, so a two-line label ("Patent Strength / Grading") does not
+     centre the icon between its lines (MOB-19). */
+  display: inline-flex; align-items: flex-start; gap: 8px;
+  font-size: 14px; line-height: 1.45;
   color: var(--text-secondary);
   transition: color var(--dur-fast) linear;
 }
 .footer-col a:hover { color: var(--text-primary); }
 .footer-ico {
-  flex: none;
+  flex: none; margin-top: calc((1.45em - 15px) / 2);
   width: 15px; height: 15px;
   stroke: var(--text-tertiary); fill: none;
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
@@ -3291,7 +3307,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
    aria-hidden; the inputs carry aria-required, and site.js sets aria-invalid plus an
    aria-describedby to the error when a submit fails. */
 .field-req { color: var(--text-tertiary); font-weight: 600; }
-.field-hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-tertiary); }
+.field-hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }   /* informative (the export-control note): secondary, not tertiary */
 .contact-panel .field input[aria-invalid="true"],
 .contact-panel .field textarea[aria-invalid="true"] { border-color: var(--danger-border); }
 
@@ -3937,13 +3953,13 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
    That keeps the six content files editable by someone who is not reading this
    stylesheet, which matters when the edits come back from a lawyer. */
 .lgl-body h2 {
-  margin: 28px 0 8px;
-  font-size: 15px; font-weight: 700; letter-spacing: 0;
+  margin: 32px 0 8px;
+  font-size: 19px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance;
   color: var(--text-primary);
 }
 .lgl-body h2:first-child { margin-top: 0; }
 .lgl-body p, .lgl-body li {
-  font-size: 14px; line-height: 1.65;
+  font-size: 16px; line-height: 1.65; text-wrap: pretty;
   color: var(--text-secondary);
   margin: 0 0 10px;
 }
@@ -5031,15 +5047,13 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .offer-card-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 /* Words in an eyebrow are Urbanist; only the 01/02/03 sectional numerals are mono. */
-.offer-card-eyebrow--text {
-  font-family: var(--font-sans);
-  letter-spacing: 0.14em;
-}
 .offer-card-eyebrow {
   font-family: var(--font-mono);
   font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
   color: rgba(255,255,255,0.72);
 }
+/* Words, not numerals: never mono (DESIGN.md §2). Declared after the base so it wins (TYPE-09). */
+.offer-card-eyebrow--text { font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0; text-transform: none; }
 .offer-card-title {
   font-size: 21px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25;
   color: #FFFFFF; margin: 0;
@@ -5310,6 +5324,10 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   --ab-body:    17px;
   --ab-small:   15px;
   --ab-label:   13px;
+  /* Type steps added 2026-10-12 (audit TYPE-07/08): one card-heading step and one card-body
+     step, so item headings sit on two sizes (card / --fd-row) and card text on one. */
+  --ab-card-h3: clamp(19px, 1.6vw, 22px);
+  --ab-card:    16px;
 
   --ab-section:  clamp(56px, 6.5vw, 96px);   /* section padding-block */
   --ab-head-gap: clamp(28px, 3.2vw, 44px);   /* heading → its content */
@@ -5402,7 +5420,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .crumb {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
   margin: 0 0 16px;
-  font-size: 14px; font-weight: 500; line-height: 1.3;
+  font-size: 13px; font-weight: 600; line-height: 1.3;
   color: var(--text-secondary);
 }
 .crumb a { color: var(--text-secondary); text-decoration: none; }
@@ -5587,10 +5605,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .eco-dial__makers span::before { content: "·"; margin-right: 0.75em; }
 .eco-dial__contract {
   margin: 0; padding: 4px 12px; background: var(--dial-ground); border-radius: 4px;
-  font-size: clamp(11.5px, 0.95cqw, 13px); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: clamp(12px, 0.95cqw, 13px); font-weight: 600; letter-spacing: 0;
   color: var(--dial-mute); white-space: nowrap;
 }
-html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 
 .eco-dial__pillars, .eco-dial__nodes { list-style: none; margin: 0; padding: 0; }
 .eco-dial__pillar {
@@ -5737,7 +5754,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   counter-increment: fd-step;
   display: grid; grid-template-columns: 2.4em 1fr; align-items: baseline;
   padding: 12px 0; border-bottom: 1px solid var(--border-primary);
-  font-size: 15.5px; line-height: 1.45; color: var(--text-primary);
+  font-size: var(--ab-card); line-height: 1.45; color: var(--text-primary);
 }
 .fd-platform__steps li::before {
   content: counter(fd-step, decimal-leading-zero);
@@ -5767,10 +5784,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    above the band's h2 by weight and tabular setting, not by shouting at 96.
    ═════════════════════════════════════════════════════════════════════════ */
 .ab {
-  --fd-display:   clamp(34px, 5.6vw, 84px);   /* 34 = DESIGN.md §2 phone hero floor */
   --fd-statement: clamp(30px, 3.8vw, 56px);
   --fd-row:       clamp(22px, 2vw, 28px);
-  --fd-figure:    clamp(40px, 4.2vw, 60px);
+  --fd-figure:    clamp(36px, 3.4vw, 52px);   /* every large figure: band, fact, pool */
   --fd-gutter:    clamp(20px, 3.4vw, 48px);
   --fd-section:   clamp(80px, 10vw, 152px);
   /* Spacing scale (brand/design-tokens.md §7.2, 2026-10-12): fixed steps on the 4px grid,
@@ -5848,7 +5864,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-hero__rail .crumb { margin: 0; font-size: 13.5px; }
 .fd-hero__rail .crumb > span:last-child { color: var(--text-primary); font-weight: 600; }
 .fd-hero__meta {
-  margin: 0; font-size: 13.5px; font-weight: 600; line-height: 1.4;
+  margin: 0; font-size: 13px; font-weight: 600; line-height: 1.4;
   color: var(--text-primary); font-variant-numeric: tabular-nums; text-wrap: balance;
 }
 /* A page with both a crumb and an event line: the line leads the aside instead. */
@@ -5941,7 +5957,14 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text-primary);
 }
 .fd-hero__cap .fd-scope li:first-child { border-top: 0; padding-top: 0; }
-[lang="zh-Hant"] .fd-hero__cap-st, [lang="zh-Hant"] .fd-hero__cap-aside > p { word-break: keep-all; overflow-wrap: anywhere; }
+/* keep-all breaks only at punctuation, which is right on a wide plate and ragged on a phone
+   (304/102/220/152px lines at 390, TYPE-12): there, balance with strict line-break instead. */
+@media (min-width: 901px) {
+  [lang="zh-Hant"] .fd-hero__cap-st, [lang="zh-Hant"] .fd-hero__cap-aside > p { word-break: keep-all; overflow-wrap: anywhere; }
+}
+@media (max-width: 900px) {
+  [lang="zh-Hant"] .fd-hero__cap-st, [lang="zh-Hant"] .fd-hero__cap-aside > p { text-wrap: balance; line-break: strict; }
+}
 @media (max-width: 900px) {
   .fd-hero__cap { grid-template-columns: minmax(0, 1fr); padding-inline: 18px; }
   .fd-hero__cap-st, .fd-hero__cap-aside { padding-inline: 0; }
@@ -5967,6 +5990,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   display: inline-flex; right: auto; left: clamp(14px, 1.6vw, 20px);
   background: var(--surface-page); border-color: var(--border-secondary); color: var(--text-secondary);
 }
+/* Phones: an unfilled band is a 260px empty slot straight after the CTA (AUSA, MOB-18);
+   desktop keeps the shot caption on purpose. */
+@media (max-width: 560px) { .fd-hero__band.fd-ph:not(.fd-ph--img) { display: none; } }
 
 /* ── Section shell for the v2 blocks: more air than .ab-section, because each
       section now carries one idea instead of a table. ── */
@@ -6184,7 +6210,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 .fd-tile__d {
   margin: 10px 0 0; max-width: 42ch;
-  font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,0.82); text-wrap: pretty;
+  font-size: var(--ab-card); line-height: 1.55; color: rgba(255,255,255,0.82); text-wrap: pretty;
 }
 @media (max-width: 760px) {
   .fd-mosaic { grid-template-columns: 1fr; }
@@ -6218,7 +6244,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-band__fig b {
   display: block;
   font-family: var(--font-sans); font-weight: 700;
-  font-size: clamp(36px, 3.4vw, 52px); letter-spacing: -0.035em; line-height: 0.95;
+  font-size: var(--fd-figure); letter-spacing: -0.035em; line-height: 0.95;
   font-variant-numeric: tabular-nums; color: var(--text-primary);
 }
 .fd-band__fig span { display: block; max-width: 28ch; font-size: 15px; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
@@ -6267,13 +6293,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-band--bleed .fd-figures > li { background: none; padding: clamp(20px, 2.4vw, 32px) 0 0; }
 .fd-band--bleed .fd-figures b {
   display: block; font-family: var(--font-sans); font-weight: 700;
-  font-size: clamp(36px, 3.4vw, 52px); letter-spacing: -0.035em; line-height: 0.95;
+  font-size: var(--fd-figure); letter-spacing: -0.035em; line-height: 0.95;
   font-variant-numeric: tabular-nums; color: #FFFFFF;
 }
 .fd-band--bleed .fd-figures--text b { font-size: clamp(26px, 2.6vw, 40px); letter-spacing: -0.02em; line-height: 1.1; }
 .fd-band--bleed .fd-figures span {
   display: block; margin-top: 14px; max-width: 30ch;
-  font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.8); text-wrap: pretty;
+  font-size: var(--ab-card); line-height: 1.5; color: rgba(255,255,255,0.8); text-wrap: pretty;
 }
 .fd-band--bleed + .fd-section { padding-top: var(--fd-section); }
 .fd-section:has(+ .fd-band--bleed) { padding-bottom: var(--fd-section); }
@@ -6304,7 +6330,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 [lang="zh-Hant"] .fd-stair .fd-h2 { max-width: none; }
 /* The lead introduces the stair: body-lead size, one step below the 26px step titles
    (at --ab-lead it read as a second headline). 26 ZH characters fit one line. */
-.fd-stair__lead { margin: 14px 0 0; max-width: 44ch; font-size: 17px; line-height: 1.55; }
+.fd-stair__lead { margin: 14px 0 0; max-width: 44ch; }   /* the shared .fd-lead size */
 [lang="zh-Hant"] .fd-stair__lead { max-width: none; }
 .fd-stair__steps {
   list-style: none; margin: 0; padding: 0;
@@ -6323,14 +6349,14 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 .fd-stair__step:last-child { background: var(--surface-secondary); }
 .fd-stair__body { flex: 1; display: flex; flex-direction: column; padding: var(--pad); }
-.fd-stair__k { display: block; margin-bottom: 10px; font-family: var(--font-sans); font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+.fd-stair__k { display: block; margin-bottom: 10px; font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--text-secondary); }
 .fd-stair__t {
-  margin: 0; font-size: clamp(20px, 1.8vw, 26px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  margin: 0; font-size: var(--ab-card-h3); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22;
   color: var(--text-primary); text-wrap: balance;
 }
 .fd-stair__d {
   margin: auto 0 0; padding-top: 24px; max-width: 30ch;
-  font-size: 15.5px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty;
+  font-size: var(--ab-card); line-height: 1.55; color: var(--text-secondary); text-wrap: pretty;
 }
 @media (min-width: 1200px) {
   .fd-stair { --rise: clamp(108px, 8.4vw, 126px); --base: 190px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -6360,12 +6386,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   background: var(--surface-secondary);
 }
 .fd-lane--ink { background: var(--surface-ink); box-shadow: inset 0 0 0 1px var(--edge-ink); }
-.fd-lane__k { margin: 0; font-family: var(--font-sans); font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+.fd-lane__k { margin: 0; font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--text-secondary); }
 .fd-lane__t {
-  margin: 0; font-size: var(--ab-h2); font-weight: 700; letter-spacing: -0.028em; line-height: 1.1;
+  margin: 0; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
   color: var(--text-primary); text-wrap: balance;
 }
-.fd-lane__d { margin: 14px 0 0; max-width: 48ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); }
+.fd-lane__d { margin: 14px 0 0; max-width: 48ch; font-size: var(--ab-card); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 .fd-lane--ink .fd-lane__k, .fd-lane--ink .fd-lane__d { color: var(--text-on-ink); opacity: 0.74; }
 .fd-lane--ink .fd-lane__t { color: var(--text-on-ink); }
 @media (max-width: 760px) { .fd-lanes { grid-template-columns: 1fr; } }
@@ -6422,7 +6448,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-feature--rev { grid-template-columns: var(--fd-split-rev); }
 .fd-feature--rev > .fd-frame { order: 2; }
 .fd-feature__label { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: var(--text-secondary); }
-.fd-feature .fd-h2 { max-width: 16ch; }
+.fd-feature .fd-h2 { max-width: 20ch; }
 /* --edges (License #portfolio, 2026-10-12): the copy shares the photo's edges instead of
    floating centred against it — heading on the photo's top, the closing line on its
    foot, ruled off like .fd-fact, any link after it. Split layout only; stacked it flows as usual. */
@@ -6444,7 +6470,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   border-top: 1px solid var(--border-tertiary);
 }
 .fd-fact b {
-  font-family: var(--font-sans); font-size: clamp(34px, 3.4vw, 48px); font-weight: 700;
+  font-family: var(--font-sans); font-size: var(--fd-figure); font-weight: 700;
   letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--text-primary);
 }
 .fd-fact span { font-size: 15px; line-height: 1.45; color: var(--text-secondary); }
@@ -6462,7 +6488,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-partner-link:hover b, .fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
 @media (prefers-reduced-motion: reduce) { .fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { transform: none; } }
-.fd-partners li > span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); }
+.fd-partners li > span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+[lang="zh-Hant"] .fd-partners li > span { text-wrap: balance; }
 @media (max-width: 900px) {
   .fd-feature, .fd-feature--rev { grid-template-columns: 1fr; }
   .fd-feature--rev > .fd-frame { order: 0; }
@@ -6499,12 +6526,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   display: grid; grid-template-columns: var(--fd-split); gap: 20px var(--fd-split-gap); align-items: end;
   background: var(--surface-page); padding: var(--fd-cell);
 }
-.fd-pledge__head .fd-h2 { max-width: 14ch; }
+.fd-pledge__head .fd-h2 { max-width: 20ch; }
 .fd-pledge__lead { margin: 0; max-width: 52ch; font-size: var(--ab-lead); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
 .fd-pledge__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
 .fd-pledge__i { display: grid; grid-template-rows: auto 1fr; row-gap: 14px; min-width: 0; background: var(--surface-page); padding: var(--fd-cell); }
-.fd-pledge__t { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
-.fd-pledge__d { margin: 0; max-width: 36ch; font-size: 15.5px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.fd-pledge__t { margin: 0; font-size: var(--ab-card-h3); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
+.fd-pledge__d { margin: 0; max-width: 36ch; font-size: var(--ab-card); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 [lang="zh-Hant"] .fd-pledge__d { line-height: 1.8; }
 @media (max-width: 1024px) { .fd-pledge__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .fd-pledge__head { grid-template-columns: 1fr; } }
@@ -6543,7 +6570,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    §1.3 literals; .ptray and .why-tiles run on the theme tokens.
    ═════════════════════════════════════════════════════════════════════════ */
 .kv {
-  --kv-display: clamp(34px, 3.4vw, 52px);
+  --kv-display: clamp(34px, 4.2vw, 60px);   /* Home's h1 sits a step above the inner 56 */
   --kv-h2: clamp(30px, 3.2vw, 48px);
   --kv-dwell: 7s;   /* = DWELL in site.js; the tab rule fills over the same span */
   position: relative; isolation: isolate; overflow: hidden;
@@ -6757,8 +6784,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   padding: var(--pt-tray-pad); background: var(--surface-tertiary); border-radius: var(--pt-tray-r);
 }
 .fd-tray .ptray__pts { padding: 0; }
-.fd-tray .ptray__pt-t { margin-bottom: 12px; font-size: clamp(19px, 1.6vw, 22px); font-weight: 700; letter-spacing: -0.015em; }
-.fd-tray .ptray__pt-d { font-size: 16px; line-height: 1.65; }
+.fd-tray .ptray__pt-t { margin-bottom: 12px; }
+.fd-tray .ptray__pt-d { line-height: 1.65; }
 [lang="zh-Hant"] .fd-tray .ptray__pt-d { line-height: 1.8; }
 @media (max-width: 760px) { .fd-tray .ptray__pts { grid-template-columns: minmax(0, 1fr); } }
 /* Bento (Protect #capabilities; mock B, protect-ksp-r1, 2026-10-11): one frame in the
@@ -6783,8 +6810,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   background: var(--surface-page); padding: var(--fd-cell);
 }
 .fd-bento__n { display: block; margin-bottom: 24px; font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
-.fd-bento__t { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
-.fd-bento__d { margin: 0; padding-top: 18px; font-size: 15.5px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.fd-bento__t { margin: 0; font-size: var(--ab-card-h3); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
+.fd-bento__d { margin: 0; padding-top: 18px; font-size: var(--ab-card); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 [lang="zh-Hant"] .fd-bento__d { line-height: 1.8; }
 @media (max-width: 900px) {
   .fd-bento__list { grid-template-columns: minmax(0, 1fr); }
@@ -6885,13 +6912,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* label and promise read as one unit; the actions sit on the photo's bottom edge */
 .ptray__line {
   margin: clamp(14px, 1.4vw, 20px) 0 0;
-  font-size: clamp(28px, 2.9vw, 44px);
-  font-weight: 600; line-height: 1.12; letter-spacing: -0.025em;
+  font-size: clamp(24px, 2.4vw, 34px);   /* under the section h2 (40), TYPE-05 */
+  font-weight: 600; line-height: 1.15; letter-spacing: -0.025em;
   color: var(--text-primary);
   text-wrap: balance;
   max-width: 18ch;
 }
-[lang="zh-Hant"] .ptray__line { max-width: 13em; line-height: 1.24; word-break: keep-all; overflow-wrap: anywhere; text-wrap: wrap; }
+[lang="zh-Hant"] .ptray__line { max-width: 16em; line-height: 1.3; word-break: keep-all; overflow-wrap: anywhere; text-wrap: balance; }
 
 .ptray__acts {
   margin-top: auto;
@@ -7013,13 +7040,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 
 .ptray__pt-t {
   margin: 0 0 10px;
-  font-size: 19px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em;
+  font-size: var(--ab-card-h3); font-weight: 700; line-height: 1.22; letter-spacing: -0.015em;
   color: var(--text-primary);
   text-wrap: balance;
 }
 .ptray__pt-d {
   margin: 0;
-  font-size: 15px; line-height: 1.6;
+  font-size: var(--ab-card); line-height: 1.6; text-wrap: pretty;
   color: var(--text-secondary);
   max-width: 62ch;
 }
@@ -7043,7 +7070,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* One-line summary under the heading; the tiles carry the detail. */
 .why-tiles__lead {
   margin: 16px 0 0; max-width: 32ch;
-  font-size: clamp(17px, 1.35vw, 19px); line-height: 1.5;
+  font-size: var(--ab-lead); line-height: 1.5;
   color: var(--text-secondary); text-wrap: pretty;
 }
 [lang="zh-Hant"] .why-tiles__lead { max-width: 20em; line-height: 1.7; }
@@ -7065,7 +7092,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   font-weight: 700; letter-spacing: -0.02em; line-height: 1.12;
   color: var(--text-primary);
 }
-.why-tiles__d { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-secondary); }
+.why-tiles__d { margin: 0; font-size: var(--ab-card); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 
 /* ── responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
@@ -7101,7 +7128,6 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   /* ZH: sized so each clause fits a line at 320 (10 characters); strict keeps 。，attached. */
   [lang="zh-Hant"] .ptray__line { font-size: clamp(21px, 6.6vw, 28px); word-break: normal; line-break: strict; }
   .ptray__pts { padding-top: 10px; }
-  .ptray__pt-t { font-size: 18px; }
   /* The disclosure reads as an expander, not a filter chip: full width, link above it. */
   .ptray__acts { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
   .ptray.is-js .ptray__tg { width: 100%; min-height: 52px; }
@@ -7241,9 +7267,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 [lang="zh-Hant"] .psg-cell__fig b, [lang="zh-Hant"] .psg-big b { letter-spacing: -0.02em; }
 .psg-cell__fig > span { font-size: 15px; line-height: 1.45; color: var(--text-secondary); }
-.psg-cell__t { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; color: var(--text-primary); text-wrap: balance; }
+.psg-cell__t { margin: 0; font-size: var(--ab-card-h3); font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; color: var(--text-primary); text-wrap: balance; }
 /* lines share the row's floor */
-.psg-cell__d { margin: auto 0 0; padding-top: 10px; max-width: 46ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.psg-cell__d { margin: auto 0 0; padding-top: 10px; max-width: 46ch; font-size: var(--ab-card); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 .psg-cell__t + .psg-cell__d { margin-top: 10px; }
 .psg-cell--pool .sig-credit { display: inline-flex; align-items: baseline; gap: 0.4em; margin: 0 0 auto; padding-bottom: 56px; font-size: 15px; line-height: 1; color: rgba(255,255,255,0.62); font-style: italic; }
 .psg-cell--pool .innovue-wordmark { background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg'); filter: none; height: 0.86em; width: 6.32em; }
@@ -7275,7 +7301,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .psg-track::-webkit-scrollbar { display: none; }
 .psg-track:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); border-radius: var(--r-inner); }
 .psg-tile { scroll-snap-align: start; min-width: 0; display: flex; flex-direction: column; padding: clamp(22px, 2.2vw, 32px); border-radius: var(--r-inner); background: var(--surface-page); }
-.psg-tile__t { margin: 0 0 32px; display: flex; gap: 12px; align-items: baseline; font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; text-wrap: balance; }
+.psg-tile__t { margin: 0 0 32px; display: flex; gap: 12px; align-items: baseline; font-size: var(--ab-card-h3); font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; text-wrap: balance; }
 .psg-tile__n { flex: none; min-width: 1ch; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
 
 /* the figures: one point each, caption on the tile's floor behind a hairline */
@@ -7376,7 +7402,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   background: var(--surface-page); border-top: 1px solid var(--border-secondary); border-right: 1px solid var(--border-secondary);
   transform: rotate(45deg);
 }
-.psg-steps__t { margin: 0; font-size: var(--ab-h2); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--text-primary); }
+.psg-steps__t { margin: 0; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--text-primary); }
 .psg-steps__d { margin: auto 0 0; padding-top: 24px; max-width: 34ch; font-size: 17px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 
 .psg-form [data-input-for][hidden] { display: none; }

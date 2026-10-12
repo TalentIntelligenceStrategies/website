@@ -360,29 +360,37 @@ the English half of each bilingual pair; the site was mixed (34 double, 5 single
 > and `label-mono-*` roles that contradicted it. Those roles are now scoped to numerals.
 > Live mono selectors in `styles.css`: **7**, all numerals.
 
-**There are no numeric `--font-size-*` tokens** — every size is set per class. The full scale:
+**The front-door scale** (2026-10-12 audit; the `.ab` custom properties and `:root` hero
+tokens in `styles.css`). Every role points at one of these; a new literal size is a finding.
 
-| Role | Class | Size | Weight | Line-height | Tracking | Notes |
-|---|---|---|---|---|---|---|
-| Section (full) | `.h-section` | `clamp(32px,4vw,48px)` | 700 | 1.1 | −0.02em | the display step on this site |
-| Section (reduced) | `.offerings .h-section`, `.about-intro .h-section` | `clamp(24px,2.8vw,36px)` | 600 | 1.15 | −0.015em | offerings/about adopt the smaller "Latest reports" hierarchy |
-| Hero title | `.pillar-title` | `clamp(34px,5vw,60px)` | 600 | 1.05 (1.1 ≤640) | −0.02em | white in hero; `em` = **flat accent**, see §5. Floor 34, see below |
-| Hero eyebrow | `.pillar-eyebrow` | 16px | 600 | — | 0.02em | `--text-primary`; overridden to `#fff` on the licensing/signal heroes; `:empty` collapses in ZH |
-| Hero sub | `.pillar-sub` | `clamp(17px,1.5vw,20px)` | 450 | 1.4 | −0.01em | `max-width:52ch`; white 82% in hero |
-| Eyebrow | `.eyebrow` | 12px | 500 | — | 0.10em | uppercase, **Urbanist**, `--text-secondary`, `margin 0 0 16px`. See the note below — no live page uses it |
-| Card title | `.offer-card-title` | 21px | 700 | 1.25 | −0.01em | white; about-card title = `clamp(19px,1.5vw,22px)` to match |
-| Card desc | `.offer-card-desc` | 15px | 450 | 1.5 | — | white 82%; `min-height:4.5em` (reserves 3 lines) |
-| Card eyebrow | `.offer-card-eyebrow` | 12px | 700 | — | 0.10em | uppercase **mono** — the sectional `01`/`02`/`03`, the one sanctioned mono use; white 72%. Words use `.offer-card-eyebrow--text` (Urbanist) |
-| Card CTA | `.offer-card-more` | 13px | 600 | — | — | white |
-| Nav link | `.topnav-link` | 14px | 600 | — | — | secondary; hover → `#000` |
-| Button (default) | `.btn` | 12px | 700 | 1 | 0.10em | — |
-| Button large | `.btn-lg` | 14px | 700 | 1 | 0.10em | — |
+| Role | Token / class | Size (390 → 1440) | Weight | Line-height | Tracking |
+|---|---|---|---|---|---|
+| Home h1 | `--kv-display` → `.kv__title` | 34 → 60 | 700 | 1.06 | −0.032em |
+| Page h1 | `.fd-hero__title` (also the 404) | 34 → 56 | 700 | 1.06 | −0.032em |
+| Section h2 | `--ab-h2` → `.fd-h2`, contact card h2 | 26 → 40 | 700 | 1.1 | −0.028em |
+| Statement | `--fd-statement` / `.fd-strip__h` | 30 → 56 | 600 | 1.08 | −0.03em |
+| Row h3 | `--fd-row` → `.fd-row__t`, `.fd-tile__t`, `.why-tiles__t`, `.fd-lane__t`, `.psg-steps__t`, `.psg-tray__h` | 22 → 28 | 700 | 1.15 | −0.02em |
+| Card h3 | `--ab-card-h3` → `.ptray__pt-t`, `.fd-bento__t`, `.fd-pledge__t`, `.fd-stair__t`, `.psg-cell__t`, `.psg-tile__t` | 19 → 22 | 700 | 1.22 | −0.015em |
+| Tray promise | `.ptray__line` | 24 → 34 (under the h2) | 600 | 1.15 | −0.025em |
+| Lead | `--ab-lead` → `.fd-lead`, `.fd-pledge__lead`, `.why-tiles__lead`, `.fd-strip__lead` | 18 → 22 | 400 | 1.5 | — |
+| Body | `--ab-body` | 17 | 400 | 1.6 | — |
+| Card body | `--ab-card` → every `*__d` in a card, tile, tray or lane | 16 | 400 | 1.6 | — |
+| Small | `--ab-small` / figure captions | 15 | 400 | 1.5 | — |
+| Label | `*__label`, `*__k`, `.kv__kicker` | 15 | 600 | — | none, sentence case |
+| Meta, crumb | `.fd-hero__meta`, `.crumb` | 13 | 600 | 1.3 | — |
+| Large figure | `--fd-figure` → band, fact, pool figures | 36 → 52 | 700 tabular | 0.95 | −0.035em |
+| Button | `.btn` (compact, nav) / `.btn-lg` (page) | 12 / 14 | 700 | 1 | 0.02em (0.04em in 中文) |
+| Legal prose | `.lgl-body p` / `h2` | 16 / 19 | 400 / 700 | 1.65 | — |
 
-> **`.h-display` no longer exists.** It was removed with the 827 dead rules in the
-> `styles.css` purge. `.h-section` is the top of the scale. Don't reintroduce it.
+Heading sizes descend with level: a card h3 never matches its section h2, and the tray
+promise sits under the section h2. **Chinese** drops the negative tracking and opens leading
+to 1.3 on every display line (h2, row and card h3s); short copy (leads, card text, captions,
+the contact lead) is `text-wrap: balance` with `line-break: strict`. Number ranges and the
+Chinese compounds that kept splitting (無人載具, 主動, 維修, 協議, 授權, 專利, 產業, 申請人, 維護, 防護, 維運) are
+glued with U+2060 by `build.py glue()`; the search index strips the joiner.
 
-Head pattern within a section: **heading (`.h-section` or `.section-head h2`) → dek
-(`.section-dek`, ~44ch)**, with an optional `.eyebrow` above. `text-wrap: balance` on
+Head pattern within a section: **`.fd-h2` → `.fd-lead`** split on `--fd-split` (§16.5), with an
+optional label above. `text-wrap: balance` on
 headings, `pretty` on prose — **in English.** Two corrections for Chinese, both measured on
 shipped strings rather than read off the spec:
 
@@ -394,22 +402,6 @@ shipped strings rather than read off the spec:
   line, so a clamped block would show *fewer* characters before the ellipsis. Fit those by
   copy length — at the desktop clamp of 2 lines, which is the tighter of the two (§7
   relaxes it to 3 at ≤640px).
-
-**`[data-page="home"] .pillar-sub` is balanced in BOTH languages** (2026-08-29) — the one
-exception to the rule above that the ZH `balance` list is `[lang="zh-Hant"]`-scoped "because
-the EN copy was written to its full measure and must not move." Here it had to move.
-`.pillar-sub` carried **no `text-wrap` at all** and wrapped greedily, so at 390px (a 350px
-measure — `.container` drops to `padding-inline: 20px` at ≤768px) the 48-character EN string
-orphaned its last word: **~289px / ~67px**. `balance` measures **191px / 183px**. `pretty` is
-the wrong tool twice over — inert on Han, and on the EN it only clears the orphan, leaving
-259/103. Scoped to home deliberately: `.pillar-sub` is shared by three heroes with very
-different strings (licensing's is two spans, signal's is 128 characters and runs ~5 lines on
-a phone), so extending it is a separate call. The ZH string is a single 337px line at 390px,
-so `balance` is a no-op there today.
-
-**Chinese does not drop the negative tracking yet.** `.pillar-title` ships `-0.02em` in both
-languages and no `zh-Hant` override exists in `styles.css`. Pending, not shipped — and not
-free, because adding it re-measures every balanced ZH block.
 
 > **The eyebrow is optional, and today it is unused.** `.section-head` ships `h2` + dek
 > on every live page; the count of standalone `.eyebrow` elements site-wide is **0**.

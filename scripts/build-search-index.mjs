@@ -57,6 +57,7 @@ const strip = (html) => html
   .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
   .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, "'")
   .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')
+  .replace(/\u2060/g, '')   // word joiners glue line breaks in the copy; they must not split a search match
   .replace(/\s+/g, ' ').trim();
 
 // ASCII slug from the English heading. CJK-only headings fall back to a positional

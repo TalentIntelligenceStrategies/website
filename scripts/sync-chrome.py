@@ -81,7 +81,7 @@ PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/licens
 # Photos load on first intent (site.js swaps data-src), so they cost nothing at page load.
 NAV_HERO = {
     'sustain':   ('sustain', 1156, '50% 68%', 'Local MRO capacity that keeps your contracts on track.', '在地化 MRO 能量，讓您的合約順利履約。'),
-    'protect':   ('protect', 993, '50% 68%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主動鎖住技術優勢。'),
+    'protect':   ('protect', 993, '50% 68%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主⁠動鎖住技術優勢。'),
     'license':   ('license', 1156, '50% 30%', 'Make your patents earn, and secure the licences you need in Taiwan with us.', '讓您的專利帶來收入，也協助您取得在台灣需要的授權。'),
     'ecosystem': ('ecosystem-hero', 447, '50% 80%', 'Three partners, brought in as your program grows.', '三家夥伴，隨您的專案成長逐步加入。'),
     'insights':  ('protect-design-room', 597, '50% 80%', 'Know what a patent is worth before you file, license or defend it.', '在申請、授權或防禦之前，先知道一件專利的價值。'),
