@@ -23,7 +23,6 @@
 <!-- The page is bilingual on one URL: EN is the DOM text, 中文 lives in data-zh and
      swaps client-side. Crawlers and unfurlers read the served HTML, so they only ever
      see EN — this is the one honest signal available without separate /zh/ URLs. -->
-<meta property="og:locale:alternate" content="zh_TW" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Licensing Platform (coming soon) — TIS" />
@@ -40,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=85">
+<link rel="stylesheet" href="/assets/build/styles.css?v=86">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -1747,12 +1746,6 @@ a, button, .howit-card, .acc-trigger, .btn {
               <li><a href="/sustain/#compliance" class="mega-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
-          <div class="mega-aside">
-            <p class="mega-eyebrow" data-zh="資源">Resources</p>
-            <ul class="mega-res">
-              <li><a href="/why-taiwan/" class="mega-res-link"><span data-zh="為何是台灣">Why Taiwan</span></a></li>
-            </ul>
-          </div>
         </div>
       </li>
       <li class="nav-item" data-nav="protect">
@@ -1791,7 +1784,7 @@ a, button, .howit-card, .acc-trigger, .btn {
             <a class="mega-hero" href="/ecosystem/"><img class="mega-hero__img" data-src="/assets/imagery/uv/ecosystem-hero-800.webp" alt="" width="800" height="447" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="生態系">Ecosystem</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="三家夥伴，隨您的專案成長逐步加入。">Three partners, brought in as your program grows.</span></a>
             <ul class="mega-list">
               <li><a href="/ecosystem/#suntek" class="mega-link"><span data-zh="服務量能">Service capacity</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/ecosystem/#fairtech" class="mega-link"><span data-zh="能力提升">Capability lifting</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/ecosystem/#capability" class="mega-link"><span data-zh="能力提升">Capability lifting</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/ecosystem/#innovue" class="mega-link"><span data-zh="智財技術">IP technology</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
@@ -1809,7 +1802,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="mega-main">
             <a class="mega-hero" href="/product/signal/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-design-room-800.webp" alt="" width="800" height="597" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="洞察">Insights</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在申請、授權或防禦之前，先知道一件專利的價值。">Know what a patent is worth before you file, license or defend it.</span></a>
             <ul class="mega-list">
-              <li><a href="/product/signal/" class="mega-link"><span data-zh="專利強度評級">Patent Strength Grading</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/#reports" class="mega-link"><span data-zh="兩種報告">Two reports</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
               <li><a href="/product/signal/#method" class="mega-link"><span data-zh="評級是怎麼算出來的">How the grade is calculated</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
@@ -1874,7 +1867,7 @@ a, button, .howit-card, .acc-trigger, .btn {
         </svg>
       </button>
 
-      <a href="#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
+      <a href="/license/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
@@ -1909,8 +1902,6 @@ a, button, .howit-card, .acc-trigger, .btn {
       <a href="/sustain/#network" class="mobile-sub-link"><span data-zh="全台服務網">Island-wide network</span></a>
       <a href="/sustain/#roadmap" class="mobile-sub-link"><span data-zh="能力路線圖">Capability roadmap</span></a>
       <a href="/sustain/#compliance" class="mobile-sub-link"><span data-zh="合規：雙軌制">Compliance: two lanes</span></a>
-      <p class="mobile-sub-label" data-zh="資源">Resources</p>
-      <a href="/why-taiwan/" class="mobile-sub-link mobile-sub-link--res"><span data-zh="為何是台灣">Why Taiwan</span></a>
     </div>
     <div class="mobile-row">
       <a href="/protect/" class="mobile-row-link"><span data-zh="防護">Protect</span></a>
@@ -1941,7 +1932,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     </div>
     <div id="m-sub-ecosystem" class="mobile-sublist">
       <a href="/ecosystem/#suntek" class="mobile-sub-link"><span data-zh="服務量能">Service capacity</span></a>
-      <a href="/ecosystem/#fairtech" class="mobile-sub-link"><span data-zh="能力提升">Capability lifting</span></a>
+      <a href="/ecosystem/#capability" class="mobile-sub-link"><span data-zh="能力提升">Capability lifting</span></a>
       <a href="/ecosystem/#innovue" class="mobile-sub-link"><span data-zh="智財技術">IP technology</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
       <a href="/ecosystem/#map" class="mobile-sub-link mobile-sub-link--res"><span data-zh="整體架構">How it fits together</span></a>
@@ -1953,7 +1944,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       </button>
     </div>
     <div id="m-sub-insights" class="mobile-sublist">
-      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="專利強度評級">Patent Strength Grading</span></a>
+      <a href="/product/signal/#reports" class="mobile-sub-link"><span data-zh="兩種報告">Two reports</span></a>
       <a href="/product/signal/#method" class="mobile-sub-link"><span data-zh="評級是怎麼算出來的">How the grade is calculated</span></a>
     </div>
     <div class="mobile-row">
@@ -1983,7 +1974,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
-    <a href="#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
+    <a href="/license/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
   </div>
 </aside>
 
@@ -2035,10 +2026,10 @@ a, button, .howit-card, .acc-trigger, .btn {
       <span data-zh="關於">About</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
-    <a href="#contact" class="search-link">
+    <a href="/license/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
       <span data-zh="聯絡我們">Contact</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
+      <span class="search-link-meta" data-zh="段落">Section</span>
     </a>
   </div>
 </div>
@@ -2063,15 +2054,23 @@ a, button, .howit-card, .acc-trigger, .btn {
        showcase module hydrates it on scroll once the veil guard stops returning
        early. That hydrator was missing between 1bb2bce and 2026-08-28, so
        following these steps used to leave six empty frames. -->
-  <div class="veil">
+  <div class="veil" role="main" aria-labelledby="veil-title">
     <div class="veil__card" id="veil-card" tabindex="-1">
       <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <h1 class="veil__title" data-zh="泰然專利防護網">Licensing Platform</h1>
+      <h1 class="veil__title" id="veil-title" data-zh="泰然專利防護網">Licensing Platform</h1>
       <p class="veil__body" data-zh="目前暫不開放訂閱，我們正在擴充專利組合。請告訴我們您出口的產品與市場，開放時會主動與您聯繫。">New subscriptions are closed while we build out the coverage. Tell us what you export and we will follow up.</p>
       <div class="veil__actions">
-        <a class="btn btn-primary btn-lg" href="/#contact" data-zh="與我們聯絡">Talk to us</a>
+        <a class="btn btn-primary btn-lg" href="/license/#contact" data-zh="與我們聯絡">Talk to us</a>
       </div>
     </div>
+    <!-- The page cannot scroll while sealed, so the footer behind the veil is unreachable:
+         the legal links and the copyright line sit here instead (2026-10-11 audit). -->
+    <p class="veil__foot">
+      <a href="/legal/terms.en.html" data-legal="terms" data-zh="服務條款">Terms</a>
+      <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a>
+      <a href="/legal/disclosures.en.html" data-legal="disclosures" data-zh="揭露聲明">Disclosures</a>
+      <span>© 2026 Talent Intelligence Strategies MRO Global Inc.</span>
+    </p>
   </div>
 
 <main id="main" data-pillar="licensing" inert aria-hidden="true">
@@ -2905,6 +2904,7 @@ a, button, .howit-card, .acc-trigger, .btn {
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
           <div class="footer-logo-row">
             <span class="footer-logo" aria-hidden="true"></span>
@@ -2974,7 +2974,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=39" defer></script>
+<script src="/assets/build/site.js?v=40" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.

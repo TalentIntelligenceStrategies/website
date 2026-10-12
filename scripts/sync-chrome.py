@@ -28,7 +28,7 @@ NAV = [
         ('/sustain/#roadmap', 'Capability roadmap', '能力路線圖'),
         ('/sustain/#compliance', 'Compliance: two lanes', '合規：雙軌制'),
     ], [
-        ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
+        # Why Taiwan lives under About only (2026-10-11 audit: one place per page).
     ]),
     ('protect', 'Protect', '防護', [
         ('/protect/#capabilities', 'Three capabilities', '三項核心能力'),
@@ -46,7 +46,7 @@ NAV = [
     ('ecosystem', 'Ecosystem', '生態系', [
         # Role labels, not partner names (2026-10-06): the capability lifter is unnamed in public copy.
         ('/ecosystem/#suntek', 'Service capacity', '服務量能'),
-        ('/ecosystem/#fairtech', 'Capability lifting', '能力提升'),
+        ('/ecosystem/#capability', 'Capability lifting', '能力提升'),
         ('/ecosystem/#innovue', 'IP technology', '智財技術'),
     ], [
         ('/ecosystem/#map', 'How it fits together', '整體架構'),
@@ -54,7 +54,8 @@ NAV = [
     ('insights', 'Insights', '洞察', [
         # SABCD rating + Patent Intelligence SaaS merged into one page (team review 2026-10-06).
         # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
-        ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
+        # The panel's photo header already links the page, so the rows are its sections.
+        ('/product/signal/#reports', 'Two reports', '兩種報告'),
         ('/product/signal/#method', 'How the grade is calculated', '評級是怎麼算出來的'),
     ], []),
     ('about', 'About', '關於', [
@@ -105,9 +106,7 @@ FOOTER_ICONS = {
     '/ecosystem/': '<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',  # network
     '/about/': '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',  # box
     '/why-taiwan/': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',  # map-pin
-    '/reports/': '<path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/>',  # paperclip
     '/product/signal/': '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',  # chart-line
-    '/product/licensing/': '<path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/>',
     'terms': '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
     'privacy': '<path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/>',
     'disclosures': '<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/>',
@@ -278,7 +277,7 @@ def search(contact='#contact'):
     rows = '\n'.join(f'''    <a href="{contact if h == '#contact' else h}" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true">{ico}</svg>
       <span data-zh="{zh}">{en}</span>
-      <span class="search-link-meta" data-zh="頁面">Page</span>
+      <span class="search-link-meta" data-zh="{'段落' if h == '#contact' else '頁面'}">{'Section' if h == '#contact' else 'Page'}</span>
     </a>''' for h, en, zh, ico in SEARCH_JUMP)
     return f'''<div class="search-overlay" id="search-overlay"></div>
 <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search" data-zh-aria="搜尋">
@@ -347,6 +346,7 @@ def footer(lockup, inert):
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
 {logo}
         </div>
@@ -364,14 +364,12 @@ def footer(lockup, inert):
     </div>
   </div>'''
 
-# Page config: (file, Innovue footer lockup, inert footer)
+# Page config: (file, Innovue footer lockup, inert footer). Redirect stubs carry no chrome
+# since 2026-10-11 (build.py redirect()), so they are not listed.
 PAGES = [
     ('index.html', False, False),
     ('about/index.html', False, False),
-    ('patents/index.html', False, False),
-    ('reports/index.html', False, False),
     ('product/signal/index.html', True, False),
-    ('product/signal/methodology.html', True, False),
     ('product/licensing/index.html', True, True),
     ('product/licensing/badge.html', True, True),
     ('404.html', False, False),
@@ -379,7 +377,6 @@ PAGES = [
     ('protect/index.html', False, False),
     ('license/index.html', False, False),
     ('ecosystem/index.html', False, False),
-    ('engage/index.html', False, False),
     ('why-taiwan/index.html', False, False),
     ('ausa/index.html', False, False),
 ]
@@ -395,7 +392,9 @@ def apply(path, lockup, inert, write):
     p = ROOT / path
     s = p.read_text(encoding='utf-8')
     orig = s
-    contact = '#contact' if 'id="contact"' in s else '/#contact'
+    # A sealed page (data-veil) keeps its <section id="contact"> inside an inert <main>, so an
+    # in-page link would go nowhere: send it to the License page's form instead.
+    contact = '/license/#contact' if 'data-veil' in s else ('#contact' if 'id="contact"' in s else '/#contact')
     s = swap(s, r'<header class="topnav"', r'</header>(\n<!-- Mega-panel scrim\.(?s:.*?)-->\n<div class="mega-scrim"[^>]*></div>)?', header(contact), path + ' header')
     s = swap(s, r'<div class="mobile-overlay"', r'</aside>', drawer(contact), path + ' drawer')
     # search modal: from overlay to the modal's closing </div> at column 0

@@ -3102,6 +3102,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
 }
 .footer-nl-form .icon-check { display: none; }
+/* Consent line under every email capture (footer newsletter, contact forms, popup):
+   what you get, then the Privacy link, which opens the legal dialog. */
+.footer-nl-fine, .form-fine {
+  margin: 10px 0 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary);
+}
+.footer-nl-fine a, .form-fine a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.footer-nl-fine a:hover, .form-fine a:hover { color: var(--text-primary); }
 .footer-nl-block.is-success .footer-nl-label { color: var(--success-fg); }
 .footer-nl-block.is-success .footer-nl-form input { border-color: var(--success-fg); }
 .footer-nl-block.is-success .footer-nl-form button {
@@ -5019,6 +5026,13 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
   text-wrap: pretty;
 }
 .veil__actions { margin-top: 28px; }
+.veil__foot {
+  grid-row: 3; align-self: end;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px;
+  margin: 0; font-size: 13px; color: var(--text-secondary);
+}
+.veil__foot a { color: inherit; text-decoration: none; }
+.veil__foot a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
 
 /* No accent colour. The licensing accent is warm orange and the hero blurring
    through the glass is already warm orange, so the colour arrives from the page
@@ -7437,20 +7451,20 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 
 /* Hover / focus on a partner: card lifts, needle darkens to the hub, wedge(s) deepen. */
 .eco-dial:has(.eco-dial__node--suntek .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__needle--suntek,
-.eco-dial:has(.eco-dial__node--fairtech .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__needle--fairtech,
+.eco-dial:has(.eco-dial__node--capability .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__needle--capability,
 .eco-dial:has(.eco-dial__node--innovue .eco-dial__link:is(:hover, :focus-visible)) :is(.eco-dial__needle--innovue, .eco-dial__bracket) {
   stroke-opacity: 0.9; stroke-width: 2;
 }
 .eco-dial:has(.eco-dial__node--suntek .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__tip--suntek,
-.eco-dial:has(.eco-dial__node--fairtech .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__tip--fairtech,
+.eco-dial:has(.eco-dial__node--capability .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__tip--capability,
 .eco-dial:has(.eco-dial__node--innovue .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__tip--innovue {
   fill: var(--dial-on); stroke-opacity: 1;
 }
-.eco-dial:has(:is(.eco-dial__node--suntek, .eco-dial__node--fairtech) .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__field--sustain,
+.eco-dial:has(:is(.eco-dial__node--suntek, .eco-dial__node--capability) .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__field--sustain,
 .eco-dial:has(.eco-dial__node--innovue .eco-dial__link:is(:hover, :focus-visible)) :is(.eco-dial__field--protect, .eco-dial__field--license) {
   --w: calc(2 * var(--f));
 }
-.eco-dial:has(:is(.eco-dial__node--suntek, .eco-dial__node--fairtech) .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__pillar--sustain,
+.eco-dial:has(:is(.eco-dial__node--suntek, .eco-dial__node--capability) .eco-dial__link:is(:hover, :focus-visible)) .eco-dial__pillar--sustain,
 .eco-dial:has(.eco-dial__node--innovue .eco-dial__link:is(:hover, :focus-visible)) :is(.eco-dial__pillar--protect, .eco-dial__pillar--license) {
   color: var(--dial-on);
 }
@@ -8150,7 +8164,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 
 /* ── Band — heading, 2–3 large figures and a photograph in one ruled grid (Sustain
-      network, Why Taiwan demand, Ecosystem FairTech). Bento, mock E 2026-10-11; replaced a
+      network, Why Taiwan demand, Ecosystem capability band). Bento, mock E 2026-10-11; replaced a
       92svh full-bleed band whose middle stood empty. Four columns: heading left and photo
       right on the top row, figures (and the foot, on its tinted cell) on the bottom row.
       --tall: two figures and no foot, so the photo runs down both rows. The 1px gap over
@@ -8198,7 +8212,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-band--text .fd-band__fig { grid-column: 1 / -1; }
 }
 
-/* --bleed: the image-led band, restored for Ecosystem #fairtech only (2026-10-12; the
+/* --bleed: the image-led band, restored for Ecosystem #capability only (2026-10-12; the
    pre-bento rules from website 0930860, scoped). The photo fills the section behind the
    copy; the heading opens the frame and the figures close it on a shared white rule. */
 .fd-band--bleed {
@@ -9245,7 +9259,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   --psg-fig: clamp(36px, 3.4vw, 52px);
   --psg-label: 14px;
 }
-#method, #figures, #pool, #indicators, #pillars, #percentile, #grade, #intake { scroll-margin-top: 96px; }
+/* No extra margin: html scroll-padding-top (80px) already clears the nav, like every other anchor. */
 
 /* ── #method · the bento ──────────────────────────────────────────────────── */
 .psg-bento {

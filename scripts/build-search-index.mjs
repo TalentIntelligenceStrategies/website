@@ -15,9 +15,9 @@
  * and a rerun is a no-op. Uniqueness is enforced per page and the script throws
  * rather than emit a colliding anchor.
  *
- * The two veiled pages are indexed but link to their page root. `data-veil`
- * scroll-locks the document, so an anchor there would land on a frozen view —
- * the section is worth finding, the fragment is not worth following.
+ * The two veiled pages get one page row each and no section rows. `data-veil`
+ * scroll-locks the document, so every section row landed on the same Coming soon
+ * view (2026-10-11 audit).
  *
  * Output: assets/build/search-index.json, committed like the rest of
  * assets/build/. Fetched by site.js on first modal open, never on page load.
@@ -37,8 +37,8 @@ const PAGES = [
   { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Strength Grading', zh: '專利強度評級' },
   { file: 'product/licensing/index.html',    url: '/product/licensing/',               en: 'Licensing Platform',      zh: '泰然專利防護網', veil: true },
   { file: 'product/licensing/badge.html',    url: '/product/licensing/badge.html',     en: 'Verified License Badge',  zh: '授權認證標章', veil: true },
-  { file: 'sustain/index.html',              url: '/sustain/',                         en: 'Sustain',                 zh: '維運' },
-  { file: 'protect/index.html',              url: '/protect/',                         en: 'Protect',                 zh: '保護' },
+  { file: 'sustain/index.html',              url: '/sustain/',                         en: 'Sustain',                 zh: '維護' },
+  { file: 'protect/index.html',              url: '/protect/',                         en: 'Protect',                 zh: '防護' },
   { file: 'license/index.html',              url: '/license/',                         en: 'License',                 zh: '授權' },
   { file: 'ecosystem/index.html',            url: '/ecosystem/',                       en: 'Ecosystem',               zh: '生態系' },
   { file: 'why-taiwan/index.html',           url: '/why-taiwan/',                      en: 'Why Taiwan',              zh: '為何是台灣' },
@@ -105,6 +105,9 @@ PAGES.forEach((page, i) => {
 });
 
 PAGES.forEach((page, pageIndex) => {
+  // A sealed page gets its one page row (above) and nothing else: every section row
+  // would land on the same Coming soon veil (2026-10-11 audit, LINK-11).
+  if (page.veil) return;
   const path = join(ROOT, page.file);
   let html = readFileSync(path, 'utf8');
 

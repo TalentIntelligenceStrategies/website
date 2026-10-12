@@ -2,6 +2,13 @@
 (() => {
   const root = document.documentElement;
 
+  // Old shared links: the Ecosystem capability band was #fairtech until 2026-10-11 (the
+  // partner is unnamed in public copy). Re-point the hash and land on the renamed section.
+  if (location.hash === '#fairtech' && document.getElementById('capability')) {
+    history.replaceState(null, '', location.pathname + location.search + '#capability');
+    addEventListener('load', () => document.getElementById('capability').scrollIntoView());
+  }
+
   // ──────────────── Theme — system / light / dark ────────────────
   // Restored 2026-09-29 (parked 2026-06-01 in ef34f5b). The inline head script sets
   // data-theme before first paint; this keeps it in step with the two controls — the
@@ -378,6 +385,11 @@
     root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
     langCodes.forEach(el => { el.textContent = lang === 'zh' ? '中文' : 'EN'; });
     langButtons.forEach(b => b.setAttribute('aria-checked', String(b.dataset.langSet === lang)));
+    // Legal links open a dialog on click, but a new tab or no-JS visit follows the href,
+    // so keep it on the reader's language.
+    document.querySelectorAll('a[data-legal]').forEach(a => {
+      a.href = a.getAttribute('href').replace(/\.(en|zh)\.html/, lang === 'zh' ? '.zh.html' : '.en.html');
+    });
     if (opts.animate && !reduceMotion.matches) {
       const myGen = ++langGen;
       langOverlay.dataset.active = 'true';
@@ -562,7 +574,12 @@
       });
       // The label is the section's page link (2026-10-06): a click navigates, the same
       // place as the panel's photo header. Hover (fine pointers) and ArrowDown open the panel.
-      trigger.addEventListener('click', () => closeMega());
+      // Touch above the drawer breakpoint has no hover, so the panel's anchors would be
+      // unreachable: the first tap opens the panel, the second (or the photo header) navigates.
+      trigger.addEventListener('click', (e) => {
+        if (!hoverFine.matches && current !== item) { e.preventDefault(); open(item, { pin: true }); return; }
+        closeMega();
+      });
       trigger.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -2668,9 +2685,7 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
   cards.forEach(c => c.addEventListener('click', () => open(c)));
   backdrop.addEventListener('click', () => close());
   overlay.querySelectorAll('.sig-xclose').forEach(b => b.addEventListener('click', () => close()));
-  // BUTTON CTAs only. On methodology.html the panel CTA is an <a> pointing at
-  // /product/signal/?report=…#intake, because that page has no intake form to fill —
-  // it has to navigate. Binding this handler to it would swallow the click.
+  // BUTTON CTAs only: an <a> CTA has to navigate, and binding this would swallow the click.
   overlay.querySelectorAll('button.sig-xcta').forEach(b => b.addEventListener('click', () => {
     const radio = selectReport(b.dataset.report);
     close(() => revealIntake(radio));
@@ -2690,23 +2705,6 @@ document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(
     b.setAttribute('aria-label', document.documentElement.getAttribute('lang') === 'zh-Hant' ? '關閉' : 'Close'));
   relabel();
   new MutationObserver(relabel).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
-
-  // Arriving from methodology.html's panel CTA: /product/signal/?report=a-short#intake.
-  // The browser handles the scroll to #intake; this only pre-selects the report, reusing
-  // the same selectReport() the in-page CTAs call, gate handling included.
-  //
-  // This is the reason the block lives in site.js rather than inline on the Signal page.
-  // site.js is deferred, so it runs AFTER that page's inline intake script has bound its
-  // change listeners. Fired from the old inline position — above that script — the radio
-  // would be checked and the deposit figure would stay on "Select a report".
-  //
-  // The query is then dropped from the URL: it describes an arrival, not a page state, and
-  // leaving it in makes a shared or refreshed link re-assert a choice the reader may have
-  // since changed.
-  const wanted = new URLSearchParams(location.search).get('report');
-  if (wanted && selectReport(wanted)) {
-    history.replaceState(null, '', location.pathname + location.hash);
-  }
 })();
 
 /* Front Desk capture posts to FRONT_DESK_ENDPOINT above. The Apps Script that
