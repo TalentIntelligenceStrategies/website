@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-12 14:37 +08:00** · Full site audit fixes (batches 1–9): links, unused code, tokens, shared spacing, type and Chinese breaks, mobile, popup and forms, motion, accessibility; styles v94.
 - **2026-10-12 11:53 +08:00** · About commitments in a ruled frame and a new photo-strip board with updated roles; About spacing fixed; styles v85.
 - **2026-10-12 10:59 +08:00** · Innovue logo and TIS submark replace names on the front door; Capability lifter back to a full-bleed band; styles v84.
 - **2026-10-12 08:36 +08:00** · Inline image in type: photo pills and three-circle stacks in five section headings (Home, Sustain, Protect ×2, License); styles v82.
