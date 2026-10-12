@@ -149,7 +149,7 @@ PAGES.forEach((page, pageIndex) => {
      avoids pretending a regex can model the whole tree. */
   const skipRanges = [];
   for (const open of main.matchAll(new RegExp(`<(\\w+)(${ATTRS})>`, 'g'))) {
-    if (!SKIP_CLASS.test(open[2])) continue;
+    if (!SKIP_CLASS.test((/\bclass="([^"]*)"/.exec(open[2]) || [, ''])[1])) continue;
     const tag = open[1];
     const re = new RegExp(`<${tag}\\b[^>]*>|</${tag}>`, 'g');
     re.lastIndex = open.index;
@@ -166,7 +166,10 @@ PAGES.forEach((page, pageIndex) => {
     const [full, , attrs, inner] = m;
     const en = strip(inner);
     if (!en) return;
-    if (SKIP_CLASS.test(attrs) || inSkippedContainer(m.index)) return;
+    // Test the heading's own class only: a data-zh-html value can carry an escaped
+    // `class="sr-only"` (a logo standing in for a name, 2026-10-12).
+    const cls = (/\bclass="([^"]*)"/.exec(attrs) || [, ''])[1];
+    if (SKIP_CLASS.test(cls) || inSkippedContainer(m.index)) return;
 
     const zh = zhOf(attrs, inner);
 

@@ -3238,6 +3238,49 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   filter: brightness(1.6);
 }
 
+/* Marks set in place of a name on the front door (visual-guide §Partner Credit by Pillar,
+   2026-10-12). The name rides inside as .sr-only text. .fd-mark--tis is the Submark,
+   square, a touch over cap height and sat on the baseline so "Why ▣" reads as one line. */
+.fd-mark {
+  display: inline-block; vertical-align: baseline; position: relative;
+  background: left center/contain no-repeat;
+}
+.fd-mark--tis {
+  width: 0.86em; height: 0.86em; top: 0.06em;
+  background-image: url('/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg');
+}
+[data-theme="dark"] .fd-mark--tis { background-image: url('/designs/assets/logos/tis/tis_cubelogo_submark_light.svg'); }
+/* §Co-Branded Lockup on a line of its own: rule at 80% of the Submark, clear space equal
+   to the Submark each side of it, Innovue balanced optically rather than by height. */
+.fd-lockup {
+  display: flex; align-items: center; gap: 0.86em; width: max-content;
+  margin-bottom: 0.32em;
+}
+.fd-lockup .fd-mark--tis { top: 0; }
+/* The rule takes the marks' own ink: #252525 like the Dark Submark and Innovue files,
+   #FAFAFA like the Light ones. */
+.fd-lockup__rule { width: 1.5px; height: 0.69em; background: #252525; }
+[data-theme="dark"] .fd-lockup__rule { background: #FAFAFA; }
+.fd-lockup .innovue-wordmark { top: 0; height: 0.525em; width: 3.84em; }
+/* Innovue standing alone as a heading (Ecosystem #innovue) or a name (dial, proof strip,
+   partner list): the inline crop sized to the cap height of the type it replaces. */
+.fd-h2 > .fd-mark--innovue { height: 0.56em; width: 4.1em; top: 0; }
+/* Standing alone as a name, with no word beside it to match: a size up, centred on the line. */
+.kv-proof__by .fd-mark--innovue { height: 0.95em; width: 6.95em; top: 0.12em; }
+.fd-partners .fd-mark--innovue { height: 0.76em; width: 5.56em; top: 0.06em; }
+.eco-dial__t > .fd-mark--innovue { height: 0.76em; width: 5.56em; top: 0.06em; }
+/* Black Innovue where it shares a heading's or a card name's ink (portfolio lockup, Ecosystem
+   dial and #innovue, Home partner list and proof strip, 2026-10-12); the white crop in the dark theme. */
+:is(.fd-lockup, .fd-h2, .eco-dial__t, .fd-partners b, .kv-proof__by) > .fd-mark--innovue {
+  background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Dark_eng_inline.svg');
+}
+[data-theme="dark"] :is(.fd-lockup, .fd-h2, .eco-dial__t, .fd-partners b, .kv-proof__by) > .fd-mark--innovue {
+  background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg');
+  filter: none;
+}
+/* Home "Why ▣": the Submark a fifth larger than the default mark. */
+.why-tiles .fd-h2 > .fd-mark--tis { width: 1.03em; height: 1.03em; top: 0.1em; }
+
 /* White Innovue wordmark set inline in the title, sized to the cap-height of
    "Partnership with" so it reads as the word it replaces. Baseline-cropped white
    SVG; width/height in em so it tracks the responsive title size. */
@@ -6835,45 +6878,63 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .ab-stat__body strong { font-weight: 600; color: var(--text-primary); }
 
-/* ── Board of Directors — the original strip, restored ─────────────────────
-   Verbatim from about/index.html: 96px circles in 132px cells, grayscale until
-   hover or focus, 15px name, 10px uppercase role, centred.
-
-   Centred is a deliberate exception to this page's shared left edge. Tried
-   left-aligned first: five 132px cells span 868px of a 1376px container, so it
-   left ~500px of dead width that read as an accident. A centred roster is the
-   conventional close for a page, and it is what the section already was. ── */
-.ab-board__heading { text-align: center; }
-.about-board-grid {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: clamp(24px, 4vw, 52px);
+/* ── Board of directors (2026-10-12; mock P, mro/mocks/about-r1). A contained photo strip
+      carries the heading; the five tiles ride over its lower edge, half on the photo, half
+      on the page. Circles stay at roster size (72px) and keep the grey-to-colour reveal on
+      hover and focus that the old centred strip had. ── */
+.fd-board__strip {
+  --ride: 76px;   /* how far the tiles sit up into the strip */
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: flex-end;
+  min-height: clamp(280px, 26vw, 380px); border-radius: 16px;
+  padding: clamp(24px, 2.6vw, 40px); padding-bottom: calc(var(--ride) + clamp(24px, 2.6vw, 40px));
 }
-.board-member {
-  margin: 0; width: 132px; text-align: center;
-  display: flex; flex-direction: column; align-items: center;
+/* Scoped under the strip: .fd-ph and .fd-h2 are declared further down the file at the same
+   weight, and would otherwise win on source order (position, heading colour). */
+.fd-board__strip .fd-board__bg { position: absolute; inset: 0; z-index: -1; }
+.fd-board__bg .fd-ph__img { filter: saturate(0.8); }
+/* Always-dark scrim under the heading (§1.3 literals: the photo surface is dark in both themes). */
+.fd-board__bg::before { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(to top, rgba(0,0,0,0.45), rgba(0,0,0,0) 60%); }
+.fd-board__strip .fd-board__h2 { color: #fff; }
+.fd-board {
+  position: relative; list-style: none;
+  margin: -76px 0 0; padding: 0 clamp(12px, 1.4vw, 20px);   /* = the strip's --ride (a sibling, so not inherited) */
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;
 }
-.board-member__photo {
-  width: 96px; aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden;
-  border: 1px solid var(--border-primary); background: var(--surface-tertiary);
+.fd-board__p {
+  display: flex; align-items: center; gap: 16px; min-width: 0; min-height: 152px;
+  padding: 24px 20px; border-radius: 16px; background: var(--surface-page);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 8px 24px -10px rgba(0,0,0,0.18);
 }
-.board-member__photo img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(1) brightness(0.85); transition: filter 0.45s ease;
+.fd-board__c {
+  position: relative; flex: none; width: 72px; aspect-ratio: 1; border-radius: 50%;
+  overflow: hidden; background: var(--surface-tertiary);
 }
-.board-member__img--jackson { transform: scale(1.213) translateY(-3%); }
-.board-member__img--steven { transform: scale(1.037); }
-@media (hover: hover) {
-  .board-member:hover .board-member__photo img { filter: grayscale(0) brightness(1); }
+/* A 1px image edge: pure black 10% on light, pure white 10% on dark. */
+.fd-board__c::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); pointer-events: none; }
+[data-theme="dark"] .fd-board__c::after { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
+.fd-board__c picture { display: block; width: 100%; height: 100%; }
+.fd-board__c img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) brightness(0.9); transition: filter 400ms ease;
 }
-.board-member:focus-within .board-member__photo img { filter: grayscale(0) brightness(1); }
-.board-member__name {
-  margin: 14px 0 0; font-size: var(--ab-small); font-weight: 600;
-  letter-spacing: -0.01em; color: var(--text-primary);
+/* Source crops: Jackson sits small in his circle; Steven's circle sits in a grey box. */
+.fd-board__img--jackson { transform: scale(1.213) translateY(-3%); }
+.fd-board__img--steven { transform: scale(1.1); }
+@media (hover: hover) { .fd-board__p:hover img { filter: none; } }
+.fd-board__p:focus-within img { filter: none; }
+@media (hover: none) { .fd-board__c img { filter: none; } }
+@media (prefers-reduced-motion: reduce) { .fd-board__c img { transition: none; } }
+.fd-board__t { display: grid; gap: 4px; min-width: 0; }
+.fd-board__t b { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; color: var(--text-primary); }
+.fd-board__role { font-size: 14px; line-height: 1.4; color: var(--text-secondary); }
+@media (max-width: 1180px) { .fd-board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .fd-board__strip { --ride: 48px; padding-bottom: calc(var(--ride) + 24px); }
+  .fd-board { margin-top: -48px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fd-board__p { min-height: 0; padding-block: 16px; }
 }
-.board-member__role {
-  margin: 5px 0 0; font-size: 10px; font-weight: 500; text-transform: uppercase;
-  letter-spacing: 0.16em; color: var(--text-tertiary);
-}
+@media (max-width: 480px) { .fd-board { grid-template-columns: 1fr; } }
 
 /* ── Reveals. site.js adds .is-revealed via IntersectionObserver. Gated
      unconditionally, matching .h-section[data-reveal] in styles.css and the
@@ -6891,21 +6952,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 @media (max-width: 900px) {
   .ab-doc { grid-template-columns: 1fr; gap: var(--ab-head-gap); }
   .ab-doc__head { position: static; }
-}
-/* 10px is the smallest type on the site and this is the only place it carries
-   prose — a person's job title beside their name, uppercase at 0.16em, in
-   --text-tertiary. Held at 10px on desktop where the 132px card is a deliberate
-   tight column; raised on a phone, where 10px uppercase is roughly 1.7mm of cap
-   height. Measured: no role rewraps at 12px and the section grows 13px.
-
-   Gated on `(pointer: coarse)` as well as the width, because the 1.7mm argument is
-   about reading distance, not viewport size: a touch tablet at 641–880px was still
-   getting 10px. Matches how the rest of the site scopes its touch-accessibility
-   overrides (styles.css, the block at the foot of the file). DESIGN.md §14.2 puts
-   the floor at 11px, and 12px on a phone — 10px is a deliberate desktop-only
-   exception, which is why it stays width-gated on fine pointers. */
-@media (max-width: 640px), (pointer: coarse) {
-  .board-member__role { font-size: 12px; }
 }
 
 /* ═════════════════════════════════════════════════════════════════════════
@@ -7837,9 +7883,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-section:first-child, .fd-hero + .fd-section, .hero + .fd-section { padding-top: var(--fd-section); }
 .fd-section:has(+ .contact), .fd-section:last-child { padding-bottom: var(--fd-section); }
 /* The section above already pads a full --fd-section; the card's own margin doubled it.
-   About's board (.ab-section) takes the half-step after a .fd-section, like any section. */
-.fd-section + .contact .contact-card { margin-top: 0; }
-.ab .fd-section + .ab-section { padding-top: calc(var(--fd-section) / 2); }
+   About's sections sit inside .ab, so the same reset is spelled for that wrapper. */
+.fd-section + .contact .contact-card,
+.ab:has(> .fd-section:last-child) + .contact .contact-card { margin-top: 0; }
 .fd-h2 {
   margin: 0; max-width: 20ch;
   font-size: var(--ab-h2); font-weight: 700;
@@ -8018,6 +8064,58 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-statement__aside > p { max-width: 62ch; text-wrap: pretty; }
 }
 
+/* ── Inline image in type (2026-10-12; mocks mro/mocks/inline-type-r1 + inline-type-map).
+      A small photo set inside a section h2: closing pill, word-wide pill, or three circles
+      when the heading counts three things. build.py ip()/ip_end()/ip_after()/ip_stack();
+      crops in mro/website-build/inline_crops.py; placement rules in DESIGN.md §16.5.
+      Two rules shape all of this CSS: the image is glued to its word (.fd-ip-nw), and no
+      animation changes a box's size, so a heading never reflows mid-motion. ── */
+.fd-ip-nw { white-space: nowrap; }
+.fd-ip {
+  display: inline-block; height: 0.78em; aspect-ratio: 1.9;
+  vertical-align: -0.06em; margin-inline-start: 0.2em; border-radius: 999px;
+  background: var(--surface-recessed) var(--ip) 50% 50% / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--surface-translucent);
+}
+.fd-ip--wide { aspect-ratio: 3; }
+/* How far the clip starts in from the right so the pill opens from a dot (one height wide):
+   1 − 1/aspect. */
+.fd-ip--pill { --ip-dot: 47.4%; }
+.fd-ip--wide { --ip-dot: 66.7%; }
+/* The stack box always reserves the fanned-out width; the circles move by transform only,
+   so the hover fan-out never pushes the line (animating margins made it jump). Fanned is
+   the resting state: touch screens and keyboards see all three. */
+.fd-ip-stack {
+  --w: 0.86em; --gap: 0.1em; --over: 0.3em;
+  position: relative; display: inline-block; vertical-align: -0.12em; margin-inline-start: 0.2em;
+  width: calc(var(--w) * 3 + var(--gap) * 2); height: var(--w);
+}
+.fd-ip-stack .fd-ip {
+  position: absolute; inset: 0 auto 0 0; margin: 0; width: var(--w); height: var(--w); aspect-ratio: 1;
+  box-shadow: 0 0 0 0.06em var(--surface-page);
+  transform: translateX(calc(var(--i) * (var(--w) + var(--gap))));
+}
+.fd-ip-stack .fd-ip:nth-child(1) { z-index: 3; }
+.fd-ip-stack .fd-ip:nth-child(2) { z-index: 2; }
+/* With a fine pointer the circles rest overlapped and fan out when the heading is hovered. */
+@media (hover: hover) and (pointer: fine) {
+  .fd-ip-stack .fd-ip { transform: translateX(calc(var(--i) * (var(--w) - var(--over)))); }
+  .fd-h2:hover .fd-ip-stack .fd-ip { transform: translateX(calc(var(--i) * (var(--w) + var(--gap)))); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .fd-ip-stack .fd-ip { transition: transform 480ms var(--ease-out); }
+}
+/* Arrival, scroll-driven: both pills open from a dot to their full width by clip-path, so the
+   box is full size from the first frame and the line never moves. (A background-size settle
+   from 160% to cover did nothing: a percentage does not interpolate into the cover keyword.)
+   Without view() support, or under reduced motion, the pill simply shows. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fd-ip--pill, .fd-ip--wide { animation: fd-ip-open linear both; animation-timeline: view(); animation-range: entry 10% cover 40%; }
+    @keyframes fd-ip-open { from { clip-path: inset(0 var(--ip-dot) 0 0 round 999px); } to { clip-path: inset(0 0 0 0 round 999px); } }
+  }
+}
+
 /* ── Mosaic — four image tiles in an offset 7/5 · 5/7 rhythm, so a group of four
       never reads as a card grid. Tiles are not links; they describe. ── */
 .fd-mosaic {
@@ -8100,6 +8198,57 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-band--text .fd-band__fig { grid-column: 1 / -1; }
 }
 
+/* --bleed: the image-led band, restored for Ecosystem #fairtech only (2026-10-12; the
+   pre-bento rules from website 0930860, scoped). The photo fills the section behind the
+   copy; the heading opens the frame and the figures close it on a shared white rule. */
+.fd-band--bleed {
+  position: relative; color: #FFFFFF; overflow: hidden;
+  min-height: min(92svh, 860px);
+  display: flex;
+}
+.fd-band--bleed > .fd-ph { position: absolute; inset: 0; border-radius: 0; }
+.fd-band--bleed > .fd-ph--img::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.22) 40%, rgba(0,0,0,0.4) 58%, rgba(0,0,0,0.84) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 55%);
+}
+.fd-band--bleed .fd-ph__img { object-position: var(--fd-pos, 50% 50%); filter: none; }
+@media (max-width: 1100px) {
+  .fd-band--bleed .fd-ph__img { object-position: var(--fd-pos-m, var(--fd-pos, 50% 50%)); }
+}
+.fd-band--bleed .fd-band__inner {
+  position: relative; z-index: 1; width: 100%;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 64px;
+  padding-block: clamp(56px, 7vw, 112px);
+}
+.fd-band--bleed .fd-h2 { color: #FFFFFF; max-width: 18ch; }
+.fd-band--bleed .fd-lead { color: rgba(255,255,255,0.8); }
+.fd-band--bleed .fd-band__label { color: rgba(255,255,255,0.72); }
+.fd-band--bleed .fd-figures {
+  display: grid; grid-template-columns: repeat(var(--fd-cols, 3), minmax(0, 1fr));
+  gap: 0 clamp(24px, 3vw, 48px);
+  background: none; border: 0; border-top: 1px solid rgba(255,255,255,0.28); border-radius: 0; overflow: visible;
+}
+.fd-band--bleed .fd-figures > li { background: none; padding: clamp(20px, 2.4vw, 32px) 0 0; }
+.fd-band--bleed .fd-figures b {
+  display: block; font-family: var(--font-sans); font-weight: 700;
+  font-size: clamp(36px, 3.4vw, 52px); letter-spacing: -0.035em; line-height: 0.95;
+  font-variant-numeric: tabular-nums; color: #FFFFFF;
+}
+.fd-band--bleed .fd-figures--text b { font-size: clamp(26px, 2.6vw, 40px); letter-spacing: -0.02em; line-height: 1.1; }
+.fd-band--bleed .fd-figures span {
+  display: block; margin-top: 14px; max-width: 30ch;
+  font-size: 15.5px; line-height: 1.5; color: rgba(255,255,255,0.8); text-wrap: pretty;
+}
+.fd-band--bleed + .fd-section { padding-top: var(--fd-section); }
+.fd-section:has(+ .fd-band--bleed) { padding-bottom: var(--fd-section); }
+[data-theme="dark"] .fd-band--bleed { box-shadow: 0 -1px 0 var(--edge-window), 0 1px 0 var(--edge-window); }
+@media (max-width: 760px) {
+  .fd-band--bleed .fd-figures { grid-template-columns: 1fr; }
+  .fd-band--bleed .fd-figures > li + li { margin-top: 28px; border-top: 1px solid rgba(255,255,255,0.18); }
+}
+
 /* ── Stair — a real sequence that climbs (Sustain roadmap, L0–L3). Mock A2 (roadmap-r2,
       2026-10-12) replaced the four-node rail. One frame in the bento band's language
       (1px --border-secondary, 16px radius); each step is --base tall plus one --rise per
@@ -8111,7 +8260,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
       below that it stacks above the stair, still inside the frame. ── */
 .fd-stair {
   --rise: clamp(36px, 4.2vw, 64px); --base: clamp(190px, 16vw, 230px); --pad: clamp(24px, 2.4vw, 36px);
-  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
+  /* clip, not hidden: hidden makes the stair a scroll container, and the inline image's
+     view() timeline in its h2 then tracks the stair instead of the page and never plays. */
+  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: clip;
   background: var(--surface-page);
 }
 .fd-stair__head { padding: clamp(24px, 3vw, 44px); }
@@ -8320,20 +8471,24 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   color: var(--text-primary); text-wrap: balance;
 }
 [lang="zh-Hant"] .fd-commit__quote { letter-spacing: 0; line-height: 1.32; max-width: 18em; }
-.fd-trio {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 3vw, 48px);
+.fd-pledge {
+  display: grid; gap: 1px; background: var(--border-secondary);
+  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
 }
-.fd-trio li { padding-top: 20px; border-top: 1px solid var(--text-primary); }
-.fd-trio b { display: block; font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; color: var(--text-primary); }
-.fd-trio span { display: block; margin-top: 10px; max-width: 34ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
-.fd-trio--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: clamp(32px, 3.6vw, 48px); }
-.fd-trio--4 b { font-size: 18px; }
-.fd-trio--4 span { font-size: 15px; }
-@media (max-width: 1100px) { .fd-trio--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 820px) { .fd-trio { grid-template-columns: 1fr; } }
-@media (min-width: 561px) and (max-width: 820px) { .fd-trio--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.fd-pledge__head {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 64px); align-items: end;
+  background: var(--surface-page); padding: clamp(28px, 3.2vw, 48px);
+}
+.fd-pledge__head .fd-h2 { max-width: 14ch; }
+.fd-pledge__lead { margin: 0; max-width: 52ch; font-size: var(--ab-lead); line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+.fd-pledge__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
+.fd-pledge__i { display: grid; grid-template-rows: auto 1fr; row-gap: 14px; min-width: 0; background: var(--surface-page); padding: clamp(24px, 2.4vw, 36px); }
+.fd-pledge__t { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.22; color: var(--text-primary); text-wrap: balance; }
+.fd-pledge__d { margin: 0; max-width: 36ch; font-size: 15.5px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+[lang="zh-Hant"] .fd-pledge__d { line-height: 1.8; }
+@media (max-width: 1024px) { .fd-pledge__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .fd-pledge__head { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .fd-pledge__list { grid-template-columns: 1fr; } }
 
 /* Inner-page hero: one column, then a taller band, and stacked full-width actions. */
 @media (max-width: 900px) {
@@ -9030,8 +9185,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 
 /* ── Insights hub (/reports/): the four research and product lines, each a link.
-      Same ink-rule grammar as .fd-trio so it reads as the site's own list, not a
-      card grid. ── */
+      Ink-ruled, so it reads as the site's own list, not a card grid. ── */
 .fd-hub {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));   /* two since 2026-10-06: Landscape reports + Patent Strength Grading */
@@ -9120,8 +9274,8 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* lines share the row's floor */
 .psg-cell__d { margin: auto 0 0; padding-top: 10px; max-width: 46ch; font-size: 16px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 .psg-cell__t + .psg-cell__d { margin-top: 10px; }
-.psg-cell--pool .sig-credit { display: inline-flex; align-items: baseline; gap: 0.4em; margin: 0 0 auto; padding-bottom: 56px; font-size: 15px; line-height: 1; color: rgba(255,255,255,0.62); }
-.psg-cell--pool .innovue-wordmark { background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg'); filter: none; }
+.psg-cell--pool .sig-credit { display: inline-flex; align-items: baseline; gap: 0.4em; margin: 0 0 auto; padding-bottom: 56px; font-size: 15px; line-height: 1; color: rgba(255,255,255,0.62); font-style: italic; }
+.psg-cell--pool .innovue-wordmark { background-image: url('/designs/assets/logos/partners/innovue/Innovue_Logo_Light_eng_inline.svg'); filter: none; height: 0.86em; width: 6.32em; }
 .psg-cell__fig--pool b { font-size: var(--fd-figure); color: #fff; }
 .psg-cell__fig--pool > span { font-size: 17px; color: rgba(255,255,255,0.86); }
 .psg-cell--pool .psg-cell__d { color: rgba(255,255,255,0.68); }

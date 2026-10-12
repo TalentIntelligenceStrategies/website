@@ -9,6 +9,9 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-12 11:53 +08:00** · About commitments in a ruled frame and a new photo-strip board with updated roles; About spacing fixed; styles v85.
+- **2026-10-12 10:59 +08:00** · Innovue logo and TIS submark replace names on the front door; Capability lifter back to a full-bleed band; styles v84.
+- **2026-10-12 08:36 +08:00** · Inline image in type: photo pills and three-circle stacks in five section headings (Home, Sustain, Protect ×2, License); styles v82.
 - **2026-10-12 08:09 +08:00** · Newsletter popup is now an email-only corner card (Sustain · Protect · License, parts photo) on the six front-door pages; removed from Licensing; styles v79, site.js v39.
 - **2026-10-12 07:24 +08:00** · Protect: the retainer statement now sits on a gimbal photo strip with its proof rows below; styles v77.
 - **2026-10-12 07:23 +08:00** · Signal: removed the retrieve-your-report bar (front-end mock, no backend) with its lookup script and styles; request form unchanged.
