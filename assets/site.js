@@ -1590,8 +1590,9 @@
   // has scrolled past the hero; 50% scroll still opens it early. It never opens while the
   // contact form or the footer newsletter is in view, the contact form has focus, or the
   // drawer, search or legal dialog is open; if one of those appears while it is showing, it
-  // closes and the 30-day mark is withdrawn, so it was never "seen". Seen = shown and then
-  // left open or dismissed by the reader.
+  // steps aside. Shown once = seen for 30 days, however it closed (dismissed, or stepped
+  // aside for a form or the menu). Withdrawing the mark on a step-aside made it reappear on
+  // every page a phone reader reached through the menu (fixed 2026-10-12).
   const mkt = document.getElementById('mkt-overlay');
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
@@ -1606,7 +1607,6 @@
         return ts && (Date.now() - ts) < TTL_MS;
       } catch (_) { return true; }
     };
-    const unmarkSeen = () => { try { localStorage.removeItem(MKT_KEY); } catch (_) {} };
 
     // One polite live region per page: announces that the card opened (it does not take focus).
     const live = document.createElement('p');
@@ -1684,11 +1684,11 @@
       if (inside && lastFocus && lastFocus.focus) lastFocus.focus();
     }
     // Reader dismissed it: stays seen for 30 days.
-    function closePopup() { if (!opened) return; hide(); retired = true; }
-    // A form or the chrome needs the space: step aside without counting as seen.
+    function closePopup() { if (!opened) return; hide(); retired = true; markMktSeen(); }
+    // A form or the chrome needs the space: step aside. It still counts as seen.
     function yieldPopup() {
       if (!opened || mktCard.classList.contains('is-done')) return;
-      hide(); unmarkSeen(); opened = false; retired = true;
+      hide(); opened = false; retired = true;
     }
     new MutationObserver(() => { if (opened && chromeOpen()) yieldPopup(); })
       .observe(document.body, { attributes: true, attributeFilter: ['class'] });
