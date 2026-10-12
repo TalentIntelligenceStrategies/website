@@ -1153,7 +1153,7 @@ anchor jumps and Lenis do not glide. A theme flip suppresses transitions for one
 | Home KV carousel | `index.html` | `site.js` KV block: 7s dwell, pauses on hover / focus / off-screen / hidden tab, stop button; no autoplay on phones | no rotation |
 | Pillar tray disclosure | Home | `site.js` + `.ptray` (`--pt-open` / `--pt-close`) | instant |
 | Mega panels, drawer, search, legal dialog, newsletter popup | chrome | CSS transitions on `--dur-base` / `--dur-panel` | opacity only |
-| Language swap | every page | `.lang-swapping` dips `main` and the footer to 0.35 for ~100ms around the text swap (the 2.2s brand-cube veil was removed 2026-10-12) | instant swap |
+| Language swap veil | every page | `#lang-overlay` brand-cube shimmer (2.2s, text swaps at 900ms); kept by decision 2026-10-12 after the audit proposed a shorter fade | swap without the veil |
 | Smooth scroll | desktop fine pointers | Lenis (`assets/build/lenis.js`, lazy) | off |
 | ScrollTrigger timeline | `product/licensing/` (sealed) | GSAP | reduced branch required |
 

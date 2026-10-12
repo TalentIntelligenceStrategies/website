@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=94">
+<link rel="stylesheet" href="/assets/build/styles.css?v=95">
 
 <style>
   /* Page-scoped scaffolding — #display 4-up image row (one per display surface).
@@ -824,7 +824,12 @@
   </div>
 </div>
 
-<script src="/assets/build/site.js?v=48" defer></script>
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
+<script src="/assets/build/site.js?v=49" defer></script>
 
 </body>
 </html>

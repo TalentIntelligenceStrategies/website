@@ -34,7 +34,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=94">
+<link rel="stylesheet" href="/assets/build/styles.css?v=95">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -611,6 +611,11 @@
 </div>
 
 
+<!-- Language toggle overlay — built up by JS, plays on user EN<->ZH swap. -->
+<div id="lang-overlay" aria-hidden="true">
+  <div id="lang-cube"></div>
+</div>
+
 <!-- newsletter-popup:start — components.md §Newsletter corner popup -->
 <div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="false" aria-hidden="true" aria-label="Newsletter sign-up" data-zh-aria="訂閱電子報">
   <div class="mkt-card" id="mkt-card">
@@ -640,6 +645,6 @@
 </div>
 <!-- newsletter-popup:end -->
 
-<script src="/assets/build/site.js?v=48" defer></script>
+<script src="/assets/build/site.js?v=49" defer></script>
 </body>
 </html>

@@ -240,10 +240,96 @@
   if (titleEl) titleEl.dataset.enTitle = document.title;
   i18nAriaEls.forEach(el => { el.dataset.enAria = el.getAttribute('aria-label') || ''; });
 
-  // Language swap (2026-10-12 audit, MOTION-11): a ~200ms fade of the page content with
-  // the text swapped at its midpoint. It replaced a full-page brand-cube veil that blocked
-  // reading for 2.2s on every switch (restore from git history if the cube is wanted back).
+  // ── Shimmer cube — extracted from brand/previews/loading-animation-preview.html.
+  // Used as a brand-mark transition during user-triggered EN<->ZH language swaps.
+  // Skipped on first paint and when prefers-reduced-motion: reduce.
+  const langOverlay = document.getElementById('lang-overlay');
+  const langCube    = document.getElementById('lang-cube');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const FACES = {
+    top:   { A:[501,3],   B:[925,293], C:[501,563], D:[74,293] },
+    left:  { A:[74,293],  B:[501,563], C:[501,997], D:[74,727] },
+    right: { A:[501,563], B:[925,293], C:[925,727], D:[501,997] },
+  };
+  const bilerp = (face, u, v) => {
+    const {A,B,C,D} = face;
+    const w00=(1-u)*(1-v), w10=u*(1-v), w11=u*v, w01=(1-u)*v;
+    return [
+      w00*A[0]+w10*B[0]+w11*C[0]+w01*D[0],
+      w00*A[1]+w10*B[1]+w11*C[1]+w01*D[1],
+    ];
+  };
+  const TOP_POLY   = '638.46,455.19 638.64,455.19 776.68,364.9 777.05,364.67 639.63,273.74 502.39,182.97 638.69,92.59 639.05,92.36 501.84,2.62 501.68,2.53 87.46,273.37 87.09,273.63 227.16,365.22 227.32,365.34 364.81,274.18 501.7,364.72 638.36,455.14';
+  const LEFT_POLY  = '74.44,292.6 74.44,444.7 212.46,530.2 212.46,674.02 74.88,588.77 74.44,588.52 74.44,726.72 488.06,997.17 488.5,997.47 488.5,843.46 352.78,759.38 352.78,617.98 488.06,701.78 488.5,702.06 488.5,563.35 74.88,292.9';
+  const RIGHT_POLY = '925.42,443.57 925.56,443.48 925.56,292.6 511.64,563.26 511.5,563.35 511.5,795.06 718.53,667.3 718.53,715.98 511.64,845.21 511.5,845.3 511.5,997.47 925.42,726.81 925.56,726.72 925.56,493.26 720.83,619.62 720.83,571.38';
+
+  const shimmerCube = (() => {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 1000 1000');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    const cellsG = document.createElementNS(SVG_NS, 'g');
+    const cells = [];
+    for (const [faceName, face] of Object.entries(FACES)) {
+      for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) {
+        const u0=i/3, v0=j/3, u1=(i+1)/3, v1=(j+1)/3;
+        const corners = [
+          bilerp(face, u0, v0), bilerp(face, u1, v0),
+          bilerp(face, u1, v1), bilerp(face, u0, v1),
+        ];
+        const poly = document.createElementNS(SVG_NS, 'polygon');
+        poly.setAttribute('points', corners.map(p => p.map(n => n.toFixed(2)).join(',')).join(' '));
+        poly.setAttribute('stroke-width', '1');
+        cellsG.appendChild(poly);
+        cells.push({ face: faceName, i, j, poly });
+      }
+    }
+    svg.appendChild(cellsG);
+    const logoG = document.createElementNS(SVG_NS, 'g');
+    logoG.style.opacity = '0';
+    for (const pts of [TOP_POLY, LEFT_POLY, RIGHT_POLY]) {
+      const p = document.createElementNS(SVG_NS, 'polygon');
+      p.setAttribute('points', pts);
+      logoG.appendChild(p);
+    }
+    svg.appendChild(logoG);
+    langCube.appendChild(svg);
+    return { cells, logoG };
+  })();
+
+  const playShimmer = () => {
+    const all = shimmerCube.cells.map(c => c.poly).concat([shimmerCube.logoG]);
+    all.forEach(el => el.getAnimations().forEach(a => a.cancel()));
+    shimmerCube.logoG.style.opacity = '0';
+    const FACE_OFFSET = { top: 0, left: 3, right: 6 };
+    for (const c of shimmerCube.cells) {
+      c.poly.style.opacity = '1';
+      c.poly.style.transform = 'scale(1)';
+      const phase = (c.i + c.j) + FACE_OFFSET[c.face] * 0.4;
+      c.poly.animate(
+        [
+          { opacity: 0,    transform: 'scale(0.7)' },
+          { opacity: 1,    transform: 'scale(1.06)', offset: 0.55 },
+          { opacity: 0.35, transform: 'scale(1)',    offset: 0.75 },
+          { opacity: 1,    transform: 'scale(1)' },
+        ],
+        { duration: 1100, delay: phase * 70, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }
+      );
+    }
+    setTimeout(() => {
+      shimmerCube.logoG.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 420, easing: 'ease-out', fill: 'forwards' }
+      );
+      for (const c of shimmerCube.cells) {
+        c.poly.animate(
+          [{ opacity: 1 }, { opacity: 0 }],
+          { duration: 420, easing: 'ease-out', fill: 'forwards' }
+        );
+      }
+    }, 1700);
+  };
 
   // ── Licensing "How it works" step mockups are same-origin <iframe> embeds that
   // are themselves bilingual (each ships its own render(lang)). The text swapper
@@ -318,9 +404,12 @@
     });
     if (opts.animate && !reduceMotion.matches) {
       const myGen = ++langGen;
-      root.classList.add('lang-swapping');
-      setTimeout(() => { if (myGen === langGen) swapText(lang); }, 100);
-      setTimeout(() => { if (myGen === langGen) root.classList.remove('lang-swapping'); }, 120);
+      langOverlay.dataset.active = 'true';
+      requestAnimationFrame(playShimmer);
+      // Mid-animation swap: text changes while overlay masks the page.
+      setTimeout(() => { if (myGen === langGen) swapText(lang); }, 900);
+      // Total = 200ms fade-in + ~1900ms cube cycle + 200ms fade-out.
+      setTimeout(() => { if (myGen === langGen) langOverlay.dataset.active = 'false'; }, 2200);
     } else {
       swapText(lang);
     }
