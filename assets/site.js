@@ -1325,18 +1325,19 @@
     });
   };
 
-  // Restores whatever label was there before rather than a hardcoded string,
-  // so a language swap mid-request can't strand the button in one language.
+  // Swaps only the label (a .btn-label span when the button has an icon), and restores the
+  // markup it replaced, so a failed send keeps the button's arrow and its data-zh (POP-04).
   const pending = (btn, on) => {
     if (!btn) return;
+    const lbl = btn.querySelector('.btn-label') || btn;
     if (on) {
-      btn.dataset.prevLabel = btn.textContent;
-      btn.textContent = t('Sending…', '傳送中…');
+      btn.dataset.prevHtml = lbl.innerHTML;
+      lbl.textContent = t('Sending…', '傳送中…');
       btn.disabled = true;
       btn.classList.add('is-pending');
     } else {
-      if (btn.dataset.prevLabel !== undefined) btn.textContent = btn.dataset.prevLabel;
-      delete btn.dataset.prevLabel;
+      if (btn.dataset.prevHtml !== undefined) lbl.innerHTML = btn.dataset.prevHtml;
+      delete btn.dataset.prevHtml;
       btn.disabled = false;
       btn.classList.remove('is-pending');
     }
@@ -1418,6 +1419,13 @@
         primeCheck(contactSuccess);
         contactForm.style.display = 'none';
         contactSuccess.classList.add('is-shown');
+        // The focused submit button just disappeared: move focus to the confirmation so it
+        // is announced and keyboard users are not dropped to <body> (A11Y-04).
+        const done = contactSuccess.querySelector('h3');
+        if (done) { done.tabIndex = -1; done.focus({ preventScroll: true }); }
+        // Someone who just wrote to us is not asked to subscribe on this visit (POP-02).
+        try { localStorage.setItem('tis-mkt-drop-seen', String(Date.now())); } catch (_) {}
+        document.dispatchEvent(new CustomEvent('tis:contact-sent'));
       };
       if (!frontDeskLive()) { succeed(); return; }   // endpoint unset — prior behaviour
 
@@ -1444,6 +1452,9 @@
     addHoneypot(nlForm);
     const nlInput = nlForm.querySelector('input[type="email"]');
     const nlLabel = nlBlock.querySelector('.footer-nl-label');
+    const nlStatus = document.getElementById('footer-nl-status');
+    // The label carries the visible state; the sr-only status region announces it (A11Y-13).
+    const nlSay = (msg) => { if (nlStatus) nlStatus.textContent = msg; };
     const nlBtn   = nlForm.querySelector('button[type="submit"]');
     const nlOrig  = nlLabel.textContent;
     let nlTimer = null;
@@ -1463,27 +1474,32 @@
       nlBlock.classList.remove('is-error');
       primeCheck(nlForm.querySelector('.icon-check'));
       nlBlock.classList.add('is-success');
-      nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，謝謝您');
+      nlLabel.textContent = t('Subscribed. Thank you.', '訂閱成功，謝謝您。');
+      nlSay(nlLabel.textContent);
       nlInput.value = '';
       // Cross-suppress the newsletter popup: this reader already subscribed in the footer.
       markMktSeen();
     };
+
+    nlInput.addEventListener('input', () => {
+      if (!nlBlock.classList.contains('is-error')) return;
+      nlBlock.classList.remove('is-error');
+      nlInput.removeAttribute('aria-invalid');
+      nlRestore();
+    });
 
     nlForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = serializeForm(nlForm, { form: 'newsletter', source: 'footer' });
       if (!EMAIL_RE.test(payload.email || '')) {
         // Used to return silently, which read as a dead button.
+        // Stays until the reader edits the field, rather than vanishing on a timer.
         nlBlock.classList.add('is-error');
-        nlLabel.textContent = t('Enter a valid email address', '請填寫有效的電子郵件');
+        nlLabel.textContent = t('Enter a valid email address.', '請填寫有效的電子郵件。');
+        nlSay(nlLabel.textContent);
         nlInput.setAttribute('aria-invalid', 'true');
         nlInput.focus();
         clearTimeout(nlTimer);
-        nlTimer = setTimeout(() => {
-          nlBlock.classList.remove('is-error');
-          nlInput.removeAttribute('aria-invalid');
-          nlRestore();
-        }, 2600);
         return;
       }
       if (!frontDeskLive()) { nlSucceed(); return; }
@@ -1495,12 +1511,9 @@
       } catch (err) {
         // The strip has no room for a message node — the label carries it.
         nlBlock.classList.add('is-error');
-        nlLabel.textContent = t('Couldn’t subscribe — try again', '訂閱失敗，請再試一次');
+        nlLabel.textContent = t('Couldn’t subscribe. Try again.', '訂閱失敗，請再試一次。');
+        nlSay(nlLabel.textContent);
         clearTimeout(nlTimer);
-        nlTimer = setTimeout(() => {
-          nlBlock.classList.remove('is-error');
-          nlRestore();
-        }, 2600);
       } finally {
         nlBtn.disabled = false;
       }
@@ -1552,10 +1565,15 @@
   document.addEventListener('click', () => closeAllBrandSelects());
 
   // ──────────────── Newsletter corner popup — components.md §Newsletter corner popup ────────────────
-  // Trigger: 45s OR 50% scroll, whichever fires first. 30-day localStorage suppression.
-  // Non-modal since 2026-10-12: a corner card (a bottom sheet on phones) with the page left
-  // live behind it. So no lockPage(), no inert, and no focus steal: a reader mid-sentence
-  // keeps their place. Mounted on the six front-door pages by mro/website-build/build.py.
+  // Non-modal corner card (a bottom sheet ≤768px) with the page left live behind it: no
+  // lockPage(), no inert, no focus steal. Mounted on six front-door pages by build.py.
+  //
+  // Polite trigger (2026-10-12 audit, POP-01..03). The 45s timer starts only once the reader
+  // has scrolled past the hero; 50% scroll still opens it early. It never opens while the
+  // contact form or the footer newsletter is in view, the contact form has focus, or the
+  // drawer, search or legal dialog is open; if one of those appears while it is showing, it
+  // closes and the 30-day mark is withdrawn, so it was never "seen". Seen = shown and then
+  // left open or dismissed by the reader.
   const mkt = document.getElementById('mkt-overlay');
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
@@ -1564,129 +1582,139 @@
     const TTL_MS = 30 * 24 * 60 * 60 * 1000;
     const DELAY_MS = 45000;
     const SCROLL_THRESHOLD = 0.50;
-
     const isSuppressed = () => {
       try {
         const ts = parseInt(localStorage.getItem(MKT_KEY) || '0', 10);
         return ts && (Date.now() - ts) < TTL_MS;
       } catch (_) { return true; }
     };
+    const unmarkSeen = () => { try { localStorage.removeItem(MKT_KEY); } catch (_) {} };
 
-    let lastFocus = null;
-    let timer = null;
-    let opened = false;
+    // One polite live region per page: announces that the card opened (it does not take focus).
+    const live = document.createElement('p');
+    live.className = 'sr-only'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite');
+    document.body.appendChild(live);
 
-    // Cached, and rAF-coalesced (2026-08-29). `doc.scrollHeight` is a forced synchronous
-    // layout flush, and this ran it on EVERY scroll event, un-throttled. It is
-    // `passive: true` so it never blocked the gesture, but the flush still landed on the
-    // main thread mid-scroll — and the listener is only armed when the popup is not
-    // suppressed, i.e. on a FIRST VISIT, which is exactly when the site was reported to
-    // stutter. The document height cannot change under a scroll, only under a resize or
-    // a reveal, so measure it there instead.
+    let lastFocus = null, timer = null, opened = false, retired = false;
+
+    // Forms in view: tracked, never measured on scroll.
+    const blockers = new Set();
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(en => { if (en.intersectionRatio >= 0.2) blockers.add(en.target); else blockers.delete(en.target); });
+        if (opened && blockers.size) yieldPopup();
+      }, { threshold: [0, 0.2] });
+      ['contact', 'footer-nl-block'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+    }
+    const chromeOpen = () => {
+      const b = document.body.classList;
+      return b.contains('nav-lock') || b.contains('lgl-lock') ||
+        document.getElementById('search-modal')?.dataset.open === 'true';
+    };
+    const contactFocused = () => !!document.activeElement?.closest?.('#contact-form');
+    const blocked = () => blockers.size > 0 || chromeOpen() || contactFocused();
+
     let scrollMax = 0;
     const measure = () => {
-      // Never measure while the page is locked. body.nav-lock and the legal lock are
-      // `position: fixed; overflow: hidden`, which takes <body> out of flow and makes
-      // scrollHeight - clientHeight collapse to ~0. A resize while the mobile drawer is
-      // open (orientation change, iOS URL-bar collapse, soft keyboard) would otherwise
-      // latch scrollMax at 0 — and closing the drawer fires no resize, so the trigger
-      // stayed dead for the rest of the session.
+      // A locked page (drawer, legal dialog) is out of flow; never latch scrollMax at ~0.
       const b = document.body.classList;
       if (b.contains('nav-lock') || b.contains('lgl-lock')) return;
       const doc = document.documentElement;
       scrollMax = doc.scrollHeight - doc.clientHeight;
     };
+    const heroEnd = () => {
+      const h = document.querySelector('.kv, .fd-hero');
+      return h ? h.offsetTop + h.offsetHeight : innerHeight;
+    };
     let scrollRaf = null;
     const onScroll = () => {
-      if (opened || scrollRaf) return;
+      if (opened || retired || scrollRaf) return;
       scrollRaf = requestAnimationFrame(() => {
         scrollRaf = null;
-        if (opened) return;
-        // Self-heal: any path that left the cache non-positive (a missed resize, a
-        // measurement taken while locked) re-measures once here. Still off the hot
-        // path — this only runs when the cached value is unusable, and it is inside
-        // the rAF, so the forced layout lands with the frame rather than mid-gesture.
+        if (opened || retired) return;
+        const y = window.scrollY || document.documentElement.scrollTop || 0;
+        // The timer only runs once the reader is past the hero, so it never lands on the CTA.
+        if (!timer && y > heroEnd()) timer = setTimeout(openPopup, DELAY_MS);
         if (scrollMax <= 0) measure();
-        const scrolled = window.scrollY || document.documentElement.scrollTop || 0;
-        if (scrollMax > 0 && (scrolled / scrollMax) >= SCROLL_THRESHOLD) openPopup();
+        if (scrollMax > 0 && (y / scrollMax) >= SCROLL_THRESHOLD) openPopup();
       });
     };
 
     function openPopup() {
-      if (opened || isSuppressed()) return;
-      // Never over an open legal dialog. This popup runs on a 45s timer of its own,
-      // so without this it lands on top of Terms mid-read. Re-arm rather than drop
-      // the trigger, so the visitor still sees it once they close the dialog.
-      if (document.body.classList.contains('lgl-lock')) { timer = setTimeout(openPopup, 20000); return; }
+      if (opened || retired || isSuppressed()) return;
+      // Not now: re-arm and try again shortly, so the reader still sees it later.
+      if (blocked()) { clearTimeout(timer); timer = setTimeout(openPopup, 15000); return; }
       opened = true;
       clearTimeout(timer);
-      window.removeEventListener('scroll', onScroll);
+      mkt.classList.remove('is-closing');
       mkt.classList.add('is-open');
       mkt.setAttribute('aria-hidden', 'false');
-      // Seen on display, not on submit: a visitor who closes it is not asked again for
-      // 30 days. No lockPage() and no focus move — see the header above.
+      live.textContent = t('Newsletter sign-up opened at the bottom of the page. Press Escape to dismiss.',
+                           '頁面底部已開啟電子報訂閱。按 Esc 可關閉。');
       markMktSeen();
     }
 
-    function closePopup() {
-      // Hand focus back only if the reader had moved into the card; otherwise it was never
-      // taken, and moving it now would yank them out of whatever they were doing.
+    function hide() {
       const inside = mktCard.contains(document.activeElement);
       mkt.classList.remove('is-open');
       mkt.setAttribute('aria-hidden', 'true');
+      const instant = reduceMotion.matches;
+      if (!instant) {
+        mkt.classList.add('is-closing');
+        setTimeout(() => mkt.classList.remove('is-closing'), 220);
+      }
       if (inside && lastFocus && lastFocus.focus) lastFocus.focus();
     }
-    // Remember where focus came from the first time the reader enters the card.
+    // Reader dismissed it: stays seen for 30 days.
+    function closePopup() { if (!opened) return; hide(); retired = true; }
+    // A form or the chrome needs the space: step aside without counting as seen.
+    function yieldPopup() {
+      if (!opened || mktCard.classList.contains('is-done')) return;
+      hide(); unmarkSeen(); opened = false; retired = true;
+    }
+    new MutationObserver(() => { if (opened && chromeOpen()) yieldPopup(); })
+      .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    const sModal = document.getElementById('search-modal');
+    if (sModal) new MutationObserver(() => { if (opened && chromeOpen()) yieldPopup(); })
+      .observe(sModal, { attributes: true, attributeFilter: ['data-open'] });
+    document.addEventListener('focusin', (e) => { if (opened && e.target.closest?.('#contact-form')) yieldPopup(); });
+    document.addEventListener('tis:contact-sent', () => { if (opened) closePopup(); retired = true; });
+
     mktCard.addEventListener('focusin', (e) => {
       if (!mktCard.contains(e.relatedTarget)) lastFocus = e.relatedTarget;
     });
-
-    // Privacy in the fine print. The legal dialog is a separate overlay and it inerts
-    // only <main> and the footer — this popup sits outside both, so the two would stack.
-    // Close this one first; the delegated [data-legal] handler then opens the dialog on
-    // the same click, because this listener is on `mkt` and fires earlier in the bubble.
-    mkt.addEventListener('click', (e) => {
-      if (e.target.closest('[data-legal]')) closePopup();
-    });
+    // Privacy link: close this first; the delegated [data-legal] handler opens the dialog.
+    mkt.addEventListener('click', (e) => { if (e.target.closest('[data-legal]')) closePopup(); });
 
     function showSuccess() {
-      // The photo and plate go with the old innerHTML; .mkt-card:has(.mkt-success) in
-      // styles.css shrinks the card to the plain success block.
-      // Built after init, so this heading isn't in the static i18nEls NodeList
-      // and won't follow a later language toggle. Resolving it through t() at
-      // creation is the correct fix — the modal is dismissed long before that
-      // would matter. Until now it was hardcoded English for ZH readers too.
-      mktCard.innerHTML =
-        '<button class="mkt-close" type="button" aria-label="Close" data-mkt-close>' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
-        '</button>' +
-        '<div class="mkt-success">' +
-          '<div class="seal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>' +
-          '<h3>' + t('You’re on the list.', '已加入訂閱名單。') + '</h3>' +
-        '</div>';
-      // Only the tick — not the close button's X, which shouldn't draw itself.
-      primeCheck(mktCard.querySelector('.seal'));
+      // Same card: the text, form and fine print give way to the success block (CSS
+      // .is-done), which is announced, and focus moves to the close button (A11Y-03).
+      primeCheck(mktCard.querySelector('.mkt-done .seal'));
+      mktCard.classList.add('is-done');
+      live.textContent = t('Subscribed. Thank you.', '訂閱成功，謝謝您。');
+      const close = mktCard.querySelector('[data-mkt-close]');
+      if (close && mktCard.contains(document.activeElement)) close.focus();
     }
 
     // → `newsletter` tab, source=popup. Email only.
     mktForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearFormError(mktForm);
-
       const payload = serializeForm(mktForm, { form: 'newsletter', source: 'popup' });
       if (!EMAIL_RE.test(payload.email || '')) {
-        showFormError(mktForm, t('Please enter a valid work email.', '請填寫有效的公司電子郵件。'));
+        showFormError(mktForm, t('Enter a valid email address.', '請填寫有效的電子郵件。'));
+        flagField(mktForm, mktForm.querySelector('[name="email"]'));
         return;
       }
       if (!frontDeskLive()) { showSuccess(); return; }
-
       const mktBtn = mktCard.querySelector('.mkt-cta');
       pending(mktBtn, true);
       try {
-        await frontDeskPost(payload);   // must land before showSuccess() wipes the card
-        showSuccess();                  // card innerHTML replaced — no un-pending needed
+        await frontDeskPost(payload);
+        showSuccess();
       } catch (err) {
         showFormError(mktForm, sendFailed());
+      } finally {
         pending(mktBtn, false);
       }
     });
@@ -1698,15 +1726,17 @@
       if (e.key === 'Escape' && mkt.classList.contains('is-open')) closePopup();
     });
 
-    // Arm triggers if not suppressed.
     if (!isSuppressed()) {
-      timer = setTimeout(openPopup, DELAY_MS);
       measure();
       window.addEventListener('scroll', onScroll, { passive: true });
-      // Reveals and lazy images change the document height after load, so re-measure on
-      // resize and once the page has settled rather than trusting the value taken here.
       window.addEventListener('resize', measure, { passive: true });
-      window.addEventListener('load', measure, { once: true });
+      // Fetch the photo once the page has settled, so the card never opens on an empty
+      // frame (POP-14); suppressed visitors never download it.
+      window.addEventListener('load', () => {
+        measure();
+        const img = mkt.querySelector('[data-mkt-img]');
+        if (img) img.loading = 'eager';
+      }, { once: true });
     }
   }
 

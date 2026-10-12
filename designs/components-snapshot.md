@@ -866,30 +866,32 @@ Choose a Sheet over a Modal when content is long-scrolling, when the user needs 
 
 ## Newsletter corner popup
 
-Marketing-site newsletter signup that slides into the bottom-right corner. Email only; the page behind it stays live (non-modal). Trigger: 45 seconds on the page or 50% scroll, whichever comes first, at most once per visitor per 30 days; a footer-newsletter signup suppresses it too. Replaced the IP intelligence drop popup (F hero band / G side panel, Role + Industry selects) on 2026-10-12.
+Marketing-site newsletter signup that slides into the bottom-right corner. Email only; the page behind it stays live (non-modal). Trigger (polite, 2026-10-12 site audit): the 45-second timer starts only once the reader has scrolled past the hero, and 50% scroll still opens it early; at most once per visitor per 30 days. It never opens, and closes without counting as seen, while the contact form or the footer newsletter is in view, the contact form has focus, or the mobile menu or search is open. A footer-newsletter or contact-form submission suppresses it. Replaced the IP intelligence drop popup (F hero band / G side panel, Role + Industry selects) on 2026-10-12.
 
 - **Consumes:** `surface-page`, `surface-recessed`, `surface-tertiary`, `surface-inverse`, `border-primary`, `border-tertiary`, `border-focus`, `text-primary`, `text-secondary`, `text-tertiary`, `text-quaternary`, `text-inverse`, `success-bg`, `success-fg`, shadow `high`. No backdrop, no scrim over the photo. Form atoms per §Input and §Button primary
 - **Surfaces:** marketing website, front door (Home, Sustain, Protect, License, Ecosystem, Why Taiwan). Not About, AUSA or Insights pages
-- **Variants:** one: **Tall plate** (desktop corner card) · bottom sheet below 560px
+- **Variants:** one: **Tall plate** (desktop corner card) · bottom sheet at 768px and below
 - **States:** entering · open · success · closed
 
-**Card.** `mkt-card`, 380×520 (aspect locked, `min(380px, 100vw − 48px)` wide), radius 20, `overflow: hidden`, shadow `high` plus a 1px `border-primary` ring. Pinned 24px from the bottom-right viewport corner. The photo (`mkt-media`) fills the whole card with `object-fit: cover`; it is a cropped flat-lay of a disassembled fixed-wing UAV (`disassembled-drone-v1`, top 18% removed so no window or table edge shows).
+**Card.** `mkt-card`, 380×520 (aspect locked, `min(380px, 100vw − 48px)` wide; 380×440 on viewports under 820px tall), radius 20, `overflow: hidden`, shadow `high` plus a 1px `border-primary` ring. Pinned 24px from the bottom-right viewport corner. The photo (`mkt-media`) fills the whole card with `object-fit: cover`; it is a cropped flat-lay of a disassembled fixed-wing UAV (`disassembled-drone-v1`, top 18% removed so no window or table edge shows).
 
-**Plate.** `mkt-main`, a solid `surface-page` sheet inset 12px from the card's left, right and bottom edges, radius 14, padding 20, shadow `high`. It reads as a sheet of paper laid among the parts. Stack, gap 16: headline (sans 19 / 600 / line-height 1.22 / −0.015em), subhead (sans 13 / `text-secondary` / `text-wrap: balance`), form row, fine print. No eyebrow.
+**Plate.** `mkt-main`, a solid `surface-page` sheet inset 12px from the card's left, right and bottom edges, radius 8 (concentric: card 20 − inset 12), padding 20, shadow `high`. It reads as a sheet of paper laid among the parts. Stack, gap 16: headline (sans 19 / 600 / line-height 1.22 / −0.015em), subhead (sans 13 / `text-secondary` / `text-wrap: balance`), form row, fine print. No eyebrow.
 
 **Copy.** Headline is the locked tagline **Sustain · Protect · License** / 維護 · 防護 · 授權 (`positioning.md` §3). Subhead: "Updates from TIS, Taiwan's ecosystem partner for unmanned-vehicle makers." / 台灣無人載具生態系夥伴 TIS 的最新動態。 Button `Subscribe` / 訂閱; fine print `Occasional email.` / 不定期寄送。 + Privacy link.
 
-**Form.** One row: email input (height 44, radius 12, 16px text so iOS does not zoom; label `Work email` visually hidden) and §Button primary `Subscribe` with a trailing arrow. Focus: `border-focus` plus a 3px 22% `border-focus` ring.
+**Shared email-capture copy** (popup, §Footer newsletter and the contact form use the same strings, 2026-10-12): label `Email` / 電子郵件; placeholder `name@company.com`; invalid `Enter a valid email address.` / 請填寫有效的電子郵件。; subscribed `Subscribed. Thank you.` / 訂閱成功，謝謝您。; every capture carries the Privacy link.
 
-**Close.** 32×32 round `surface-page` button with a 1px `border-primary` ring, top-right of the card over the photo. Hover `surface-tertiary` / `text-primary`.
+**Form.** One row (stacked, button full width, at 400px and below): email input (height 44, radius 12, 16px text so iOS does not zoom; label `Email` visually hidden) and §Button primary `Subscribe` with a trailing arrow. Focus: `border-focus` plus a 3px 22% `border-focus` ring.
 
-**Phones (≤560px).** Bottom sheet: full width, radius 20 20 0 0, `surface-recessed` ground. The photo becomes a 190px band on top and the plate overlaps its lower edge by 44px; the safe-area inset pads the bottom.
+**Close.** 32×32 round `surface-page` button with a 1px `border-primary` ring, top-right of the card over the photo, with a 44×44 hit area. Hover `surface-tertiary` / `text-primary`.
 
-**Success state.** The card body is replaced by the shared success block (56×56 `success-bg` seal with a drawn check, sans 20 / 600 `You're on the list.`), in a 360px card.
+**Phones and tablets (≤768px).** Bottom sheet: full width, radius 20 20 0 0, `surface-recessed` ground. The photo becomes a 190px band on top and the plate overlaps its lower edge by 44px; the safe-area inset pads the bottom.
 
-**Motion.** Card enters 520ms ease-out-quint `translateY(24px)` + opacity; the photo settles from `scale(1.06)` over 1400ms; the plate lifts 12px with a 160ms delay. Phones slide the sheet up from 100%. Reduced motion: no animation.
+**Success state.** The form and fine print cross-fade to the shared success block (56×56 `success-bg` seal with a drawn check, sans 20 / 600 `Subscribed. Thank you.` / 訂閱成功，謝謝您。) inside the same card; a polite live region announces it and focus moves to the close button.
 
-**Accessibility.** `role="dialog"`, `aria-modal="false"`, labelled by the headline. No page lock, no focus steal (a reader mid-sentence keeps their place). Escape or the close button dismisses; focus returns to where it was only if it had moved into the card.
+**Motion** (design-tokens.md §4 scale). Card enters at `panel` (320ms) on `out`, `translateY(24px)` + opacity; the photo settles from `scale(1.06)` at `reveal` (600ms); the plate lifts 12px 60ms behind. Exit at `base` (180ms): opacity + `translateY(12px)`. The sheet slides up from 100% on the `drawer` curve and back down on close. Reduced motion: opacity only.
+
+**Accessibility.** `role="dialog"`, `aria-modal="false"`, named `Newsletter sign-up` / 訂閱電子報. No page lock, no focus steal (a reader mid-sentence keeps their place); on open a polite live region says it opened and that Escape dismisses it. Errors set `aria-invalid` and move focus to the field. Escape or the close button dismisses; focus returns to where it was only if it had moved into the card. Stacks above page content but below the drawer, search and legal dialog.
 
 Pairs with §Footer (the always-on newsletter peer; both post to the same `newsletter` capture, distinguished by `source`).
 

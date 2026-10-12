@@ -38,7 +38,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=91">
+<link rel="stylesheet" href="/assets/build/styles.css?v=92">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -492,7 +492,7 @@
             </div>
             <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出需求">Send request</button>
             </div>
             <p class="form-fine"><span data-zh="我們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </form>
@@ -501,7 +501,7 @@
               <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
             </span>
             <div>
-              <h3 data-zh="訊息已送出。">Message sent.</h3>
+              <h3 data-zh="需求已送出。">Request sent.</h3>
               <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
             </div>
           </div>
@@ -520,14 +520,15 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
+            <div class="footer-nl-label" id="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" autocomplete="email" placeholder="name@company.com" aria-label="Email" data-zh-aria="電子郵件" aria-describedby="footer-nl-label" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="sr-only" id="footer-nl-status" role="status" aria-live="polite"></p>
             <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
           <div class="footer-logo-row">
@@ -595,7 +596,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=45" defer></script>
+<script src="/assets/build/site.js?v=46" defer></script>
 
 </body>
 </html>

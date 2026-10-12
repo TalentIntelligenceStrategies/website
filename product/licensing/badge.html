@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=91">
+<link rel="stylesheet" href="/assets/build/styles.css?v=92">
 
 <style>
   /* Page-scoped scaffolding — #display 4-up image row (one per display surface).
@@ -743,14 +743,15 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
+            <div class="footer-nl-label" id="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" autocomplete="email" placeholder="name@company.com" aria-label="Email" data-zh-aria="電子郵件" aria-describedby="footer-nl-label" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="sr-only" id="footer-nl-status" role="status" aria-live="polite"></p>
             <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
           <div class="footer-logo-row">
@@ -820,7 +821,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=45" defer></script>
+<script src="/assets/build/site.js?v=46" defer></script>
 
 </body>
 </html>

@@ -3875,7 +3875,7 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
    disappears on long content — not a model to copy.
 
    z-index deviates from the spec's 700 on purpose. The registry above tops out at
-   .mkt-overlay 1000, and that newsletter popup fires on its own 45s timer, so a
+   .mkt-overlay 600 (it sits below this dialog), and that newsletter popup fires on its own timer, so a
    legal dialog at 700 would be covered by an unrelated marketing card mid-read.
    1100 puts it above everything; site.js also suppresses the mkt timer while open.
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -4088,11 +4088,15 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
    no lock). A solid plate lies on the photo like a sheet on the table; nothing scrims the
    photo. Phones get a bottom sheet. Picked from mro/mocks/popup-r1 (Tall · Copy 2 · Photo 1). */
 .mkt-overlay {
-  position: fixed; inset: 0; z-index: 1000;
+  /* Above page content and the topnav (100), below the drawer (700), search (900) and the
+     legal dialog (1100): it never covers the chrome a reader just opened (POP-01). */
+  position: fixed; inset: 0; z-index: 600;
   display: none; align-items: flex-end; justify-content: flex-end; padding: 24px;
   pointer-events: none;
 }
-.mkt-overlay.is-open { display: flex; }
+.mkt-overlay.is-open, .mkt-overlay.is-closing { display: flex; }
+.mkt-overlay.is-closing .mkt-card { animation: mkt-card-out var(--dur-base) var(--ease-out) both; }
+@keyframes mkt-card-out { to { opacity: 0; transform: translateY(12px); } }
 
 .mkt-card {
   position: relative; pointer-events: auto;
@@ -4109,7 +4113,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-media picture { display: contents; }
 .mkt-img {
   display: block; width: 100%; height: 100%; object-fit: cover;
-  animation: mkt-img-in var(--dur-media) var(--ease-out) both;
+  animation: mkt-img-in var(--dur-reveal) var(--ease-reveal) both;
 }
 @keyframes mkt-img-in { from { transform: scale(1.06); } }
 
@@ -4124,14 +4128,15 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 }
 .mkt-close:hover { background: var(--surface-tertiary); color: var(--text-primary); }
 .mkt-close:active { transform: scale(var(--press-scale)); }
+.mkt-close::after { content: ""; position: absolute; inset: -6px; border-radius: 999px; }   /* 44px hit area */
 .mkt-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 .mkt-main {
   position: absolute; left: 12px; right: 12px; bottom: 12px;
   display: flex; flex-direction: column; gap: 16px;
-  padding: 20px; border-radius: var(--r-frame);
+  padding: 20px; border-radius: 8px;   /* concentric: card 16 − inset 12, floored */
   background: var(--surface-page); box-shadow: var(--shadow-high);
-  animation: mkt-plate-in var(--dur-panel) var(--ease-out) 160ms both;
+  animation: mkt-plate-in var(--dur-panel) var(--ease-out) 60ms both;
 }
 @keyframes mkt-plate-in { from { opacity: 0; transform: translateY(12px); } }
 .mkt-text { display: flex; flex-direction: column; gap: 8px; }
@@ -4162,28 +4167,41 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-cta { flex: none; height: 44px; padding: 0 16px; gap: 8px; font-size: 12px; border: 0; cursor: pointer; }
 .mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 .mkt-cta:hover svg { transform: translateX(2px); }
-.mkt-fine { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-tertiary); }
+.mkt-fine { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
 .mkt-fine a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
 
-/* Success: site.js swaps the card body for .mkt-success, so drop the photo-card geometry. */
-.mkt-card:has(.mkt-success) { width: min(360px, calc(100vw - 48px)); aspect-ratio: auto; background: var(--surface-page); }
+/* Success: the plate's text, form and fine print give way to the success block in the same
+   card (site.js adds .is-done); the block fades in rather than the card snapping size. */
+.mkt-done { display: none; }
+.mkt-card.is-done .mkt-text, .mkt-card.is-done .mkt-form, .mkt-card.is-done .mkt-fine { display: none; }
+.mkt-card.is-done .mkt-done { display: flex; animation: mkt-done-in var(--dur-base) var(--ease-out) both; }
+@keyframes mkt-done-in { from { opacity: 0; } }
+/* Short laptops: a shorter photo so the card does not reach the hero CTA (POP-03). */
+@media (min-width: 769px) and (max-height: 820px) { .mkt-card { aspect-ratio: 380 / 440; } }
+/* Narrow phones: field and button stack, so the address is not cut to ~128px (MOB-07). */
+@media (max-width: 400px) {
+  .mkt-row { flex-direction: column; }
+  .mkt-cta { width: 100%; justify-content: center; }
+}
 
-/* Phones: a bottom sheet. Photo band on top, the plate overlapping its lower edge. */
-@media (max-width: 560px) {
+/* Phones and tablets: a bottom sheet. Photo band on top, the plate overlapping its lower
+   edge. 768, not 560: at tablet width the corner card covered half the hero (POP-03). */
+@media (max-width: 768px) {
   .mkt-overlay { padding: 0; }
   .mkt-card {
     width: 100%; aspect-ratio: auto; max-height: calc(100dvh - 24px); overflow: auto;
     border-radius: var(--r-frame) var(--r-frame) 0 0; box-shadow: var(--shadow-high);
-    animation-name: mkt-sheet-in;
+    animation: mkt-sheet-in var(--dur-panel) var(--ease-drawer) both;
   }
   @keyframes mkt-sheet-in { from { transform: translateY(100%); } }
+  .mkt-overlay.is-closing .mkt-card { animation: mkt-sheet-out var(--dur-base) var(--ease-drawer) both; }
+  @keyframes mkt-sheet-out { to { transform: translateY(100%); } }
   .mkt-media { position: relative; inset: auto; height: 190px; }
   .mkt-img { object-position: 50% 32%; }
   .mkt-main {
     position: relative; left: auto; right: auto; bottom: auto;
     margin: -44px 12px calc(12px + env(safe-area-inset-bottom));
   }
-  .mkt-card:has(.mkt-success) { width: 100%; }
 }
 
 /* Brand select — components.md §Select (custom dropdown, not native <select>) */
@@ -4240,8 +4258,8 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .brand-select-item.selected .check { opacity: 1; }
 
 .mkt-success {
-  padding: 48px 32px; text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 16px 8px; text-align: center;
+  flex-direction: column; align-items: center; gap: 12px;
 }
 .mkt-success .seal {
   width: 56px; height: 56px; border-radius: 50%;
@@ -4306,7 +4324,7 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
 /* z-index 95 is the only free band. It covers everything inside <main> — the
    licensing page lifts its announce bar to 90 — while leaving every chrome
    overlay above it: .topnav 100, .mobile-drawer 700, .search-modal 900,
-   #lang-overlay 999, .mkt-overlay 1000, .lgl-overlay 1100. The nav staying usable is deliberate:
+   .mkt-overlay 600, #lang-overlay 999, .lgl-overlay 1100. The nav staying usable is deliberate:
    a sealed page with no nav traps the visitor, and the language toggle lives
    there, so covering it would leave a ZH reader stuck in English.
 

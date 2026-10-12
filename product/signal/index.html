@@ -41,7 +41,7 @@
      a swap-in after first paint reflows the words around it, not just the digits. -->
 <link rel="preload" href="/assets/build/fonts/Inconsolata-600.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=91">
+<link rel="stylesheet" href="/assets/build/styles.css?v=92">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -656,7 +656,7 @@
             <span class="offer-card-title" data-zh="景深報告">Study Report</span>
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="依個案報價">Quoted per case</span>
             <span class="offer-card-desc" data-zh="S 到 D 的評級與在 1433 件專利池中的排名，加上 50 項指標逐項分析、強弱項 Top 10 與授權策略建議。僅適用已核准或已公開專利。">A grade from S to D and your rank in the 1433-patent pool, plus all 50 indicators, top strengths, risks and licensing strategy. Granted or published only.</span>
-            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See a sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
           </span>
@@ -668,7 +668,7 @@
             <span class="offer-card-title" data-zh="廣角報告">Survey Report</span>
             <span class="offer-card-eyebrow offer-card-eyebrow--text" data-zh="依個案報價">Quoted per case</span>
             <span class="offer-card-desc" data-zh="市場上最相關的十件專利，各附相似度分數與比對原因說明。任何輸入皆可 — 連一個想法也行。">The ten closest patents on the market, each with a similarity score and why it matches. Any input.</span>
-            <span class="offer-card-more"><span data-zh="看報告樣張">See sample report</span>
+            <span class="offer-card-more"><span data-zh="看報告樣張">See a sample report</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
           </span>
@@ -863,11 +863,11 @@
             </fieldset>
             <div class="field" data-input-for="granted">
               <label for="intake-input" data-zh="專利號">Patent number</label>
-              <input id="intake-input" name="patent" type="text" spellcheck="false" data-zh-placeholder="如 US10148981" placeholder="e.g. US10148981" />
+              <input id="intake-input" name="patent" type="text" spellcheck="false" data-zh-placeholder="例如：US10148981" placeholder="e.g. US10148981" />
             </div>
             <div class="field" data-input-for="pending" hidden>
               <label for="intake-app" data-zh="申請號（如已提出）">Application number, if filed</label>
-              <input id="intake-app" name="application" type="text" spellcheck="false" data-zh-placeholder="如 TW 113104567" placeholder="e.g. TW 113104567" />
+              <input id="intake-app" name="application" type="text" spellcheck="false" data-zh-placeholder="例如：TW 113104567" placeholder="e.g. TW 113104567" />
               <p class="field-hint" data-zh="簽署保密協議後，我們再向您索取草稿。">We ask for the draft once an NDA is in place.</p>
             </div>
             <div class="field" data-input-for="idea" hidden>
@@ -1025,14 +1025,15 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
+            <div class="footer-nl-label" id="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" autocomplete="email" placeholder="name@company.com" aria-label="Email" data-zh-aria="電子郵件" aria-describedby="footer-nl-label" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="sr-only" id="footer-nl-status" role="status" aria-live="polite"></p>
             <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
           <div class="footer-logo-row">
@@ -1101,7 +1102,7 @@
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=45" defer></script>
+<script src="/assets/build/site.js?v=46" defer></script>
 
 <!-- Request form routing (PRD v0.7 F-ROUTE / §8.2.1). The patent status picks which input
      shows and gates the report: a full PSS ranking needs a published patent's citation,

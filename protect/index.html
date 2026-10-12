@@ -34,7 +34,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=91">
+<link rel="stylesheet" href="/assets/build/styles.css?v=92">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -372,7 +372,7 @@
       <div class="fd-hero__aside">
         <p class="fd-hero__figure"><b data-zh="16 家中有 9 家">9 of 16</b><span data-zh="主要外國無人機製造商，在台灣沒有任何專⁠利。">leading foreign UAV makers hold no Taiwan patents.</span></p>
         <p class="fd-hero__sub" data-zh="部署後的系統會被研究。沒有台灣專⁠利，您就無法對抗在地仿製，也沒有與在地供應商談判的籌碼。">Fielded systems get studied. Without Taiwan filings you have no position against local imitation and no leverage with local suppliers.</p>
-        <div class="pillar-actions"><a href="#contact" class="btn btn-lg btn-primary" data-zh="預約範疇評估會談">Request a scoping conversation</a></div>
+        <div class="pillar-actions"><a href="#contact" class="btn btn-lg btn-primary" data-zh="預約專利申請策略檢視">Request a filing-strategy review</a></div>
       </div>
     </div>
     <div class="container"><div class="fd-ph fd-ph--img fd-hero__band" style="--fd-pos-m:65% 50%" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/protect-hero-b-400.webp 400w, /assets/imagery/uv/protect-hero-b-800.webp 800w, /assets/imagery/uv/protect-hero-b-1376.webp 1376w" sizes="(max-aspect-ratio: 16/9) 180vh, 100vw"><img class="fd-ph__img" src="/assets/imagery/uv/protect-hero-b.jpg" alt="" width="1376" height="768" fetchpriority="high" decoding="async"></picture></div></div>
@@ -474,7 +474,7 @@
             </div>
             <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
-              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
+              <button type="submit" class="btn btn-primary btn-lg" data-zh="送出需求">Send request</button>
             </div>
             <p class="form-fine"><span data-zh="我們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </form>
@@ -483,7 +483,7 @@
               <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
             </span>
             <div>
-              <h3 data-zh="訊息已送出。">Message sent.</h3>
+              <h3 data-zh="需求已送出。">Request sent.</h3>
               <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
             </div>
           </div>
@@ -499,14 +499,15 @@
       <div class="footer-grid">
         <div class="footer-identity">
           <div class="footer-nl-block" id="footer-nl-block">
-            <div class="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
+            <div class="footer-nl-label" id="footer-nl-label" data-zh="訂閱最新動態">Get our latest news</div>
             <form class="footer-nl-form" id="footer-nl-form" novalidate>
-              <input type="email" name="email" placeholder="Your email" data-zh-placeholder="您的電子郵件" aria-label="Email address" data-zh-aria="電子郵件" required />
+              <input type="email" name="email" autocomplete="email" placeholder="name@company.com" aria-label="Email" data-zh-aria="電子郵件" aria-describedby="footer-nl-label" required />
               <button type="submit" aria-label="Subscribe" data-zh-aria="訂閱">
                 <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
                 <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </button>
             </form>
+            <p class="sr-only" id="footer-nl-status" role="status" aria-live="polite"></p>
             <p class="footer-nl-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </div>
           <div class="footer-logo-row">
@@ -574,9 +575,9 @@
 </div>
 
 <!-- newsletter-popup:start — components.md §Newsletter corner popup -->
-<div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="mkt-headline">
+<div class="mkt-overlay" id="mkt-overlay" role="dialog" aria-modal="false" aria-hidden="true" aria-label="Newsletter sign-up" data-zh-aria="訂閱電子報">
   <div class="mkt-card" id="mkt-card">
-    <div class="mkt-media" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/newsletter-parts-400.webp 400w, /assets/imagery/uv/newsletter-parts-760.webp 760w" sizes="(max-width: 560px) 100vw, 380px"><img class="mkt-img" src="/assets/imagery/uv/newsletter-parts.jpg" alt="" width="760" height="1040" loading="lazy" decoding="async"></picture></div>
+    <div class="mkt-media" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/imagery/uv/newsletter-parts-400.webp 400w, /assets/imagery/uv/newsletter-parts-760.webp 760w" sizes="(max-width: 560px) 100vw, 380px"><img class="mkt-img" src="/assets/imagery/uv/newsletter-parts.jpg" alt="" width="760" height="1040" loading="lazy" decoding="async" data-mkt-img></picture></div>
     <button class="mkt-close" type="button" aria-label="Close" data-zh-aria="關閉" data-mkt-close>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -586,18 +587,22 @@
         <p class="mkt-sub" data-zh="台灣無⁠人⁠載⁠具生態系夥伴 TIS 的最新動態。">Updates from TIS, Taiwan’s ecosystem partner for unmanned-vehicle makers.</p>
       </div>
       <form class="mkt-form" id="mkt-form" novalidate>
-        <label class="mkt-lbl" for="mkt-email" data-zh="工作信箱">Work email</label>
+        <label class="mkt-lbl" for="mkt-email" data-zh="電子郵件">Email</label>
         <div class="mkt-row">
-          <input class="input mkt-input" id="mkt-email" type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
-          <button class="btn btn-primary mkt-cta" type="submit"><span data-zh="訂閱">Subscribe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <input class="input mkt-input" id="mkt-email" type="email" name="email" required autocomplete="email" placeholder="name@company.com" />
+          <button class="btn btn-primary mkt-cta" type="submit"><span class="btn-label"><span data-zh="訂閱">Subscribe</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
         </div>
       </form>
       <p class="mkt-fine"><span data-zh="不定期寄送。">Occasional email.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
+      <div class="mkt-done mkt-success">
+        <div class="seal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3 data-zh="訂閱成功，謝謝您。">Subscribed. Thank you.</h3>
+      </div>
     </div>
   </div>
 </div>
 <!-- newsletter-popup:end -->
 
-<script src="/assets/build/site.js?v=45" defer></script>
+<script src="/assets/build/site.js?v=46" defer></script>
 </body>
 </html>
