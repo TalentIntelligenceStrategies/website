@@ -1399,7 +1399,7 @@
       const payload = serializeForm(contactForm, { form: 'contact', source: contactForm.dataset.source || 'contact' });
       const [invalid, bad] =
         !payload.name                       ? [t('Please enter your name.', '請填寫姓名。'), 'name'] :
-        !EMAIL_RE.test(payload.email || '') ? [t('Please enter a valid email address.', '請填寫有效的電子郵件。'), 'email'] :
+        !EMAIL_RE.test(payload.email || '') ? [t('Enter a valid email address.', '請填寫有效的電子郵件。'), 'email'] :
         !payload.message                    ? [t('Please tell us briefly what you need.', '請簡述您的需求。'), 'message'] : ['', null];
       if (invalid) {
         showFormError(contactForm, invalid);

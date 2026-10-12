@@ -636,14 +636,6 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   line-height: 1.1;
   margin: 0;
 }
-/* Offerings + About headings adopt the smaller .section-head h2 hierarchy
-   (matches "Latest reports") rather than the full .h-section display scale. */
-.offerings .h-section {
-  font-size: clamp(24px, 2.8vw, 36px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
-}
 
 /* [data-reveal] scroll reveal. Visible by default (2026-10-12 audit, MOTION-03): site.js
    adds .rv-pre only to elements that start below the fold, and swaps it for .is-revealed
@@ -1003,7 +995,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   position: relative; overflow: hidden;
   display: grid; align-content: end; gap: 4px;
   min-height: 132px; margin: 0 -12px 6px; padding: 14px 16px;
-  border-radius: var(--r-inner);
+  border-radius: var(--r-sm);   /* concentric with the 16px panel at its ~8px inset */
   background: #000;
   text-decoration: none;
 }
@@ -1118,7 +1110,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .mobile-row-dropdown .mobile-nav-chevron {
   width: 16px; height: 16px;
   color: var(--text-tertiary);
-  stroke: currentColor; fill: none; stroke-width: 1.8;
+  stroke: currentColor; fill: none; stroke-width: 1.5;
   stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-out);
 }
@@ -2330,23 +2322,6 @@ main { padding-top: 64px; }
    pinned left behind a hairline divider, the scrolling logo marquee filling the
    right (edge-faded on the logo area only, against the card's #000 fill). */
 
-/* ── Marquee ── */
-.partner-marquee {
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 0;            /* allow the track to overflow + scroll within the row */
-  overflow: hidden;
-}
-/* Stack on narrow screens: label above, marquee below. Drop the divider +
-   right-align so the stacked label reads left-aligned. */
-@media (max-width: 640px) {
-  .partner-marquee { width: 100%; }
-}
-@keyframes partner-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
 /* ═════════════════════════════════════════════════════════════════════
    TOUCH: the strip becomes a real scroller (2026-08-29)
 
@@ -2362,34 +2337,6 @@ main { padding-top: 64px; }
    scroll away with the logos; a mask applies to the element's own box and stays put.
    It also drops two backdrop-filter layers on the device least able to afford them.
    ═════════════════════════════════════════════════════════════════════ */
-@media (pointer: coarse) {
-  .partner-marquee {
-    overflow-x: auto;
-    overflow-y: hidden;
-    /* pan-x AND pan-y (2026-08-29). `pan-x` alone told the browser this element only
-       handles horizontal gestures, which also meant a finger landing anywhere on the
-       1936px logo row could not scroll the PAGE -- the band was a dead zone you had to
-       swipe around. pan-y costs nothing here: the element is overflow-y: hidden, so
-       there is no vertical scroll of its own for the page to compete with. */
-    touch-action: pan-x pan-y;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
-  }
-  .partner-marquee::-webkit-scrollbar { display: none; }
-}
-/* Reduced motion already reflows the track to a static wrapping row and hides the
-   duplicate set (see the block near the top of this file). Restore normal overflow so
-   that row is not trapped in a scroller it no longer needs, and drop the mask with it. */
-@media (pointer: coarse) and (prefers-reduced-motion: reduce) {
-  .partner-marquee {
-    overflow-x: visible;
-    -webkit-mask-image: none;
-            mask-image: none;
-  }
-}
 
 /* ── Marks ── */
 .partner {
@@ -2425,36 +2372,6 @@ main { padding-top: 64px; }
 }
 
 /* ───────── Reports — carousel ───────── */
-
-/* Carousel — horizontal scroll-snap track of report tiles. */
-.report-carousel { width: 100%; }
-.report-carousel-track {
-  list-style: none; margin: 0; padding: 4px 0 8px;
-  display: flex; gap: 20px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-.report-carousel-track::-webkit-scrollbar { display: none; }
-/* Tile photo — sits below the scrim (::after, z-index -1) so the white copy stays legible.
-   The placeholder-radial background remains as a fallback while the image loads.
-   Entry: scale(1.08) + fade → settles to scale(1) when .is-in lands (scroll-reveal
-   observer in site.js, staggered there) — mirrors the offer-card reveal. */
-.report-card-media {
-  position: absolute; inset: 0; z-index: -2;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transform-origin: center;
-  opacity: 0;
-  transform: scale(1.08);
-  transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
-  will-change: transform, opacity;
-}
-@media (prefers-reduced-motion: reduce) {
-  .report-carousel-track { scroll-behavior: auto; }
-}
 
 /* ───────── 404 ───────── */
 /* The one page-specific block the sheet did not already cover. Composes the
@@ -2644,7 +2561,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
 }
 
 /* Newsletter signup — sits above the lockup inside the identity column.
-   In-place success state (no toast), 1.6s auto-reset. components.md §Footer. */
+   In-place success state (no toast); it stays until the next submit. components.md §Footer. */
 .footer-nl-block { margin-bottom: 24px; }
 .footer-nl-label {
   font-family: var(--font-sans);
@@ -4137,7 +4054,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-main {
   position: absolute; left: 12px; right: 12px; bottom: 12px;
   display: flex; flex-direction: column; gap: 16px;
-  padding: 20px; border-radius: 8px;   /* concentric: card 16 − inset 12, floored */
+  padding: 20px; border-radius: 4px;   /* concentric: card 16 − inset 12 */
   background: var(--surface-page); box-shadow: var(--shadow-high);
   animation: mkt-plate-in var(--dur-panel) var(--ease-out) 60ms both;
 }
@@ -4271,7 +4188,6 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 }
 .mkt-success .seal svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .mkt-success h3 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 0; }
-
 
 /* ───────── Language toggle overlay — Shimmer cube
    Plays on user EN<->ZH swap as a brand-mark transition. Skipped on
@@ -5363,9 +5279,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   --ab-block:    clamp(20px, 2.2vw, 28px);   /* between blocks in a column */
   --ab-panel:    clamp(28px, 4vw, 60px);     /* inside a card */
 }
-/* Animates `top`, a paint property, rather than transform — so a headless
-   render shows the cue mid-travel instead of a blank strip. */
-@keyframes ab-cue-run { 0% { top: -18px; } 60%, 100% { top: 52px; } }
 
 /* ── Board of directors (2026-10-12; mock P, mro/mocks/about-r1). A contained photo strip
       carries the heading; the five tiles ride over its lower edge, half on the photo, half
@@ -5476,47 +5389,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 @media (max-width: 480px) {
   [data-page="home"] .pillar-actions .pillar-note { align-self: flex-start; padding-left: 0; margin-top: 2px; }
-}
-.phase + .phase {
-  border-left: 1px solid var(--border-tertiary);
-  padding-left: clamp(24px, 3vw, 44px);
-  margin-left: calc(-1 * clamp(24px, 3vw, 44px) / 2);
-}
-@media (max-width: 880px) {
-  .phase { padding: 20px 0; }
-  .phase:first-child { padding-top: 0; }
-  .phase:last-child { padding-bottom: 0; }
-  .phase + .phase { border-left: 0; border-top: 1px solid var(--border-tertiary); padding-left: 0; margin-left: 0; }
-}
-.panel {
-  background: var(--surface-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--r-frame);
-  padding: clamp(24px, 3vw, 40px);
-}
-
-/* A block that must read as its own asset (License: portfolio vs services).
-   Full-width panel with a heavier edge than .panel so the split is unmistakable. */
-.block {
-  border: 1px solid var(--border-tertiary);
-  border-radius: var(--r-frame);
-  padding: clamp(28px, 4vw, 60px);
-}
-.block + .block { margin-top: clamp(24px, 3vw, 40px); }
-/* On the always-dark offer tiles the frame is the card itself. */
-.offer-card--ph::before {
-  background:
-    repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.05) 14px 15px),
-    #0E0E0E;
-}
-
-/* ── Split — prose beside a placeholder (partner sections, network). ── */
-.split {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 88px); align-items: start;
-}
-@media (max-width: 900px) {
-  .split { grid-template-columns: 1fr; }
 }
 
 /* ── Ecosystem dial (mro/mocks/ecosystem-map C2, picked 2026-10-06; replaced the 780px
@@ -5704,12 +5576,17 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .eco-dial__node {
   --dial-tex: radial-gradient(circle, color-mix(in oklab, var(--text-primary) 32%, transparent) 0.9px, transparent 1.4px) 0 0 / 9px 9px;
 }
-.eco-dial__link:hover, .eco-dial__link:focus-visible {
-  transform: translateY(-3px);
-  border-color: color-mix(in oklab, var(--dial-on) 30%, transparent);
-  box-shadow:
-    0 2px 4px var(--dial-shade),
-    0 18px 36px -16px var(--dial-shade);
+.eco-dial__link:focus-visible { border-color: color-mix(in oklab, var(--dial-on) 30%, transparent); }
+/* The lift and shadow are pointer-only; keyboard focus keeps the site's ring and halo
+   instead of losing it under the hover shadow (MOTION-05, MOTION-24). */
+@media (hover: hover) and (pointer: fine) {
+  .eco-dial__link:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--dial-on) 30%, transparent);
+    box-shadow:
+      0 2px 4px var(--dial-shade),
+      0 18px 36px -16px var(--dial-shade);
+  }
 }
 .eco-dial__link:is(:hover, :focus-visible)::before { opacity: 0.85; }
 .eco-dial__link:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: 3px; }
@@ -5726,7 +5603,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .eco-dial__t { font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--dial-on); text-wrap: balance; }
 .eco-dial__d { font-size: 13px; line-height: 1.45; color: var(--dial-mute); }
-
 
 /* ── Narrow: no dial (the partner cards need the corners beside the rim). The stage stays
       on the page ground; makers, contract, hub, pillars, partners stack top-down. ── */
@@ -5855,7 +5731,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    same ruling the heroes use, until its photograph lands. The markup keeps the caption
    so the shot list is still greppable. */
 .fd-ph:not(.fd-ph--img) .fd-ph__cap { display: none; }
-.fd-ph:not(.fd-ph--img):not(.fd-ph--drawn)::before {
+.fd-ph:not(.fd-ph--img)::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 32px),
@@ -5891,7 +5767,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .fd-hero__rail { border-bottom: 1px solid var(--border-tertiary); }
 .fd-hero__rail > .container { display: flex; align-items: center; min-height: 52px; padding-block: 10px; }
-.fd-hero__rail .crumb { margin: 0; font-size: 13.5px; }
+.fd-hero__rail .crumb { margin: 0; }
 .fd-hero__rail .crumb > span:last-child { color: var(--text-primary); font-weight: 600; }
 .fd-hero__meta {
   margin: 0; font-size: 13px; font-weight: 600; line-height: 1.4;
@@ -6067,7 +5943,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   width: fit-content; justify-self: start; align-self: flex-start;   /* hit area hugs the label */
   font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
 }
-.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
+.fd-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 /* One inline-link recipe (MOTION-06): underline at 4px offset, arrow 3px on --dur-base,
    mirrored on keyboard focus. */
 .fd-link:is(:hover, :focus-visible) span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
@@ -6100,7 +5976,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 /* The rule that sets the aside apart: a hairline above, primary-weight emphasis. */
 /* With the note the aside outgrows the statement, and bottom-aligned the heading
    would sink below the aside's first line: top-align so both start together. */
-.fd-statement:has(.fd-statement__note) { align-items: start; }
 /* Statement on a strip (Protect #why-neutral, 2026-10-11, mock E): a slim 4.2:1 photo with
    the h2 on its clear sky, no scrim (removed 2026-10-12 at the user's call); the lead and the proof rows run in
    one row below. Phones stack: a 16:9 cut of the photo, then the h2 on the page ground. */
@@ -6695,7 +6570,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .kv .btn-primary { background: #FFFFFF; color: #000; }
 .kv .btn-primary:hover { background: rgba(255,255,255,0.86); }
 .kv .pillar-note { margin: 0; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: rgba(255,255,255,0.78); }
-.kv .pillar-note svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.kv .pillar-note svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* The floor: three slide names and the pause control, bottom right. */
 .kv__bar {
@@ -7219,10 +7094,6 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    IntersectionObserver exists. Without JS, with reduced motion, or in a headless
    render, every block is simply there.
    ═════════════════════════════════════════════════════════════════════════ */
-/* One reveal recipe site-wide (MOTION-02): 16px rise, --dur-reveal on --ease-reveal, 70ms
-   stagger. The hero, which a reader sees on every navigation, is a short 8px fade instead
-   (MOTION-17). */
-@keyframes fd-rise { from { opacity: 0; transform: translateY(16px); } }
 @keyframes fd-hero-in { from { opacity: 0; transform: translateY(8px); } }
 @keyframes kv-slide-in { from { opacity: 0; } }
 @keyframes fd-settle { from { transform: scale(1.06); } }
@@ -7356,7 +7227,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   -webkit-tap-highlight-color: transparent;
   transition: background-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
-.psg-nav__btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.psg-nav__btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .psg-nav__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
 .psg-nav__btn:disabled { opacity: 0.4; cursor: default; }
 .psg-nav__btn:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
@@ -7440,7 +7311,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-read small { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
 .psg-zones { list-style: none; margin: 0; padding: 0; display: flex; gap: 3px; }
 .psg-zone { flex: var(--w) 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-top: 10px; border-top: 6px solid var(--border-secondary); font-variant-numeric: tabular-nums; }
-.psg-zone b { font-size: 15px; font-weight: 700; color: var(--text-tertiary); }
+.psg-zone b { font-size: 15px; font-weight: 700; color: var(--text-secondary); }
 .psg-zone span { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 .psg-zone.is-you { border-top-color: var(--text-primary); }
 .psg-zone.is-you b, .psg-zone.is-you span { color: var(--text-primary); }
@@ -7532,3 +7403,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .btn, .icon-btn, .topic-chip, .theme-seg { border: 1px solid ButtonText; }
   .fd-ph::before, .fd-tile::before, .kv__media::before { forced-color-adjust: auto; }
 }
+
+/* Press feedback on the remaining pressable controls (MOTION-10): the close buttons and the
+   icon buttons scale like every other button. */
+.lgl-close, .icon-btn, .search-esc { transition-property: background, color, transform; transition-duration: var(--dur-fast); transition-timing-function: var(--ease-out); }
+.lgl-close:active, .icon-btn:active, .search-esc:active { transform: scale(var(--press-scale)); }
