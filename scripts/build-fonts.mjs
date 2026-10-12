@@ -144,8 +144,14 @@ const toRange = (cps) => {
   return parts.join(',');
 };
 
-const buckets = [];
-for (let i = 0; i < points.length; i += BUCKET) buckets.push(points.slice(i, i + BUCKET));
+// Bucket 00 is the company name plus the 中文 language label. English pages (the legal
+// documents above all) carry 泰然策略解密股份有限公司 and 中文 and nothing else in Chinese, and cut on codepoint order those
+// 12 glyphs landed in all four buckets: ~330 KB for one name (2026-10-11 audit). Now an
+// English page pulls one tiny file.
+const BRAND = [...new Set([...'泰然策略解密股份有限公司中文'].map((c) => c.codePointAt(0)))].filter((cp) => used.has(cp)).sort((a, b) => a - b);
+const rest = points.filter((cp) => !BRAND.includes(cp));
+const buckets = [BRAND];
+for (let i = 0; i < rest.length; i += BUCKET) buckets.push(rest.slice(i, i + BUCKET));
 
 /* ── 3. Emit ───────────────────────────────────────────────────────────── */
 rmSync(OUT, { recursive: true, force: true });

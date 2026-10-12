@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=86">
+<link rel="stylesheet" href="/assets/build/styles.css?v=87">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -261,27 +261,6 @@
   line-height: 1;
   color: var(--text-primary);
 }
-.pcard-unit {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-tertiary);
-  margin-left: 0;
-}
-/* Savings chip — green success pill. */
-.pcard-save {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 10px;
-  padding: 3px 9px;
-  border-radius: 6px;
-  background: var(--success-bg);
-  color: var(--success-fg);
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.pcard-save:empty { display: none; }
 /* Term line — carries the label + savings chip on one baseline. Secondary
    ink (not tertiary) so the term detail stays comfortably readable. */
 .pcard-term {
@@ -353,16 +332,6 @@
   height: 16px;
   flex-shrink: 0;
   margin-top: 1px;
-}
-
-/* Trust strip — institution marks nested in the right column, directly
-   under the Proof & delivery group. Mirrors the .pcard-feat structure
-   exactly: dashed top divider + 24px top, an h4.pcard-feat-title heading
-   (its own 14px bottom margin sets the heading→content rhythm), and a row
-   of logos as the content. Logos shown in full primary color at rest. */
-.pcard-trust {
-  padding-top: 24px;
-  border-top: 1px dashed var(--border-primary);
 }
 
 /* Keep the marks in primary color in dark mode too (override the global
@@ -1152,59 +1121,6 @@ a, button, .howit-card, .acc-trigger, .btn {
   cursor: pointer;
 }
 
-/* ============================================================
-   Live step visual ("hiw-screen") — clean condensed product UI
-   rendered as real DOM (no images), built from the licensing
-   flow vocabulary in brand/previews/licensing-flow-preview.html.
-   Tokens are pinned to LIGHT values so the visual stays a bright
-   product window even when the page is in dark mode.
-   All classes are hs- namespaced + scoped to avoid colliding
-   with page-level .card/.btn/.chip/.opt/.signal styles.
-   ============================================================ */
-
-/* eyebrow / section label — preview weight 500, +0.20em, tertiary */
-
-/* layout helpers */
-
-/* chips — tier/juris, weight 700 per components.md weight asymmetry */
-
-/* option rows — preview .opt: roomy padding, name w500, selected = dark border only */
-
-/* 2-col mini-grid variant — used for the 6-industry list (step 1) so it
-   stays compact inside the locked 2:1 frame and balances the 2-item
-   jurisdiction column beside it. */
-
-/* scope / summary bar — quiet inset strip (surface-tertiary, borderless) */
-
-/* path cards (step 2) — preview .path-card: radio + eyebrow + title; selected = dark border + ring + filled radio */
-
-/* patent rows (step 3) — preview patent-card vocabulary: mono ID w600, title w500, dark checkbox */
-
-/* patent list (step 3) — scrollable with a fixed bottom fade cue so it reads
-   as a longer, ongoing list. The fade is an overlay pinned to the wrap (not the
-   scroll content) so it stays put while the list scrolls underneath it. */
-
-/* swap (step 4) */
-
-/* tier pill anchored to the right edge of each pool row (canonical placement) */
-
-/* decorative "Swap" action pill in the scope strip (visual only) */
-
-/* term & payment (step 5) — preview .pay: selected = dark border; flag = dark pill on top edge */
-
-/* active license (step 6) */
-
-/* canonical Verified License Badge (seal-pill) — same component as the bento,
-   scaled to the step-6 frame and centered. */
-
-/* Mobile: release the 2:1 lock and let the visual reflow to its content. */
-
-/* entrance animation — re-triggered on each step change */
-@keyframes hiwIn {
-  from { opacity: 0; transform: translateY(8px) scale(0.99); }
-  to   { opacity: 1; transform: none; }
-}
-
 /* ── inline commit CTA — pinned to the bottom-right of the stage, riding the
    active step's checks row (the panels run taller than the stage min-height, so
    the checks already sit at the bottom). The checks reserve a right gutter so
@@ -1614,10 +1530,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 .juris-tile{width:32px;height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
 .juris-tile.us{background:var(--juris-us-bg);color:var(--juris-us);}
 .juris-tile.tw{background:var(--juris-tw-bg);color:var(--juris-tw);}
-
-.juris-tile.jp{background:var(--juris-jp-bg);color:var(--juris-jp);}
 .juris-tile.kr{background:var(--juris-kr-bg);color:var(--juris-kr);}
-.juris-tile.ep{background:var(--juris-ep-bg);color:var(--juris-ep);}
 .juris-tile.cn{background:var(--juris-cn-bg);color:var(--juris-cn);}
 .tier-tile{height:32px;flex-shrink:0;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 11px;font-family:var(--font-sans);font-size:12px;font-weight:700;line-height:1;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 22%,transparent);}
 .tier-tile.s{background:var(--score-s-bg);color:var(--score-s);}
@@ -2115,8 +2028,6 @@ a, button, .howit-card, .acc-trigger, .btn {
        in sync — the same trick the carousel dots use. -->
   <section class="hero hero--showcase" aria-labelledby="lic-hero-title" data-active-pillar="licensing">
     <div class="hero-warm" aria-hidden="true"></div>
-    <div class="hero-silver" aria-hidden="true"></div>
-    <div class="hero-signal" aria-hidden="true"></div>
 
     <div class="container hero-inner">
       <!-- Hero copy per chinese-copy-direction.md slide 21 (Persona A · export SME framing).
@@ -2974,7 +2885,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div id="lang-cube"></div>
 </div>
 
-<script src="/assets/build/site.js?v=40" defer></script>
+<script src="/assets/build/site.js?v=41" defer></script>
 <script>
   // Pricing card — the term toggle (3/6/12/24) is the only interactive
   // control; it drives the per-month price, savings badge, and term line.

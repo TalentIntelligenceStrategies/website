@@ -111,12 +111,10 @@
   // Given an ELEMENT target, Lenis already reads the target's scroll-margin-top and the
   // scroller's scroll-padding-top and subtracts both itself (lenis 1.3.26, dist/lenis.mjs
   // :783-786). Passing the usual `offset: -80` to clear the fixed topnav — which is what
-  // most Lenis guidance tells you to do — double-counts it. Measured on methodology.html:
-  // every pipe-nav jump landed 285px (= 80 pad + 205 margin) short, which showed the
-  // WRONG figure in the pinned card for all five links.
+  // most Lenis guidance tells you to do — double-counts it (measured 2026-08: every
+  // jump landed 80px + the target's margin short).
   //
-  // So styles.css stays the single source of truth for anchor offsets, including
-  // .mth-stage__step's proportional `max(40px, calc(30vh - 80px))`. An `offset` here
+  // So styles.css stays the single source of truth for anchor offsets. An `offset` here
   // would silently override that arithmetic at every viewport height.
 
   // The licensing page drives lenis.raf from gsap.ticker so its ScrollTrigger scrub
@@ -327,7 +325,7 @@
   // below never touches iframe src, so broadcast the active language into them via
   // postMessage — they flip in place, no reload. Re-sent on each frame's `load`
   // too, since they're lazy-loaded and may not exist yet when applyLang first runs.
-  const showcaseFrames = document.querySelectorAll('.lic-frame iframe[src], .hero-dash iframe[src]');
+  const showcaseFrames = document.querySelectorAll('.lic-frame iframe[src]');
   let currentLang = 'en';
   const postLang = (frame, lang) => {
     try { frame.contentWindow?.postMessage({ type: 'tis-lang', lang }, location.origin); }
@@ -860,42 +858,9 @@
   // A language switch must re-render whatever is on screen in the new language.
   window.__searchRefresh = () => { if (sInput.value.trim()) applySearch(); else sResults.innerHTML = zeroState; };
 
-  // ──────────────── Count-up — design-tokens.md §7.2 (count-up 1200ms linear) ────────────────
+  // Count-up timing — design-tokens.md §7.2 (count-up 1200ms linear). Used by fdCount below.
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const counters = document.querySelectorAll('.counter');
   const COUNT_MS = 1200;
-
-  // Thousands separators by default (e.g. 1,234). data-sep="none" opts a counter
-  // out — for figures that read as an unformatted quantity rather than a
-  // presented number (the Signal pool numeral set inline in a sentence).
-  const fmt = (n, el) => el.dataset.sep === 'none' ? String(n) : n.toLocaleString('en-US');
-  const animate = (el, end) => {
-    if (reduced) { el.textContent = fmt(end, el); return; }
-    const startT = performance.now();
-    const tick = (now) => {
-      // Clamped on both sides: the first rAF timestamp can precede startT, which
-      // made t negative and rendered "-1" for a frame.
-      const t = Math.max(0, Math.min((now - startT) / COUNT_MS, 1));
-      el.textContent = fmt(Math.floor(t * end), el);
-      if (t < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-
-  if ('IntersectionObserver' in window) {
-    const counterObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          animate(el, parseInt(el.dataset.target, 10));
-          obs.unobserve(el);
-        }
-      });
-    }, { threshold: 0.3 });
-    counters.forEach(el => counterObserver.observe(el));
-  } else {
-    counters.forEach(el => el.textContent = fmt(parseInt(el.dataset.target, 10), el));
-  }
 
   // ──────────────── Front door v2 — reveals + figure count-up ────────────────
   // styles.css "FRONT DOOR v2 · MOTION" owns the looks; this only decides WHEN. A block
@@ -903,9 +868,9 @@
   // nothing on screen at load ever blinks out, and nothing at all is hidden without
   // JS, under reduced motion, or without IntersectionObserver.
   const fdTargets = [
-    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-offer__body, .eco-ring, .fd-platform__body, .fd-commit__quote, .fd-note, .fd-pending'],
-    ['list', '.fd-mosaic, .fd-stair__steps, .fd-trio, .fd-rows, .fd-figures, .fd-partners, .fd-ksp'],
-    ['clip', '.fd-frame, .fd-offer > .fd-ph, .fd-platform__shot'],
+    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-platform__body, .fd-note'],
+    ['list', '.fd-mosaic, .fd-stair__steps, .fd-rows, .fd-figures, .fd-partners'],
+    ['clip', '.fd-frame, .fd-platform__shot'],
   ];
   const fdCount = (b) => {
     // One number per figure ("48,750", "×21", "30+", "180M"); "9 of 16" and the
@@ -1150,79 +1115,10 @@
     }
   }
 
-  // ──────────────── Report-card reveal — image zooms 1.08 → 1.0 + fades in on entry ────────────────
-  // Adds .is-in (CSS owns the settle + hover zoom); NOT staggered. Observed at the
-  // CAROUSEL level, not per card: the track scrolls horizontally, so cards parked
-  // off the right edge have zero viewport intersection and would stay hidden if
-  // observed individually — revealing all of a carousel's cards when the carousel
-  // itself enters view keeps every tile from being stuck at opacity:0.
-  // Reduced motion / no IntersectionObserver → reveal immediately.
-  const reportCarousels = document.querySelectorAll('.report-carousel');
-  if (reportCarousels.length) {
-    const revealCards = root => root.querySelectorAll('.report-card').forEach(c => c.classList.add('is-in'));
-    if (reduced || !('IntersectionObserver' in window)) {
-      reportCarousels.forEach(revealCards);
-    } else {
-      const reportObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            revealCards(entry.target);
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-      reportCarousels.forEach(el => reportObserver.observe(el));
-    }
-  }
-
-  // ──────────────── Methodology stage — the figure pins and swaps (DESIGN.md §16.3) ────────────────
-  // Guarded so it no-ops on every page but product/signal/ (methodology folded in 2026-10-06).
-  //
-  // .is-live means ACTUALLY PINNED, not "the script ran". The stage only pins above
-  // 980px wide and only on a viewport tall enough to hold the card (the tallest of
-  // the six is 583px and the pin sits 84–148px down, so under ~700px its bottom
-  // would be off-screen). Asking the media queries here rather than leaving CSS to
-  // undo a live stage keeps one source of truth — and stops the card, which while
-  // pinned belongs to the stage, from wrapping all six stacked figures.
-  //
-  // The markup's default is the no-JS state: steps and figures stacked, every figure
-  // visible. Going live is purely additive.
-  const mthStage = document.querySelector('.mth-stage__stage');
-  if (mthStage && 'IntersectionObserver' in window) {
-    const mthMQ = ['(prefers-reduced-motion: reduce)', '(max-width: 980px)', '(max-height: 700px)']
-      .map(q => matchMedia(q));
-    const mthPinnable = () => !mthMQ.some(m => m.matches);
-    const mthFigs  = [...mthStage.querySelectorAll('.mth-stage__fig')];
-    const mthSteps = [...document.querySelectorAll('.mth-stage__step')];
-    let mthObs = null;
-
-    const mthSync = () => {
-      if (mthObs) { mthObs.disconnect(); mthObs = null; }
-      if (!mthPinnable()) {
-        mthStage.classList.remove('is-live');
-        mthFigs.forEach(f => f.classList.remove('is-on'));
-        return;
-      }
-      mthStage.classList.add('is-live');
-      const show = n => mthFigs.forEach((f, i) => f.classList.toggle('is-on', i === n));
-      show(0);
-      // IntersectionObserver, never a scroll listener: no per-frame work, no jank.
-      mthObs = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if (entry.isIntersecting) show(+entry.target.dataset.step); });
-      }, { rootMargin: '-45% 0px -45% 0px' });
-      mthSteps.forEach(el => mthObs.observe(el));
-    };
-
-    // Re-evaluate on the media queries themselves, not on resize.
-    mthMQ.forEach(m => m.addEventListener('change', mthSync));
-    mthSync();
-  }
-
   // ──────────────── Accordion (single-open within group) — components.md §Accordion ────────────────
   // The `.acc-mark` +/− glyph and the `.howitworks` step-panel sync that used to hang
   // off this handler are gone: no page carries either, and no `.acc-item` carries
-  // `data-step` (methodology's `data-step` lives on `.mth-stage__*`, a different
-  // component). The chevron is CSS, driven by `.is-open`.
+  // `data-step`. The chevron is CSS, driven by `.is-open`.
   //
   // The trigger used to announce nothing at all: no aria-expanded, so a screen reader
   // read five identical buttons with no indication that any of them had opened. And
@@ -1334,8 +1230,8 @@
 
   // FormData alone loses two of the three forms:
   //   · the footer and popup email inputs ship without a name attribute
-  //   · Role / Industry are .brand-select divs, invisible to FormData — their
-  //     value lives in dataset.value (see the Brand select block above)
+  //   · capital/'s Role / Industry are .brand-select divs, invisible to FormData —
+  //     their value lives in dataset.value (see the Brand select block above)
   // The bare-email fallback is load-bearing: capital/ is a separate repo that
   // loads this file cross-origin and will run it before its markup catches up.
   const serializeForm = (form, extra) => {
@@ -1538,7 +1434,7 @@
   }
 
   // ──────────────── Footer newsletter → `newsletter` tab, source=footer ────────────────
-  // components.md §Footer — in-place success, 1.6s auto-reset.
+  // components.md §Footer — in-place success state.
   const MKT_KEY = 'tis-mkt-drop-seen';
   const markMktSeen = () => { try { localStorage.setItem(MKT_KEY, String(Date.now())); } catch (_) {} };
 
@@ -1569,7 +1465,7 @@
       nlBlock.classList.add('is-success');
       nlLabel.textContent = t("Thanks — you're subscribed", '訂閱成功，謝謝您');
       nlInput.value = '';
-      // Cross-suppress the IP-intel drop popup — already engaged via footer.
+      // Cross-suppress the newsletter popup: this reader already subscribed in the footer.
       markMktSeen();
     };
 
@@ -1612,6 +1508,8 @@
   }
 
   // ──────────────── Brand select — components.md §Select (custom dropdown wiring) ────────────────
+  // Used by capital.tisglobalinc.com only (it loads this file cross-origin); no website page
+  // has a .brand-select. Keep it until capital stops depending on this file.
   const closeAllBrandSelects = (except) => {
     document.querySelectorAll('.brand-select.open').forEach(el => {
       if (el === except) return;
@@ -1770,8 +1668,7 @@
       primeCheck(mktCard.querySelector('.seal'));
     }
 
-    // → `newsletter` tab, source=popup. Role and Industry come from the
-    // .brand-select widgets, which serializeForm() reads via dataset.value.
+    // → `newsletter` tab, source=popup. Email only.
     mktForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearFormError(mktForm);
@@ -1783,7 +1680,6 @@
       }
       if (!frontDeskLive()) { showSuccess(); return; }
 
-      // The CTA lives in .mkt-foot, outside the form, wired via form="mkt-form".
       const mktBtn = mktCard.querySelector('.mkt-cta');
       pending(mktBtn, true);
       try {
@@ -2077,299 +1973,6 @@
     });
   });
 })();
-
-/* ══════════════════════════════════════════════════════════════════════════
-   PARTNER STRIP — touch autoplay  (coarse pointers only)
-
-   On desktop this strip is pure CSS: a max-content track with a 34s linear keyframe
-   translating -50%, paused on :hover. That gave a phone nothing — :hover is unreliable
-   and sticky on iOS, and `overflow: hidden` meant the logos could not be dragged at all.
-
-   A transform and a native scroller cannot share an element, so on coarse pointers the
-   CSS animation is switched off (see styles.css) and the same motion is driven here by
-   incrementing scrollLeft, wrapping at half the track. The markup already duplicates
-   the four marks exactly once for the -50% loop, which is what makes the wrap seamless
-   — if the number of marks ever changes, both halves must change together.
-
-   `data-partner-marquee` was a dead hook until now: it was in the markup with zero
-   references anywhere in this file.
-   ══════════════════════════════════════════════════════════════════════════ */
-(() => {
-  const coarse = matchMedia('(pointer: coarse)');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const PX_PER_SEC = 29;          // matches the 34s CSS duration over a ~992px half-track
-
-  document.querySelectorAll('[data-partner-marquee]').forEach((box) => {
-    const track = box.querySelector('.partner-marquee__track');
-    if (!track) return;
-
-    let raf = null, last = 0, down = false;
-    // Position is tracked here as a float rather than read back from scrollLeft each
-    // frame. At 29px/s and 60fps each step is ~0.48px, and reading scrollLeft back
-    // quantises it away — the strip advanced ~2px in 1.6s instead of ~46px. Writing
-    // an accumulated float keeps the sub-pixel remainder.
-    let pos = 0;
-    const running = () => coarse.matches && !reduce.matches;
-
-    // ── The pause gate watches the SCROLLER, not the pointer (2026-08-29) ──────────
-    //
-    // This used to be a refcount incremented on pointerdown and decremented on
-    // pointerup / pointercancel / pointerleave, and it could not survive a native
-    // scroll gesture. `touch-action` hands a horizontal pan to the compositor, and the
-    // browser marks that handover by firing POINTERCANCEL — so the refcount hit zero
-    // the instant the drag actually started, autoplay resumed mid-drag, and from the
-    // next frame the loop was writing an absolute scrollLeft on top of the browser's
-    // own scroll. The two fought for the same property every frame: the strip juddered,
-    // refused to follow the finger, and killed the momentum fling on release. Reported
-    // as "the whole thing spasms and doesn't work".
-    //
-    // Watching `scroll` fixes the whole class at once, because it observes the OUTCOME
-    // instead of trying to infer the gesture: finger drag, momentum fling, wheel and
-    // trackpad all produce scroll events, and pointercancel is no longer a signal we
-    // have to interpret. The loop distinguishes its own writes by remembering the value
-    // it last wrote — see the scroll handler for why a flag will not do.
-    let userScrolling = false, idleTimer = null, lastWritten = -1;
-    const IDLE_MS = 900;      // long enough to outlast an iOS momentum fling
-
-    // ── Wrap ──────────────────────────────────────────────────────────────────────
-    // Position X and X + half render IDENTICALLY — that is what the duplicated mark set
-    // buys — so normalising into [0, half) is invisible by construction. The old
-    // `if (pos >= half) pos -= half` is correct only while the value overshoots by less
-    // than one half-track; that holds at today's four marks (max scrollLeft 1636 < 2 ×
-    // 968) but silently stops holding if the strip ever gets narrower relative to its
-    // track. A modulo is correct for any overshoot and costs the same.
-    //
-    // The teleport this was blamed for was not the arithmetic. It was `release()`
-    // adopting scrollLeft mid-gesture and the loop then WRITING that normalised value
-    // back while the finger was still moving — the visible jump was the write, not the
-    // wrap. The scroll-idle gate above is what actually fixes it.
-    const norm = (v, half) => (half > 0 ? ((v % half) + half) % half : 0);
-
-    const step = (t) => {
-      const dt = last ? Math.min((t - last) / 1000, 0.05) : 0;   // clamp after a tab switch
-      last = t;
-      if (!down && !userScrolling) {
-        const half = track.scrollWidth / 2;
-        if (half > 0) {
-          pos = norm(pos + PX_PER_SEC * dt, half);               // seamless wrap
-          box.scrollLeft = pos;
-          // Read back rather than remembering `pos`: the browser rounds and clamps the
-          // value it actually stores, and the scroll handler below compares against it
-          // exactly. The read is free here — a scroll write does not dirty layout, so
-          // this is not a forced reflow.
-          lastWritten = box.scrollLeft;
-        }
-      }
-      raf = requestAnimationFrame(step);
-    };
-
-    const start = () => { if (!raf && running()) { last = 0; raf = requestAnimationFrame(step); } };
-    // `down` is reset here as well as in sync(): the two teardown paths were asymmetric,
-    // and a press still latched when the IntersectionObserver stopped the loop left the
-    // strip frozen on the way back in.
-    const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } down = false; };
-
-    box.addEventListener('scroll', () => {
-      // Our own write, echoed back — ignore it, or the loop would permanently pause
-      // itself on its first frame.
-      //
-      // Compared by VALUE, not by a "this one is mine" flag. Scroll events are
-      // coalesced and dispatched at the next rendering opportunity, so a flag set by
-      // the loop can be consumed by an event that actually carries the user's position
-      // too, and the drag is silently swallowed — every frame, for as long as the drag
-      // lasts. Any position that is not the one we last wrote came from the user.
-      if (Math.abs(box.scrollLeft - lastWritten) < 1) return;
-      userScrolling = true;
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        userScrolling = false;
-        // Adopt where the scroll actually came to rest, or the next frame would snap
-        // the strip back to wherever the accumulator had got to meanwhile.
-        pos = norm(box.scrollLeft, track.scrollWidth / 2);
-      }, IDLE_MS);
-    }, { passive: true });
-
-    // ── Drag vs tap ───────────────────────────────────────────────────────────────
-    // The four real marks are target="_blank" anchors, so without this a swipe that
-    // happens to start on a logo opens innovue.ltd on release.
-    //
-    // TWO independent signals, because neither alone covers both pointer types:
-    //
-    //   `moved`  — pointer travel while the button/finger is down. Gated on `down`,
-    //              which is what makes it safe on a mouse: an ungated pointermove
-    //              turns every hover across the strip into a "drag" and then eats the
-    //              next genuine click on a logo.
-    //   `scrolled` — how far the strip itself travelled during the gesture. This is the
-    //              touch safety net. A horizontal pan ends in POINTERCANCEL, after
-    //              which no further pointermove arrives, so `moved` can still be false
-    //              when the finger has clearly dragged. Comparing scrollLeft against
-    //              its value at pointerdown sees the drag regardless. Safe to read here
-    //              because the loop is paused for the whole gesture — `down` covers the
-    //              press and the scroll-idle gate covers the fling — so any delta is
-    //              the user's, never autoplay's. On desktop the strip is not a scroller
-    //              at all (overflow: hidden, CSS transform), so this term is always 0.
-    //   `pointered` — whether a pointer sequence actually preceded this click. Without
-    //              it, a keyboard Enter (which dispatches click with no pointerdown) is
-    //              measured against a stale `downLeft` while autoplay writes scrollLeft
-    //              continuously, so `scrolled` is effectively always true and the link
-    //              is silently preventDefault'd. `moved` alone was false for keyboard,
-    //              which is why the pre-scrolled version did not have this problem.
-    let downX = 0, downY = 0, downLeft = 0, moved = false, pointered = false;
-
-    // A finger on the strip stops it immediately, before any scroll event exists — a
-    // plain boolean, not a refcount, because the release paths are no longer symmetric
-    // with the press. `pointerleave` is gone: on a scroller whose content moves under a
-    // stationary finger it fires unprompted, and each spurious call re-adopted `pos`.
-    box.addEventListener('pointerdown', (e) => {
-      down = true; moved = false; pointered = true;
-      downX = e.clientX; downY = e.clientY; downLeft = box.scrollLeft;
-    });
-    const lift = () => { down = false; };
-    box.addEventListener('pointerup', lift);
-    box.addEventListener('pointercancel', lift);   // hands off to the scroll-idle gate
-    // Failsafe release. A mouse gets no implicit pointer capture, so press → drag off the
-    // strip → release fires neither event on `box`, `down` stays true, and step()'s gate
-    // is false for the rest of the session. window sees the release wherever it lands.
-    // NOT pointerleave, which is what this replaces: on a scroller whose content moves
-    // under a stationary finger it fires unprompted and re-adopts `pos` each time.
-    window.addEventListener('pointerup', lift);
-    window.addEventListener('pointercancel', lift);
-
-    box.addEventListener('pointermove', (e) => {
-      if (!down || moved) return;
-      if (Math.abs(e.clientX - downX) > 8 || Math.abs(e.clientY - downY) > 8) moved = true;
-    });
-    box.addEventListener('click', (e) => {
-      const scrolled = Math.abs(box.scrollLeft - downLeft) > 8;
-      // Only a click that a pointer actually produced can be a swallowed drag. Keyboard
-      // and assistive-tech activation fall straight through to the anchor.
-      if (pointered && (moved || scrolled)) { e.preventDefault(); e.stopPropagation(); }
-      moved = false;
-      pointered = false;
-      downLeft = box.scrollLeft;
-    }, true);   // capture, so it beats the anchor's own navigation
-
-    // Nothing to animate while the section is off-screen.
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((es) => {
-        es.forEach(en => en.isIntersecting ? start() : stop());
-      }, { rootMargin: '100px' }).observe(box);
-    } else { start(); }
-
-    const sync = () => {
-      stop();
-      clearTimeout(idleTimer);
-      userScrolling = false;
-      down = false;
-      pos = 0;
-      box.scrollLeft = 0;
-      lastWritten = box.scrollLeft;
-      if (running()) start();                 // else desktop/reduced-motion: CSS owns it again
-    };
-    coarse.addEventListener('change', sync);
-    reduce.addEventListener('change', sync);
-  });
-})();
-
-// ─── Card carousel: scroll-snap track, prev/next arrows, dot indicators ───
-// Drives both the Reports and Press sections — same markup classes, two IDs.
-function initCardCarousel(carouselId) {
-  const carousel = document.getElementById(carouselId);
-  if (!carousel) return;
-  const track = carousel.querySelector('.report-carousel-track');
-  const cells = Array.from(carousel.querySelectorAll('.report-card-cell'));
-  if (!track || cells.length < 2) return;
-
-  const section  = carousel.closest('section');
-  const prevBtn  = section && section.querySelector('.report-nav-btn[data-dir="prev"]');
-  const nextBtn  = section && section.querySelector('.report-nav-btn[data-dir="next"]');
-  const dotsWrap = section && section.querySelector('.report-dots');
-
-  // Build one dot per card.
-  //
-  // These are pagination, not tabs. They used to carry role="tab" inside a
-  // role="tablist", with no tabpanel and no aria-controls anywhere on the page — so a
-  // screen reader announced "tab 1 of 4" and then had nowhere to send you. A labelled
-  // group of buttons with aria-current is what this control actually is.
-  //
-  // The name comes from the card's own <h3> via aria-labelledby rather than a written
-  // string. Two reasons: the hardcoded "Go to report N" was also announcing on the
-  // Press carousel, and a written label would need its own data-zh-aria to survive the
-  // language toggle. Pointing at the heading borrows a node that already swaps, so the
-  // dot is named "Japanese Enterprise Patent Sell-Off Flow Report" in English and the
-  // Chinese title in Chinese, with no extra i18n plumbing.
-  const dots = cells.map((cell, i) => {
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.className = 'report-dot';
-    const title = cell.querySelector('.report-card-title[id]');
-    if (title) dot.setAttribute('aria-labelledby', title.id);
-    else {
-      // Unreached today — every cell on both carousels has a titled <h3> — and here
-      // only so a dot can never be nameless. It deliberately does NOT take
-      // data-zh-aria: this file collects its i18n nodes once at init and these
-      // buttons are built afterwards, so an attribute set here would never swap.
-      // Read the live lang instead, and warn: landing here means a card shipped
-      // without a heading, which is the actual bug to fix.
-      const zh = document.documentElement.lang === 'zh-Hant';
-      dot.setAttribute('aria-label', zh ? `前往第 ${i + 1} 張` : `Go to slide ${i + 1}`);
-      console.warn('[carousel] cell has no .report-card-title[id]; dot fell back to a positional label', cell);
-    }
-    dot.addEventListener('click', () => scrollToCell(i));
-    if (dotsWrap) dotsWrap.appendChild(dot);
-    return dot;
-  });
-
-  const cellStep = () => {
-    if (cells.length < 2) return cells[0].offsetWidth;
-    return cells[1].offsetLeft - cells[0].offsetLeft; // card width + gap
-  };
-
-  const nearestIndex = () => {
-    const x = track.scrollLeft;
-    let best = 0, bestDist = Infinity;
-    cells.forEach((cell, i) => {
-      const d = Math.abs(cell.offsetLeft - track.offsetLeft - x);
-      if (d < bestDist) { bestDist = d; best = i; }
-    });
-    return best;
-  };
-
-  const scrollToCell = (i) => {
-    const idx = Math.max(0, Math.min(cells.length - 1, i));
-    track.scrollTo({ left: cells[idx].offsetLeft - track.offsetLeft, behavior: 'smooth' });
-  };
-
-  const sync = () => {
-    const active = nearestIndex();
-    // aria-current, not aria-selected: aria-selected is only meaningful on a tab,
-    // option or gridcell, and these are none of those. Styling keys off the same
-    // attribute (see .report-dot[aria-current="true"] in styles.css).
-    dots.forEach((d, i) => {
-      if (i === active) d.setAttribute('aria-current', 'true');
-      else d.removeAttribute('aria-current');
-    });
-    const atStart = track.scrollLeft <= 2;
-    const atEnd   = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-    if (prevBtn) prevBtn.disabled = atStart;
-    if (nextBtn) nextBtn.disabled = atEnd;
-  };
-
-  if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -cellStep(), behavior: 'smooth' }));
-  if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left:  cellStep(), behavior: 'smooth' }));
-
-  let raf = null;
-  track.addEventListener('scroll', () => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => { raf = null; sync(); });
-  });
-  window.addEventListener('resize', sync);
-
-  sync();
-}
-// Auto-init every card carousel with an id (Reports: reports-/press-carousel;
-// Capital & IP: capital-focus-/capital-why-carousel; any future page too).
-document.querySelectorAll('.report-carousel[id]').forEach(c => initCardCarousel(c.id));
 
 /* ════════════════════════════════════════════════════════════════════════
    Verified License Badge — 3D idle-float + mouse-follow tilt + shine.

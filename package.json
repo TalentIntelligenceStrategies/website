@@ -3,13 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Build layer for tisglobalinc.com. The site is still hand-authored static HTML served from the repo root \u2014 this only builds the React islands, the Tailwind layer, and the vendored three.js / GSAP bundles into assets/build/.",
+  "description": "Build layer for tisglobalinc.com. The site is hand-authored static HTML served from the repo root; this builds the vendored GSAP and Lenis bundles, minified CSS/JS twins, subset fonts, WebP images, the search index and the sitemap into assets/build/.",
   "scripts": {
-    "tokens": "node scripts/gen-tailwind-config.mjs",
     "fonts": "node scripts/build-fonts.mjs",
     "images": "node scripts/build-images.mjs",
     "search": "node scripts/build-search-index.mjs",
-    "build": "npm run tokens && vite build && npm run fonts && npm run min && npm run images && npm run search && npm run sitemap",
+    "build": "vite build && npm run fonts && npm run min && npm run images && npm run search && npm run sitemap",
     "dev": "vite build --watch",
     "serve": "python3 -m http.server 8000",
     "verify": "node scripts/check-cascade-order.mjs && node scripts/verify-build.mjs",
@@ -19,11 +18,8 @@
     "sitemap": "node scripts/build-sitemap.mjs"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.26",
     "sharp": "^0.35.4",
     "subset-font": "^2.5.0",
-    "tailwindcss": "^3.4.17",
     "vite": "^6.0.7"
   },
   "dependencies": {

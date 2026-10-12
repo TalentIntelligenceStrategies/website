@@ -16,9 +16,34 @@ exclude:
   - package.json
   - package-lock.json
   - vite.config.js
-  - tailwind.config.js
-  - postcss.config.js
   - skills-lock.json
+  # Source fonts are build inputs (scripts/build-fonts.mjs), not page assets: the site loads
+  # the subset WOFF2 in assets/build/fonts/. Only Urbanist Regular + Bold stay published,
+  # because capital.tisglobalinc.com loads them from here (2026-10-11 audit: ~60 MB of
+  # source fonts were public).
+  - "designs/assets/fonts/Inconsolata"
+  - "designs/assets/fonts/Noto Sans TC"
+  - "designs/assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf"
+  - "designs/assets/fonts/Urbanist/Urbanist-Italic-VariableFont_wght.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-Black.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-BlackItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-BoldItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-ExtraBold.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-ExtraBoldItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-ExtraLight.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-ExtraLightItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-Italic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-Light.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-LightItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-Medium.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-MediumItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-SemiBold.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-SemiBoldItalic.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-Thin.ttf"
+  - "designs/assets/fonts/Urbanist/static/Urbanist-ThinItalic.ttf"
+  # Seal workbook cited by brand/components.md and visual-guide.md: kept in the repo,
+  # not published (7.6 MB, linked from nowhere on the site).
+  - "assets/badges/badge-preview.html"
   # Jekyll defaults
   - node_modules
   - vendor
