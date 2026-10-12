@@ -71,13 +71,15 @@ Full role table in §7.2.
 
 Fades (color) or eases (motion). Nothing bounces, nothing springs.
 
-**Durations:** 100ms (hover color), 150ms (small transforms, modal enter), 250ms (card hover, accordion), 350ms (scroll reveals, hover-lift). `prefers-reduced-motion: reduce` → 0ms.
+**Durations:** five steps. 120ms fast (press feedback, color), 180ms base (hover lifts, small transforms, menus and dialogs opening), 320ms panel (drawers, disclosures, sheets), 600ms reveal (scroll reveals on marketing pages), 900ms media (photo cross-fades). Interface motion stays under 300ms; only reveals and media run longer. Exits are faster than entrances. `prefers-reduced-motion: reduce` → movement off, short opacity fades kept.
 
-**Easing:** one curve — `cubic-bezier(0.2, 1, 0.3, 1)`. Linear fades reserved for color.
+**Easing:** three curves, by job. `out` for interface motion, `reveal` for scroll reveals, `drawer` for panels that slide from an edge. Linear only for color fades and continuous motion (marquees, progress).
+
+**Press:** pressable controls scale to 0.97 on `:active`, at the fast duration on the `out` curve.
 
 **Shadows:** three levels (low / medium / high), built on 6–12% black. Low under buttons and tooltips; medium under cards and dropdowns; high under modals.
 
-**Corners:** 6px (chips, tooltips), 8–12px (buttons, inputs), 16px (cards), 24px (hero). Nothing ships at 0px.
+**Corners:** three working radii. 16px frame (cards, media, trays, panels, the hero band), 12px inner (tiles nested in a frame, buttons, inputs), 8px small (thumbnails, small controls); 6px for chips and tooltips, and the pill. Nested corners stay concentric: inner = frame − the frame's padding, floored at the 12px step. Nothing ships at 0px.
 
 **Borders:** 1px default; 0.5px on retina.
 
@@ -89,7 +91,7 @@ Non-negotiable:
 
 - **Contrast** — every text / surface pair meets WCAG AA (4.5:1 body, 3:1 large and UI). N7 (`#A5A5A5`) and N8 (`#8A8F98`) are UI/decorative only; never body.
 - **Tap targets** — ≥ 44×44 px on mobile. Small button variant requires `min-height: 44px` when standalone.
-- **Focus rings** — always visible. 1px outline, 2px offset, `#252525` (primary ink); `#FFFFFF` on inverse surfaces. Never removed without a visible replacement.
+- **Focus rings** — always visible. 2px outline, 2px offset (3px on image-backed cards), `#252525` (primary ink); `#FFFFFF` on inverse surfaces. Never removed without a visible replacement.
 - **Reduced motion** — `prefers-reduced-motion: reduce` collapses transitions to 0ms and stops signal-dot pulsing.
 - **Language** — Chinese content uses the Noto Sans TC stack; tracking constraint in §7.2.
 
@@ -99,7 +101,6 @@ Non-negotiable:
 
 - **Dark mode** — not built. Tokens support it structurally via `[data-theme=dark]` overrides. Revisit when a dark surface ships.
 - **Font swap** — if Urbanist / Inconsolata are replaced, only two token values change; everything else cascades.
-- **Verified License Badge — expired-state visual treatment** — the active-state spec is finalized: stadium pill wrapping issuer + licensee §Seal · Standalone marks + QR, light-locked, identity in [`visual-guide.md`](./visual-guide.md) §Verified License Badge, implementation in [`components.md`](./components.md) §Verified License Badge. Open sub-question: how an expired badge reads — greyscale? overlay label? replacement stamp? Ship-blocker for the Licensing Platform because licenses will lapse. Tracked in the trailing TODO of [`components.md`](./components.md) §Verified License Badge.
 - **Chart / data-visualization palette** — deliberately monochrome by default. The two pillar-score components (Radar chart, Threshold bar in [`components.md`](./components.md)) carry tier as a typographic chip (`STRONG` · `MID` · `WEAK`) over neutral fills — no colour is load-bearing on the radar / threshold panel. `signal-active` / `signal-warning` / `signal-lapsed` in §7.4 remain for status-dot use (live / degraded / lapsed indicators), not for score encoding. **Deck-scope categorical palette resolved in §7.4** (`--chart-deck-1` … `--chart-deck-5`) — chart-semantic; deck data-viz consumer spec deferred (presentations.md trimmed to layout + chrome). **SABCD tier ramp resolved in §7.4** (`--score-s` / `-a` / `-b` / `-c` / `-d`) as a five-hue quality ladder — gold (S) → emerald (A) → sky (B) → violet (C) → orange (D). Each hue is held off the status / signal palette so a Tier chip and a Status chip on the same row never read as the same family — gold sits clearly off the warning amber `#A16207`, emerald is cyan-shifted off the success forest-green, sky is lighter than the info royal-blue, and orange reads softer than the danger red. Violet, formerly tier S's primitive, moves down to tier C as a mid-rank caution tone. The ramp maps onto patent-quality intuition (premium / strong / solid / caution / weak) and recovers instant tier-readability on dense surfaces (Licensing Platform recommendation grid, license detail tables, Patent Intelligence SaaS scorecards). Threshold-bar's monochrome rule still applies inside the radar/threshold panel — colour-coded SABCD chips and the monochrome P1–P8 readout coexist without conflict. **Jurisdiction accent ramp resolved in §7.4** (`--juris-us` / `-tw` / `-eu` / `-jp` / `-ch`) as a five-hue regional palette — indigo (US) → olive (TW) → teal (EU) → fuchsia (JP) → cherry (CH). The dominant pairing (`US × Tier S` — indigo against gold) sits firmly off-axis. CH sits in the cherry-red region — only adjacency is the danger status chip `#B91C1C`, but danger reads as a brighter / more saturated pure red while CH reads as a deeper / pinker rose. TW sits in the olive (yellow-green) region with two adjacencies: Tier S gold (both warm yellow-tones) and Tier A emerald (yellow-green vs cyan-green) — separable by saturation and value at chip scale. EU moved off slate to teal so it no longer reads against the silver brand ramp (`--slate-*`). JP fuchsia ↔ Tier C violet separates the same way. Jurisdiction-semantic, never status. (KR / Korea dropped for now.) Used for jurisdiction chips on the Licensing Platform (catalog, recommendation grid, license inventory, license detail). **SaaS-scope multi-series palette remains deferred** (Patent Intelligence SaaS data-viz; Licensing Platform). Paired visual spec in [`visual-guide.md`](./visual-guide.md) §Iconography → Data Visualization.
 - **Imagery — full spec** — photography, AI / generated, illustrations, product screenshots, patterns / textures / backgrounds, jurisdiction maps, and non-data diagrams are all unspec'd. Working flag in [`visual-guide.md`](./visual-guide.md) §Imagery. (Gradients are **retired** — §7.5 below now specs static imagery + one flat accent per surface; surface mapping in [`visual-guide.md`](./visual-guide.md) §Imagery → Surface identity. Static imagery carrying surface identity makes the photography / pattern spec *more* urgent, not less.)
 
@@ -335,7 +336,7 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 
 **Spacing (4px grid, px):** 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 56, 64, 80, 96, 128, 160.
 
-**Radius (px):** 4, 6, 8, 12, 16, 24, 32 · plus `9999px` (pill) and `50%` (circle).
+**Radius (px):** 4, 6, 8, 12, 16, 24, 32 · plus `9999px` (pill) and `50%` (circle). Working radii: frame 16 (`--r-frame`), inner 12 (`--r-inner`), small 8 (`--r-sm`).
 
 **Border widths:** 1px default (0.5px retina) · 1.5px (card accents) · 2px (underline accents).
 
@@ -343,7 +344,7 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
 - Low: `0 2px 4px rgba(0,0,0,0.06)`
 - Medium: `0 4px 24px rgba(0,0,0,0.08)`
 - High: `0 7px 32px rgba(0,0,0,0.12)`
-- Focus: `0 0 0 1px #252525`
+- Focus: 2px outline at 2px offset (see §5); ring color `#252525`, `#FFFFFF` on inverse
 - Inner highlight: `inset 0 1px 0 rgba(255,255,255,0.4)`
 - Stacked low (content cards):
   ```
@@ -354,16 +355,22 @@ Icons render as geometric outlines on a 24px grid — monochrome, `currentColor`
   0 0 1px 0 rgba(0,0,0,0.06)
   ```
 
-**Motion durations:** fast 100ms · base 150ms · medium 250ms · slow 350ms · count-up 1200ms (linear).
+**Motion durations:** fast 120ms · base 180ms · panel 320ms · reveal 600ms · media 900ms · count-up 1200ms (linear). CSS: `--dur-fast`, `--dur-base`, `--dur-panel`, `--dur-reveal`, `--dur-media`.
 
 **Easings:**
 
 | Name | Curve | Use |
 |---|---|---|
-| linear | `linear` | color fades |
-| out | `cubic-bezier(0, 0, 0.2, 1)` | enter |
-| in | `cubic-bezier(0.4, 0, 1, 1)` | exit |
-| emphasized | `cubic-bezier(0.2, 1, 0.3, 1)` | lifts, CTAs (default) |
+| linear | `linear` | color fades, marquees, progress |
+| out | `cubic-bezier(0.23, 1, 0.32, 1)` | interface motion: enter, exit, hover, press (default) |
+| reveal | `cubic-bezier(0.16, 1, 0.3, 1)` | scroll reveals, media settles |
+| drawer | `cubic-bezier(0.32, 0.72, 0, 1)` | panels and sheets sliding from an edge |
+
+No `ease-in` on interface motion. CSS: `--ease-out`, `--ease-reveal`, `--ease-drawer`.
+
+**Press scale:** 0.97 (`--press-scale`).
+
+**Front-door spacing (marketing pages):** on the 4px grid — 8 · 12 · 16 · 24 · 32 fixed steps (`--fd-s1`…`--fd-s5`), plus three fluid roles: cell padding `clamp(24px, 2.4vw, 36px)`, heading-to-content gap `clamp(32px, 4vw, 56px)`, section rhythm `clamp(80px, 10vw, 152px)`.
 
 **Breakpoints (px):** sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536 · site-max 1440.
 

@@ -149,6 +149,7 @@ Tokens live in `:root`-level blocks in `styles.css`:
 | | `--border-secondary` | `#E8E8E8` |
 | | `--border-tertiary` | `#D5D5D5` |
 | | `--border-focus` | `#252525` |
+| Focus | `--focus-w` / `--focus-off` | `2px` / `2px` — §14.0.05; 3px offset on image-backed cards |
 | Signals | `--signal-active` | `#22C55E` |
 | | `--signal-warning` | `#F59E0B` |
 | | `--success-bg` / `--success-fg` | `#F0FDF4` / `#15803D` |
@@ -453,6 +454,17 @@ free, because adding it re-measures every balanced ZH block.
 chips / contact-panel fields `8px`.
 
 8px is the base unit. Group tightly within a beat, separate generously between sections.
+
+**Front-door spacing tokens** (on `.ab`, 2026-10-12; brand/design-tokens.md §7.2). Fixed
+steps `--fd-s1` 8 · `--fd-s2` 12 · `--fd-s3` 16 · `--fd-s4` 24 · `--fd-s5` 32; fluid roles
+`--fd-cell` `clamp(24px, 2.4vw, 36px)` (padding inside a frame cell, tray or tile),
+`--fd-head-gap` `clamp(32px, 4vw, 56px)` (section heading → content) and `--fd-section`
+`clamp(80px, 10vw, 152px)` (section rhythm). Gaps and paddings in the `.fd-*` blocks use
+these; an off-grid literal (10, 14, 18, 22px) is a finding unless it is optical.
+
+**Radii** (`:root`): `--r-frame` 16 for frames, cards, media, trays and the hero band;
+`--r-inner` 12 for tiles inside a frame, buttons and inputs; `--r-sm` 8 for thumbnails and
+small controls. Chips and pills stay 999px. Nested corners stay concentric.
 
 ### 3.1 Breakpoints
 
@@ -1102,168 +1114,52 @@ decorative gradient left. Don't add one.
 
 ## 10. Motion & reveal
 
-**Three motion techniques ship, not one.** All are sanctioned; the constraint is *where*
-each is allowed and that each has a fallback.
+### 10.1 The motion scale (tokens on `:root`)
 
-| Technique | Where | Fallback |
+One scale, from `brand/design-tokens.md` §4 / §7.2 (2026-10-12; it replaced ~25 durations
+and five easing families). Use the tokens; a raw `ms` or `cubic-bezier()` in a new rule is a
+review finding.
+
+| Token | Value | Use |
 |---|---|---|
-| `IntersectionObserver` + CSS transitions (`site.js`) | every page — the default | `prefers-reduced-motion` shows the resolved state |
-| GLSL / WebGL via `assets/build/hero-shader.js` | hero backdrops (`index.html`, `about/`, `product/signal/`) | DPR capped at 2 — **except `about/`, which is uncapped**; reduced-motion renders one static frame; **must** hold on an opaque background of its own — see §5 |
-| GLSL / WebGL, inline raw context | `404.html`, `reports/` | never used three.js; own uniform conventions and quad topology, deliberately not folded into the shared runner |
+| `--dur-fast` | 120ms | press feedback, color |
+| `--dur-base` | 180ms | hover lifts, small transforms, menus and dialogs opening |
+| `--dur-panel` | 320ms | drawers, disclosures, sheets |
+| `--dur-reveal` | 600ms | scroll reveals (marketing pages only) |
+| `--dur-media` | 900ms | photo cross-fades and settles |
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | all interface motion (default) |
+| `--ease-reveal` | `cubic-bezier(0.16, 1, 0.3, 1)` (= `--ease-card`) | scroll reveals, media |
+| `--ease-drawer` | `cubic-bezier(0.32, 0.72, 0, 1)` | panels and sheets from an edge |
+| `--press-scale` | 0.97 | every pressable control on `:active` |
 
-> **Every hero shader loop is gated on an `IntersectionObserver` over its mount**
-> (2026-08-29, all four of `index.html`, `about/`, `product/signal/`, `reports/`). None of
-> them were: each drew a viewport-filling quad at up to DPR 2 for the entire session,
-> footer included, competing with scroll compositing and thermally throttling the phone.
-> Off-screen is a **hold, not a stop** — the two time-based loops reuse the `held` /
-> `heldAt` accumulator they already had for overlay locks, so the band resumes on the
-> phase it stopped on rather than jumping to wall clock. Cancel the rAF; do not merely
-> skip the draw inside it, or the frame is not actually given back.
->
-> The reduced-motion branch was also **half-written on three of the four**:
-> `if (!reduce) uniforms.time.value += SPEED` froze the *clock* but not the *draw*, so the
-> GPU still rendered ~60 identical frames a second — and the `if (reduce) renderer.render()`
-> meant to be the single static frame was immediately followed by `animate()` starting the
-> loop anyway. `reports/` always had this right and is the reference shape: reduce means
-> one frame and **no loop**.
-| GSAP + ScrollTrigger (3-CDN fallback chain) | `product/licensing/index.html` only | reduced-motion branch required |
+Rules: interface motion stays under 300ms; exits are faster than entrances; `linear` only
+for color fades and continuous motion; no `ease-in` on interface motion (the announcement
+rotator's 180ms exit is the one documented exception, §4). Animate `transform`, `opacity`,
+`filter` and `clip-path`, never layout properties. Long loops (marquees, Ken Burns) keep
+their own literal durations.
 
-Prefer the observer. Reach for GSAP only when a timeline genuinely needs scrub-linked
-sequencing, and do not add a fourth *animation* library.
+### 10.2 What moves, and where
 
-**Lenis (`lenis@1.3.26`) is the one addition to that list, and it is not an animation
-technique — it is scroll transport.** It replaces how the page scrolls; it animates
-nothing. Where the three techniques above decide what moves, Lenis only decides how the
-scroll position gets from A to B, so it composes with all of them rather than competing.
+| Motion | Where | Owner | Reduced motion |
+|---|---|---|---|
+| Front-door reveals: `rise`, `list` (stagger via `--fd-i`), `clip` | every front-door page | `site.js` "Front door v2" sets `[data-fd]` + `.fd-pre` only below the fold | nothing is hidden |
+| Figure count-up | `.fd-figures b` | `site.js` `fdCount` (`COUNT_MS` 1200, linear) | static number |
+| `[data-reveal]` fade-rise | Signal, AUSA, and capital.tisglobalinc.com | `site.js` scroll-reveal | resolved state |
+| Offer-card image settle | Signal report cards | `site.js` offer-card reveal | resolved state |
+| Home KV carousel | `index.html` | `site.js` KV block: 7s dwell, pauses on hover / focus / off-screen / hidden tab, stop button; no autoplay on phones | no rotation |
+| Pillar tray disclosure | Home | `site.js` + `.ptray` (`--pt-open` / `--pt-close`) | instant |
+| Mega panels, drawer, search, legal dialog, newsletter popup | chrome | CSS transitions on `--dur-base` / `--dur-panel` | opacity only |
+| Language swap veil | every page | `#lang-overlay` | swap without the veil |
+| Smooth scroll | desktop fine pointers | Lenis (`assets/build/lenis.js`, lazy) | off |
+| ScrollTrigger timeline | `product/licensing/` (sealed) | GSAP | reduced branch required |
 
-| | |
-|---|---|
-| **Where** | site-wide, from `assets/site.js`; `/assets/build/lenis.js` (~5.7 KB gzipped) |
-| **Feel** | `lerp: 0.18` — ~0.27s to settle. Restrained on purpose; the community default of `0.05` is ~1.0s and reads as an effect rather than as weight. Settle time is ~`3/(lerp*60)` seconds, so a **higher** number is lighter. |
-| **Fallback** | library-handled reduced motion (below), plus native scroll if the module fails to load — the `.lenis` class is never added, so every Lenis CSS rule stays inert |
+There are no WebGL heroes on this site any more (the last ones went in 2026-10; the runner
+was removed 2026-10-11). capital.tisglobalinc.com mounts its own globe into `.hero-shader`.
 
-Three rules that are load-bearing, each of which was a measured bug before it was a rule:
-
-- **Never pass an `offset` to `lenis.scrollTo()` for an element target.** Lenis already
-  subtracts the target's `scroll-margin-top` and the scroller's `scroll-padding-top`
-  itself. Adding the usual `offset: -80` to clear the fixed topnav double-counts it —
-  every methodology pipe-nav jump landed 285px short and showed the wrong figure in the
-  pinned card. `styles.css` stays the single source of truth for anchor offsets.
-- **Never add a horizontal track to the `prevent` list.** `gestureOrientation` is
-  `vertical`, so Lenis never touches a horizontal gesture and those tracks already work.
-  `prevent` is per-node and blocks *both* axes, so listing the reports carousel made an
-  ordinary vertical wheel over it jump 400px natively instead of easing.
-- **Nothing Lenis touches may be unconditional in `assets/site.js` or `styles.css`.**
-  `capital.tisglobalinc.com` hot-links both files from this domain. Init is gated on the
-  script's own origin and every CSS rule is `.lenis`-scoped, which keeps that site on
-  native scroll.
-
-**Reduced motion is the one effect here without a hand-written `@media` fallback, and
-that is correct** — `respectReducedMotion` defaults to `true` and Lenis reads the query
-*per scroll* rather than through a listener, so the preference applies live without a
-reload: user scroll goes 1:1, programmatic scroll becomes a jump cut. Do not wrap it in a
-`matchMedia` branch. (The licensing page's separate `isStatic()` guard is unrelated — that
-governs the ScrollTrigger scrub, not scroll transport.)
-
-On the licensing page the two must be wired together or the pin and the scrub drift apart
-by a frame: `lenis.on('scroll', ScrollTrigger.update)`, `lenis.raf` driven from
-`gsap.ticker`, and `lagSmoothing(0)`. That page is veiled today, so the handshake is
-dormant until the veil lifts.
-
-- **`[data-reveal]`** (headings, deks, about cards, partner band): fade + 10px rise →
-  `.is-revealed` transitions `opacity/transform` over **450ms `--ease-card`**; the dek
-  trails the heading by **70ms**. Observer `threshold:0.12, rootMargin:'0px 0px -8% 0px'`.
-- **`.offer-card` → `.is-in`**: image `scale(1.08)→1` + fade over 700ms, **staggered
-  `i*90ms`** per card; `threshold:0.25`.
-- **`.report-card` → `.is-in`**: same 700ms image reveal, per-carousel (not staggered).
-- **Hover language** (`(hover:hover) and (pointer:fine)` only): cards lift
-  (`-2/-6px`) with a shadow step-up and image zoom to 1.06; nav links darken to
-  `#000`; arrows translate; `.arrow-link`/`.contact-email`/`.contact-meta a` share a
-  left-origin 1px underline wipe (`scaleX(0)→1`, 280ms `--ease-out`).
-- **Partner marquee**: `@keyframes partner-scroll` translateX `0→-50%` over **34s
-  linear infinite** (was 45s until 2026-08-29 — ~22 → ~29 px/s over the ~992px
-  half-track), duplicated set for a seamless loop, `animation-play-state:paused` on
-  hover, progressive-blur edge fades.
-  **On coarse pointers the keyframe is off and `site.js` drives `scrollLeft` instead.**
-  A transform and a native scroller cannot share an element — the transform moves content
-  the scroll container knows nothing about — and `overflow: hidden` meant the logos could
-  not be dragged at all on a phone, while `:hover` (the only pause) is unreliable and
-  sticky on iOS. Four things that are easy to get wrong there:
-    · **The pause gate watches the SCROLLER, not the pointer.** This is the one that
-      matters, and it shipped wrong (fixed 2026-08-29). The gate was a refcount
-      incremented on `pointerdown` and decremented on `pointerup` / `pointercancel` /
-      `pointerleave` — and a refcount cannot survive a native scroll, because
-      **`touch-action` handing the pan to the compositor is signalled by
-      `pointercancel`**. The count hit zero the instant the drag began, autoplay resumed
-      *mid-drag*, and the loop and the finger then fought over `scrollLeft` every frame.
-      Reported as "the whole thing spasms and doesn't work". Listening for `scroll` with a
-      900ms idle timer observes the *outcome* instead of inferring the gesture, so drag,
-      momentum fling and wheel are all covered by one rule.
-      **Distinguish our own writes by VALUE, not by a flag** — scroll events are coalesced
-      and dispatched at the next rendering opportunity, so a "this one is mine" boolean
-      gets consumed by an event that also carries the user's position, and the drag is
-      swallowed every frame for as long as it lasts. Compare `scrollLeft` against the
-      value read back after the last write.
-      Note what was *not* the bug: the `pos -= half` wrap. Position X and X + half render
-      identically (that is what the duplicated mark set buys), so normalising is invisible
-      either way. The visible jump was the loop **writing** an adopted position back while
-      the finger was still moving. The modulo now used is correctness insurance for a
-      future mark count, not the fix.
-    · Position is accumulated as a **float**, not read back from `scrollLeft` each frame.
-      At 29px/s and 60fps each step is ~0.48px and reading it back quantises that away —
-      the strip advanced ~2px in 1.6s instead of ~46px. (The one read-back that *is*
-      correct is immediately after writing, to learn what the browser actually stored.)
-    · The edge fades become a `mask-image`. The two `.partner-marquee__blur` elements are
-      `position: absolute` inside what is now a scroll container, so they scroll away with
-      the logos; a mask applies to the element's own box.
-    · The four real marks are `target="_blank"` anchors, so a capture-phase `click`
-      handler suppresses the click when the gesture was a drag. **Two signals, because
-      neither covers both pointer types**: pointer travel >8px *while the button is down*
-      (gating on `down` is what keeps a mouse **hover** from being read as a drag and
-      eating the next real click), plus how far `scrollLeft` moved since `pointerdown`
-      (the touch safety net — after `pointercancel` no further `pointermove` arrives, so
-      travel alone stays false on a finger swipe that clearly dragged).
-  `touch-action` is **`pan-x pan-y`**, not `pan-x`. `pan-x` alone also told the browser
-  this element does not handle vertical gestures, so a finger landing anywhere on the
-  1936px logo row could not scroll the *page* — the band was a dead zone. The element is
-  `overflow-y: hidden`, so `pan-y` costs it nothing.
-  `data-partner-marquee` was a **dead hook** with zero references until this; it is the
-  driver's selector now. Reduced motion still reflows the track to a static wrapping row,
-  and both the scroller and the mask stand down there.
-- **Crossfades**: hero backdrops 480ms, shader 600ms, theme swap 250ms, buttons ~100ms.
-- **Counters**: `.counter[data-target]` count-up via `counterObserver` (`threshold:0.3`),
-  driven entirely from `site.js` — there is no `.counter` CSS rule. Live on `/about/`
-  (`180`, `100`) and `product/signal/` (`1433`, `50`, `8`).
-  Values are formatted with `toLocaleString('en-US')`, so four digits and up get a
-  thousands comma. **`data-sep="none"` opts an element out** — used on the Signal pool
-  numeral, where at 72px a separator reads as punctuation rather than scale.
-  Two rules for any counter with copy set beside it: the markup text must equal what the
-  counter lands on (it is the no-JS value), and the element needs a reserved width
-  (`min-width` in `ch`, which tracks a `clamp()`ed font-size for free) or the growing
-  digit *count* will shove that copy sideways — `tabular-nums` fixes digit width, not
-  digit count.
-
-Ease-out only; **no bounce** — the hero scroll cue is the single sanctioned exception.
-
-**Every effect has a `@media (prefers-reduced-motion: reduce)` fallback**: reveals show
-instantly, image zooms are disabled, the marquee goes static, the shader renders one
-frame, counters show the final value, the scroll cue stops. Content is **never** hidden
-behind a never-firing transition, and never gated invisible on JS failure.
-
-> **Verification note.** Motion-frozen screenshots require
-> `--force-prefers-reduced-motion`; without it the shader, marquees and sheens produce
-> false positives. Never capture below the fold with a tall viewport — it inflates the
-> `100vh` heroes and the capture is meaningless. Scroll with URL fragments instead.
-
----
-
-**One carve-out (2026-08-23).** §17's veil is content *deliberately* covered, and it is
-the one case that works **because** it needs no JS rather than despite it. It never
-animates, and everything inside a veiled `<main>` gets
-`animation-play-state: paused` — a live keyframe under a `backdrop-filter` forces a
-full-viewport re-blur every frame.
-
----
+**Traps that still apply.** Headless Chrome runs rAF at about 1fps and never composites a
+WebGL canvas, so neither can be verified from screenshots. A WAAPI `onfinish` assigned after
+`animate()` under reduced motion never fires (Chrome finishes a 0ms animation at once): use
+`animation.finished.then()`.
 
 ## 11. Page rhythm & weight (buildable rules)
 

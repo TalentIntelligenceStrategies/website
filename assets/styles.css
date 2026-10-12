@@ -249,7 +249,24 @@ picture { display: contents; }
     repeating-linear-gradient(90deg, rgba(37,37,37,0.020) 0, rgba(37,37,37,0.020) 1px, transparent 1px, transparent 32px);
 
   --ease-card: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);   /* also redeclared locally on .about-card */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* interface motion: enter, exit, hover, press */
+  /* Motion scale — brand/design-tokens.md §4 / §7.2 (2026-10-12). Interface motion stays
+     under 300ms; reveals and media run longer. Linear only for color and continuous motion. */
+  --ease-reveal: var(--ease-card);                  /* scroll reveals, media settles */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);    /* panels and sheets sliding from an edge */
+  --dur-fast:   120ms;   /* press feedback, color */
+  --dur-base:   180ms;   /* hover lifts, small transforms, menus and dialogs */
+  --dur-panel:  320ms;   /* drawers, disclosures, sheets */
+  --dur-reveal: 600ms;   /* scroll reveals */
+  --dur-media:  900ms;   /* photo cross-fades */
+  --press-scale: 0.97;
+  /* Working radii — §4 Corners. Nested corners stay concentric. */
+  --r-frame: 16px;   /* cards, media, trays, panels, hero band */
+  --r-inner: 12px;   /* tiles in a frame, buttons, inputs */
+  --r-sm:    8px;    /* thumbnails, small controls */
+  /* Focus ring — §5: 2px at 2px (3px on image-backed cards). */
+  --focus-w:   2px;
+  --focus-off: 2px;
 }
 
 /* ───────── Tokens — dark (homepage-scope, not yet in design-tokens.md) ───────── */
@@ -462,7 +479,7 @@ body {
   letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 250ms cubic-bezier(0.2,1,0.3,1), color 250ms cubic-bezier(0.2,1,0.3,1);
+  transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 
 /* Faint 32px graph-paper grid behind the whole page — dark lines on the white page
@@ -531,8 +548,8 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
    outline at 2→4px. Contiguous, and each half is 2px — also the width floor, up
    from 1px. Two rules re-declare this and are annotated where they do. */
 :focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-w) solid var(--border-focus);
+  outline-offset: var(--focus-off);
   box-shadow: 0 0 0 2px var(--text-inverse);
   border-radius: 4px;
 }
@@ -613,7 +630,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .section-dek[data-reveal].is-revealed {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 450ms var(--ease-card), transform 450ms var(--ease-card);
+  transition: opacity var(--dur-panel) var(--ease-reveal), transform var(--dur-panel) var(--ease-reveal);
 }
 .section-dek[data-reveal].is-revealed { transition-delay: 70ms; }
 @media (prefers-reduced-motion: reduce) {
@@ -674,7 +691,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   letter-spacing: 0;
   color: var(--text-secondary);
   padding: 6px 14px;
-  transition: color 120ms linear;
+  transition: color var(--dur-fast) linear;
 }
 /* Hover lands on the page's true black (light) / true white (dark) — a denser,
    more deliberate shift than the old secondary→primary (#252525) step. The pure
@@ -702,7 +719,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   border-radius: 6px;
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--text-secondary);
-  transition: background 100ms linear, color 100ms linear;
+  transition: background var(--dur-fast) linear, color var(--dur-fast) linear;
 }
 .icon-btn:hover { background: var(--surface-tertiary); color: var(--text-primary); }
 .icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -724,7 +741,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   border: 0;
   border-radius: 9999px;
   cursor: pointer;
-  transition: background 100ms linear, color 100ms linear, box-shadow 100ms linear;
+  transition: background var(--dur-fast) linear, color var(--dur-fast) linear, box-shadow var(--dur-fast) linear;
 }
 .theme-seg:hover { color: var(--text-primary); }
 .theme-seg[aria-pressed="true"] {
@@ -744,11 +761,11 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   font-weight: 700;
   letter-spacing: 0.10em;
   line-height: 1;
-  border-radius: 12px;
-  transition: background 100ms linear, color 100ms linear, transform 100ms linear, box-shadow 100ms linear;
+  border-radius: var(--r-inner);
+  transition: background var(--dur-fast) linear, color var(--dur-fast) linear, transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) linear;
   white-space: nowrap;
 }
-.btn:active { transform: scale(0.95); }
+.btn:active { transform: scale(var(--press-scale)); }
 .btn-primary {
   background: var(--surface-inverse);
   color: var(--text-inverse);
@@ -759,7 +776,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .btn-lg {
   padding: 18px 28px;
   font-size: 14px;
-  border-radius: 12px;
+  border-radius: var(--r-inner);
 }
 
 .btn-secondary {
@@ -814,7 +831,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   min-width: 180px;
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
+  border-radius: var(--r-inner);
   box-shadow: var(--shadow-medium);
   padding: 4px 0;
   z-index: 600;
@@ -823,7 +840,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   pointer-events: none;
   /* visibility (delayed past the fade) takes the closed menu out of the Tab order. */
   visibility: hidden;
-  transition: opacity 150ms cubic-bezier(0.2,1,0.3,1), transform 150ms cubic-bezier(0.2,1,0.3,1), visibility 0s linear 150ms;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s linear 150ms;
 }
 .lang-wrap { position: relative; }
 .lang-wrap[data-open="true"] .lang-menu {
@@ -893,7 +910,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   background: var(--text-primary);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 220ms var(--ease-out);
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .nav-trigger[aria-expanded="true"] { color: var(--text-primary); }
 .nav-trigger[aria-expanded="true"]::after { transform: scaleX(1); }
@@ -922,17 +939,17 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   overscroll-behavior: contain;
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   box-shadow: var(--shadow-high);
   opacity: 0;
   visibility: hidden;
   transform: scale(0.97);
   transform-origin: var(--ox, left) top;
-  transition: opacity 100ms var(--ease-out), transform 100ms var(--ease-out), visibility 0s linear 100ms;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility 0s linear 100ms;
 }
 .mega-panel[data-open="true"] {
   opacity: 1; visibility: visible; transform: none;
-  transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out), visibility 0s;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s;
 }
 /* Moving across triggers swaps content in place — no fade-out / fade-in stutter. */
 .topnav.mega-switching .mega-panel { transition: none; }
@@ -960,14 +977,14 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   position: relative; overflow: hidden;
   display: grid; align-content: end; gap: 4px;
   min-height: 132px; margin: 0 -12px 6px; padding: 14px 16px;
-  border-radius: 10px;
+  border-radius: var(--r-inner);
   background: #000;
   text-decoration: none;
 }
 .mega-hero__img {
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; object-fit: cover;
-  transition: transform 400ms var(--ease-out);
+  transition: transform var(--dur-panel) var(--ease-out);
 }
 .mega-hero::before {
   content: ""; position: absolute; inset: 0; z-index: 1;
@@ -982,7 +999,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 .mega-hero__arrow {
   width: 15px; height: 15px; flex: none;
   stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 200ms var(--ease-out);
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .mega-hero__d {
   position: relative; z-index: 2;
@@ -992,7 +1009,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   .mega-hero:hover .mega-hero__img { transform: scale(1.04); }
   .mega-hero:hover .mega-hero__arrow { transform: translateX(3px); }
 }
-.mega-hero:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.mega-hero:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
 
 .mega-list, .mega-res { list-style: none; margin: 0; padding: 0; }
 .mega-list > li + li { border-top: 1px solid var(--border-primary); }
@@ -1002,7 +1019,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   padding: 10px 0;
   font-size: 15px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.35;
   color: var(--text-primary);
-  transition: color 120ms linear;
+  transition: color var(--dur-fast) linear;
 }
 .mega-arrow {
   flex: none; margin-left: auto;
@@ -1010,7 +1027,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   stroke: currentColor; fill: none; stroke-width: 1.6;
   stroke-linecap: round; stroke-linejoin: round;
   opacity: 0; transform: translateX(-6px);
-  transition: opacity 160ms linear, transform 240ms var(--ease-out);
+  transition: opacity var(--dur-base) linear, transform var(--dur-base) var(--ease-out);
 }
 .mega-link:hover .mega-arrow,
 .mega-link:focus-visible .mega-arrow,
@@ -1021,7 +1038,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   padding: 9px 0;
   font-size: 14px; font-weight: 500; line-height: 1.4;
   color: var(--text-secondary);
-  transition: color 120ms linear;
+  transition: color var(--dur-fast) linear;
 }
 .mega-res-link:hover { color: var(--text-primary); }
 .mega-res-link:hover > span:first-child { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
@@ -1031,7 +1048,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   z-index: 99;
   background: rgba(0, 0, 0, 0.14);
   opacity: 0; pointer-events: none;
-  transition: opacity 200ms linear;
+  transition: opacity var(--dur-base) linear;
 }
 .mega-scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
 
@@ -1077,7 +1094,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   color: var(--text-tertiary);
   stroke: currentColor; fill: none; stroke-width: 1.8;
   stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .mobile-row-dropdown[aria-expanded="true"] .mobile-nav-chevron { transform: rotate(180deg); }
 .mobile-sublist {
@@ -1112,7 +1129,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   backdrop-filter: blur(4px);
   z-index: 500;
   opacity: 0; pointer-events: none;
-  transition: opacity 150ms linear;
+  transition: opacity var(--dur-base) linear;
 }
 .mobile-overlay[data-open="true"] { opacity: 1; pointer-events: auto; }
 
@@ -1127,7 +1144,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   /* Off-screen is not hidden: without visibility the closed drawer's 19 controls sat
      in the Tab order ahead of <main>. Delayed past the slide so the exit still plays. */
   visibility: hidden;
-  transition: transform 250ms cubic-bezier(0.2,1,0.3,1), visibility 0s linear 250ms;
+  transition: transform var(--dur-base) var(--ease-out), visibility 0s linear 250ms;
   display: flex; flex-direction: column;
 }
 .mobile-drawer[data-open="true"] { transform: translateX(0); visibility: visible; transition-delay: 0s; }
@@ -1174,7 +1191,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   display: flex; gap: 4px;
   padding: 4px;
   background: var(--surface-recessed);
-  border-radius: 10px;
+  border-radius: var(--r-inner);
 }
 .mobile-lang button {
   flex: 1;
@@ -1186,7 +1203,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   background: transparent;
   border: 0; border-radius: 7px;
   cursor: pointer;
-  transition: color 150ms ease, background-color 150ms ease;
+  transition: color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
 }
 .mobile-lang button[aria-checked="true"] {
   color: var(--text-primary);
@@ -1210,7 +1227,7 @@ main { padding-top: 64px; }
   background: #000;                 /* matches the always-dark about panels / offer cards */
   color: var(--text-on-ink);        /* white on the black bar in both themes (--text-inverse turns dark in dark theme) */
   overflow: hidden; max-height: 80px;
-  transition: max-height 200ms var(--ease-card), opacity 200ms var(--ease-card);
+  transition: max-height var(--dur-base) var(--ease-reveal), opacity var(--dur-base) var(--ease-reveal);
 }
 /* Dark theme: the bar stays an ink block (black + hairline) instead of a white strip. */
 [data-theme="dark"] .announce { background: var(--surface-ink); box-shadow: inset 0 -1px 0 var(--edge-ink); }
@@ -1236,7 +1253,7 @@ main { padding-top: 64px; }
      quarter and then crawled, which is what read as a snap. */
   opacity: 0;
   pointer-events: none;
-  transition: opacity 260ms ease-in;
+  transition: opacity var(--dur-base) ease-in;
 }
 /* The ticker's loop duplicate. Present in the markup rather than cloned in JS so the
    i18n pass — which collects its nodes ONCE at init — translates it natively, and so
@@ -1250,7 +1267,7 @@ main { padding-top: 64px; }
 .announce-item.is-active {
   opacity: 1;
   pointer-events: auto;
-  transition: opacity 340ms ease-out 300ms;
+  transition: opacity var(--dur-panel) var(--ease-out) 300ms;
 }
 
 /* Reduced motion: do not cycle at all. Un-stack into a row and show both at once,
@@ -1481,7 +1498,7 @@ main { padding-top: 64px; }
      its message as intended and comes back. See the TICKER block above. */
 }
 @media (prefers-reduced-motion: reduce) {
-  .announce { transition: opacity 120ms linear; }
+  .announce { transition: opacity var(--dur-fast) linear; }
 }
 
 /* ───────── Hero — gradient backdrops + 3-pillar carousel ─────────
@@ -1535,7 +1552,7 @@ main { padding-top: 64px; }
   z-index: 2;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 480ms var(--ease-card);
+  transition: opacity var(--dur-panel) var(--ease-reveal);
   /* No background — the pillar gradient washes were retired 2026-08-06
      (design-tokens.md §7.5). This layer survives purely as the positioned
      carrier for the 32px grid ::before and, on product pages, the full-bleed
@@ -1578,7 +1595,7 @@ main { padding-top: 64px; }
   z-index: 2;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 600ms var(--ease-card);
+  transition: opacity var(--dur-reveal) var(--ease-reveal);
 }
 .hero-shader.is-ready { opacity: 1; }
 .hero-shader canvas { display: block; width: 100% !important; height: 100% !important; }
@@ -1901,7 +1918,7 @@ main { padding-top: 64px; }
   backdrop-filter: blur(4px);
   z-index: 800;
   opacity: 0; pointer-events: none;
-  transition: opacity 150ms linear;
+  transition: opacity var(--dur-base) linear;
 }
 .search-overlay[data-open="true"] { opacity: 1; pointer-events: auto; }
 
@@ -1912,13 +1929,13 @@ main { padding-top: 64px; }
   width: min(560px, calc(100vw - 32px));
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   box-shadow: var(--shadow-high);
   z-index: 900;
   opacity: 0; pointer-events: none;
   /* visibility (delayed past the fade) keeps the closed modal's input and links out of the Tab order. */
   visibility: hidden;
-  transition: opacity 150ms cubic-bezier(0.2,1,0.3,1), transform 150ms cubic-bezier(0.2,1,0.3,1), visibility 0s linear 150ms;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), visibility 0s linear 150ms;
   overflow: hidden;
 }
 .search-modal[data-open="true"] {
@@ -1990,10 +2007,10 @@ main { padding-top: 64px; }
 .search-link {
   display: flex; align-items: center; gap: 12px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   color: var(--text-primary);
   font-size: 14px;
-  transition: background 100ms linear;
+  transition: background var(--dur-fast) linear;
 }
 .search-link:hover { background: var(--surface-tertiary); }
 .search-link svg {
@@ -2119,7 +2136,7 @@ main { padding-top: 64px; }
   background: none; border: 0;
   font: inherit;
   color: var(--text-primary);
-  transition: color 100ms linear;
+  transition: color var(--dur-fast) linear;
 }
 .acc-trigger:hover { color: var(--text-secondary); }
 .acc-trigger .acc-title {
@@ -2132,7 +2149,7 @@ main { padding-top: 64px; }
 .acc-content {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 250ms cubic-bezier(0.2,1,0.3,1);
+  transition: grid-template-rows var(--dur-base) var(--ease-out);
 }
 .acc-item.is-open .acc-content { grid-template-rows: 1fr; }
 .acc-content > div { overflow: hidden; min-height: 0; }
@@ -2350,7 +2367,7 @@ main { padding-top: 64px; }
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  transition: filter 250ms cubic-bezier(0.2,1,0.3,1), opacity 250ms linear;
+  transition: filter var(--dur-base) var(--ease-out), opacity var(--dur-base) linear;
 }
 .partner--ipic    { background-image: var(--partner-ipic); }
 .partner--nycu    { background-image: var(--partner-nycu); }
@@ -2399,7 +2416,7 @@ main { padding-top: 64px; }
   transform-origin: center;
   opacity: 0;
   transform: scale(1.08);
-  transition: opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+  transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
   will-change: transform, opacity;
 }
 /* Reduced motion — no zoom in or out; image just shows. */
@@ -2556,7 +2573,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 14px;
   color: var(--text-secondary);
-  transition: color 100ms linear;
+  transition: color var(--dur-fast) linear;
 }
 .footer-col a:hover { color: var(--text-primary); }
 .footer-ico {
@@ -2564,7 +2581,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   width: 15px; height: 15px;
   stroke: var(--text-tertiary); fill: none;
   stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-  transition: stroke 100ms linear;
+  transition: stroke var(--dur-fast) linear;
 }
 .footer-col a:hover .footer-ico { stroke: var(--text-primary); }
 
@@ -2601,7 +2618,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 12px;
-  transition: color 100ms linear;
+  transition: color var(--dur-fast) linear;
 }
 .footer-nl-form {
   position: relative;
@@ -2613,25 +2630,25 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   padding: 0 48px 0 14px;
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 10px;
+  border-radius: var(--r-inner);
   font-family: var(--font-sans);
   font-size: 14px;
   color: var(--text-primary);
-  transition: border-color 100ms linear;
+  transition: border-color var(--dur-fast) linear;
 }
 .footer-nl-form input::placeholder { color: var(--text-tertiary); }
 .footer-nl-form input:focus { outline: none; border-color: var(--border-focus); }
 .footer-nl-form button {
   position: absolute; right: 6px;
   width: 32px; height: 32px;
-  border: 0; border-radius: 8px; cursor: pointer;
+  border: 0; border-radius: var(--r-sm); cursor: pointer;
   background: var(--surface-tertiary);
   color: var(--text-primary);
   display: inline-flex; align-items: center; justify-content: center;
-  transition: background 100ms linear, color 100ms linear, transform 80ms linear;
+  transition: background var(--dur-fast) linear, color var(--dur-fast) linear, transform var(--dur-fast) var(--ease-out);
 }
 .footer-nl-form button:hover { background: var(--surface-quaternary); }
-.footer-nl-form button:active { transform: scale(0.95); }
+.footer-nl-form button:active { transform: scale(var(--press-scale)); }
 .footer-nl-form button svg {
   width: 14px; height: 14px;
   stroke: currentColor; fill: none;
@@ -2787,7 +2804,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   display: grid;
   grid-template-columns: 5fr 6fr;
   margin-block: var(--space-section);  /* gap above/below matches every other section */
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   background: #000;                    /* matches venture.jpg's pure-black background */
   box-shadow: var(--shadow-medium);
 }
@@ -3139,7 +3156,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 280ms var(--ease-out);
+  transition: transform var(--dur-panel) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .contact-meta a:hover::after,
@@ -3169,7 +3186,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin: clamp(14px, 1.6vw, 24px);
   padding: clamp(26px, 2.4vw, 40px);
   background: var(--surface-elevated);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   box-shadow: var(--shadow-high);
 }
 @media (max-width: 880px) {
@@ -3191,7 +3208,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
      just describes a shape that moved. */
   /* Superseded 2026-10-06: the photo now runs under the whole stacked card, so the
      panel no longer butts into neighbours. It insets 12px and rounds all four corners. */
-  .contact-panel { align-self: stretch; margin: 0 12px; border-radius: 12px; }
+  .contact-panel { align-self: stretch; margin: 0 12px; border-radius: var(--r-inner); }
 }
 .contact-form {
   display: flex; flex-direction: column; gap: 18px;
@@ -3224,7 +3241,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   font: inherit;
   font-size: 15px;
   outline: none;
-  transition: border-color 150ms cubic-bezier(0.2,1,0.3,1);
+  transition: border-color var(--dur-base) var(--ease-out);
 }
 .field input::placeholder,
 .field textarea::placeholder { color: var(--text-quaternary); }
@@ -3240,10 +3257,10 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
 .contact-panel .field input,
 .contact-panel .field textarea {
   border: 1px solid var(--border-tertiary);
-  border-radius: 12px;
+  border-radius: var(--r-inner);
   background: var(--surface-page);
   padding: 12px 14px;
-  transition: border-color 150ms var(--ease-card), box-shadow 150ms var(--ease-card);
+  transition: border-color var(--dur-base) var(--ease-reveal), box-shadow var(--dur-base) var(--ease-reveal);
 }
 .contact-panel .field input:focus,
 .contact-panel .field textarea:focus {
@@ -3298,7 +3315,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   margin-right: 14px;
   padding: 10px 18px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--r-inner);
   background: var(--surface-tertiary);
   color: var(--text-primary);
   font-family: inherit;
@@ -3307,13 +3324,13 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   letter-spacing: 0.10em;
   line-height: 1;
   cursor: pointer;
-  transition: background 100ms linear;
+  transition: background var(--dur-fast) linear;
 }
 .contact-panel .field input[type="file"]::-webkit-file-upload-button {
   margin-right: 14px;
   padding: 10px 18px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--r-inner);
   background: var(--surface-tertiary);
   color: var(--text-primary);
   font-family: inherit;
@@ -3347,20 +3364,20 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--text-secondary);
   cursor: pointer;
   user-select: none;
-  transition: background 140ms ease-out, color 140ms ease-out,
-              border-color 140ms ease-out, transform 120ms ease-out;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 .topic-chip input { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; }
 @media (hover: hover) and (pointer: fine) {
   .topic-chip:hover { border-color: var(--text-tertiary); color: var(--text-primary); }
 }
-.topic-chip:active { transform: scale(0.97); }
+.topic-chip:active { transform: scale(var(--press-scale)); }
 .topic-chip:has(input:checked) {
   background: var(--surface-inverse);
   border-color: var(--surface-inverse);
   color: var(--text-inverse);
 }
-.topic-chip:focus-within { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.topic-chip:focus-within { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
 
 .contact-actions { display: flex; padding-top: 4px; }
 .contact-actions .btn { width: 100%; }
@@ -3381,7 +3398,7 @@ body[data-page="home"] .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   color: var(--danger-border);
   background: var(--danger-border-wash);
   border: 1px solid var(--danger-border);
-  border-radius: 8px;
+  border-radius: var(--r-sm);
 }
 .form-error.is-shown { display: block; }
 .mkt-form .form-error { margin-top: 4px; }
@@ -3457,32 +3474,32 @@ svg.is-primed polyline {
 
 /* Contact — two paths: the arc sweeps, then the tick writes inside it. */
 .contact-success.is-shown .check-pill {
-  animation: check-pill-in 220ms var(--ease-card) both;
+  animation: check-pill-in var(--dur-base) var(--ease-reveal) both;
 }
 .contact-success.is-shown .check-pill svg.is-primed path:nth-of-type(1) {
-  animation: check-draw 300ms var(--ease-card) 120ms both;
+  animation: check-draw var(--dur-panel) var(--ease-reveal) 120ms both;
 }
 .contact-success.is-shown .check-pill svg.is-primed path:nth-of-type(2) {
-  animation: check-draw 240ms var(--ease-card) 340ms both;
+  animation: check-draw var(--dur-base) var(--ease-reveal) 340ms both;
 }
 .contact-success.is-shown h3 {
-  animation: check-label-in 260ms var(--ease-card) 420ms both;
+  animation: check-label-in var(--dur-base) var(--ease-reveal) 420ms both;
 }
 
 /* Popup — single tick path, so a shorter run. */
 .mkt-success .seal {
-  animation: check-pill-in 220ms var(--ease-card) both;
+  animation: check-pill-in var(--dur-base) var(--ease-reveal) both;
 }
 .mkt-success .seal svg.is-primed path {
-  animation: check-draw 260ms var(--ease-card) 120ms both;
+  animation: check-draw var(--dur-base) var(--ease-reveal) 120ms both;
 }
 .mkt-success h3 {
-  animation: check-label-in 260ms var(--ease-card) 260ms both;
+  animation: check-label-in var(--dur-base) var(--ease-reveal) 260ms both;
 }
 
 /* Footer newsletter — same tick draw so all three confirmations agree. */
 .footer-nl-block.is-success .footer-nl-form svg.icon-check.is-primed polyline {
-  animation: check-draw 260ms var(--ease-card) 60ms both;
+  animation: check-draw var(--dur-base) var(--ease-reveal) 60ms both;
 }
 
 /* The global reduce block below zeroes animation-duration but not delay, which
@@ -3585,7 +3602,7 @@ svg.is-primed polyline {
   -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); opacity:0; }
 .sig-xpanel{ position:relative; z-index:1; width:min(850px, 100%); max-height:min(92svh, 940px);
   display:flex; flex-direction:column; overflow:hidden; background:var(--surface-page);
-  border-radius:16px; box-shadow:var(--shadow-high); transform-origin:top left; }
+  border-radius:var(--r-frame); box-shadow:var(--shadow-high); transform-origin:top left; }
 .sig-xpanel[hidden]{ display:none; }
 .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
 
@@ -3679,12 +3696,12 @@ svg.is-primed polyline {
 
    No overflow:hidden on .sig-doc: the bar and the stage carry the frame's corner
    radii themselves, inset 1px for the border. */
-.sig-doc{ border:1px solid var(--border-tertiary); border-radius:12px;
+.sig-doc{ border:1px solid var(--border-tertiary); border-radius:var(--r-inner);
   background:var(--surface-page); box-shadow:var(--shadow-low); }
 
 .sig-doc__bar{ display:flex; align-items:center; gap:10px; padding:11px 14px;
   background:var(--surface-secondary); border-bottom:1px solid var(--border-primary);
-  border-radius:11px 11px 0 0; }
+  border-radius:var(--r-inner) var(--r-inner) 0 0; }
 /* lucide file-text, matching the 24px stroke icons the rest of the page already
    uses (.pillar-eyebrow-ico, .sig-rt__lock) and the lucide-react set the build
    layer depends on. One icon set, not two. */
@@ -3708,7 +3725,7 @@ svg.is-primed polyline {
 
 .sig-doc__stage{ display:flex; flex-direction:column; gap:clamp(16px,1.8vw,22px);
   padding:clamp(16px,1.8vw,22px); background:var(--surface-recessed);
-  border-radius:0 0 11px 11px; }
+  border-radius:0 0 var(--r-inner) var(--r-inner); }
 .sig-sheet{ margin:0; }
 /* Deliberately unblurred — the inverse of .sig-rt__page img above. The sample is
    readable; the report you have bought but not yet paid the balance on is not. */
@@ -3743,7 +3760,7 @@ svg.is-primed polyline {
 .sig-sheet__wm{ position:absolute; inset:0 0 auto; aspect-ratio:1136 / 1512;
   display:grid; place-items:center; overflow:hidden; pointer-events:none; }
 .sig-sheet__wm > span{ transform:rotate(-28deg); white-space:nowrap;
-  padding:.35em .8em; border:2px solid currentColor; border-radius:8px;
+  padding:.35em .8em; border:2px solid currentColor; border-radius:var(--r-sm);
   font-size:clamp(17px,3.4vw,30px); font-weight:700; letter-spacing:.04em;
   color:var(--surface-ink); opacity:.22; }
 .sig-doc__disclaim{ margin:10px 0 0; font-size:13px; line-height:1.5; font-weight:600;
@@ -3759,7 +3776,7 @@ svg.is-primed polyline {
 }
 .sig-xclose{ position:absolute; top:14px; right:14px; z-index:3; width:40px; height:40px; border-radius:9999px;
   display:grid; place-items:center; background:var(--surface-page); border:1px solid var(--border-primary);
-  color:var(--text-primary); cursor:pointer; transition:background .2s var(--ease-card); }
+  color:var(--text-primary); cursor:pointer; transition:background var(--dur-base) var(--ease-reveal); }
 .sig-xclose:hover{ background:var(--surface-tertiary); }
 
 /* ── Touch overrides for the report panel (2026-08-29) ──────────────────────
@@ -3826,7 +3843,7 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
   padding: 40px 20px;
   background: rgba(0, 0, 0, 0.4);
   -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
-  animation: lgl-overlay-in 150ms linear;
+  animation: lgl-overlay-in var(--dur-base) linear;
 }
 .lgl-overlay[data-open="true"] { display: flex; }
 @keyframes lgl-overlay-in { from { opacity: 0; } to { opacity: 1; } }
@@ -3839,9 +3856,9 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
   min-height: min(520px, calc(100dvh - 80px)); /* floor: a short doc or a cold-cache load must not render as a 144px box that then snaps to full height mid-animation */
   max-height: calc(100dvh - 80px);       /* dvh, not vh: mobile toolbars must not eat the close button */
   background: var(--surface-page);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   box-shadow: var(--shadow-high);
-  animation: lgl-dialog-in 150ms cubic-bezier(0.2, 1, 0.3, 1);
+  animation: lgl-dialog-in var(--dur-base) var(--ease-out);
 }
 @keyframes lgl-dialog-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -3885,14 +3902,14 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
   color: var(--text-secondary);
   cursor: pointer;
   touch-action: manipulation;             /* no 300ms tap delay on the one control that dismisses the dialog */
-  transition: background 140ms ease-out, color 140ms ease-out;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 /* 44px of pointer on a 32px button. The glyph is stroke-only (`fill: none`), so a
    hit test inside the icon box resolves to a 2px stroke or falls through; the inset
    pseudo-element gives the button one solid target at the size a finger expects. */
-.lgl-close::before { content: ""; position: absolute; inset: -6px; border-radius: 10px; }
+.lgl-close::before { content: ""; position: absolute; inset: -6px; border-radius: var(--r-inner); }
 .lgl-close:hover { background: var(--surface-tertiary); color: var(--text-primary); }
-.lgl-close:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.lgl-close:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
 .lgl-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; pointer-events: none; }
 
 /* ── Legal prose ─────────────────────────────────────────────────────────────
@@ -3933,7 +3950,7 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
   margin: 0 0 20px;
   padding: 12px 14px;
   border: 1px solid var(--border-secondary);
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   background: var(--surface-secondary);
   font-size: 13px; line-height: 1.55;
   color: var(--text-secondary);
@@ -4016,7 +4033,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 
 /* Spec: motion respects reduced-motion — opacity only, no translate. */
 @media (prefers-reduced-motion: reduce) {
-  .lgl-dialog { animation: lgl-overlay-in 120ms linear; }
+  .lgl-dialog { animation: lgl-overlay-in var(--dur-fast) linear; }
 }
 
 /* ───────── Newsletter corner popup — components.md §Newsletter corner popup (2026-10-12) ─────────
@@ -4034,10 +4051,10 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   position: relative; pointer-events: auto;
   width: min(380px, calc(100vw - 48px)); aspect-ratio: 380 / 520;
   max-height: calc(100dvh - 48px);
-  border-radius: 20px; overflow: hidden;
+  border-radius: var(--r-frame); overflow: hidden;
   background: var(--surface-recessed);
   box-shadow: var(--shadow-high), 0 0 0 1px var(--border-primary);
-  animation: mkt-card-in 520ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: mkt-card-in var(--dur-panel) var(--ease-out) both;
 }
 @keyframes mkt-card-in { from { opacity: 0; transform: translateY(24px); } }
 
@@ -4045,7 +4062,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .mkt-media picture { display: contents; }
 .mkt-img {
   display: block; width: 100%; height: 100%; object-fit: cover;
-  animation: mkt-img-in 1400ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: mkt-img-in var(--dur-media) var(--ease-out) both;
 }
 @keyframes mkt-img-in { from { transform: scale(1.06); } }
 
@@ -4056,18 +4073,18 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   box-shadow: 0 0 0 1px var(--border-primary);
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
-  transition: background 120ms linear, color 120ms linear, transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background var(--dur-fast) linear, color var(--dur-fast) linear, transform var(--dur-fast) var(--ease-out);
 }
 .mkt-close:hover { background: var(--surface-tertiary); color: var(--text-primary); }
-.mkt-close:active { transform: scale(0.94); }
+.mkt-close:active { transform: scale(var(--press-scale)); }
 .mkt-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 .mkt-main {
   position: absolute; left: 12px; right: 12px; bottom: 12px;
   display: flex; flex-direction: column; gap: 16px;
-  padding: 20px; border-radius: 14px;
+  padding: 20px; border-radius: var(--r-frame);
   background: var(--surface-page); box-shadow: var(--shadow-high);
-  animation: mkt-plate-in 520ms cubic-bezier(0.23, 1, 0.32, 1) 160ms both;
+  animation: mkt-plate-in var(--dur-panel) var(--ease-out) 160ms both;
 }
 @keyframes mkt-plate-in { from { opacity: 0; transform: translateY(12px); } }
 .mkt-text { display: flex; flex-direction: column; gap: 8px; }
@@ -4087,8 +4104,8 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   /* 16px: mobile Safari zooms the viewport on focus for any input under 16px. */
   font: inherit; font-size: 16px; color: var(--text-primary);
   background: var(--surface-page);
-  border: 1px solid var(--border-tertiary); border-radius: 12px;
-  transition: border-color 120ms linear, box-shadow 120ms linear;
+  border: 1px solid var(--border-tertiary); border-radius: var(--r-inner);
+  transition: border-color var(--dur-fast) linear, box-shadow var(--dur-fast) linear;
 }
 .mkt-form .input:focus {
   outline: none; border-color: var(--border-focus);
@@ -4096,7 +4113,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 }
 .mkt-form .input::placeholder { color: var(--text-quaternary); }
 .mkt-cta { flex: none; height: 44px; padding: 0 16px; gap: 8px; font-size: 12px; border: 0; cursor: pointer; }
-.mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+.mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 .mkt-cta:hover svg { transform: translateX(2px); }
 .mkt-fine { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-tertiary); }
 .mkt-fine a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
@@ -4109,7 +4126,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   .mkt-overlay { padding: 0; }
   .mkt-card {
     width: 100%; aspect-ratio: auto; max-height: calc(100dvh - 24px); overflow: auto;
-    border-radius: 20px 20px 0 0; box-shadow: var(--shadow-high);
+    border-radius: var(--r-frame) var(--r-frame) 0 0; box-shadow: var(--shadow-high);
     animation-name: mkt-sheet-in;
   }
   @keyframes mkt-sheet-in { from { transform: translateY(100%); } }
@@ -4131,9 +4148,9 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   font: inherit; font-size: 14px; color: var(--text-primary); text-align: left;
   background: var(--surface-page);
-  border: 1px solid var(--border-tertiary); border-radius: 8px;
+  border: 1px solid var(--border-tertiary); border-radius: var(--r-sm);
   padding: 0 14px; height: 40px; cursor: pointer;
-  transition: border-color 80ms linear;
+  transition: border-color var(--dur-fast) linear;
 }
 .brand-select-trigger:focus-visible,
 .brand-select.open > .brand-select-trigger { outline: none; border-color: var(--border-focus); }
@@ -4145,20 +4162,20 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 .brand-select-chevron {
   display: inline-flex; color: var(--text-tertiary);
   flex-shrink: 0;
-  transition: transform 150ms cubic-bezier(0.2,1,0.3,1);
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .brand-select-chevron svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .brand-select.open .brand-select-chevron { transform: rotate(180deg); }
 .brand-select-menu {
   position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 10;
   background: var(--surface-page);
-  border: 1px solid var(--border-primary); border-radius: 12px;
+  border: 1px solid var(--border-primary); border-radius: var(--r-inner);
   box-shadow: var(--shadow-medium);
   padding: 4px 0; max-height: 240px; overflow-y: auto;
   display: none;
 }
 .brand-select.open .brand-select-menu {
-  display: block; animation: bs-in 150ms cubic-bezier(0.2,1,0.3,1);
+  display: block; animation: bs-in var(--dur-base) var(--ease-out);
 }
 @keyframes bs-in {
   from { opacity: 0; transform: translateY(-4px); }
@@ -4168,7 +4185,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   font-size: 14px; line-height: 1.55; color: var(--text-primary);
   padding: 8px 12px; cursor: pointer;
-  transition: background 80ms linear;
+  transition: background var(--dur-fast) linear;
 }
 .brand-select-item:hover { background: var(--surface-tertiary); }
 .brand-select-item .check { flex-shrink: 0; display: inline-flex; color: var(--text-primary); opacity: 0; }
@@ -4203,7 +4220,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   color: var(--text-primary);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms linear;
+  transition: opacity var(--dur-base) linear;
 }
 #lang-overlay[data-active="true"] {
   opacity: 1;
@@ -4279,7 +4296,7 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
 }
 .veil__card:focus { outline: none; }   /* programmatic target, not a control */
 .veil__card:focus-visible {
-  outline: 2px solid var(--border-focus); outline-offset: 12px; border-radius: 4px;
+  outline: var(--focus-w) solid var(--border-focus); outline-offset: 12px; border-radius: 4px;
   /* No halo. The 12px offset is deliberate on this centred empty-state card, and a
      2px white ring hugging the card 10px inside the outline reads as an artifact
      rather than one indicator. The veil is a light wash, so the outline carries it. */
@@ -4364,7 +4381,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   padding: 32px;
   background: var(--surface-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   align-items: start;
 }
 @media (max-width: 700px) {
@@ -4401,7 +4418,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .placeholder-frame {
   background: var(--surface-page);
   border: 1px solid var(--border-primary);
-  border-radius: 14px;
+  border-radius: var(--r-frame);
   overflow: hidden;
   box-shadow: var(--shadow-medium);
 }
@@ -4778,7 +4795,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .seal-pill .seal-pill-credential .qr{
   width:72px;height:72px;
-  border:1px solid var(--border-primary);border-radius:8px;
+  border:1px solid var(--border-primary);border-radius:var(--r-sm);
   background:repeating-conic-gradient(var(--text-primary) 0 25%,transparent 0 50%) 0 0/8px 8px;
 }
 .seal-pill .seal-pill-credential .lic-no{
@@ -4821,7 +4838,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   transform-style:preserve-3d;
   will-change:transform;
   transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-  transition:transform .18s ease-out, box-shadow .3s var(--ease-card);
+  transition:transform var(--dur-base) var(--ease-out), box-shadow var(--dur-panel) var(--ease-reveal);
   /* Lift the resting shadow into a soft warm-tinted glow for the showcase. */
   box-shadow:0 18px 48px -12px rgba(0,0,0,0.18), 0 6px 16px rgba(0,0,0,0.08);
 }
@@ -4894,11 +4911,11 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   flex-direction: column;
   justify-content: flex-end;        /* copy anchored to the bottom */
   padding: 28px;
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   background: #0E0E0E;              /* dark chip base behind the particle image (::before) */
   box-shadow: var(--shadow-medium);
   text-decoration: none;
-  transition: box-shadow 220ms var(--ease-card), transform 220ms var(--ease-card);
+  transition: box-shadow var(--dur-base) var(--ease-reveal), transform var(--dur-base) var(--ease-reveal);
 }
 /* Particle-cloud image layer — sits below the scrim.
    Resting transform composes a per-card rotation (--img-rot) with a scale the
@@ -4914,7 +4931,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   transform-origin: center;
   opacity: 0;
   transform: rotate(var(--img-rot)) scale(1.08);
-  transition: opacity 700ms var(--ease-card), transform 700ms var(--ease-card);
+  transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal);
   will-change: transform, opacity;
 }
 .offer-card.is-in::before { opacity: 1; transform: rotate(var(--img-rot)) scale(1); }
@@ -5041,7 +5058,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .offer-card-more svg {
   width: 16px; height: 16px; stroke: currentColor; fill: none;
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 200ms var(--ease-card);
+  transition: transform var(--dur-base) var(--ease-reveal);
 }
 @media (hover: hover) and (pointer: fine) {
   .offer-card:hover { box-shadow: var(--shadow-high); transform: translateY(-2px); }
@@ -5054,7 +5071,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    specificity, so a card that is hovered AND keyboard-focused would otherwise drop
    the white half of the ring — on a dark image-backed card, the only half that shows. */
 .offer-card:focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: var(--focus-w) solid var(--border-focus);
   outline-offset: 3px;
   box-shadow: 0 0 0 2px var(--text-inverse);
 }
@@ -5291,7 +5308,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   --ride: 76px;   /* how far the tiles sit up into the strip */
   position: relative; isolation: isolate; overflow: hidden;
   display: flex; align-items: flex-end;
-  min-height: clamp(280px, 26vw, 380px); border-radius: 16px;
+  min-height: clamp(280px, 26vw, 380px); border-radius: var(--r-frame);
   padding: clamp(24px, 2.6vw, 40px); padding-bottom: calc(var(--ride) + clamp(24px, 2.6vw, 40px));
 }
 /* Scoped under the strip: .fd-ph and .fd-h2 are declared further down the file at the same
@@ -5308,7 +5325,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .fd-board__p {
   display: flex; align-items: center; gap: 16px; min-width: 0; min-height: 152px;
-  padding: 24px 20px; border-radius: 16px; background: var(--surface-page);
+  padding: 24px 20px; border-radius: var(--r-frame); background: var(--surface-page);
   box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 8px 24px -10px rgba(0,0,0,0.18);
 }
 .fd-board__c {
@@ -5321,7 +5338,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .fd-board__c picture { display: block; width: 100%; height: 100%; }
 .fd-board__c img {
   display: block; width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(1) brightness(0.9); transition: filter 400ms ease;
+  filter: grayscale(1) brightness(0.9); transition: filter var(--dur-panel) var(--ease-out);
 }
 /* Source crops: Jackson sits small in his circle; Steven's circle sits in a grey box. */
 .fd-board__img--jackson { transform: scale(1.213) translateY(-3%); }
@@ -5348,7 +5365,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .ab [data-reveal] { opacity: 0; transform: translateY(14px); }
 .ab [data-reveal].is-revealed {
   opacity: 1; transform: none;
-  transition: opacity 520ms var(--ease-card), transform 520ms var(--ease-card);
+  transition: opacity var(--dur-panel) var(--ease-reveal), transform var(--dur-panel) var(--ease-reveal);
 }
 @media (prefers-reduced-motion: reduce) {
   .ab [data-reveal] { opacity: 1; transform: none; }
@@ -5406,7 +5423,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .panel {
   background: var(--surface-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 16px;
+  border-radius: var(--r-frame);
   padding: clamp(24px, 3vw, 40px);
 }
 
@@ -5414,7 +5431,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    Full-width panel with a heavier edge than .panel so the split is unmistakable. */
 .block {
   border: 1px solid var(--border-tertiary);
-  border-radius: 24px;
+  border-radius: var(--r-frame);
   padding: clamp(28px, 4vw, 60px);
 }
 .block + .block { margin-top: clamp(24px, 3vw, 40px); }
@@ -5476,7 +5493,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   aspect-ratio: 1200 / 560;
 }
 .eco-dial__art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.eco-dial__s { stop-color: var(--dial-on); stop-opacity: calc(var(--o) * var(--w, 1)); transition: stop-opacity 200ms var(--ease-out); }
+.eco-dial__s { stop-color: var(--dial-on); stop-opacity: calc(var(--o) * var(--w, 1)); transition: stop-opacity var(--dur-base) var(--ease-out); }
 /* Tonal fields: each wedge its own strength, so the three read as separate planes. Ink on
    a light ground reads heavier than light on dark did, so the whole set is scaled by
    --f; the 0.85 / 0.5 / 1.05 ratio between the wedges is unchanged. */
@@ -5501,11 +5518,11 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .eco-dial__floor { stroke: var(--dial-on); stroke-opacity: 0.3; stroke-width: 1; vector-effect: non-scaling-stroke; }
 .eco-dial__bracket, .eco-dial__needle {
   fill: none; stroke: var(--dial-on); stroke-opacity: 0.28; stroke-width: 1; vector-effect: non-scaling-stroke;
-  transition: stroke-opacity 200ms var(--ease-out), stroke-width 200ms var(--ease-out);
+  transition: stroke-opacity var(--dur-base) var(--ease-out), stroke-width var(--dur-base) var(--ease-out);
 }
 .eco-dial__tip {
   fill: var(--dial-ground); stroke: var(--dial-on); stroke-opacity: 0.55; stroke-width: 1; vector-effect: non-scaling-stroke;
-  transition: fill 200ms var(--ease-out);
+  transition: fill var(--dur-base) var(--ease-out);
 }
 .eco-dial__fall { stroke: url(#eco-dial-fall); stroke-opacity: 0.75; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 
@@ -5559,7 +5576,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .eco-dial__pillar {
   position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
   color: color-mix(in oklab, var(--dial-on) 50%, transparent);
-  transition: color 200ms var(--ease-out);
+  transition: color var(--dur-base) var(--ease-out);
 }
 .eco-dial__pillar-t {
   display: block; font-size: 3.1cqw; font-weight: 700;
@@ -5601,13 +5618,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .eco-dial__link {
   position: relative; isolation: isolate; overflow: hidden;
   display: flex; flex-direction: column; gap: 4px;
-  padding: 14px 16px 16px; border-radius: 14px;
+  padding: 14px 16px 16px; border-radius: var(--r-frame);
   background: var(--dial-card); color: inherit; text-decoration: none;
   border: 1px solid color-mix(in oklab, var(--dial-on) 11%, transparent);
   box-shadow:
     0 1px 2px var(--dial-shade),
     0 12px 28px -14px var(--dial-shade);
-  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
 }
 .eco-dial__link::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -5615,7 +5632,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   -webkit-mask-image: linear-gradient(100deg, transparent 30%, var(--dial-on) 100%);
           mask-image: linear-gradient(100deg, transparent 30%, var(--dial-on) 100%);
   opacity: 0.55;
-  transition: opacity 200ms var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 .eco-dial__node {
   --dial-tex: radial-gradient(circle, color-mix(in oklab, var(--text-primary) 32%, transparent) 0.9px, transparent 1.4px) 0 0 / 9px 9px;
@@ -5628,7 +5645,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
     0 18px 36px -16px var(--dial-shade);
 }
 .eco-dial__link:is(:hover, :focus-visible)::before { opacity: 0.85; }
-.eco-dial__link:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+.eco-dial__link:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: 3px; }
 .eco-dial__meta { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
 .eco-dial__ico {
   display: block; flex: none; width: 16px; height: 16px; fill: none; stroke: var(--dial-on); opacity: 0.8;
@@ -5656,7 +5673,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .eco-dial__halo { width: 160%; height: 70%; top: 10%; bottom: auto; }
   .eco-dial__apex, .eco-dial__hub, .eco-dial__pillar, .eco-dial__node { position: relative; left: auto; top: auto; transform: none; }
   .eco-dial__apex { gap: 0; }
-  .eco-dial__makers { flex-wrap: wrap; justify-content: center; white-space: normal; border-radius: 14px; }
+  .eco-dial__makers { flex-wrap: wrap; justify-content: center; white-space: normal; border-radius: var(--r-frame); }
   .eco-dial__contract { position: relative; padding: 24px 12px; background: none; }
   .eco-dial__contract::before, .eco-dial__contract::after {
     content: ""; position: absolute; left: 50%; width: 1px; height: 18px; background: var(--dial-on); opacity: 0.5;
@@ -5709,7 +5726,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-platform .pillar-actions { margin-top: 32px; }
 .fd-platform__shot {
   margin: 0; padding: clamp(14px, 2.6vw, 36px);
-  border-radius: 20px; background: var(--surface-recessed);
+  border-radius: var(--r-frame); background: var(--surface-recessed);
 }
 /* The render's bezel runs to its edges with ~20px corners and white outside them;
    a matching radius (20/1300 × 20/820) clips that white off on the dark theme. */
@@ -5736,6 +5753,11 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   --fd-figure:    clamp(40px, 4.2vw, 60px);
   --fd-gutter:    clamp(20px, 3.4vw, 48px);
   --fd-section:   clamp(80px, 10vw, 152px);
+  /* Spacing scale (brand/design-tokens.md §7.2, 2026-10-12): fixed steps on the 4px grid,
+     plus the fluid roles every front-door block shares. */
+  --fd-s1: 8px;  --fd-s2: 12px;  --fd-s3: 16px;  --fd-s4: 24px;  --fd-s5: 32px;
+  --fd-cell:     clamp(24px, 2.4vw, 36px);   /* padding inside a frame cell, tray, tile */
+  --fd-head-gap: clamp(32px, 4vw, 56px);     /* section heading → its content */
 }
 
 /* ── Media slot. Photography lands later; until then the slot is a dark field with
@@ -5791,7 +5813,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-ph__img { object-position: var(--fd-pos-m, var(--fd-pos, 50% 50%)); }
 }
 /* A slot that sits in the page, not behind copy. */
-.fd-frame { border-radius: 16px; aspect-ratio: var(--fd-ratio, 4 / 5); }
+.fd-frame { border-radius: var(--r-frame); aspect-ratio: var(--fd-ratio, 4 / 5); }
 
 /* ── Inner-page hero (2026-10-10, "ground and band"): a hairline rail for where-you-are,
       the headline left and figure / sub / CTA right on the page ground, then the
@@ -5866,7 +5888,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-hero__band {
   margin-top: var(--fd-hero-pad);
   aspect-ratio: 3 / 1; max-height: 480px; width: 100%;
-  border-radius: 12px;
+  border-radius: var(--r-inner);
 }
 .fd-hero__band.fd-ph--img .fd-ph__img { object-position: 50% 50%; filter: saturate(0.86); }
 /* Caption plate (Sustain #problem, About #who; mock E, 2026-10-11): a plate fixed to the
@@ -5875,13 +5897,13 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    one step under the hero sub: statement at the sub's size but weight 500, aside 14px
    secondary, scope rows 13px labels, so the caption never outranks the hero copy. */
 .fd-hero__fig { margin: var(--fd-hero-pad) 0 0; }
-.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: 12px 12px 0 0; }
+.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: var(--r-inner) var(--r-inner) 0 0; }
 .fd-hero__cap {
   display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: 12px clamp(32px, 5vw, 96px); align-items: start;
   padding-block: clamp(18px, 1.8vw, 24px) clamp(20px, 2vw, 28px);
   background: var(--surface-secondary); border: 1px solid var(--border-secondary); border-top: 0;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 var(--r-inner) var(--r-inner);
 }
 .fd-hero__cap-st {
   margin: 0; padding-inline-start: clamp(18px, 2vw, 28px); max-width: 52ch;
@@ -5982,7 +6004,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   display: inline-flex; align-items: center; gap: 8px; margin-top: clamp(24px, 2.8vw, 32px);
   font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
 }
-.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease-out); }
+.fd-link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 .fd-link:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .fd-link:hover svg { transform: translateX(4px); }
 
@@ -6018,7 +6040,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    one row below. Phones stack: a 16:9 cut of the photo, then the h2 on the page ground. */
 /* The frame keeps the photo's own 4.2:1, so cover never crops it sideways and the nacelle
    stays left of the claim column at every width (a fixed min-height pushed it under the h2). */
-.fd-strip__frame { position: relative; aspect-ratio: 1600 / 381; border-radius: 14px; overflow: hidden; }
+.fd-strip__frame { position: relative; aspect-ratio: 1600 / 381; border-radius: var(--r-frame); overflow: hidden; }
 .fd-strip__ph { position: absolute; inset: 0; }
 .fd-strip__claim {
   position: absolute; z-index: 2; inset: 0 0 0 auto; width: 34%;
@@ -6057,7 +6079,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 }
 @media (max-width: 760px) {
   .fd-strip__frame { aspect-ratio: auto; overflow: visible; }
-  .fd-strip__ph { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; }
+  .fd-strip__ph { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r-frame); }
   .fd-strip__claim { position: static; width: auto; padding: 0; display: block; }
   .fd-strip__h { margin-top: 24px; font-size: var(--fd-statement); }
   [lang="zh-Hant"] .fd-strip__h { font-size: var(--fd-statement); }
@@ -6116,7 +6138,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-h2:hover .fd-ip-stack .fd-ip { transform: translateX(calc(var(--i) * (var(--w) + var(--gap)))); }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .fd-ip-stack .fd-ip { transition: transform 480ms var(--ease-out); }
+  .fd-ip-stack .fd-ip { transition: transform var(--dur-panel) var(--ease-out); }
 }
 /* Arrival, scroll-driven: both pills open from a dot to their full width by clip-path, so the
    box is full size from the first frame and the line never moves. (A background-size settle
@@ -6140,7 +6162,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   min-height: clamp(300px, 30vw, 440px);
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: clamp(22px, 2.4vw, 32px);
-  border-radius: 16px; color: #FFFFFF;
+  border-radius: var(--r-frame); color: #FFFFFF;
 }
 .fd-tile:nth-child(4n+1), .fd-tile:nth-child(4n+4) { grid-column: span 7; }
 .fd-tile::before {
@@ -6172,7 +6194,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px; background: var(--border-secondary);
-  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
 .fd-band .fd-figures > li { background: var(--surface-page); padding: clamp(24px, 2.6vw, 40px); }
 .fd-band__head { grid-column: 1 / 3; }
@@ -6267,7 +6289,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   --rise: clamp(36px, 4.2vw, 64px); --base: clamp(190px, 16vw, 230px); --pad: clamp(24px, 2.4vw, 36px);
   /* clip, not hidden: hidden makes the stair a scroll container, and the inline image's
      view() timeline in its h2 then tracks the stair instead of the page and never plays. */
-  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: clip;
+  border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: clip;
   background: var(--surface-page);
 }
 .fd-stair__head { padding: clamp(24px, 3vw, 44px); }
@@ -6321,7 +6343,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 /* ── Lanes — the two compliance lanes as one split object: light half, ink half. ── */
 .fd-lanes {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-radius: 24px; overflow: hidden;
+  border-radius: var(--r-frame); overflow: hidden;
   border: 1px solid var(--border-secondary);
 }
 .fd-lane {
@@ -6356,7 +6378,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 38%);
   mask-image: linear-gradient(90deg, transparent 0%, black 38%);
   filter: grayscale(1) contrast(1.04);
-  transition: filter 700ms var(--ease-out), transform 1200ms var(--ease-out);
+  transition: filter var(--dur-reveal) var(--ease-out), transform var(--dur-media) var(--ease-out);
   transform-origin: 100% 50%;
 }
 /* Dark theme: Lane A's pale sky would glow as a white slab on the dark card. */
@@ -6428,7 +6450,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .fd-partner-link svg {
   width: 15px; height: 15px; flex: none; stroke: var(--text-secondary); fill: none;
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-  transition: transform 180ms var(--ease-out), stroke 180ms var(--ease-out);
+  transition: transform var(--dur-base) var(--ease-out), stroke var(--dur-base) var(--ease-out);
 }
 .fd-partner-link:hover b, .fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
@@ -6464,7 +6486,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 @media (max-width: 760px) { .fd-row { grid-template-columns: 1fr; } }
 .fd-pledge {
   display: grid; gap: 1px; background: var(--border-secondary);
-  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
 .fd-pledge__head {
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 64px); align-items: end;
@@ -6490,9 +6512,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   .fd-hero__fig .fd-hero__band { margin-top: 0; }
 }
 @media (max-width: 560px) {
-  .fd-hero__band { aspect-ratio: 4 / 3; border-radius: 10px; }
-  .fd-hero__fig .fd-hero__band { border-radius: 10px 10px 0 0; }
-  .fd-hero__cap { border-radius: 0 0 10px 10px; }
+  .fd-hero__band { aspect-ratio: 4 / 3; border-radius: var(--r-inner); }
+  .fd-hero__fig .fd-hero__band { border-radius: var(--r-inner) var(--r-inner) 0 0; }
+  .fd-hero__cap { border-radius: 0 0 var(--r-inner) var(--r-inner); }
   .fd-hero__band.fd-ph--img .fd-ph__img { object-position: var(--fd-pos-m, 50% 50%); }
   .fd-hero .pillar-actions { flex-direction: column; align-items: stretch; }
   .fd-hero .pillar-actions .btn { white-space: normal; text-align: center; line-height: 1.3; padding-inline: 20px; text-wrap: balance; }
@@ -6523,7 +6545,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   background: #000; color: #FFFFFF;
 }
 .kv__layers { position: absolute; inset: 0; z-index: -1; }
-.kv__media { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms var(--ease-out); }
+.kv__media { position: absolute; inset: 0; opacity: 0; transition: opacity var(--dur-reveal) var(--ease-out); }
 .kv__media.is-active { opacity: 1; }
 .kv__media > .fd-ph { position: absolute; inset: 0; }
 /* The grade follows the copy (hero round 2, R6, 2026-10-11): darkest on the left where the
@@ -6556,9 +6578,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .kv__slide {
   grid-area: 1 / 1; display: flex; align-items: flex-end;
   opacity: 0; visibility: hidden;
-  transition: opacity 400ms var(--ease-out), visibility 0s linear 400ms;
+  transition: opacity var(--dur-panel) var(--ease-out), visibility 0s linear 400ms;
 }
-.kv__slide.is-active { opacity: 1; visibility: visible; transition: opacity 500ms var(--ease-out) 80ms, visibility 0s; }
+.kv__slide.is-active { opacity: 1; visibility: visible; transition: opacity var(--dur-panel) var(--ease-out) 80ms, visibility 0s; }
 .kv__body { width: 100%; }
 .kv__body > * { max-width: 1100px; }
 /* One kicker line per slide: what the slide is about, never a second headline. */
@@ -6605,12 +6627,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   position: relative; min-height: 44px; padding: 14px 0 6px;
   background: none; border: 0; cursor: pointer;
   font: inherit; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.72);
-  transition: color 180ms var(--ease-out);
+  transition: color var(--dur-base) var(--ease-out);
 }
 .kv__tab::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.5px;
   background: currentColor; transform: scaleX(0); transform-origin: left;
-  transition: transform 300ms var(--ease-out);
+  transition: transform var(--dur-panel) var(--ease-out);
 }
 .kv__tab[aria-selected="true"] { color: #FFFFFF; }
 .kv__tab[aria-selected="true"]::before { transform: scaleX(1); }
@@ -6618,19 +6640,19 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .kv[data-playing="paused"] .kv__tab[aria-selected="true"]::before { animation-play-state: paused; }
 @keyframes kv-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @media (hover: hover) { .kv__tab:hover { color: #FFFFFF; } }
-.kv__tab:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; border-radius: 4px; }
+.kv__tab:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); border-radius: 4px; }
 /* Pause / play (WCAG 2.2.2). 44px target; the icon's centre sits on the tab labels' line. */
 .kv__pause {
   display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 8px 0 0; margin-right: -14px;
-  background: none; border: 0; border-radius: 8px; cursor: pointer; color: rgba(255,255,255,0.72);
-  transition: color 180ms var(--ease-out);
+  background: none; border: 0; border-radius: var(--r-sm); cursor: pointer; color: rgba(255,255,255,0.72);
+  transition: color var(--dur-base) var(--ease-out);
 }
 .kv__pause[hidden] { display: none; }
 .kv__pause svg { width: 14px; height: 14px; fill: currentColor; }
 .kv__play-i, .kv__pause[data-stopped] .kv__pause-i { display: none; }
 .kv__pause[data-stopped] .kv__play-i { display: block; }
 @media (hover: hover) { .kv__pause:hover { color: #FFFFFF; } }
-.kv__pause:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+.kv__pause:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); }
 
 /* Phone: one slide at a time, so the KV is as tall as the slide in view, not the tallest
    one, and the action stays on the first screen. No timer here (site.js), so no pause
@@ -6718,9 +6740,9 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    white tiles on grey, always open. No .ptray ancestor, so the fold rules never apply.
    Tone and space separate the points; the page's ruled sections sit either side. */
 .fd-tray {
-  --pt-radius: 12px; --pt-pad: clamp(24px, 2.4vw, 36px); --pt-gap: clamp(12px, 1.4vw, 20px);
+  --pt-radius: var(--r-inner); --pt-pad: clamp(24px, 2.4vw, 36px); --pt-gap: clamp(12px, 1.4vw, 20px);
   --pt-tile: var(--surface-page);
-  padding: clamp(16px, 2.2vw, 32px); background: var(--surface-tertiary); border-radius: 20px;
+  padding: clamp(16px, 2.2vw, 32px); background: var(--surface-tertiary); border-radius: var(--r-frame);
 }
 .fd-tray .ptray__pts { padding: 0; }
 .fd-tray .ptray__pt-t { margin-bottom: 12px; font-size: clamp(19px, 1.6vw, 22px); font-weight: 700; letter-spacing: -0.015em; }
@@ -6733,7 +6755,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
    Every cell the same ground: the items are peers, not a sequence's end (2026-10-11). Stacks at 900. */
 .fd-bento {
   display: grid; gap: 1px; background: var(--border-secondary);
-  border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
 .fd-bento__list {
   list-style: none; margin: 0; padding: 0;
@@ -6778,12 +6800,12 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
       left, three tiles on the right in the trays' neutral grey (the warm wash read as a
       clash against the grey trays, 2026-10-02). ── */
 .ptray, .why-tiles {
-  --pt-radius: 12px;
+  --pt-radius: var(--r-inner);
   --pt-pad: clamp(24px, 2.4vw, 36px);
   --pt-gap: clamp(12px, 1.4vw, 20px);
   --pt-tray: var(--surface-tertiary);
   --pt-tile: var(--surface-page);
-  --pt-tray-r: 20px;
+  --pt-tray-r: var(--r-frame);
   --pt-tray-pad: clamp(16px, 2.2vw, 32px);
   --pt-ch-gap: clamp(20px, 2.4vw, 36px);
   /* motion: open slower than close; the drawer curve settles, ease-out answers */
@@ -6809,10 +6831,10 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   color: var(--text-primary);
   font-size: 15px; font-weight: 600;
   text-decoration: none;
-  transition: background-color .25s var(--ease-out), transform .16s var(--ease-out);
+  transition: background-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
-.ptray__chip:active { transform: scale(0.97); }
-.ptray__chip:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.ptray__chip:active { transform: scale(var(--press-scale)); }
+.ptray__chip:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
 @media (hover: hover) and (pointer: fine) {
   .ptray__chip:hover { background: var(--surface-quaternary); }
 }
@@ -6866,7 +6888,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   gap: 14px 28px;
 }
 .ptray__more { margin-top: 0; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 600; }
-.ptray__more svg { transition: transform .25s var(--ease-out); }
+.ptray__more svg { transition: transform var(--dur-base) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .ptray__more:hover svg { transform: translateX(3px); }
 }
@@ -6903,10 +6925,10 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: transform .16s var(--ease-out), background-color .2s ease;
+  transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
 }
-.ptray__tg:active { transform: scale(0.97); }
-.ptray__tg:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+.ptray__tg:active { transform: scale(var(--press-scale)); }
+.ptray__tg:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: 3px; }
 
 .ptray__pip {
   position: relative; flex: none;
@@ -6914,20 +6936,20 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   display: grid; place-items: center;
   background: var(--pt-tray);
   color: var(--text-primary);
-  transition: background-color .24s var(--ease-out), color .24s var(--ease-out);
+  transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 .ptray__pip-n, .ptray__pip-x { grid-area: 1 / 1; }
 .ptray__pip-n {
   font-family: var(--font-mono); font-size: 13px; font-weight: 600;
   font-variant-numeric: tabular-nums; line-height: 1;
-  transition: opacity .2s var(--ease-out), transform .24s var(--ease-out), filter .2s var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out);
 }
 /* minus bar: hidden as a short, blurred stroke; draws in when open */
 .ptray__pip-x {
   width: 12px; height: 2px; border-radius: 2px;
   background: currentColor;
   opacity: 0; transform: scaleX(0.4); filter: blur(2px);
-  transition: opacity .2s var(--ease-out), transform .24s var(--ease-out), filter .2s var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out);
 }
 .ptray__tg[aria-expanded="true"] .ptray__pip { background: var(--surface-inverse); color: var(--text-inverse); }
 .ptray__tg[aria-expanded="true"] .ptray__pip-n { opacity: 0; transform: scale(0.6); filter: blur(2px); }
@@ -6969,11 +6991,11 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .ptray.is-js .ptray__pt {
   opacity: 0;
   transform: translateY(10px) scale(0.985);
-  transition: opacity .14s var(--ease-out), transform .2s var(--ease-out);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
 .ptray.is-js .ptray__ch.is-open .ptray__pt {
   opacity: 1; transform: none;
-  transition-duration: .32s, .42s;
+  transition-duration: var(--dur-panel), var(--dur-panel);
   transition-delay: calc(90ms + var(--i, 0) * var(--pt-stagger));
 }
 
@@ -7102,19 +7124,19 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 @keyframes fd-rise { from { opacity: 0; transform: translateY(18px); } }
 @keyframes fd-settle { from { transform: scale(1.06); } }
 @media (prefers-reduced-motion: no-preference) {
-  .fd-hero__head { animation: fd-rise 700ms var(--ease-out) both; }
-  .fd-hero__band { animation: fd-rise 800ms var(--ease-out) 80ms both; }
+  .fd-hero__head { animation: fd-rise var(--dur-reveal) var(--ease-out) both; }
+  .fd-hero__band { animation: fd-rise var(--dur-reveal) var(--ease-out) 80ms both; }
 
-  [data-fd="rise"] { transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+  [data-fd="rise"] { transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out); }
   [data-fd="rise"].fd-pre { opacity: 0; transform: translateY(18px); }
 
   [data-fd="list"] > * {
-    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+    transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
     transition-delay: calc(var(--fd-i, 0) * 70ms);
   }
   [data-fd="list"].fd-pre > * { opacity: 0; transform: translateY(14px); }
 
-  [data-fd="clip"] { transition: clip-path 1000ms var(--ease-out); }
+  [data-fd="clip"] { transition: clip-path var(--dur-media) var(--ease-out); }
   [data-fd="clip"].fd-pre { clip-path: inset(6% 6% 6% 6% round 20px); }
 
   /* The stair: the steps rise in turn, a little further than a list, timed as the old rail. */
@@ -7185,7 +7207,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .psg-bento {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px;
   background: var(--border-secondary); border: 1px solid var(--border-secondary);
-  border-radius: 16px; overflow: hidden;
+  border-radius: var(--r-frame); overflow: hidden;
 }
 .psg-cell {
   position: relative; min-width: 0;
@@ -7216,7 +7238,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 
 /* ── #figures · the tray ──────────────────────────────────────────────────── */
 .psg-figsec { padding-top: 0; }
-.psg-tray { padding: clamp(16px, 2.2vw, 32px); border-radius: 20px; background: var(--surface-tertiary); }
+.psg-tray { padding: clamp(16px, 2.2vw, 32px); border-radius: var(--r-frame); background: var(--surface-tertiary); }
 .psg-tray__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 4px 4px clamp(16px, 2vw, 24px); }
 .psg-tray__h { margin: 0 0 8px; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
 .psg-nav { display: flex; gap: 8px; flex: none; }
@@ -7224,20 +7246,20 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
   width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
   border: 0; border-radius: 999px; background: var(--surface-page); color: var(--text-primary); cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 200ms var(--ease-out), opacity 200ms var(--ease-out), transform 160ms var(--ease-out);
+  transition: background-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
 }
 .psg-nav__btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.psg-nav__btn:active:not(:disabled) { transform: scale(0.97); }
+.psg-nav__btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
 .psg-nav__btn:disabled { opacity: 0.4; cursor: default; }
-.psg-nav__btn:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.psg-nav__btn:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
 .psg-track {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * 12px) / 3); gap: 12px;
   overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
 }
 .psg-track::-webkit-scrollbar { display: none; }
-.psg-track:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 4px; border-radius: 12px; }
-.psg-tile { scroll-snap-align: start; min-width: 0; display: flex; flex-direction: column; padding: clamp(22px, 2.2vw, 32px); border-radius: 12px; background: var(--surface-page); }
+.psg-track:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); border-radius: var(--r-inner); }
+.psg-tile { scroll-snap-align: start; min-width: 0; display: flex; flex-direction: column; padding: clamp(22px, 2.2vw, 32px); border-radius: var(--r-inner); background: var(--surface-page); }
 .psg-tile__t { margin: 0 0 32px; display: flex; gap: 12px; align-items: baseline; font-size: 20px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; text-wrap: balance; }
 .psg-tile__n { flex: none; min-width: 1ch; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
 
@@ -7327,7 +7349,7 @@ html[lang^="zh"] .eco-dial__contract { letter-spacing: 0.14em; }
 .psg-steps {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px;
-  background: var(--border-secondary); border: 1px solid var(--border-secondary); border-radius: 16px; overflow: hidden;
+  background: var(--border-secondary); border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
 }
 .psg-steps__i {
   position: relative; display: flex; flex-direction: column; min-height: clamp(220px, 20vw, 280px);
