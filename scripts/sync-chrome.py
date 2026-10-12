@@ -137,7 +137,8 @@ def header(contact='#contact'):
             </ul>
           </div>''' if res else ''
         items.append(f'''      <li class="nav-item" data-nav="{key}">
-        <a href="{PAGE_HREF[key]}" class="topnav-link nav-trigger" id="nav-t-{key}" aria-expanded="false" aria-controls="mega-{key}"><span data-zh="{zh}">{en}</span></a>
+        <a href="{PAGE_HREF[key]}" class="topnav-link nav-trigger" id="nav-t-{key}"><span data-zh="{zh}">{en}</span></a>
+        <button type="button" class="nav-sub" aria-expanded="false" aria-controls="mega-{key}" aria-label="{en} links" data-zh-aria="{zh}連結"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
         <div class="mega-panel" id="mega-{key}" role="region" aria-labelledby="nav-t-{key}">
           <div class="mega-main">
             {mega_hero(key, en, zh)}
@@ -164,21 +165,21 @@ def header(contact='#contact'):
 
     <div class="topnav-controls">
       <!-- Theme toggle — 3-segment pill: System / Light / Dark (restored 2026-09-29 from ef34f5b^) -->
-      <div id="theme-toggle" class="theme-toggle" role="group" aria-label="Theme" data-zh-aria="主題">
-        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" data-zh-aria="跟隨系統" aria-pressed="false">
+      <div id="theme-toggle" class="theme-toggle" role="radiogroup" aria-label="Theme" data-zh-aria="主題">
+        <button class="theme-seg" type="button" data-theme-set="system" aria-label="System theme" data-zh-aria="跟隨系統" role="radio" aria-checked="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         </button>
-        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" data-zh-aria="淺色主題" aria-pressed="false">
+        <button class="theme-seg" type="button" data-theme-set="light" aria-label="Light theme" data-zh-aria="淺色主題" role="radio" aria-checked="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         </button>
-        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" data-zh-aria="深色主題" aria-pressed="false">
+        <button class="theme-seg" type="button" data-theme-set="dark" aria-label="Dark theme" data-zh-aria="深色主題" role="radio" aria-checked="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
 
       <!-- Language switcher — Lucide `globe` icon (brand/assets/icons/ui/globe.svg) -->
       <div class="lang-wrap" id="lang-wrap">
-        <button id="lang-trigger" type="button" class="icon-btn icon-btn--code" aria-label="Switch language" data-zh-aria="切換語言" aria-haspopup="menu" aria-expanded="false">
+        <button id="lang-trigger" type="button" class="icon-btn icon-btn--code" aria-label="Language: English" aria-expanded="false" aria-controls="lang-menu">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
@@ -186,9 +187,9 @@ def header(contact='#contact'):
           </svg>
           <span class="lang-code" aria-hidden="true">EN</span>
         </button>
-        <div class="lang-menu" role="menu">
-          <button type="button" data-lang-set="en" role="menuitemradio" aria-checked="true">English</button>
-          <button type="button" data-lang-set="zh" role="menuitemradio" aria-checked="false">中文</button>
+        <div class="lang-menu" id="lang-menu" role="radiogroup" aria-label="Language" data-zh-aria="語言">
+          <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
+          <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
         </div>
       </div>
 
@@ -286,9 +287,10 @@ def search(contact='#contact'):
       <path d="m21 21-4.34-4.34"/>
       <circle cx="11" cy="11" r="8"/>
     </svg>
-    <input id="search-input" type="text" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面…" placeholder="Search pages…" autocomplete="off" spellcheck="false" />
+    <input id="search-input" type="search" class="search-input" aria-label="Search" data-zh-aria="搜尋" data-zh-placeholder="搜尋頁面…" placeholder="Search pages…" autocomplete="off" spellcheck="false" />
     <button type="button" class="search-esc" id="search-close" aria-label="Close search" data-zh-aria="關閉搜尋"><span aria-hidden="true">Esc</span></button>
   </div>
+  <p class="sr-only" id="search-status" role="status" aria-live="polite"></p>
   <div class="search-results">
     <p class="search-section-label" data-zh="跳至">Jump to</p>
 {rows}

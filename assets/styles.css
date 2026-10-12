@@ -759,7 +759,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   transition: background var(--dur-fast) linear, color var(--dur-fast) linear, box-shadow var(--dur-fast) linear;
 }
 .theme-seg:hover { color: var(--text-primary); }
-.theme-seg[aria-pressed="true"] {
+.theme-seg[aria-checked="true"] {
   background: var(--surface-elevated);
   color: var(--text-primary);
   box-shadow: var(--shadow-low);
@@ -926,11 +926,23 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   transform-origin: left center;
   transition: transform var(--dur-base) var(--ease-out);
 }
-.nav-trigger[aria-expanded="true"] { color: var(--text-primary); }
-.nav-trigger[aria-expanded="true"]::after { transform: scaleX(1); }
+.nav-item:has(> .nav-sub[aria-expanded="true"]) > .nav-trigger { color: var(--text-primary); }
+.nav-item:has(> .nav-sub[aria-expanded="true"]) > .nav-trigger::after { transform: scaleX(1); }
+/* The panel's disclosure button (A11Y-11). Mouse users open panels on hover and never see
+   it; it shows as a small chevron in the label's right padding when focused from the
+   keyboard, so the section links are a Tab away instead of behind a hidden ArrowDown. */
+.nav-sub {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 24px; margin-left: -14px; padding: 0;
+  border: 0; border-radius: var(--r-sm); background: transparent; color: var(--text-secondary);
+  opacity: 0; cursor: pointer;
+}
+.nav-sub:focus-visible, .nav-sub[aria-expanded="true"] { opacity: 1; }
+.nav-sub svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
+.nav-sub[aria-expanded="true"] svg { transform: rotate(180deg); }
 /* Current section (components.md §Top nav · Current section): the open-state underline
    at rest, faint. Opening the panel takes it to full strength via the rule above. */
-.nav-trigger[data-current="true"]:not([aria-expanded="true"])::after { transform: scaleX(1); opacity: 0.35; }
+.nav-item:not(:has(> .nav-sub[aria-expanded="true"])) > .nav-trigger[data-current="true"]::after { transform: scaleX(1); opacity: 0.35; }
 .topnav[data-mega-open="true"] { background: var(--surface-page); }
 
 /* Anchored column with a photo header (nav style A2, 2026-10-06; chosen from the five
@@ -1977,11 +1989,14 @@ main { padding-top: 64px; }
   border: 0; outline: 0;
   padding: 4px 0;
 }
+/* type="search" (A11Y-12) without WebKit's own field styling and clear button. */
+.search-input { -webkit-appearance: none; appearance: none; }
+.search-input::-webkit-search-cancel-button, .search-input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
 .search-input::placeholder { color: var(--text-tertiary); }
 .search-esc {
   font-family: var(--font-sans);
   font-size: 11px; font-weight: 500;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   padding: 4px 8px;
   border: 1px solid var(--border-primary);
   border-radius: 6px;
@@ -2656,7 +2671,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   transition: border-color var(--dur-fast) linear;
 }
 .footer-nl-form input::placeholder { color: var(--text-tertiary); }
-.footer-nl-form input:focus { outline: none; border-color: var(--border-focus); }
+.footer-nl-form input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); }
 .footer-nl-form button {
   position: absolute; right: 6px;
   width: 32px; height: 32px;
@@ -3287,8 +3302,9 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
 }
 .contact-panel .field input:focus,
 .contact-panel .field textarea:focus {
+  /* One text-field focus ring site-wide (A11Y-07): border + 1px ring = a 2px solid perimeter. */
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--surface-translucent);
+  box-shadow: 0 0 0 1px var(--border-focus);
 }
 /* Required marker, hint and invalid state (Phase 3, 2026-09-30). The asterisk is
    aria-hidden; the inputs carry aria-required, and site.js sets aria-invalid plus an
@@ -3970,7 +3986,7 @@ body.sig-xlock{ position:fixed; inset-inline:0; width:100%; overflow:hidden; }
 .lgl-meta {
   font-family: var(--font-mono);
   font-size: 12px; letter-spacing: 0.02em;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   margin: 0 0 20px;
 }
 
@@ -4148,7 +4164,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 }
 .mkt-form .input:focus {
   outline: none; border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--border-focus) 22%, transparent);
+  box-shadow: 0 0 0 1px var(--border-focus);
 }
 .mkt-form .input::placeholder { color: var(--text-quaternary); }
 .mkt-cta { flex: none; height: 44px; padding: 0 16px; gap: 8px; font-size: 12px; border: 0; cursor: pointer; }
@@ -6697,6 +6713,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .kv__pause[data-stopped] .kv__play-i { display: block; }
 @media (hover: hover) and (pointer: fine) { .kv__pause:hover { color: #FFFFFF; } }
 .kv__pause:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); }
+/* The KV CTA is a white button on a dark photo: the ink ring disappeared into the photo and
+   the white halo into the button (A11Y-08). White ring, black halo, like the tabs (§1.3 literals). */
+.kv .btn:focus-visible { outline: var(--focus-w) solid #FFFFFF; outline-offset: var(--focus-off); box-shadow: 0 0 0 calc(var(--focus-off) + var(--focus-w) + 2px) #000; }
 
 /* Phone: one slide at a time, so the KV is as tall as the slide in view, not the tallest
    one, and the action stays on the first screen. No timer here (site.js), so no pause
@@ -7144,7 +7163,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   [lang="zh-Hant"] .ptray__line { font-size: clamp(21px, 6.6vw, 28px); word-break: normal; line-break: strict; }
   .ptray__pts { padding-top: 10px; }
   /* The disclosure reads as an expander, not a filter chip: full width, link above it. */
-  .ptray__acts { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+  .ptray__acts { flex-direction: column; align-items: stretch; gap: 8px; }   /* visual order = tab order (A11Y-20) */
   .ptray.is-js .ptray__tg { width: 100%; min-height: 52px; }
   .ptray__more { align-self: flex-start; }
   .why-tiles__list { grid-template-columns: minmax(0, 1fr); gap: 28px; }
@@ -7384,7 +7403,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-pos.is-lead .psg-pos__fill { background: var(--text-primary); }
 .psg-pos.is-lead .psg-pos__mark { width: 16px; height: 16px; border-color: var(--text-primary); }
 .psg-pos.is-lead .psg-pos__p { color: var(--text-primary); }
-.psg-ticks { margin: 0; padding-top: 10px; border-top: 1px solid var(--border-tertiary); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
+.psg-ticks { margin: 0; padding-top: 10px; border-top: 1px solid var(--border-tertiary); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text-secondary); }
 .psg-ticks__scale { display: flex; justify-content: space-between; }
 /* 5 · Grade: the letter is the answer, the rows are its working, the bar places it */
 .psg-grade { display: grid; gap: 24px; }
@@ -7399,7 +7418,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-zones { list-style: none; margin: 0; padding: 0; display: flex; gap: 3px; }
 .psg-zone { flex: var(--w) 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-top: 10px; border-top: 6px solid var(--border-secondary); font-variant-numeric: tabular-nums; }
 .psg-zone b { font-size: 15px; font-weight: 700; color: var(--text-tertiary); }
-.psg-zone span { font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
+.psg-zone span { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 .psg-zone.is-you { border-top-color: var(--text-primary); }
 .psg-zone.is-you b, .psg-zone.is-you span { color: var(--text-primary); }
 
@@ -7474,4 +7493,19 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .psg-pil li { grid-template-columns: minmax(0, 1fr) calc(8 * var(--d)); gap: 12px; font-size: 15px; }
   .psg-pil__n { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* the dots carry the count */
   .psg-ind th + th, .psg-ind td + td { padding-left: 16px; }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   FORCED COLORS (Windows High Contrast). The system palette removes background fills,
+   so every selected or pressed state that relied on one gets a border or an underline
+   it keeps (2026-10-12 audit, A11Y-16). Focus rings are outlines and survive as-is.
+   ═════════════════════════════════════════════════════════════════════════ */
+@media (forced-colors: active) {
+  .topic-chip:has(input:checked), .theme-seg[aria-checked="true"], .mobile-theme [aria-checked="true"],
+  .mobile-lang [aria-checked="true"], .lang-menu [aria-checked="true"], .ptray__chip[aria-pressed="true"] {
+    outline: 2px solid Highlight; outline-offset: -2px;
+  }
+  .kv__tab[aria-selected="true"], .nav-item:has(> .nav-sub[aria-expanded="true"]) > .nav-trigger { text-decoration: underline; text-underline-offset: 6px; }
+  .btn, .icon-btn, .topic-chip, .theme-seg { border: 1px solid ButtonText; }
+  .fd-ph::before, .fd-tile::before, .kv__media::before { forced-color-adjust: auto; }
 }

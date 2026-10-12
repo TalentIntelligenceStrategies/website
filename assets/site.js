@@ -307,6 +307,9 @@
   const applyLang = (lang, opts = {}) => {
     root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
     langCodes.forEach(el => { el.textContent = lang === 'zh' ? '中文' : 'EN'; });
+    // The visible EN / 中文 is part of the trigger's name (label in name, WCAG 2.5.3).
+    const lt = document.getElementById('lang-trigger');
+    if (lt) lt.setAttribute('aria-label', lang === 'zh' ? '語言：中文' : 'Language: English');
     langButtons.forEach(b => b.setAttribute('aria-checked', String(b.dataset.langSet === lang)));
     // Legal links open a dialog on click, but a new tab or no-JS visit follows the href,
     // so keep it on the reader's language.
@@ -351,9 +354,13 @@
     window.addEventListener('load', lockI18nWidths);
   }
 
-  const closeLangMenu = () => {
+  // Disclosure, not a menu (A11Y-09): Escape or a choice closes it and hands focus back to
+  // the trigger, so the next Tab never lands inside the closed list.
+  const closeLangMenu = ({ focus = false } = {}) => {
+    const was = langWrap.dataset.open === 'true';
     langWrap.dataset.open = 'false';
     langTrigger.setAttribute('aria-expanded', 'false');
+    if (focus && was) langTrigger.focus();
   };
 
   langTrigger.addEventListener('click', (e) => {
@@ -364,15 +371,15 @@
   });
   langButtons.forEach(b => b.addEventListener('click', () => {
     applyLang(b.dataset.langSet, { animate: true });
-    closeLangMenu();
+    closeLangMenu({ focus: langWrap.contains(b) });
     // The swap plays a full-screen shimmer; leaving the drawer open on top of it
     // reads as two overlays fighting. closeDrawer is declared further down the
     // same scope — this runs on click, long after that line has executed.
     if (typeof closeDrawer === 'function') closeDrawer();
   }));
 
-  document.addEventListener('click', closeLangMenu);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
+  document.addEventListener('click', () => closeLangMenu());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu({ focus: langWrap.contains(document.activeElement) }); });
 
   // ──────────────── Section map — which nav group a URL belongs to ────────────────
   // Drives aria-current on nav links and which drawer group opens by default.
@@ -413,7 +420,7 @@
     let current = null;       // the open .nav-item
     let pinned = false;       // opened by click/keyboard (hover-leave must not close it)
     let openTimer = null, closeTimer = null;
-    const parts = (item) => ({ trigger: item.querySelector('.nav-trigger'), panel: item.querySelector('.mega-panel') });
+    const parts = (item) => ({ trigger: item.querySelector('.nav-trigger'), toggle: item.querySelector('.nav-sub'), panel: item.querySelector('.mega-panel') });
     const cancelTimers = () => {
       if (openTimer)  { clearTimeout(openTimer);  openTimer  = null; }
       if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
@@ -437,8 +444,8 @@
       if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
     };
     const hide = (item) => {
-      const { trigger, panel } = parts(item);
-      trigger.setAttribute('aria-expanded', 'false');
+      const { toggle, panel } = parts(item);
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
       delete panel.dataset.open;
     };
     const open = (item, { pin = false } = {}) => {
@@ -450,10 +457,10 @@
         topnav.classList.add('mega-switching');
         hide(current);
       }
-      const { trigger, panel } = parts(item);
+      const { toggle, panel } = parts(item);
       prime(item);
       place(item);
-      trigger.setAttribute('aria-expanded', 'true');
+      if (toggle) toggle.setAttribute('aria-expanded', 'true');
       panel.dataset.open = 'true';
       current = item;
       topnav.dataset.megaOpen = 'true';
@@ -470,7 +477,7 @@
       pinned = false;
       topnav.dataset.megaOpen = 'false';
       if (megaScrim) megaScrim.dataset.open = 'false';
-      if (focusTrigger) parts(item).trigger.focus();
+      if (focusTrigger) (parts(item).toggle || parts(item).trigger).focus();
     };
 
     navItems.forEach(item => {
@@ -499,6 +506,13 @@
       trigger.addEventListener('click', (e) => {
         if (!hoverFine.matches && current !== item) { e.preventDefault(); open(item, { pin: true }); return; }
         closeMega();
+      });
+      // The link navigates; this button beside it (visible on keyboard focus) opens and
+      // closes the section's panel, so its links are reachable with Tab (A11Y-11).
+      const toggle = item.querySelector('.nav-sub');
+      if (toggle) toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (current === item) closeMega(); else open(item, { pin: true });
       });
       trigger.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowDown') {
@@ -744,13 +758,18 @@
   const ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
   const esc = (x) => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+  // A typed query gets a spoken count, not just a repainted list (A11Y-12).
+  const sStatus = document.getElementById('search-status');
+  const say = (msg) => { if (sStatus) sStatus.textContent = msg; };
   const render = (rows) => {
     const zh = zhNow();
     if (!rows.length) {
       sResults.innerHTML = '<p class="search-section-label">' +
         (zh ? '沒有符合的結果' : 'No matches') + '</p>';
+      say(zh ? '沒有符合的結果' : 'No matches');
       return;
     }
+    say(zh ? `${rows.length} 筆結果` : `${rows.length} result${rows.length === 1 ? '' : 's'}`);
     sResults.innerHTML = '<p class="search-section-label">' + (zh ? '搜尋結果' : 'Results') + '</p>' +
       rows.map(({ e, page }) => {
         const title = esc((zh && e.zt) || e.t);
