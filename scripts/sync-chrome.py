@@ -56,6 +56,7 @@ NAV = [
         # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
         # One row named like the footer (2026-10-13): the product, not its sections.
         ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
+        ('/product/search/', 'Patent Search', '專利檢索'),   # 2026-10-13: self-serve search for founders
     ], []),
     ('about', 'About', '關於', [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
@@ -106,6 +107,7 @@ FOOTER_ICONS = {
     '/about/': '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',  # box
     '/why-taiwan/': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',  # map-pin
     '/product/signal/': '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',  # chart-line
+    '/product/search/': '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/>',  # file-search (lucide-static 1.56.0)
     'terms': '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
     'privacy': '<path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/>',
     'disclosures': '<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/>',
@@ -269,6 +271,7 @@ SEARCH_JUMP = [
     ('/ecosystem/', 'Ecosystem', '生態系', '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/>'),
     ('/why-taiwan/', 'Why Taiwan', '為何是台灣', '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
     ('/product/signal/', 'Patent Strength Grading', '專利強度評級', '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
+    ('/product/search/', 'Patent Search', '專利檢索', '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/>'),
     ('/about/', 'About', '關於', '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
     ('#contact', 'Contact', '聯絡我們', '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/>'),
 ]
@@ -299,7 +302,7 @@ def search(contact='#contact'):
 FOOTER_COLS = [
     ('Services', '服務', [('/sustain/', 'Sustain', '維護'), ('/protect/', 'Protect', '防護'), ('/license/', 'License', '授權')]),
     ('Company', '公司', [('/ecosystem/', 'Ecosystem', '生態系'), ('/why-taiwan/', 'Why Taiwan', '為何是台灣'), ('/about/', 'About', '關於')]),
-    ('Insights', '洞察', [('/product/signal/', 'Patent Strength Grading', '專利強度評級')]),
+    ('Insights', '洞察', [('/product/signal/', 'Patent Strength Grading', '專利強度評級'), ('/product/search/', 'Patent Search', '專利檢索')]),
 ]
 
 def footer(lockup, inert):
@@ -372,6 +375,7 @@ PAGES = [
     ('index.html', False, False),
     ('about/index.html', False, False),
     ('product/signal/index.html', True, False),
+    ('product/search/index.html', True, False),
     ('product/licensing/index.html', True, True),
     ('product/licensing/badge.html', True, True),
     ('404.html', False, False),

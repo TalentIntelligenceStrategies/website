@@ -23,6 +23,7 @@ const PAGES = [
   ['/why-taiwan/', 'why-taiwan/index.html', '0.8'],
   ['/about/', 'about/index.html', '0.7'],
   ['/product/signal/', 'product/signal/index.html', '0.6'],
+  ['/product/search/', 'product/search/index.html', '0.6'],
 ];
 
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
