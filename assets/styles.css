@@ -4328,7 +4328,8 @@ body[data-veil] main *::before,
 body[data-veil] main *::after { animation-play-state: paused !important; }
 /* Patent Search's page is ink-only, so on light the 0.70 white wash reads as a blank sheet; a
    grey wash a tad darker lets the texture show (2026-10-14). Dark keeps the shared wash. */
-[data-theme="light"] body[data-page="search"] .veil { background: color-mix(in srgb, var(--surface-quaternary) 82%, transparent); }
+[data-theme="light"] body[data-page="search"] .veil { background: color-mix(in srgb, var(--surface-quaternary) 58%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(0.6); backdrop-filter: blur(18px) saturate(0.6); }   /* still unreadable at 1440 and 390 */
 
 /* ═════════════════════════════════════════════════════════════════════
    Product deep-dive pages (/product/signal/, /product/licensing/)
