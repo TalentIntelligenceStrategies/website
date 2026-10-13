@@ -3279,8 +3279,10 @@ of a shared block scoped under `.ps-page`.
 - **Recapture.** `mro/mocks/search-r1/capture-app.mjs` drives the prototype on 127.0.0.1 over CDP. It stages:
   "Terrain" renamed to "Patent Search" (gated to zero matches), a relevance score per row (the fixture has
   none), the points meter hidden, the project named "Gate stack", and the coverage card stating the six
-  offices. Recapture from Innovue's production UI once it ships. Real holder names are shown (accepted
-  2026-10-13).
+  offices. All patent data in the shots is **fabricated** (`fabricate.mjs`: holders, inventors, numbers, dates,
+  classes, titles, abstracts; 2026-10-14); only the drawings are real (public Google Patents images), and a gate
+  fails the capture if any real number, holder, inventor or title is visible. Recapture from Innovue's
+  production UI once it ships.
 
 ## 17. Page state — the veil
 

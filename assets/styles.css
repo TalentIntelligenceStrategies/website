@@ -1047,9 +1047,10 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   opacity: 0; transform: translateX(-6px);
   transition: opacity var(--dur-base) linear, transform var(--dur-base) var(--ease-out);
 }
+/* Hover and keyboard focus only: the current page keeps no standing arrow (2026-10-14), so the
+   Insights rows, which are whole pages, behave like every other dropdown row. */
 .mega-link:hover .mega-arrow,
-.mega-link:focus-visible .mega-arrow,
-.mega-link[aria-current="page"] .mega-arrow { opacity: 1; transform: none; }
+.mega-link:focus-visible .mega-arrow { opacity: 1; transform: none; }
 .mega-res-link {
   display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px;
   min-height: 40px;
