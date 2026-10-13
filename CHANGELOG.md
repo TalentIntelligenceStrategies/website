@@ -9,7 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
-- **2026-10-14 04:50 +08:00** · Patent Search marked Coming soon in the nav and veiled like the Licensing Platform; styles v102.
+- **2026-10-14 04:50 +08:00** · Patent Search marked Coming soon in the nav and veiled like the Licensing Platform (a darker light-mode wash); styles v103.
 - **2026-10-14 04:36 +08:00** · Patent Search shots recaptured with fabricated patent data; dropdown rows lose the standing current-page arrow; styles v101.
 - **2026-10-14 04:18 +08:00** · New Insights page, Patent Search (/product/search/), in the Insights dropdown, footer, search and sitemap; styles v100.
 - **2026-10-14 04:00 +08:00** · Insights nav dropdown and mobile menu now show one Patent Strength Grading link, matching the footer.
