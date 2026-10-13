@@ -78,11 +78,12 @@ PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/licens
 # About were shortened and split apart on 2026-10-06 (both had carried the same long TIS-role
 # line); Insights describes Patent Strength Grading. The object-position puts the
 # subject in the middle of the short, wide crop; every photo is cropped vertically.
+# Protect and License swapped photos on 2026-10-13 (each keeps its own height and crop).
 # Photos load on first intent (site.js swaps data-src), so they cost nothing at page load.
 NAV_HERO = {
     'sustain':   ('sustain', 1156, '50% 68%', 'Local MRO capacity that keeps your contracts on track.', '在地化 MRO 能量，讓您的合約順利履約。'),
-    'protect':   ('protect', 993, '50% 68%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主⁠動鎖住技術優勢。'),
-    'license':   ('license', 1156, '50% 30%', 'Make your patents earn, and secure the licences you need in Taiwan with us.', '讓您的專利帶來收入，也協助您取得在台灣需要的授權。'),
+    'protect':   ('license', 1156, '50% 30%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主⁠動鎖住技術優勢。'),
+    'license':   ('protect', 993, '50% 68%', 'Make your patents earn, and secure the licences you need in Taiwan with us.', '讓您的專利帶來收入，也協助您取得在台灣需要的授權。'),
     'ecosystem': ('ecosystem-hero', 447, '50% 80%', 'Three partners, brought in as your program grows.', '三家夥伴，隨您的專案成長逐步加入。'),
     'insights':  ('protect-design-room', 597, '50% 80%', 'Know what a patent is worth before you file, license or defend it.', '在申請、授權或防禦之前，先知道一件專利的價值。'),
     'about':     ('hero', 447, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '無人載具製造商在台灣的生態系夥伴。'),
@@ -400,9 +401,9 @@ def apply(path, lockup, inert, write):
     orig = s
     # A sealed page (data-veil) keeps its <section id="contact"> inside an inert <main>, so an
     # in-page link would go nowhere: send it to the License page's form instead.
-    # Patent Search's veil carries its own request form, so its contact links go to the veil card.
-    contact = ('#veil-card' if 'class="veil' in s and 'id="contact-form"' in s.split('<main', 1)[0]
-               else '/license/#contact' if 'data-veil' in s else ('#contact' if 'id="contact"' in s else '/#contact'))
+    # Licensing's links go to the License page's form; Patent Search (veiled 2026-10-14) to Home's.
+    contact = (('/license/#contact' if 'data-page="licensing"' in s else '/#contact') if 'data-veil' in s
+               else ('#contact' if 'id="contact"' in s else '/#contact'))
     s = swap(s, r'<header class="topnav"', r'</header>(\n<!-- Mega-panel scrim\.(?s:.*?)-->\n<div class="mega-scrim"[^>]*></div>)?', header(contact), path + ' header')
     s = swap(s, r'<div class="mobile-overlay"', r'</aside>', drawer(contact), path + ' drawer')
     # search modal: from overlay to the modal's closing </div> at column 0

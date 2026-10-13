@@ -3262,7 +3262,7 @@ Copy and the ZH pairs: `mro/mocks/search-r1/copy.md` and `copy-zh-TW/translation
 Mocks: `mro/mocks/search-r1` (page S). CSS: `styles.css` block **FRONT DOOR v2 · SEARCH**, every override
 of a shared block scoped under `.ps-page`.
 
-- **Coming soon (2026-10-14).** Veiled per §17 (`SEARCH_VEIL` in build.py); the form lives in the veil.
+- **Coming soon (2026-10-14).** Veiled per §17 (`SEARCH_VEIL` in build.py), as the Licensing Platform is.
 - **Order.** `fd_hero` (product shot in the band slot, pins 1–4) → `#how` steps 1–4 as the shot's legend
   (screen-reader h2 only) → `#problem` `.ps-bleed` → `#coverage` `band()` → `#scope` `.ps-bento` →
   `#screen` and `#export` on Signal's `.fd-platform` → contact (`data-source="patent-search"`, topic
@@ -3292,11 +3292,9 @@ For a product that exists but is not open yet. The page stays in the document as
 `product/licensing/index.html` and `product/licensing/badge.html` since 2026-08-23.
 
 Also live on `product/search/index.html` since 2026-10-14 (Patent Search, built by `build.py`
-`page(veil=)`). Its variant `.veil--form` carries the page's own request form inside the veil (wider,
-scrolls inside itself, topic chips hidden with Insights preselected), so the nav Contact button and skip
-link target `#veil-card` and requests still post as `patent-search`. The in-page contact section is left
-out while veiled, so there is one `#contact-form`. It is noindex, out of the sitemap, and `veil: true`
-in the search index; its nav row carries the Coming soon flag, its footer link does not.
+`page(veil=)`): the same card (flag, title, one sentence, "Talk to us" → `/#contact`), the page and its
+own request form behind it as texture. It is noindex, out of the sitemap and `veil: true` in the search
+index; its nav row carries the Coming soon flag, its footer link does not.
 
 ### 17.1 The contract
 
