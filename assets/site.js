@@ -1589,10 +1589,10 @@
   // Polite trigger (2026-10-12 audit, POP-01..03). The 45s timer starts only once the reader
   // has scrolled past the hero; 50% scroll still opens it early. It never opens while the
   // contact form or the footer newsletter is in view, the contact form has focus, or the
-  // drawer, search or legal dialog is open; if one of those appears while it is showing, it
-  // steps aside. Shown once = seen for 30 days, however it closed (dismissed, or stepped
-  // aside for a form or the menu). Withdrawing the mark on a step-aside made it reappear on
-  // every page a phone reader reached through the menu (fixed 2026-10-12).
+  // drawer, search or legal dialog is open. Once open it stays until the close button
+  // (2026-10-13): no step-aside for forms, focus or chrome (z-index 600 keeps it under the
+  // drawer, search and legal dialog), no Escape. A successful subscribe closes it after 4s.
+  // Shown once = seen for 30 days.
   const mkt = document.getElementById('mkt-overlay');
   const mktCard = document.getElementById('mkt-card');
   const mktForm = document.getElementById('mkt-form');
@@ -1620,7 +1620,6 @@
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach(en => { if (en.intersectionRatio >= 0.2) blockers.add(en.target); else blockers.delete(en.target); });
-        if (opened && blockers.size) yieldPopup();
       }, { threshold: [0, 0.2] });
       ['contact', 'footer-nl-block'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
     }
@@ -1667,8 +1666,8 @@
       mkt.classList.remove('is-closing');
       mkt.classList.add('is-open');
       mkt.setAttribute('aria-hidden', 'false');
-      live.textContent = t('Newsletter sign-up opened at the bottom of the page. Press Escape to dismiss.',
-                           '頁面底部已開啟電子報訂閱。按 Esc 可關閉。');
+      live.textContent = t('Newsletter sign-up opened at the bottom of the page. Use its Close button to dismiss.',
+                           '頁面底部已開啟電子報訂閱。可按「關閉」按鈕關閉。');
       markMktSeen();
     }
 
@@ -1683,26 +1682,15 @@
       }
       if (inside && lastFocus && lastFocus.focus) lastFocus.focus();
     }
-    // Reader dismissed it: stays seen for 30 days.
+    // Close button (or a finished subscribe): stays seen for 30 days.
     function closePopup() { if (!opened) return; hide(); retired = true; markMktSeen(); }
-    // A form or the chrome needs the space: step aside. It still counts as seen.
-    function yieldPopup() {
-      if (!opened || mktCard.classList.contains('is-done')) return;
-      hide(); opened = false; retired = true;
-    }
-    new MutationObserver(() => { if (opened && chromeOpen()) yieldPopup(); })
-      .observe(document.body, { attributes: true, attributeFilter: ['class'] });
-    const sModal = document.getElementById('search-modal');
-    if (sModal) new MutationObserver(() => { if (opened && chromeOpen()) yieldPopup(); })
-      .observe(sModal, { attributes: true, attributeFilter: ['data-open'] });
-    document.addEventListener('focusin', (e) => { if (opened && e.target.closest?.('#contact-form')) yieldPopup(); });
-    document.addEventListener('tis:contact-sent', () => { if (opened) closePopup(); retired = true; });
+    // A sent contact form stops it opening later; an open card stays until closed.
+    document.addEventListener('tis:contact-sent', () => { retired = true; });
 
     mktCard.addEventListener('focusin', (e) => {
       if (!mktCard.contains(e.relatedTarget)) lastFocus = e.relatedTarget;
     });
-    // Privacy link: close this first; the delegated [data-legal] handler opens the dialog.
-    mkt.addEventListener('click', (e) => { if (e.target.closest('[data-legal]')) closePopup(); });
+    // Privacy link: the delegated [data-legal] handler opens the dialog above this card.
 
     function showSuccess() {
       // Same card: the text, form and fine print give way to the success block (CSS
@@ -1712,6 +1700,7 @@
       live.textContent = t('Subscribed. Thank you.', '訂閱成功，謝謝您。');
       const close = mktCard.querySelector('[data-mkt-close]');
       if (close && mktCard.contains(document.activeElement)) close.focus();
+      setTimeout(closePopup, 4000);
     }
 
     // → `newsletter` tab, source=popup. Email only.
@@ -1736,13 +1725,7 @@
         pending(mktBtn, false);
       }
     });
-    mkt.addEventListener('click', (e) => {
-      if (e.target === mkt) closePopup();
-      if (e.target.closest('[data-mkt-close]')) closePopup();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mkt.classList.contains('is-open')) closePopup();
-    });
+    mkt.addEventListener('click', (e) => { if (e.target.closest('[data-mkt-close]')) closePopup(); });
 
     if (!isSuppressed()) {
       measure();

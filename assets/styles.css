@@ -6402,6 +6402,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: var(--text-primary);
 }
 .fd-fact span { font-size: 15px; line-height: 1.45; color: var(--text-secondary); }
+/* --stack: a caption too long to ride the figure's baseline drops beneath it (Why Taiwan #patents). */
+.fd-fact--stack { flex-direction: column; align-items: flex-start; gap: 10px; }
 .fd-partners { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--border-tertiary); }
 .fd-partners li { padding: 16px 0; border-bottom: 1px solid var(--border-primary); }
 .fd-partners b { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); }
