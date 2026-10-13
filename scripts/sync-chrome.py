@@ -54,9 +54,8 @@ NAV = [
     ('insights', 'Insights', '洞察', [
         # SABCD rating + Patent Intelligence SaaS merged into one page (team review 2026-10-06).
         # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
-        # The panel's photo header already links the page, so the rows are its sections.
-        ('/product/signal/#reports', 'Two reports', '兩種報告'),
-        ('/product/signal/#method', 'How the grade is calculated', '評級是怎麼算出來的'),
+        # One row named like the footer (2026-10-13): the product, not its sections.
+        ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
     ], []),
     ('about', 'About', '關於', [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),

@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-14 04:00 +08:00** · Insights nav dropdown and mobile menu now show one Patent Strength Grading link, matching the footer.
 - **2026-10-13 07:42 +08:00** · New Patent Strength Grading hero (report on patent drawings); Protect tray and mega card photo swapped to the blueprint desk, Home circle now the engine.
 - **2026-10-12 14:37 +08:00** · Full site audit fixes (batches 1–9): links, unused code, tokens, shared spacing, type and Chinese breaks, mobile, popup and forms, motion, accessibility; styles v94.
 - **2026-10-12 11:53 +08:00** · About commitments in a ruled frame and a new photo-strip board with updated roles; About spacing fixed; styles v85.
