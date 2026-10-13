@@ -56,7 +56,7 @@ NAV = [
         # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
         # One row named like the footer (2026-10-13): the product, not its sections.
         ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
-        ('/product/search/', 'Patent Search', '專利檢索'),   # 2026-10-13: self-serve search for founders
+        ('/product/search/', 'Patent Search', '專利檢索', True),   # 2026-10-13: self-serve search for founders; coming soon (veiled) 2026-10-14
     ], []),
     ('about', 'About', '關於', [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
@@ -375,7 +375,7 @@ PAGES = [
     ('index.html', False, False),
     ('about/index.html', False, False),
     ('product/signal/index.html', True, False),
-    ('product/search/index.html', True, False),
+    ('product/search/index.html', True, True),
     ('product/licensing/index.html', True, True),
     ('product/licensing/badge.html', True, True),
     ('404.html', False, False),
@@ -400,7 +400,9 @@ def apply(path, lockup, inert, write):
     orig = s
     # A sealed page (data-veil) keeps its <section id="contact"> inside an inert <main>, so an
     # in-page link would go nowhere: send it to the License page's form instead.
-    contact = '/license/#contact' if 'data-veil' in s else ('#contact' if 'id="contact"' in s else '/#contact')
+    # Patent Search's veil carries its own request form, so its contact links go to the veil card.
+    contact = ('#veil-card' if 'class="veil' in s and 'id="contact-form"' in s.split('<main', 1)[0]
+               else '/license/#contact' if 'data-veil' in s else ('#contact' if 'id="contact"' in s else '/#contact'))
     s = swap(s, r'<header class="topnav"', r'</header>(\n<!-- Mega-panel scrim\.(?s:.*?)-->\n<div class="mega-scrim"[^>]*></div>)?', header(contact), path + ' header')
     s = swap(s, r'<div class="mobile-overlay"', r'</aside>', drawer(contact), path + ' drawer')
     # search modal: from overlay to the modal's closing </div> at column 0

@@ -4327,6 +4327,21 @@ body[data-veil] main *,
 body[data-veil] main *::before,
 body[data-veil] main *::after { animation-play-state: paused !important; }
 
+/* .veil--form (Patent Search, 2026-10-14): the veil carries the page's request form, so it is
+   wider, left-aligned under the centred head, and scrolls inside itself when the form is
+   taller than the viewport (the page behind stays locked). The panel keeps the contact
+   card's own form surface: fields need a solid ground, not the frosted wash. */
+.veil--form { overflow-y: auto; overscroll-behavior: contain; grid-template-rows: 1fr auto 1fr; }
+.veil--form .veil__card { max-width: min(640px, 100%); width: 100%; }
+.veil--form .contact-panel { align-self: stretch; margin: 28px 0 0; text-align: start; }
+.veil--form .veil__foot { padding-top: 28px; }
+/* The topic is fixed (Insights, preselected): the chips are hidden, the checked radio still submits. */
+.veil--form .contact-topics { display: none; }
+@media (max-width: 560px) {
+  .veil--form { padding-inline: 16px; }
+  .veil--form .contact-panel { padding: 20px; border-radius: var(--r-inner); box-shadow: var(--shadow-high); }
+}
+
 /* ═════════════════════════════════════════════════════════════════════
    Product deep-dive pages (/product/signal/, /product/licensing/)
    Shared layout — added 2026-05-18 for multi-page restructure

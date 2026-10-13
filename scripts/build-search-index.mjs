@@ -35,7 +35,7 @@ const OUT  = join(ROOT, 'assets/build/search-index.json');
 const PAGES = [
   { file: 'index.html',                      url: '/',                                 en: 'Home',                    zh: '首頁' },
   { file: 'product/signal/index.html',       url: '/product/signal/',                  en: 'Patent Strength Grading', zh: '專利強度評級' },
-  { file: 'product/search/index.html',       url: '/product/search/',                  en: 'Patent Search',           zh: '專利檢索' },
+  { file: 'product/search/index.html',       url: '/product/search/',                  en: 'Patent Search',           zh: '專利檢索', veil: true },
   { file: 'product/licensing/index.html',    url: '/product/licensing/',               en: 'Licensing Platform',      zh: '泰然專利防護網', veil: true },
   { file: 'product/licensing/badge.html',    url: '/product/licensing/badge.html',     en: 'Verified License Badge',  zh: '授權認證標章', veil: true },
   { file: 'sustain/index.html',              url: '/sustain/',                         en: 'Sustain',                 zh: '維護' },
