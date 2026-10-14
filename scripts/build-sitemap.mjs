@@ -3,7 +3,7 @@
  * or today when the file has uncommitted changes, so it cannot drift the way the
  * hand-kept file did (2026-10-11 audit, LINK-07).
  *
- * Left out on purpose: redirect stubs, /ausa/ (unlisted QR landing page), the two
+ * Left out on purpose: redirect stubs, the two
  * sealed Licensing Platform pages (noindex), 404.html, /legal/ (read in a dialog),
  * and /documents/ + /designs/ (disallowed in robots.txt).
  *

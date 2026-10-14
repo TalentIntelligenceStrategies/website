@@ -9,6 +9,9 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-10-14 10:58 +08:00** · Fleet photos on Home, Ecosystem, Sustain, About and Why Taiwan and two nav panels; eight retired photos deleted; styles v107, site.js v55.
+- **2026-10-14 09:19 +08:00** · Removed the undeployed /ausa page: builder, chrome sync, .gitignore entry, docs and its hero images.
+- **2026-10-14 07:30 +08:00** · Ecosystem: new orchestrator statement on an empty-service-bay photo strip, claim in white on the left; styles v106.
 - **2026-10-14 04:50 +08:00** · Patent Search marked Coming soon in the nav and veiled like the Licensing Platform (a lighter, less blurred grey wash on light mode so the page shows through); styles v104.
 - **2026-10-14 04:36 +08:00** · Patent Search shots recaptured with fabricated patent data; dropdown rows lose the standing current-page arrow; styles v101.
 - **2026-10-14 04:18 +08:00** · New Insights page, Patent Search (/product/search/), in the Insights dropdown, footer, search and sitemap; styles v100.

@@ -899,8 +899,8 @@
   // JS, under reduced motion, or without IntersectionObserver.
   const fdTargets = [
     // Per component type, not per page (MOTION-22): every grid of cards is a staggered list.
-    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-platform__body, .fd-note, .fd-strip'],
-    ['list', '.fd-mosaic, .fd-stair__steps, .fd-rows, .fd-figures, .fd-partners, .fd-bento, .fd-pledge, .fd-board, .why-tiles__list, .psg-bento, .fd-tray .ptray__pts'],
+    ['rise', '.fd-statement, .fd-head, .fd-feature__body, .fd-lanes, .fd-platform__body, .fd-strip'],
+    ['list', '.fd-mosaic, .fd-stair__steps, .fd-rows, .fd-figures, .fd-partners, .fd-bento, .fd-pledge, .fd-board__row, .fd-cap__grid, .fd-cols, .why-tiles__list, .psg-bento, .fd-tray .ptray__pts'],
     ['clip', '.fd-frame, .fd-platform__shot'],
   ];
   const fdCount = (b) => {

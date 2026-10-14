@@ -34,7 +34,6 @@ conditioned on a licence. Wherever the two appear together, the site says so.
 | Surface | Path | Built from |
 | --- | --- | --- |
 | Front door | `/`, `/sustain/`, `/protect/`, `/license/`, `/ecosystem/`, `/why-taiwan/`, `/about/` | `mro/website-build/build.py` + `home_about.py` (generated; edit those, not the HTML) |
-| AUSA landing | `/ausa/` | `build.py` (deferred, not deployed) |
 | Insights | `/product/signal/` (Patent Strength Grading); `/product/licensing/` (veiled) | hand-authored |
 | Chrome | nav, drawer, search, footer on every page | `scripts/sync-chrome.py` |
 

@@ -79,14 +79,16 @@ PAGE_HREF = {'sustain': '/sustain/', 'protect': '/protect/', 'license': '/licens
 # line); Insights describes Patent Strength Grading. The object-position puts the
 # subject in the middle of the short, wide crop; every photo is cropped vertically.
 # Protect and License swapped photos on 2026-10-13 (each keeps its own height and crop).
+# About and Protect moved to the capability lifter's aircraft on 2026-10-14 (fleet-r1 #12, unnamed,
+# markings painted out): the river delta and the bronze sky, each keeping its earlier crop.
 # Photos load on first intent (site.js swaps data-src), so they cost nothing at page load.
 NAV_HERO = {
     'sustain':   ('sustain', 1156, '50% 68%', 'Local MRO capacity that keeps your contracts on track.', '在地化 MRO 能量，讓您的合約順利履約。'),
-    'protect':   ('license', 1156, '50% 30%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主⁠動鎖住技術優勢。'),
+    'protect':   ('protect-nav', 450, '50% 30%', 'Lock in your technology lead before competitors can move into the gap.', '在競品與空窗期面前，主⁠動鎖住技術優勢。'),
     'license':   ('protect', 993, '50% 68%', 'Make your patents earn, and secure the licences you need in Taiwan with us.', '讓您的專利帶來收入，也協助您取得在台灣需要的授權。'),
     'ecosystem': ('ecosystem-hero', 447, '50% 80%', 'Three partners, brought in as your program grows.', '三家夥伴，隨您的專案成長逐步加入。'),
     'insights':  ('protect-design-room', 597, '50% 80%', 'Know what a patent is worth before you file, license or defend it.', '在申請、授權或防禦之前，先知道一件專利的價值。'),
-    'about':     ('hero', 447, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '無人載具製造商在台灣的生態系夥伴。'),
+    'about':     ('about-nav', 450, '50% 35%', "Taiwan's ecosystem partner for unmanned-vehicle makers.", '無人載具製造商在台灣的生態系夥伴。'),
 }
 HERO_ARROW = '<svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
 
@@ -385,7 +387,6 @@ PAGES = [
     ('license/index.html', False, False),
     ('ecosystem/index.html', False, False),
     ('why-taiwan/index.html', False, False),
-    ('ausa/index.html', False, False),
 ]
 
 def swap(src, start_pat, end_pat, new, label):
