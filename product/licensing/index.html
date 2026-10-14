@@ -39,7 +39,7 @@
 <link rel="preload" href="/assets/build/fonts/Urbanist-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/assets/build/fonts/Urbanist-700.woff2" as="font" type="font/woff2" crossorigin />
 
-<link rel="stylesheet" href="/assets/build/styles.css?v=107">
+<link rel="stylesheet" href="/assets/build/styles.css?v=108">
 
 <script>
   // Theme + language init — sync to avoid a flash. Reads tis-theme + tis-lang and sets
@@ -88,9 +88,11 @@
   box-shadow: 0 1px 1px rgba(0,0,0,0.03), 0 8px 24px -12px rgba(0,0,0,0.06);
   transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms ease;
 }
-.howit-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
+@media (hover: hover) and (pointer: fine) {
+  .howit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 24px 48px -16px rgba(0,0,0,0.12);
+  }
 }
 
 /* Visual — gradient backdrop + zoomed UI crop */
@@ -544,26 +546,23 @@ body, .section p, .faq-list .acc-content p {
   max-width: var(--tis-copy-max-width);
 }
 
-/* Button typography — Stripe ctaFont = 425/15px/1.6, applied in Urbanist 500. Not inside
-   the shared contact form, which keeps the site's button so every form matches (POP-12). */
-:is(.btn, .btn-primary, .btn-secondary):not(.contact-form *) {
+/* Button typography — Stripe ctaFont = 425/15px/1.6, applied in Urbanist 500. Page buttons
+   only: the shared contact form, the nav Contact pill, the drawer and the veil keep the site's
+   button, so the chrome reads identically on every page (POP-12; audit F06, 2026-10-13 — the
+   two-class :not() out-ranked .topnav-cta and set the pill 15px tall-line). */
+:is(.btn, .btn-primary, .btn-secondary):not(.contact-form *, .topnav-cta, .mobile-drawer *, .veil *) {
   font-weight: 500;
   font-size: 15px;
   line-height: 1.6;
   letter-spacing: 0;
-  transition: var(--tis-hover-transition);
+  transition-property: background-color, color, border-color, box-shadow, transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease-out);
 }
 
-/* Topnav CTA stays on the homepage spec so chrome reads identically across pages. */
-.topnav-cta {
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: 0.10em;
-}
-
-/* Universal hover easing — Stripe cubic-bezier curve. */
-a, button, .howit-card, .acc-trigger, .btn {
+/* Hover easing — Stripe cubic-bezier curve, page content only; the nav, drawer and footer
+   keep the site's timing (audit F06). */
+main :is(a, button, .howit-card, .acc-trigger) {
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -943,9 +942,11 @@ a, button, .howit-card, .acc-trigger, .btn {
   border: 1px solid var(--border-primary);
   border-radius: 14px;
 }
-.walkaway .wa-col:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-medium);
+@media (hover: hover) and (pointer: fine) {
+  .walkaway .wa-col:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+  }
 }
 /* Icon → title → description stack at the top of the card. */
 .walkaway .wa-col-body {
@@ -995,7 +996,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   height: 16px;
   transition: transform var(--tis-hover-transition);
 }
-.walkaway .wa-col:hover .wa-arrow { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) { .walkaway .wa-col:hover .wa-arrow { transform: translateX(3px); } }
 
 @media (max-width: 980px) {
   .walkaway .walkaway-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1680,16 +1681,16 @@ a, button, .howit-card, .acc-trigger, .btn {
         <button type="button" class="nav-sub" aria-expanded="false" aria-controls="mega-license" aria-label="License links" data-zh-aria="授權連結"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
         <div class="mega-panel" id="mega-license" role="region" aria-labelledby="nav-t-license">
           <div class="mega-main">
-            <a class="mega-hero" href="/license/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-800.webp" alt="" width="800" height="993" decoding="async" style="object-position:50% 68%"><span class="mega-hero__t"><span data-zh="授權">License</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="讓您的專利帶來收入，也協助您取得在台灣需要的授權。">Make your patents earn, and secure the licences you need in Taiwan with us.</span></a>
+            <a class="mega-hero" href="/license/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-800.webp" alt="" width="800" height="993" decoding="async" style="object-position:50% 68%"><span class="mega-hero__t"><span data-zh="授權">License</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="讓您的專⁠利帶來收入，也協助您取得在台灣需要的授權。">Make your patents earn, and secure the licences you need in Taiwan with us.</span></a>
             <ul class="mega-list">
-              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/licensing/" class="mega-link"><span data-zh="泰然專⁠利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/license/#portfolio" class="mega-link"><span data-zh="TIS × Innovue 無人機專⁠利組合">TIS × Innovue UAV patent portfolio</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
           <div class="mega-aside">
             <p class="mega-eyebrow" data-zh="資源">Resources</p>
             <ul class="mega-res">
-              <li><a href="/why-taiwan/#patents" class="mega-res-link"><span data-zh="台灣專利現況">Taiwan patent picture</span></a></li>
+              <li><a href="/why-taiwan/#patents" class="mega-res-link"><span data-zh="台灣專⁠利現況">Taiwan patent picture</span></a></li>
             </ul>
           </div>
         </div>
@@ -1719,10 +1720,10 @@ a, button, .howit-card, .acc-trigger, .btn {
         <button type="button" class="nav-sub" aria-expanded="false" aria-controls="mega-insights" aria-label="Insights links" data-zh-aria="洞察連結"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
         <div class="mega-panel" id="mega-insights" role="region" aria-labelledby="nav-t-insights">
           <div class="mega-main">
-            <a class="mega-hero" href="/product/signal/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-design-room-800.webp" alt="" width="800" height="597" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="洞察">Insights</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在申請、授權或防禦之前，先知道一件專利的價值。">Know what a patent is worth before you file, license or defend it.</span></a>
+            <a class="mega-hero" href="/product/signal/"><img class="mega-hero__img" data-src="/assets/imagery/uv/protect-design-room-800.webp" alt="" width="800" height="597" decoding="async" style="object-position:50% 80%"><span class="mega-hero__t"><span data-zh="洞察">Insights</span><svg class="mega-hero__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><span class="mega-hero__d" data-zh="在申請、授權或防禦之前，先知道一件專⁠利的價值。">Know what a patent is worth before you file, license or defend it.</span></a>
             <ul class="mega-list">
-              <li><a href="/product/signal/" class="mega-link"><span data-zh="專利強度評級">Patent Strength Grading</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
-              <li><a href="/product/search/" class="mega-link"><span data-zh="專利檢索">Patent Search</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/signal/" class="mega-link"><span data-zh="專⁠利強度評級">Patent Strength Grading</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
+              <li><a href="/product/search/" class="mega-link"><span data-zh="專⁠利檢索">Patent Search</span> <span class="status-flag" data-zh="即將推出">Coming soon</span><svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></li>
             </ul>
           </div>
         </div>
@@ -1787,7 +1788,7 @@ a, button, .howit-card, .acc-trigger, .btn {
         </svg>
       </button>
 
-      <a href="/license/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我們">Contact</a>
+      <a href="/license/#contact" class="btn btn-primary topnav-cta" data-zh="聯絡我⁠們">Contact</a>
 
       <!-- Mobile trigger -->
       <button class="topnav-mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" data-zh-aria="開啟選單" aria-expanded="false" aria-controls="mobile-drawer">
@@ -1839,10 +1840,10 @@ a, button, .howit-card, .acc-trigger, .btn {
       </button>
     </div>
     <div id="m-sub-license" class="mobile-sublist">
-      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
-      <a href="/license/#portfolio" class="mobile-sub-link"><span data-zh="TIS × Innovue 無人機專利組合">TIS × Innovue UAV patent portfolio</span></a>
+      <a href="/product/licensing/" class="mobile-sub-link"><span data-zh="泰然專⁠利防護網">Licensing Platform</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
+      <a href="/license/#portfolio" class="mobile-sub-link"><span data-zh="TIS × Innovue 無人機專⁠利組合">TIS × Innovue UAV patent portfolio</span></a>
       <p class="mobile-sub-label" data-zh="資源">Resources</p>
-      <a href="/why-taiwan/#patents" class="mobile-sub-link mobile-sub-link--res"><span data-zh="台灣專利現況">Taiwan patent picture</span></a>
+      <a href="/why-taiwan/#patents" class="mobile-sub-link mobile-sub-link--res"><span data-zh="台灣專⁠利現況">Taiwan patent picture</span></a>
     </div>
     <div class="mobile-row">
       <a href="/ecosystem/" class="mobile-row-link"><span data-zh="生態系">Ecosystem</span></a>
@@ -1864,8 +1865,8 @@ a, button, .howit-card, .acc-trigger, .btn {
       </button>
     </div>
     <div id="m-sub-insights" class="mobile-sublist">
-      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="專利強度評級">Patent Strength Grading</span></a>
-      <a href="/product/search/" class="mobile-sub-link"><span data-zh="專利檢索">Patent Search</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
+      <a href="/product/signal/" class="mobile-sub-link"><span data-zh="專⁠利強度評級">Patent Strength Grading</span></a>
+      <a href="/product/search/" class="mobile-sub-link"><span data-zh="專⁠利檢索">Patent Search</span> <span class="status-flag" data-zh="即將推出">Coming soon</span></a>
     </div>
     <div class="mobile-row">
       <a href="/about/" class="mobile-row-link"><span data-zh="關於">About</span></a>
@@ -1894,7 +1895,7 @@ a, button, .howit-card, .acc-trigger, .btn {
       <button type="button" data-lang-set="en" role="radio" aria-checked="true">English</button>
       <button type="button" data-lang-set="zh" role="radio" aria-checked="false">中文</button>
     </div>
-    <a href="/license/#contact" class="btn btn-primary" data-zh="聯絡我們">Contact</a>
+    <a href="/license/#contact" class="btn btn-primary" data-zh="聯絡我⁠們">Contact</a>
   </div>
 </aside>
 
@@ -1939,12 +1940,12 @@ a, button, .howit-card, .acc-trigger, .btn {
     </a>
     <a href="/product/signal/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
-      <span data-zh="專利強度評級">Patent Strength Grading</span>
+      <span data-zh="專⁠利強度評級">Patent Strength Grading</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/product/search/" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></svg>
-      <span data-zh="專利檢索">Patent Search</span>
+      <span data-zh="專⁠利檢索">Patent Search</span>
       <span class="search-link-meta" data-zh="頁面">Page</span>
     </a>
     <a href="/about/" class="search-link">
@@ -1954,7 +1955,7 @@ a, button, .howit-card, .acc-trigger, .btn {
     </a>
     <a href="/license/#contact" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-      <span data-zh="聯絡我們">Contact</span>
+      <span data-zh="聯絡我⁠們">Contact</span>
       <span class="search-link-meta" data-zh="段落">Section</span>
     </a>
   </div>
@@ -1983,10 +1984,10 @@ a, button, .howit-card, .acc-trigger, .btn {
   <div class="veil" role="main" aria-labelledby="veil-title">
     <div class="veil__card" id="veil-card" tabindex="-1">
       <span class="status-flag" data-zh="即將推出">Coming soon</span>
-      <h1 class="veil__title" id="veil-title" data-zh="泰然專利防護網">Licensing Platform</h1>
-      <p class="veil__body" data-zh="目前暫不開放訂閱，我們正在擴充專利組合。請告訴我們您出口的產品與市場，開放時會主動與您聯繫。">New subscriptions are closed while we build out the coverage. Tell us what you export and we will follow up.</p>
+      <h1 class="veil__title" id="veil-title" data-zh="泰然專⁠利防護網">Licensing Platform</h1>
+      <p class="veil__body" data-zh="目前暫不開放訂閱，我⁠們正在擴充專⁠利組合。請告訴我⁠們您出口的產⁠品與市場，開放時會主動與您聯繫。">New subscriptions are closed while we build out the coverage. Tell us what you export and we will follow up.</p>
       <div class="veil__actions">
-        <a class="btn btn-primary btn-lg" href="/license/#contact" data-zh="與我們聯絡">Talk to us</a>
+        <a class="btn btn-primary btn-lg" href="/license/#contact" data-zh="與我⁠們聯絡">Talk to us</a>
       </div>
     </div>
     <!-- The page cannot scroll while sealed, so the footer behind the veil is unreachable:
@@ -2000,7 +2001,7 @@ a, button, .howit-card, .acc-trigger, .btn {
   </div>
 
 <main id="main" data-pillar="licensing" inert aria-hidden="true">
-  <div class="container crumb-bar"><nav aria-label="Breadcrumb" data-zh-aria="導覽路徑"><p class="crumb"><a href="/license/" data-zh="授權">License</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="泰然專利防護網">Licensing Platform</span></p></nav></div>
+  <div class="container crumb-bar"><nav aria-label="Breadcrumb" data-zh-aria="導覽路徑"><p class="crumb"><a href="/license/" data-zh="授權">License</a><span class="crumb__sep" aria-hidden="true">/</span><span data-zh="泰然專⁠利防護網">Licensing Platform</span></p></nav></div>
 
 
 
@@ -2009,22 +2010,22 @@ a, button, .howit-card, .acc-trigger, .btn {
     <span class="announce-rotator">
       <span class="announce-item is-active">
         <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+        <span class="announce-msg" data-zh="即將推出：泰然專⁠利防護網 — 30 件專⁠利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
       </span>
       <span class="announce-item">
         <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="現已開放委託：專利強度評級 — 50 項指標的完整評級，或最相近的十件專利">Now open: Patent Strength Grading — a grade across 50 indicators, or the ten closest patents</span>
+        <span class="announce-msg" data-zh="現已開放委託：專⁠利強度評級 — 50 項指標的完整評級，或最相近的十件專⁠利">Now open: Patent Strength Grading — a grade across 50 indicators, or the ten closest patents</span>
       </span>
       <!-- Ticker loop duplicate (<=880px only). Must stay an EXACT copy of the two
            items above — the track translates -50%, which is only seamless while the
            second half matches the first. aria-hidden so each message is announced once. -->
       <span class="announce-item announce-item--dup" aria-hidden="true">
         <span class="ticker-pulse ticker-pulse--warning" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="即將推出：泰然專利防護網 — 30 件專利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
+        <span class="announce-msg" data-zh="即將推出：泰然專⁠利防護網 — 30 件專⁠利組合，涵蓋美國與台灣">Coming soon: TIS Licensing Platform — 30-patent bundles across US and Taiwan</span>
       </span>
       <span class="announce-item announce-item--dup" aria-hidden="true">
         <span class="ticker-pulse ticker-pulse--signal" aria-hidden="true"></span>
-        <span class="announce-msg" data-zh="現已開放委託：專利強度評級 — 50 項指標的完整評級，或最相近的十件專利">Now open: Patent Strength Grading — a grade across 50 indicators, or the ten closest patents</span>
+        <span class="announce-msg" data-zh="現已開放委託：專⁠利強度評級 — 50 項指標的完整評級，或最相近的十件專⁠利">Now open: Patent Strength Grading — a grade across 50 indicators, or the ten closest patents</span>
       </span>
     </span>
     <button type="button" class="announce-close" aria-label="Dismiss announcement" data-zh-aria="關閉公告">
@@ -2051,19 +2052,19 @@ a, button, .howit-card, .acc-trigger, .btn {
       <article class="pillar pillar--lic-hero" data-pillar="licensing">
         <p class="pillar-eyebrow">
           <svg class="pillar-eyebrow-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg>
-          <span data-zh="泰然專利防護網">Licensing Platform</span>
+          <span data-zh="泰然專⁠利防護網">Licensing Platform</span>
         </p>
         <h2 class="pillar-title" id="lic-hero-title">
-          <span data-zh="為出口備妥專利授權，">Patent licences for your exports.</span><br>
-          <em data-zh="30 件專利包輕裝上陣。">Thirty patents, none of the overhead.</em>
+          <span data-zh="為出口備妥專⁠利授權，">Patent licences for your exports.</span><br>
+          <em data-zh="30 件專⁠利包輕裝上陣。">Thirty patents, none of the overhead.</em>
         </h2>
         <p class="pillar-sub">
-          <span data-zh="1 分鐘勾選國家 × 產業 × 期別，2 種專利包選法，5 類專利評級，">Pick country × industry × term — two paths, five SABCD grades.</span>
+          <span data-zh="1 分鐘勾選國家 × 產業 × 期別，2 種專⁠利包選法，5 類專⁠利評級，">Pick country × industry × term — two paths, five SABCD grades.</span>
           <span data-zh="授權認證標章讓買家查得到您的授權紀錄。">A Verified License Badge lets buyers check your licence on record.</span>
         </p>
         <div class="pillar-actions">
           <!-- was: href="https://license.tisglobalinc.com/welcome" (app not linked while the product is not open) -->
-          <a href="/#contact" class="btn btn-primary btn-lg" data-zh="與我們聯絡">Talk to us</a>
+          <a href="/#contact" class="btn btn-primary btn-lg" data-zh="與我⁠們聯絡">Talk to us</a>
           <a href="#contact" class="btn btn-secondary btn-lg" data-zh="聯絡業務">Talk to sales</a>
         </div>
 
@@ -2071,7 +2072,7 @@ a, button, .howit-card, .acc-trigger, .btn {
              every bundled patent. Reuses the .partner mark vocabulary + tokens;
              EN/ZH pair verbatim from the pricing card's .pcard-trust heading. -->
         <div class="lic-hero-trust">
-          <p class="lic-hero-trust__label" data-zh="專利授權自權威機構">Licensed from established institutions</p>
+          <p class="lic-hero-trust__label" data-zh="專⁠利授權自權威機構">Licensed from established institutions</p>
           <div class="lic-hero-trust__logos">
             <a href="https://www.ipic.tw/"      class="partner partner--ipic" aria-label="iPIC (opens in new tab)" data-zh-aria="創智（另開新分頁）" target="_blank" rel="noopener noreferrer"></a>
             <a href="https://www.iii.org.tw/en"  class="partner partner--iii"  aria-label="III — Institute for Information Industry (opens in new tab)" data-zh-aria="資策會 — 財團法人資訊工業策進會（另開新分頁）" target="_blank" rel="noopener noreferrer"></a>
@@ -2191,20 +2192,20 @@ a, button, .howit-card, .acc-trigger, .btn {
 
         <article class="deliv-card">
           <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg></span>
-          <h3 data-zh="AI 智選專利包">Bundles by AI Smart-Pick</h3>
-          <p data-zh-html data-zh="依出口國 × 產業別 × 產品線三軸掃描風險缺口，推薦最相關的 30 件專利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
+          <h3 data-zh="AI 智選專⁠利包">Bundles by AI Smart-Pick</h3>
+          <p data-zh-html data-zh="依出口國 × 產業別 × 產⁠品線三軸掃描風險缺口，推薦最相關的 30 件專⁠利。支援人機協作與手動替換，不需懂法律。">Scans gaps across your <strong style="font-weight:600">industry × export</strong> country and suggests the 30 relevant patents, with manual swaps supported — <strong style="font-weight:600">no legal expertise</strong> required.</p>
         </article>
 
         <article class="deliv-card">
           <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
           <h3 data-zh="權威機構聯合授權">Co-licensed by established institutions</h3>
-          <p data-zh-html data-zh="創智、資策會、陽明交大作為授權方，提供以貴公司名義簽發、涵蓋 30 件專利的非專屬授權。在國際買家與合作夥伴面前，是機構級的 IP 後盾。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> stand behind <strong style="font-weight:600">a non-exclusive licence to 30 patents, issued to your company</strong> — institution-backed, and recognized by buyers and partners.</p>
+          <p data-zh-html data-zh="創智、資策會、陽明交大作為授權方，提供以貴公司名義簽發、涵蓋 30 件專⁠利的非專屬授權。在國際買家與合作夥伴面前，是機構級的 IP 後盾。"><a href="https://www.iii.org.tw/en" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">III</a>, <a href="https://www.ipic.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">iPIC</a>, and <a href="https://www.nycu.edu.tw/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:underline">NYCU</a> stand behind <strong style="font-weight:600">a non-exclusive licence to 30 patents, issued to your company</strong> — institution-backed, and recognized by buyers and partners.</p>
         </article>
 
         <article class="deliv-card">
           <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
           <h3 data-zh="機構背書的授權">An institution-backed licence</h3>
-          <p data-zh-html data-zh="專利主張多半找上毫無授權紀錄的公司。三家機構為您的授權背書，<strong>授權紀錄</strong>不再是空白。">Patent-assertion claims tend to find companies with no licence on record. Three institutions behind your licence put <strong style="font-weight:600">one on record</strong>.</p>
+          <p data-zh-html data-zh="專⁠利主張多半找上毫無授權紀錄的公司。三家機構為您的授權背書，<strong>授權紀錄</strong>不再是空白。">Patent-assertion claims tend to find companies with no licence on record. Three institutions behind your licence put <strong style="font-weight:600">one on record</strong>.</p>
         </article>
 
         <article class="deliv-card">
@@ -2216,13 +2217,13 @@ a, button, .howit-card, .acc-trigger, .btn {
         <article class="deliv-card">
           <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg></span>
           <h3 data-zh="2 秒驗證，自由展示">Verify in 2 seconds, display anywhere</h3>
-          <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
+          <p><a href="/product/licensing/badge.html" data-zh-html data-zh="標章內嵌獨一授權編號與 QR Code，2 秒線上即時驗證。可印於國際展位、提案書、官網 Footer 或產⁠品外包裝。">The badge embeds a <strong style="font-weight:600">unique license number</strong> and QR code. Print it on international booth signage, proposals, your website footer, or product packaging.</a></p>
         </article>
 
         <article class="deliv-card">
           <span class="deliv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V6"/></svg></span>
-          <h3 data-zh="專利授權列為營運支出">Licensing as OpEx</h3>
-          <p data-zh-html data-zh="自行申請專利耗時又昂貴，專職 IP 人力是固定開銷。專利包採訂閱制，期別 3 / 6 / 12 / 24 個月。價格請洽詢。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle is a subscription on <strong style="font-weight:600">3 / 6 / 12 / 24-month</strong> terms. Pricing on request.</p>
+          <h3 data-zh="專⁠利授權列為營運支出">Licensing as OpEx</h3>
+          <p data-zh-html data-zh="自行申請專⁠利耗時又昂貴，專職 IP 人力是固定開銷。專⁠利包採訂閱制，期別 3 / 6 / 12 / 24 個月。價格請洽詢。"><strong style="font-weight:600">Filing</strong> patents is <strong style="font-weight:600">slow</strong> and <strong style="font-weight:600">expensive</strong>, and an IP hire is overhead. A TIS patent bundle is a subscription on <strong style="font-weight:600">3 / 6 / 12 / 24-month</strong> terms. Pricing on request.</p>
         </article>
 
       </div>
@@ -2240,10 +2241,10 @@ a, button, .howit-card, .acc-trigger, .btn {
 
       <header class="gap-head" data-reveal>
         <h2 id="gap-heading" class="gap-title">
-          <span class="gap-title-a" data-zh="補專利缺口有三條路，">Three ways to cover the gap.</span>
+          <span class="gap-title-a" data-zh="補專⁠利缺口有三條路，">Three ways to cover the gap.</span>
           <span class="gap-title-b" data-zh="只有一條為出口商打造。">Only one is built for exporters.</span>
         </h2>
-        <p class="gap-stakes" data-zh="買家下單前會先問您的專利佈局；答不出來，訂單就得等。">Buyers ask about your patent position before they order. Without an answer, the order waits.</p>
+        <p class="gap-stakes" data-zh="買家下單前會先問您的專⁠利佈局；答不出來，訂單就得等。">Buyers ask about your patent position before they order. Without an answer, the order waits.</p>
       </header>
 
       <div class="gap-metrics">
@@ -2265,8 +2266,8 @@ a, button, .howit-card, .acc-trigger, .btn {
         <!-- Path 3 — Subscribe to a Patent Bundle -->
         <article class="gap-metric" data-reveal>
           <p class="gap-metric-label"><img class="gap-ico-mark" src="/designs/assets/logos/tis/tis_cubelogo_submark_dark.svg" alt="TIS" width="22" height="22" /><span class="gap-metric-tag" data-zh="第三條路">Path 3</span></p>
-          <h3 class="gap-metric-name" data-zh="訂閱專利包">Subscribe to a Patent Bundle</h3>
-          <p class="gap-metric-sub" data-zh="以貴公司名義簽發、涵蓋 30 件專利的非專屬授權。價格請洽詢。">A non-exclusive licence to 30 patents, issued to your company. Pricing on request.</p>
+          <h3 class="gap-metric-name" data-zh="訂閱專⁠利包">Subscribe to a Patent Bundle</h3>
+          <p class="gap-metric-sub" data-zh="以貴公司名義簽發、涵蓋 30 件專⁠利的非專屬授權。價格請洽詢。">A non-exclusive licence to 30 patents, issued to your company. Pricing on request.</p>
         </article>
 
       </div>
@@ -2310,11 +2311,11 @@ a, button, .howit-card, .acc-trigger, .btn {
               </div>
               <div class="lic-block">
                 <h3 data-zh="鎖定單一產業">Scoped to a single industry</h3>
-                <p data-zh="對準您產品真正競爭的領域。">Matched to where your product actually competes.</p>
+                <p data-zh="對準您產⁠品真正競爭的領域。">Matched to where your product actually competes.</p>
               </div>
               <div class="lic-block">
-                <h3 data-zh="這些輸入界定您的專利包">Your inputs define the bundle</h3>
-                <p data-zh="產品與市場描述越具體，AI 專利推薦就越貼近您實際的海外風險。">The more specific your product and market description, the closer the patent recommendation tracks your real overseas risk.</p>
+                <h3 data-zh="這些輸入界定您的專⁠利包">Your inputs define the bundle</h3>
+                <p data-zh="產⁠品與市場描述越具體，AI 專⁠利推薦就越貼近您實際的海外風險。">The more specific your product and market description, the closer the patent recommendation tracks your real overseas risk.</p>
               </div>
             </aside>
           </div>
@@ -2329,7 +2330,7 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="lic-copy-col">
             <div class="lic-headline">
               <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
-              <p class="lic-stepline" data-zh="AI 智選組建您的專利包">AI Smart-pick builds your bundle</p>
+              <p class="lic-stepline" data-zh="AI 智選組建您的專⁠利包">AI Smart-pick builds your bundle</p>
             </div>
             <aside class="lic-copy lic-copy--right">
               <div>
@@ -2337,7 +2338,7 @@ a, button, .howit-card, .acc-trigger, .btn {
                 <p data-zh-html data-zh="1 件不是佈局，是被告的標靶：發證當下，對手就知道要繞開哪一條請求項。30 件是真正能嚇阻的最小數字，再多只是軍備競賽，徒增成本。">One patent isn't a <strong style="font-weight:600">position</strong> — it's a <strong style="font-weight:600">target</strong>: the day it issues, rivals know which claim to design around. Thirty is the fewest that truly deters; more is just an arms race, adding cost for nothing.</p>
               </div>
               <div>
-                <h3 data-zh="專利包內容：SABCD">Inside the bundle: SABCD</h3>
+                <h3 data-zh="專⁠利包內容：SABCD">Inside the bundle: SABCD</h3>
                 <p data-zh-html data-zh="30 件橫跨 5 個評級：5 S、6 A、9 B、6 C、4 D。S、A 屬頂級戰略、能打的強項，B、C、D 補足數量，有質有量兼備。">30 patents across all 5 tiers. S and A are the strategic top tier that go on <strong style="font-weight:600">offense</strong>; B, C and D blanket the field around them — <strong style="font-weight:600">quality</strong> and <strong style="font-weight:600">quantity</strong> in one bundle.</p>
               </div>
             </aside>
@@ -2353,12 +2354,12 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="lic-copy-col">
             <div class="lic-headline">
               <p class="lic-howit" data-zh-html data-zh="如何運作">How it works</p>
-              <p class="lic-stepline" data-zh="替換任一同級專利">Swap any same-tier patent</p>
+              <p class="lic-stepline" data-zh="替換任一同級專⁠利">Swap any same-tier patent</p>
             </div>
             <aside class="lic-copy lic-copy--right">
               <div>
                 <h3 data-zh="AI 推薦，您做主">AI proposes; you decide</h3>
-                <p data-zh-html data-zh="同級專利自選替換，不加價、無等審。">Swap any pick for a <strong style="font-weight:600">same-tier</strong> alternate — <strong style="font-weight:600">no extra cost</strong>, no review wait.</p>
+                <p data-zh-html data-zh="同級專⁠利自選替換，不加價、無等審。">Swap any pick for a <strong style="font-weight:600">same-tier</strong> alternate — <strong style="font-weight:600">no extra cost</strong>, no review wait.</p>
               </div>
             </aside>
           </div>
@@ -2378,11 +2379,11 @@ a, button, .howit-card, .acc-trigger, .btn {
             <aside class="lic-copy lic-copy--right">
               <div>
                 <h3 data-zh="單一價格，全包">One price, all-in</h3>
-                <p data-zh="專利包、期限、涵蓋範圍一頁看清，簽約時沒有隱藏費用。">Bundle, term and coverage on one page — no line-item surprises at signing.</p>
+                <p data-zh="專⁠利包、期限、涵蓋範圍一頁看清，簽約時沒有隱藏費用。">Bundle, term and coverage on one page — no line-item surprises at signing.</p>
               </div>
               <div>
                 <h3 data-zh="您確認前不會鎖定">Nothing locks until you say so</h3>
-                <p data-zh="在任何承諾生效前，完整檢視 30 件專利清單與總價。">Review the full 30-patent list and the total before anything is committed.</p>
+                <p data-zh="在任何承諾生效前，完整檢視 30 件專⁠利清單與總價。">Review the full 30-patent list and the total before anything is committed.</p>
               </div>
             </aside>
           </div>
@@ -2405,8 +2406,8 @@ a, button, .howit-card, .acc-trigger, .btn {
                 <p data-zh="在瀏覽器完成真實非專屬授權合約的電子簽署。">e-Sign a genuine non-exclusive licence agreement right in the browser.</p>
               </div>
               <div>
-                <h3 data-zh="由專利權人背書">Backed by the patent owner</h3>
-                <p data-zh="合約相對方即為持有專利的機構，並載明於合約中。">The counterparty is the institution that holds the patents, named in the contract.</p>
+                <h3 data-zh="由專⁠利權人背書">Backed by the patent owner</h3>
+                <p data-zh="合約相對方即為持有專⁠利的機構，並載明於合約中。">The counterparty is the institution that holds the patents, named in the contract.</p>
               </div>
             </aside>
           </div>
@@ -2426,11 +2427,11 @@ a, button, .howit-card, .acc-trigger, .btn {
             <aside class="lic-copy lic-copy--right">
               <div>
                 <h3 data-zh="有紀錄可查的授權">A licence on record</h3>
-                <p data-zh-html data-zh="您取得的是<strong>以貴公司名義簽發、涵蓋 30 件專利的非專屬授權</strong>，由持有專利的機構簽署。">You hold <strong style="font-weight:600">a non-exclusive licence to 30 patents, issued to your company</strong>, signed by the institutions that own them.</p>
+                <p data-zh-html data-zh="您取得的是<strong>以貴公司名義簽發、涵蓋 30 件專⁠利的非專屬授權</strong>，由持有專⁠利的機構簽署。">You hold <strong style="font-weight:600">a non-exclusive licence to 30 patents, issued to your company</strong>, signed by the institutions that own them.</p>
               </div>
               <div>
                 <h3 data-zh="簽約即簽發">Issued on signature</h3>
-                <p data-zh="合約簽署後即簽發授權。授權範圍為所列 30 件專利，並非營運自由度（FTO）意見。">Your licence is issued once the contract is signed. It covers the 30 listed patents; it is not a freedom-to-operate opinion.</p>
+                <p data-zh="合約簽署後即簽發授權。授權範圍為所列 30 件專⁠利，並非營運自由度（FTO）意見。">Your licence is issued once the contract is signed. It covers the 30 listed patents; it is not a freedom-to-operate opinion.</p>
               </div>
               <div>
                 <h3 data-zh="可出示的憑證">A credential you can show</h3>
@@ -2450,7 +2451,7 @@ a, button, .howit-card, .acc-trigger, .btn {
         <div class="lic-footer">
           <span class="lic-progress-track" aria-hidden="true"><span class="lic-progress-fill"></span></span>
           <!-- was: href="https://license.tisglobalinc.com/welcome" -->
-          <a href="/#contact" class="btn btn-primary btn-lg lic-cta" data-zh="與我們聯絡">Talk to us</a>
+          <a href="/#contact" class="btn btn-primary btn-lg lic-cta" data-zh="與我⁠們聯絡">Talk to us</a>
         </div>
 
       </div>
@@ -2564,7 +2565,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 
           <div class="pcard-left">
             <div>
-              <h3 class="pcard-title" data-zh="打造您的專利包">Build your bundle</h3>
+              <h3 class="pcard-title" data-zh="打造您的專⁠利包">Build your bundle</h3>
 
               <div class="pcard-price">
                 <span class="pcard-amt" data-zh="價格請洽詢">Pricing on request</span>
@@ -2574,7 +2575,7 @@ a, button, .howit-card, .acc-trigger, .btn {
 
             <div class="pcard-left-foot">
               <!-- was: href="https://license.tisglobalinc.com/welcome", data-target="licensing-signup" (dead attr, removed) -->
-              <a href="/#contact" class="btn btn-primary btn-lg pcard-cta" data-zh="與我們聯絡">Talk to us</a>
+              <a href="/#contact" class="btn btn-primary btn-lg pcard-cta" data-zh="與我⁠們聯絡">Talk to us</a>
             </div>
           </div>
 
@@ -2646,21 +2647,21 @@ a, button, .howit-card, .acc-trigger, .btn {
         <div class="acc-list faq-list">
         <div class="acc-item is-open">
           <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="專利從哪裡來？">Where do the patents come from?</span>
+            <span class="acc-title" data-zh="專⁠利從哪裡來？">Where do the patents come from?</span>
             <svg class="acc-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="acc-content"><div>
-            <p data-zh-html data-zh="每件專利來自合作機構創智、資策會、陽明交大，進入組合池前皆完成 SABCD 評級。">Every patent comes from our partner institutions — <strong>iPIC, III, and NYCU</strong> — and is SABCD-graded before it enters a bundle.</p>
+            <p data-zh-html data-zh="每件專⁠利來自合作機構創智、資策會、陽明交大，進入組合池前皆完成 SABCD 評級。">Every patent comes from our partner institutions — <strong>iPIC, III, and NYCU</strong> — and is SABCD-graded before it enters a bundle.</p>
           </div></div>
         </div>
 
         <div class="acc-item">
           <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="你們怎麼決定我們組合裡的 30 件？">How do you decide which 30 patents go into our bundle?</span>
+            <span class="acc-title" data-zh="你們怎麼決定我⁠們組合裡的 30 件？">How do you decide which 30 patents go into our bundle?</span>
             <svg class="acc-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="acc-content"><div>
-            <p data-zh-html data-zh="上傳您的產品說明書或 FTO 報告。我們比對產業池，挑出真正涵蓋您暴露風險的專利。不合適的，簽約前都能換成同評級替代。">Upload your <strong>product spec</strong> or <strong>FTO report</strong>. We map it against the industry pool and pick the patents that cover your real exposure. Anything that doesn't fit, swap for a <strong>same-tier</strong> alternate before you sign.</p>
+            <p data-zh-html data-zh="上傳您的產⁠品說明書或 FTO 報告。我⁠們比對產業池，挑出真正涵蓋您暴露風險的專⁠利。不合適的，簽約前都能換成同評級替代。">Upload your <strong>product spec</strong> or <strong>FTO report</strong>. We map it against the industry pool and pick the patents that cover your real exposure. Anything that doesn't fit, swap for a <strong>same-tier</strong> alternate before you sign.</p>
           </div></div>
         </div>
 
@@ -2670,23 +2671,23 @@ a, button, .howit-card, .acc-trigger, .btn {
             <svg class="acc-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="acc-content"><div>
-            <p data-zh-html data-zh="沒有任何產品能保證這點，授權也無法抵擋所有主張。您取得的是<strong>以貴公司名義簽發、涵蓋 30 件專利的非專屬授權</strong>，以及任何買家都能驗證的標章。">No product can promise that, and a licence does not answer every claim. What you hold is <strong>a non-exclusive licence to 30 patents, issued to your company</strong>, and a badge any buyer can verify.</p>
+            <p data-zh-html data-zh="沒有任何產⁠品能保證這點，授權也無法抵擋所有主張。您取得的是<strong>以貴公司名義簽發、涵蓋 30 件專⁠利的非專屬授權</strong>，以及任何買家都能驗證的標章。">No product can promise that, and a licence does not answer every claim. What you hold is <strong>a non-exclusive licence to 30 patents, issued to your company</strong>, and a badge any buyer can verify.</p>
           </div></div>
         </div>
 
         <div class="acc-item">
           <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="非專屬授權，競爭對手不就能拿到一樣的專利？">It's non-exclusive — what stops a competitor licensing the same patents?</span>
+            <span class="acc-title" data-zh="非專屬授權，競爭對手不就能拿到一樣的專⁠利？">It's non-exclusive — what stops a competitor licensing the same patents?</span>
             <svg class="acc-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="acc-content"><div>
-            <p data-zh-html data-zh="重點不在獨佔，而在以貴公司名義簽發的授權。專利包依您的暴露風險組建、標章掛您公司名；專利池夠深，兩家公司很少拿到同一組 30 件。">Exclusivity isn't the point — <strong>a licence issued to your company</strong> is. Your bundle is scoped to your exposure and badged as yours, and the pools run deep — two firms rarely hold the same 30.</p>
+            <p data-zh-html data-zh="重點不在獨佔，而在以貴公司名義簽發的授權。專⁠利包依您的暴露風險組建、標章掛您公司名；專⁠利池夠深，兩家公司很少拿到同一組 30 件。">Exclusivity isn't the point — <strong>a licence issued to your company</strong> is. Your bundle is scoped to your exposure and badged as yours, and the pools run deep — two firms rarely hold the same 30.</p>
           </div></div>
         </div>
 
         <div class="acc-item">
           <button type="button" class="acc-trigger">
-            <span class="acc-title" data-zh="合約期內若有專利被撤銷會發生什麼事？">What happens if a patent gets invalidated mid-contract?</span>
+            <span class="acc-title" data-zh="合約期內若有專⁠利被撤銷會發生什麼事？">What happens if a patent gets invalidated mid-contract?</span>
             <svg class="acc-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="acc-content"><div>
@@ -2713,8 +2714,8 @@ a, button, .howit-card, .acc-trigger, .btn {
 
         <aside class="contact-overlay">
           <div class="contact-overlay-top">
-            <h2 id="contact-heading" data-zh="與我們聯絡。">Get in touch.</h2>
-            <p class="contact-lead" data-zh-html data-zh="從一件專利到整個專利組合，<br>告訴我們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
+            <h2 id="contact-heading" data-zh="與我⁠們聯絡。">Get in touch.</h2>
+            <p class="contact-lead" data-zh-html data-zh="從一件專⁠利到整個專⁠利組合，<br>告訴我⁠們您的需求。">From one patent to a whole portfolio, tell us what you need.</p>
           </div>
         </aside>
 
@@ -2787,13 +2788,13 @@ a, button, .howit-card, .acc-trigger, .btn {
             <div class="field">
               <label for="contact-message"><span data-zh="您的需求">What you need</span><span class="field-req" aria-hidden="true"> *</span></label>
               <textarea id="contact-message" name="message" rows="4" aria-required="true" aria-describedby="contact-message-hint" placeholder="Briefly describe what you need…" data-zh-placeholder="簡述您的需求…"></textarea>
-              <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
+              <p class="field-hint" id="contact-message-hint" data-zh="請勿在此提供受出口管制的技術資料；涉及敏感內容時，我⁠們會先安排保密協議。">Please don’t include export-controlled technical data here. We’ll arrange an NDA for anything sensitive.</p>
             </div>
             <div class="topic-chips"><label class="topic-chip"><input type="checkbox" name="nda" value="yes" /><span data-zh="先簽保密協議再談">Request an NDA before we talk</span></label></div>
             <div class="contact-actions">
               <button type="submit" class="btn btn-primary btn-lg" data-zh="送出訊息">Send message</button>
             </div>
-            <p class="form-fine"><span data-zh="我們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
+            <p class="form-fine"><span data-zh="我⁠們只用這些資料回覆您。">We use these details only to reply to you.</span> <a href="/legal/privacy.en.html" data-legal="privacy" data-zh="隱私政策">Privacy</a></p>
           </form>
 
           <div class="contact-success" id="contact-success" role="status" aria-live="polite">
@@ -2802,7 +2803,7 @@ a, button, .howit-card, .acc-trigger, .btn {
             </span>
             <div>
               <h3 data-zh="訊息已送出。">Message sent.</h3>
-              <p class="contact-success__next" data-zh="我們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
+              <p class="contact-success__next" data-zh="我⁠們會在兩個工作天內以電子郵件回覆。">We reply by email within two business days.</p>
             </div>
           </div>
         </div>
@@ -2860,8 +2861,8 @@ a, button, .howit-card, .acc-trigger, .btn {
           <div class="footer-col">
             <h2 data-zh="洞察">Insights</h2>
             <ul>
-              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="專利強度評級">Patent Strength Grading</span></a></li>
-              <li><a href="/product/search/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></svg><span data-zh="專利檢索">Patent Search</span></a></li>
+              <li><a href="/product/signal/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg><span data-zh="專⁠利強度評級">Patent Strength Grading</span></a></li>
+              <li><a href="/product/search/" class="footer-link"><svg class="footer-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></svg><span data-zh="專⁠利檢索">Patent Search</span></a></li>
             </ul>
           </div>
           <div class="footer-col">

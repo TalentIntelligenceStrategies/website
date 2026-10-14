@@ -414,7 +414,8 @@ picture { display: contents; }
    evens the lines; strict line-break keeps closing punctuation off a line start. */
 [lang="zh-Hant"] :is(.fd-hero__sub, .fd-lead, .fd-tile__d, .fd-stair__d, .fd-lane__d, .fd-bento__d,
   .fd-pledge__d, .fd-row__d, .fd-band__foot, .fd-band__fig span, .why-tiles__d, .ptray__pt-d,
-  .psg-cell__d, .psg-steps__d, .contact-lead, .fd-fact span, .veil__body) {
+  .psg-cell__d, .psg-steps__d, .contact-lead, .fd-fact span, .veil__body,
+  .eco-dial__d, .fd-bullets li, .psg-big > span, .fd-cap .fd-figures span) {   /* + audit F22 / F35 / F41 */
   text-wrap: balance; line-break: strict;
 }
 /* CJK display lines drop the negative tracking and open the leading (TYPE-13), as the hero
@@ -728,7 +729,8 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   color: var(--text-secondary);
   transition: background var(--dur-fast) linear, color var(--dur-fast) linear;
 }
-.icon-btn:hover { background: var(--surface-tertiary); color: var(--text-primary); }
+/* Hover only where there is a pointer: on touch it stuck after the tap (audit F19). */
+@media (hover: hover) and (pointer: fine) { .icon-btn:hover { background: var(--surface-tertiary); color: var(--text-primary); } }
 .icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Theme toggle — 3-segment pill: System / Light / Dark */
@@ -757,7 +759,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   box-shadow: var(--shadow-low);
 }
 .theme-seg svg {
-  width: 14px; height: 14px;
+  width: 16px; height: 16px;   /* 16, with the globe and search beside it (audit F18) */
   stroke: currentColor; fill: none;
   stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
 }
@@ -799,14 +801,13 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   border-radius: 6px;
   align-items: center; justify-content: center;
 }
-.topnav-mobile-trigger:hover { background: var(--surface-tertiary); }
+@media (hover: hover) and (pointer: fine) { .topnav-mobile-trigger:hover { background: var(--surface-tertiary); } }
 .topnav-mobile-trigger svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* 1080, not 980: six section triggers + the Secondary wordmark + the controls need
    ~1040px of row at 14px/600 (measured 2026-09-28; the old four-link nav fit at 980). */
 @media (max-width: 1080px) {
   .topnav-links { display: none; }
-  .topnav-cta { display: none; }
   .theme-toggle { display: none; }   /* the drawer carries the theme control below the nav breakpoint */
   .topnav-mobile-trigger { display: inline-flex; }
   /* Drawer layout: no links sit left of the controls, so the divider has nothing to
@@ -820,6 +821,12 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
   .topnav-controls .icon-btn--code { padding: 0; }
   .topnav-controls .lang-code { display: none; }
   .topnav-controls .icon-btn svg { width: 20px; height: 20px; }
+}
+/* Contact stays in the bar on tablets and small laptops (769–1080), beside the hamburger:
+   it is narrow, and it is the one action every page leads to (audit F14). Phones carry it
+   in the drawer. */
+@media (max-width: 768px) {
+  .topnav-cta { display: none; }
 }
 /* 1081–1199: six items + theme pill + globe + search + Contact run 40px over at 1081
    with the bar's 32px gaps (measured 2026-09-29). Halving the gaps wins back 48px;
@@ -1016,7 +1023,7 @@ img { max-width: 100%; height: auto; }   /* never let a raw <img> overflow its c
 }
 .mega-hero__arrow {
   width: 15px; height: 15px; flex: none;
-  stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-out);
 }
 .mega-hero__d {
@@ -2057,6 +2064,9 @@ main { padding-top: 64px; }
   .search-link { flex-wrap: wrap; row-gap: 2px; }
   .search-link > span:not(.search-link-meta) { flex: 1 1 0; min-width: 0; }
   .search-link-meta { flex-basis: 100%; margin-left: 28px; padding-left: 0; text-align: start; }
+  /* The authored Jump-to list (the only meta carrying data-zh) is all pages: its 'Page' line
+     doubled every row's height and said nothing (audit F15). Results keep their page name. */
+  .search-link-meta[data-zh="頁面"] { display: none; }
 }
 
 /* ───────── Products — pillar toggle + deliverables + how-it-works ───────── */
@@ -2426,14 +2436,16 @@ main { padding-top: 64px; }
   gap: 48px 56px;
   align-items: start;
 }
-@media (max-width: 980px) {
+/* Stacks to 1100, not 980: at 981–1100 the brand track left the newsletter field
+   'name@company' and wrapped 'Patent Strength Grading' to three lines (audit F10). */
+@media (max-width: 1100px) {
   .footer-grid { grid-template-columns: 1fr; gap: 40px; }
 }
 /* Every page that ends in the contact card: inset the footer block so it lines up with
    the card's panel padding directly above it (clamp matches .contact-overlay). The
    baseline hairline below takes the same inset, so columns and rule share one edge. */
 body:has(.contact-card) .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
   body:has(.contact-card) .footer-grid { padding-inline: 0; }
 }
 /* Homepage: copyright is its own compact final line BELOW the footer — a separate
@@ -2448,7 +2460,7 @@ body:has(.contact-card) .footer-grid { padding-inline: clamp(32px, 4vw, 56px); }
   text-align: center;
 }
 body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32px, 4vw, 56px); }
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
   body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: 0; }
 }
 /* Footer co-branded lockup — visual-guide.md §Co-Branded Lockup */
@@ -2496,7 +2508,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
 /* Links dissolve into the parent grid (display:contents) so brand + the three
    columns lay out as four evenly-distributed tracks across the container. */
 .footer-cols { display: contents; }
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
   .footer-cols {                            /* re-form as its own grid under the stacked brand */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -3002,9 +3014,7 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
     rgba(0,0,0,0.74) 0%, rgba(0,0,0,0.58) 30%, rgba(0,0,0,0) 56%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.55) 100%);
 }
 @media (max-width: 880px) {
-  .contact-card--uv .contact-overlay::after {
-    background: linear-gradient(180deg, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.72) 45%, rgba(0,0,0,0.45) 100%);
-  }
+  /* The phone scrim lives in the banded block further down (audit F03). */
   .contact-card--uv .contact-overlay::before {
     background: url('/assets/imagery/uv/contact-hangar.jpg') 12% 50% / cover no-repeat, #000;
     background: image-set(url('/assets/imagery/uv/contact-hangar-1360.webp') type('image/webp'), url('/assets/imagery/uv/contact-hangar.jpg') type('image/jpeg')) 12% 50% / cover no-repeat, #000;
@@ -3057,6 +3067,27 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   .contact-overlay-meta {
     grid-template-columns: 1fr;
   }
+}
+/* UV card on phones and tablets (audit F03, 2026-10-13): the hangar photo is a clean band
+   at the card's head and the heading starts on the dark ground under it, the way the
+   newsletter sheet and the stacked strips read. Full bleed under a 0.86 scrim it showed
+   only floor and feet behind the meta; banded, the people and the aircraft read. The
+   meta then sits on flat black (its 0.55 scrim over the card's #000). */
+@media (max-width: 880px) {
+  .contact-card--uv { --cc-ph: clamp(170px, 46vw, 320px); }
+  .contact-card--uv .contact-overlay::before {
+    bottom: auto; height: var(--cc-ph);
+    background-position: 30% 58%;
+  }
+  .contact-card--uv .contact-overlay::after {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) calc(var(--cc-ph) - 72px), #000 var(--cc-ph));
+  }
+  .contact-card--uv .contact-overlay { padding-top: calc(var(--cc-ph) + 4px); }
+}
+/* Phones: the banner and meta share the form panel's 20px inset, so the heading, the
+   fields and the office hours run down one edge (they were 24 / 20 / 24). */
+@media (max-width: 560px) {
+  .contact-overlay, .contact-overlay-meta { padding-inline: 20px; }
 }
 .contact-meta { display: flex; flex-direction: column; gap: 6px; }
 /* Office hours and the address are each one long unbreakable-feeling string; in a
@@ -3137,7 +3168,9 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   margin: clamp(14px, 1.6vw, 24px);
   padding: clamp(26px, 2.4vw, 40px);
   background: var(--surface-elevated);
-  border-radius: var(--r-frame);
+  /* Inset in the card, so the inner radius, not the card's own: at r-frame the corners
+     bulged against the card's curve (audit F13). Fields inside are r-inner too. */
+  border-radius: var(--r-inner);
   box-shadow: var(--shadow-high);
 }
 @media (max-width: 880px) {
@@ -3335,6 +3368,14 @@ body:has(.contact-card) .footer-baseline .footer-copy { margin-inline: clamp(32p
   color: var(--text-inverse);
 }
 .topic-chip:focus-within { outline: var(--focus-w) solid var(--border-focus); outline-offset: var(--focus-off); }
+/* Never one chip alone on a row (audit F12). In the narrow two-column panel at 881–1100 the
+   six contact topics sit 3 + 3, as they do on phones, in both languages; on narrow phones
+   the Signal intake's three fit one row with a tighter pill; on touch every chip is 44px. */
+@media (min-width: 881px) and (max-width: 1100px) {
+  .topic-chips { display: grid; grid-template-columns: repeat(3, max-content); justify-items: start; }
+}
+@media (max-width: 420px) { .topic-chip { padding-inline: 12px; } }
+@media (pointer: coarse) { .topic-chip { min-height: 44px; } }
 
 .contact-actions { display: flex; padding-top: 4px; }
 .contact-actions .btn { width: 100%; }
@@ -3480,8 +3521,15 @@ svg.is-primed polyline {
    is not motion, so the drawer, search, dialogs and slides no longer pop. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
-  :is(.mobile-drawer, .mobile-overlay, .search-modal, .search-overlay, .lgl-overlay, .mega-panel, .kv__media) {
+  /* Panels that take focus fade visibility only while closing: opening, it flips at once,
+     so the focus() that follows lands inside the panel instead of on a still-hidden
+     target (audit F02). */
+  .mobile-overlay, .search-overlay, .lgl-overlay, .kv__media,
+  .mobile-drawer:not([data-open="true"]), .search-modal:not([data-open="true"]), .mega-panel:not([data-open="true"]) {
     transition-property: opacity, visibility !important; transition-duration: var(--dur-base) !important;
+  }
+  .mobile-drawer[data-open="true"], .search-modal[data-open="true"], .mega-panel[data-open="true"] {
+    transition-property: opacity !important; transition-duration: var(--dur-base) !important;
   }
 }
 
@@ -3568,6 +3616,16 @@ svg.is-primed polyline {
   border-radius:var(--r-frame); box-shadow:var(--shadow-high); transform-origin:top left; }
 .sig-xpanel[hidden]{ display:none; }
 .sig-xpanel__scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:inherit; }
+/* A focusable region (tabindex=0 in the markup), so arrow and Page keys scroll the sample
+   once it has focus; one Tab from Close reaches it (audit F47). */
+.sig-xpanel__scroll:focus-visible{ outline:var(--focus-w) solid var(--border-focus); outline-offset:calc(-1 * var(--focus-w)); }
+/* The CTA repeated at the end of the sample (audit F46): the page's own primary, not the
+   white-on-photo banner button; full width on phones. */
+.sig-xpanel__end{ display:flex; justify-content:flex-end; padding-top:8px; }
+.sig-xcta.sig-xcta--end{ background:var(--surface-inverse); color:var(--text-inverse); }
+@media (hover: hover) and (pointer: fine){ .sig-xcta.sig-xcta--end:hover{ background:var(--surface-inverse-hover); } }
+@media (max-width: 640px){ .sig-xpanel__end .sig-xcta{ width:100%; justify-content:center; } }
+@media (pointer: coarse){ .sig-xcta{ min-height:44px; } }
 
 /* ── The panel banner ────────────────────────────────────────────────────────
    Was a 200px decorative image strip with the title block stacked underneath it. It
@@ -3606,7 +3664,7 @@ svg.is-primed polyline {
 .sig-xbanner__copy{ display:flex; flex-direction:column; gap:8px; max-width:52ch; }
 .sig-xbanner__buy{ display:flex; flex-direction:column; align-items:flex-end; gap:12px; }
 .sig-xcta{ flex:none; white-space:nowrap; background:#FFFFFF; color:#252525; }
-.sig-xcta:hover{ background:rgba(255,255,255,0.86); }
+@media (hover: hover) and (pointer: fine){ .sig-xcta:hover{ background:rgba(255,255,255,0.86); } }
 
 /* Type for the copy block. Sentence case on the eyebrow, matching the card eyebrow it
    morphs out of. All three sit on the scrimmed photo, so all three are light. */
@@ -4086,7 +4144,7 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
 }
 .mkt-form .input::placeholder { color: var(--text-quaternary); }
 .mkt-cta { flex: none; height: 44px; padding: 0 16px; gap: 8px; font-size: 12px; border: 0; cursor: pointer; }
-.mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
+.mkt-cta svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .mkt-cta:hover svg { transform: translateX(3px); } }
 .mkt-fine { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
 .mkt-fine a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
@@ -4117,11 +4175,17 @@ body.sig-xlock .footer * { animation-play-state: paused !important; }
   @keyframes mkt-sheet-in { from { transform: translateY(100%); } }
   .mkt-overlay.is-closing .mkt-card { animation: mkt-sheet-out var(--dur-base) var(--ease-drawer) both; }
   @keyframes mkt-sheet-out { to { transform: translateY(100%); } }
-  .mkt-media { position: relative; inset: auto; height: 190px; }
+  /* The band grows with the sheet: a fixed 190px at tablet width cropped the kit shot to a
+     zoomed strip (audit F16). */
+  .mkt-media { position: relative; inset: auto; height: clamp(190px, 34vw, 280px); }
   .mkt-img { object-position: 50% 32%; }
+  /* One sheet, not a card on a card: the plate runs edge to edge over the photo's foot with
+     the sheet's own top radius, instead of a 12px recessed gutter round it (audit F17). */
   .mkt-main {
     position: relative; left: auto; right: auto; bottom: auto;
-    margin: -44px 12px calc(12px + env(safe-area-inset-bottom));
+    margin: -44px 0 0;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    border-radius: var(--r-frame) var(--r-frame) 0 0;
   }
 }
 
@@ -4307,8 +4371,13 @@ body[data-veil] { overflow: hidden; height: 100dvh; }
   display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px;
   margin: 0; font-size: 13px; color: var(--text-secondary);
 }
-.veil__foot a { color: inherit; text-decoration: none; }
-.veil__foot a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
+.veil__foot a { color: inherit; text-decoration: none; padding-block: 12px; }   /* ~44px target (audit F45) */
+@media (hover: hover) and (pointer: fine) { .veil__foot a:hover { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; } }
+.veil__foot a:focus-visible { color: var(--text-primary); text-decoration: underline; text-underline-offset: 2px; }
+/* The copyright takes its own centred row, so a narrow screen never strands 'Inc.' alone
+   at the left under the centred links (audit F45). The links' padding sets the row rhythm. */
+.veil__foot { row-gap: 0; text-align: center; }
+.veil__foot > span { flex-basis: 100%; text-wrap: balance; }
 
 /* No accent colour. The licensing accent is warm orange and the hero blurring
    through the glass is already warm orange, so the colour arrives from the page
@@ -5041,7 +5110,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .offer-card-more svg {
   width: 16px; height: 16px; stroke: currentColor; fill: none;
-  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-reveal);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -5231,7 +5300,10 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
      exception applies and where padding would break the line box. */
   .search-link { min-height: 44px; }
   .footer-col a { min-height: 44px; }
-  .contact-meta a { min-height: 44px; display: inline-flex; align-items: center; }
+  /* The 44px target is a hit area, not a taller box: min-height grew the Email row ~10px
+     looser than its neighbours and pushed the hover underline below the text (audit F03).
+     ::before, because ::after is the underline. */
+  .contact-meta a::before { content: ""; position: absolute; inset: -12px 0; }
   .lang-menu button { min-height: 44px; }
   /* The only control on a standalone legal page — measured 114x17. It is hidden when
      these files are injected into the legal dialog (.lgl-overlay .lgl-page-back), so
@@ -5242,8 +5314,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
      control in reach of the input it belongs to.
      (patents/index.html's .pat-modal-close is NOT here: that page already extends
      it to 44px with a ::after overlay in its own block, which keeps the 32px
-     visual. A width override here would fight it and lose to page-local order.) */
-  .footer-nl-form button { width: 44px; height: 44px; }
+     visual. A width override here would fight it and lose to page-local order.)
+     The 44px target is the ::after hit area above; the chip stays 32px, inset in the field
+     as on desktop. Sized to 44px it filled the field and ran off its edge (audit F11). */
 }
 
 /* ═════════════════════════════════════════════════════════════════════════
@@ -5304,7 +5377,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   grid-row: 2; list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(19px, 2.4vw, 34px);
 }
-.fd-board__p { display: grid; grid-template-columns: 53px minmax(0, 1fr); gap: 14px; align-items: center; min-width: 0; }
+/* Top-aligned, so every director's name sits on one line across the row whether the role
+   under it runs one line or two (audit F33). */
+.fd-board__p { display: grid; grid-template-columns: 53px minmax(0, 1fr); gap: 14px; align-items: start; min-width: 0; }
 .fd-board__c {
   position: relative; width: 53px; aspect-ratio: 1; border-radius: 50%;
   overflow: hidden; background: var(--surface-recessed);
@@ -5338,12 +5413,13 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-board .fd-board__h2 { order: -1; align-self: flex-start; margin: 0 0 16px; color: var(--text-primary); }
   .fd-board > .fd-board__bg { position: relative; z-index: 0; aspect-ratio: 16 / 9; border-radius: var(--r-frame); }
   .fd-board__bg .fd-ph__img { object-position: var(--fd-pos-m, 50% 50%); }
-  .fd-board__row { margin-top: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  /* One column from 900 down: five people in two columns left the last one alone beside an
+     empty cell (audit F32). */
+  .fd-board__row { margin-top: 16px; grid-template-columns: minmax(0, 1fr); gap: 0 24px; }
   .fd-board__p { grid-template-columns: 43px minmax(0, 1fr); align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--border-secondary); }
   .fd-board__t b { color: var(--text-primary); }
   .fd-board__role { color: var(--text-secondary); opacity: 1; }
 }
-@media (max-width: 560px) { .fd-board__row { grid-template-columns: minmax(0, 1fr); } }
 
 /* ── Reveals. site.js adds .is-revealed via IntersectionObserver. Gated
      unconditionally, matching .h-section[data-reveal] in styles.css and the
@@ -5590,7 +5666,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
       0 18px 36px -16px var(--dial-shade);
   }
 }
-.eco-dial__link:is(:hover, :focus-visible)::before { opacity: 0.85; }
+.eco-dial__link:focus-visible::before { opacity: 0.85; }
+@media (hover: hover) and (pointer: fine) { .eco-dial__link:hover::before { opacity: 0.85; } }
 .eco-dial__link:focus-visible { outline: var(--focus-w) solid var(--border-focus); outline-offset: 3px; }
 .eco-dial__meta { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
 .eco-dial__ico {
@@ -5631,6 +5708,22 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .eco-dial__nodes { order: 3; display: flex; flex-direction: column; gap: 10px; }
   .eco-dial__node { width: auto; }
   .eco-dial__link:hover, .eco-dial__link:focus-visible { transform: none; }
+  /* Stacked, the cards lose the dial's needles and lift, so a down arrow after each name says
+     they lead to that partner's section (audit F37). */
+  .eco-dial__t::after {
+    content: ""; display: inline-block; width: 14px; height: 14px; margin-left: 6px; vertical-align: -1px;
+    background: var(--dial-mute);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12l7 7 7-7'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12l7 7 7-7'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+}
+/* Tablet (769–1120): the stacked dial keeps its 520px spine, but the three partner cards run
+   3-up across the container instead of a narrow centred column under a left heading (audit F38). */
+@media (min-width: 769px) and (max-width: 1120px) {
+  .eco-dial { max-width: none; }
+  .eco-dial__apex, .eco-dial__hub, .eco-dial__pillars { width: min(100%, 520px); align-self: center; }
+  .eco-dial__nodes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .eco-dial__node { display: grid; }   /* the three cards share one height */
 }
 
 /* ── License · Licensing Platform (team review 2026-10-06). The platform moved under
@@ -5693,7 +5786,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    ═════════════════════════════════════════════════════════════════════════ */
 .ab {
   --fd-statement: clamp(30px, 3.8vw, 56px);
-  --fd-row:       clamp(22px, 2vw, 28px);
+  --fd-row:       clamp(20px, 2vw, 28px);   /* 20 floor: 1.3x under the 26px phone h2 (audit F21) */
   --fd-figure:    clamp(36px, 3.4vw, 52px);   /* every large figure: band, fact, pool */
   --fd-gutter:    clamp(20px, 3.4vw, 48px);
   --fd-section:   clamp(80px, 10vw, 152px);
@@ -5839,14 +5932,18 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    head's 7fr / 5fr grid and gap, so the aside starts on the hero sub's left edge. Type sits
    one step under the hero sub: statement at the sub's size but weight 500, aside 14px
    secondary, scope rows 13px labels, so the caption never outranks the hero copy. */
-.fd-hero__fig { margin: var(--fd-hero-pad) 0 0; }
-.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: var(--r-frame) var(--r-frame) 0 0; }
+/* Photo and plate share ONE outline on the figure (audit F20): the plate drew its own
+   U-border under the band, which in dark met the hero's edge line as a double hairline. */
+.fd-hero__fig {
+  margin: var(--fd-hero-pad) 0 0;
+  border: 1px solid var(--border-secondary); border-radius: var(--r-frame); overflow: hidden;
+}
+.fd-hero__fig .fd-hero__band { margin-top: 0; border-radius: 0; }
 .fd-hero__cap {
   display: grid; grid-template-columns: var(--fd-split);
   gap: 12px var(--fd-split-gap); align-items: start;
   padding-block: clamp(18px, 1.8vw, 24px) clamp(20px, 2vw, 28px);
-  background: var(--surface-secondary); border: 1px solid var(--border-secondary); border-top: 0;
-  border-radius: 0 0 var(--r-frame) var(--r-frame);
+  background: var(--surface-secondary);
 }
 .fd-hero__cap-st {
   margin: 0; padding-inline-start: clamp(18px, 2vw, 28px); max-width: 52ch;
@@ -5940,7 +6037,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   width: fit-content; justify-self: start; align-self: flex-start;   /* hit area hugs the label */
   font-size: 16px; font-weight: 600; color: var(--text-primary); text-decoration: none;
 }
-.fd-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
+.fd-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--dur-base) var(--ease-out); }
 /* One inline-link recipe (MOTION-06): underline at 4px offset, arrow 3px on --dur-base,
    mirrored on keyboard focus. */
 .fd-link:is(:hover, :focus-visible) span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
@@ -5986,7 +6083,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .fd-strip__h {
   margin: 0; max-width: 17ch;
-  font-size: clamp(26px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08;
+  font-size: clamp(30px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08;
   color: var(--surface-ink); text-wrap: balance;
 }
 /* The claim sits on the pale sky, which is light in both themes, so it inks with
@@ -6006,6 +6103,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 [lang="zh-Hant"] .fd-strip__lead, [lang="zh-Hant"] .fd-strip__aside > p { word-break: keep-all; overflow-wrap: anywhere; }
 .fd-strip__aside > .fd-link { grid-column: 1 / -1; margin-top: 8px; }
+/* ≤1100 the 7-column aside left each proof note ~170px wide: stack them (audit F24). */
+@media (max-width: 1100px) { .fd-strip__aside { grid-template-columns: 1fr; } }
 /* Claim side and ink follow the photo (strip-r1, 2026-10-13): --left puts the claim on the photo's
    clear left; --light inks it with --text-on-ink (white in both themes) for a darker photo. Desktop
    only: ≤768 the claim drops onto the page and takes the page ink. */
@@ -6028,8 +6127,17 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-strip__frame { aspect-ratio: auto; overflow: visible; }
   .fd-strip__ph { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r-frame); }
   .fd-strip__claim { position: static; width: auto; padding: 0; display: block; }
-  .fd-strip__h { margin-top: 24px; font-size: var(--fd-statement); color: var(--text-primary); }
-  [lang="zh-Hant"] .fd-strip__h { font-size: var(--fd-statement); }
+  /* The phone crop applies from 768 down, with the stacking, not only ≤720 with every other
+     slot: at 721–768 the centre cut ran the aircraft off the right edge (audit F05). */
+  .fd-strip__ph .fd-ph__img { object-position: var(--fd-pos-m, var(--fd-pos, 50% 50%)); }
+  /* The blue-UAV strips carry an airframe ~half the photo wide: 16:9 shows 42% of a 4.2:1
+     photo and cut its tail, 2.2:1 shows 52% and keeps it whole. */
+  :is(.fd-strip--lead, .fd-strip--hero, .fd-strip--close) .fd-strip__ph { aspect-ratio: 2.2 / 1; }
+  /* Dropped onto the page the claim reads as a section heading, so it takes the h2 size; at
+     --fd-statement it out-sized every h2 around it (audit F04). Chinese breaks by kinsoku
+     (line-break: strict) instead of keep-all + anywhere, which could start a line on 。. */
+  .fd-strip__h { margin-top: 24px; font-size: var(--ab-h2); color: var(--text-primary); }
+  [lang="zh-Hant"] .fd-strip__h { font-size: var(--ab-h2); word-break: normal; overflow-wrap: normal; line-break: strict; }
   .fd-strip__row { margin-top: 16px; }
   .fd-strip__lead { color: var(--text-secondary); }
   .fd-strip__aside { grid-template-columns: 1fr; }
@@ -6039,6 +6147,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    strip carrying the demand claim, the lead and all three figures (it replaced the #demand
    section). The proofs keep their hairlines; the lead takes a third. */
 .fd-strip--lead { margin-bottom: clamp(40px, 5vw, 72px); }
+/* Stacked, the claim sits on the page at h2 size, 40px above the section's own h2: two
+   headings read as one. A section's gap sets them apart (audit F07). */
+@media (max-width: 768px) { .fd-strip--lead { margin-bottom: var(--fd-section); } }
 .fd-strip--close { margin-top: clamp(32px, 4vw, 56px); }
 .fd-hero--strip .fd-strip { margin-top: clamp(32px, 4vw, 56px); }
 .fd-strip--hero .fd-strip__row { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
@@ -6077,6 +6188,12 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 }
 .fd-bullets b { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 @media (max-width: 900px) { .fd-cols { grid-template-columns: minmax(0, 1fr); } }
+/* Tablet (641–900): each program is a row, photo left and facts right, instead of three
+   728 × 546 photos stacked one per screen (audit F39). Phones keep the stack. */
+@media (min-width: 641px) and (max-width: 900px) {
+  .fd-cols__i { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+  .fd-cols__i .fd-bullets { margin-top: 0; }
+}
 .fd-scope { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 10px; }
 .fd-scope li {
   padding-top: 10px; border-top: 1px solid var(--border-tertiary);
@@ -6170,7 +6287,8 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   font-size: var(--ab-card); line-height: 1.55; color: rgba(255,255,255,0.82); text-wrap: pretty;
 }
 @media (max-width: 768px) {
-  .fd-mosaic { grid-template-columns: 1fr; }
+  /* Two up to 600, one below: at 768 four 340px tiles stacked one per row (audit F40). */
+  .fd-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   /* Three-line copy climbs into the light part of the photo on a phone tile (MOB-05). */
   .fd-tile::before { background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0) 78%); }
   .fd-tile__d { color: rgba(255,255,255,0.92); }
@@ -6234,8 +6352,10 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px clamp(24px, 3vw, 48px);
 }
-.fd-cap .fd-figures li { display: grid; gap: 6px; padding-top: 12px; border-top: 1px solid var(--border-secondary); }
-.fd-cap .fd-figures b { font-size: clamp(18px, 1.6vw, 22px); font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); }
+/* Top-aligned, so a figure that wraps does not float its neighbour's caption lower; balance
+   splits 'ISO 9001 · 14001 · 27001' evenly instead of stranding '27001' (audit F35). */
+.fd-cap .fd-figures li { display: grid; gap: 6px; align-content: start; padding-top: 12px; border-top: 1px solid var(--border-secondary); }
+.fd-cap .fd-figures b { font-size: clamp(18px, 1.6vw, 22px); font-weight: 600; letter-spacing: -0.01em; color: var(--text-primary); text-wrap: balance; }
 .fd-cap .fd-figures span { font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
 .fd-cap__grid {
   margin-top: clamp(32px, 4vw, 56px);
@@ -6246,7 +6366,15 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .fd-cap__cell--lg { grid-row: span 2; aspect-ratio: auto; }
 .fd-cap__ph { position: absolute; inset: 0; border-radius: 0; }
 .fd-cap__ph .fd-ph__img { filter: saturate(0.86); }
-@media (max-width: 900px) { .fd-cap__head { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) {
+  .fd-cap__head { grid-template-columns: minmax(0, 1fr); }
+  /* Stacked, the photos lead the block as they do in the Suntek and Innovue features either
+     side, so each partner reads photo, label, heading, copy and no two photos meet across a
+     section break (audit F36). */
+  .fd-cap > .container { display: flex; flex-direction: column; }
+  .fd-cap__grid { order: -1; margin: 0 0 clamp(24px, 4vw, 32px); }
+}
+@media (max-width: 560px) { .fd-cap .fd-figures { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) {
   .fd-cap__grid { grid-template-columns: 1fr 1fr; }
   .fd-cap__cell--lg { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; }
@@ -6317,6 +6445,13 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-stair__step + .fd-stair__step::before { display: none; }
   .fd-stair__d { margin-top: 10px; padding-top: 0; }
 }
+@media (max-width: 600px) { .fd-mosaic { grid-template-columns: minmax(0, 1fr); } }
+/* Tablet (600–1023): the four levels sit 2 × 2, not one 30ch column per full-width row with
+   its right half empty (audit F40). */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .fd-stair__steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fd-stair__step:nth-child(even) { border-inline-start: 1px solid var(--border-secondary); }
+}
 
 /* ── Lanes — the two compliance lanes as one split object: light half, ink half. ── */
 .fd-lanes {
@@ -6372,13 +6507,16 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-lane--img .fd-ph__img {
     position: relative; inset: auto; z-index: 0; max-width: none;
     width: calc(100% + 2 * clamp(28px, 3.4vw, 52px)); height: 190px;
-    margin: 0 calc(-1 * clamp(28px, 3.4vw, 52px)) -32px;
+    margin: 0 calc(-1 * clamp(28px, 3.4vw, 52px)) 0;   /* was -32px, sized against the old 40px gap */
     object-position: var(--lane-pos, 100% 50%);
     -webkit-mask-image: linear-gradient(180deg, black 55%, transparent 100%);
     mask-image: linear-gradient(180deg, black 55%, transparent 100%);
   }
   .fd-lane--img picture { display: block; order: -1; }
   .fd-lane--img .fd-lane__t, .fd-lane--img .fd-lane__d { max-width: none; }
+  /* Stacked, the label sits with its title instead of 60px above it: the desktop gap and
+     space-between were sized for a tall split lane (audit F30). */
+  .fd-lane--img { gap: 12px; min-height: 0; justify-content: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fd-lane--img .fd-ph__img { transition: none; }
@@ -6399,6 +6537,10 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
    foot, ruled off like .fd-fact, any link after it. Split layout only; stacked it flows as usual. */
 @media (min-width: 901px) {
   .fd-feature--edges { align-items: stretch; }
+  /* Stretched, the frame takes the copy's height and aspect-ratio then derives a width wider
+     than its track: at 901–1100 the photo ran under the first letters of Ecosystem #suntek
+     (audit F01). Capping the width lets cover absorb the ratio change instead. */
+  .fd-feature--edges > .fd-frame { min-width: 0; max-width: 100%; }
   .fd-feature--edges .fd-feature__body { display: flex; flex-direction: column; }
   .fd-feature--edges .fd-h2 { margin-top: -0.12em; }
   .fd-feature--edges .fd-feature__body > p:last-of-type {
@@ -6432,8 +6574,12 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
   transition: transform var(--dur-base) var(--ease-out), stroke var(--dur-base) var(--ease-out);
 }
-.fd-partner-link:hover b, .fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-.fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
+.fd-partner-link:focus-visible b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.fd-partner-link:focus-visible svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
+@media (hover: hover) and (pointer: fine) {
+  .fd-partner-link:hover b { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .fd-partner-link:hover svg { stroke: var(--text-primary); transform: translate(2px, -2px); }
+}
 @media (prefers-reduced-motion: reduce) { .fd-partner-link:hover svg, .fd-partner-link:focus-visible svg { transform: none; } }
 .fd-partners li > span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
 [lang="zh-Hant"] .fd-partners li > span { text-wrap: balance; }
@@ -6497,8 +6643,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-hero__fig .fd-hero__band { border-radius: var(--r-frame) var(--r-frame) 0 0; }
   .fd-hero__cap { border-radius: 0 0 var(--r-frame) var(--r-frame); }
   .fd-hero__band.fd-ph--img .fd-ph__img { object-position: var(--fd-pos-m, 50% 50%); }
-  .fd-hero .pillar-actions { flex-direction: column; align-items: stretch; }
-  .fd-hero .pillar-actions .btn { white-space: normal; text-align: center; line-height: 1.3; padding-inline: 20px; text-wrap: balance; }
+  /* + the License platform CTA, the one primary button left content-width on phones (audit F28). */
+  :is(.fd-hero, .fd-platform) .pillar-actions { flex-direction: column; align-items: stretch; }
+  :is(.fd-hero, .fd-platform) .pillar-actions .btn { white-space: normal; text-align: center; line-height: 1.3; padding-inline: 20px; text-wrap: balance; }
   .fd-hero__figure { gap: 8px 14px; }
   .fd-hero__figure b { font-size: 34px; }
   [lang="zh-Hant"] .fd-hero__figure b { font-size: 28px; }
@@ -6721,6 +6868,11 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .kv-proof__f { align-self: flex-start; font-size: 24px; }
   .kv-proof__by { font-size: 14px; }
 }
+/* Tablet portrait (561–768): two cards in view, not one 612px card with room for two
+   (audit F26). Phones keep 84%. */
+@media (min-width: 561px) and (max-width: 768px) {
+  .kv-proof__list { grid-auto-columns: calc(50% - 10px); }
+}
 @media (max-width: 360px) {
   /* 320–360: wider, tighter cards so "180M-patent database" holds one line (it left
      "database" alone at 24px in a 195px card). The next card still peeks. */
@@ -6778,6 +6930,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .fd-bento__list { grid-template-columns: minmax(0, 1fr); }
   .fd-bento__i { grid-row: auto; display: block; }
   .fd-bento__n { margin-bottom: 16px; }
+  /* Stacked, the foot line aligns with the cell copy above it, not centred as a ragged
+     three-line block (audit F34). */
+  .fd-bento__foot { text-align: left; }
 }
 @media (prefers-reduced-motion: no-preference) {
   /* A slide change: its photograph settles behind the copy. */
@@ -7082,9 +7237,17 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
      (MOB-11). Drop the tray surface; the tiles sit on the page in the tray's grey. */
   .fd-tray { --pt-pad: 20px; --pt-tile: var(--surface-tertiary); padding: 0; background: none; }
   .ptray__lede { padding: 14px 20px 10px; }   /* lines the promise up with the tile text (10 tray + 20 tile) */
-  .ptray__line { font-size: clamp(23px, 7.2vw, 28px); }
+  /* Capped under the 26px phone h2 ('Three pillars, one contract'): at up to 28px the
+     promise out-ranked its own section heading (audit F27). */
+  .ptray__line { font-size: clamp(21px, 6.2vw, 24px); }
   /* ZH: sized so each clause fits a line at 320 (10 characters); strict keeps 。，attached. */
-  [lang="zh-Hant"] .ptray__line { font-size: clamp(21px, 6.6vw, 28px); word-break: normal; line-break: strict; }
+  [lang="zh-Hant"] .ptray__line { font-size: clamp(21px, 6.6vw, 24px); word-break: normal; line-break: strict; }
+  /* Concentric in the 10px rim (audit F29): the photo and the point tiles take the tray's
+     radius less its padding, and the number pip sits as far from the pill's end as from its
+     top and bottom. */
+  .ptray { --pt-radius: calc(var(--pt-tray-r) - var(--pt-tray-pad)); }
+  .ptray__media { border-radius: calc(var(--pt-tray-r) - var(--pt-tray-pad)); }
+  .ptray.is-js .ptray__tg { padding-left: 10px; }
   .ptray__pts { padding-top: 10px; }
   /* The disclosure reads as an expander, not a filter chip: full width, link above it. */
   .ptray__acts { flex-direction: column; align-items: stretch; gap: 8px; }   /* visual order = tab order (A11Y-20) */
@@ -7158,15 +7321,20 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
       positioned layers inside, and costs no layout.
    2. Ink blocks stay ink (--surface-ink), set in each component above.
    ═════════════════════════════════════════════════════════════════════════ */
-[data-theme="dark"] :is(.fd-ph.fd-frame, .fd-tile, .offer-card, .contact-card) {
+/* Every photo slot the light theme frames is framed in dark too: the hero band, tray, strip
+   and platform shots had no edge, so their dark corners dissolved into the page (audit F20). */
+[data-theme="dark"] :is(.fd-ph.fd-frame, .fd-tile, .offer-card, .contact-card, .fd-ph--img, .ptray__media, .fd-strip__ph, .fd-platform__shot img) {
   outline: 1px solid var(--edge-window); outline-offset: -1px;
 }
 [data-theme="dark"] :is(.fd-hero, .hero) { box-shadow: 0 1px 0 var(--edge-window); }
+[data-theme="dark"] .fd-hero:has(.fd-hero__fig) { box-shadow: none; }
 /* Light theme: the same window edge in ink, so pale photographs (workbench, gimbal strip,
    sky lane) keep their frame on the white page (MOTION-20). */
 [data-theme="light"] :is(.fd-ph--img, .fd-tile, .ptray__media, .fd-strip__ph, .fd-platform__shot img) {
   outline: 1px solid var(--edge-photo); outline-offset: -1px;
 }
+/* The captioned hero's figure carries the frame, so its band draws none of its own. */
+[data-theme] .fd-hero__fig .fd-ph--img { outline: none; }
 /* Page grid: the light rule draws ink lines at 0.024, which vanish on graphite. */
 [data-theme="dark"] body::before {
   background-image:
@@ -7245,7 +7413,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-figsec { padding-top: 0; }
 .psg-tray { padding: clamp(16px, 2.2vw, 32px); border-radius: var(--r-frame); background: var(--surface-tertiary); }
 .psg-tray__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 4px 4px clamp(16px, 2vw, 24px); }
-.psg-tray__h { margin: 0 0 8px; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.psg-tray__h { margin: 0 0 8px; font-size: var(--fd-row); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
 .psg-nav { display: flex; gap: 8px; flex: none; }
 .psg-nav__btn {
   width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
@@ -7272,7 +7440,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-fig { flex: 1; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
 .psg-fig__cap { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-tertiary); font-size: 15px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
 .psg-big { margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
-.psg-big > span { font-size: 15px; color: var(--text-secondary); }
+.psg-big > span { font-size: 15px; color: var(--text-secondary); text-wrap: balance; }
 /* 1 · Measure: the live panel's five rows; the percentile carries the weight */
 .psg-ind { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .psg-ind th { padding: 0 0 10px; font-size: var(--psg-label); font-weight: 600; color: var(--text-secondary); text-align: right; white-space: nowrap; }
@@ -7287,6 +7455,9 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 .psg-pil { --d: 14px; list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .psg-pil li { display: grid; grid-template-columns: minmax(0, 1fr) calc(8 * var(--d)) 1.5em; align-items: center; gap: 16px; font-size: 16px; line-height: 1.3; }
 .psg-pil__name { color: var(--text-primary); }
+/* Narrow tiles: a smaller dot frees the name column, so 'Forward-Looking Value' and its
+   siblings hold one line (audit F42). The ≤480 step below goes smaller still. */
+@media (max-width: 1100px) { .psg-pil { --d: 11px; } }
 .psg-pil__dots {
   --r: calc((var(--d) - 4px) / 2);
   height: calc(var(--d) - 4px); width: calc(var(--n) * var(--d) - 4px);
@@ -7398,8 +7569,21 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .psg-steps__i + .psg-steps__i::after { left: var(--fd-cell); top: -7px; transform: rotate(135deg); }
   .psg-steps__d { padding-top: 12px; }
 }
+/* Tablet (601–800): each stacked step is a row, title left and copy right, instead of a
+   726px card whose 34ch copy left half of it empty (audit F48). */
+@media (min-width: 601px) and (max-width: 800px) {
+  .psg-steps__i { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); column-gap: var(--fd-cell); align-items: baseline; }
+  .psg-steps__d { margin: 0; padding-top: 0; max-width: 44ch; }
+}
 @media (max-width: 640px) {
-  .psg-track { grid-auto-columns: 86%; }
+  /* The track bleeds to the tray's edge, so the next tile peeks in whole from the rim instead
+     of clipped mid-glyph inside the padding, and each tile hugs its own content rather than
+     stretching to the tallest (audit F43). */
+  .psg-track {
+    grid-auto-columns: 86%; align-items: start;
+    margin-inline: calc(-1 * clamp(16px, 2.2vw, 32px)); padding-inline: clamp(16px, 2.2vw, 32px);
+    scroll-padding-inline: clamp(16px, 2.2vw, 32px);
+  }
   .psg-nav { display: none; }
   .psg-posset { --pos-cols: 2.4em minmax(0, 1fr) 2.8em; }
   .psg-posset__head { display: none; }   /* the P82 line and the numbers say it */
@@ -7409,7 +7593,7 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
   .psg-cell--ind, .psg-cell--pil, .psg-cell--pct, .psg-cell--grade { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {
-  .psg-pil { --d: 10px; }
+  .psg-pil { --d: 8px; }
   .psg-pil li { grid-template-columns: minmax(0, 1fr) calc(8 * var(--d)); gap: 12px; font-size: 15px; }
   .psg-pil__n { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* the dots carry the count */
   .psg-ind th + th, .psg-ind td + td { padding-left: 16px; }
@@ -7658,5 +7842,5 @@ body[data-veil] main *::after { animation-play-state: paused !important; }
 
 /* Press feedback on the remaining pressable controls (MOTION-10): the close buttons and the
    icon buttons scale like every other button. */
-.lgl-close, .icon-btn, .search-esc { transition-property: background, color, transform; transition-duration: var(--dur-fast); transition-timing-function: var(--ease-out); }
-.lgl-close:active, .icon-btn:active, .search-esc:active { transform: scale(var(--press-scale)); }
+.lgl-close, .icon-btn, .search-esc, .topnav-mobile-trigger { transition-property: background, color, transform; transition-duration: var(--dur-fast); transition-timing-function: var(--ease-out); }
+.lgl-close:active, .icon-btn:active, .search-esc:active, .topnav-mobile-trigger:active { transform: scale(var(--press-scale)); }
