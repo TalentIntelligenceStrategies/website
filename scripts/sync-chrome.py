@@ -17,6 +17,12 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 ARROW = '<svg class="mega-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>'
 CHEV = '<svg class="mobile-nav-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
 FLAG = '<span class="status-flag" data-zh="即將推出">Coming soon</span>'
+FLAG_BETA = '<span class="status-flag" data-zh="測試版上線">Live in beta</span>'
+# TIS Terrain (2026-11-16): the name set like the page lockup, TIS bold, then the descriptor.
+# A label carrying markup is emitted as-is; only the descriptor swaps under 中文, so the bold
+# TIS survives the language swap (a data-zh on the whole label would flatten it).
+TERRAIN = ('<span class="nav-tt"><span class="nav-tt__name"><b>TIS</b> Terrain</span>'
+           '<span class="nav-tt__sep" aria-hidden="true">·</span><span data-zh="專利檢索">Patent search</span></span>')
 
 # (key, EN, ZH, main links, resources) — each link: (href, EN, ZH, flag?).
 # The section's page is PAGE_HREF[key]: the panel eyebrow links to it (there is no
@@ -56,7 +62,7 @@ NAV = [
         # Landscape reports + Press hidden with /reports/ (2026-10-06): Insights is this page.
         # One row named like the footer (2026-10-13): the product, not its sections.
         ('/product/signal/', 'Patent Strength Grading', '專利強度評級'),
-        ('/product/search/', 'Patent Search', '專利檢索', True),   # 2026-10-13: self-serve search for founders; coming soon (veiled) 2026-10-14
+        ('/product/search/', TERRAIN, '', 'beta'),   # 2026-10-13 Patent Search; veiled 2026-10-14; TIS Terrain, Live in beta 2026-11-16
     ], []),
     ('about', 'About', '關於', [
         ('/why-taiwan/', 'Why Taiwan', '為何是台灣'),
@@ -121,9 +127,10 @@ def ficon(key):
 
 def link(l, cls, arrow=False):
     href, en, zh = l[0], l[1], l[2]
-    flag = (' ' + FLAG) if len(l) > 3 and l[3] else ''
+    flag = (' ' + (FLAG_BETA if l[3] == 'beta' else FLAG)) if len(l) > 3 and l[3] else ''
     legal = ' data-legal="disclosures"' if 'disclosures' in href else ''
-    return (f'<a href="{href}" class="{cls}"{legal}><span data-zh="{zh}">{esc(en)}</span>{flag}'
+    label = en if en.startswith('<') else f'<span data-zh="{zh}">{esc(en)}</span>'
+    return (f'<a href="{href}" class="{cls}"{legal}>{label}{flag}'
             + (ARROW if arrow else '') + '</a>')
 
 def header(contact='#contact'):
@@ -274,7 +281,7 @@ SEARCH_JUMP = [
     ('/ecosystem/', 'Ecosystem', '生態系', '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 7 3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/>'),
     ('/why-taiwan/', 'Why Taiwan', '為何是台灣', '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
     ('/product/signal/', 'Patent Strength Grading', '專利強度評級', '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
-    ('/product/search/', 'Patent Search', '專利檢索', '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/>'),
+    ('/product/search/', TERRAIN, '', '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/>'),
     ('/about/', 'About', '關於', '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'),
     ('#contact', 'Contact', '聯絡我們', '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/>'),
 ]
@@ -282,7 +289,7 @@ SEARCH_JUMP = [
 def search(contact='#contact'):
     rows = '\n'.join(f'''    <a href="{contact if h == '#contact' else h}" class="search-link">
       <svg viewBox="0 0 24 24" aria-hidden="true">{ico}</svg>
-      <span data-zh="{zh}">{en}</span>
+      {en if en.startswith('<') else f'<span data-zh="{zh}">{en}</span>'}
       <span class="search-link-meta" data-zh="{'段落' if h == '#contact' else '頁面'}">{'Section' if h == '#contact' else 'Page'}</span>
     </a>''' for h, en, zh, ico in SEARCH_JUMP)
     return f'''<div class="search-overlay" id="search-overlay"></div>
@@ -305,7 +312,7 @@ def search(contact='#contact'):
 FOOTER_COLS = [
     ('Services', '服務', [('/sustain/', 'Sustain', '維護'), ('/protect/', 'Protect', '防護'), ('/license/', 'License', '授權')]),
     ('Company', '公司', [('/ecosystem/', 'Ecosystem', '生態系'), ('/why-taiwan/', 'Why Taiwan', '為何是台灣'), ('/about/', 'About', '關於')]),
-    ('Insights', '洞察', [('/product/signal/', 'Patent Strength Grading', '專利強度評級'), ('/product/search/', 'Patent Search', '專利檢索')]),
+    ('Insights', '洞察', [('/product/signal/', 'Patent Strength Grading', '專利強度評級'), ('/product/search/', TERRAIN, '')]),
 ]
 
 def footer(lockup, inert):
@@ -378,7 +385,7 @@ PAGES = [
     ('index.html', False, False),
     ('about/index.html', False, False),
     ('product/signal/index.html', True, False),
-    ('product/search/index.html', True, True),
+    ('product/search/index.html', True, False),   # veil lifted 2026-11-16
     ('product/licensing/index.html', True, True),
     ('product/licensing/badge.html', True, True),
     ('404.html', False, False),

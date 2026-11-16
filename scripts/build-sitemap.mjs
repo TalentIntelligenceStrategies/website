@@ -23,7 +23,7 @@ const PAGES = [
   ['/why-taiwan/', 'why-taiwan/index.html', '0.8'],
   ['/about/', 'about/index.html', '0.7'],
   ['/product/signal/', 'product/signal/index.html', '0.6'],
-  // /product/search/ is veiled (coming soon, 2026-10-14): out of the sitemap until it opens.
+  ['/product/search/', 'product/search/index.html', '0.6'],   // TIS Terrain, veil lifted 2026-11-16
 ];
 
 const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();

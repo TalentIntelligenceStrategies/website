@@ -51,6 +51,12 @@ const LATIN = [
   ['Inconsolata', 400, 'Inconsolata/static/Inconsolata-Regular.ttf'],
   ['Inconsolata', 500, 'Inconsolata/static/Inconsolata-Medium.ttf'],
   ['Inconsolata', 600, 'Inconsolata/static/Inconsolata-SemiBold.ttf'],
+  // Italic (2026-11-16, TIS Terrain): the page sets its emphasis in real italics — 400 in
+  // the hero sub, 500 in heading emphasis, 700 in the bold question. Only pages that render
+  // italic Urbanist fetch these; without them the browser synthesised a slant.
+  ['Urbanist',    400, 'Urbanist/static/Urbanist-Italic.ttf',       'italic'],
+  ['Urbanist',    500, 'Urbanist/static/Urbanist-MediumItalic.ttf', 'italic'],
+  ['Urbanist',    700, 'Urbanist/static/Urbanist-BoldItalic.ttf',   'italic'],
 ];
 
 /* CJK face: ONE variable source covering the whole 400-700 weight axis, subset and
@@ -160,17 +166,17 @@ mkdirSync(OUT, { recursive: true });
 const faces = [];
 let total = 0;
 
-for (const [family, weight, file] of LATIN) {
+for (const [family, weight, file, style = 'normal'] of LATIN) {
   const src = join(SRC, file);
   if (!existsSync(src)) throw new Error(`missing source font: ${file}`);
   // No `text` argument would drop everything; passing the full charset keeps the
   // face whole while still re-encoding to WOFF2.
   const ttf = readFileSync(src);
   const buf = await subsetFont(ttf, ALL_LATIN, { targetFormat: 'woff2' });
-  const name = `${family.replace(/\s+/g, '')}-${weight}.woff2`;
+  const name = `${family.replace(/\s+/g, '')}-${weight}${style === 'italic' ? '-italic' : ''}.woff2`;
   writeFileSync(join(OUT, name), buf);
   total += buf.length;
-  faces.push({ family, weight, name, range: null });
+  faces.push({ family, weight, name, range: null, style });
   console.log(`  ${name.padEnd(28)} ${(ttf.length / 1024).toFixed(0).padStart(6)} KB ttf → ${(buf.length / 1024).toFixed(1).padStart(7)} KB woff2`);
 }
 
@@ -209,10 +215,10 @@ const block = [
   '/* Latin faces are whole — format conversion only. The Noto Sans TC faces are',
   '   subset to the glyphs this site uses and split by unicode-range, so a page',
   '   downloads only the buckets it renders. Regenerate with `npm run build`. */',
-  ...faces.map(({ family, weight, name, range }) => [
+  ...faces.map(({ family, weight, name, range, style = 'normal' }) => [
     '@font-face {',
     `  font-family: '${family}';`,
-    '  font-style: normal;',
+    `  font-style: ${style};`,
     `  font-weight: ${weight};`,
     '  font-display: swap;',
     `  src: url('/assets/build/fonts/${name}') format('woff2');`,

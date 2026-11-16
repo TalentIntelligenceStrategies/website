@@ -2349,3 +2349,172 @@
    "New deployment" mints a different /exec URL — is in
    documents/front-desk-apps-script.md. It used to sit here as a 129-line comment,
    which shipped ~6 KB of runbook to every visitor on every page. */
+
+/* ──────────────── Terrain — /product/search/ (2026-11-16; mock search-r2 C3) ────────────────
+   1. Play-once reveals, the same contract as "Front door v2" above: a .c-tl block gets .c-pre
+      (its hidden "before" state) only if it starts below the fold, and loses it once when it
+      scrolls in. Nothing is hidden with JS off, under reduced motion, or without
+      IntersectionObserver; styles.css "FRONT DOOR v3 · TERRAIN" owns the looks and the timing.
+   2. The hero search types through five examples (data-examples / data-examples-zh), deletes
+      and moves on: ~40ms a character with a little jitter, rest 2.4s, delete at 34ms. When a
+      sentence lands, Search presses and a new three results load in: the old three lift away
+      (--dur-base), the list unrolls from under the bar while the rows slide down 60ms apart
+      (--dur-reveal), the opened record settles last (--dur-panel). WAAPI, transform / opacity /
+      clip-path only, so the hero never changes height. Pauses while hovered, focused, off-screen,
+      in a hidden tab, or by its pause button. Reduced motion or no JS: sentence 1, static.
+      Motion tokens are written in seconds (.6s): ms() reads the unit, a bare parseFloat would
+      read 0.6ms and every animation would blink. */
+(() => {
+  if (!document.querySelector('.tt-page')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.remove('c-pre');
+      o.unobserve(e.target);
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.tt-page .c-tl').forEach((el) => {
+    if (el.getBoundingClientRect().top < innerHeight * 0.94) return;   // already in view: leave it be
+    el.classList.add('c-pre');
+    obs.observe(el);
+  });
+})();
+
+(() => {
+  if (!document.querySelector('.tt-page')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const box = document.querySelector('.c3-demo .c-search');
+  const host = box && box.querySelector('.c3-type');
+  if (!host) return;
+  const txt = host.querySelector('.c3-type__txt');
+  const live = host.querySelector('.c3-type__live');
+  const btn = box.querySelector('.c-search__btn');
+  // The examples follow the page language; a swap restarts the loop on the other set.
+  const zhNow = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
+  const examples = () => (zhNow() && host.dataset.examplesZh ? host.dataset.examplesZh : host.dataset.examples).split('|');
+  let S = examples();
+  const L = (en, zh) => (zhNow() ? zh : en);
+  const T = { type: 40, jitter: 22, del: 34, rest: 2400, gap: 380, start: 900, press: 160 };
+
+  const pause = document.createElement('button');
+  pause.type = 'button'; pause.className = 'c3-pause';
+  pause.innerHTML = '<svg class="c3-i-pause" viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg>'
+    + '<svg class="c3-i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L4.9 1.7a.6.6 0 0 0-.9.5Z"/></svg>';
+  btn.before(pause);
+
+  let user = false, hover = false, focus = false, seen = true, i = 0, pos = S[0].length, mode = 'rest', timer = 0;
+  const held = () => user || hover || focus || !seen || document.hidden;
+  // One line: keep the caret in view when a sentence outruns the field (narrow screens).
+  const set = (s) => { txt.textContent = s; live.scrollLeft = live.scrollWidth; };
+  const later = (fn, ms) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+
+  function step() {
+    if (held()) return;                       // resumes from the same character via resume()
+    const s = S[i];
+    if (mode === 'type') {
+      host.classList.remove('c3-rest');
+      pos++; set(s.slice(0, pos));
+      if (pos >= s.length) {
+        mode = 'rest'; host.classList.add('c3-rest');
+        btn.classList.add('is-press'); setTimeout(() => btn.classList.remove('is-press'), T.press);
+        search(i);
+        return later(step, T.rest);
+      }
+      const ch = s[pos - 1];
+      return later(step, T.type + Math.random() * T.jitter + (ch === ' ' || ch === ',' ? 30 : 0));
+    }
+    if (mode === 'rest') { mode = 'del'; host.classList.remove('c3-rest'); return later(step, 0); }
+    if (mode === 'del') {
+      pos--; set(s.slice(0, Math.max(pos, 0)));
+      if (pos <= 0) { mode = 'type'; i = (i + 1) % S.length; pos = 0; return later(step, T.gap); }
+      return later(step, T.del);
+    }
+  }
+  // ---- Results: each press runs a search. The old three lift away, then the list unrolls
+  // down from under the bar and the new three slide in behind it, 01 first; the opened
+  // record settles last. Transform, opacity, clip-path only, so the hero never changes height.
+  const list = document.querySelector('.c3-rows');
+  const rows = list ? [...list.children] : [];
+  const rec = document.querySelector('.c3-rec__body');
+  const sheet = document.querySelector('.c3-rec__sheet');
+  const pages = [...document.querySelectorAll('.c3-pages li')];
+  const meta = rec ? [...rec.querySelectorAll('.c3-bar--t, .c3-meta .c-bar')] : [];
+  // Per sentence: title-bar widths at ranks 1-3, scores, the record's field widths, lit page.
+  const RES = [
+    { w: [78, 64, 70], s: ['0.8412', '0.8127', '0.7935'], m: [72, 58, 74, 36, 36], p: 2 },
+    { w: [70, 82, 58], s: ['0.8836', '0.8410', '0.8022'], m: [64, 70, 52, 38, 38], p: 0 },
+    { w: [84, 60, 72], s: ['0.7958', '0.7911', '0.7604'], m: [80, 48, 66, 34, 34], p: 4 },
+    { w: [62, 76, 66], s: ['0.8673', '0.8019', '0.7788'], m: [56, 62, 78, 40, 36], p: 1 },
+    { w: [74, 68, 80], s: ['0.9024', '0.8261', '0.8203'], m: [68, 54, 60, 36, 38], p: 3 },
+  ];
+  const css = getComputedStyle(document.documentElement);
+  const tok = (n, d) => (css.getPropertyValue(n).trim() || d);
+  // Tokens may be written in s (.6s) or ms (600ms).
+  const ms = (n, d) => { const v = tok(n, d), f = parseFloat(v); return /ms$/.test(v) ? f : /s$/.test(v) ? f * 1000 : parseFloat(d); };
+  const M = {
+    out: ms('--dur-base', '180ms'), in: ms('--dur-reveal', '600ms'), rec: ms('--dur-panel', '320ms'),
+    easeOut: tok('--ease-out', 'ease-out'), easeIn: tok('--ease-reveal', 'ease-out'), stagger: 60,
+  };
+  let running = [];
+  function fill(R) {
+    rows.forEach((r, n) => {
+      r.querySelector(':scope > .c-bar').style.setProperty('--w', R.w[n] + '%');
+      r.querySelector(':scope > .c-score').textContent = R.s[n];
+    });
+    meta.forEach((b, n) => b.style.setProperty('--w', R.m[n] + '%'));
+    pages.forEach((li, n) => li.classList.toggle('is-on', n === R.p));
+  }
+  function search(k) {
+    if (!list || rows.length !== 3) return;
+    running.forEach(a => a.cancel()); running = [];
+    const R = RES[k % RES.length];
+    // Exit: quick and soft, the whole list together (exits faster than enters).
+    const out = list.animate(
+      [{ opacity: 1, transform: 'none', filter: 'blur(0)' }, { opacity: 0, transform: 'translateY(-6px)', filter: 'blur(2px)' }],
+      { duration: M.out, easing: M.easeOut, fill: 'forwards' });
+    running.push(out);
+    out.onfinish = () => {
+      fill(R);
+      // Enter: the list unrolls from its top edge (just under the bar)...
+      running.push(list.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+        { duration: M.in, easing: M.easeIn, fill: 'backwards' }));
+      // ...and the rows come down inside it, 01 first.
+      rows.forEach((r, n) => running.push(r.animate(
+        [{ opacity: 0, transform: 'translateY(-16px)' }, { opacity: 1, transform: 'none' }],
+        { duration: M.in, easing: M.easeIn, delay: n * M.stagger, fill: 'backwards' })));
+      // The opened record settles once row 01 has mostly landed.
+      [sheet, rec].forEach((el, n) => el && running.push(el.animate(
+        [{ opacity: 0, filter: 'blur(2px)' }, { opacity: 1, filter: 'blur(0)' }],
+        { duration: M.rec, easing: M.easeOut, delay: M.in * 0.35 + n * M.stagger, fill: 'backwards' })));
+      out.cancel();                            // same task as the enters: no flash between
+    };
+  }
+
+  function resume() { clearTimeout(timer); if (!held()) later(step, mode === 'rest' ? T.rest / 2 : T.type); }
+  function syncBtn() {
+    box.classList.toggle('c3-paused', user);
+    pause.setAttribute('aria-label', user ? L('Play the typing example', '播放輸入示範') : L('Pause the typing example', '暫停輸入示範'));
+    pause.setAttribute('aria-pressed', String(user));
+  }
+
+  pause.addEventListener('click', () => { user = !user; syncBtn(); resume(); });
+  const demo = box.closest('.c3-demo');
+  demo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hover = true; } });
+  demo.addEventListener('pointerleave', () => { hover = false; resume(); });
+  demo.addEventListener('focusin', () => { focus = true; });
+  demo.addEventListener('focusout', () => { focus = false; resume(); });
+  document.addEventListener('visibilitychange', resume);
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; resume(); }, { threshold: 0.2 }).observe(box);
+
+  new MutationObserver(() => {
+    syncBtn();
+    S = examples(); i = 0; pos = 0; mode = 'type'; set('');
+    resume();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  host.classList.add('c3-typing', 'c3-rest');
+  syncBtn();
+  later(step, T.start);                        // after the hero entrance settles
+})();
