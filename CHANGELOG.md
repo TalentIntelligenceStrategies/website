@@ -9,6 +9,7 @@ Format: one short entry per editing session, newest on top.
 ```
 
 ## Entries
+- **2026-11-17 12:50 +08:00** · /product/licensing/ rebuilt on the Terrain C3 base with a bundle-swap hero (still veiled); licensing orange removed site-wide; styles v110, site.js v57.
 - **2026-11-16 11:37 +08:00** · /product/search/ rebuilt as TIS Terrain (deck look, Live in beta, veil lifted); nav renamed site-wide; Urbanist italic; styles v109, site.js v56.
 - **2026-10-14 13:18 +08:00** · Mobile/tablet layout audit: 47 fixes across all pages (overlap, strips, contact card, footer, ZH line breaks, focus); spares photo re-cut; styles v108.
 - **2026-10-14 10:58 +08:00** · Fleet photos on Home, Ecosystem, Sustain, About and Why Taiwan and two nav panels; eight retired photos deleted; styles v107, site.js v55.

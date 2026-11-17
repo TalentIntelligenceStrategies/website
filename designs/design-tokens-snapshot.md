@@ -224,9 +224,6 @@ Custom four-stop ramp tuned to harmonize with the warm S-tier gold. **Retired 20
 
 | Pillar | Pastel | Hex | Dark-mode swap (vivid) |
 |---|---|---|---|
-| Warm (Licensing Platform) | peach | `#FFD7B0` | `#F97316` D-orange |
-| Warm | cream | `#FEDCBE` | `#D4A017` S-gold |
-| Warm | gold | `#F5E4A8` | — |
 | Cool (Patent Intelligence SaaS) | lavender | `#E9D5FF` | `#8B5CF6` C-violet |
 | Cool | sky | `#BFDBFE` | `#0EA5E9` B-sky |
 | Cool | mint | `#D1FAE5` | `#10B981` A-emerald |
@@ -475,12 +472,9 @@ No `ease-in` on interface motion. CSS: `--ease-out`, `--ease-reveal`, `--ease-dr
 | shadow-medium | `0 4px 24px rgba(0,0,0,0.08)` (cards at rest on the gapped recommendation grid, dropdowns, sheet shell) |
 | shadow-high | `0 7px 32px rgba(0,0,0,0.12)` (cards on hover, modals, popovers) |
 | shadow-stacked-low | five-layer composite (see §7.2 *Shadows*) — content cards on the marketing site |
-| surface-accent-licensing | `#EC4200` (Licensing Platform accent — vivid; UI chrome, eyebrows, large text. Sampled from the shipped nav-dropdown imagery) |
-| surface-accent-licensing-text | `#D93B00` (Licensing accent, text-safe on white — 4.59:1) |
 | surface-accent-signal | `#0EA5E9` (Patent Intelligence SaaS accent — vivid; **dark surfaces only**, 5.53:1 on `#252525` but only 2.77:1 on white) |
 | surface-accent-signal-text | `#0A72B0` (Signal accent, text-safe on white — 5.19:1) |
 | surface-accent-tis | `#252525` (TIS-overall — neutral ink; TIS speaks in ink, not in a colour of its own) |
-| surface-accent-licensing-wash | `#F1EDE7` (pale warm tint — fills only: secondary-button hover, soft panels on licensing surfaces. Never type.) |
 | surface-accent-signal-wash | `#EEF3F7` (pale cool tint — fills only: secondary-button hover, soft panels on Signal surfaces. Never type.) |
 | partner-brand-ipic | `#00AAEA` (iPIC brand blue — **externally owned**) |
 | partner-brand-iii | `#14156D` (III / Institute for Information Industry brand navy — **externally owned**) |
@@ -498,15 +492,15 @@ Nothing was lost silently: the retired compositions remain in this file's histor
 
 | Surface | Vivid | Text-safe on white | Reads as |
 |---|---|---|---|
-| Licensing Platform | `--surface-accent-licensing` `#EC4200` | `--surface-accent-licensing-text` `#D93B00` | Red-leaning orange. Sampled from the shipped nav-dropdown imagery. |
+| Licensing Platform | `--surface-accent-tis` `#252525` | same | Neutral ink. The licensing orange was retired 2026-11-16; the Licensing Platform carries no thematic colour. |
 | Patent Intelligence SaaS | `--surface-accent-signal` `#0EA5E9` | `--surface-accent-signal-text` `#0A72B0` | True azure. Vivid value is **dark-surface only** — see the contrast note below. |
 | TIS overall | `--surface-accent-tis` `#252525` | same | Neutral ink. TIS speaks across surfaces, so it carries no colour of its own. |
 
-**Contrast — read this before using an accent.** `#0EA5E9` measures **2.77:1 on white**, which fails the §5 AA floor even for large text and UI. It is a *dark-surface* accent (5.53:1 on `#252525`) and that is how the shipped Signal hero uses it. On any light surface, use `--surface-accent-signal-text` instead. Licensing's `#EC4200` is more forgiving — 3.93:1 on white and 3.90:1 on ink — so it clears AA for large text and UI on both, but body copy on white still needs the `-text` sibling.
+**Contrast — read this before using an accent.** `#0EA5E9` measures **2.77:1 on white**, which fails the §5 AA floor even for large text and UI. It is a *dark-surface* accent (5.53:1 on `#252525`) and that is how the shipped Signal hero uses it. On any light surface, use `--surface-accent-signal-text` instead.
 
 **Partner brand colours are not TIS colours.** `--partner-brand-*` exist so a partner's own seal or lockup can render in that institution's blue — iPIC, III, NYCU. They are externally owned, sit outside every TIS ramp, and are never an accent, a status, or a fill on TIS-owned UI. Note the naming trap: `--partner-<name>` and `--partner-<name>-color` are **logo asset URLs**, not colours; the colour tokens carry the `-brand-` infix.
 
-**Held off the SABCD ramp, with one adjacency to respect.** Accents are surface identity; `--score-*` is patent quality. They must never read as the same family. The two live closest together are `--surface-accent-licensing-text` `#D93B00` and `--score-d` `#C2410C` — separable because the accent is a hotter, redder orange while tier D is a browner burnt orange. On marketing surfaces they never co-occur (tier chips don't appear there). On the Licensing Platform they can, so prefer the vivid accent for chrome and let the tier chip own the burnt register.
+**Held off the SABCD ramp.** Accents are surface identity; `--score-*` is patent quality. They must never read as the same family. Since the licensing orange was retired, orange on any surface means tier D (`--score-d` `#C2410C`) and nothing else; never use it as a thematic or brand colour.
 
 **Application.** Flat `color` / `background-color` / `border-color` only — no `background-clip: text`, no multi-stop sweeps. An accent is rationed: a single emphasized run, an eyebrow, a chart series, one CTA. Never a wash behind body copy.
 

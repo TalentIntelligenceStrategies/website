@@ -236,11 +236,11 @@ Why: gradients had become a second, parallel colour system — 181 declarations 
 |---|---|---|
 | **TIS overall** — front door (Home, Sustain, Protect, License, Ecosystem, About), hero, global chrome | Neutral ink `--surface-accent-tis`. Silver register available as flat `--slate-700` / `--slate-200`. | The WebGL shifting-lines shader on the homepage hero; black image-backed cards elsewhere. TIS speaks in ink, not in a colour of its own. |
 | **Patent Intelligence SaaS** *(Insights)* | `--surface-accent-signal` `#0EA5E9` on dark; `--surface-accent-signal-text` `#0A72B0` on light | Blue-register stills — `assets/imagery/signal/signal-cool.jpg` is the reference. |
-| **Licensing Platform** *(Insights)* | `--surface-accent-licensing` `#EC4200`; `--surface-accent-licensing-text` `#D93B00` on light | Orange-register stills — `assets/imagery/coremap/licensing-warm-v2.png` is the reference. |
+| **Licensing Platform** *(Insights)* | Neutral ink `--surface-accent-tis`. The licensing orange was retired 2026-11-16; orange on this surface means tier D only. | Graphite / product-screen register — real app captures in a neutral frame. No warm or orange stills. |
 
 **Services · Ascent / Brokerage removed.** The bronze theme existed only for those surfaces. The bronze ramp is retired in `design-tokens.md` §7.2. The Sustain · Protect · License pillars ([`positioning.md`](./positioning.md) §2) speak in TIS-overall neutral ink; no new pillar accents are defined.
 
-**Don't cross-cast.** A surface's accent is its identity — Signal surfaces don't carry orange, Licensing surfaces don't carry blue. Neutral ink is the only register that speaks across surfaces, and it's reserved for TIS-overall.
+**Don't cross-cast.** A surface's accent is its identity — Signal is the only surface with a colour of its own, and Licensing surfaces don't carry blue. Everything else, Licensing included, speaks in neutral ink. Orange is never thematic; it belongs to the tier D chip.
 
 **Ration the accent.** Flat `color` / `background-color` / `border-color` only. One emphasized run, an eyebrow, a chart series, one CTA — never a wash behind body copy, and never a multi-stop sweep. Check the contrast note in §7.5 before placing `#0EA5E9` on a light surface: it fails AA there.
 

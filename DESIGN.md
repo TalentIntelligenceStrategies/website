@@ -162,13 +162,14 @@ replaced by flat per-surface accents. **There is no gradient accent left on this
 
 | Token | Value | Use |
 |---|---|---|
-| `--surface-accent-licensing` | `#EC4200` | 3.93:1 on white — large text / UI chrome only |
-| `--surface-accent-licensing-text` | `#D93B00` | 4.59:1 on white — body copy |
 | `--surface-accent-signal` | `#0EA5E9` | 2.77:1 on white — **dark surfaces only** |
 | `--surface-accent-signal-text` | `#0A72B0` | 5.19:1 on white — body copy |
-| `--surface-accent-licensing-wash` | `#F1EDE7` | pale warm tint — hover/rest fills |
 | `--surface-accent-signal-wash` | `#EEF3F7` | pale cool tint — hover/rest fills |
 | `--surface-accent-tis` | `#252525` | TIS overall carries no colour of its own — neutral ink |
+
+The licensing orange (`--surface-accent-licensing*`) was retired brand-wide 2026-11-16: the
+Licensing Platform uses neutral ink like TIS overall. Orange survives only as the tier D data
+colour (`--score-d*`).
 
 Accents are held **off** the SABCD ramp so a surface accent never reads as a tier chip.
 Pick the `-text` variant for anything at body size; the vivid values miss AA.
@@ -819,7 +820,7 @@ padding so the two left edges line up. `.pillar-title` white; `.pillar-sub` whit
 `bottom:28px`, `hero-cue-bounce 2.2s` infinite.
 
 **`.pillar-title em` is a flat accent, not clipped gradient.** Per pillar:
-signal → `--surface-accent-signal`; licensing → `--surface-accent-licensing`;
+signal → `--surface-accent-signal`; licensing → the default (no accent since 2026-11-16);
 positioning → `--slate-200` (TIS overall carries no colour, so the silver register is the
 light end of the slate ramp). Each also sets `font-style: normal` and
 `-webkit-text-fill-color` to clear the inherited fill. `background-clip: text` is **0
@@ -873,8 +874,7 @@ the container becomes `flex-direction: column; align-items: stretch`.
   treatment for every surface; hover `--slate-400`, `filter:none`. Dark theme swaps to
   `--slate-700` on `--slate-100`.
   This was a per-pillar gradient fill (warm / cool / slate) until 2026-08-06. The accents
-  can't carry button text at AA on a dark hero — `#EC4200` is 3.9:1 against both white
-  and ink — so the CTA takes the high-contrast light fill and the accent stays reserved
+  can't carry button text at AA on a dark hero, so the CTA takes the high-contrast light fill and the accent stays reserved
   for text emphasis.
 
 **Two hovers, one reason.** `--surface-inverse-hover` (`#292524`) is imperceptible
@@ -1324,7 +1324,6 @@ assumed to be:
 | `.pillar-sub` white 82% (→ `#D1D1D1`) | 13.8:1 | 4.5 |
 | `em` positioning `--slate-200` | 17.0:1 | 3.0 |
 | `em` signal `--surface-accent-signal` | 7.6:1 | 3.0 |
-| `em` licensing `--surface-accent-licensing` | 5.4:1 | 3.0 |
 | `.hero .btn-glass` label | 17.4:1 | 4.5 |
 | `.hero .btn-secondary` label | 14.5:1 | 4.5 |
 
@@ -2128,83 +2127,30 @@ its own (the same treatment `/product/signal/` uses).
 Everything above is site-wide. This section holds what is genuinely scoped to one page.
 Keep additions here as subsections — do not split them into separate files.
 
-### 16.1 Licensing Platform landing page — `product/licensing/index.html`
+### 16.1 Licensing Platform — `product/licensing/index.html` (2026-11-17; veiled)
 
-**Aesthetic direction — "the coverage dossier."** A chaptered, instrument-grade document
-a composed advisor walks the reader through, replacing vague legal dread with the calm of
-someone who already holds coverage. Reference lane, named: **Stripe-restraint precision
-meets a sealed private-bank dossier** — monochrome ink on white/warm-white, exact type,
-generous air, with the licensing accent rationed like a wax seal.
+Rebuilt 2026-11-17 from mock `mro/mocks/licensing-r2`, variant l1: TIS Terrain's C3 structure and
+motion (§16.6) on the Licensing Platform's own move. The October "coverage dossier" page (warm coremap
+hero, 30-patent copy, pricing, FAQ) is in git history before this fold. **Generated** by `build.py`
+`licensing_page()`; markup and every EN/ZH pair in `mro/website-build/licensing.py` (ZH drafted
+2026-11-17, ZH ✓ pending). CSS: `styles.css` block **FRONT DOOR v3 · LICENSING**, scoped
+`body[data-page="licensing"]`. Motion: `site.js` block **Licensing**. Still veiled (§17).
 
-Why the dossier framing licenses moves that are banned by reflex elsewhere:
-
-- **Sectional numbering** is legitimate: the page *is* an ordered narrative, not
-  decorative scaffolding. It replaces the banned "kicker above every section."
-- **Inconsolata** is literal, not costume: it sets patent IDs (`US10892431`), tier
-  counts, licence numbers, dates and figures — genuine technical registers.
-- The accent acts as a **seal/foil**, never a fill behind text.
-
-**Colour.** Licensing accent = `--surface-accent-licensing` (large text / UI),
-`--surface-accent-licensing-text` (body copy), `--surface-accent-licensing-wash` (the
-warm alternating ground). `--score-*` and `--score-*-vivid` are reserved for SABCD tier
-data on this page — distribution bar, tier chips, patent dots — and nothing else.
-
-> There is no `--lic-surface-alt`. Earlier drafts of this spec invented `#FBF7F1` and
-> claimed it was already defined; it exists nowhere in code. Use
-> `--surface-accent-licensing-wash` (`#F1EDE7`).
-
-**Live composition** (in DOM order): `hero.hero--showcase` → `deliverables` →
-`gapcover` → `lic-showcase` → `walkaway` → `pricing` (`section--alt`) → contact. The
-page reuses the universal `howitworks` / `acc-*` accordion, the `bp-*` bundle picker,
-`brand-select`, `contact-form`, and `patent-card`, all with their markup and JS contracts
-intact — only the skin is page-scoped.
-
-**Layout intent that still governs edits here:**
-
-- **Hero** — asymmetric: oversized type left, a framed credential/seal slot right. Accent
-  on one word plus a thin rule. All hero copy is forced to `#fff` over the warm photo
-  (there is no scrim), which is why the eyebrow, title, `em` and sub are pinned together.
-- **Comparison ledger, not a card grid** — the three-way File / Hire / Subscribe
-  comparison is hairline-split rows with mono cost figures, the Subscribe row lifted into
-  a single warm-white panel with an accent seal rule. Not three equal cards.
-- **Figures** render in mono ink with a unit, set on the hairline grid — never as glowing
-  numerals.
-- **Distribution bar** — proportional tier-coloured segments, animated from 0 width on
-  reveal; the tier role-lines are a compact data-coloured legend.
-- **Cards only where a card is the true affordance** (scenario panels, inventory rows).
-  No nested cards.
-
-**Motion.** This is the **only** page cleared for GSAP + ScrollTrigger (§10), and it must
-keep the 3-CDN fallback chain and a reduced-motion branch. One deliberate hero entrance;
-`[data-reveal]` for the rest; `.counter[data-target]` for real figures.
-
-**Voice.** Anchor numbers verbatim. Credit Innovue once near the top, in the phrasing
-`visual-guide-snapshot.md` approves. No em dashes in *new* copy; existing verbatim copy is
-preserved as-is.
-
-#### Veiled — coming soon (2026-08-23)
-
-TIS shifted focus away from the Licensing Platform. This page and `badge.html` are covered
-by the §17 veil: the narrative below the veil is intact and unedited except for the three
-CTAs and the announce bar, so lifting the veil restores a working page rather than
-requiring a rewrite. `noindex, follow` on both — `follow` so link equity keeps flowing to
-`/` and `/product/signal/` and re-indexing after the revert is fast.
-
-The three `license.tisglobalinc.com/welcome` CTAs now point at `/#contact` and read "Talk
-to us". They stay real anchors on purpose: a veil is presentation, not access control, so
-the markup has to be correct on its own merits. Removing `href` would make them
-unfocusable and unannounced; reusing `.btn:disabled` would conflate "product unavailable"
-with "form in flight". The original hrefs are in an HTML comment beside each.
-
-`NT$3,390` is gone. It lived only in this page's announce bar and contradicted the
-picker's own `NT$8,490` floor, so it was **removed rather than corrected** — re-asserting a
-live price on a page that is no longer selling would be worse. The dead
-`data-target="licensing-signup"` went with it, as did the duplicate `sr-only` `<h1>` that
-disagreed with the visible one.
-
-Revert list: §17.10.
-
----
+- **Ground.** The site's neutral dark-mode greys, not Terrain's graphite: bands run hero `#121212` ·
+  gap `#FFFFFF` · industries `#181818` · how `#FAFAFA` · walkaway `#121212` · contact. No dot grid,
+  blooms, crop marks or metal edges. Greyscale only; the one colour is the `--ok` status dot.
+- **Hero.** Copy left (5), the product right (7); stacks below 1100px. The demo is a bundle across
+  five tiers beside the active tier's backups; one patent at a time is swapped for a same-tier
+  backup (mark → pick → swap → refill), on the site motion tokens, WAAPI on transform / opacity /
+  clip-path / filter only. Title rows reserve two lines (`min-height: 2lh`) so the hero holds one
+  height in both languages. Pause button, hold on hover / focus / off-screen / hidden tab; reduced
+  motion shows the static frame (Tier A swapped). The loop rewrites `data-en` / `data-zh` on the
+  text it changes, so the language swap keeps the current frame.
+- **Copy rules.** No bundle count (the product ships 10; the brand anchor still says 30). Say only
+  what ships: a TIS-signed Digital License Credential, verifiable by QR. No MOICA, no institution
+  signatures or names, no pricing. Open combinations only (Semiconductor / Networking / Net-Zero ×
+  US / TW). Primary CTA goes out to `license.tisglobalinc.com/welcome`.
+- **Open item.** The page-scoped `--g-*` ramp is not in `brand/design-tokens.md` (same as Terrain).
 
 ### 16.2 Signal — `product/signal/index.html`
 

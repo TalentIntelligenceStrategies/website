@@ -2518,3 +2518,200 @@
   syncBtn();
   later(step, T.start);                        // after the hero entrance settles
 })();
+
+/* ──────────────── Licensing — /product/licensing/ (2026-11-17; mock licensing-r2 l1) ────────────────
+   Same contracts as Terrain above, on the Licensing Platform's own move.
+   1. Play-once reveals: .c-tl blocks below the fold get .c-pre until they scroll in.
+   2. The hero bundle swaps one patent at a time for a same-tier backup, Tier S to Tier D, looping:
+      mark (the row lifts, the backup column relabels and its three backups unroll in, 60ms apart)
+      → pick (the best-scoring backup) → swap (the old title lifts away, the new one glides in from
+      the column, FLIP on --ease-drawer; the relevance bar re-fills; "Swapped" settles) → the patent
+      that left drops into the column → rest 2.4s → next tier. No cursor. WAAPI on transform /
+      opacity / clip-path / filter only, so the hero never changes height. Pauses while hovered,
+      focused, off-screen, in a hidden tab, or by its pause button. Reduced motion or no JS: the
+      static frame (Tier A just swapped). The pool is illustrative and mirrors licensing.py POOL
+      and the portal's /welcome demo. Text set here also rewrites data-en / data-zh, so the
+      language swap keeps whatever the loop last showed. */
+(() => {
+  if (!document.querySelector('.lp-page')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.remove('c-pre');
+      o.unobserve(e.target);
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.lp-page .c-tl').forEach((el) => {
+    if (el.getBoundingClientRect().top < innerHeight * 0.94) return;
+    el.classList.add('c-pre');
+    obs.observe(el);
+  });
+})();
+
+(() => {
+  if (!document.querySelector('.lp-page')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const demo = document.querySelector('.l1-demo');
+  if (!demo) return;
+  const rows = [...demo.querySelectorAll('.l1-row')];
+  const list = demo.querySelector('.l1-bk__list');
+  const items = list ? [...list.children] : [];
+  const tierLab = demo.querySelector('.l1-bk__tier');
+  const bar = demo.querySelector('.l1-bar');
+  if (rows.length !== 5 || items.length !== 3 || !tierLab || !bar) return;
+
+  // Per tier: [EN, ZH, relevance]. Index 0 is the patent in the bundle; 1-3 are its backups.
+  const POOL = {
+    S: [['Backside power delivery network for sub-2nm logic', '次 2 奈米邏輯元件之背面供電網路', 94], ['High aspect-ratio through-silicon via etch control', '高深寬比矽穿孔蝕刻控制方法', 92],
+        ['Gate-all-around nanosheet transistor with inner spacers', '具內間隔層之環繞式閘極奈米片電晶體', 90], ['Buried power rail with self-aligned via contacts', '具自對準通孔之埋入式電源軌', 87]],
+    A: [['Chiplet interposer with embedded deep-trench capacitors', '內嵌深溝槽電容之小晶片中介層', 91], ['Hybrid bonding interconnect with self-aligned copper pads', '自對準銅墊之混合鍵合互連結構', 88],
+        ['Selective-area atomic layer deposition for stacked dies', '堆疊晶粒之選擇性原子層沉積', 84], ['Warpage control for fan-out wafer-level packages', '扇出型晶圓級封裝之翹曲控制', 79]],
+    B: [['Thermal-aware floorplanning for 3D integrated circuits', '三維積體電路之熱感知佈局方法', 83], ['Die-to-die test access over a shared scan bus', '共用掃描匯流排之晶粒間測試存取', 86],
+        ['Wafer-level underfill dispensing with flow monitoring', '具流量監測之晶圓級底部填充點膠', 81], ['Through-mold via formation by laser drilling', '雷射鑽孔之模塑通孔成形方法', 77]],
+    C: [['Line-edge roughness reduction in photoresist patterning', '光阻圖案化之線邊緣粗糙度改善', 76], ['Pore sealing for porous low-k dielectrics', '多孔低介電材料之孔隙封閉製程', 79],
+        ['Probe card planarity calibration from contact marks', '以接觸痕校正探針卡平整度', 74], ['Copper seed layer repair before electroplating', '電鍍前銅晶種層修補方法', 71]],
+    D: [['Wafer cassette mapping with an optical slot sensor', '光學槽位感測之晶圓盒映射', 68], ['Reticle pod purge with humidity feedback', '具濕度回饋之光罩盒吹淨控制', 71],
+        ['Edge-bead removal nozzle alignment by camera', '攝影機輔助之去邊珠噴嘴對位', 66], ['Chemical drum level sensing by load cells', '荷重元化學品桶液位感測', 63]],
+  };
+  const OWN = [['Research institute', '研究機構'], ['University', '大學']];
+  const TIERS = ['S', 'A', 'B', 'C', 'D'];
+  const zhNow = () => document.documentElement.getAttribute('lang') === 'zh-Hant';
+  const L = (en, zh) => (zhNow() ? zh : en);
+  // Write both languages, show the current one.
+  const say = (el, en, zh) => { el.dataset.en = en; el.dataset.zh = zh; el.textContent = zhNow() ? zh : en; };
+
+  const state = {};
+  TIERS.forEach((t, n) => { state[t] = { row: 0, bk: [1, 2, 3], pick: 0, own: n % 2 }; });
+
+  const css = getComputedStyle(document.documentElement);
+  const tok = (n, d) => (css.getPropertyValue(n).trim() || d);
+  // Tokens may be written in s (.6s) or ms (600ms).
+  const ms = (n, d) => { const v = tok(n, d), f = parseFloat(v); return /ms$/.test(v) ? f : /s$/.test(v) ? f * 1000 : parseFloat(d); };
+  const M = {
+    base: ms('--dur-base', '180ms'), panel: ms('--dur-panel', '320ms'), reveal: ms('--dur-reveal', '600ms'),
+    out: tok('--ease-out', 'ease-out'), rev: tok('--ease-reveal', 'ease-out'), move: tok('--ease-drawer', 'ease-in-out'), stagger: 60,
+  };
+  const BEAT = { start: 1600, mark: M.reveal + 520, pick: 560, swap: M.panel + M.reveal, refill: 2400, unmark: 380 };
+
+  // Pause / play, in the context bar. The demo box is aria-hidden; the control must not be.
+  const pause = document.createElement('button');
+  pause.type = 'button'; pause.className = 'l1-pause';
+  pause.innerHTML = '<svg class="l1-i-pause" viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2" width="3" height="10" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/></svg>'
+    + '<svg class="l1-i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L4.9 1.7a.6.6 0 0 0-.9.5Z"/></svg>';
+  bar.append(pause);
+  const inner = demo.querySelector('.l1-demo__in');
+  inner.removeAttribute('aria-hidden');
+  [...inner.children].forEach((el) => el.setAttribute('aria-hidden', 'true'));
+  bar.removeAttribute('aria-hidden');
+  bar.querySelector('.l1-bar__ctx').setAttribute('aria-hidden', 'true');
+
+  let user = false, hover = false, focus = false, seen = true, timer = 0;
+  const held = () => user || hover || focus || !seen || document.hidden;
+  const later = (fn, d) => { clearTimeout(timer); timer = setTimeout(fn, d); };
+  const anim = (el, kf, o) => el.animate(kf, { fill: 'backwards', ...o });
+
+  const setRel = (host, rel) => {
+    host.querySelector('.l1-b').style.setProperty('--w', rel + '%');
+    host.querySelector('.l1-n').textContent = rel + '%';
+  };
+  const setRow = (r, t) => {
+    const [en, zh, rel] = POOL[t][state[t].row];
+    say(r.querySelector('.l1-t'), en, zh);
+    const [oe, oz] = OWN[state[t].own % 2];
+    say(r.querySelector('.l1-o'), oe, oz);
+    setRel(r, rel);
+  };
+  const setItem = (li, t, k) => {
+    const [en, zh, rel] = POOL[t][k];
+    say(li.querySelector('.l1-t'), en, zh);
+    setRel(li, rel);
+  };
+
+  // The static frame shows Tier A done; the loop picks up at Tier B.
+  let k = 2, step = 'mark';
+  function run() {
+    if (held()) return;
+    const t = TIERS[k], r = rows[k], S = state[t];
+
+    if (step === 'mark') {
+      rows.forEach((x) => x.classList.remove('is-on', 'is-done'));
+      r.classList.add('is-on');
+      const out = list.animate([{ opacity: 1, transform: 'none', filter: 'blur(0)' }, { opacity: 0, transform: 'translateY(-6px)', filter: 'blur(2px)' }],
+        { duration: M.base, easing: M.out, fill: 'forwards' });
+      out.onfinish = () => {
+        tierLab.textContent = 'Tier ' + t;
+        items.forEach((li, n) => { li.classList.remove('is-pick'); setItem(li, t, S.bk[n]); });
+        anim(list, [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: M.reveal, easing: M.rev });
+        items.forEach((li, n) => anim(li, [{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }],
+          { duration: M.reveal, easing: M.rev, delay: n * M.stagger }));
+        out.cancel();
+      };
+      step = 'pick'; return later(run, BEAT.mark);
+    }
+
+    if (step === 'pick') {
+      S.pick = S.bk.reduce((b, x, n) => (POOL[t][x][2] > POOL[t][S.bk[b]][2] ? n : b), 0);
+      items[S.pick].classList.add('is-pick');
+      step = 'swap'; return later(run, BEAT.pick);
+    }
+
+    if (step === 'swap') {
+      const li = items[S.pick];
+      const from = li.querySelector('.l1-t').getBoundingClientRect();
+      const title = r.querySelector('.l1-t');
+      const old = S.row;
+      const exit = title.animate([{ opacity: 1, transform: 'none', filter: 'blur(0)' }, { opacity: 0, transform: 'translateY(-6px)', filter: 'blur(2px)' }],
+        { duration: M.base, easing: M.out, fill: 'forwards' });
+      li.animate([{ opacity: 1 }, { opacity: 0 }], { duration: M.base, easing: M.out, fill: 'forwards' });
+      exit.onfinish = () => {
+        S.row = S.bk[S.pick]; S.bk[S.pick] = old; S.own++;
+        const prevW = parseFloat(r.querySelector('.l1-b').style.getPropertyValue('--w')) || 70;
+        setRow(r, t);
+        const to = title.getBoundingClientRect();
+        const dx = from.left - to.left, dy = from.top - to.top;
+        anim(title, [{ opacity: .5, filter: 'blur(2px)', transform: `translate(${dx}px, ${dy}px)` }, { opacity: 1, filter: 'blur(0)', transform: 'none' }],
+          { duration: M.panel + M.base, easing: M.move });
+        exit.cancel();
+        // The visible fill is the track's ::after, so the re-fill is a keyed CSS animation (styles.css).
+        const fill = r.querySelector('.l1-b');
+        fill.style.setProperty('--from', String(prevW / POOL[t][S.row][2]));
+        fill.classList.remove('is-fill'); void fill.offsetWidth; fill.classList.add('is-fill');
+        anim(r.querySelector('.l1-n'), [{ opacity: 0 }, { opacity: 1 }], { duration: M.base, easing: M.out, delay: M.panel });
+        setTimeout(() => r.classList.add('is-done'), M.panel);
+        setTimeout(() => {
+          li.classList.remove('is-pick');
+          setItem(li, t, S.bk[S.pick]);
+          li.getAnimations().forEach((x) => x.cancel());
+          anim(li, [{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'none' }], { duration: M.panel, easing: M.out });
+        }, M.panel + M.base);
+      };
+      step = 'unmark'; return later(run, BEAT.swap + BEAT.refill);
+    }
+
+    if (step === 'unmark') {
+      rows[k].querySelector('.l1-b').classList.remove('is-fill');
+      k = (k + 1) % TIERS.length;
+      step = 'mark'; return later(run, BEAT.unmark);
+    }
+  }
+
+  function resume() { clearTimeout(timer); if (!held()) later(run, 600); }
+  function syncBtn() {
+    demo.classList.toggle('l1-paused', user);
+    pause.setAttribute('aria-label', user ? L('Play the swap example', '播放替換示範') : L('Pause the swap example', '暫停替換示範'));
+    pause.setAttribute('aria-pressed', String(user));
+  }
+  pause.addEventListener('click', () => { user = !user; syncBtn(); resume(); });
+  demo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hover = true; });
+  demo.addEventListener('pointerleave', () => { hover = false; resume(); });
+  demo.addEventListener('focusin', () => { focus = true; });
+  demo.addEventListener('focusout', () => { focus = false; resume(); });
+  document.addEventListener('visibilitychange', resume);
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; resume(); }, { threshold: 0.2 }).observe(demo);
+  new MutationObserver(syncBtn).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  syncBtn();
+  later(run, BEAT.start);
+})();
